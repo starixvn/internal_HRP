@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
+    <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
+  </ItemGroup>
+
+</Project>
