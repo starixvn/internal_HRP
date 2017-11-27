@@ -1,7 +1,7 @@
 namespace HRP.Services
 {
     using System.Collections.Generic;
-    using HRP.Core.Model;
+    using Core.Model;
 
     public class UserService : IUserService
     {
@@ -12,10 +12,10 @@ namespace HRP.Services
                 UserId = 1,
                 Username = "admin",
                 Password = "1234aa",
-                Functions = new List<FunctionModel>
+                MenuItems = new List<MenuItem>
                 {
-                    new FunctionModel { FunctionId = 1, FunctionKey = "Home", IsHost = false, IsRead = false },
-                    new FunctionModel { FunctionId = 1, FunctionKey = "UserManagement", IsHost = true, IsRead = false }
+                    new MenuItem { MenuId = 1, Name = "Home" },
+                    new MenuItem { MenuId = 2, Name = "User Management" }
                 }
             };
         }

@@ -1,9 +1,15 @@
 namespace HRP_Website
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Text;
+    using Fanex.Data;
     using HRP.Models;
     using HRP.Services;
+    using HRP.Core.Services;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -11,6 +17,7 @@ namespace HRP_Website
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
 
     public class Startup
     {
@@ -24,6 +31,20 @@ namespace HRP_Website
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Dictionary<string, string> connections = Configuration
+                .GetSection("ConnectionStrings")
+                .GetChildren()
+                .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
+
+            DbSettingProviderManager
+            .StartNewSession()
+            .UseConnectionStrings(connections)
+            .UseDefaultDbSettingProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "SPNames.xml"),
+                false,
+                true)
+            .Run();
+
             services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
 
             //
@@ -52,7 +73,12 @@ namespace HRP_Website
                 };
             });
 
-            services.AddMvc();
+            services.AddMemoryCache();
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,9 +96,10 @@ namespace HRP_Website
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

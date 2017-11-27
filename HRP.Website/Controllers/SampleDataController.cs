@@ -5,6 +5,8 @@ namespace HRP_Website.Controllers
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using HRP.Core.Filters;
+    using HRP.Core.Enumerations;
 
     [Authorize]
     [Route("api/[controller]")]
@@ -16,6 +18,7 @@ namespace HRP_Website.Controllers
         };
 
         [HttpGet("[action]")]
+        //[HRPPermission(FunctionKey = "WeatherForecasts", Policy = Policy.Host)]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();

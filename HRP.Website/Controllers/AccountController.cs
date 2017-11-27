@@ -8,6 +8,7 @@ namespace HRP_Website.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Cors;
     using Newtonsoft.Json.Linq;
+    using HRP.Core.Services;
     using HRP.Services;
     using HRP.Models;    
     
@@ -16,13 +17,16 @@ namespace HRP_Website.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly ISessionService _sessionService;
 
         public AccountController(
             IUserService userService,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            ISessionService sessionService)
         {
             _tokenService = tokenService;
             _userService = userService;
+            _sessionService = sessionService;
         }
 
         [AllowAnonymous]
@@ -37,6 +41,10 @@ namespace HRP_Website.Controllers
                 {
                     var accessToken = _tokenService.CreateJwtTokens(user);
                     user.Token = accessToken;
+
+                    _sessionService.UserId = user.UserId;
+                    _sessionService.Username = user.Username;
+                    _sessionService.MenuItems = user.MenuItems;
 
                     return Ok(user);
                 }

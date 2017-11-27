@@ -6,7 +6,7 @@ namespace HRP.Core.Model
     {
         public UserSession()
         {
-            Functions = new List<FunctionModel>();
+            MenuItems = new List<MenuItem>();
         }
 
         public int UserId { get; set; }
@@ -19,6 +19,6 @@ namespace HRP.Core.Model
 
         public string Token { get; set; }
 
-        public IEnumerable<FunctionModel> Functions { get; set; }
+        public IEnumerable<MenuItem> MenuItems { get; set; }
     }
 }
