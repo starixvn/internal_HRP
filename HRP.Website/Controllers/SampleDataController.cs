@@ -8,7 +8,7 @@ namespace HRP_Website.Controllers
     using HRP.Core.Filters;
     using HRP.Core.Enumerations;
 
-    [Authorize]
+    [HRPAuthorize]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
@@ -18,7 +18,7 @@ namespace HRP_Website.Controllers
         };
 
         [HttpGet("[action]")]
-        //[HRPPermission(FunctionKey = "WeatherForecasts", Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = "WeatherForecasts", Policy = Policy.Host)]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();

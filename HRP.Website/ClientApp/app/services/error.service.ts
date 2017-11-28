@@ -12,6 +12,9 @@ export class ErrorService {
                 this.router.navigate(['/login']);
                 break;
 
+            case 405:
+                break;
+
             case 500:
                 break;
         }

@@ -16,6 +16,11 @@ namespace HRP.Services
                 {
                     new MenuItem { MenuId = 1, Name = "Home" },
                     new MenuItem { MenuId = 2, Name = "User Management" }
+                },
+                Functions = new List<FunctionModel>
+                {
+                    new FunctionModel { FunctionId = 1, FunctionKey = "UserManagement", IsHost = true },
+                    new FunctionModel { FunctionId = 2, FunctionKey = "WeatherForecasts", IsHost = true }
                 }
             };
         }

@@ -1,6 +1,7 @@
 namespace HRP.Core.Model
 {
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     public class UserSession
     {
@@ -20,5 +21,8 @@ namespace HRP.Core.Model
         public string Token { get; set; }
 
         public IEnumerable<MenuItem> MenuItems { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<FunctionModel> Functions { get; set; }
     }
 }

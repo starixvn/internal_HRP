@@ -1,7 +1,9 @@
 namespace HRP.Core.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.AspNetCore.Http;
+    using Enumerations;
     using Model;
 
     public class SessionService : ISessionService
@@ -9,6 +11,7 @@ namespace HRP.Core.Services
         public const string InternalUsername = "InternalUsername";
         public const string InternalUserId = "InternalUserId";
         public const string InternalMenuItemList = "InternalMenuItemList";
+        public const string InternalFunctionList = "InternalFunctionList";
 
         private readonly ISession _session;
 
@@ -40,9 +43,36 @@ namespace HRP.Core.Services
             set => _session.Set(InternalMenuItemList, value);
         }
 
-        public int GetUserPermissionOnFunction(int userId, string functionKey)
+        public IEnumerable<FunctionModel> Functions
+        { 
+            get => _session.Get<List<FunctionModel>>(InternalFunctionList);
+            set => _session.Set(InternalFunctionList, value);
+        }
+
+        public bool HasPermissionOnFunction(string functionKey, Policy policy)
         {
-            return 2;
+            var currentFunction = Functions.FirstOrDefault(x => x.FunctionKey == functionKey);
+            var result = false;
+
+            if (currentFunction != null)
+            {
+                switch (policy)
+                {
+                    case Policy.Read:
+                        result = currentFunction.IsRead || currentFunction.IsHost;
+                        break;
+
+                    case Policy.Host:
+                        result = currentFunction.IsHost;
+                        break;
+
+                    default:
+                        result = false;
+                        break;
+                }
+            }
+
+            return result;
         }
 
         public void ClearAll()

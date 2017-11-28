@@ -45,6 +45,7 @@ namespace HRP_Website.Controllers
                     _sessionService.UserId = user.UserId;
                     _sessionService.Username = user.Username;
                     _sessionService.MenuItems = user.MenuItems;
+                    _sessionService.Functions = user.Functions;
 
                     return Ok(user);
                 }

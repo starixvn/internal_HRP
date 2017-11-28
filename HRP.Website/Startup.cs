@@ -6,18 +6,18 @@ namespace HRP_Website
     using System.Linq;
     using System.Text;
     using Fanex.Data;
+    using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
-    using HRP.Core.Services;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.SpaServices.Webpack;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
 
     public class Startup
     {
@@ -44,12 +44,8 @@ namespace HRP_Website
                 false,
                 true)
             .Run();
-
-            services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
-
-            //
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserService, UserService>();
+            
+            services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));            
 
             // Jwt Authentication
             services.AddAuthentication(options =>
@@ -75,8 +71,16 @@ namespace HRP_Website
 
             services.AddMemoryCache();
             services.AddMvc().AddSessionStateTempDataProvider();
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["BearerTokens:AccessTokenExpirationMinutes"]));
+                options.Cookie.HttpOnly = true;
+            });
+
+            // DI
             services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
@@ -96,7 +100,7 @@ namespace HRP_Website
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSession();
