@@ -9,9 +9,9 @@
             "type": "clr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net471/win10-x64/HRP.Website.exe",
+            "program": "${workspaceFolder}/HRP.Website/bin/Debug/net461/win10-x64/HRP.Website.exe",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/HRP.Website",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

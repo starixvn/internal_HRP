@@ -9,7 +9,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/HRP.Website.csproj"
+                "${workspaceFolder}/HRP.Website/HRP.Website.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

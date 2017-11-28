@@ -36,14 +36,14 @@ namespace HRP_Website
                 .GetChildren()
                 .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
 
-            DbSettingProviderManager
+            /*DbSettingProviderManager
             .StartNewSession()
             .UseConnectionStrings(connections)
             .UseDefaultDbSettingProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "SPNames.xml"),
                 false,
                 true)
-            .Run();
+            .Run();*/
             
             services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));            
 
@@ -69,8 +69,8 @@ namespace HRP_Website
                 };
             });
 
-            services.AddMemoryCache();
             services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["BearerTokens:AccessTokenExpirationMinutes"]));
