@@ -2,15 +2,11 @@ namespace HRP_Website
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
-    using Fanex.Data;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -19,7 +15,6 @@ namespace HRP_Website
     using Microsoft.AspNetCore.SpaServices.Webpack;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -46,13 +41,13 @@ namespace HRP_Website
                 false,
                 true)
             .Run();*/
-            
-            services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
+
+            services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
 
             // Cookie Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options => {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["BearerTokens:AccessTokenExpirationMinutes"]));
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                 options.SlidingExpiration = true;
                 options.LoginPath = "/Auth/Login";
                     options.LogoutPath = "/Auth/Logout";
@@ -75,13 +70,12 @@ namespace HRP_Website
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["BearerTokens:AccessTokenExpirationMinutes"]));
+                options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                 options.Cookie.HttpOnly = true;
             });
 
             // DI
             services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

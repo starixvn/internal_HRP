@@ -20,15 +20,12 @@ namespace HRP_Website.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ITokenService _tokenService;
         private readonly ISessionService _sessionService;
 
         public AccountController(
             IUserService userService,
-            ITokenService tokenService,
             ISessionService sessionService)
         {
-            _tokenService = tokenService;
             _userService = userService;
             _sessionService = sessionService;
         }
@@ -103,13 +100,6 @@ namespace HRP_Website.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpGet("[action]")]
-        public bool IsAuthenticated()
-        {
-            return _sessionService.UserId > 0 && !string.IsNullOrWhiteSpace(_sessionService.Username);
         }
     }
 }

@@ -29,9 +29,17 @@ namespace HRP_Website.Controllers
             return View();
         }
 
+        [HttpGet]
         public IEnumerable<MenuItem> GetMenuByCurrentUser() 
         {
             return _sessionService.MenuItems;
+        }
+
+        
+        [HttpGet]
+        public bool IsAuthenticated()
+        {
+            return _sessionService.UserId > 0 && !string.IsNullOrWhiteSpace(_sessionService.Username);
         }
     }
 }
