@@ -7,5 +7,7 @@ namespace HRP.Models
         [Required]
         [MaxLength(6)]
         public string VerifyCode { get; set; }
+
+        public bool IsTwoFactorAuth { get; set; }
     }
 }

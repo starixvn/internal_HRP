@@ -9,6 +9,7 @@ namespace HRP_Website.Controllers
     using HRP.Core.Services;
     using HRP.Services;
     using HRP.Models;
+    using Google.Authenticator;
 
     public class AuthController : Controller
     {
@@ -30,8 +31,10 @@ namespace HRP_Website.Controllers
             return View(model);
         }
 
+        
+
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public IActionResult Login(LoginViewModel model)
         {
             if (model != null && ModelState.IsValid)
             {
@@ -39,26 +42,57 @@ namespace HRP_Website.Controllers
 
                 if (user != null)
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, model.Username),
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-                    };
-
-                    _sessionService.UserId = user.UserId;
                     _sessionService.Username = user.Username;
-                    _sessionService.MenuItems = user.MenuItems;
-                    _sessionService.Functions = user.Functions;
-
-                    var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    return Redirect("~/Home");;
+                    
+                    return RedirectToAction("VerifyOTP");
                 }
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("verify-otp-code")]
+        public ActionResult VerifyOTP()
+        {
+            if (!string.IsNullOrEmpty(_sessionService.Username))
+            {
+                TwoFactorAuthenticatorViewModel model = new TwoFactorAuthenticatorViewModel();
+                return View(model);
+            }
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        [Route("verify-otp-code")]
+        public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
+        {
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
+            string SecretKey = "1234aa";
+            string UniqueKey = _sessionService.Username + SecretKey;
+            bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode);
+
+            if (ModelState.IsValid && isValidOTP)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                };
+
+                _sessionService.UserId = user.UserId;
+                _sessionService.Username = user.Username;
+                _sessionService.MenuItems = user.MenuItems;
+                _sessionService.Functions = user.Functions;
+
+                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return Redirect("~/Home");
+            }
+            return RedirectToAction("Login");
         }
 
         [HttpGet("[action]"), HttpPost("[action]")]
