@@ -48,34 +48,52 @@ namespace HRP_Website.Controllers
                         new Claim(ClaimTypes.Name, model.Username),
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                     };
-}
-            return Unauthorized();
-        }
-
-        [HttpPost]
-        [Route("verify-code")]
-        public IActionResult VerifyCode([FromBody]TwoFactorAuthenticatorViewModel model)
-        {
-            var user = _userService.GetUserByUsername(_sessionService.Username);
-            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
-            string UserUniqueKey =  _sessionService.Username;
-            bool isValid = twoFactorAuthen.ValidateTwoFactorPIN(UserUniqueKey, model.VerifyCode);
-            if (user != null)
-            {
-                var accessToken = _tokenService.CreateJwtTokens(user);
-
                     _sessionService.UserId = user.UserId;
                     _sessionService.Username = user.Username;
                     _sessionService.MenuItems = user.MenuItems;
                     _sessionService.Functions = user.Functions;
-                return Ok(user);
+
+                    var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                     return Ok();
+                }
             }
+
             return Unauthorized();
+            
         }
+
+        // [HttpPost]
+        // [Route("verify-code")]
+        // public async Task<IActionResult> VerifyCode([FromBody]TwoFactorAuthenticatorViewModel model)
+        // {
+        //     var user = _userService.GetUserByUsername(_sessionService.Username);
+        //     TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
+        //     string UserUniqueKey =  _sessionService.Username;
+        //     bool isValid = twoFactorAuthen.ValidateTwoFactorPIN(UserUniqueKey, model.VerifyCode);
+        //     if (user != null)
+        //     {
+        //         var claims = new List<Claim>
+        //         {
+        //             new Claim(ClaimTypes.Name, model.Username),
+        //             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+        //         };
+        //         _sessionService.UserId = user.UserId;
+        //         _sessionService.Username = user.Username;
+        //         _sessionService.MenuItems = user.MenuItems;
+        //         _sessionService.Functions = user.Functions;
+
+        //         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+
+        //         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    
+        //         return Ok(user);
+        //     }
+        //     return Unauthorized();
+        // }
 
         [AllowAnonymous]
         [HttpGet("[action]"), HttpPost("[action]")]
