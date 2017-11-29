@@ -29,10 +29,10 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(data => {
-                if(data.status === 200) {
-                    this.router.navigate([this.returnUrl]);
-                }                
-            }, error => { });
+            .subscribe(data => { 
+                if (data.status === 200) {
+                    this.router.navigate(['/passcode-verify']);
+                }
+                 }, error => { this.loading = false; });
     }
 }

@@ -29,4 +29,6 @@ export class TwoFactorAuthenticatorComponent implements OnInit {
         this.authenticationService.twoFactorVerify(this.model.verifyCode)
             .subscribe(data => { this.router.navigate(['/passcode-verify']);}, error => { console.log("Error") });
     }
+
+    
 }

@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { AuthGuard } from './components/app/auth.guard';
 import { LoginComponent } from './components/login/login.component';
+import { TwoFactorAuthenticatorComponent } from './components/twofactorauthen/TwoFactorAuthenticator.component';
 
 import { ErrorService } from './services/error.service';
 import { BaseService } from './services/base.service';
@@ -21,7 +22,8 @@ import { BaseService } from './services/base.service';
         NavMenuComponent,
         FetchDataComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        TwoFactorAuthenticatorComponent
     ],
     imports: [
         CommonModule,
