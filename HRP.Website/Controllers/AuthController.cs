@@ -26,13 +26,14 @@ namespace HRP_Website.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            var model = new LoginViewModel();
+            return View(model);
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model != null && ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(model.Username);
 

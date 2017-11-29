@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { IMenuItem } from '../../models/menu-item';
 
 @Component({
     selector: 'nav-menu',
@@ -7,4 +9,5 @@ import { Component } from '@angular/core';
 })
 
 export class NavMenuComponent {
+    @Input() menus: IMenuItem[];
 }

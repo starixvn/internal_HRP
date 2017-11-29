@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Http } from '@angular/http';
 
-import { AppConfig } from './app.config';
 import { BaseService } from '../../services/base.service';
 import { ErrorService } from '../../services/error.service';
+
+import { IMenuItem } from '../../models/menu-item';
 
 @Component({
     selector: 'app',
@@ -12,18 +13,20 @@ import { ErrorService } from '../../services/error.service';
 })
 
 export class AppComponent implements OnInit {
-    isAuthenticated: boolean = false;
+    menus: IMenuItem[];
 
-    constructor(private router: Router,
+    constructor(private http: Http,
         private baseService: BaseService,
         private errorService: ErrorService,
-        private config: AppConfig) { }
+        @Inject('BASE_URL') private baseUrl: string) { }
 
     ngOnInit() {
-        let url = this.config.apiUrl + '/api/account/IsAuthenticated';
+        this.getMenuByCurrentUser();
+    }
+
+    private getMenuByCurrentUser() {
+        let url = this.baseUrl + 'home/GetMenuByCurrentUser';
         this.baseService.get(url)
-            .subscribe(data => { 
-                this.isAuthenticated = data as boolean;
-            }, error => { this.errorService.handleError(error); });
+            .subscribe(data => { this.menus = data as IMenuItem[]; }, error => { this.errorService.handleError(error); });
     }
 }

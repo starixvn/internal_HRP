@@ -14,8 +14,8 @@ namespace HRP.Services
                 Password = "1234aa",
                 MenuItems = new List<MenuItem>
                 {
-                    new MenuItem { MenuId = 1, Name = "Home" },
-                    new MenuItem { MenuId = 2, Name = "User Management" }
+                    new MenuItem { MenuId = 1, Name = "Home", Link = "home" },
+                    new MenuItem { MenuId = 2, Name = "User Management", Link = "usermanagement" }
                 },
                 Functions = new List<FunctionModel>
                 {
