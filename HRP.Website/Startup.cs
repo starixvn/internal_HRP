@@ -5,11 +5,13 @@ namespace HRP_Website
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using Fanex.Data;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -45,28 +47,28 @@ namespace HRP_Website
                 true)
             .Run();*/
             
-            services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));            
+            services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
 
-            // Jwt Authentication
+            // Cookie Authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options => {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["BearerTokens:AccessTokenExpirationMinutes"]));
+                options.SlidingExpiration = true;
+                options.LoginPath = "/Auth/Login";
+                    options.LogoutPath = "/Auth/Logout";
+                    options.Events.OnSigningOut = context =>
+                    {
+                        context.Response.Redirect(options.LoginPath);
+                        return Task.CompletedTask;
+                    };
+            });         
+
+            // Cookie Authentication
             services.AddAuthentication(options =>
             {
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(cfg =>
-            {
-                cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;
-                cfg.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = Configuration["BearerTokens:Issuer"],
-                    ValidAudience = Configuration["BearerTokens:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"])),
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
 
             services.AddMvc().AddSessionStateTempDataProvider();
@@ -108,8 +110,12 @@ namespace HRP_Website
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "login",
+                    template: "{controller=auth}/{action=login}");
+
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=home}/{action=index}/{id?}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",

@@ -3,6 +3,8 @@ namespace HRP.Core.Filters
     using System;
     using System.Net;
     using Enumerations;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
 
@@ -16,6 +18,7 @@ namespace HRP.Core.Filters
         {
             if (context?.HttpContext == null)
             {
+                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return;
             }

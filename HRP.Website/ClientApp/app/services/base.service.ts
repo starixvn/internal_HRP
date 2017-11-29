@@ -37,18 +37,6 @@ export class BaseService {
 
     // private helper methods
     private createRequestOptions() {
-        // create authorization header with jwt token
-        const userJson = localStorage.getItem('currentUser');
-        let currentUser = userJson !== null ? JSON.parse(userJson) : {};
-        if (currentUser && currentUser.token) {
-            let headers = new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + currentUser.token
-            });
-
-            return new RequestOptions({ headers: headers });
-        }
-
         let headers = new Headers({ 'Content-Type': 'application/json' });
         return new RequestOptions({ headers: headers });
     }

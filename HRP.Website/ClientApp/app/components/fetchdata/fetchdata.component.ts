@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import { Component, OnInit } from '@angular/core';
 
 import { AppConfig } from '../app/app.config';
 import { BaseService } from '../../services/base.service';
@@ -7,8 +6,7 @@ import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'fetchdata',
-    templateUrl: './fetchdata.component.html',
-    providers: [BaseService, ErrorService]
+    templateUrl: './fetchdata.component.html'
 })
 
 export class FetchDataComponent implements OnInit {

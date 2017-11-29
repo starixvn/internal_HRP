@@ -12,6 +12,9 @@ import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { AuthGuard } from './components/app/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 
+import { ErrorService } from './services/error.service';
+import { BaseService } from './services/base.service';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -28,6 +31,8 @@ import { LoginComponent } from './components/login/login.component';
     ],
     providers: [
         AppConfig,
+        BaseService,
+        ErrorService,
         AuthGuard
     ]
 })

@@ -1,6 +1,8 @@
 namespace HRP.Core.Filters
 {
     using System.Net;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
@@ -19,6 +21,7 @@ namespace HRP.Core.Filters
 
             if (currentSession.UserId <= 0 || string.IsNullOrWhiteSpace(currentSession.Username))
             {
+                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             }
         }
