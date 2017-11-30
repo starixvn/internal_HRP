@@ -10,30 +10,16 @@ namespace HRP_Website.Controllers
     using Google.Authenticator;
 
     [HRPAuthorize]
-    public class HomeController : Controller
+    public class AccountController : Controller
     {
         private readonly ISessionService _sessionService;
 
-        public HomeController(ISessionService sessionService)
+        public AccountController(ISessionService sessionService)
         {
             _sessionService = sessionService;
         }
 
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
-        }
-
         [HttpGet]
-<<<<<<< HEAD
-=======
         public IActionResult Profile()
         {
             TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
@@ -47,13 +33,6 @@ namespace HRP_Website.Controllers
             return View(model);
         }
 
->>>>>>> 87432 - add 2 factor authenticate
-        public IEnumerable<MenuItem> GetMenuByCurrentUser() 
-        {
-            return _sessionService.MenuItems;
-        }
-
-        
         [HttpGet]
         public bool IsAuthenticated()
         {

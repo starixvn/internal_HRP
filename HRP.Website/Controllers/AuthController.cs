@@ -58,6 +58,7 @@ namespace HRP_Website.Controllers
             if (!string.IsNullOrEmpty(_sessionService.Username))
             {
                 TwoFactorAuthenticatorViewModel model = new TwoFactorAuthenticatorViewModel();
+                model.SkipTwoFactor = true;
                 return View(model);
             }
             return RedirectToAction("Login");
@@ -72,8 +73,9 @@ namespace HRP_Website.Controllers
             string SecretKey = "1234aa";
             string UniqueKey = _sessionService.Username + SecretKey;
             bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode);
+            bool stepTwo = (ModelState.IsValid && isValidOTP) || (model.SkipTwoFactor);
 
-            if (ModelState.IsValid && isValidOTP)
+            if (stepTwo)
             {
                 var claims = new List<Claim>
                 {
@@ -91,6 +93,7 @@ namespace HRP_Website.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 return Redirect("~/Home");
+                
             }
             return RedirectToAction("Login");
         }

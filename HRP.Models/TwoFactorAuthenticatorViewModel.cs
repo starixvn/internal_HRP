@@ -8,6 +8,6 @@ namespace HRP.Models
         [MaxLength(6)]
         public string VerifyCode { get; set; }
 
-        public bool IsTwoFactorAuth { get; set; }
+        public bool SkipTwoFactor { get; set; }
     }
 }
