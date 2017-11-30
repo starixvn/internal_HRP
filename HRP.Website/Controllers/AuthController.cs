@@ -1,5 +1,6 @@
 namespace HRP_Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
@@ -30,8 +31,6 @@ namespace HRP_Website.Controllers
             var model = new LoginViewModel();
             return View(model);
         }
-
-        
 
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
@@ -71,7 +70,9 @@ namespace HRP_Website.Controllers
             var user = _userService.GetUserByUsername(_sessionService.Username);
             TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
             string SecretKey = "1234aa";
+            DateTime nowDate = DateTime.Now;
             string UniqueKey = _sessionService.Username + SecretKey;
+            string currentPIN = twoFactorAuthen.GetCurrentPIN(SecretKey, nowDate);
             bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || (model.SkipTwoFactor);
 
@@ -95,7 +96,8 @@ namespace HRP_Website.Controllers
                 return Redirect("~/Home");
                 
             }
-            return RedirectToAction("Login");
+            _sessionService.ClearAll();
+            return RedirectToAction("VerifyOTP");
         }
 
         [HttpGet("[action]"), HttpPost("[action]")]
