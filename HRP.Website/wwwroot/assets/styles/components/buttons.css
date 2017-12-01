@@ -1,0 +1,27 @@
+﻿.btn {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border: none;
+  outline: none;
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: inherit;
+  -webkit-transition: all ease-in-out 0.3s;
+  -khtml-transition: all ease-in-out 0.3s;
+  -moz-transition: all ease-in-out 0.3s;
+  -ms-transition: all ease-in-out 0.3s;
+  -o-transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.3s; }
+  .btn.-primary {
+    background-color: #1973b2;
+    color: #fff; }
+    .btn.-primary:hover {
+      background-color: #16659c; }
+

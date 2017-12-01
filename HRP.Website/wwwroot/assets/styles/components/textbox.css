@@ -1,0 +1,51 @@
+﻿::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #888; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #888;
+  opacity: 1; }
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #888; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #888;
+  opacity: 1; }
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  outline: none;
+  height: 36px;
+  line-height: 36px;
+  background-color: #fafafa;
+  border: 1px solid #d9d9d9;
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  font-size: inherit;
+  color: #333;
+  -webkit-transition: all ease-in-out 0.3s;
+  -khtml-transition: all ease-in-out 0.3s;
+  -moz-transition: all ease-in-out 0.3s;
+  -ms-transition: all ease-in-out 0.3s;
+  -o-transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.3s; }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #1a87d3;
+    -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+    -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+    -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+    -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+    -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+    box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2); }
+
