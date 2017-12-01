@@ -2,8 +2,10 @@ namespace HRP_Website
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
@@ -33,14 +35,14 @@ namespace HRP_Website
                 .GetChildren()
                 .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
 
-            /*DbSettingProviderManager
+            DbSettingProviderManager
             .StartNewSession()
             .UseConnectionStrings(connections)
             .UseDefaultDbSettingProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "SPNames.xml"),
                 false,
                 true)
-            .Run();*/
+            .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
 
