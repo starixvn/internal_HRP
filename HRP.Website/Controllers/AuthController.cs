@@ -76,8 +76,7 @@ namespace HRP_Website.Controllers
             var SecretKey = "1234aa";
             var nowDate = DateTime.Now;
             string UniqueKey = _sessionService.Username + SecretKey;
-            string currentPIN = twoFactorAuthen.GetCurrentPIN(SecretKey, nowDate);
-            bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode);
+            bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode, TimeSpan.FromSeconds(30));
             bool stepTwo = (ModelState.IsValid && isValidOTP) || (model.SkipTwoFactor);
 
             if (stepTwo)
