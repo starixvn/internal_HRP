@@ -56,10 +56,14 @@ namespace HRP_Website.Controllers
         {
             if (!string.IsNullOrEmpty(_sessionService.Username))
             {
-                TwoFactorAuthenticatorViewModel model = new TwoFactorAuthenticatorViewModel();
-                model.SkipTwoFactor = true;
+                var model = new TwoFactorAuthenticatorViewModel
+                {
+                    SkipTwoFactor = true
+                };
+
                 return View(model);
             }
+
             return RedirectToAction("Login");
         }
 
@@ -68,9 +72,9 @@ namespace HRP_Website.Controllers
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
-            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
-            string SecretKey = "1234aa";
-            DateTime nowDate = DateTime.Now;
+            var twoFactorAuthen = new TwoFactorAuthenticator();
+            var SecretKey = "1234aa";
+            var nowDate = DateTime.Now;
             string UniqueKey = _sessionService.Username + SecretKey;
             string currentPIN = twoFactorAuthen.GetCurrentPIN(SecretKey, nowDate);
             bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode);
@@ -96,7 +100,7 @@ namespace HRP_Website.Controllers
                 return Redirect("~/Home");
                 
             }
-            _sessionService.ClearAll();
+            
             return RedirectToAction("VerifyOTP");
         }
 
