@@ -100,6 +100,13 @@ namespace HRP_Website.Controllers
             return RedirectToAction("VerifyOTP");
         }
 
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         [HttpGet("[action]"), HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {

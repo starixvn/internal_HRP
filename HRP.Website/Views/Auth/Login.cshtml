@@ -7,6 +7,43 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <link href="./Content/views/login/login.css" rel="stylesheet" />
+    <script type="text/javascript" src="./Scripts/Libs/jquery.min.js"></script>
+    <script type="text/javascript" src="./Scripts/Libs/jquery.validate.js"></script>
+    <script type="text/javascript" src="./Scripts/Libs/jquery.validate.unobtrusive.js"></script>
+</head>
+<body>
+    <section class="block">
+        <a href="#" class="logo">
+            <img src="./Content/images/logo_login.svg" alt="logo" />
+        </a>
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+        {
+            <div class="group">
+                <span class="icon-user"></span>
+                @Html.TextBoxFor(model => model.Username, new {@class = "form-control", placeholder = "Username"})
+            </div>
+            <div class="group">
+                <span class="icon-password"></span>
+                @Html.TextBoxFor(model => model.Username, new {@class = "form-control", placeholder = "Password"})
+            </div>
+            <div class="group">
+                <input type="submit" value="Login" class="btn -primary" />
+            </div>
+        }
+        <div class="footer">
+            <a class="link" href="/forgotPassword.html">Forgot Password?</a>
+        </div>
+    </section>
+
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
@@ -29,9 +66,10 @@
                     @Html.PasswordFor(model => model.Password, new {@class = "form-control"})
                 </div>
                 <input type="submit" class="form-control btn btn-primary" value="Login" />
+                @Html.ActionLink("Forgot Password", "ForgotPassword", "Auth", null)
             </div>
         }
     </div>
 
 </body>
-</html>
+</html> -->

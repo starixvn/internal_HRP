@@ -1,0 +1,89 @@
+@font-face {
+  font-family: 'hrp';
+  src:  url('fonts/hrp.eot?s00rs');
+  src:  url('fonts/hrp.eot?s00rs#iefix') format('embedded-opentype'),
+    url('fonts/hrp.ttf?s00rs') format('truetype'),
+    url('fonts/hrp.woff?s00rs') format('woff'),
+    url('fonts/hrp.svg?s00rs#hrp') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'hrp' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-mail:before {
+  content: "\e90a";
+}
+.icon-add:before {
+  content: "\e900";
+}
+.icon-back:before {
+  content: "\e901";
+}
+.icon-calendar:before {
+  content: "\e902";
+}
+.icon-close:before {
+  content: "\e903";
+}
+.icon-configuration:before {
+  content: "\e904";
+}
+.icon-done:before {
+  content: "\e905";
+}
+.icon-edit:before {
+  content: "\e906";
+}
+.icon-employee_management:before {
+  content: "\e907";
+}
+.icon-exit:before {
+  content: "\e908";
+}
+.icon-key:before {
+  content: "\e909";
+}
+.icon-mailconfirm:before {
+  content: "\e90b";
+}
+.icon-next:before {
+  content: "\e90c";
+}
+.icon-password:before {
+  content: "\e90d";
+}
+.icon-payment:before {
+  content: "\e90e";
+}
+.icon-payslip:before {
+  content: "\e90f";
+}
+.icon-permission:before {
+  content: "\e910";
+}
+.icon-question:before {
+  content: "\e911";
+}
+.icon-report:before {
+  content: "\e912";
+}
+.icon-successful:before {
+  content: "\e913";
+}
+.icon-user:before {
+  content: "\e914";
+}
