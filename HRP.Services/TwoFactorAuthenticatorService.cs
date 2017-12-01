@@ -1,6 +1,5 @@
 namespace HRP.Services
 {
-    using HRP.Services.Interfaces;
     using System;
     using Google.Authenticator;
 
@@ -9,12 +8,11 @@ namespace HRP.Services
         private string _appName = "HRP";
         private int qrImageWidth = 200;
         private int qrImageHeight = 200;
-
         private int otpExpireTime = 30;
 
         private SetupCode SetupGoogleAuthInfo(string username, string secretKey)
         {
-            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
+            var twoFactorAuthen = new TwoFactorAuthenticator();
             string UniqueKey = username + secretKey;
             var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, UniqueKey, qrImageWidth, qrImageHeight);
             return setupInfo;
@@ -34,7 +32,7 @@ namespace HRP.Services
         public bool ValidateOTPCode(string username, string secretkey, string otpCode)
         {
             bool validOTP = false;
-            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
+            var twoFactorAuthen = new TwoFactorAuthenticator();
             string uniqueKey = username + secretkey;
             TimeSpan timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
             twoFactorAuthen.ValidateTwoFactorPIN(uniqueKey, otpCode, timeExpireOTP);

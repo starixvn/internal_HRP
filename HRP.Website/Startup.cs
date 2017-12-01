@@ -9,7 +9,6 @@ namespace HRP_Website
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
-    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -78,12 +77,12 @@ namespace HRP_Website
             });
 
             // DI
-            services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,6 @@ namespace HRP_Website.Controllers
     using HRP.Core.Services;
     using HRP.Services;
     using HRP.Models;
-    using HRP.Services.Interfaces;
 
     public class AuthController : Controller
     {
