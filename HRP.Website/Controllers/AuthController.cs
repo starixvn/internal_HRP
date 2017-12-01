@@ -106,6 +106,7 @@ namespace HRP_Website.Controllers
 
 
         [HttpGet]
+        [Route("forgot-password")]
         public IActionResult ForgotPassword()
         {
             return View();
