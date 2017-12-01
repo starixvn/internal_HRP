@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
@@ -13,8 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
+    <PackageReference Include="NETStandard.Library.NETFramework" Version="2.0.0-preview2-25405-01" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
   </ItemGroup>
-
 </Project>
