@@ -1,0 +1,31 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+@import "../base/font-roboto";
+@import "../base/scaffolding";
+@import "../components/buttons";
+@import "../components/textbox";
+@import url("/fonts/hrp/style.css");
+@import url("/base/reset.css");
+
+body {
+    display: flex; 
+    justify-content: center;
+    align-items: center;  
+    height: 100vh;
+    width: 100%;
+    font-size: $font-size + 1;
+    background-color: #1973b2; 
+}
+
+.block {
+    .btn {
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+}
+
+.logo {
+    width: 172px;
+    height: 100px;
+    margin: 48px auto 34px;
+}
