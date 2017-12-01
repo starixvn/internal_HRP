@@ -78,11 +78,12 @@ namespace HRP_Website
             });
 
             // DI
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IBaseService, BaseService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

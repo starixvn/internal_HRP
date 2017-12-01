@@ -4,4 +4,10 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.2" />
+    <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
+    <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
+  </ItemGroup>
+
 </Project>

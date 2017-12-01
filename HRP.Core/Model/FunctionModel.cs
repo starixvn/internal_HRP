@@ -6,9 +6,9 @@ namespace HRP.Core.Model
 
         public string FunctionKey { get; set; }
 
-        public string FunctionName { get; set; }
+        public string Name { get; set; }
 
-        public int? ParentFunctionId { get; set; }
+        public int? ParentId { get; set; }
 
         public bool IsReadOnly { get; set; }
 
