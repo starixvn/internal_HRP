@@ -9,6 +9,7 @@ namespace HRP_Website
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
+    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -79,6 +80,7 @@ namespace HRP_Website
             // DI
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }

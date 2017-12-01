@@ -6,7 +6,7 @@ namespace HRP.Models
     {
         [Required]
         [MaxLength(6)]
-        public string VerifyCode { get; set; }
+        public string OTPCode { get; set; }
 
         public bool SkipTwoFactor { get; set; }
     }

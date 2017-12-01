@@ -10,19 +10,22 @@ namespace HRP_Website.Controllers
     using HRP.Core.Services;
     using HRP.Services;
     using HRP.Models;
-    using Google.Authenticator;
+    using HRP.Services.Interfaces;
 
     public class AuthController : Controller
     {
         private readonly IUserService _userService;
         private readonly ISessionService _sessionService;
+        private readonly ITwoFactorAuthenticatorService _twoFactorAuthService;
 
         public AuthController(
             IUserService userService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            ITwoFactorAuthenticatorService twoFactorAuthenService)
         {
             _userService = userService;
             _sessionService = sessionService;
+            _twoFactorAuthService = twoFactorAuthenService;
         }
 
         [HttpGet]
@@ -51,7 +54,7 @@ namespace HRP_Website.Controllers
         }
 
         [HttpGet]
-        [Route("verify-otp-code")]
+        [Route("verify-otp")]
         public ActionResult VerifyOTP()
         {
             if (!string.IsNullOrEmpty(_sessionService.Username))
@@ -68,15 +71,12 @@ namespace HRP_Website.Controllers
         }
 
         [HttpPost]
-        [Route("verify-otp-code")]
+        [Route("verify-otp")]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
-            var twoFactorAuthen = new TwoFactorAuthenticator();
-            var SecretKey = "1234aa";
-            var nowDate = DateTime.Now;
-            string UniqueKey = _sessionService.Username + SecretKey;
-            bool isValidOTP = twoFactorAuthen.ValidateTwoFactorPIN(UniqueKey, model.VerifyCode, TimeSpan.FromSeconds(30));
+            //temporary secret_key is 1234aa
+            bool isValidOTP = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username,"1234aa", model.OTPCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || (model.SkipTwoFactor);
 
             if (stepTwo)

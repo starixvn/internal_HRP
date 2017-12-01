@@ -16,12 +16,12 @@
 {
     <div class="form-group">
         <div class="form-group">
-            <label for="VerifyCode">VerifyCode</label>
-            @Html.TextBoxFor(model => model.VerifyCode, new {@class = "form-control"})
+            <label for="OTPCode">VerifyCode</label>
+            <input asp-for="OTPCode" class="form-control", placholder="OTP Code"/>
         </div>
         <div class="form-group">
             <label for="SkipTwoFactor">Skip Two Factor</label>
-            @Html.CheckBoxFor(model => model.SkipTwoFactor, new {@class = "form-control", @checked = "checked"})
+            <input asp-for="SkipTwoFactor", class="form-control", checked />
         </div>
         <input type="submit" class="form-control btn btn-primary" value="Verify" />
     </div>
