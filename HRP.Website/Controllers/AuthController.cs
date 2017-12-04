@@ -8,23 +8,28 @@ namespace HRP_Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using HRP.Core.Services;
+    using HRP.Core.Model;
+    using HRP.Criteria;
     using HRP.Services;
     using HRP.Models;
 
     public class AuthController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly ISessionService _sessionService;
-        private readonly ITwoFactorAuthenticatorService _twoFactorAuthService;
+        private readonly IUserService userService;
+        private readonly ISessionService sessionService;
+        private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
+        private readonly IBaseService baseService;
 
         public AuthController(
             IUserService userService,
             ISessionService sessionService,
-            ITwoFactorAuthenticatorService twoFactorAuthenService)
+            ITwoFactorAuthenticatorService twoFactorAuthenService,
+            IBaseService baseService)
         {
-            _userService = userService;
-            _sessionService = sessionService;
-            _twoFactorAuthService = twoFactorAuthenService;
+            this.userService = userService;
+            this.sessionService = sessionService;
+            this.twoFactorAuthService = twoFactorAuthenService;
+            this.baseService = baseService;
         }
 
         [HttpGet]
@@ -39,11 +44,11 @@ namespace HRP_Website.Controllers
         {
             if (model != null && ModelState.IsValid)
             {
-                var user = _userService.GetUserByUsername(model.Username);
+                var user = userService.GetUserByUsername(model.Username);
 
                 if (user != null)
                 {
-                    _sessionService.Username = user.Username;
+                    sessionService.Username = user.Username;
                     
                     return RedirectToAction("VerifyOTP");
                 }
@@ -56,7 +61,7 @@ namespace HRP_Website.Controllers
         [Route("verify-otp")]
         public ActionResult VerifyOTP()
         {
-            if (!string.IsNullOrEmpty(_sessionService.Username))
+            if (!string.IsNullOrEmpty(sessionService.Username))
             {
                 var model = new TwoFactorAuthenticatorViewModel
                 {
@@ -73,10 +78,10 @@ namespace HRP_Website.Controllers
         [Route("verify-otp")]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
-            var user = _userService.GetUserByUsername(_sessionService.Username);
+            var user = userService.GetUserByUsername(sessionService.Username);
             //temporary secret_key is 1234aa
-            bool isValidOTP = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username,"1234aa", model.OTPCode);
-            bool stepTwo = (ModelState.IsValid && isValidOTP) || (model.SkipTwoFactor);
+            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, "1234aa", model.OTPCode);
+            bool stepTwo = (ModelState.IsValid && isValidOTP) || model.SkipTwoFactor;
 
             if (stepTwo)
             {
@@ -86,17 +91,16 @@ namespace HRP_Website.Controllers
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                 };
 
-                _sessionService.UserId = user.UserId;
-                _sessionService.Username = user.Username;
-                _sessionService.MenuItems = user.MenuItems;
-                _sessionService.Functions = user.Functions;
+                sessionService.UserId = user.UserId;
+                sessionService.Username = user.Username;
+                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user.UserId });
+                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user.UserId });
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 return Redirect("~/Home");
-                
             }
             
             return RedirectToAction("VerifyOTP");
@@ -113,7 +117,7 @@ namespace HRP_Website.Controllers
         [HttpGet("[action]"), HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {
-            _sessionService.ClearAll();
+            sessionService.ClearAll();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");

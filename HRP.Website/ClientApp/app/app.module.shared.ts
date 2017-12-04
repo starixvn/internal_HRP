@@ -9,8 +9,6 @@ import { AppConfig } from './components/app/app.config';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { AuthGuard } from './components/app/auth.guard';
-import { TwoFactorAuthenticatorComponent } from './components/twofactorauthen/TwoFactorAuthenticator.component';
 
 import { ErrorService } from './services/error.service';
 import { BaseService } from './services/base.service';
@@ -20,8 +18,7 @@ import { BaseService } from './services/base.service';
         AppComponent,
         NavMenuComponent,
         FetchDataComponent,
-        HomeComponent,
-        TwoFactorAuthenticatorComponent
+        HomeComponent
     ],
     imports: [
         CommonModule,
@@ -32,8 +29,7 @@ import { BaseService } from './services/base.service';
     providers: [
         AppConfig,
         BaseService,
-        ErrorService,
-        AuthGuard
+        ErrorService
     ]
 })
 

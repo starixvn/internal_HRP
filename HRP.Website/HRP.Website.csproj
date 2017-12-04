@@ -34,6 +34,7 @@
     <ProjectReference Include="..\HRP.Services\HRP.Services.csproj" />
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
+    <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
   </ItemGroup>
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
