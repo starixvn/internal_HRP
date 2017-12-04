@@ -6,7 +6,6 @@
     <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
-    <PackageReference Include="Fanex.MailDeliver.MailClient" Version="1.0.0.2" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
@@ -16,5 +15,8 @@
     <PackageReference Include="NETStandard.Library.NETFramework" Version="2.0.0-preview2-25405-01" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj" />
   </ItemGroup>
 </Project>

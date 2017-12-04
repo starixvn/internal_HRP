@@ -5,9 +5,17 @@ namespace HRP.Core.Services
     using Model;
     using Fanex.MailDeliver.MailClient.API;
     using Fanex.MailDeliver.Model;
+    using Microsoft.Extensions.Options;
 
     public class BaseMailService : IBaseMailService
     {
+        private readonly IOptionsSnapshot<Core.Model.MailConfig> _configuration;
+
+        public BaseMailService(IOptionsSnapshot<Core.Model.MailConfig> configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void SendEmail(MailModel email)
         {
             if (email == null || !IsValidEmail(email.ReceiverEmail))
@@ -23,7 +31,7 @@ namespace HRP.Core.Services
                 Body = email.Body
             };
 
-            using (var client = new MailDeliver())
+            using (var client = new MailDeliver(_configuration.Value.AppId, _configuration.Value.MailAddress))
             {
                 client.SendMail(mailItem);
             }

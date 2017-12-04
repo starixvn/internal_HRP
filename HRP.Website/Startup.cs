@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Fanex.Data;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Services;
@@ -14,7 +15,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Microsoft.AspNetCore.SpaServices.Webpack;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -45,6 +45,7 @@
             .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
+            services.Configure<MailConfig>(options => Configuration.GetSection("MailConfig").Bind(options));
 
             // Cookie Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -80,6 +81,7 @@
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IBaseMailService, BaseMailService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
