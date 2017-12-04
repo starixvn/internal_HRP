@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot your password</title>
+	<meta charset="utf-8" />
+    <link href="assets/bundles/before-login.min.css" rel="stylesheet" />
+     @RenderSection("styles", required: false)
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="assets/styles/images/logo_page.svg" alt="logo" />
+        </a>
+    </header>
+    <section class="block">
+        @RenderBody()
+        @RenderSection("scripts", required: false)
+    </section>
+</body>
+</html>

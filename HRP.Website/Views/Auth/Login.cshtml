@@ -11,14 +11,20 @@
 <head>
     <title>Login</title>
     <meta charset="utf-8" />
-    <link href="assets/bundles/login.min.css" rel="stylesheet" />
+    <link href="/assets/bundles/login.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="/assets/js/libs/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/assets/js/libs/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="/assets/js/libs/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/assets/js/libs/jquery.validate.unobtrusive.min.js"></script>
+    
 </head>
 <body>
     <section class="block">
         <a href="#" class="logo">
-            <img src="assets/styles/images/logo_login.svg" alt="logo" />
+            <img src="/assets/styles/images/logo_login.svg" alt="logo" />
         </a>
-         <form asp-controller="Auth" asp-action="Login" method="POST">
+         <form asp-controller="Auth" asp-action="Login" method="POST" id="login">
             <div class="group">
                 <span class="icon-user"></span>
                 <input asp-for="Username" class="form-control", placeholder="Username">
@@ -35,40 +41,6 @@
             <a class="link" href="/forgot-password">Forgot Password?</a>
         </div>
     </section>
-
+    <script type="text/javascript" src="/assets/js/login.js"></script>
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"]</title>
-    <script type="text/javascript" src="./Scripts/Libs/jquery.min.js"></script>
-    <script type="text/javascript" src="./Scripts/Libs/jquery.validate.js"></script>
-    <script type="text/javascript" src="./Scripts/Libs/jquery.validate.unobtrusive.js"></script>
-    
-</head>
-<body>
-    <div class="container" style="max-width: 800px;">
-        @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
-        {
-            <div class="form-group">
-                <div class="form-group">
-                    <label for="Username">Username</label>
-                    @Html.TextBoxFor(model => model.Username, new {@class = "form-control"})
-                </div>
-                <div class="form-group">
-                    <label for="Password">Password</label>
-                    @Html.PasswordFor(model => model.Password, new {@class = "form-control"})
-                </div>
-                <input type="submit" class="form-control btn btn-primary" value="Login" />
-                @Html.ActionLink("Forgot Password", "ForgotPassword", "Auth", null)
-            </div>
-        }
-    </div>
-
-</body>
-</html> -->

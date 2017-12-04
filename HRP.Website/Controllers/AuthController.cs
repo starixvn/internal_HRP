@@ -114,6 +114,13 @@ namespace HRP_Website.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Route("forgot-password")]
+        public IActionResult ForgotPassword([FromBody] string username)
+        {
+            return View(username);
+        }
+
         [HttpGet("[action]"), HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {
