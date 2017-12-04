@@ -1,12 +1,18 @@
 $("form").submit(function( event ) {
     event.preventDefault();
-    $('input[type=text]').each(function(index, element) {
+    var allInputs = $( "input").length;
+    var filledInput = 0;
+    $('input').each(function(index, element) {
         var inputValue = $(element).val();
-        if (!inputValue)
-        {
+        var check;
+        if (!inputValue) {
             $(this).parent().effect('shake');
+        } else {
+            filledInput++;
         }
     });
 
-    event.currentTarget.submit();
+    if (allInputs == filledInput) {
+        event.currentTarget.submit();
+    }
   });
