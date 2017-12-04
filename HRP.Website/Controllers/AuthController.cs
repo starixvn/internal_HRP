@@ -54,6 +54,8 @@ namespace HRP.Website.Controllers
                 }
             }
 
+            ViewBag.ErrorMessage = "Invalid Username or Password.";
+
             return View(model);
         }
 
@@ -116,9 +118,19 @@ namespace HRP.Website.Controllers
 
         [HttpPost]
         [Route("forgot-password")]
-        public IActionResult ForgotPassword([FromBody] string username)
+        public IActionResult ForgotPassword(string Username)
         {
-            return View(username);
+
+            //Check valid username here
+            bool validUsername = false;
+            if (validUsername)
+            {
+                return RedirectToAction("RecoverPasswordSuccess");
+            }
+
+            ViewBag.ErrorMessage = "The username that you've entered doesn't  match any account. Please try again.";
+            
+            return View();
         }
 
         [HttpGet("[action]"), HttpPost("[action]")]

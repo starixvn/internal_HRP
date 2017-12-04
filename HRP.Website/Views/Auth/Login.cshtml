@@ -33,9 +33,16 @@
                 <span class="icon-password"></span>
                 <input asp-for="Password" class="form-control", placeholder="Password">
             </div>
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="group">
+                     <p style="color: red">@ViewBag.ErrorMessage</p>
+                </div>
+            }
             <div class="group">
                 <input type="submit" value="Login" class="btn -primary" />
             </div>
+            
         </form>
         <div class="footer">
             <a class="link" href="/forgot-password">Forgot Password?</a>
