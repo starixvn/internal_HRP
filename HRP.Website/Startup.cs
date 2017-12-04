@@ -1,4 +1,4 @@
-namespace HRP_Website
+﻿namespace HRP.Website
 {
     using System;
     using System.Collections.Generic;
@@ -91,10 +91,6 @@ namespace HRP_Website
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
             }
             else
             {
@@ -110,14 +106,10 @@ namespace HRP_Website
                 routes.MapRoute(
                     name: "login",
                     template: "{controller=auth}/{action=login}");
-
+                    
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=home}/{action=index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

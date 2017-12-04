@@ -1,43 +1,49 @@
-namespace HRP_Website.Controllers
+﻿namespace HRP.Website.Controllers
 {
-    using System.Collections.Generic;
     using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using HRP.Core.Filters;
-    using HRP.Core.Model;
     using HRP.Models;
     using HRP.Core.Services;
     using Google.Authenticator;
+    using HRP.Website.Models;
 
     [HRPAuthorize]
     public class HomeController : Controller
     {
-        private readonly ISessionService _sessionService;
+        private readonly ISessionService sessionService;
 
         public HomeController(ISessionService sessionService)
         {
-            _sessionService = sessionService;
+            this.sessionService = sessionService;
         }
-
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Error()
+        public IActionResult About()
         {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
             return View();
         }
 
         [HttpGet]
         public IActionResult Profile()
         {
-            TwoFactorAuthenticator twoFactorAuthen = new TwoFactorAuthenticator();
+            var twoFactorAuthen = new TwoFactorAuthenticator();
             string SecretKey = "1234aa";
-            string UniqueKey = _sessionService.Username + SecretKey;
-            var setupInfo = twoFactorAuthen.GenerateSetupCode("HRP Authenticator", _sessionService.Username, UniqueKey, 200, 200);
+            string UniqueKey = sessionService.Username + SecretKey;
+            var setupInfo = twoFactorAuthen.GenerateSetupCode("HRP Authenticator", sessionService.Username, UniqueKey, 200, 200);
             UserProfileViewModel model = new UserProfileViewModel();
             model.QRImageUrl = setupInfo.QrCodeSetupImageUrl;
             model.SetupCode = setupInfo.ManualEntryKey; 
@@ -45,17 +51,9 @@ namespace HRP_Website.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IEnumerable<MenuItem> GetMenuByCurrentUser() 
+        public IActionResult Error()
         {
-            return _sessionService.MenuItems;
-        }
-
-        
-        [HttpGet]
-        public bool IsAuthenticated()
-        {
-            return _sessionService.UserId > 0 && !string.IsNullOrWhiteSpace(_sessionService.Username);
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

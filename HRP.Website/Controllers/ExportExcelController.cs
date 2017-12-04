@@ -1,4 +1,4 @@
-namespace HRP_Website.Controllers
+namespace HRP.Website.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using HRP.Core.Extensions;

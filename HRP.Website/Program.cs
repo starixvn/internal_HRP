@@ -1,4 +1,4 @@
-namespace HRP_Website
+﻿namespace HRP.Website
 {
     using System.IO;
     using Microsoft.AspNetCore;

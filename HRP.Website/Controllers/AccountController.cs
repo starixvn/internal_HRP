@@ -1,4 +1,4 @@
-namespace HRP_Website.Controllers
+namespace HRP.Website.Controllers
 {
     using System.Collections.Generic;
     using System.Diagnostics;
