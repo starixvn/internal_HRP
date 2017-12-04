@@ -20,5 +20,14 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName":"wwwroot/js/jquery.min.js",
+    "inputFiles":[
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/jquery-ui/jquery-ui.js"
+    ]
   }
 ]
