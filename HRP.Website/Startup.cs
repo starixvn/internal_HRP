@@ -8,7 +8,6 @@
     using Fanex.Data;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Models;
     using HRP.Services;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;

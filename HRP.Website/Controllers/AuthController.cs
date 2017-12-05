@@ -120,7 +120,6 @@ namespace HRP.Website.Controllers
         [Route("forgot-password")]
         public IActionResult ForgotPassword(string Username)
         {
-
             //Check valid username here
             bool validUsername = false;
             if (validUsername)
