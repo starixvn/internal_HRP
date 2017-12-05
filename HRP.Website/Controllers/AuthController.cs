@@ -12,6 +12,7 @@ namespace HRP.Website.Controllers
     using HRP.Criteria;
     using HRP.Services;
     using HRP.Models;
+    using HRP.Core.Services.Interfaces;
 
     public class AuthController : Controller
     {
@@ -19,17 +20,20 @@ namespace HRP.Website.Controllers
         private readonly ISessionService sessionService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
         private readonly IBaseService baseService;
+        private readonly IAccountMailService accountMailService;
 
         public AuthController(
             IUserService userService,
             ISessionService sessionService,
             ITwoFactorAuthenticatorService twoFactorAuthenService,
-            IBaseService baseService)
+            IBaseService baseService,
+            IAccountMailService accountMailService)
         {
             this.userService = userService;
             this.sessionService = sessionService;
             this.twoFactorAuthService = twoFactorAuthenService;
             this.baseService = baseService;
+            this.accountMailService = accountMailService;
         }
 
         [HttpGet]
@@ -121,14 +125,22 @@ namespace HRP.Website.Controllers
         public IActionResult ForgotPassword(string Username)
         {
             //Check valid username here
-            bool validUsername = false;
-            if (validUsername)
+            bool validUsername = Username == "admin" ? true : false;
+            if (!validUsername)
             {
-                return RedirectToAction("RecoverPasswordSuccess");
+                // accountMailService.SendMailForRecoveryPassword(Username);
+                return RedirectToAction("ConfirmationEmailSent");
             }
 
             ViewBag.ErrorMessage = "The username that you've entered doesn't  match any account. Please try again.";
             
+            return View();
+        }
+
+        [HttpGet]
+        [Route("confirmation-email-sent")]
+        public IActionResult ConfirmationEmailSent()
+        {
             return View();
         }
 

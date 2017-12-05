@@ -8,6 +8,7 @@
     using Fanex.Data;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Core.Services.Interfaces;
     using HRP.Services;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
@@ -83,6 +84,7 @@
             services.AddScoped<IBaseMailService, BaseMailService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountMailService, AccountMailService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
         }
 
