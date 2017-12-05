@@ -12,6 +12,7 @@ namespace HRP.Website.Controllers
     using HRP.Criteria;
     using HRP.Services;
     using HRP.Models;
+    using HRP.Website.Models;
 
     public class AuthController : Controller
     {
