@@ -1,3 +1,5 @@
+@using HRP.Resources;
+
 @{
     ViewData["Title"] = "Assign Function";
 }
@@ -7,12 +9,12 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th rowspan="2">Super Admin Function</th>
-                <th colspan="2">User Permission</th>
+                <th rowspan="2">@ViewLang.SuperAdminFunction</th>
+                <th colspan="2">@ViewLang.UserPermission</th>
             </tr>
             <tr>
                 <th></th>
-                <th>Host</th>
+                <th>@ViewLang.Read</th>
             </tr>
         </thead>
         <tbody>

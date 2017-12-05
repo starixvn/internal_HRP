@@ -1,0 +1,26 @@
+@model HRP.Website.Models.TwoFactorAuthenticatorViewModel
+
+@{
+    ViewBag.Title = "Verify OTP code";
+    Layout = "_LoginLayout";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="circle-large">
+            <span class="icon-otp"></span>
+    </div>
+    <h1 class="title">OTP code validation</h1>
+    <div class="intro -otp">
+        <p>To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP.</p>
+        <p class="text-special">Your Date & Time Settin on your device must be set to Automatic.</p>
+    </div>    
+    <div class="group">
+        <input asp-for="OTPCode" class="form-control" placholder="OTP Code"/>
+    </div>
+    <div class="group list-button">
+        <input type="submit" class="button -primary" value="Validate OTP" />
+        <input type="button" class="button -second" value="Cancel">        
+    </div>
+}
