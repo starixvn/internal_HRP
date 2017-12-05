@@ -48,17 +48,18 @@
 
             // Cookie Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => {
+            .AddCookie(options =>
+            {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                 options.SlidingExpiration = true;
                 options.LoginPath = "/Auth/Login";
-                    options.LogoutPath = "/Auth/Logout";
-                    options.Events.OnSigningOut = context =>
-                    {
-                        context.Response.Redirect(options.LoginPath);
-                        return Task.CompletedTask;
-                    };
-            });         
+                options.LogoutPath = "/Auth/Logout";
+                options.Events.OnSigningOut = context =>
+                {
+                    context.Response.Redirect(options.LoginPath);
+                    return Task.CompletedTask;
+                };
+            });
 
             // Cookie Authentication
             services.AddAuthentication(options =>
@@ -104,7 +105,7 @@
             app.UseSession();
 
             app.UseMvc(routes =>
-            {                    
+            {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

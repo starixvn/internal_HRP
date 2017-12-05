@@ -1,12 +1,12 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System.Diagnostics;
-    using Microsoft.AspNetCore.Mvc;
-    using HRP.Core.Filters;
-    using HRP.Models;
-    using HRP.Core.Services;
     using Google.Authenticator;
+    using HRP.Core.Filters;
+    using HRP.Core.Services;
+    using HRP.Models;
     using HRP.Website.Models;
+    using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
     public class HomeController : Controller
@@ -44,11 +44,19 @@
             string SecretKey = "1234aa";
             string UniqueKey = sessionService.Username + SecretKey;
             var setupInfo = twoFactorAuthen.GenerateSetupCode("HRP Authenticator", sessionService.Username, UniqueKey, 200, 200);
-            UserProfileViewModel model = new UserProfileViewModel();
-            model.QRImageUrl = setupInfo.QrCodeSetupImageUrl;
-            model.SetupCode = setupInfo.ManualEntryKey; 
+            var model = new UserProfileViewModel
+            {
+                QRImageUrl = setupInfo.QrCodeSetupImageUrl,
+                SetupCode = setupInfo.ManualEntryKey
+            };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AssignFunction()
+        {
+            return View();
         }
 
         public IActionResult Error()
