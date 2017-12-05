@@ -82,6 +82,7 @@
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IBaseMailService, BaseMailService>();
+            services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountMailService, AccountMailService>();
@@ -105,11 +106,7 @@
             app.UseSession();
 
             app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "login",
-                    template: "{controller=auth}/{action=login}");
-                    
+            {                    
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
