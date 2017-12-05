@@ -1,0 +1,137 @@
+@model HRP.Models.UserProfileViewModel;
+
+@{
+    ViewBag.Title = "Profile";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HRP System</title>
+    <meta charset="utf-8" />
+    <link href="assets/bundles/main.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="assets/styles/images/logo_page.svg" alt="logo" />
+        </a>
+        <ul class="main-menu">
+            <li class="menu">
+                <a href="#" class="link active"><span class="icon-configuration"></span>Configuration</a>
+                <ul class="submenu">
+                    <li><a href="#" class="link">User Management</a></li>
+                    <li><a href="#" class="link">Data Management</a></li>
+                </ul>
+            </li>
+            <li class="menu"><a href="#" class="link"><span class="icon-employee_management"></span>Employee Management</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payment"></span>Payment Process</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payslip"></span>Payslip</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-report"></span>Report</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-exit"></span>Exit</a></li>
+        </ul>
+        <div class="user-info">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Jennie Thompson
+                    <span class="circle-gray">
+                        <span class="icon-user"></span>
+                    </span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="/Profile.html"><span class="icon-user"></span>Profile</a></li>
+                    <li><a href="/Password.html"><span class="icon-password"></span>Password</a></li>
+                    <li><a href="/OTP.html"><span class="icon-otp"></span>OTP</a></li>
+                    <li><a href="/login.html"><span class="icon-logout"></span>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <section class="content-container">
+        <div class="content">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation">
+                    <a href="#profile" aria-controls="home" role="tab" data-toggle="tab">Profile</a>
+                </li>
+                <li role="presentation">
+                    <a href="#changePassword" aria-controls="profile" role="tab" data-toggle="tab">Change your password</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a href="#otp" aria-controls="messages" role="tab" data-toggle="tab">OTP</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <h1 class="username">pgmbrian</h1>
+                    <div class="form-information block">
+                        <label class="text" for="fullName">Full name</label>
+                        <div class="group-control">
+                            <input type="text" class="control" id="fullName" />
+                        </div>
+                        <label class="text" for="phoneNumber">Phone number</label>
+                        <div class="group-control">
+                            <input type="text" class="control error" id="phoneNumber" />
+                            <span class="icon-close"></span>
+                            <p class="msg-error">Password must contain at least 8 characters, including UPPER/lowercase and numbers</p>
+                        </div>
+                        <label class="text" for="email">Email Address<span class="required">*</span></label>
+                        <div class="group-control">
+                            <input type="email" class="control" id="email" />
+                            <span class="icon-successful"></span>
+                        </div>
+                        <div class="btn-list">
+                            <button class="button -primary">Save</button>
+                            <button class="button -second">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="changePassword">
+                    <div class="form-information block">
+                        <label class="text" for="old-password">Old password</label>
+                        <div class="group-control">
+                            <input type="password" class="control" id="old-password" />
+                            <span class="icon-successful"></span>
+                        </div>
+                        <label class="text" for="new-password">New password</label>
+                        <div class="group-control">
+                            <input type="password" class="control error" id="new-password" />
+                            <span class="icon-close"></span>
+                            <p class="msg-error">Password must contain at least 8 characters, including UPPER/lowercase and numbers</p>
+                        </div>
+                        <label class="text" for="confirm-password">Confirm password</span></label>
+                        <div class="group-control">
+                            <input type="password" class="control" id="confirm-password" />
+                        </div>
+                        <div class="group-control checkbox">
+                            <input type="checkbox" id="showPassword" />
+                            <label class="label-text" for="showPassword">Show password</label>
+                        </div>
+                        <div class="btn-list">
+                            <button class="button -primary">Save</button>
+                            <button class="button -second">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane otp active" id="otp">
+                    <div class="block">
+                        <p class="info">
+                            The OTP will be required when you make log in to HRP system.
+                            You will need to register for the <strong>Mobile Authenticator App</strong> before
+                            enabling the OTP option.
+                        </p>
+                        <p class="info bold msg-success">Register Sophos Authenticator Mobile App</p>
+                        <p class="info">Click the button below to change the registered device from you secret key.</p>
+                        <button class="button -primary">Change secret key</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <script src="assets/js/libs/jquery/jquery-1.11.3.js"></script>
+    <script src="assets/js/libs/bootstrap/bootstrap.js"></script>
+</body>
+</html>

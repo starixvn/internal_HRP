@@ -1,0 +1,410 @@
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+@import "../base/font-roboto";
+@import "../base/scaffolding";
+@import "../components/buttons";
+@import "../components/dropdown";
+@import "../components/textbox";
+@import "../components/checkbox";
+@import "../components/panels";
+@import "../components/messages";
+@import "../components/tabs";
+
+body { 
+    background-color: $page-bg;
+}
+
+.header {
+    display: grid;    
+    grid-template-columns: 177px 1fr 210px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    height: 61px;
+    padding-left: 16px;
+    border-bottom: 1px solid #dcdcdc;  
+
+    .logo img {
+        height: 30px;
+    }
+
+    .main-menu {
+        margin-left: 48px;
+        margin-bottom: 0;
+    }
+
+    .user-info {
+        margin-right: 16px;
+    }
+
+}
+
+.main-menu {
+    .menu {
+        float: left;
+        position: relative;
+
+        &:hover .submenu {
+            opacity: 1;
+            visibility: visible;
+            top: 100%;
+        }
+    }
+
+    .menu > .link {
+        display: flex;    
+        justify-content: center;
+        align-items: center;
+        line-height: 60px;    
+        padding-left: 16px;
+        padding-right: 16px;
+        margin-right: 16px;
+        text-decoration: none;
+        position: relative;
+        color: #687c89;
+        font-weight: bold;
+
+        [class^="icon"] {
+            margin-right: 4px;
+            color: #687c89;
+        }
+
+        .icon-configuration,
+        .icon-employee_management {
+            font-size: 18px;
+        }
+
+        .icon-employee_management {
+            margin-right: 6px;
+        }
+
+        .icon-payment,
+        .icon-exit {
+            font-size: 22px;
+        }
+
+        .icon-payslip {
+            font-size: 20px;
+        }
+
+        .icon-report {
+            font-size: 24px;
+        }
+
+        &:hover, &:hover [class^="icon"] {
+            color: #0175c7;
+        }
+
+        &.active, &.active [class^="icon"] {
+            color: #0175c7;
+        }
+    }
+}
+
+.submenu {
+    @include border-radius( 0 0 2px 2px);
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)"); 
+    @include transition("all .3s ease-in-out");
+    position: absolute;
+    top: 80%;
+    left: 0;    
+    text-transform: capitalize;
+    background-color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+        
+    .link {
+        display: block;
+        padding: 12px 24px;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .link:active {
+        text-decoration: none;
+    }
+
+    .link:hover {
+        text-decoration: none;
+        background-color: #f57d14;
+        color: #fff;
+    }
+}
+
+.user-info {
+    .dropdown .btn {
+        color: #1973b2;
+        font-weight: bold;
+    }
+
+    .username {
+        font-weight: bold;
+        color: $link-color;
+    }
+
+    .circle-gray {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 36px;
+        width: 36px;
+        background-color: #f57d14;
+        border: 2px solid #cbcbcb;
+        @include border-radius(50%);
+
+        .icon-user {
+            color: #fff;
+            font-size: 16px;
+        }
+    }
+}
+
+
+/* Content */
+.content-container {
+    padding: 15px 20px;
+
+    .content {
+        @include border-radius(5px);
+        @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+        background-color: #fff;
+        padding: 16px;
+        counter-reset: section;
+    }
+
+    .username {
+        color: #1973b2;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .tab-content > .tab-pane {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .block {
+        width: 550px;
+    }
+}
+
+.title {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-information {
+    .text {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: normal;
+        text-transform: capitalize;
+        font-weight: bold;
+        color: $text-color;
+    }
+
+    .control {
+        display: block;
+        width: 100%;
+        
+        padding-right: 40px;
+
+        &.error {
+            border-color: #ff4545;
+            @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
+        }
+    }
+
+    .button.-second {
+        margin-left: 16px;
+    }
+
+    .group-control {
+        position: relative;
+        margin-bottom: 20px;
+
+        .icon-close, .icon-successful {
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            font-size: 20px;
+        }
+    }
+
+    .required {
+        color: #ff0000;
+        margin-left: 4px;
+    }
+
+    .msg-error {
+        margin-top: 10px;
+    }
+}
+
+.otp {
+    .title {
+        font-size: 16px;
+    }
+
+    .info {
+        margin: 5px 0;
+        line-height: 20px;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
+
+    .icon-successful {
+        position: relative;
+        top: 5px;
+        font-size: 20px;
+    }
+}
+
+/* Register OTP */
+
+.register-otp  {
+    padding-top: 10px;
+
+    .sub-title {
+        position: relative;
+        padding-left: 33px;
+        color: #1973b2;
+        font-weight: bold;
+        font-size: 14px;
+        counter-reset: subsection;
+
+        &:before {
+            @include border-radius(50%);   
+            position: absolute;
+            left: 0;
+            top: -5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;         
+            height: 24px;
+            width: 24px;            
+            background-color: #f57d14;
+            counter-increment: section;
+            content: counter(section);
+            color: #fff;
+        }
+    }
+
+    .steps {
+        padding-bottom: 26px;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    // Download Sophos
+    .download-content {
+        display: grid;
+        grid-template-columns: 90px 243px;
+        grid-template-rows: 90px;
+        padding: 12px 0 16px;
+    }
+
+    .list-download {
+        margin-left: 16px;
+
+        h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: normal;                
+            color: #000;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin: 4px 0 8px;
+        }
+    }
+
+    .more-info {        
+        line-height: 20px;
+
+        &.-important {
+            color: #f57d14;
+            font-weight: bold;
+        }
+    }
+
+    // QR code
+    .qr-code {
+        padding: 20px 0 20px;
+
+        .img {
+            @include border-radius(5px);
+            padding: 6px;
+            border: 1px solid $border-color;    
+            margin-bottom: 17px;        
+        }
+
+        .text-username {
+            color: #0b599c;
+            font-weight: bold;
+        }
+    }
+    
+    .manualQRCode {
+        .text-key {
+            display: inline-block;
+            border: 1px solid $border-color;
+            padding: 10px 6px;
+            color: #f57d14;
+            font-weight: bold;
+        }
+
+        .example {
+            display: flex;
+            padding-top: 16px;
+        }
+
+        .col-right {
+            margin-left: 36px;
+        }
+    }
+
+    .block {
+        padding-top: 20px;
+
+        .msg-success {
+            margin-bottom: 12px;
+        }
+
+        .control {
+            width: 252px;
+        }
+    }
+}
+
+/* Icons */
+
+.icon-arrow-down {
+	height: 0;
+    width: 0;
+	border: 4px solid;
+	border-color: #888 #888 transparent transparent;
+    transform: rotate(135deg);
+}
+
+.icon-successful {
+    color: #18aa3a;
+}
+    
+.icon-close {
+    color: #ff0000;
+}

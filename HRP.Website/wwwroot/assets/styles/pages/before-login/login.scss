@@ -1,11 +1,10 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../base/font-roboto";
-@import "../base/scaffolding";
-@import "../components/buttons";
-@import "../components/textbox";
-@import url("/fonts/hrp/style.css");
-@import url("/base/reset.css");
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../base/font-roboto";
+@import "../../base/scaffolding";
+@import "../../components/buttons";
+@import "../../components/textbox";
+@import "../../layout/before-login";
 
 body {
     display: flex; 
@@ -18,7 +17,7 @@ body {
 }
 
 .block {
-    .btn {
+    .button {
         font-size: 16px;
         text-transform: uppercase;
     }
@@ -29,3 +28,5 @@ body {
     height: 100px;
     margin: 48px auto 34px;
 }
+
+

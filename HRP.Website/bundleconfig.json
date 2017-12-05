@@ -2,10 +2,30 @@
 // More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
-    "outputFileName": "wwwroot/css/site.min.css",
+    "outputFileName": "wwwroot/assets/bundles/login.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
-      "wwwroot/css/site.css"
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/assets/styles/pages/before-login/login.css"
+    ]
+  },  
+  {
+    "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/assets/styles/pages/before-login/common.css"
+    ]
+  },  
+  {
+    "outputFileName": "wwwroot/assets/bundles/main.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/assets/styles/pages/main.css"
     ]
   },
   {

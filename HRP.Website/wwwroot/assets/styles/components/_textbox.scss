@@ -1,7 +1,4 @@
-﻿@import "../abstracts/variables";
-@import "../abstracts/mixins";
-
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+﻿::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: $input-color-placeholder;
 }
 
@@ -21,10 +18,13 @@
 
 input[type="text"],
 input[type="email"],
+input[type="number"],
 input[type="password"] {
     outline: none;
     height: 36px;
     line-height: 36px;    
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: #fafafa;
     border: 1px solid $border-color;
     @include border-radius(2px);

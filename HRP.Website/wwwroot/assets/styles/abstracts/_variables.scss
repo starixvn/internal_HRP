@@ -1,7 +1,7 @@
 ﻿$font-family: Roboto, Arial, Tahoma, sans-serif;
 $font-size: 13px;
 $page-bg: #f2f4f6;
-$text-color: #666;
+$text-color: #333;
 
 $link-color: #1973b2;
 $link-hover-color: darken($link-color, 10%);
@@ -28,4 +28,12 @@ $btn-add-bg-hover: darken($btn-add-bg, 5%);
 
 $msg-error: #fe0000; 
 
+$msg-success: #18aa3a; 
+$msg-success-border: #329a37; 
+$msg-success-bg: #e5ffeb;
+
 $transition-common: all ease-in-out .3s;
+
+$tab-color: #333;
+$tab-active-color: #333;
+$tab-line: #f57d14;

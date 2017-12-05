@@ -1,0 +1,67 @@
+.msg-error {    
+    display: inline-block;
+    line-height: 18px;
+    color: $msg-error;
+}
+
+.msg-success {
+    display: inline-block;
+    line-height: 18px;
+    color: $msg-success;
+
+    &.-has-icon {
+        position: relative;
+        border: 1px solid $msg-success-border;
+        padding: 10px 20px 10px 36px;
+        background-color: $msg-success-bg;
+        color: $msg-success;
+        font-weight: bold;   
+        
+        &:before {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: "hrp";
+            content: "\e913";
+            color: $msg-success; 
+            font-size: 20px;
+        }     
+    }
+}
+
+.note {
+    position: absolute;
+    left: 100%;
+    top: -86px;
+    width: 364px;
+    line-height: 20px;
+    margin-left: -8px;
+    padding: 12px 16px;
+    border: 1px solid #3475c7;
+    background-color: #e3f5fa;
+    color: #1973b2;
+    @include border-radius(4px);
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: -9px;
+        bottom: 30px;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #3475c7;
+        border-width: 0 0 1px 1px;
+        background-color: #e3f5fa;
+        transform: rotate(30deg) skew(-26deg);
+    }
+
+    .list {
+        list-style: disc;
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+
+    .list li {
+        margin-bottom: 4px;
+    }
+}

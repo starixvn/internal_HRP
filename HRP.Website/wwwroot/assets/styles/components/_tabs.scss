@@ -1,0 +1,63 @@
+.nav-tabs > li  {
+    margin-right: 12px;
+
+    &.limited a {
+        opacity: .4;
+        
+        &:hover {
+            cursor: not-allowed;
+        }        
+    }
+}
+
+.nav-tabs > li > a:hover {
+    background: none;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+.nav.nav-tabs > li > a {
+    font-size: 18px;
+    padding: 10px 30px;
+    border: none;
+}
+
+.nav.nav-tabs > li:before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    width: 0;
+    height: 4px;
+    margin: auto;
+    background-color: #f57d14;
+    content: '';
+    transition: width 0.4s;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    border: none;
+    color: $tab-active-color;
+    background: transparent;
+}
+
+.nav.nav-tabs > li.active:before, 
+.nav.nav-tabs > li:hover:before {
+    width: 100%;
+}
+
+.nav.nav-tabs > li.active.limited:before, 
+.nav.nav-tabs > li.limited:hover:before {
+    width: 0;
+}
+
+
+.nav-tabs > li > a {
+    color: $tab-color;
+    font-weight: bold;
+    outline: none;
+}
+
+.tab-pane {
+    padding: 22px 16px;
+}

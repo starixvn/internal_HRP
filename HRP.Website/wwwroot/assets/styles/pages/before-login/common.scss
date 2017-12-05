@@ -1,12 +1,18 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../layout/before-login";
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../base/font-roboto";
+@import "../../base/scaffolding";
+@import "../../components/buttons";
+@import "../../components/textbox";
+@import "../../components/messages";
+@import "../../layout/before-login";
 
 body { 
     height: 100vh;
     width: 100%;
     font-size: $font-size + 1;
     background-color: $page-bg;
+    color: #666;
 }
 
 .header {
@@ -47,7 +53,7 @@ body {
         .icon-password,
         .icon-done,
         .icon-mailconfirm,
-        .icon-key {
+        .icon-key, .icon-otp {
             color: #fff;
         }
 
@@ -58,6 +64,10 @@ body {
 
         .icon-mailconfirm {
             font-size: 36px;
+        }
+
+        .icon-otp {
+            font-size: 34px;  
         }
 
         .icon-key {
@@ -96,53 +106,38 @@ body {
         padding: 0 24px 40px;
     }
 
-    &.-reset-password {
+    &.-reset-password, &.-otp-code-validation {
         width: 350px;    
+    }   
+
+    &.-otp-code-validation {  
+        .intro {
+            line-height: 20px;
+            line-height: 20px;
+            padding: 0 20px 14px;
+        }
+
+        .intro .text-special {
+            margin-top: 10px;
+        }
+
+        .list-button {
+            display: grid;
+            grid-template-columns: 203px 100px;
+        }
+
+        .button {
+            width: initial;
+        }
+
+        .button.-second {
+            margin-left: 16px;
+        }
     }    
 }
 
-.note {
-    position: absolute;
-    left: 100%;
-    top: -86px;
-    width: 364px;
-    line-height: 20px;
-    margin-left: -8px;
-    padding: 12px 16px;
-    border: 1px solid #3475c7;
-    background-color: #e3f5fa;
-    color: #1973b2;
-    @include border-radius(4px);
-
-    &:before {
-        content: "";
-        position: absolute;
-        left: -9px;
-        bottom: 30px;
-        width: 16px;
-        height: 16px;
-        border: 1px solid #3475c7;
-        border-width: 0 0 1px 1px;
-        background-color: #e3f5fa;
-        transform: rotate(30deg) skew(-26deg);
-    }
-
-    .list {
-        list-style: disc;
-        margin-left: 15px;
-        margin-top: 10px;
-    }
-
-    .list li {
-        margin-bottom: 4px;
-    }
-}
-
 .msg-error {    
-    display: inline-block;
-    line-height: 18px;
     margin-top: 10px;
-    color: $msg-error;
 }
 
 %action {
@@ -176,3 +171,4 @@ body {
         border-color: $link-hover-color;
     }
 }
+
