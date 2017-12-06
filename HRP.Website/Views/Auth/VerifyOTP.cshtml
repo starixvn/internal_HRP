@@ -1,4 +1,4 @@
-@model HRP.Website.Models.TwoFactorAuthenticatorViewModel
+@model HRP.Models.TwoFactorAuthenticatorViewModel
 
 @{
     ViewBag.Title = "Verify OTP code";
@@ -18,6 +18,9 @@
     </div>    
     <div class="group">
         <input asp-for="OTPCode" class="form-control" placholder="OTP Code"/>
+    </div>
+    <div class="group">
+        <input asp-for="SkipTwoFactor" class="form-controll" checked />
     </div>
     <div class="group list-button">
         <input type="submit" class="button -primary" value="Validate OTP" />
