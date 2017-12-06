@@ -7,38 +7,54 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/assets/bundles/main.min.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/bundles/main.min.css" asp-append-version="true" />
     </environment>
 
     @RenderSection("Styles", false)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
+        </a>
+        <ul class="main-menu">
+            <li class="menu">
+                <a href="#" class="link active"><span class="icon-configuration"></span>Configuration</a>
+                <ul class="submenu">
+                    <li><a href="#" class="link">User Management</a></li>
+                    <li><a href="#" class="link">Data Management</a></li>
+                </ul>
+            </li>
+            <li class="menu"><a href="#" class="link"><span class="icon-employee_management"></span>Employee Management</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payment"></span>Payment Process</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payslip"></span>Payslip</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-report"></span>Report</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-exit"></span>Exit</a></li>
+        </ul>
+        <div class="user-info">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Jennie Thompson
+                    <span class="circle-gray">
+                        <span class="icon-user"></span>
+                    </span>
+                    <span class="caret"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">HRP.Website</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="/changeProfile.html"><span class="icon-user"></span>Profile</a></li>
+                    <li><a href="/changePassword.html"><span class="icon-password"></span>Password</a></li>
+                    <li><a href="/registerOTP.html"><span class="icon-otp"></span>OTP</a></li>
+                    <li><a href="/login.html"><span class="icon-logout"></span>Sign out</a></li>
                 </ul>
             </div>
         </div>
-    </nav>
+    </header>
     <div class="container body-content">
         @RenderBody()
     </div>
