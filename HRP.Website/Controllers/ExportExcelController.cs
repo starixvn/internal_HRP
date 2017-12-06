@@ -1,12 +1,12 @@
 namespace HRP.Website.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using HRP.Core.Extensions;
     using System.IO;
     using System.Threading.Tasks;
+    using HRP.Core.Extensions;
     using Microsoft.AspNetCore.Hosting;
-    using NPOI.XSSF.UserModel;
+    using Microsoft.AspNetCore.Mvc;
     using NPOI.SS.UserModel;
+    using NPOI.XSSF.UserModel;
 
     public class ExportExcelController : Controller
     {
@@ -26,7 +26,9 @@ namespace HRP.Website.Controllers
             writer.SyncColumnsWidth(5);
             writer.CreateFreezePane(0, 3);
 
-            return File(await writer.Render(Path.Combine(sWebRootFolder, "employee.xls")), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "employee.xls");
+            return File(
+                await writer.Render(Path.Combine(sWebRootFolder, "employee.xls")).ConfigureAwait(false),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "employee.xls");
         }
 
         public async Task<IActionResult> Export()
@@ -65,7 +67,7 @@ namespace HRP.Website.Controllers
 
             using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
             {
-                await stream.CopyToAsync(memory);
+                await stream.CopyToAsync(memory).ConfigureAwait(false);
             }
 
             memory.Position = 0;

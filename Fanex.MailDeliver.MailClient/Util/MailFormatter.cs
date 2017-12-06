@@ -1,6 +1,5 @@
 ﻿namespace Fanex.MailDeliver.MailClient.Util
 {
-    using System;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
 

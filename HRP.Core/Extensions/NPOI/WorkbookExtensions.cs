@@ -1,6 +1,5 @@
 namespace HRP.Core.Extensions
 {
-    using Microsoft.AspNetCore.Http;
     using NPOI.SS.UserModel;
 
     public static class WorkbookExtensions
@@ -11,7 +10,7 @@ namespace HRP.Core.Extensions
             var newSheet = workbook.CloneSheet(sheetIndex);
             var newSheetIndex = workbook.GetSheetIndex(newSheet);
             workbook.SetSheetName(newSheetIndex, newSheetName);
-            
+
             return newSheet;
         }
     }

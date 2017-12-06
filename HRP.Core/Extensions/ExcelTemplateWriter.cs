@@ -3,8 +3,8 @@ namespace HRP.Core.Extensions
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Reflection;
+    using System.Threading.Tasks;
     using NPOI.HSSF.UserModel;
     using NPOI.SS.UserModel;
     using NPOI.SS.Util;
@@ -21,6 +21,7 @@ namespace HRP.Core.Extensions
         #endregion Attributes
 
         #region Constructors
+
         public ExcelTemplateWriter(string filePath, string excelFileName = "Report.xls", string sheetName = "Result")
             : this(new FileStream(filePath, FileMode.Open, FileAccess.Read), excelFileName, sheetName)
         {
@@ -51,7 +52,7 @@ namespace HRP.Core.Extensions
         {
             _sheet.Workbook.RemoveSheetAt(0);
             var memory = new MemoryStream();
-            using(var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write))
+            using (var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 _sheet.Workbook.Write(fs);
             }

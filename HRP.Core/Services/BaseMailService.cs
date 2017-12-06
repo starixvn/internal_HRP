@@ -2,10 +2,10 @@ namespace HRP.Core.Services
 {
     using System.IO;
     using System.Text.RegularExpressions;
-    using Model;
     using Fanex.MailDeliver.MailClient.API;
     using Fanex.MailDeliver.Model;
     using Microsoft.Extensions.Options;
+    using Model;
 
     public class BaseMailService : IBaseMailService
     {

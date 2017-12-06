@@ -2,13 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
-    using Fanex.MailDeliver.MailClient.Util;
     using Fanex.MailDeliver.MailClient.API.WCF;
+    using Fanex.MailDeliver.MailClient.Util;
     using Fanex.MailDeliver.Model;
-    
+
     public class MailDeliver : IMailDeliver, IDisposable
     {
         private EndpointAddress _endpoint;

@@ -1,8 +1,8 @@
 namespace HRP.Core.Extensions
 {
+    using System;
     using NPOI.SS.UserModel;
     using NPOI.SS.Util;
-    using System;
 
     public static class CellExtensions
     {

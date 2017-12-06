@@ -2,8 +2,8 @@ namespace HRP.Core.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Http;
     using Enumerations;
+    using Microsoft.AspNetCore.Http;
     using Model;
 
     public class SessionService : ISessionService
@@ -26,25 +26,25 @@ namespace HRP.Core.Services
         }
 
         public int UserId
-        { 
+        {
             get => _session?.GetInt32(InternalUserId) ?? 0;
             set => _session?.SetInt32(InternalUserId, value);
         }
 
         public string Username
-        { 
+        {
             get => _session.GetString(InternalUsername) ?? string.Empty;
             set => _session.SetString(InternalUsername, value);
         }
 
-        public IEnumerable<MenuItem> MenuItems 
-        { 
+        public IEnumerable<MenuItem> MenuItems
+        {
             get => _session.Get<List<MenuItem>>(InternalMenuItemList);
             set => _session.Set(InternalMenuItemList, value);
         }
 
         public IEnumerable<FunctionModel> Functions
-        { 
+        {
             get => _session.Get<List<FunctionModel>>(InternalFunctionList);
             set => _session.Set(InternalFunctionList, value);
         }

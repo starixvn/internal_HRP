@@ -4,7 +4,7 @@ namespace HRP.Core.Services
 
     public interface IBaseMailService
     {
-         void SendEmail(MailModel email);
+        void SendEmail(MailModel email);
 
         string ReadTextFile(string filePath);
     }
