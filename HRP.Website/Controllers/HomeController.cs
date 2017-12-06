@@ -10,7 +10,6 @@
     using HRP.Models.UserPermisson;
     using HRP.Website.Models;
     using Microsoft.AspNetCore.Mvc;
-    using HRP.Models;
 
     [HRPAuthorize]
     public class HomeController : Controller

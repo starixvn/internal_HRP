@@ -10,7 +10,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <div class="row">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="adminPermissionTable">
         <thead>
             <tr>
                 <th rowspan="2">@ViewLang.SuperAdminFunction</th>
@@ -28,15 +28,19 @@
                 {
                     <tr>
                         <td>@parent.Name</td>
-                        <td><input type="checkbox"></td>
-                        <td><input type="checkbox"></td>
+                        <td>
+                            <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId" />
+                        </td>
                     </tr>
                     foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
                     {
                         <tr>
                             <td><span>└── </span>@child.Name</td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId" /></td>
+                            <td><input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId" /></td>
                         </tr>
                     }
                 }
@@ -46,7 +50,7 @@
 </div>
 
 <div class="row">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="userPermissionTable">
         <thead>
             <tr>
                 <th rowspan="3">@ViewLang.Function</th>
@@ -64,11 +68,11 @@
                 }
             </tr>
             <tr>
-                <th><input type="checkbox"></th>
+                <th><input type="checkbox" id="checkAllFunc"></th>
                 @foreach (Company company in Model.Companies)
                 {
-                    <th><input type="checkbox"></th>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" /></th>
+                    <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" /></th>
                 }
             </tr>
         </thead>
@@ -79,22 +83,28 @@
                 {
                     <tr>
                         <td>@parent.Name</td>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="checkAllRowFunc"></td>
                         @foreach (Company company in Model.Companies)
                         {
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId" /></td>
+                            <td><input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId" /></td>
                         }
                     </tr>
                     foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
                     {
                         <tr>
                             <td><span>└── </span>@child.Name</td>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" class="checkAllRowFunc" /></td>
                             @foreach (Company company in Model.Companies)
                             {
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" name="criteria.funcRead"
+                                           data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="criteria.funcHost"
+                                           data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId" />
+                                </td>
                             }
                         </tr>
                     }
@@ -104,6 +114,10 @@
     </table>
 </div>
 <div class="row">
-    <button>@ViewLang.Save</button>
-    <button>@ViewLang.Cancel</button>
+    <button id="btnSave">@ViewLang.Save</button>
+    <button id="btCancel">@ViewLang.Cancel</button>
 </div>
+
+@section Scripts {
+    <script src="~/assets/js/assign-permission-to-user.js"></script>
+}

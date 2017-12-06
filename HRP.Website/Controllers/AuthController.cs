@@ -6,11 +6,11 @@ namespace HRP.Website.Controllers
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Models;
     using HRP.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
-    using HRP.Models;
     using BCrypt.Net;
     using HRP.Resources;
 
@@ -46,20 +46,19 @@ namespace HRP.Website.Controllers
             if (model != null && ModelState.IsValid)
             {
                 var user = userService.GetUserByUsername(model.Username);
-                
+
                 if (model.Username == "admin" && model.Password == "1234aa")
                 {
                     sessionService.Username = "admin";
-                
+
                     return RedirectToAction("VerifyOTP");
                 }
-                
+
                 if (user != null && ValidPassword(model.Password, user.Password))
                 {
                     sessionService.Username = user.Username;
 
                     return RedirectToAction("VerifyOTP");
-                    
                 }
             }
 
@@ -97,7 +96,7 @@ namespace HRP.Website.Controllers
             var user = userService.GetUserByUsername(sessionService.Username);
             bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user != null ? user.SecretKey : "1234aa", model.OTPCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || model.SkipTwoFactor;
-            
+
             if (stepTwo)
             {
                 var claims = new List<Claim>
@@ -105,11 +104,11 @@ namespace HRP.Website.Controllers
                     new Claim(ClaimTypes.Name, user != null ? user.Username : "admin"),
                     new Claim(ClaimTypes.NameIdentifier, user != null ? user.UserId.ToString() : "1")
                 };
-               
+
                 sessionService.UserId = user != null ? user.UserId : 1;
                 sessionService.Username = user != null ? user.Username : "admin";
-                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user != null ? user.UserId : 1}).ConfigureAwait(false);
-                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user != null ? user.UserId : 1}).ConfigureAwait(false);
+                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user != null ? user.UserId : 1 }).ConfigureAwait(false);
+                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user != null ? user.UserId : 1 }).ConfigureAwait(false);
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 

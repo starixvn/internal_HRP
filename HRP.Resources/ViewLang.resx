@@ -135,6 +135,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>
