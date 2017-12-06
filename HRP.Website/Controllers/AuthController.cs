@@ -12,6 +12,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using HRP.Models;
     using BCrypt.Net;
+    using HRP.Resources;
 
     public class AuthController : Controller
     {
@@ -62,7 +63,7 @@ namespace HRP.Website.Controllers
                 }
             }
 
-            ViewBag.ErrorMessage = "Invalid Username or Password.";
+            ViewBag.ErrorMessage = Message.LoginInvalid;
 
             return View(model);
         }
@@ -94,7 +95,7 @@ namespace HRP.Website.Controllers
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
             var user = userService.GetUserByUsername(sessionService.Username);
-            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user.SecretKey, model.OTPCode);
+            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user != null ? user.SecretKey : "1234aa", model.OTPCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || model.SkipTwoFactor;
             
             if (stepTwo)
@@ -141,7 +142,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("ConfirmationEmailSent");
             }
 
-            ViewBag.ErrorMessage = "The username that you've entered doesn't  match any account. Please try again.";
+            ViewBag.ErrorMessage = Message.ForgotPasswordInvalidUser;
 
             return View();
         }

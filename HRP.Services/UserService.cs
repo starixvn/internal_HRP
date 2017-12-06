@@ -1,13 +1,9 @@
 namespace HRP.Services
 {
-    using System;
-    using System.Data;
     using Core.Model;
     using HRP.Criteria;
     using Core.Services;
-    using HRP.Criteria;
     using HRP.Models;
-    using Fanex.Data;
     using HRP.Core.Constants;
     using Microsoft.Extensions.Options;
 
@@ -17,15 +13,19 @@ namespace HRP.Services
 
         private IBaseMailService _emailService;
 
-        public UserService() : this (null, null)
+        private IBaseService _baseService;
+
+        public UserService() : this (null, null, null)
         {
         }
 
         public UserService(IBaseMailService emailService,
-                IOptionsSnapshot<AppSettingsOptions> configuration)
+                IOptionsSnapshot<AppSettingsOptions> configuration,
+                IBaseService baseService)
         {
             _emailService = emailService;
             _configuration = configuration;
+            _baseService = baseService;
         }
 
         public User GetUserByUsername(string username)
@@ -35,15 +35,12 @@ namespace HRP.Services
                 Username = username
             };
 
-            User user = new User();
-
-            if (criteria != null && criteria.IsValid())
-            {
-                user = GetDataEntity<User>(criteria);
-            }
+            var  user = _baseService.GetDataEntity<User>(criteria);
 
             return user;
         }
+
+
 
         public CommandResult UpdateTokenResetPassword(string username, string token)
         {
@@ -53,12 +50,8 @@ namespace HRP.Services
                 TokenResetPassword = token
             };
             
-            CommandResult result = new CommandResult();
+            var result = _baseService.ExecuteNonQuery(criteria);
 
-            if (criteria != null && criteria.IsValid())
-            {
-                result = ExecuteNonQuery(criteria);
-            }
 
             return result;
         }

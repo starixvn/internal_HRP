@@ -59,5 +59,32 @@ namespace HRP.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username that you&apos;ve entered doesn&apos;t  match any account. Please try again..
+        /// </summary>
+        public static string ForgotPasswordInvalidUser {
+            get {
+                return ResourceManager.GetString("ForgotPasswordInvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Username or Password..
+        /// </summary>
+        public static string LoginInvalid {
+            get {
+                return ResourceManager.GetString("LoginInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password doesn&apos;t match, try again.
+        /// </summary>
+        public static string NotMatchPassword {
+            get {
+                return ResourceManager.GetString("NotMatchPassword", resourceCulture);
+            }
+        }
     }
 }
