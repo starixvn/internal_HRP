@@ -6,6 +6,7 @@ namespace HRP.Services
     using HRP.Criteria;
     using Core.Services;
     using HRP.Models;
+    using Fanex.Data;
 
     public class UserService : BaseService, IUserService
     {
@@ -15,6 +16,15 @@ namespace HRP.Services
             {
                 Username = username   
             };
+
+            User user = new User();
+
+            if (criteria != null && criteria.IsValid())
+            {
+                user = GetDataEntity<User>(criteria);         
+            }
+            
+            return user;
         }
 
         public GetUsersResult GetUsers(string keyword, bool? isActive, int pageNumber, int pageSize)
