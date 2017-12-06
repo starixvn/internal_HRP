@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 
 </Project>
