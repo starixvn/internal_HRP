@@ -18,7 +18,7 @@ namespace HRP.Core.Filters
         {
             if (context?.HttpContext == null)
             {
-                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return;
             }

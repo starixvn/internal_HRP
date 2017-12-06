@@ -10,7 +10,9 @@ namespace HRP.Core.Services
         string Username { get; set; }
         IEnumerable<MenuItem> MenuItems { get; set; }
         IEnumerable<FunctionModel> Functions { get; set; }
+
         bool HasPermissionOnFunction(string functionKey, Policy policy);
+
         void ClearAll();
     }
 }

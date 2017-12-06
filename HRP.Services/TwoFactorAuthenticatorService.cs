@@ -17,6 +17,7 @@ namespace HRP.Services
             var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, UniqueKey, qrImageWidth, qrImageHeight);
             return setupInfo;
         }
+
         public string GenerateQrImageUrl(string username, string secretKey)
         {
             var setupInfo = SetupGoogleAuthInfo(username, secretKey);

@@ -1,7 +1,6 @@
 namespace HRP.Tests.Services
 {
     using HRP.Services;
-    using System;
     using Xunit;
 
     public class UserServiceTests

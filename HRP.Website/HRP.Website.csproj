@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
-    <PackageReference Include="Dapper" Version="1.50.2" />
+    <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
@@ -19,7 +19,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
-    <PackageReference Include="NETStandard.Library.NETFramework" Version="2.0.0-preview2-25405-01" />
     <PackageReference Include="NPOI" Version="2.3.0" />
   </ItemGroup>
 

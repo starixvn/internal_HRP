@@ -43,7 +43,7 @@
                 }
             }
         }
-        
+
         public static void LinkedResource(ref MailRecord record)
         {
             foreach (var resource in record.AlternateView)

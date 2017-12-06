@@ -1,18 +1,16 @@
 namespace HRP.Website.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.Cookies;
-    using HRP.Core.Services;
     using HRP.Core.Model;
+    using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Services;
-    using HRP.Models;
     using HRP.Website.Models;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Mvc;
 
     public class AuthController : Controller
     {
@@ -57,7 +55,7 @@ namespace HRP.Website.Controllers
                 if (user != null && ValidPassword(model.Password, user.Password))
                 {
                     sessionService.Username = user.Username;
-                
+
                     return RedirectToAction("VerifyOTP");
                     
                 }
@@ -109,19 +107,18 @@ namespace HRP.Website.Controllers
                
                 sessionService.UserId = user != null ? user.UserId : 1;
                 sessionService.Username = user != null ? user.Username : "admin";
-                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user!= null ? user.UserId : 1 });
-                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user != null ? user.UserId : 1 });
+                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
+                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).ConfigureAwait(false);
 
                 return Redirect("~/Home");
             }
-            
+
             return RedirectToAction("VerifyOTP");
         }
-
 
         [HttpGet]
         [Route("forgot-password")]
@@ -142,7 +139,7 @@ namespace HRP.Website.Controllers
             }
 
             ViewBag.ErrorMessage = "The username that you've entered doesn't  match any account. Please try again.";
-            
+
             return View();
         }
 
@@ -157,7 +154,7 @@ namespace HRP.Website.Controllers
         public async Task<IActionResult> Logout()
         {
             sessionService.ClearAll();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
 
             return RedirectToAction("Login");
         }
