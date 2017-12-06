@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
+    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Services\HRP.Services.csproj" />
   </ItemGroup>
 
