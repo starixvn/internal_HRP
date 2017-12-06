@@ -1,12 +1,8 @@
 namespace HRP.Services
 {
-    using System;
-    using System.Data;
-    using Core.Model;
-    using HRP.Criteria;
     using Core.Services;
+    using HRP.Criteria;
     using HRP.Models;
-    using Fanex.Data;
 
     public class UserService : BaseService, IUserService
     {
@@ -14,16 +10,16 @@ namespace HRP.Services
         {
             GetUserByUsernameCriteria criteria = new GetUserByUsernameCriteria
             {
-                Username = username   
+                Username = username
             };
 
             User user = new User();
 
             if (criteria != null && criteria.IsValid())
             {
-                user = GetDataEntity<User>(criteria);         
+                user = GetDataEntity<User>(criteria);
             }
-            
+
             return user;
         }
     }
