@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>Create New User</value>
+  </data>
   <data name="Function" xml:space="preserve">
     <value>Function</value>
   </data>
@@ -132,10 +135,52 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
   <data name="SuperAdminFunction" xml:space="preserve">
     <value>Super Admin Function</value>
   </data>
+  <data name="UserActiveStatus" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="UserAllStatus" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="UserInactiveStatus" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
   <data name="UserPermission" xml:space="preserve">
     <value>User Permission</value>
+  </data>
+  <data name="UserTable_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="UserTable_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="UserTable_CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="UserTable_Creator" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="UserTable_Email" xml:space="preserve">
+    <value>Email Add.</value>
+  </data>
+  <data name="UserTable_FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="UserTable_Phone" xml:space="preserve">
+    <value>Phone No.</value>
+  </data>
+  <data name="UserTable_UserId" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="UserTable_Username" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

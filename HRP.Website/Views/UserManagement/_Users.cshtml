@@ -1,24 +1,30 @@
-﻿@using HRP.Core.Model
+﻿@using HRP.Models
+@using HRP.Resources
 @model IEnumerable<UserModel>
 
-<table id="user-table" class="table table table-bordered table-hover">
+<a asp-action="CreateUser" asp-controller="UserManagement" class="btn btn-success" id="btn-create-user">
+    <i class="glyphicon glyphicon-plus"></i>
+    @ViewLang.CreateNewUser
+</a>
+
+<table id="user-table" class="table table table-bordered table-hover table-responsive">
     <thead>
         <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Full Name</th>
-            <th>Phone No.</th>
-            <th>Email Add.</th>
-            <th>Creator</th>
-            <th>Created Date</th>
-            <th>Active</th>
-            <th>Action</th>
+            <th>@ViewLang.UserTable_UserId</th>
+            <th>@ViewLang.UserTable_Username</th>
+            <th>@ViewLang.UserTable_FullName</th>
+            <th>@ViewLang.UserTable_Phone</th>
+            <th>@ViewLang.UserTable_Email</th>
+            <th>@ViewLang.UserTable_Creator</th>
+            <th>@ViewLang.UserTable_Creator</th>
+            <th>@ViewLang.UserTable_Active</th>
+            <th>@ViewLang.UserTable_Action</th>
         </tr>
     </thead>
     <tbody>
        @foreach(var user in Model)
        {
-        <tr>
+        <tr id="user-@user.UserId">
             <td>@user.UserId</td>
             <td>@user.Username</td>
             <td>@user.FullName</td>
@@ -26,7 +32,7 @@
             <td>@user.Email</td>
             <td>@user.CreatedBy</td>
             <td>@Html.DisplayFor(x => user.CreatedDate)</td>
-            <td>@user.IsActive</td>
+            <td><input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status"/></td>
             <td></td>
         </tr>
        }

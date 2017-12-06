@@ -1,19 +1,42 @@
-﻿
-<form class="form-inline" asp-action="GetUsers" asp-controller="UserManagement" 
+﻿@using HRP.Resources
+<form class="form-inline" asp-action="GetUsers" asp-controller="UserManagement"
       data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
     <div class="form-group">
-        <label>Status</label>
+        <label>@ViewLang.Status</label>
         <select class="form-control" name="status">
-            <option>All</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
+            <option>@ViewLang.UserAllStatus</option>
+            <option value="true">@ViewLang.UserActiveStatus</option>
+            <option value="false">@ViewLang.UserInactiveStatus</option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">@ViewLang.Submit</button>
 </form>
 
 <div id="result"></div>
+
+<div class="modal fade" id="user-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="UpdateUserStatus" asp-controller="UserManagement"
+                  data-ajax-method="post" data-ajax="true" data-ajax-success="userManagement.onUpdateUserStatus">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to active/inactive this user?
+                    <input type="hidden" id="user-id" name="userid" />
+                    <input type="hidden" id="user-status" name="isactive" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Styles{
     <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />

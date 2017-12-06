@@ -70,6 +70,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New User.
+        /// </summary>
+        public static string CreateNewUser {
+            get {
+                return ResourceManager.GetString("CreateNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function.
         /// </summary>
         public static string Function {
@@ -106,6 +115,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        public static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Super Admin Function.
         /// </summary>
         public static string SuperAdminFunction {
@@ -115,11 +142,119 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string UserActiveStatus {
+            get {
+                return ResourceManager.GetString("UserActiveStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string UserAllStatus {
+            get {
+                return ResourceManager.GetString("UserAllStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        public static string UserInactiveStatus {
+            get {
+                return ResourceManager.GetString("UserInactiveStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Permission.
         /// </summary>
         public static string UserPermission {
             get {
                 return ResourceManager.GetString("UserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        public static string UserTable_Action {
+            get {
+                return ResourceManager.GetString("UserTable_Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string UserTable_Active {
+            get {
+                return ResourceManager.GetString("UserTable_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created Date.
+        /// </summary>
+        public static string UserTable_CreatedDate {
+            get {
+                return ResourceManager.GetString("UserTable_CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creator.
+        /// </summary>
+        public static string UserTable_Creator {
+            get {
+                return ResourceManager.GetString("UserTable_Creator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Add..
+        /// </summary>
+        public static string UserTable_Email {
+            get {
+                return ResourceManager.GetString("UserTable_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name.
+        /// </summary>
+        public static string UserTable_FullName {
+            get {
+                return ResourceManager.GetString("UserTable_FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No..
+        /// </summary>
+        public static string UserTable_Phone {
+            get {
+                return ResourceManager.GetString("UserTable_Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #.
+        /// </summary>
+        public static string UserTable_UserId {
+            get {
+                return ResourceManager.GetString("UserTable_UserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string UserTable_Username {
+            get {
+                return ResourceManager.GetString("UserTable_Username", resourceCulture);
             }
         }
     }
