@@ -1,7 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using HRP.Core.Services;
     using HRP.Criteria.User;
     using HRP.Models;
