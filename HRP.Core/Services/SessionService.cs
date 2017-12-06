@@ -1,10 +1,10 @@
 namespace HRP.Core.Services
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Enumerations;
     using Microsoft.AspNetCore.Http;
     using Model;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class SessionService : ISessionService
     {
