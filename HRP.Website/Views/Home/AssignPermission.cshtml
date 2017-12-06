@@ -1,4 +1,5 @@
 ﻿@using HRP.Resources
+@using HRP.Models
 @using HRP.Models.UserPermisson
 
 @model AssignPermissonViewModel
@@ -16,26 +17,26 @@
                 <th colspan="2">@ViewLang.UserPermission</th>
             </tr>
             <tr>
-                <th></th>
                 <th>@ViewLang.Read</th>
+                <th>@ViewLang.Host</th>
             </tr>
         </thead>
         <tbody>
             @if (Model.Functions != null && Model.Functions.Any(x => x.IsAdmin))
             {
-                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue))
+                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && x.IsAdmin))
                 {
                     <tr>
                         <td>@parent.Name</td>
-                        <td></td>
-                        <td></td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
                     </tr>
-                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId == parent.FunctionId))
-                    { 
-                         <tr>
-                            <td><span>└── </span>@parent.Name</td>
-                            <td></td>
-                            <td></td>
+                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
+                    {
+                        <tr>
+                            <td><span>└── </span>@child.Name</td>
+                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox"></td>
                         </tr>
                     }
                 }
@@ -45,4 +46,64 @@
 </div>
 
 <div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="3">@ViewLang.Function</th>
+                <th rowspan="2"></th>
+                @foreach (Company company in Model.Companies)
+                {
+                    <th colspan="2">@company.Name</th>
+                }
+            </tr>
+            <tr>
+                @foreach (Company company in Model.Companies)
+                {
+                    <th>@ViewLang.Read</th>
+                    <th>@ViewLang.Host</th>
+                }
+            </tr>
+            <tr>
+                <th><input type="checkbox"></th>
+                @foreach (Company company in Model.Companies)
+                {
+                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Functions != null && Model.Functions.Any(x => !x.IsAdmin))
+            {
+                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && !x.IsAdmin))
+                {
+                    <tr>
+                        <td>@parent.Name</td>
+                        <td><input type="checkbox"></td>
+                        @foreach (Company company in Model.Companies)
+                        {
+                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox"></td>
+                        }
+                    </tr>
+                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
+                    {
+                        <tr>
+                            <td><span>└── </span>@child.Name</td>
+                            <td><input type="checkbox"></td>
+                            @foreach (Company company in Model.Companies)
+                            {
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            }
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <button>@ViewLang.Save</button>
+    <button>@ViewLang.Cancel</button>
 </div>
