@@ -5,18 +5,19 @@ namespace HRP.Tests.Services
 
     public class UserServiceTests
     {
-        private readonly UserService _userService;
+        readonly UserService _userService;
 
         public UserServiceTests()
         {
             _userService = new UserService();
         }
 
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData("admin")]
+        public void GetUserByUsername(string username)
         {
-            var result = _userService.GetUserByUsername("admin");
-            Assert.False(false, "Test unit test");
+            var result = _userService.GetUserByUsername(username);
+            Assert.NotNull(result);
         }
     }
 }
