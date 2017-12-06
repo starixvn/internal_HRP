@@ -11,5 +11,8 @@ namespace HRP.Core.Constants
         public const string BeginRootTag = "<ROOT>";
 
         public const string EndRootTag = "</ROOT>";
+
+        public const string templateEmailResetPassword = "wwwroot/EmailTemplates/EmailTemplateResetPassword.cshtml";
+
     }
 }

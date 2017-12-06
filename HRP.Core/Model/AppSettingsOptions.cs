@@ -9,5 +9,7 @@
         public string CertificateFilePath { get; set; }
 
         public string PasswordToSignTheCertificateFile { get; set; }
+
+        public string BaseHostUrl { get; set; }
     }
 }

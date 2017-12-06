@@ -1,0 +1,19 @@
+namespace HRP.Services
+{
+    using HRP.Core.Model;
+    using HRP.Models;
+
+    public interface IUserService
+    {
+        User GetUserByUsername(string username);
+<<<<<<< HEAD
+=======
+
+        GetUsersResult GetUsers(string keyword, bool? isActive, int pageNumber, int pageSize);
+
+        CommandResult UpdateTokenResetPassword(string username, string token);
+
+        void ResetUserPassword(string username);
+>>>>>>> 87653 - send mail to reset password
+    }
+}

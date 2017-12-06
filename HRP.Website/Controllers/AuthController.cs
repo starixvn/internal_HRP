@@ -7,11 +7,11 @@ namespace HRP.Website.Controllers
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Services;
-    using HRP.Website.Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
     using HRP.Models;
+    using BCrypt.Net;
 
     public class AuthController : Controller
     {
@@ -67,9 +67,9 @@ namespace HRP.Website.Controllers
             return View(model);
         }
 
-        private bool ValidPassword(string modelPassword, string hashPassword)
+        private bool ValidPassword(string modelPassword, string hashedPassword)
         {
-            return modelPassword == hashPassword;
+            return BCrypt.Verify(modelPassword, hashedPassword);
         }
 
         [HttpGet]
@@ -94,8 +94,7 @@ namespace HRP.Website.Controllers
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
             var user = userService.GetUserByUsername(sessionService.Username);
-            //temporary secret_key is 1234aa
-            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, "1234aa", model.OTPCode);
+            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user.SecretKey, model.OTPCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || model.SkipTwoFactor;
             
             if (stepTwo)
@@ -130,12 +129,15 @@ namespace HRP.Website.Controllers
 
         [HttpPost]
         [Route("forgot-password")]
-        public IActionResult ForgotPassword(string Username)
+        public IActionResult ForgotPassword(string username)
         {
             //Check valid username here
-            bool validUsername = Username == "admin" ? true : false;
-            if (!validUsername)
+            var user = userService.GetUserByUsername(username);
+
+            if (user != null || username == "admin")
             {
+                userService.ResetUserPassword(username);
+
                 return RedirectToAction("ConfirmationEmailSent");
             }
 
@@ -144,6 +146,13 @@ namespace HRP.Website.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        [Route("reset-password")]
+        public IActionResult ResetPassword(string token)
+        {
+            return View();
+        }
         [HttpGet]
         [Route("confirmation-email-sent")]
         public IActionResult ConfirmationEmailSent()

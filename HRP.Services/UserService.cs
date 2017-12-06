@@ -1,11 +1,33 @@
 namespace HRP.Services
 {
+    using System;
+    using System.Data;
+    using Core.Model;
+    using HRP.Criteria;
     using Core.Services;
     using HRP.Criteria;
     using HRP.Models;
+    using Fanex.Data;
+    using HRP.Core.Constants;
+    using Microsoft.Extensions.Options;
 
     public class UserService : BaseService, IUserService
     {
+        private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
+
+        private IBaseMailService _emailService;
+
+        public UserService() : this (null, null)
+        {
+        }
+
+        public UserService(IBaseMailService emailService,
+                IOptionsSnapshot<AppSettingsOptions> configuration)
+        {
+            _emailService = emailService;
+            _configuration = configuration;
+        }
+
         public User GetUserByUsername(string username)
         {
             GetUserByUsernameCriteria criteria = new GetUserByUsernameCriteria
@@ -21,6 +43,77 @@ namespace HRP.Services
             }
 
             return user;
+        }
+
+        public GetUsersResult GetUsers(string keyword, bool? isActive, int pageNumber, int pageSize)
+        {
+            var result = new GetUsersResult();
+
+            using (var objectDb = new ObjectDb("User_GetUsers"))
+            {
+                var filter = new
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Keyword = keyword ?? string.Empty,
+                    Total = 0
+                };
+
+                objectDb.AddInParameter("IsActive", SqlDbType.Bit, (object)isActive ?? DBNull.Value);
+                result.Users = objectDb.Query<UserModel>(filter);
+                result.Total = filter.Total;
+            }
+
+            return result;
+        }
+
+        public CommandResult UpdateTokenResetPassword(string username, string token)
+        {
+            UpdateTokenResetPasswordCriteria criteria = new UpdateTokenResetPasswordCriteria
+            {
+                Username = username,
+                TokenResetPassword = token
+            };
+            
+            CommandResult result = new CommandResult();
+
+            if (criteria != null && criteria.IsValid())
+            {
+                result = ExecuteNonQuery(criteria);
+            }
+
+            return result;
+        }
+
+        public void ResetUserPassword(string username)
+        {
+            string tokenResetPassword = Utilities.GenerateRadomString();
+            CommandResult updateToken = UpdateTokenResetPassword(username, tokenResetPassword);
+            if (updateToken.IsSuccessful)
+            {
+                SendMailToResetPassword(username, tokenResetPassword);
+            }
+        }
+
+        private void SendMailToResetPassword(string username, string tokenResetPassword)
+        {
+            var user = GetUserByUsername(username);
+            
+            var body = _emailService.ReadTextFile(Constants.templateEmailResetPassword);
+
+            string linkToReset = _configuration.Value.BaseHostUrl + "/reset-password?token=" + tokenResetPassword;
+
+            body = string.Format(body, username, linkToReset);
+
+            MailModel model = new MailModel
+            {
+                Subject = "Reset your password on HRP system",
+                ReceiverEmail = user != null ? user.Email : "oliver.dang@nexcel.vn",
+                MailCC = string.Empty,
+                Body = body
+            };
+
+            _emailService.SendEmail(model);
         }
     }
 }

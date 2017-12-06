@@ -3,6 +3,7 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />

@@ -1,0 +1,96 @@
+namespace HRP.Services
+{
+    using Core.Services;
+    using HRP.Criteria;
+    using HRP.Models;
+<<<<<<< HEAD
+=======
+    using Fanex.Data;
+    using HRP.Core.Constants;
+    using Microsoft.Extensions.Options;
+>>>>>>> 87653 - send mail to reset password
+
+    public class UserService : BaseService, IUserService
+    {
+        private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
+
+        private IBaseMailService _emailService;
+
+        public UserService() : this (null, null)
+        {
+        }
+
+        public UserService(IBaseMailService emailService,
+                IOptionsSnapshot<AppSettingsOptions> configuration)
+        {
+            _emailService = emailService;
+            _configuration = configuration;
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            GetUserByUsernameCriteria criteria = new GetUserByUsernameCriteria
+            {
+                Username = username
+            };
+
+            User user = new User();
+
+            if (criteria != null && criteria.IsValid())
+            {
+                user = GetDataEntity<User>(criteria);
+            }
+
+            return user;
+        }
+
+        public CommandResult UpdateTokenResetPassword(string username, string token)
+        {
+            UpdateTokenResetPasswordCriteria criteria = new UpdateTokenResetPasswordCriteria
+            {
+                Username = username,
+                TokenResetPassword = token
+            };
+            
+            CommandResult result = new CommandResult();
+
+            if (criteria != null && criteria.IsValid())
+            {
+                result = ExecuteNonQuery(criteria);
+            }
+
+            return result;
+        }
+
+        public void ResetUserPassword(string username)
+        {
+            string tokenResetPassword = Utilities.GenerateRadomString();
+            CommandResult updateToken = UpdateTokenResetPassword(username, tokenResetPassword);
+            if (updateToken.IsSuccessful)
+            {
+                SendMailToResetPassword(username, tokenResetPassword);
+            }
+        }
+
+        private void SendMailToResetPassword(string username, string tokenResetPassword)
+        {
+            var user = GetUserByUsername(username);
+            
+            var body = _emailService.ReadTextFile(Constants.templateEmailResetPassword);
+
+            string linkToReset = _configuration.Value.BaseHostUrl + "/reset-password?token=" + tokenResetPassword;
+
+            body = string.Format(body, username, linkToReset);
+
+            MailModel model = new MailModel
+            {
+                Subject = "Reset your password on HRP system",
+                ReceiverEmail = user != null ? user.Email : "oliver.dang@nexcel.vn",
+                MailCC = string.Empty,
+                Body = body
+            };
+
+            _emailService.SendEmail(model);
+        }
+    }
+}

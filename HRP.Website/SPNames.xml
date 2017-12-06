@@ -13,7 +13,7 @@
   <Function Name="User">
     <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
         <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="User_GetUsers" SpName="User_GetUsers" DbName="bodb_HRP" Plain="0"></Setting>
+        <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateUserStatus" SpName="User_UpdateUserStatus" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>
