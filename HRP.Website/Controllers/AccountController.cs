@@ -5,6 +5,7 @@ namespace HRP.Website.Controllers
     using HRP.Services;
     using HRP.Website.Models;
     using Microsoft.AspNetCore.Mvc;
+    using HRP.Models;
 
     [HRPAuthorize]
     public class AccountController : Controller

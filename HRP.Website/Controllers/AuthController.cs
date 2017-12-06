@@ -11,6 +11,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using HRP.Models;
 
     public class AuthController : Controller
     {
@@ -107,8 +108,8 @@ namespace HRP.Website.Controllers
                
                 sessionService.UserId = user != null ? user.UserId : 1;
                 sessionService.Username = user != null ? user.Username : "admin";
-                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
-                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
+                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user != null ? user.UserId : 1}).ConfigureAwait(false);
+                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user != null ? user.UserId : 1}).ConfigureAwait(false);
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
