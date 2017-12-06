@@ -1,21 +1,19 @@
 namespace HRP.Services
 {
     using Core.Model;
-    using HRP.Criteria;
     using Core.Services;
-    using HRP.Models;
     using HRP.Core.Constants;
+    using HRP.Criteria;
+    using HRP.Models;
     using Microsoft.Extensions.Options;
 
     public class UserService : BaseService, IUserService
     {
         private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
+        private readonly IBaseMailService _emailService;
+        private readonly IBaseService _baseService;
 
-        private IBaseMailService _emailService;
-
-        private IBaseService _baseService;
-
-        public UserService() : this (null, null, null)
+        public UserService() : this(null, null, null)
         {
         }
 
@@ -30,28 +28,25 @@ namespace HRP.Services
 
         public User GetUserByUsername(string username)
         {
-            GetUserByUsernameCriteria criteria = new GetUserByUsernameCriteria
+            var criteria = new GetUserByUsernameCriteria
             {
                 Username = username
             };
 
-            var  user = _baseService.GetDataEntity<User>(criteria);
+            var user = _baseService.GetDataEntity<User>(criteria);
 
             return user;
         }
 
-
-
         public CommandResult UpdateTokenResetPassword(string username, string token)
         {
-            UpdateTokenResetPasswordCriteria criteria = new UpdateTokenResetPasswordCriteria
+            var criteria = new UpdateTokenResetPasswordCriteria
             {
                 Username = username,
                 TokenResetPassword = token
             };
-            
-            var result = _baseService.ExecuteNonQuery(criteria);
 
+            var result = _baseService.ExecuteNonQuery(criteria);
 
             return result;
         }
@@ -69,7 +64,7 @@ namespace HRP.Services
         private void SendMailToResetPassword(string username, string tokenResetPassword)
         {
             var user = GetUserByUsername(username);
-            
+
             var body = _emailService.ReadTextFile(Constants.templateEmailResetPassword);
 
             string linkToReset = _configuration.Value.BaseHostUrl + "/reset-password?token=" + tokenResetPassword;
