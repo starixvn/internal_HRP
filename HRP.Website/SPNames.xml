@@ -7,6 +7,9 @@
     <Function Name="Menu">
         <Setting Key="Menu_GetByUserId" SpName="Menu_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
     </Function>
+    <Function Name="Company">
+      <Setting Key="Company_GetAll" SpName="Company_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    </Function>
     <Function Name="User">
         <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
         <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>

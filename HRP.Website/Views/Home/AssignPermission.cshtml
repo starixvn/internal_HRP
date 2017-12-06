@@ -1,0 +1,48 @@
+﻿@using HRP.Resources
+@using HRP.Models.UserPermisson
+
+@model AssignPermissonViewModel
+
+@{
+    ViewData["Title"] = "Assign Permission";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="2">@ViewLang.SuperAdminFunction</th>
+                <th colspan="2">@ViewLang.UserPermission</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>@ViewLang.Read</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Functions != null && Model.Functions.Any(x => x.IsAdmin))
+            {
+                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue))
+                {
+                    <tr>
+                        <td>@parent.Name</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId == parent.FunctionId))
+                    { 
+                         <tr>
+                            <td><span>└── </span>@parent.Name</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+</div>

@@ -8,6 +8,8 @@ namespace HRP.Core.Model
 
         public string Name { get; set; }
 
+        public int CompanyId { get; set; }
+
         public int? ParentId { get; set; }
 
         public bool IsReadOnly { get; set; }
