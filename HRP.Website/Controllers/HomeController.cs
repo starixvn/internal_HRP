@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using HRP.Models;
 
-    //[HRPAuthorize]
+    [HRPAuthorize]
     public class HomeController : Controller
     {
         private readonly ISessionService sessionService;
