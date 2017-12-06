@@ -1,0 +1,36 @@
+﻿@using HRP.Core.Model
+@model IEnumerable<UserModel>
+
+<table id="user-table" class="table table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Phone No.</th>
+            <th>Email Add.</th>
+            <th>Creator</th>
+            <th>Created Date</th>
+            <th>Active</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach(var user in Model)
+       {
+        <tr>
+            <td>@user.UserId</td>
+            <td>@user.Username</td>
+            <td>@user.FullName</td>
+            <td>@user.Phone</td>
+            <td>@user.Email</td>
+            <td>@user.CreatedBy</td>
+            <td>@Html.DisplayFor(x => user.CreatedDate)</td>
+            <td>@user.IsActive</td>
+            <td></td>
+        </tr>
+       }
+    </tbody>
+</table>
+
+<script src="~/assets/js/user-management.js"></script>

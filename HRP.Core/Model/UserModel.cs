@@ -1,6 +1,7 @@
 ﻿namespace HRP.Core.Model
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class UserModel
     {
@@ -8,8 +9,11 @@
 
         public string Username { get; set; }
 
+        public string FullName { get; set; }
+
         public string Phone { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy hh:mm tt}")]
         public DateTime CreatedDate { get; set; }
 
         public string Email { get; set; }

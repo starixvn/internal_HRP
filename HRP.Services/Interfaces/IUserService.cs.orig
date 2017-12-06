@@ -3,15 +3,15 @@ namespace HRP.Services
     using HRP.Core.Model;
     using HRP.Criteria;
     using HRP.Models;
-    
+
     public interface IUserService
     {
 <<<<<<< HEAD
-        UserSession GetUserByUsername(string username);
+        User GetUserByUsername(string username);
 
         GetUsersResult GetUsers(string keyword, bool? isActive, int pageNumber, int pageSize);
 =======
-        User GetUserByUsername(string username);
->>>>>>> 87653 - Validate password
+        UserSession GetUserByUsername(string username);
+>>>>>>> #87712 - Web - SC008 - User Management Page
     }
 }

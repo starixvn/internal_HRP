@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Functions>
-    <Function Name="Function">
-        <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
-        <Setting Key="Function_GetByUserId" SpName="Function_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
-    </Function>
-    <Function Name="Menu">
-        <Setting Key="Menu_GetByUserId" SpName="Menu_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
-    </Function>
+  <Function Name="Function">
+    <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Function_GetByUserId" SpName="Function_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Menu">
+    <Setting Key="Menu_GetByUserId" SpName="Menu_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
     <Function Name="Company">
       <Setting Key="Company_GetAll" SpName="Company_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
     </Function>
-    <Function Name="User">
-        <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
+  <Function Name="User">
+    <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
         <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetUsers" SpName="User_GetUsers" DbName="bodb_HRP" Plain="0"></Setting>
         
-    </Function>
+  </Function>
 </Functions>

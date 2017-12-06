@@ -1,10 +1,12 @@
 {
-    "name": "asp.net",
-    "private": true,
-    "dependencies": {
-        "jquery": "3.1.1",
-        "jquery-validation": "1.14.0",
-        "jquery-validation-unobtrusive": "3.2.6",
-        "bootstrap": "3.3.7"
-    }
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery": "3.1.1",
+    "jquery-validation": "1.14.0",
+    "jquery-validation-unobtrusive": "3.2.6",
+    "bootstrap": "3.3.7",
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
+    "datatables.net-bs": "2.1.1"
+  }
 }
