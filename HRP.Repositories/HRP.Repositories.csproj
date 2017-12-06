@@ -10,4 +10,8 @@
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
+  </ItemGroup>
+
 </Project>

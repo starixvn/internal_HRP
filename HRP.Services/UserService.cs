@@ -3,17 +3,17 @@ namespace HRP.Services
     using System;
     using System.Data;
     using Core.Model;
-    using Fanex.Data;
+    using HRP.Criteria;
+    using Core.Services;
+    using HRP.Models;
 
-    public class UserService : IUserService
+    public class UserService : BaseService, IUserService
     {
-        public UserSession GetUserByUsername(string username)
+        public User GetUserByUsername(string username)
         {
-            return new UserSession
+            GetUserByUsernameCriteria criteria = new GetUserByUsernameCriteria
             {
-                UserId = 1,
-                Username = "admin",
-                Password = "1234aa"
+                Username = username   
             };
         }
 

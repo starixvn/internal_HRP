@@ -1,4 +1,4 @@
-namespace HRP.Website.Models
+namespace HRP.Models
 {
     using System.ComponentModel.DataAnnotations;
 

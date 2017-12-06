@@ -8,6 +8,5 @@ namespace HRP.Core.Model
 
         public string FullName { get; set; }
 
-        public string Password { get; set; }
     }
 }
