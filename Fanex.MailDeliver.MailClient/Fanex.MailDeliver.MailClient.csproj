@@ -3,6 +3,7 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="OpenCover" Version="4.6.519" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.4.0" />
   </ItemGroup>
 </Project>

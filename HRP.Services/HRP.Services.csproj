@@ -12,6 +12,7 @@
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="OpenCover" Version="4.6.519" />
   </ItemGroup>
 
   <PropertyGroup>
