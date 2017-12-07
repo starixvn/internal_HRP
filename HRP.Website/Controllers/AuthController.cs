@@ -51,14 +51,14 @@ namespace HRP.Website.Controllers
                 {
                     sessionService.Username = "admin";
 
-                    return RedirectToAction("VerifyOTP");
+                    return RedirectToAction(nameof(VerifyOTP));
                 }
 
-                if (user != null && ValidPassword(model.Password, user.Password))
+                if (user != null && IsPasswordValid(model.Password, user.Password))
                 {
                     sessionService.Username = user.Username;
 
-                    return RedirectToAction("VerifyOTP");
+                    return RedirectToAction(nameof(VerifyOTP));
                 }
             }
 
@@ -67,9 +67,8 @@ namespace HRP.Website.Controllers
             return View(model);
         }
 
-        private bool ValidPassword(string modelPassword, string hashedPassword)
+        private static bool IsPasswordValid(string modelPassword, string hashedPassword)
         {
-            string password = BCrypt.HashPassword(modelPassword);
             return BCrypt.Verify(modelPassword, hashedPassword);
         }
 
@@ -136,7 +135,7 @@ namespace HRP.Website.Controllers
             {
                 userService.ResetUserPassword(username);
 
-                return RedirectToAction("ConfirmationEmailSent");
+                return RedirectToAction(nameof(ConfirmationEmailSent));
             }
 
             ViewBag.ErrorMessage = Message.ForgotPasswordInvalidUser;
@@ -172,7 +171,7 @@ namespace HRP.Website.Controllers
                     Password = BCrypt.HashPassword(model.Password)
                 };
 
-                CommandResult result = baseService.ExecuteNonQuery(criteria);
+                var result = baseService.ExecuteNonQuery(criteria);
 
                 if (result.IsSuccessful)
                 {
@@ -194,7 +193,7 @@ namespace HRP.Website.Controllers
             sessionService.ClearAll();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
     }
 }

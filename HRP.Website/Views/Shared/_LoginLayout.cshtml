@@ -2,21 +2,21 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <link href="/assets/bundles/before-login.min.css" rel="stylesheet" />
+    <link href="~/assets/bundles/before-login.min.css" rel="stylesheet"/>
     @RenderSection("styles", required: false)
     <title>@RenderSection("title", required: false)</title>
 </head>
 <body>
     <header class="header">
         <a href="/" class="logo">
-            <img src="/assets/styles/images/logo_page.svg" alt="logo" />
+            <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
         </a>
     </header>
     <section class="block">
         @RenderBody()
-        @RenderSection("scripts", required: false)
     </section>
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/js/login.js"></script>
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/login.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>
