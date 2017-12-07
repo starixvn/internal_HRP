@@ -9,4 +9,9 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
+    <ProjectReference Include="..\HRP.Resources\HRP.Resources.csproj" />
+  </ItemGroup>
+
 </Project>

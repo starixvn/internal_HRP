@@ -13,6 +13,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using BCrypt.Net;
     using HRP.Resources;
+    using HRP.Criteria.User;
 
     public class AuthController : Controller
     {
@@ -146,13 +147,44 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-
         [HttpGet]
         [Route("reset-password")]
         public IActionResult ResetPassword(string token)
         {
+            var user = userService.GetUserByTokenResetPassword(token);
+
+            if (user != null)
+            {
+                return NotFound();
+            }
+
             return View();
         }
+
+        [HttpPost]
+        [Route("reset-password")]
+        public IActionResult ResetPassword(string token, ChangePasswordViewModel model)
+        {
+            var user = userService.GetUserByTokenResetPassword(token);
+
+            if (model != null && ModelState.IsValid && user != null)
+            {
+                var criteria = new UpdateUserPasswordCriteria
+                {
+                    UserId = user.UserId,
+                    Password = BCrypt.HashPassword(model.Password)
+                };
+
+                CommandResult result = baseService.ExecuteNonQuery(criteria);
+
+                if (result.IsSuccessful)
+                {
+                    return RedirectToAction("ChangePasswordSuccess");
+                }
+            }
+            return BadRequest();
+        }
+
         [HttpGet]
         [Route("confirmation-email-sent")]
         public IActionResult ConfirmationEmailSent()

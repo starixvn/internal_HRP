@@ -4,10 +4,11 @@ namespace HRP.Services
     using Core.Services;
     using HRP.Core.Constants;
     using HRP.Criteria;
+    using HRP.Criteria.User;
     using HRP.Models;
     using Microsoft.Extensions.Options;
 
-    public class UserService : BaseService, IUserService
+    public class UserService : IUserService
     {
         private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
         private readonly IBaseMailService _emailService;
@@ -38,6 +39,16 @@ namespace HRP.Services
             return user;
         }
 
+        public User GetUserByTokenResetPassword(string tokenResetPassword)
+        {
+            var criteria = new GetUserByTokenResetPasswordCriteria
+            {
+                TokenResetPassword = tokenResetPassword
+            };
+
+            return _baseService.GetDataEntity<User>(criteria);
+        }
+
         public CommandResult UpdateTokenResetPassword(string username, string token)
         {
             var criteria = new UpdateTokenResetPasswordCriteria
@@ -55,6 +66,7 @@ namespace HRP.Services
         {
             string tokenResetPassword = Utilities.GenerateRadomString();
             CommandResult updateToken = UpdateTokenResetPassword(username, tokenResetPassword);
+
             if (updateToken.IsSuccessful)
             {
                 SendMailToResetPassword(username, tokenResetPassword);
@@ -65,7 +77,7 @@ namespace HRP.Services
         {
             var user = GetUserByUsername(username);
 
-            var body = _emailService.ReadTextFile(Constants.templateEmailResetPassword);
+            var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
 
             string linkToReset = _configuration.Value.BaseHostUrl + "/reset-password?token=" + tokenResetPassword;
 
