@@ -87,12 +87,12 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
-                baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
+                _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                 if (user != null && IsPasswordValid(viewModel.Password, user.Password))
                 {
                     _sessionService.Username = user.Username;
-                    baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
+                    _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                     //TODO: Hardcode
                     user.IsTwoFactor = true;
