@@ -128,7 +128,7 @@
         [HttpGet]
         public IActionResult CheckUsernameExisted(string username)
         {
-            return Json(_baseService.GetData<int>(new CheckUsernameExistedCriteria { Username = username }).Count() == 0);
-
+            return Json(baseService.GetData<int>(new CheckUsernameExistedCriteria { Username = username }).Count() == 0);
+        }
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Function">
+    <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Function_GetByUserId" SpName="Function_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Menu">
+    <Setting Key="Menu_GetByUserId" SpName="Menu_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Company">
+    <Setting Key="Company_GetAll" SpName="Company_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="User">
+    <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
+<<<<<<< HEAD
+    <Setting Key="User_GetByTokenResetPassword" SpName="User_GetByTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdatePassword" SpName="User_UpdatePassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateLastLoginDate" SpName="User_UpdateLastLoginDate" DbName="bodb_HRP" Plain="0"></Setting>
+=======
+    <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+>>>>>>> Create new user page
+    <Setting Key="User_UpdateUserStatus" SpName="User_UpdateUserStatus" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetUsers" SpName="User_GetUsers" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CheckUsernameExisted" SpName="User_CheckUsernameExisted" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+</Functions>

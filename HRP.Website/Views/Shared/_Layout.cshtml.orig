@@ -1,0 +1,91 @@
+﻿@using HRP.Resources
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HRP.Website</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/assets/bundles/main.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/assets/bundles/main.min.css" asp-append-version="true" />
+    </environment>
+
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <header class="header">
+        <a asp-controller="home" asp-action="index" class="logo">
+            <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
+        </a>
+        <ul class="main-menu">
+            <li class="menu">
+                <a href="#" class="link active"><span class="icon-configuration"></span>Configuration</a>
+                <ul class="submenu">
+<<<<<<< HEAD
+                    <li><a asp-controller="usermanagement" asp-action="index" class="link">User Management</a></li>
+=======
+                    <li><a asp-action="Index" asp-controller="UserManagement" class="link">User Management</a></li>
+>>>>>>> Create new user page
+                    <li><a href="#" class="link">Data Management</a></li>
+                </ul>
+            </li>
+            <li class="menu"><a href="#" class="link"><span class="icon-employee_management"></span>Employee Management</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payment"></span>Payment Process</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-payslip"></span>Payslip</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-report"></span>Report</a></li>
+            <li class="menu"><a href="#" class="link"><span class="icon-exit"></span>Exit</a></li>
+        </ul>
+        <div class="user-info">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Jennie Thompson
+                    <span class="circle-gray">
+                        <span class="icon-user"></span>
+                    </span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="/changeProfile.html"><span class="icon-user"></span>Profile</a></li>
+                    <li><a href="/changePassword.html"><span class="icon-password"></span>Password</a></li>
+                    <li><a href="/registerOTP.html"><span class="icon-otp"></span>OTP</a></li>
+                    <li><a asp-controller="auth" asp-action="logout"><span class="icon-logout"></span>@ViewLang.SignOut</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

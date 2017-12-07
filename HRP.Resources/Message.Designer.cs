@@ -97,11 +97,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid OTP or OTP expired.
+        ///   Looks up a localized string similar to Full Name.
         /// </summary>
-        public static string InvalidOTP {
+        public static string FullNameLabel {
             get {
-                return ResourceManager.GetString("InvalidOTP", resourceCulture);
+                return ResourceManager.GetString("FullNameLabel", resourceCulture);
             }
         }
         
@@ -115,20 +115,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid OTP or OTP expired.
+        /// </summary>
+        public static string InvalidOTP {
+            get {
+                return ResourceManager.GetString("InvalidOTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Username or Password..
         /// </summary>
         public static string LoginInvalid {
             get {
                 return ResourceManager.GetString("LoginInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request reset password on HRP System.
-        /// </summary>
-        public static string ResetPasswordEmailSubject {
-            get {
-                return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
             }
         }
         
@@ -165,6 +165,15 @@ namespace HRP.Resources {
         public static string PhoneNumberMaxLength {
             get {
                 return ResourceManager.GetString("PhoneNumberMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request reset password on HRP System.
+        /// </summary>
+        public static string ResetPasswordEmailSubject {
+            get {
+                return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
             }
         }
         
