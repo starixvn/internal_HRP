@@ -6,6 +6,6 @@ namespace HRP.Services
 
         string GenerateSetupCode(string username, string secretKey);
 
-        bool ValidateOTPCode(string username, string secretKey, string otpCode);
+        bool ValidateOTPCode(string username, string secretKey, int otpCode);
     }
 }

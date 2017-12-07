@@ -21,9 +21,9 @@
         <input asp-for="OTPCode" class="form-control" placholder="OTP Code" />
         <span asp-validation-for="OTPCode" class="msg-error"></span>
     </div>
-    <div class="group">
+    @*<div class="group">
         <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
-    </div>
+    </div>*@
     <div class="group list-button">
         <input type="submit" class="button -primary" value="Validate OTP" />
         <input type="button" class="button -second" value="Cancel">

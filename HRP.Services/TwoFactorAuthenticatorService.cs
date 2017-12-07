@@ -30,13 +30,13 @@ namespace HRP.Services
             return setupInfo.ManualEntryKey;
         }
 
-        public bool ValidateOTPCode(string username, string secretKey, string otpCode)
+        public bool ValidateOTPCode(string username, string secretKey, int otpCode)
         {
             var validOTP = false;
             var twoFactorAuthen = new TwoFactorAuthenticator();
             var uniqueKey = username + secretKey;
             var timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
-            twoFactorAuthen.ValidateTwoFactorPIN(uniqueKey, otpCode, timeExpireOTP);
+            twoFactorAuthen.ValidateTwoFactorPIN(uniqueKey, otpCode.ToString(), timeExpireOTP);
 
             return validOTP;
         }

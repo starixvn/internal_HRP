@@ -1,11 +1,11 @@
 namespace HRP.Core.Filters
 {
-    using System.Net;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
+    using System.Net;
 
     public class HRPAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
