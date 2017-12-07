@@ -24,8 +24,8 @@ namespace HRP.Website.Controllers
         {
             var model = new UserProfileViewModel
             {
-                QRImageUrl = twoFactorAuthService.GenerateQrImageUrl(sessionService.Username, "1234aa"),
-                SetupCode = twoFactorAuthService.GenerateSetupCode(sessionService.Username, "1234aa")
+                //QRImageUrl = twoFactorAuthService.GenerateQrImageUrl(sessionService.Username, "1234aa"),
+                //SetupCode = twoFactorAuthService.GenerateSetupCode(sessionService.Username, "1234aa")
             };
 
             return View(model);

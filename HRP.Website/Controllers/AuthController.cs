@@ -1,6 +1,7 @@
 namespace HRP.Website.Controllers
 {
     using BCrypt.Net;
+    using Google.Authenticator;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -90,6 +91,11 @@ namespace HRP.Website.Controllers
                 {
                     _sessionService.Username = user.Username;
 
+                    if (!user.IsTwoFactor)
+                    {
+                        return RedirectToAction(nameof(SetupOtp));
+                    }
+
                     return RedirectToAction(nameof(VerifyOTP));
                 }
             }
@@ -165,11 +171,6 @@ namespace HRP.Website.Controllers
                 return RedirectToAction(nameof(Login));
             }
 
-            if(user.IsTwoFactor)
-            {
-
-            }
-
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
 
             //TODO: Hardcode
@@ -210,7 +211,15 @@ namespace HRP.Website.Controllers
 
         public IActionResult SetupOtp()
         {
-            var viewModel = new SetupOtpViewModel();
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(user.Username, user.SecretKey);
+
+            var viewModel = new SetupOtpViewModel
+            {
+                QrCodeLink = setupCode.QrCodeSetupImageUrl,
+                TextCode = setupCode.ManualEntryKey
+            };
+
             return View(viewModel);
         }
 

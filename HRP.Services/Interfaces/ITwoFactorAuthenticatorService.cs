@@ -1,10 +1,10 @@
 namespace HRP.Services
 {
+    using Google.Authenticator;
+
     public interface ITwoFactorAuthenticatorService
     {
-        string GenerateQrImageUrl(string username, string secretKey);
-
-        string GenerateSetupCode(string username, string secretKey);
+        SetupCode SetupGoogleAuthInfo(string username, string secretKey);
 
         bool ValidateOTPCode(string username, string secretKey, int otpCode);
     }
