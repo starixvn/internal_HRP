@@ -20,7 +20,7 @@ namespace HRP.Models
 
         public DateTime? LastLoginDate { get; set; }
 
-        public bool IsRegisterOTP { get; set; }
+        public bool IsOTPRegistered { get; set; }
 
         public string SecretKey { get; set; }
 

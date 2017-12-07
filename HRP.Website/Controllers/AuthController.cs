@@ -15,6 +15,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -95,7 +96,7 @@ namespace HRP.Website.Controllers
                     _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                     //TODO: Hardcode
-                    user.IsTwoFactor = true;
+                    user.IsOTPRegistered = true;
 
                     {
                         return RedirectToAction(nameof(SetupOtp));
