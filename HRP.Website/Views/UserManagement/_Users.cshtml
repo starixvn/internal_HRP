@@ -2,11 +2,6 @@
 @using HRP.Resources
 @model IEnumerable<UserModel>
 
-<a asp-action="CreateUser" asp-controller="UserManagement" class="btn btn-success" id="btn-create-user">
-    <i class="glyphicon glyphicon-plus"></i>
-    @ViewLang.CreateNewUser
-</a>
-
 <table id="user-table" class="table table table-bordered table-hover table-responsive">
     <thead>
         <tr>
@@ -22,21 +17,25 @@
         </tr>
     </thead>
     <tbody>
-       @foreach(var user in Model)
-       {
-        <tr id="user-@user.UserId">
-            <td>@user.UserId</td>
-            <td>@user.Username</td>
-            <td>@user.FullName</td>
-            <td>@user.Phone</td>
-            <td>@user.Email</td>
-            <td>@user.CreatedBy</td>
-            <td>@Html.DisplayFor(x => user.CreatedDate)</td>
-            <td><input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status"/></td>
-            <td></td>
-        </tr>
-       }
+        @foreach (var user in Model)
+        {
+            <tr id="user-@user.UserId">
+                <td>@user.UserId</td>
+                <td>@user.Username</td>
+                <td>@user.FullName</td>
+                <td>@user.Phone</td>
+                <td>@user.Email</td>
+                <td>@user.CreatedBy</td>
+                <td>@Html.DisplayFor(x => user.CreatedDate)</td>
+                <td><input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status" /></td>
+                <td></td>
+            </tr>
+        }
     </tbody>
 </table>
-
-<script src="~/assets/js/user-management.js"></script>
+<environment include="Development">
+    <script src="~/assets/js/user-management.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/assets/js/user-management.min.js"></script>
+</environment>

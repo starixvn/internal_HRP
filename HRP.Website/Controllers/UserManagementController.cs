@@ -117,5 +117,18 @@
 
             return result.ToString();
         }
+        
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            var viewModel = new CreateUserViewModel();
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult CheckUsernameExisted(string username)
+        {
+            return Json(_baseService.GetData<int>(new CheckUsernameExistedCriteria { Username = username }).Count() == 0);
+
     }
 }

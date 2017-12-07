@@ -61,6 +61,33 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string EmailLabel {
+            get {
+                return ResourceManager.GetString("EmailLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Address must not over {1} characters long.
+        /// </summary>
+        public static string EmailMaxLength {
+            get {
+                return ResourceManager.GetString("EmailMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is required!.
+        /// </summary>
+        public static string EmailRequired {
+            get {
+                return ResourceManager.GetString("EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username that you&apos;ve entered doesn&apos;t  match any account. Please try again..
         /// </summary>
         public static string ForgotPasswordInvalidUser {
@@ -79,6 +106,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Name must not over {1} characters long..
+        /// </summary>
+        public static string FullNameMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Username or Password..
         /// </summary>
         public static string LoginInvalid {
@@ -93,6 +129,69 @@ namespace HRP.Resources {
         public static string ResetPasswordEmailSubject {
             get {
                 return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be between 8 and 50 characters long, contains UPPER/lowercase letters and number..
+        /// </summary>
+        public static string PasswordContainRequired {
+            get {
+                return ResourceManager.GetString("PasswordContainRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is required!.
+        /// </summary>
+        public static string PasswordRequired {
+            get {
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No..
+        /// </summary>
+        public static string PhoneNumberLabel {
+            get {
+                return ResourceManager.GetString("PhoneNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No. must not over {1} characters long..
+        /// </summary>
+        public static string PhoneNumberMaxLength {
+            get {
+                return ResourceManager.GetString("PhoneNumberMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username must be between 2 and 30 characters long and does not contain the space..
+        /// </summary>
+        public static string UsernameLengthNoSpaceAllowed {
+            get {
+                return ResourceManager.GetString("UsernameLengthNoSpaceAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username is required!.
+        /// </summary>
+        public static string UsernameRequired {
+            get {
+                return ResourceManager.GetString("UsernameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Username you&apos;ve entered has already exists. Username must be unique. Please choose another username..
+        /// </summary>
+        public static string UsernameUnique {
+            get {
+                return ResourceManager.GetString("UsernameUnique", resourceCulture);
             }
         }
     }

@@ -1,0 +1,66 @@
+﻿@using HRP.Models
+@model CreateUserViewModel
+
+<h2>User Management / Create New User</h2>
+<form class="form-horizontal" asp-action="CreateUser" asp-controller="UserManagement" method="post" id="create-user-form">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Username" class="col-sm-1 control-label"></label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="Username">
+            @Html.ValidationMessageFor(x => x.Username, string.Empty, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-sm-1 control-label"></label>
+        <div class="col-sm-6">
+            <input type="password" class="form-control" asp-for="Password">
+            @Html.ValidationMessageFor(x => x.Password, string.Empty, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FullName" class="col-sm-1 control-label"></label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="FullName">
+            @Html.ValidationMessageFor(x => x.FullName, string.Empty, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneNumber" class="col-sm-1 control-label"></label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="PhoneNumber">
+            @Html.ValidationMessageFor(x => x.PhoneNumber, string.Empty, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="col-sm-1 control-label"></label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="Email">
+            @Html.ValidationMessageFor(x => x.Email, string.Empty, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-6">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" asp-controller="UserManagement" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/assets/js/create-user.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/assets/js/user-management.min.js"></script>
+    </environment>
+}

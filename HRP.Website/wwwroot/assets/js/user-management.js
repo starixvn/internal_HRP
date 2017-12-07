@@ -11,7 +11,9 @@
 
     });
 
-    $("#btn-create-user").prependTo("#toolbar");
+    var button = $('#btn-create-user');
+    button.clone().removeClass('hidden').prependTo('#toolbar');
+    button.addClass('hidden');
 
     $(".toggle-user-status").on('click', function (e) {
         e.preventDefault();

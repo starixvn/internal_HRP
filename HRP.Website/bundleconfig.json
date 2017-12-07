@@ -60,5 +60,21 @@
       "renameLocals": true
     },
     "sourceMap": false
+    },
+    {
+    "outputFileName": "wwwroot/assets/js/user-management.min.js",
+    "inputFiles": [ "wwwroot/assets/js/user-management.js" ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/js/create-user.min.js",
+    "inputFiles": [ "wwwroot/assets/js/create-user.js" ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

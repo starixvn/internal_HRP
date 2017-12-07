@@ -117,16 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="EmailMaxLength" xml:space="preserve">
+    <value>Email Address must not over {1} characters long</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email is required!</value>
+  </data>
   <data name="ForgotPasswordInvalidUser" xml:space="preserve">
     <value>The username that you've entered doesn't  match any account. Please try again.</value>
   </data>
   <data name="InvalidOTP" xml:space="preserve">
     <value>Invalid OTP or OTP expired</value>
   </data>
+  <data name="FullNameMaxLength" xml:space="preserve">
+    <value>Full Name must not over {1} characters long.</value>
+  </data>
   <data name="LoginInvalid" xml:space="preserve">
     <value>Invalid Username or Password.</value>
   </data>
   <data name="ResetPasswordEmailSubject" xml:space="preserve">
     <value>Request reset password on HRP System</value>
+  </data>
+  <data name="PasswordContainRequired" xml:space="preserve">
+    <value>Password must be between 8 and 50 characters long, contains UPPER/lowercase letters and number.</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Password is required!</value>
+  </data>
+  <data name="PhoneNumberLabel" xml:space="preserve">
+    <value>Phone No.</value>
+  </data>
+  <data name="PhoneNumberMaxLength" xml:space="preserve">
+    <value>Phone No. must not over {1} characters long.</value>
+  </data>
+  <data name="UsernameLengthNoSpaceAllowed" xml:space="preserve">
+    <value>Username must be between 2 and 30 characters long and does not contain the space.</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>Username is required!</value>
+  </data>
+  <data name="UsernameUnique" xml:space="preserve">
+    <value>The Username you've entered has already exists. Username must be unique. Please choose another username.</value>
   </data>
 </root>

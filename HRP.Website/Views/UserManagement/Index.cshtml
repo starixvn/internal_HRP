@@ -1,4 +1,7 @@
 ﻿@using HRP.Resources
+
+<h2>User Management</h2>
+
 <form class="form-inline" asp-action="GetUsers" asp-controller="UserManagement"
       data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
     <div class="form-group">
@@ -13,7 +16,14 @@
     <button type="submit" class="btn btn-default">@ViewLang.Submit</button>
 </form>
 
-<div id="result"></div>
+<a asp-action="CreateUser" asp-controller="UserManagement" class="btn btn-success" id="btn-create-user">
+    <i class="glyphicon glyphicon-plus"></i>
+    @ViewLang.CreateNewUser
+</a>
+<div id="result">
+
+
+</div>
 
 <div class="modal fade" id="user-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
