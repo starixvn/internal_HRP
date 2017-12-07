@@ -4,6 +4,7 @@ namespace HRP.Models
     {
         public string OTPCode { get; set; }
 
-        public bool SkipTwoFactor { get; set; }
+        // TODO: Remove when 2 factor completed
+        public bool IsByPassTwoFactor { get; set; }
     }
 }

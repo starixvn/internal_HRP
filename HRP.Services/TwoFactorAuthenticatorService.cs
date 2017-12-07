@@ -1,20 +1,20 @@
 namespace HRP.Services
 {
-    using System;
     using Google.Authenticator;
+    using System;
 
     public class TwoFactorAuthenticatorService : ITwoFactorAuthenticatorService
     {
-        private string _appName = "HRP";
-        private int qrImageWidth = 200;
-        private int qrImageHeight = 200;
-        private int otpExpireTime = 30;
+        private readonly string _appName = "HRP";
+        private readonly int qrImageWidth = 200;
+        private readonly int qrImageHeight = 200;
+        private readonly int otpExpireTime = 30;
 
         private SetupCode SetupGoogleAuthInfo(string username, string secretKey)
         {
             var twoFactorAuthen = new TwoFactorAuthenticator();
-            string UniqueKey = username + secretKey;
-            var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, UniqueKey, qrImageWidth, qrImageHeight);
+            var uniqueKey = username + secretKey;
+            var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, uniqueKey, qrImageWidth, qrImageHeight);
             return setupInfo;
         }
 
@@ -30,13 +30,14 @@ namespace HRP.Services
             return setupInfo.ManualEntryKey;
         }
 
-        public bool ValidateOTPCode(string username, string secretkey, string otpCode)
+        public bool ValidateOTPCode(string username, string secretKey, string otpCode)
         {
-            bool validOTP = false;
+            var validOTP = false;
             var twoFactorAuthen = new TwoFactorAuthenticator();
-            string uniqueKey = username + secretkey;
-            TimeSpan timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
+            var uniqueKey = username + secretKey;
+            var timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
             twoFactorAuthen.ValidateTwoFactorPIN(uniqueKey, otpCode, timeExpireOTP);
+
             return validOTP;
         }
     }
