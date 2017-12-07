@@ -77,14 +77,5 @@ namespace HRP.Resources {
                 return ResourceManager.GetString("LoginInvalid", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password doesn&apos;t match, try again.
-        /// </summary>
-        public static string NotMatchPassword {
-            get {
-                return ResourceManager.GetString("NotMatchPassword", resourceCulture);
-            }
-        }
     }
 }

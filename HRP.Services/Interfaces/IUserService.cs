@@ -1,7 +1,6 @@
 namespace HRP.Services
 {
     using HRP.Core.Model;
-    using HRP.Criteria.User;
     using HRP.Models;
 
     public interface IUserService

@@ -1,6 +1,4 @@
-﻿
-
-namespace HRP.Core.Services
+﻿namespace HRP.Core.Services
 {
     using BCrypt.Net;
 
@@ -12,10 +10,10 @@ namespace HRP.Core.Services
             string random = salt.Replace("/", string.Empty).Replace(".", string.Empty);
             return random;
         }
-        
+
         public static string GenerateSecretKey()
         {
-             return BCrypt.GenerateSalt(12);
+            return BCrypt.GenerateSalt(12);
         }
     }
 }

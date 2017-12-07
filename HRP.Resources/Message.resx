@@ -123,7 +123,4 @@
   <data name="LoginInvalid" xml:space="preserve">
     <value>Invalid Username or Password.</value>
   </data>
-  <data name="NotMatchPassword" xml:space="preserve">
-    <value>Password doesn't match, try again</value>
-  </data>
 </root>

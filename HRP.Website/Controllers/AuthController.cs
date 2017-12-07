@@ -34,7 +34,6 @@ namespace HRP.Website.Controllers
             this.baseService = baseService;
         }
 
-        [HttpGet]
         public ActionResult Login()
         {
             var model = new LoginViewModel();
@@ -47,13 +46,6 @@ namespace HRP.Website.Controllers
             if (model != null && ModelState.IsValid)
             {
                 var user = userService.GetUserByUsername(model.Username);
-
-                if (model.Username == "admin" && model.Password == "1234aa")
-                {
-                    sessionService.Username = "admin";
-
-                    return RedirectToAction("VerifyOTP");
-                }
 
                 if (user != null && ValidPassword(model.Password, user.Password))
                 {
@@ -70,11 +62,10 @@ namespace HRP.Website.Controllers
 
         private bool ValidPassword(string modelPassword, string hashedPassword)
         {
+            string password = BCrypt.HashPassword(modelPassword);
             return BCrypt.Verify(modelPassword, hashedPassword);
         }
 
-        [HttpGet]
-        [Route("verify-otp")]
         public ActionResult VerifyOTP()
         {
             if (!string.IsNullOrEmpty(sessionService.Username))
@@ -91,25 +82,24 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        [Route("verify-otp")]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel model)
         {
             var user = userService.GetUserByUsername(sessionService.Username);
-            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user != null ? user.SecretKey : "1234aa", model.OTPCode);
+            bool isValidOTP = twoFactorAuthService.ValidateOTPCode(sessionService.Username, user.SecretKey, model.OTPCode);
             bool stepTwo = (ModelState.IsValid && isValidOTP) || model.SkipTwoFactor;
 
             if (stepTwo)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user != null ? user.Username : "admin"),
-                    new Claim(ClaimTypes.NameIdentifier, user != null ? user.UserId.ToString() : "1")
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                 };
 
-                sessionService.UserId = user != null ? user.UserId : 1;
-                sessionService.Username = user != null ? user.Username : "admin";
-                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user != null ? user.UserId : 1 }).ConfigureAwait(false);
-                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user != null ? user.UserId : 1 }).ConfigureAwait(false);
+                sessionService.UserId = user.UserId;
+                sessionService.Username = user.Username;
+                sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(new GetMenuByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
+                sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(new GetFunctionByUserIdCriteria { UserId = user.UserId }).ConfigureAwait(false);
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
@@ -121,21 +111,18 @@ namespace HRP.Website.Controllers
             return RedirectToAction("VerifyOTP");
         }
 
-        [HttpGet]
-        [Route("forgot-password")]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("forgot-password")]
         public IActionResult ForgotPassword(string username)
         {
             //Check valid username here
             var user = userService.GetUserByUsername(username);
 
-            if (user != null || username == "admin")
+            if (user != null)
             {
                 userService.ResetUserPassword(username);
 
@@ -147,13 +134,12 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-        [HttpGet]
         [Route("reset-password")]
         public IActionResult ResetPassword(string token)
         {
             var user = userService.GetUserByTokenResetPassword(token);
 
-            if (user != null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -185,7 +171,6 @@ namespace HRP.Website.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
         [Route("confirmation-email-sent")]
         public IActionResult ConfirmationEmailSent()
         {
