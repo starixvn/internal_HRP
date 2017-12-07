@@ -1,5 +1,4 @@
-﻿
-namespace HRP.Criteria
+﻿namespace HRP.Criteria
 {
     using Fanex.Data.Repository;
 
@@ -12,6 +11,5 @@ namespace HRP.Criteria
         public override string GetSettingKey() => "User_UpdateTokenResetPassword";
 
         public override bool IsValid() => !string.IsNullOrEmpty(Username);
-        
     }
 }

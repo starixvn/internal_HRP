@@ -2,6 +2,7 @@ namespace HRP.Website.Controllers
 {
     using BCrypt.Net;
     using Google.Authenticator;
+    using BCrypt.Net;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -13,9 +14,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {
@@ -86,17 +84,18 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
+                baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
 
                 if (user != null && IsPasswordValid(viewModel.Password, user.Password))
                 {
                     _sessionService.Username = user.Username;
-
                     if (!user.IsTwoFactor)
                     {
                         return RedirectToAction(nameof(SetupOtp));
                     }
 
-                    return RedirectToAction(nameof(VerifyOTP));
+            ViewBag.Message = Message.InvalidOTP;
+            return View();
                 }
             }
 
@@ -115,7 +114,6 @@ namespace HRP.Website.Controllers
         }
 
         [HttpGet]
-        [Route("reset-password")]
         public IActionResult ResetPassword(string token)
         {
             var user = _userService.GetUserByTokenResetPassword(token);
@@ -129,7 +127,6 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        [Route("reset-password")]
         public IActionResult ResetPassword(string token, ChangePasswordViewModel model)
         {
             var user = _userService.GetUserByTokenResetPassword(token);

@@ -6,6 +6,7 @@ namespace HRP.Services
     using HRP.Criteria;
     using HRP.Criteria.User;
     using HRP.Models;
+    using HRP.Resources;
     using Microsoft.Extensions.Options;
 
     public class UserService : IUserService
@@ -65,6 +66,7 @@ namespace HRP.Services
         public void ResetUserPassword(string username)
         {
             string tokenResetPassword = Utilities.GenerateRadomString();
+
             CommandResult updateToken = UpdateTokenResetPassword(username, tokenResetPassword);
 
             if (updateToken.IsSuccessful)
@@ -79,14 +81,14 @@ namespace HRP.Services
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
 
-            string linkToReset = _configuration.Value.BaseHostUrl + "/reset-password?token=" + tokenResetPassword;
+            string linkToReset = _configuration.Value.BaseHostUrl + "/ResetPassword?token=" + tokenResetPassword;
 
             body = string.Format(body, username, linkToReset);
 
             MailModel model = new MailModel
             {
-                Subject = "Reset your password on HRP system",
-                ReceiverEmail = user != null ? user.Email : "oliver.dang@nexcel.vn",
+                Subject = Message.ResetPasswordEmailSubject,
+                ReceiverEmail = user.Email,
                 MailCC = string.Empty,
                 Body = body
             };

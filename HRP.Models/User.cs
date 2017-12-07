@@ -20,13 +20,12 @@ namespace HRP.Models
 
         public DateTime? LastLoginDate { get; set; }
 
-        public bool IsTwoFactor { get; set; }
+        public bool IsRegisterOTP { get; set; }
 
         public string SecretKey { get; set; }
 
         public int CreatedBy { get; set; }
 
         public DateTime? CreatedDate { get; set; }
-
     }
 }

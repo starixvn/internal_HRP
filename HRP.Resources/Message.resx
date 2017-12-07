@@ -120,7 +120,13 @@
   <data name="ForgotPasswordInvalidUser" xml:space="preserve">
     <value>The username that you've entered doesn't  match any account. Please try again.</value>
   </data>
+  <data name="InvalidOTP" xml:space="preserve">
+    <value>Invalid OTP or OTP expired</value>
+  </data>
   <data name="LoginInvalid" xml:space="preserve">
     <value>Invalid Username or Password.</value>
+  </data>
+  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+    <value>Request reset password on HRP System</value>
   </data>
 </root>
