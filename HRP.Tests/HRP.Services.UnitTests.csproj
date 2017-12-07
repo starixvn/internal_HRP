@@ -13,13 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
-    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Services\HRP.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Website\Controllers\" />
   </ItemGroup>
 
   <!--Document: https://github.com/dotnet/docs/blob/master/docs/core/testing/unit-testing-with-dotnet-test.md-->
