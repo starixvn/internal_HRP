@@ -62,7 +62,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> AssignPermission()
+        public async Task<IActionResult> AssignPermission(int id)
         {
             var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
@@ -70,6 +70,7 @@
 
             var model = new AssignPermissonViewModel
             {
+                UserId = id,
                 Functions = functions,
                 Companies = companies,
                 UserPermissions = permissions
@@ -83,9 +84,11 @@
         {
             var userPermissions = !string.IsNullOrWhiteSpace(permissions)
                 ? JsonConvert.DeserializeObject<IEnumerable<UserPermissionModel>>(permissions) : new List<UserPermissionModel>();
+            var userId = userPermissions.Any() ? userPermissions.First().UserId : 0;
+
             var criteria = new AssignFunctionToUserCriteria
             {
-                UserId = sessionService.UserId,
+                UserId = userId,
                 Value = ConvertUserPermissionToXml(userPermissions),
                 ModifiedBy = sessionService.UserId
             };

@@ -4,6 +4,8 @@
 
     public class AssignPermissonViewModel
     {
+        public int UserId { get; set; }
+
         public IEnumerable<FunctionModel> Functions { get; set; }
 
         public IEnumerable<Company> Companies { get; set; }

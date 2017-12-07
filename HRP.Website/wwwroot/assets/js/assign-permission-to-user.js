@@ -268,7 +268,8 @@ var assignPermissionToUser = (function ($) {
 
     function registerEventSave() {
         $btnSave.on('click', function () {
-            var model = [],
+            var userId = $('#UserId').val(),
+                model = [],
                 els = [],
                 totalItems;
 
@@ -284,7 +285,7 @@ var assignPermissionToUser = (function ($) {
                         .find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
                         .prop('checked');
 
-                model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
+                model.push({ UserId: userId, FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
 
             els = $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:disabled)');
@@ -299,7 +300,7 @@ var assignPermissionToUser = (function ($) {
                         .find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
                         .prop('checked');
 
-                model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
+                model.push({ UserId: userId, FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
 
             if (model.length > 0) {
@@ -323,10 +324,18 @@ var assignPermissionToUser = (function ($) {
         });
     }
 
+    function initCheckedInUserTable() {
+        if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
+            && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
+            $checkAllFunc.trigger('click');
+        } else {
+            
+        }
+    }
+
     function registerEvents() {
         registerEventCheckAdminFunc();
         registerEventCheckUserFunc();
-
         registerEventSave();
     }
 
@@ -341,6 +350,7 @@ var assignPermissionToUser = (function ($) {
         $btCancel = $('#btCancel');
 
         registerEvents();
+        initCheckedInUserTable();
     }
 
     return {
