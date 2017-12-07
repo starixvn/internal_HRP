@@ -1,10 +1,10 @@
 namespace HRP.Core.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Enumerations;
     using Microsoft.AspNetCore.Http;
     using Model;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class SessionService : ISessionService
     {
@@ -51,19 +51,19 @@ namespace HRP.Core.Services
 
         public bool HasPermissionOnFunction(string functionKey, Policy policy)
         {
-            var currentFunction = Functions.FirstOrDefault(x => x.FunctionKey == functionKey);
+            var functions = Functions.Where(x => x.FunctionKey == functionKey);
             var result = false;
 
-            if (currentFunction != null)
+            if (functions != null)
             {
                 switch (policy)
                 {
                     case Policy.Read:
-                        result = currentFunction.IsRead || currentFunction.IsHost;
+                        result = functions.Max(x => x.IsRead) || functions.Max(x => x.IsHost);
                         break;
 
                     case Policy.Host:
-                        result = currentFunction.IsHost;
+                        result = functions.Max(x => x.IsHost);
                         break;
 
                     default:

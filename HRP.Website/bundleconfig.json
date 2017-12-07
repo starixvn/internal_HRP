@@ -9,7 +9,7 @@
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/before-login/login.css"
     ]
-  },  
+  },
   {
     "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
     // An array of relative input file paths. Globbing patterns supported
@@ -18,7 +18,7 @@
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/before-login/common.css"
     ]
-  },  
+  },
   {
     "outputFileName": "wwwroot/assets/bundles/main.min.css",
     // An array of relative input file paths. Globbing patterns supported
@@ -42,12 +42,23 @@
     "sourceMap": false
   },
   {
-    "outputFileName":"wwwroot/js/jquery.min.js",
-    "inputFiles":[
+    "outputFileName": "wwwroot/js/jquery.min.js",
+    "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/lib/jquery-ui/jquery-ui.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/js/assign-permission-to-user.min.js",
+    "inputFiles": [
+      "wwwroot/assets/js/assign-permission-to-user.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
   }
 ]

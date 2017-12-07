@@ -5,6 +5,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -14,6 +15,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
+    [HRPAuthorize]
     public class UserManagementController : Controller
     {
         private readonly ISessionService sessionService;
@@ -88,7 +90,7 @@
                 ModifiedBy = sessionService.UserId
             };
 
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return Json(commandResult);
         }

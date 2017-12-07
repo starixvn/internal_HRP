@@ -275,7 +275,7 @@ var assignPermissionToUser = (function ($) {
             els = $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:disabled)');
             totalItems = els.length;
 
-            for (var i = 0; i <= totalItems; i++) {
+            for (var i = 0; i < totalItems; i++) {
                 var el = $(els[i]),
                     functionId = el.data('fid'),
                     companyId = el.data('cid'),
@@ -284,15 +284,13 @@ var assignPermissionToUser = (function ($) {
                         .find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
                         .prop('checked');
 
-                if (isRead || isHost) {
-                    model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
-                }
+                model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
 
             els = $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:disabled)');
             totalItems = els.length;
 
-            for (var i = 0; i <= totalItems; i++) {
+            for (var i = 0; i < totalItems; i++) {
                 var el = $(els[i]),
                     functionId = el.data('fid'),
                     companyId = el.data('cid'),
@@ -301,23 +299,21 @@ var assignPermissionToUser = (function ($) {
                         .find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
                         .prop('checked');
 
-                if (isRead || isHost) {
-                    model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
-                }
+                model.push({ FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
 
             if (model.length > 0) {
                 var permissions = JSON.stringify(model);
                 $.ajax({
-                    //contentType: 'application/json; charset=utf-8',
-                    //dataType: 'json',
                     type: 'POST',
                     url: '/UserManagement/AssignPermission',
                     data: {
                         'permissions': permissions
                     },
                     success: function (response) {
-                        
+                        if (response.IsSuccessful) {
+                            
+                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         

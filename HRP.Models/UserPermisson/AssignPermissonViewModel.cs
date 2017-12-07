@@ -9,5 +9,7 @@
         public IEnumerable<Company> Companies { get; set; }
 
         public IEnumerable<UserPermissionModel> UserPermissions { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }
