@@ -14,6 +14,9 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {
@@ -89,13 +92,17 @@ namespace HRP.Website.Controllers
                 if (user != null && IsPasswordValid(viewModel.Password, user.Password))
                 {
                     _sessionService.Username = user.Username;
+                    baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
+
+                    //TODO: Hardcode
+                    user.IsTwoFactor = true;
+
                     if (!user.IsTwoFactor)
                     {
                         return RedirectToAction(nameof(SetupOtp));
                     }
 
-            ViewBag.Message = Message.InvalidOTP;
-            return View();
+                    return RedirectToAction(nameof(VerifyOTP));
                 }
             }
 
@@ -171,7 +178,7 @@ namespace HRP.Website.Controllers
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
 
             //TODO: Hardcode
-            isOTPValid = true;
+            isOTPValid = viewModel.IsByPassTwoFactor;
 
             if (isOTPValid)
             {

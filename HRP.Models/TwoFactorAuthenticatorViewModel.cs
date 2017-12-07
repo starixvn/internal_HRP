@@ -8,6 +8,6 @@ namespace HRP.Models
         public int OTPCode { get; set; }
 
         // TODO: Remove when 2 factor completed
-        ////public bool IsByPassTwoFactor { get; set; }
+        public bool IsByPassTwoFactor { get; set; } = true;
     }
 }
