@@ -1,7 +1,8 @@
 namespace HRP.Website.Controllers
 {
-    using BCrypt.Net;
-    using Google.Authenticator;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -54,7 +55,6 @@ namespace HRP.Website.Controllers
         [Route("forgot-password")]
         public IActionResult ForgotPassword(string username)
         {
-            //Check valid username here
             var user = _userService.GetUserByUsername(username);
 
             if (user != null || username == "admin")
@@ -97,7 +97,6 @@ namespace HRP.Website.Controllers
                     //TODO: Hardcode
                     user.IsTwoFactor = true;
 
-                    if (!user.IsTwoFactor)
                     {
                         return RedirectToAction(nameof(SetupOtp));
                     }
@@ -164,13 +163,13 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Login));
             }
 
             var user = _userService.GetUserByUsername(_sessionService.Username);
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction(nameof(Login));
             }
