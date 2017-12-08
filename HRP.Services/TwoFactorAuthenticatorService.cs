@@ -29,7 +29,7 @@ namespace HRP.Services
         ////    return setupInfo.ManualEntryKey;
         ////}
 
-        public bool ValidateOTPCode(string username, string secretKey, int otpCode)
+        public bool ValidateOTPCode(string username, string secretKey, string otpCode)
         {
             var validOTP = false;
             var uniqueKey = username + secretKey;
@@ -40,7 +40,7 @@ namespace HRP.Services
 
             // document: http://brandonpotter.com/2014/09/07/implementing-free-two-factor-authentication-in-net-using-google-authenticator/
             // accept +/- 5 minute tolerate
-            twoFactorAuthenticator.ValidateTwoFactorPIN(uniqueKey, otpCode.ToString());
+            twoFactorAuthenticator.ValidateTwoFactorPIN(uniqueKey, otpCode);
 
             return validOTP;
         }

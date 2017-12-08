@@ -72,12 +72,6 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel viewModel)
         {
-            //TODO: Hardcode. Remove when connect to real data
-            ////viewModel.Username = "admin";
-            ////viewModel.Password = "1234aa";
-            ////ModelState.Clear();
-            ////TryValidateModel(viewModel);
-
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
@@ -113,7 +107,7 @@ namespace HRP.Website.Controllers
         [HttpGet]
         public IActionResult ResetPassword(string token)
         {
-            var user = _userService.GetUserByTokenResetPassword(token);
+            var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (user != null)
             {
@@ -126,7 +120,7 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult ResetPassword(string token, ChangePasswordViewModel model)
         {
-            var user = _userService.GetUserByTokenResetPassword(token);
+            var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (model != null && ModelState.IsValid && user != null)
             {
@@ -146,7 +140,12 @@ namespace HRP.Website.Controllers
             return BadRequest();
         }
 
-        public ActionResult VerifyOTP()
+        public IActionResult ChangePasswordSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult VerifyOTP()
         {
             return View(new TwoFactorAuthenticatorViewModel());
         }
@@ -154,24 +153,18 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction(nameof(Login));
-            }
-
             var user = _userService.GetUserByUsername(_sessionService.Username);
 
-            if (user == null)
+            if (!ModelState.IsValid || user == null)
             {
                 return RedirectToAction(nameof(Login));
             }
 
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
 
-            //TODO: Hardcode
-            isOTPValid = viewModel.IsByPassTwoFactor;
+            var isSkipOTP = viewModel.IsByPassTwoFactor;
 
-            if (isOTPValid)
+            if (isOTPValid || isSkipOTP)
             {
                 _sessionService.UserId = user.UserId;
                 _sessionService.Username = user.Username;

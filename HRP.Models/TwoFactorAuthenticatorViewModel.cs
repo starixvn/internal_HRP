@@ -5,7 +5,7 @@ namespace HRP.Models
     public class TwoFactorAuthenticatorViewModel
     {
         [Required]
-        public int OTPCode { get; set; }
+        public string OTPCode { get; set; }
 
         // TODO: Remove when 2 factor completed
         public bool IsByPassTwoFactor { get; set; }
