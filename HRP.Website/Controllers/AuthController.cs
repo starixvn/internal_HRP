@@ -35,21 +35,18 @@ namespace HRP.Website.Controllers
             _baseService = baseService;
         }
 
-        [Route("confirmation-email-sent")]
         public IActionResult ConfirmationEmailSent()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("forgot-password")]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("forgot-password")]
         public IActionResult ForgotPassword(string username)
         {
             var user = _userService.GetUserByUsername(username);
@@ -84,16 +81,13 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
-                _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                 if (user != null && IsPasswordValid(viewModel.Password, user.Password))
                 {
                     _sessionService.Username = user.Username;
                     _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
-                    //TODO: Hardcode
-                    user.IsOTPRegistered = true;
-
+                    if (!user.IsOTPRegistered)
                     {
                         return RedirectToAction(nameof(SetupOtp));
                     }
@@ -166,6 +160,7 @@ namespace HRP.Website.Controllers
             }
 
             var user = _userService.GetUserByUsername(_sessionService.Username);
+
             if (user == null)
             {
                 return RedirectToAction(nameof(Login));
