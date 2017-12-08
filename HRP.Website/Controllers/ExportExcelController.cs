@@ -10,18 +10,18 @@ namespace HRP.Website.Controllers
 
     public class ExportExcelController : Controller
     {
-        private IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public ExportExcelController(IHostingEnvironment hostingEnvironment)
         {
-            _hostingEnvironment = hostingEnvironment;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IActionResult> Index()
         {
-            string sWebRootFolder = _hostingEnvironment.WebRootPath;
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
             string sFileName = @"ExcelTemplates\\TestTemplate.xls";
-            var writer = new ExcelTemplateWriter(Path.Combine(sWebRootFolder, sFileName), "Employee", "Employee");
+            var writer = new ExcelTemplateWriter(Path.Combine(sWebRootFolder, sFileName), "Employee");
             writer.CopyRows(0, 3);
             writer.SyncColumnsWidth(5);
             writer.CreateFreezePane(0, 3);
@@ -33,7 +33,7 @@ namespace HRP.Website.Controllers
 
         public async Task<IActionResult> Export()
         {
-            string sWebRootFolder = _hostingEnvironment.WebRootPath;
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
             string sFileName = @"demo.xlsx";
             var memory = new MemoryStream();
             using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))

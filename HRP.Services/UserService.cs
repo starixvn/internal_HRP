@@ -43,7 +43,7 @@ namespace HRP.Services
         public void ResetUserPassword(string username)
         {
             string tokenResetPassword = Utilities.GenerateRadomString();
-            var criteria = new UpdateTokenResetPasswordCriteria()
+            var criteria = new UpdateTokenResetPasswordCriteria
             {
                 Username = username,
                 TokenResetPassword = tokenResetPassword
@@ -81,7 +81,7 @@ namespace HRP.Services
         public void OTPRegister(string username)
         {
             string tokenOTPRegister = Utilities.GenerateRadomString();
-            var criteria = new UpdateTokenOTPRegisterCriteria()
+            var criteria = new UpdateTokenOTPRegisterCriteria
             {
                 Username = username,
                 TokenRegisterOTP = tokenOTPRegister

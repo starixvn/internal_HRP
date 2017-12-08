@@ -13,7 +13,6 @@ namespace HRP.Core.Extensions
     {
         #region Attributes
 
-        private readonly string _fileName;
         private readonly ISheet _templateSheet;
         private readonly ISheet _sheet;
         private int _rowId;
@@ -22,20 +21,19 @@ namespace HRP.Core.Extensions
 
         #region Constructors
 
-        public ExcelTemplateWriter(string filePath, string excelFileName = "Report.xls", string sheetName = "Result")
-            : this(new FileStream(filePath, FileMode.Open, FileAccess.Read), excelFileName, sheetName)
+        public ExcelTemplateWriter(string filePath, string sheetName = "Result")
+            : this(new FileStream(filePath, FileMode.Open, FileAccess.Read), sheetName)
         {
         }
 
-        public ExcelTemplateWriter(FileStream fs, string excelFileName = "Report.xls", string sheetName = "Result")
-            : this(new HSSFWorkbook(fs), excelFileName, sheetName)
+        public ExcelTemplateWriter(FileStream fs, string sheetName = "Result")
+            : this(new HSSFWorkbook(fs), sheetName)
         {
             fs?.Close();
         }
 
-        public ExcelTemplateWriter(HSSFWorkbook template, string excelFileName, string sheetName)
+        public ExcelTemplateWriter(HSSFWorkbook template, string sheetName)
         {
-            _fileName = excelFileName;
             _templateSheet = template.GetSheetAt(0);
             _sheet = template.CreateSheet(sheetName);
         }
@@ -59,7 +57,7 @@ namespace HRP.Core.Extensions
 
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                await stream.CopyToAsync(memory);
+                await stream.CopyToAsync(memory).ConfigureAwait(false);
             }
 
             memory.Position = 0;

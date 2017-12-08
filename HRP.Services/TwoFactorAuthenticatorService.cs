@@ -4,7 +4,7 @@ namespace HRP.Services
 
     public class TwoFactorAuthenticatorService : ITwoFactorAuthenticatorService
     {
-        public readonly string AppName = "HRP";
+        private readonly string AppName = "HRP";
         private readonly int qrImageWidth = 200;
         private readonly int qrImageHeight = 200;
         ////private readonly int otpExpireTime = 30;

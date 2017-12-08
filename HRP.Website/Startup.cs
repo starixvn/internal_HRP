@@ -39,7 +39,6 @@
             .UseConnectionStrings(connections)
             .UseDefaultDbSettingProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "SPNames.xml"),
-                false,
                 true)
             .Run();
 
