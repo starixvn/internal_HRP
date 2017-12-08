@@ -76,10 +76,9 @@ namespace HRP.Website.Controllers
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
 
-                if (user != null && IsPasswordValid(viewModel.Password, user.Password))
+                if (user != null && IsPasswordValid(viewModel.Password, user.Password) && user.IsActive)
                 {
                     _sessionService.Username = user.Username;
-                    _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                     if (!user.IsOTPRegistered)
                     {
@@ -196,6 +195,8 @@ namespace HRP.Website.Controllers
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).ConfigureAwait(false);
+
+                _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
                 return RedirectToAction("Index", "Home");
             }
