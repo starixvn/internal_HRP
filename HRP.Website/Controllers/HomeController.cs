@@ -1,11 +1,9 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System.Diagnostics;
     using Google.Authenticator;
     using HRP.Core.Filters;
     using HRP.Core.Services;
     using HRP.Models;
-    using HRP.Website.Models;
     using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
@@ -37,11 +35,6 @@
             };
 
             return View(model);
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
