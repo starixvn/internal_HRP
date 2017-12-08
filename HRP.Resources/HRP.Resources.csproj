@@ -4,6 +4,18 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Resources.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Resources.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Message.Designer.cs">
       <DesignTime>True</DesignTime>

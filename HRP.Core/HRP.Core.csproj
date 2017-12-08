@@ -2,6 +2,12 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Core.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Core.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="Dapper" Version="1.50.4" />
@@ -15,6 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj" />

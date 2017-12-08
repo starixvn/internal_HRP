@@ -5,6 +5,14 @@
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Website.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Website.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
@@ -28,6 +36,7 @@
     <PackageReference Include="NETStandard.Library.NETFramework" Version="2.0.0-preview2-25405-01" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
   </ItemGroup>
 
   <ItemGroup>

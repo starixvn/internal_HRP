@@ -4,10 +4,19 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Repositories.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>HRP.Repositories.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
   </ItemGroup>
 
   <ItemGroup>

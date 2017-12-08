@@ -30,6 +30,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Core.UnitTests", "HRP.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Models.UnitTests", "HRP.Models.UnitTests\HRP.Models.UnitTests.csproj", "{DF31DE0E-580E-47B1-A071-30D549A353B1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{34B608BA-C585-4856-8C8D-39DBEE27E58E}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\HRPCSharp.ruleset = SonarQube\HRPCSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

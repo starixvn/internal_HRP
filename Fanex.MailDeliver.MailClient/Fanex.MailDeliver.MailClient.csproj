@@ -2,7 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>Fanex.MailDeliver.MailClient.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>Fanex.MailDeliver.MailClient.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.4.0" />
   </ItemGroup>
 </Project>
