@@ -121,16 +121,20 @@ body {
             margin-top: 10px;
         }
 
+        .form-control {
+            padding-left: 16px;
+        }
+        
         .list-button {
             display: grid;
-            grid-template-columns: 203px 100px;
+            grid-template-columns: 100px 203px;
         }
 
         .button {
             width: initial;
         }
 
-        .button.-second {
+        .button.-primary {
             margin-left: 16px;
         }
     }    

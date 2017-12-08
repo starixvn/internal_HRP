@@ -48,6 +48,7 @@ input, button {
 }
 
 .button {
+  display: inline-block;
   height: 36px;
   line-height: 36px;
   padding-left: 24px;
@@ -90,6 +91,15 @@ input, button {
   background-color: #6a6a6a;
 }
 
+.button.-add {
+  background-color: #1ca041;
+  color: #fff;
+}
+
+.button.-add:hover {
+  background-color: #188a38;
+}
+
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #888;
@@ -113,6 +123,7 @@ input, button {
 }
 
 input[type="text"],
+input[type="search"],
 input[type="email"],
 input[type="number"],
 input[type="password"] {
@@ -140,6 +151,7 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
+input[type="search"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="password"]:focus {

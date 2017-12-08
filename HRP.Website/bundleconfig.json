@@ -29,6 +29,20 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/otp.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/assets/styles/pages/auth/otp.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/user-management.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/assets/styles/pages/configuration/user-management.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/site.js"

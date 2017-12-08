@@ -20,15 +20,26 @@
         @foreach (var user in Model)
         {
             <tr id="user-@user.UserId">
-                <td>@user.UserId</td>
+                <td class="text-center">@user.UserId</td>
                 <td>@user.Username</td>
                 <td>@user.FullName</td>
                 <td>@user.Phone</td>
                 <td>@user.Email</td>
-                <td>@user.CreatedBy</td>
-                <td>@Html.DisplayFor(x => user.CreatedDate)</td>
-                <td><input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status" /></td>
-                <td></td>
+                <td class="text-center">@user.CreatedBy</td>
+                <td class="text-center">@Html.DisplayFor(x => user.CreatedDate)</td>
+                <td class="text-center"><input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status" /></td>
+                <td  class="text-center">
+                    <div class="dropdown config-action">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="icon-configuration"></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#"><span class="icon-edit"></span>Edit Details</a></li>
+                            <li><a href="#"><span class="icon-permission"></span>Edit Permission</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>

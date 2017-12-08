@@ -1,0 +1,146 @@
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.otp {
+    .title {
+        font-size: 16px;
+    }
+
+    .info {
+        margin: 5px 0;
+        line-height: 20px;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
+
+    .icon-successful {
+        position: relative;
+        top: 5px;
+        font-size: 20px;
+    }
+}
+
+/* Register OTP */
+
+.register-otp  {
+    padding-top: 10px;
+
+    .sub-title {
+        position: relative;
+        padding-left: 33px;
+        color: #1973b2;
+        font-weight: bold;
+        font-size: 14px;
+        counter-reset: subsection;
+
+        &:before {
+            @include border-radius(50%);   
+            position: absolute;
+            left: 0;
+            top: -5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;         
+            height: 24px;
+            width: 24px;            
+            background-color: #f57d14;
+            counter-increment: section;
+            content: counter(section);
+            color: #fff;
+        }
+    }
+
+    .steps {
+        padding-bottom: 26px;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    // Download Sophos
+    .download-content {
+        display: grid;
+        grid-template-columns: 90px 243px;
+        grid-template-rows: 90px;
+        padding: 12px 0 16px;
+    }
+
+    .list-download {
+        margin-left: 16px;
+
+        h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: normal;                
+            color: #000;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin: 4px 0 8px;
+        }
+    }
+
+    .more-info {        
+        line-height: 20px;
+
+        &.-important {
+            color: #f57d14;
+            font-weight: bold;
+        }
+    }
+
+    // QR code
+    .qr-code {
+        padding: 20px 0 20px;
+
+        .img {
+            @include border-radius(5px);
+            padding: 6px;
+            border: 1px solid $border-color;    
+            margin-bottom: 17px;        
+        }
+
+        .text-username {
+            color: #0b599c;
+            font-weight: bold;
+        }
+    }
+    
+    .manualQRCode {
+        .text-key {
+            display: inline-block;
+            border: 1px solid $border-color;
+            padding: 10px 6px;
+            color: #f57d14;
+            font-weight: bold;
+        }
+
+        .example {
+            display: flex;
+            padding-top: 16px;
+        }
+
+        .col-right {
+            margin-left: 36px;
+        }
+    }
+
+    .block {
+        padding-top: 20px;
+
+        .msg-success {
+            margin-bottom: 12px;
+        }
+
+        .control {
+            width: 252px;
+        }
+    }
+}
+

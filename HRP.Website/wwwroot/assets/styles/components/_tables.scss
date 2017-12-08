@@ -1,0 +1,29 @@
+﻿.table {
+  th, td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  thead th {    
+    background-color: $table-header-bg;
+    color: $table-header-color;
+    text-align: center;
+  }
+  
+  tbody {
+    td:hover {
+      background-color: $table-td-bg-hover;
+    }
+  }
+
+  &.table-bordered>tbody>tr>td,
+  &.table-bordered>tbody>tr>th,
+  &.table-bordered>thead>tr>td,
+  &.table-bordered>thead>tr>th {
+    border-color: $table-border;
+  }
+
+  &.table-bordered>thead>tr>th {
+    border-bottom-width: 1px;
+  }
+}

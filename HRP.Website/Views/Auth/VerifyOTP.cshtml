@@ -4,29 +4,31 @@
     Layout = "_LoginLayout";
 }
 
-@section title{ OTP Code Validation }
-<form asp-action="VerifyOTP" asp-controller="Auth">
-    <div class="circle-large">
-        <span class="icon-otp"></span>
-    </div>
-    <h1 class="title">OTP Code Validation</h1>
-    <div class="intro -otp">
-        <p>To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP.</p>
-        <p class="text-special">
-            <span class="highlight">*</span>
-            <span>Your Date & Time Setting on your device must be set to Automatic.</span>
-        </p>
-    </div>
-    <div class="group">
-        <input asp-for="OTPCode" class="form-control" placholder="OTP Code" />
-        <span asp-validation-for="OTPCode" class="msg-error"></span>
-    </div>
-    <div class="group">
-        <label>Skip OTP authenticator</label>
-        <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
-    </div>
-    <div class="group list-button">
-        <input type="submit" class="button -primary" value="Validate OTP" />
-        <input type="button" class="button -second" value="Cancel">
-    </div>
-</form>
+<section class="block -otp-code-validation">
+    @section title{ OTP Code Validation }
+    <form asp-action="VerifyOTP" asp-controller="Auth">
+        <div class="circle-large">
+            <span class="icon-otp"></span>
+        </div>
+        <h1 class="title">OTP Code Validation</h1>
+        <div class="intro -otp">
+            <p>To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP.</p>
+            <p class="text-special">
+                <span class="highlight">*</span>
+                <span>Your Date & Time Setting on your device must be set to Automatic.</span>
+            </p>
+        </div>
+        <div class="group">
+            <input asp-for="OTPCode" class="form-control" placholder="OTP Code" />
+            <span asp-validation-for="OTPCode" class="msg-error"></span>
+        </div>
+        <div class="group">
+            <label>Skip OTP authenticator</label>
+            <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
+        </div>
+        <div class="group list-button">
+            <input type="button" class="button -second" value="Cancel">
+            <input type="submit" class="button -primary" value="Validate OTP" />
+        </div>
+    </form>
+</section>

@@ -15,15 +15,31 @@ body {
     background-color: $page-bg;
 }
 
-.header {
-    display: grid;    
-    grid-template-columns: 177px 1fr 210px;
-    justify-content: space-between;
-    align-items: center;
+
+.wrapper {
+    width: 100%;
+    padding: 15px 20px;
+
+    @media screen and (min-device-width: 1366px) {
+        width: 1360px;
+        margin: auto;
+    }    
+}
+
+
+.header {    
     background-color: #fff;
     height: 61px;
     padding-left: 16px;
     border-bottom: 1px solid #dcdcdc;  
+
+    .wrapper {
+        display: grid;    
+        grid-template-columns: 177px 1fr 210px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+    }
 
     .logo img {
         height: 30px;
@@ -97,7 +113,7 @@ body {
         }
 
         &.active, &.active [class^="icon"] {
-            color: #0175c7;
+            color: #f57d14;
         }
     }
 }
@@ -163,18 +179,13 @@ body {
     }
 }
 
-
 /* Content */
-.content-container {
-    padding: 15px 20px;
-
-    .content {
-        @include border-radius(5px);
-        @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
-        background-color: #fff;
-        padding: 16px;
-        counter-reset: section;
-    }
+.content {
+    @include border-radius(5px);
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+    background-color: #fff;
+    padding: 16px;
+    counter-reset: section;
 
     .username {
         color: #1973b2;
@@ -199,196 +210,6 @@ body {
     font-size: 20px;
     font-weight: bold;
     color: #333;
-}
-
-.form-information {
-    .text {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: normal;
-        text-transform: capitalize;
-        font-weight: bold;
-        color: $text-color;
-    }
-
-    .control {
-        display: block;
-        width: 100%;
-        
-        padding-right: 40px;
-
-        &.error {
-            border-color: #ff4545;
-            @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
-        }
-    }
-
-    .button.-second {
-        margin-left: 16px;
-    }
-
-    .group-control {
-        position: relative;
-        margin-bottom: 20px;
-
-        .icon-close, .icon-successful {
-            position: absolute;
-            right: 10px;
-            top: 8px;
-            font-size: 20px;
-        }
-    }
-
-    .required {
-        color: #ff0000;
-        margin-left: 4px;
-    }
-
-    .msg-error {
-        margin-top: 10px;
-    }
-}
-
-.otp {
-    .title {
-        font-size: 16px;
-    }
-
-    .info {
-        margin: 5px 0;
-        line-height: 20px;
-    }
-
-    .button {
-        margin-top: 10px;
-    }
-
-    .icon-successful {
-        position: relative;
-        top: 5px;
-        font-size: 20px;
-    }
-}
-
-/* Register OTP */
-
-.register-otp  {
-    padding-top: 10px;
-
-    .sub-title {
-        position: relative;
-        padding-left: 33px;
-        color: #1973b2;
-        font-weight: bold;
-        font-size: 14px;
-        counter-reset: subsection;
-
-        &:before {
-            @include border-radius(50%);   
-            position: absolute;
-            left: 0;
-            top: -5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;         
-            height: 24px;
-            width: 24px;            
-            background-color: #f57d14;
-            counter-increment: section;
-            content: counter(section);
-            color: #fff;
-        }
-    }
-
-    .steps {
-        padding-bottom: 26px;
-
-        &:last-child {
-            padding-bottom: 0;
-        }
-    }
-
-    // Download Sophos
-    .download-content {
-        display: grid;
-        grid-template-columns: 90px 243px;
-        grid-template-rows: 90px;
-        padding: 12px 0 16px;
-    }
-
-    .list-download {
-        margin-left: 16px;
-
-        h3 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: normal;                
-            color: #000;
-        }
-
-        p {
-            color: #666;
-            font-size: 14px;
-            margin: 4px 0 8px;
-        }
-    }
-
-    .more-info {        
-        line-height: 20px;
-
-        &.-important {
-            color: #f57d14;
-            font-weight: bold;
-        }
-    }
-
-    // QR code
-    .qr-code {
-        padding: 20px 0 20px;
-
-        .img {
-            @include border-radius(5px);
-            padding: 6px;
-            border: 1px solid $border-color;    
-            margin-bottom: 17px;        
-        }
-
-        .text-username {
-            color: #0b599c;
-            font-weight: bold;
-        }
-    }
-    
-    .manualQRCode {
-        .text-key {
-            display: inline-block;
-            border: 1px solid $border-color;
-            padding: 10px 6px;
-            color: #f57d14;
-            font-weight: bold;
-        }
-
-        .example {
-            display: flex;
-            padding-top: 16px;
-        }
-
-        .col-right {
-            margin-left: 36px;
-        }
-    }
-
-    .block {
-        padding-top: 20px;
-
-        .msg-success {
-            margin-bottom: 12px;
-        }
-
-        .control {
-            width: 252px;
-        }
-    }
 }
 
 /* Icons */

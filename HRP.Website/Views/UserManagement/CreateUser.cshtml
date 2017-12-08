@@ -2,73 +2,77 @@
 @using HRP.Resources
 @model CreateUserViewModel
 
-<h2>User Management / Create New User</h2>
-<form class="form-horizontal" asp-action="CreateUser" asp-controller="UserManagement" id="create-user-form"
-      data-ajax-method="post" data-ajax="true" data-ajax-begin="createUser.onCreateBegin" data-ajax-success="createUser.onCreateSuccess" data-ajax-complete="createUser.onCreateComplete">
-    <div class="form-group">
-        <label asp-for="Username" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" asp-for="Username">
-            <span asp-validation-for="Username" class="text-danger"></span>
+<section class="wrapper">
+    <div class="content">
+        <h2 class="title">User Management / Create New User</h2>
+        <form class="form-information block" asp-action="CreateUser" asp-controller="UserManagement" id="create-user-form"
+            data-ajax-method="post" data-ajax="true" data-ajax-begin="createUser.onCreateBegin" 
+            data-ajax-success="createUser.onCreateSuccess" data-ajax-complete="createUser.onCreateComplete">
+
+            <label asp-for="Username" class="text"></label>
+            <div class="group-control">
+                    <input type="text" class="control" asp-for="Username">
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <label asp-for="Password" class="text"></label>
+                <div class="group-control">
+                    <input type="password" class="control" asp-for="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <label asp-for="FullName" class="text"></label>
+                <div class="group-control6">
+                    <input type="text" class="control" asp-for="FullName">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <label asp-for="PhoneNumber" class="text"></label>
+                <div class="group-control">
+                    <input type="text" class="control" asp-for="PhoneNumber">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <label asp-for="Email" class="text"></label>
+                <div class="group-control">
+                    <input type="text" class="control" asp-for="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <label asp-for="IsActive" class="text"></label>
+                <div class="group-control">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" asp-for="IsActive">
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+                <div class="btn-list">
+                    <a asp-action="Index" asp-controller="UserManagement" class="button -second">@ViewLang.Cancel</a>
+                    <button id="btn-create" type="submit" class="button -primary" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
+                </div>
+                <div class="note">
+                    <p>For the safety and security of your account, you should create a new user that has:</p>
+                    <ul class="list">
+                        <li>Username must be uniques, between 2 and 30 characters long and does not contain the space.</li>
+                        <li>Password must be has at least 8 characters and maximum 50 characters in length, contains UPER/lowercase letters and numbers.</li>
+                        <li>Username, Password and Email Address are required.</li>
+                    </ul>
+                </div>
+        </form>
+        <div class="alert alert-success alert-dismissible hidden" role="alert" id="create-user-alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span></span>
         </div>
     </div>
+</section>
 
-    <div class="form-group">
-        <label asp-for="Password" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <input type="password" class="form-control" asp-for="Password">
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-    </div>
+@section Styles{
+    <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
+}
 
-    <div class="form-group">
-        <label asp-for="FullName" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" asp-for="FullName">
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneNumber" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" asp-for="PhoneNumber">
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Email" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" asp-for="Email">
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsActive" class="col-sm-1 control-label"></label>
-        <div class="col-sm-6">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" asp-for="IsActive">
-                </label>
-            </div>
-            <span asp-validation-for="IsActive" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-6">
-            <button id="btn-create" type="submit" class="btn btn-primary" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
-            <a asp-action="Index" asp-controller="UserManagement" class="btn btn-danger">@ViewLang.Cancel</a>
-        </div>
-    </div>
-</form>
-
-<div class="alert alert-success alert-dismissible hidden" role="alert" id="create-user-alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <span></span>
-</div>
 
 @section Scripts {
     <environment include="Development">

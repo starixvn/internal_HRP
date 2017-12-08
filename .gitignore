@@ -243,3 +243,9 @@ _Pvt_Extensions
 /xUnitCoverageReport.exe
 /xUnitCoverageReport.exe.config
 /coverage.xml
+
+
+/HRP.Website/wwwroot/node_modules
+/HRP.Website/wwwroot/package-lock.json
+/HRP.Website/wwwroot/package.json
+/HRP.Website/wwwroot/gulpfile.js

@@ -1,0 +1,106 @@
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/tables";
+
+.create-user:hover {
+    text-decoration: none;
+}
+
+.search-box {
+    width: 185px;
+}
+
+.table {
+
+    .config-action {
+        display: inline-block;
+    }
+
+    .icon-configuration {
+        color: #1973b2;
+    }
+
+    .dropdown-menu {
+        @include border-radius(2px);
+        right: 0;
+        left: auto;        
+        border: 1px solid #1973b2;        
+    }
+
+    .dropdown-menu > li >a {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+}
+
+.dataTables_wrapper {
+    .dataTables_length {
+        .form-control {
+            @include border-radius(2px);
+            outline: none;
+            height: 32px;
+            line-height: 32px;    
+            padding-left: 10px;
+            padding-right: 10px;
+            background-color: #fafafa;
+            border: 1px solid $border-color;
+            font-size: inherit;
+            color: $input-color;   
+        }
+    }
+}
+
+.pagination {
+    .paginate_button.active a,
+    .paginate_button a {
+        @include border-radius(2px);
+        line-height: 32px;
+        height: 32px;
+        width: 32px;
+        padding: 0;
+        border-color: #e2e3e4;
+        text-align: center;
+    }
+
+    .paginate_button a {       
+        color: #666;
+
+        &:hover {
+            color: #1973b2;
+        }
+    }
+
+    .paginate_button.active a {
+        background-color: #f57d14;
+        color: #fff;
+    }
+
+    >li:first-child>a,
+    >li:first-child>span {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    >li:last-child>a,
+    >li:last-child>span {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+}
+
+/* Create User */
+.form-information {
+    position: relative;
+    
+    .note {
+        margin-left: 30px;
+        top: 28px;
+
+        &:before {
+            top: 85px;
+            bottom: auto;
+        }
+    }
+}
