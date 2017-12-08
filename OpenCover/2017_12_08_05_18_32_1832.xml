@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="12/08/2017 17:18:35">
+  <assembly name="D:\Project\HRP\HRP.Criteria.UnitTests\bin\Debug\HRP.Criteria.UnitTests.DLL" environment="64-bit .NET 4.0.30319.42000 [collection-per-class, parallel (8 threads)]" test-framework="xUnit.net 2.3.1.3858" run-date="2017-12-08" run-time="17:18:35" config-file="D:\Project\HRP\packages\xunit.runner.console.2.3.1\tools\net452\xunit.console.exe.Config" total="5" passed="5" failed="0" skipped="0" time="0.244" errors="0">
+    <errors />
+    <collection total="5" passed="5" failed="0" skipped="0" name="Test collection for HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" time="0.038">
+      <test name="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests.IsValid_CheckParameter_ReturnAsExpected(userId: 1, modifiedBy: 1, value: \&quot;&lt;root&gt;&lt;/root&gt;\&quot;, expected: True)" type="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" method="IsValid_CheckParameter_ReturnAsExpected" time="0.0363908" result="Pass" />
+      <test name="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests.IsValid_CheckParameter_ReturnAsExpected(userId: 0, modifiedBy: 1, value: \&quot;&lt;root&gt;&lt;/root&gt;\&quot;, expected: False)" type="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" method="IsValid_CheckParameter_ReturnAsExpected" time="0.0000724" result="Pass" />
+      <test name="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests.IsValid_CheckParameter_ReturnAsExpected(userId: 0, modifiedBy: 0, value: \&quot;&lt;root&gt;&lt;/root&gt;\&quot;, expected: False)" type="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" method="IsValid_CheckParameter_ReturnAsExpected" time="0.0000186" result="Pass" />
+      <test name="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests.IsValid_CheckParameter_ReturnAsExpected(userId: 0, modifiedBy: 0, value: \&quot;\&quot;, expected: False)" type="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" method="IsValid_CheckParameter_ReturnAsExpected" time="0.0000162" result="Pass" />
+      <test name="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests.GetSettingKey_ReturnCorrectSettingKey" type="HRP.Criteria.UnitTests.User.AssignFunctionToUserCriteriaTests" method="GetSettingKey_ReturnCorrectSettingKey" time="0.0012321" result="Pass" />
+    </collection>
+  </assembly>
+</assemblies>
