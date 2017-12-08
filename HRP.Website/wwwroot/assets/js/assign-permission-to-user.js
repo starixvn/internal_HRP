@@ -30,8 +30,7 @@ var assignPermissionToUser = (function ($) {
 
             if (parentId) {
                 var parent = $adminPermissionTable.find('input[type=checkbox][name='
-                        + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
-                        + '][data-fid=' + parentId + ']:not(:disabled)');
+                    + (attrname === 'criteria.funcRead' ? attrRead : attrHost) + '][data-fid=' + parentId + ']:not(:disabled)');
 
                 if (checked) {
                     if (!parent.prop('checked')) {
@@ -39,8 +38,7 @@ var assignPermissionToUser = (function ($) {
                     }
                 } else {
                     var childs = $adminPermissionTable.find('input[type=checkbox][name='
-                            + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
-                            + '][data-pid=' + parentId + ']:checked');
+                        + (attrname === 'criteria.funcRead' ? attrRead : attrHost) + '][data-pid=' + parentId + ']:checked');
 
                     if (childs.length === 0) {
                         parent.prop('checked', checked);
@@ -48,8 +46,7 @@ var assignPermissionToUser = (function ($) {
                 }
             } else {
                 $adminPermissionTable.find('input[type=checkbox][name='
-                        + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
-                        + '][data-pid=' + functionId + ']:not(:disabled)')
+                    + (attrname === 'criteria.funcRead' ? attrRead : attrHost) + '][data-pid=' + functionId + ']:not(:disabled)')
                     .prop('checked', checked);
             }
         });
@@ -59,15 +56,60 @@ var assignPermissionToUser = (function ($) {
         $checkAllFunc.on('click', function () {
             var checked = $(this).prop('checked');
 
-            $userPermissionTable.find('input:checkbox').prop('checked', checked);
+            $userPermissionTable.find('input[type=checkbox]:not(:disabled)').prop('checked', checked);
         });
     }
 
     function registerEventCheckAllRowFunc() {
         $checkAllRowFunc.on('click', function () {
-            var checked = $(this).prop('checked');
+            var el = $(this),
+                tr = el.closest('tr'),
+                parentId = el.data('pid'),
+                functionId = el.data('fid'),
+                checked = $(this).prop('checked'),
+                companyId;
 
-            $(this).closest('tr').find('input:checkbox').prop('checked', checked);
+            tr.find('input[type=checkbox]:not(:disabled)').prop('checked', checked);
+
+            if (parentId) {
+                if (checked) {
+                    $userPermissionTable.find('input.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)')
+                        .closest('tr').find('input[type=checkbox]:not(:disabled)').prop('checked', checked);
+                } else if ($userPermissionTable.find('input.checkAllRowFunc[data-pid=' + parentId + ']:not(:disabled)')
+                    .closest('tr').find('input[type=checkbox]:checked').length === 0) {
+                    $userPermissionTable.find('input.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)')
+                        .closest('tr').find('input[type=checkbox]:not(:disabled)').prop('checked', checked);
+                }
+            } else {
+                $userPermissionTable.find('input.checkAllRowFunc[data-pid=' + functionId + ']:not(:disabled)').trigger('click');
+            }
+
+            if (!checked) {
+                tr.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').each(function () {
+                    companyId = $(this).data('cid');
+                    if ($('.checkAllColFuncRead[data-cid=' + companyId + ']:not(:disabled)').prop('checked')) {
+                        $('.checkAllColFuncRead[data-cid=' + companyId + ']:not(:disabled)').prop('checked', false);
+                    }
+                });
+
+                tr.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').each(function () {
+                    companyId = $(this).data('cid');
+                    if ($('.checkAllColFuncHost[data-cid=' + companyId + ']:not(:disabled)').prop('checked')) {
+                        $('.checkAllColFuncHost[data-cid=' + companyId + ']:not(:disabled)').prop('checked', false);
+                    }
+                });
+            }
+
+            if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
+                && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
+                if (!$checkAllFunc.prop('checked')) {
+                    $checkAllFunc.trigger('click');
+                }
+            } else {
+                if ($checkAllFunc.prop('checked')) {
+                    $checkAllFunc.prop('checked', false);
+                }
+            }
         });
     }
 
@@ -80,10 +122,19 @@ var assignPermissionToUser = (function ($) {
                 .prop('checked', checked);
 
             if (!checked) {
-                $('.checkAllColFuncHost[data-cid=' + companyId + ']:not(:disabled)').prop('checked', false);
+                $('.checkAllColFuncHost[data-cid=' + companyId + ']:not(:disabled)').prop('checked', checked);
                 $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-cid=' + companyId + ']:not(:disabled)')
-                    .prop('checked', false);
+                    .prop('checked', checked);
             }
+
+            $userPermissionTable.find('tbody tr').each(function () {
+                if ($(this).find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
+                    && $(this).find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
+                    $(this).find('.checkAllRowFunc:not(:disabled)').prop('checked', true);
+                } else {
+                    $(this).find('.checkAllRowFunc:not(:disabled)').prop('checked', false);
+                }
+            });
 
             if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
                 && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
@@ -107,10 +158,19 @@ var assignPermissionToUser = (function ($) {
                 .prop('checked', checked);
 
             if (checked) {
-                $('.checkAllColFuncRead[data-cid=' + companyId + ']:not(:disabled)').prop('checked', true);
+                $('.checkAllColFuncRead[data-cid=' + companyId + ']:not(:disabled)').prop('checked', checked);
                 $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-cid=' + companyId + ']:not(:disabled)')
-                    .prop('checked', true);
+                    .prop('checked', checked);
             }
+
+            $userPermissionTable.find('tbody tr').each(function () {
+                if ($(this).find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
+                    && $(this).find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
+                    $(this).find('.checkAllRowFunc:not(:disabled)').prop('checked', true);
+                } else {
+                    $(this).find('.checkAllRowFunc:not(:disabled)').prop('checked', false);
+                }
+            });
 
             if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
                 && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
@@ -184,6 +244,18 @@ var assignPermissionToUser = (function ($) {
                 }
             }
 
+            parentId = elCheckAllRow.data('pid');
+            checked = elCheckAllRow.prop('checked');
+            if (parentId) {
+                if (checked) {
+                    $userPermissionTable.find('.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)').prop('checked', checked);
+                } else if ($userPermissionTable.find('.checkAllRowFunc[data-pid=' + parentId + ']:checked').length === 0) {
+                    $userPermissionTable.find('.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)').prop('checked', checked);
+                }
+            } else {
+                $userPermissionTable.find('.checkAllRowFunc[data-pid=' + functionId + ']:not(:disabled)').prop('checked', checked);
+            }
+
             if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
                 && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
                 if (!$checkAllFunc.prop('checked')) {
@@ -249,6 +321,18 @@ var assignPermissionToUser = (function ($) {
                 }
             }
 
+            parentId = elCheckAllRow.data('pid');
+            checked = elCheckAllRow.prop('checked');
+            if (parentId) {
+                if (checked) {
+                    $userPermissionTable.find('.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)').prop('checked', checked);
+                } else if ($userPermissionTable.find('.checkAllRowFunc[data-pid=' + parentId + ']:checked').length === 0) {
+                    $userPermissionTable.find('.checkAllRowFunc[data-fid=' + parentId + ']:not(:disabled)').prop('checked', checked);
+                }
+            } else {
+                $userPermissionTable.find('.checkAllRowFunc[data-pid=' + functionId + ']:not(:disabled)').prop('checked', checked);
+            }
+
             if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
                 && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
                 if (!$checkAllFunc.prop('checked')) {
@@ -309,11 +393,9 @@ var assignPermissionToUser = (function ($) {
                     },
                     success: function (response) {
                         if (response.IsSuccessful) {
-                            
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        
                     }
                 });
             }
@@ -325,7 +407,32 @@ var assignPermissionToUser = (function ($) {
             && $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
             $checkAllFunc.trigger('click');
         } else {
-            
+            $('.checkAllRowFunc').each(function () {
+                var tr = $(this);
+
+                if (tr.find('input[type=checkbox][name=criteria\\.funcRead]:not(:checked)').length === 0
+                    && tr.find('input[type=checkbox][name=criteria\\.funcHost]:not(:checked)').length === 0) {
+                    tr.find('.checkAllRowFunc').prop('checked', true);
+                }
+            });
+
+            $('.checkAllColFuncRead').each(function () {
+                var td = $(this),
+                    companyId = td.data('cid');
+
+                if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-cid=' + companyId + ']:not(:checked)').length === 0) {
+                    td.prop('checked', true);
+                }
+            });
+
+            $('.checkAllColFuncHost').each(function () {
+                var td = $(this),
+                    companyId = td.data('cid');
+
+                if ($userPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-cid=' + companyId + ']:not(:checked)').length === 0) {
+                    td.prop('checked', true);
+                }
+            });
         }
     }
 

@@ -51,7 +51,7 @@ namespace HRP.Core.Services
 
         public bool HasPermissionOnFunction(string functionKey, Policy policy)
         {
-            var functions = Functions.Where(x => x.FunctionKey == functionKey);
+            var functions = Functions?.Where(x => x.FunctionKey == functionKey);
             var result = false;
 
             if (functions != null)

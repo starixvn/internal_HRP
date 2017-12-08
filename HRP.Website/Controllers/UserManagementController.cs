@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -64,24 +65,28 @@
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public async Task<IActionResult> AssignPermission(int id)
         {
             var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = sessionService.UserId }).ConfigureAwait(false);
+            var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
 
             var model = new AssignPermissonViewModel
             {
                 UserId = id,
                 Functions = functions,
                 Companies = companies,
-                UserPermissions = permissions
+                UserPermissions = permissions,
+                IsHost = isHost
             };
 
             return View(model);
         }
 
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public async Task<JsonResult> AssignPermission(string permissions)
         {
             var userPermissions = !string.IsNullOrWhiteSpace(permissions)

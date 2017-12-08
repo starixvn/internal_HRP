@@ -6,6 +6,7 @@
 
 @{
     ViewData["Title"] = "Assign Permission";
+    var disabled = Model.IsHost ? string.Empty : "disabled";
 }
 <h2>@ViewData["Title"]</h2>
 
@@ -33,11 +34,11 @@
                         <td>@parent.Name</td>
                         <td>
                             <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
-                                   @(permission != null && permission.IsRead ? "checked" : string.Empty) />
+                                   @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                         </td>
                         <td>
                             <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
-                                   @(permission != null && permission.IsHost ? "checked" : string.Empty) />
+                                   @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                         </td>
                     </tr>
                     foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
@@ -47,11 +48,11 @@
                             <td><span>└── </span>@child.Name</td>
                             <td>
                                 <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) />
+                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                             </td>
                             <td>
                                 <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) />
+                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                             </td>
                         </tr>
                     }
@@ -80,11 +81,11 @@
                 }
             </tr>
             <tr>
-                <th><input type="checkbox" id="checkAllFunc"></th>
+                <th><input type="checkbox" id="checkAllFunc" @disabled /></th>
                 @foreach (Company company in Model.Companies)
                 {
-                    <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" /></th>
-                    <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" /></th>
+                    <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled /></th>
+                    <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled /></th>
                 }
             </tr>
         </thead>
@@ -95,17 +96,17 @@
                 {
                     <tr>
                         <td>@parent.Name</td>
-                        <td><input type="checkbox" class="checkAllRowFunc" data-fid="@parent.FunctionId" data-pid=""></td>
+                        <td><input type="checkbox" class="checkAllRowFunc" data-fid="@parent.FunctionId" data-pid="" @disabled /></td>
                         @foreach (Company company in Model.Companies)
                         {
                             var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId == company.CompanyId);
                             <td>
                                 <input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
-                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) />
+                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                             </td>
                             <td>
                                 <input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
-                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) />
+                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                             </td>
                         }
                     </tr>
@@ -113,19 +114,19 @@
                     {
                         <tr>
                             <td><span>└── </span>@child.Name</td>
-                            <td><input type="checkbox" class="checkAllRowFunc" data-fid="@child.FunctionId" data-pid="@parent.FunctionId" /></td>
+                            <td><input type="checkbox" class="checkAllRowFunc" data-fid="@child.FunctionId" data-pid="@parent.FunctionId" @disabled /></td>
                             @foreach (Company company in Model.Companies)
                             {
                                 var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId == company.CompanyId);
                                 <td>
                                     <input type="checkbox" name="criteria.funcRead"
                                            data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                           @(permission != null && permission.IsRead ? "checked" : string.Empty) />
+                                           @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                                 </td>
                                 <td>
                                     <input type="checkbox" name="criteria.funcHost"
                                            data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                           @(permission != null && permission.IsHost ? "checked" : string.Empty) />
+                                           @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                                 </td>
                             }
                         </tr>
@@ -136,8 +137,12 @@
     </table>
 </div>
 <div class="row">
-    <button id="btnSave">@ViewLang.Save</button>
-    <button id="btCancel">@ViewLang.Cancel</button>
+    @if (Model.IsHost)
+    {
+        <a class="btn btn-default" id="btnSave">@ViewLang.Save</a>
+    }
+
+    <a class="btn btn-default" id="btCancel" asp-action="index">@ViewLang.Cancel</a>
 </div>
 
 @section Scripts {
