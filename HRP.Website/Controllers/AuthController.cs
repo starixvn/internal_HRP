@@ -1,12 +1,9 @@
 namespace HRP.Website.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BCrypt.Net;
-    using Google.Authenticator;
-    using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -138,13 +135,13 @@ namespace HRP.Website.Controllers
 
                 if (result.IsSuccessful)
                 {
-                    return RedirectToAction("ChangePasswordSuccess");
+                    return RedirectToAction(nameof(ChangePasswordSuccessful));
                 }
             }
             return BadRequest();
         }
 
-        public IActionResult ChangePasswordSuccess()
+        public IActionResult ChangePasswordSuccessful()
         {
             return View();
         }
@@ -207,7 +204,7 @@ namespace HRP.Website.Controllers
         {
             User user = new User();
             string secretKey = Utilities.GenerateSecretKey();
-            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(user.Username, user.SecretKey);
+            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, user.SecretKey);
 
             if (string.IsNullOrEmpty(token) && IsAuthenticated())
             {
