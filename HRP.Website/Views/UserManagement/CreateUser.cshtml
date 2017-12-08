@@ -1,4 +1,5 @@
 ﻿@using HRP.Models
+@using HRP.Resources
 @model CreateUserViewModel
 
 <h2>User Management / Create New User</h2>
@@ -58,8 +59,8 @@
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-6">
-            <button id="btn-create" type="submit" class="btn btn-primary" data-loading-text="Saving...">Save</button>
-            <a asp-action="Index" asp-controller="UserManagement" class="btn btn-danger">Cancel</a>
+            <button id="btn-create" type="submit" class="btn btn-primary" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
+            <a asp-action="Index" asp-controller="UserManagement" class="btn btn-danger">@ViewLang.Cancel</a>
         </div>
     </div>
 </form>
