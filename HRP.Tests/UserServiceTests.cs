@@ -1,4 +1,4 @@
-namespace HRP.Tests.Services
+namespace HRP.Services.UnitTest
 {
     using HRP.Services;
     using Xunit;
