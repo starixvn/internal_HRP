@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenCover" Version="4.6.519" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Message.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

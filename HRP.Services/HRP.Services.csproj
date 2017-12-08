@@ -13,11 +13,11 @@
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.1" />
-    <PackageReference Include="OpenCover" Version="4.6.519" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+	<DebugType>Full</DebugType>
   </PropertyGroup>
 
 </Project>

@@ -237,3 +237,9 @@ _Pvt_Extensions
 .fake/
 /HRP.Website/node_modules
 /package-lock.json
+/CodeCoverage
+/CoverageReport
+/UnitTest.xml
+/xUnitCoverageReport.exe
+/xUnitCoverageReport.exe.config
+/coverage.xml
