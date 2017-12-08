@@ -16,10 +16,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
 
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-
     public class AuthController : Controller
     {
         private readonly IBaseService _baseService;

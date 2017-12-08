@@ -11,80 +11,67 @@ var assignPermissionToUser = (function ($) {
         $btCancel;
 
     function registerEventCheckAdminFunc() {
-        $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:disabled)').on('click', function () {
+        $adminPermissionTable.find('input[type=checkbox]:not(:disabled)').on('click', function () {
             var el = $(this),
                 parentId = el.data('pid'),
                 functionId = el.data('fid'),
-                checked = el.prop('checked');
+                checked = el.prop('checked'),
+                attrname = el.attr('name'),
+                attrRead = 'criteria\\.funcRead',
+                attrHost = 'criteria\\.funcHost';
 
-            if (!checked) {
+            if (!checked && attrname === 'criteria.funcRead') {
                 $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + functionId + ']:not(:disabled)')
                     .prop('checked', true).trigger('click');
-            }
-
-            if (parentId) {
-                var parent = $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-fid=' + parentId + ']:not(:disabled)');
-
-                if (checked) {
-                    if (!parent.prop('checked')) {
-                        parent.prop('checked', checked);
-                    }
-                } else {
-                    var childs = $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-pid=' + parentId + ']:checked');
-
-                    if (childs.length === 0) {
-                        parent.prop('checked', checked);
-                    }
-                }
-            } else {
-                $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-pid=' + functionId + ']:not(:disabled)').prop('checked', checked);
-            }
-        });
-
-        $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost]:not(:disabled)').on('click', function () {
-            var el = $(this),
-                parentId = el.data('pid'),
-                functionId = el.data('fid'),
-                checked = el.prop('checked');
-
-            if (checked) {
+            } else if (checked && attrname === 'criteria.funcHost') {
                 $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead][data-fid=' + functionId + ']:not(:disabled)')
                     .prop('checked', false).trigger('click');
             }
 
             if (parentId) {
-                var parent = $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-fid=' + parentId + ']:not(:disabled)');
+                var parent = $adminPermissionTable.find('input[type=checkbox][name='
+                        + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
+                        + '][data-fid=' + parentId + ']:not(:disabled)');
 
                 if (checked) {
                     if (!parent.prop('checked')) {
                         parent.prop('checked', checked);
                     }
                 } else {
-                    var childs = $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-pid=' + parentId + ']:checked');
+                    var childs = $adminPermissionTable.find('input[type=checkbox][name='
+                            + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
+                            + '][data-pid=' + parentId + ']:checked');
 
                     if (childs.length === 0) {
                         parent.prop('checked', checked);
                     }
                 }
             } else {
-                $adminPermissionTable.find('input[type=checkbox][name=criteria\\.funcHost][data-pid=' + functionId + ']:not(:disabled)').prop('checked', checked);
+                $adminPermissionTable.find('input[type=checkbox][name='
+                        + (attrname === 'criteria.funcRead' ? attrRead : attrHost)
+                        + '][data-pid=' + functionId + ']:not(:disabled)')
+                    .prop('checked', checked);
             }
         });
     }
 
-    function registerEventCheckUserFunc() {
+    function registerEventCheckAllFunc() {
         $checkAllFunc.on('click', function () {
             var checked = $(this).prop('checked');
 
             $userPermissionTable.find('input:checkbox').prop('checked', checked);
         });
+    }
 
+    function registerEventCheckAllRowFunc() {
         $checkAllRowFunc.on('click', function () {
             var checked = $(this).prop('checked');
 
             $(this).closest('tr').find('input:checkbox').prop('checked', checked);
         });
+    }
 
+    function registerEventCheckAllColFuncRead() {
         $checkAllColFuncRead.on('click', function () {
             var checked = $(this).prop('checked'),
                 companyId = $(this).data('cid');
@@ -109,7 +96,9 @@ var assignPermissionToUser = (function ($) {
                 }
             }
         });
+    }
 
+    function registerEventCheckAllColFuncHost() {
         $checkAllColFuncHost.on('click', function () {
             var checked = $(this).prop('checked'),
                 companyId = $(this).data('cid');
@@ -134,6 +123,13 @@ var assignPermissionToUser = (function ($) {
                 }
             }
         });
+    }
+
+    function registerEventCheckUserFunc() {
+        registerEventCheckAllFunc();
+        registerEventCheckAllRowFunc();
+        registerEventCheckAllColFuncRead();
+        registerEventCheckAllColFuncHost();
 
         $userPermissionTable.find('input[type=checkbox][name=criteria\\.funcRead]:not(:disabled)').on('click', function () {
             var el = $(this),
