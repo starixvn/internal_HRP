@@ -83,6 +83,7 @@ namespace HRP.Website.Controllers
 
                     if (!user.IsOTPRegistered)
                     {
+                        _userService.OTPRegister(user.Username);
                         return RedirectToAction(nameof(SetupOtp));
                     }
 
@@ -193,6 +194,8 @@ namespace HRP.Website.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+
+            ViewBag.ErrorMessage = Message.InvalidOTP;
 
             return RedirectToAction(nameof(VerifyOTP));
         }

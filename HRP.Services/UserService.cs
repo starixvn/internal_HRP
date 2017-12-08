@@ -40,34 +40,16 @@ namespace HRP.Services
             return user;
         }
 
-        public User GetUserByTokenResetPassword(string tokenResetPassword)
-        {
-            var criteria = new GetUserByTokenResetPasswordCriteria
-            {
-                TokenResetPassword = tokenResetPassword
-            };
-
-            return _baseService.GetDataEntity<User>(criteria);
-        }
-
-        public CommandResult UpdateTokenResetPassword(string username, string token)
-        {
-            var criteria = new UpdateTokenResetPasswordCriteria
-            {
-                Username = username,
-                TokenResetPassword = token
-            };
-
-            var result = _baseService.ExecuteNonQuery(criteria);
-
-            return result;
-        }
-
         public void ResetUserPassword(string username)
         {
             string tokenResetPassword = Utilities.GenerateRadomString();
+            var criteria = new UpdateTokenResetPasswordCriteria()
+            {
+                Username = username,
+                TokenResetPassword = tokenResetPassword
+            };
 
-            CommandResult updateToken = UpdateTokenResetPassword(username, tokenResetPassword);
+            CommandResult updateToken = _baseService.ExecuteNonQuery(criteria);
 
             if (updateToken.IsSuccessful)
             {
@@ -85,7 +67,7 @@ namespace HRP.Services
 
             body = string.Format(body, username, linkToReset);
 
-            MailModel model = new MailModel
+            var mailModel = new MailModel
             {
                 Subject = Message.ResetPasswordEmailSubject,
                 ReceiverEmail = user.Email,
@@ -93,7 +75,45 @@ namespace HRP.Services
                 Body = body
             };
 
-            _emailService.SendEmail(model);
+            _emailService.SendEmail(mailModel);
+        }
+
+        public void OTPRegister(string username)
+        {
+            string tokenOTPRegister = Utilities.GenerateRadomString();
+            var criteria = new UpdateTokenOTPRegisterCriteria()
+            {
+                Username = username,
+                TokenRegisterOTP = tokenOTPRegister
+            };
+
+            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+
+            if (result.IsSuccessful)
+            {
+                SendMailToRegisterOTP(username, tokenOTPRegister);
+            }
+        }
+
+        private void SendMailToRegisterOTP(string username, string tokenOTPRegister)
+        {
+            var user = GetUserByUsername(username);
+
+            var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
+
+            string linkToRegisterOTP = _configuration.Value.BaseHostUrl + "/OTPRegister?token=" + tokenOTPRegister;
+
+            body = string.Format(body, username, linkToRegisterOTP);
+
+            var mailModel = new MailModel
+            {
+                Subject = Message.RegisterOTP,
+                ReceiverEmail = user.Email,
+                MailCC = string.Empty,
+                Body = body
+            };
+
+            _emailService.SendEmail(mailModel);
         }
     }
 }

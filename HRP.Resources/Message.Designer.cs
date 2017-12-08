@@ -169,6 +169,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP Registration Requirement.
+        /// </summary>
+        public static string RegisterOTP {
+            get {
+                return ResourceManager.GetString("RegisterOTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request reset password on HRP System.
         /// </summary>
         public static string ResetPasswordEmailSubject {

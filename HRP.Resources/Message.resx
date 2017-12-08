@@ -168,4 +168,7 @@
   <data name="UserIsActiveLabel" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="RegisterOTP" xml:space="preserve">
+    <value>OTP Registration Requirement</value>
+  </data>
 </root>
