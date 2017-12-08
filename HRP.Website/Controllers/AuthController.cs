@@ -84,7 +84,7 @@ namespace HRP.Website.Controllers
                     if (!user.IsOTPRegistered)
                     {
                         _userService.OTPRegister(user.Username);
-                        return RedirectToAction(nameof(SetupOtp));
+                        return RedirectToAction(nameof(RegisterOTPNoti));
                     }
 
                     return RedirectToAction(nameof(VerifyOTP));
@@ -94,6 +94,11 @@ namespace HRP.Website.Controllers
             ViewBag.ErrorMessage = Message.LoginInvalid;
 
             return View(viewModel);
+        }
+
+        public IActionResult RegisterOTPNoti()
+        {
+            return View();
         }
 
         [HttpGet("[action]"), HttpPost("[action]")]
