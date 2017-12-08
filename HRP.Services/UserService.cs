@@ -63,7 +63,7 @@ namespace HRP.Services
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
 
-            string linkToReset = _configuration.Value.BaseHostUrl + "/ResetPassword?token=" + tokenResetPassword;
+            string linkToReset = _configuration.Value.BaseHostUrl + "/Auth/ResetPassword?token=" + tokenResetPassword;
 
             body = string.Format(body, username, linkToReset);
 
@@ -101,7 +101,7 @@ namespace HRP.Services
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
 
-            string linkToRegisterOTP = _configuration.Value.BaseHostUrl + "/OTPRegister?token=" + tokenOTPRegister;
+            string linkToRegisterOTP = _configuration.Value.BaseHostUrl + "/Auth/SetupOTP?token=" + tokenOTPRegister;
 
             body = string.Format(body, username, linkToRegisterOTP);
 

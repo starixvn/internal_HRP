@@ -14,6 +14,7 @@
     <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetByTokenResetPassword" SpName="User_GetByTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetByTokenOTPRegister" SpName="User_GetByTokenOTPRegister" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateTokenOTPRegister" SpName="User_UpdateTokenOTPRegister" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdatePassword" SpName="User_UpdatePassword" DbName="bodb_HRP" Plain="0"></Setting>

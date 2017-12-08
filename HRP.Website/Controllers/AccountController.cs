@@ -3,7 +3,6 @@ namespace HRP.Website.Controllers
     using HRP.Core.Filters;
     using HRP.Core.Services;
     using HRP.Services;
-    using HRP.Website.Models;
     using Microsoft.AspNetCore.Mvc;
     using HRP.Models;
 

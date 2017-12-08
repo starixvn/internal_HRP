@@ -1,5 +1,6 @@
 ﻿namespace HRP.Core.Services
 {
+    using System;
     using BCrypt.Net;
 
     public static class Utilities
@@ -13,7 +14,9 @@
 
         public static string GenerateSecretKey()
         {
-            return BCrypt.GenerateSalt(12);
+            var random = Guid.NewGuid().ToString();
+            random = random.Replace("-", string.Empty).Substring(0, 12);
+            return random;
         }
     }
 }

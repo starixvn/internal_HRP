@@ -1,9 +1,12 @@
 namespace HRP.Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BCrypt.Net;
+    using Google.Authenticator;
+    using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -200,18 +203,38 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(VerifyOTP));
         }
 
-        public IActionResult SetupOtp()
+        public IActionResult SetupOtp(string token)
         {
-            var user = _userService.GetUserByUsername(_sessionService.Username);
+            User user = new User();
+            string secretKey = Utilities.GenerateSecretKey();
             var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(user.Username, user.SecretKey);
+
+            if (string.IsNullOrEmpty(token) && IsAuthenticated())
+            {
+                user = _userService.GetUserByUsername(_sessionService.Username);
+            }
+            else
+            {
+                user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+            }
 
             var viewModel = new SetupOtpViewModel
             {
+                SecretKey = secretKey,
                 QrCodeLink = setupCode.QrCodeSetupImageUrl,
                 TextCode = setupCode.ManualEntryKey
             };
 
             return View(viewModel);
+        }
+
+        private bool IsAuthenticated()
+        {
+            return _sessionService.UserId > 0 && !string.IsNullOrEmpty(_sessionService.Username);
         }
 
         private static bool IsPasswordValid(string modelPassword, string hashedPassword)
