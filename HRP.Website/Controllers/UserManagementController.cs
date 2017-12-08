@@ -1,9 +1,11 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BCrypt.Net;
     using HRP.Core.Constants;
     using HRP.Core.Filters;
     using HRP.Core.Model;
@@ -15,7 +17,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
-    //[HRPAuthorize]
+    [HRPAuthorize]
     public class UserManagementController : Controller
     {
         private readonly ISessionService sessionService;
@@ -117,7 +119,7 @@
 
             return result.ToString();
         }
-        
+
         [HttpGet]
         public IActionResult CreateUser()
         {
@@ -126,11 +128,28 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateUser(CreateUserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                var criteria = new CreateUserCriteria
+                {
+                    Username = viewModel.Username,
+                    FullName = viewModel.FullName,
+                    Phone = viewModel.PhoneNumber,
+                    Email = viewModel.Email,
+                    Password = BCrypt.HashPassword(viewModel.Password),
+                    IsActive = viewModel.IsActive,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = sessionService.UserId
+                };
+
+                var result = baseService.ExecuteNonQuery(criteria);
+                if (result.IsSuccessful)
+                {
+                    return Json(new { userId = criteria.UserId, username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
+                }
             }
 
             return View(viewModel);

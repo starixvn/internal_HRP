@@ -21,5 +21,6 @@
     <Setting Key="User_UpdateUserStatus" SpName="User_UpdateUserStatus" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetUsers" SpName="User_GetUsers" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_CheckUsernameExisted" SpName="User_CheckUsernameExisted" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CreateUser" SpName="User_CreateUser" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>
