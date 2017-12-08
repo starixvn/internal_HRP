@@ -15,7 +15,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
-    [HRPAuthorize]
+    //[HRPAuthorize]
     public class UserManagementController : Controller
     {
         private readonly ISessionService sessionService;
@@ -122,6 +122,17 @@
         public IActionResult CreateUser()
         {
             var viewModel = new CreateUserViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser(CreateUserViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View(viewModel);
         }
 

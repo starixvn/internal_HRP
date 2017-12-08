@@ -32,5 +32,8 @@
         [Display(ResourceType = typeof(Message), Name = "EmailLabel")]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Display(ResourceType = typeof(Message), Name = "UserIsActiveLabel")]
+        public bool IsActive { get; set; }
     }
 }

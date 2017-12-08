@@ -165,4 +165,7 @@
   <data name="FullNameLabel" xml:space="preserve">
     <value>Full Name</value>
   </data>
+  <data name="UserIsActiveLabel" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>

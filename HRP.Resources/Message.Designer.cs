@@ -178,6 +178,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string UserIsActiveLabel {
+            get {
+                return ResourceManager.GetString("UserIsActiveLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username must be between 2 and 30 characters long and does not contain the space..
         /// </summary>
         public static string UsernameLengthNoSpaceAllowed {
