@@ -1,8 +1,5 @@
 namespace HRP.Website.Controllers
 {
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -15,6 +12,9 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {
@@ -213,7 +213,7 @@ namespace HRP.Website.Controllers
 
         public IActionResult SetupOtp(string token)
         {
-            string secretKey = Utilities.GenerateSecretKey();
+            var secretKey = Utilities.GenerateSecretKey();
             var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
 
             if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
