@@ -145,7 +145,7 @@
                 var result = baseService.ExecuteNonQuery(criteria);
                 if (result.IsSuccessful)
                 {
-                    return Json(new { userId = criteria.UserId, username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
+                    return Json(new { username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
                 }
             }
 
@@ -183,10 +183,7 @@
                 };
 
                 var result = baseService.ExecuteNonQuery(criteria);
-                if (result.IsSuccessful)
-                {
-                    return Json(new { userId = criteria.UserId, username = viewModel.Username });
-                }
+                return Json(result);
             }
 
             return View(viewModel);

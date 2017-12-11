@@ -8,16 +8,16 @@
         onCreateBegin: function () {
             $('#btn-create').button('loading')
         },
-        onCreateSuccess: function (result, status) {
+        onCreateSuccess: function (response, status) {
             var alert = $('#create-user-alert');
             var delay = 5;
-            var textAlert = result.username + ' account has been created successfully. You will be redirected in ';
+            var textAlert = response.username + ' account has been created successfully. You will be redirected in ';
             alert.removeClass('hidden');
             $('#alert-message', alert).text(textAlert + delay + ' seconds.');
 
             window.setInterval(function () {
                 if (delay === 0) {
-                    window.location.href = result.redirectTo;
+                    window.location.href = response.redirectTo;
                 } else {
                     delay--;
                     $('#alert-message', alert).text(textAlert + delay + ' seconds.');

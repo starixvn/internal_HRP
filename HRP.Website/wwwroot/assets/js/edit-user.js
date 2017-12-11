@@ -3,7 +3,7 @@
         onEditBegin: function () {
             $('#btn-edit').button('loading')
         },
-        onEditSuccess: function (result, status) {
+        onEditSuccess: function (response, status) {
             var alert = $('#edit-user-alert');
 
             alert.removeClass('hidden');
