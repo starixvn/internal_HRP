@@ -1,7 +1,6 @@
 ﻿@using HRP.Models.Account
 @model AccountViewModel
 
-
 @{
     bool isAuthenticated = User.Identity.IsAuthenticated;
     var limitFunctionClass = isAuthenticated ? "" : "limited";
@@ -43,8 +42,6 @@
 <section class="content-container">
     <div class="content">
 
-        
-
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="@limitFunctionClass">
@@ -69,7 +66,7 @@
             <div role="tabpanel" class="tab-pane" id="password">
                 @if (isAuthenticated)
                 {
-                    @Html.Partial("_Password")
+                    @Html.Partial("_Password", Model.ChangePasswordViewModel)
                 }
             </div>
             <div role="tabpanel" class="tab-pane otp" id="otp">

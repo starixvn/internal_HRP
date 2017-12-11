@@ -45,6 +45,12 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult Index(AccountViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                viewModel = new AccountViewModel();
+                viewModel.ActivePanel = "password";
+                viewModel.ChangePasswordViewModel = new ChangePasswordViewModel();
+            }
             return View(viewModel);
         }
 
@@ -82,7 +88,7 @@ namespace HRP.Website.Controllers
                     Username = username
                 }
             };
-            
+
             return View("Index", accountViewModel);
         }
 
