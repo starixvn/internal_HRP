@@ -18,18 +18,6 @@ namespace HRP.Services
             return setupInfo;
         }
 
-        ////public string GenerateQrImageUrl(string username, string secretKey)
-        ////{
-        ////    var setupInfo = SetupGoogleAuthInfo(username, secretKey);
-        ////    return setupInfo.QrCodeSetupImageUrl;
-        ////}
-
-        ////public string GenerateSetupCode(string username, string secretKey)
-        ////{
-        ////    var setupInfo = SetupGoogleAuthInfo(username, secretKey);
-        ////    return setupInfo.ManualEntryKey;
-        ////}
-
         public bool ValidateOTPCode(string username, string secretKey, string otpCode)
         {
             var uniqueKey = username + secretKey;
