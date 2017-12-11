@@ -1,14 +1,14 @@
-﻿namespace HRP.Models
+﻿namespace HRP.Models.UserProfile
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ChangePasswordViewModel
+    public class ResetPasswordViewModel
     {
         private const string regexForPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,50}$";
 
-        private const string passwordRequired = "Password must contain at least 8 characters, including UPPER/lowercase and number.";
+        private const string passwordRequired = "Password must contain at least 8 characters, including UPPER/lowercase letters and number.";
 
-        private const string passwordNotMatch = "Password doesn't match, try again";
+        private const string passwordNotMatch = "This password don't match. Try again?";
 
         [Required]
         [DataType("Password")]

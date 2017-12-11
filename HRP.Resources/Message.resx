@@ -171,4 +171,10 @@
   <data name="RegisterOTP" xml:space="preserve">
     <value>OTP Registration Requirement</value>
   </data>
+  <data name="OldPasswordIncorrect" xml:space="preserve">
+    <value>The old password you entered is incorrect.</value>
+  </data>
+  <data name="PasswordChangeSuccessful" xml:space="preserve">
+    <value>Your password has been successfully changed.</value>
+  </data>
 </root>

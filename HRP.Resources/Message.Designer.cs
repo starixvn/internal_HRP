@@ -133,6 +133,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The old password you entered is incorrect..
+        /// </summary>
+        public static string OldPasswordIncorrect {
+            get {
+                return ResourceManager.GetString("OldPasswordIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been successfully changed..
+        /// </summary>
+        public static string PasswordChangeSuccessful {
+            get {
+                return ResourceManager.GetString("PasswordChangeSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password must be between 8 and 50 characters long, contains UPPER/lowercase letters and number..
         /// </summary>
         public static string PasswordContainRequired {

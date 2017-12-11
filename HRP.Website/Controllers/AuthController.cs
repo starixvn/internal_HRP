@@ -7,6 +7,7 @@ namespace HRP.Website.Controllers
     using Criteria.User;
     using HRP.Models;
     using HRP.Models.Authentication;
+    using HRP.Models.UserProfile;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
@@ -133,7 +134,7 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(string token, ChangePasswordViewModel model)
+        public IActionResult ResetPassword(string token, ResetPasswordViewModel model)
         {
             var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
