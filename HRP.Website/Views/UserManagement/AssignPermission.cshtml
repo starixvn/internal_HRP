@@ -8,142 +8,151 @@
     ViewData["Title"] = "Assign Permission";
     var disabled = Model.IsHost ? string.Empty : "disabled";
 }
-<h2>@ViewData["Title"]</h2>
 
-<input type="hidden" asp-for="@Model.UserId" />
+<section class="wrapper">
+    <div class="content">
+        <ol class="breadcrumb">
+            <li><a href="/usermanagement">User Management</a></li>
+            <li class="active">@ViewData["Title"]</li>
+        </ol>
 
-<div class="row">
-    <table class="table table-bordered" id="adminPermissionTable">
-        <thead>
-            <tr>
-                <th rowspan="2">@ViewLang.SuperAdminFunction</th>
-                <th colspan="2">@ViewLang.UserPermission</th>
-            </tr>
-            <tr>
-                <th>@ViewLang.Read</th>
-                <th>@ViewLang.Host</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Functions != null && Model.Functions.Any(x => x.IsAdmin))
-            {
-                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && x.IsAdmin))
-                {
-                    var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId < 0);
-                    <tr>
-                        <td>@parent.Name</td>
-                        <td>
-                            <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
-                                   @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
-                        </td>
-                        <td>
-                            <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
-                                   @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
-                        </td>
-                    </tr>
-                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
-                    {
-                        permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId < 0);
-                        <tr>
-                            <td><span>└── </span>@child.Name</td>
-                            <td>
-                                <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
-                            </td>
-                            <td>
-                                <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
-                            </td>
-                        </tr>
-                    }
-                }
-            }
-        </tbody>
-    </table>
-</div>
+        <input type="hidden" asp-for="@Model.UserId" />
 
-<div class="row">
-    <table class="table table-bordered" id="userPermissionTable">
-        <thead>
-            <tr>
-                <th rowspan="3">@ViewLang.Function</th>
-                <th rowspan="2"></th>
-                @foreach (Company company in Model.Companies)
-                {
-                    <th colspan="2">@company.Name</th>
-                }
-            </tr>
-            <tr>
-                @foreach (Company company in Model.Companies)
-                {
+        <table class="table table-bordered super-admin-func" id="adminPermissionTable">
+            <thead>
+                <tr>
+                    <th rowspan="2">@ViewLang.SuperAdminFunction</th>
+                    <th colspan="2">@ViewLang.UserPermission</th>
+                </tr>
+                <tr>
                     <th>@ViewLang.Read</th>
                     <th>@ViewLang.Host</th>
-                }
-            </tr>
-            <tr>
-                <th><input type="checkbox" id="checkAllFunc" @disabled /></th>
-                @foreach (Company company in Model.Companies)
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Functions != null && Model.Functions.Any(x => x.IsAdmin))
                 {
-                    <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled /></th>
-                    <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled /></th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Functions != null && Model.Functions.Any(x => !x.IsAdmin))
-            {
-                foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && !x.IsAdmin))
-                {
-                    <tr>
-                        <td>@parent.Name</td>
-                        <td><input type="checkbox" class="checkAllRowFunc" data-fid="@parent.FunctionId" data-pid="" @disabled /></td>
-                        @foreach (Company company in Model.Companies)
+                    foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && x.IsAdmin))
+                    {
+                        var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId < 0);
+                        <tr>
+                            <td>@parent.Name</td>
+                            <td class="text-center">
+                                <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
+                                    @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
+                                    @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                            </td>
+                        </tr>
+                        foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
                         {
-                            var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId == company.CompanyId);
-                            <td>
-                                <input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
-                                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
-                            </td>
-                            <td>
-                                <input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
-                                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
-                            </td>
+                            permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId < 0);
+                            <tr>
+                                <td><span>└── </span>@child.Name</td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                                        @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                                        @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                                </td>
+                            </tr>
                         }
-                    </tr>
-                    foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
+                    }
+                }
+            </tbody>
+        </table>
+
+    
+        <table class="table table-bordered func" id="userPermissionTable">
+            <thead>
+                <tr>
+                    <th rowspan="3">@ViewLang.Function</th>
+                    <th rowspan="2"></th>
+                    @foreach (Company company in Model.Companies)
+                    {
+                        <th colspan="2">@company.Name</th>
+                    }
+                </tr>
+                <tr>
+                    @foreach (Company company in Model.Companies)
+                    {
+                        <th>@ViewLang.Read</th>
+                        <th>@ViewLang.Host</th>
+                    }
+                </tr>
+                <tr>
+                    <th><input type="checkbox" id="checkAllFunc" @disabled /></th>
+                    @foreach (Company company in Model.Companies)
+                    {
+                        <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled /></th>
+                        <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled /></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Functions != null && Model.Functions.Any(x => !x.IsAdmin))
+                {
+                    foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && !x.IsAdmin))
                     {
                         <tr>
-                            <td><span>└── </span>@child.Name</td>
-                            <td><input type="checkbox" class="checkAllRowFunc" data-fid="@child.FunctionId" data-pid="@parent.FunctionId" @disabled /></td>
+                            <td>@parent.Name</td>
+                            <td  class="text-center"><input type="checkbox" class="checkAllRowFunc" data-fid="@parent.FunctionId" data-pid="" @disabled /></td>
                             @foreach (Company company in Model.Companies)
                             {
-                                var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId == company.CompanyId);
-                                <td>
-                                    <input type="checkbox" name="criteria.funcRead"
-                                           data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                           @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                                var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId == company.CompanyId);
+                                <td class="text-center">
+                                    <input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
+                                        @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                                 </td>
-                                <td>
-                                    <input type="checkbox" name="criteria.funcHost"
-                                           data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
-                                           @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                                <td class="text-center">
+                                    <input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="" data-fid="@parent.FunctionId"
+                                        @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                                 </td>
                             }
                         </tr>
+                        foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
+                        {
+                            <tr>
+                                <td><span>└── </span>@child.Name</td>
+                                <td class="text-center"><input type="checkbox" class="checkAllRowFunc" data-fid="@child.FunctionId" data-pid="@parent.FunctionId" @disabled /></td>
+                                @foreach (Company company in Model.Companies)
+                                {
+                                    var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId == company.CompanyId);
+                                    <td class="text-center">
+                                        <input type="checkbox" name="criteria.funcRead"
+                                            data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                                            @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="criteria.funcHost"
+                                            data-cid="@company.CompanyId" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                                            @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                                    </td>
+                                }
+                            </tr>
+                        }
                     }
                 }
+            </tbody>
+        </table>
+        <div class="list-button">
+            <a class="button -second" id="btCancel" asp-action="index">@ViewLang.Cancel</a>
+            @if (Model.IsHost)
+            {
+                <a class="button -primary" id="btnSave">@ViewLang.Save</a>
             }
-        </tbody>
-    </table>
-</div>
-<div class="row">
-    @if (Model.IsHost)
-    {
-        <a class="btn btn-default" id="btnSave">@ViewLang.Save</a>
-    }
+        </div>
+    </div>
+</section>
 
-    <a class="btn btn-default" id="btCancel" asp-action="index">@ViewLang.Cancel</a>
-</div>
+@section Styles{
+    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+}
 
 @section Scripts {
     <environment include="Development">

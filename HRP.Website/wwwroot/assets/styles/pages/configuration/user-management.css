@@ -281,6 +281,10 @@
   padding-bottom: 6px;
 }
 
+.table.super-admin-func {
+  width: 570px;
+}
+
 /* Create User */
 .form-information {
   position: relative;

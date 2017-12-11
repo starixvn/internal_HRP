@@ -95,6 +95,7 @@ input, button {
 
 .button.-second:hover {
   background-color: #6a6a6a;
+  text-decoration: none;
 }
 
 .button.-add {
@@ -171,7 +172,7 @@ input[type="password"]:focus {
 }
 
 .msg-error, .text-danger {
-  display: inline-block;
+  display: block;
   line-height: 18px;
   color: #fe0000;
 }

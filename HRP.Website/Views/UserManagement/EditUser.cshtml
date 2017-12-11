@@ -4,17 +4,17 @@
 
 <section class="wrapper">
     <div class="content">
-        <h2 class="title">User Management / Edit Details "@Model.Username"</h2>
+        <ol class="breadcrumb">
+            <li><a href="/usermanagement">User Management</a></li>
+            <li class="active">Edit Details "@Model.Username"</li>
+        </ol>
         <form class="form-information block" asp-action="EditUser" asp-controller="UserManagement" id="edit-user-form"
               data-ajax-method="post" data-ajax="true" data-ajax-begin="editUser.onEditBegin"
               data-ajax-success="editUser.onEditSuccess" data-ajax-complete="editUser.onEditComplete">
 
             <input type="hidden" asp-for="UserId" />
 
-            <label asp-for="Username" class="text"></label>
-            <div class="group-control">
-                @Model.Username
-            </div>
+            <h1 class="username">@Model.Username</h1>
 
             <label asp-for="FullName" class="text"></label>
             <div class="group-control">
