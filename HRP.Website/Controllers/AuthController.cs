@@ -78,13 +78,13 @@ namespace HRP.Website.Controllers
 
                 if (user != null && IsPasswordValid(viewModel.Password, user.Password) && user.IsActive)
                 {
-                    _sessionService.Username = user.Username;
-
                     if (!user.IsOTPRegistered)
                     {
                         _userService.OTPRegister(user.Username);
                         return RedirectToAction(nameof(RegisterOTPNoti));
                     }
+
+                    _sessionService.Username = user.Username;
 
                     return RedirectToAction(nameof(VerifyOTP));
                 }
@@ -152,6 +152,11 @@ namespace HRP.Website.Controllers
 
         public IActionResult VerifyOTP()
         {
+            if (string.IsNullOrEmpty(_sessionService.Username))
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
             return View(new TwoFactorAuthenticatorViewModel());
         }
 
@@ -208,17 +213,12 @@ namespace HRP.Website.Controllers
 
         public IActionResult SetupOtp(string token)
         {
-            User user = new User();
             string secretKey = Utilities.GenerateSecretKey();
-            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, user.SecretKey);
+            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
 
-            if (string.IsNullOrEmpty(token) && IsAuthenticated())
+            if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
             {
-                user = _userService.GetUserByUsername(_sessionService.Username);
-            }
-            else
-            {
-                user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
+                var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
                 if (user == null)
                 {
                     return BadRequest();
