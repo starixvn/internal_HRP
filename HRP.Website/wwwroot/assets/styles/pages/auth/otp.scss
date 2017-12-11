@@ -2,6 +2,7 @@
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
 
+/* Change  OTP */
 .otp {
     .title {
         font-size: 16px;
@@ -144,3 +145,20 @@
     }
 }
 
+/* Notication OTP */
+.notication-otp {
+    width: 690px;
+    margin: 106px auto 0;
+    padding: 34px 24px;
+    font-size: 14px;
+    color: #666;
+
+    .info {
+        margin-bottom: 16px;
+        line-height: 20px;
+
+        li {
+            margin-bottom: 10px;
+        }
+    }
+}
