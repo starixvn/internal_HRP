@@ -62,7 +62,8 @@
             var criteria = new UpdateUserStatusCriteria
             {
                 UserId = userId,
-                IsActive = isActive
+                IsActive = isActive,
+                EditedBy = sessionService.UserId
             };
             var result = baseService.ExecuteNonQuery(criteria);
             if (result.IsSuccessful)
@@ -175,6 +176,41 @@
         public IActionResult CheckUsernameExisted(string username)
         {
             return Json(!baseService.GetData<int>(new CheckUsernameExistedCriteria { Username = username }).Any());
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
+        public IActionResult EditUser(int id)
+        {
+            var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserCriteria { UserId = id });
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
+        public IActionResult EditUser(EditUserViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new EditUserCriteria
+                {
+                    UserId = viewModel.UserId,
+                    FullName = viewModel.FullName,
+                    Phone = viewModel.Phone,
+                    Email = viewModel.Email,
+                    IsActive = viewModel.IsActive,
+                    EditedBy = sessionService.UserId
+                };
+
+                var result = baseService.ExecuteNonQuery(criteria);
+                if (result.IsSuccessful)
+                {
+                    return Json(new { userId = criteria.UserId, username = viewModel.Username });
+                }
+            }
+
+            return View(viewModel);
         }
     }
 }

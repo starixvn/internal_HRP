@@ -9,19 +9,18 @@
             $('#btn-create').button('loading')
         },
         onCreateSuccess: function (result, status) {
-            debugger;
             var alert = $('#create-user-alert');
             var delay = 5;
             var textAlert = result.username + ' account has been created successfully. You will be redirected in ';
             alert.removeClass('hidden');
-            $('span', alert).text(textAlert + delay + ' seconds.');
+            $('#alert-message', alert).text(textAlert + delay + ' seconds.');
 
             window.setInterval(function () {
                 if (delay === 0) {
                     window.location.href = result.redirectTo;
                 } else {
                     delay--;
-                    $('span', alert).text(textAlert + delay + ' seconds.');
+                    $('#alert-message', alert).text(textAlert + delay + ' seconds.');
                 }
             }, 1000); 
         },

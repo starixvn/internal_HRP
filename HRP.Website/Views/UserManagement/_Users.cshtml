@@ -4,6 +4,7 @@
 
 @{
     var canEditUserInfo = ViewBag.CanEditUserInfo;
+    var rowNumber = 1;
 }
 
 <table id="user-table" class="table table table-bordered table-hover table-responsive">
@@ -24,7 +25,7 @@
         @foreach (var user in Model)
         {
             <tr id="user-@user.UserId">
-                <td class="text-center">@user.UserId</td>
+                <td class="text-center">@rowNumber</td>
                 <td>@user.Username</td>
                 <td>@user.FullName</td>
                 <td>@user.Phone</td>
@@ -41,13 +42,14 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             @if (canEditUserInfo)
                             {
-                                <li><a href="#"><span class="icon-edit"></span>Edit Details</a></li>
+                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
                                 <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
                             }
                         </ul>
                     </div>
                 </td>
             </tr>
+            rowNumber++;
         }
     </tbody>
 </table>
