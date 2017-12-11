@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.Authentication
+﻿namespace HRP.Models.Account
 {
     public class SetupOtpViewModel
     {

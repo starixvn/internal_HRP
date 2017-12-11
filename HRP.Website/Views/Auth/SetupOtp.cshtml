@@ -1,9 +1,9 @@
-﻿@model HRP.Models.Authentication.SetupOtpViewModel
+﻿@using HRP.Models.Account
+@model SetupOtpViewModel
 @{
+    ViewData["Title"] = "Setup OTP";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
-
-@section title{ Setup OTP }
 
 <p>The OTP will be required when you make log in to HRP system. You will need to register for the Mobile Authenticator App before enabling the OTP</p>
 

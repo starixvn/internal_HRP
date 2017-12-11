@@ -27,4 +27,8 @@
     <ProjectReference Include="..\HRP.Resources\HRP.Resources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>

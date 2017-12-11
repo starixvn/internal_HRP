@@ -1,5 +1,8 @@
 namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Filters;
     using Core.Model;
@@ -8,7 +11,6 @@ namespace HRP.Website.Controllers
     using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
-    using HRP.Models.Authentication;
     using HRP.Models.UserProfile;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,9 +18,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class AccountController : Controller
@@ -107,9 +106,9 @@ namespace HRP.Website.Controllers
 
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.Otp);
 
-#if DEBUG
-            isOTPValid = true;
-#endif
+////#if DEBUG
+////            isOTPValid = true;
+////#endif
 
             if (isOTPValid)
             {
