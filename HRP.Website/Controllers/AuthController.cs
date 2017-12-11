@@ -35,6 +35,11 @@ namespace HRP.Website.Controllers
             _baseService = baseService;
         }
 
+        public IActionResult ChangePasswordSuccessful()
+        {
+            return View();
+        }
+
         public IActionResult ConfirmationEmailSent()
         {
             return View();
@@ -95,11 +100,6 @@ namespace HRP.Website.Controllers
             return View(viewModel);
         }
 
-        public IActionResult RegisterOTPNoti()
-        {
-            return View();
-        }
-
         [HttpGet("[action]"), HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {
@@ -107,6 +107,11 @@ namespace HRP.Website.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
 
             return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult RegisterOTPNoti()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -145,9 +150,28 @@ namespace HRP.Website.Controllers
             return BadRequest();
         }
 
-        public IActionResult ChangePasswordSuccessful()
+        public IActionResult SetupOtp(string token)
         {
-            return View();
+            var secretKey = Utilities.GenerateSecretKey();
+            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
+
+            if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
+            {
+                var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+            }
+
+            var viewModel = new SetupOtpViewModel
+            {
+                SecretKey = secretKey,
+                QrCodeLink = setupCode.QrCodeSetupImageUrl,
+                TextCode = setupCode.ManualEntryKey
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult VerifyOTP()
@@ -211,38 +235,14 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(VerifyOTP));
         }
 
-        public IActionResult SetupOtp(string token)
+        private static bool IsPasswordValid(string modelPassword, string hashedPassword)
         {
-            var secretKey = Utilities.GenerateSecretKey();
-            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
-
-            if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
-            {
-                var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-            }
-
-            var viewModel = new SetupOtpViewModel
-            {
-                SecretKey = secretKey,
-                QrCodeLink = setupCode.QrCodeSetupImageUrl,
-                TextCode = setupCode.ManualEntryKey
-            };
-
-            return View(viewModel);
+            return BCrypt.Verify(modelPassword, hashedPassword);
         }
 
         private bool IsAuthenticated()
         {
             return _sessionService.UserId > 0 && !string.IsNullOrEmpty(_sessionService.Username);
-        }
-
-        private static bool IsPasswordValid(string modelPassword, string hashedPassword)
-        {
-            return BCrypt.Verify(modelPassword, hashedPassword);
         }
     }
 }
