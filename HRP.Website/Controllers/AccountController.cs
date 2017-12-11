@@ -8,6 +8,7 @@ namespace HRP.Website.Controllers
     using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
+    using HRP.Models.Authentication;
     using HRP.Models.UserProfile;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
@@ -139,6 +140,7 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
