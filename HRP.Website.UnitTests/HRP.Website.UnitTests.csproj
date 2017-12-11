@@ -77,10 +77,6 @@
       <Project>{fb14dd5e-fe8c-433d-be71-1dcb5542a975}</Project>
       <Name>HRP.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HRP.Repositories\HRP.Repositories.csproj">
-      <Project>{384e3042-c8e4-49c5-8eca-84fb3c7af523}</Project>
-      <Name>HRP.Repositories</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HRP.Services\HRP.Services.csproj">
       <Project>{a82b603f-a59e-4c3a-8a28-4dd415f741e8}</Project>
       <Name>HRP.Services</Name>

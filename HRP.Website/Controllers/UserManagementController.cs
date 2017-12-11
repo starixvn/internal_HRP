@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -106,33 +106,13 @@
             var criteria = new AssignFunctionToUserCriteria
             {
                 UserId = userId,
-                Value = ConvertUserPermissionToXml(userPermissions),
+                Value = userPermissions.ToXML().ToString(),
                 ModifiedBy = sessionService.UserId
             };
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return Json(commandResult);
-        }
-
-        private static string ConvertUserPermissionToXml(IEnumerable<UserPermissionModel> permissions)
-        {
-            var template = "<FunctionPolicy FunctionId='{0}' CompanyId='{1}' IsRead='{2}' IsHost='{3}'></FunctionPolicy>";
-            var result = new StringBuilder();
-
-            if (permissions.Any())
-            {
-                result.Append(Constants.BeginRootTag);
-
-                foreach (UserPermissionModel permission in permissions)
-                {
-                    result.AppendFormat(template, permission.FunctionId, permission.CompanyId, permission.IsRead, permission.IsHost);
-                }
-
-                result.Append(Constants.EndRootTag);
-            }
-
-            return result.ToString();
         }
 
         [HttpGet]
@@ -185,7 +165,6 @@
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserCriteria { UserId = id });
             return View(viewModel);
         }
-
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
