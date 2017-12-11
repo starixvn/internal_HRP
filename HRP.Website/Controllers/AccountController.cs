@@ -2,32 +2,43 @@ namespace HRP.Website.Controllers
 {
     using HRP.Core.Filters;
     using HRP.Core.Services;
-    using HRP.Services;
-    using Microsoft.AspNetCore.Mvc;
+    using HRP.Criteria.User;
     using HRP.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using BCrypt.Net;
 
     [HRPAuthorize]
     public class AccountController : Controller
     {
-        private readonly ISessionService sessionService;
-        private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
+        private readonly ISessionService _sessionService;
 
-        public AccountController(ISessionService sessionService, ITwoFactorAuthenticatorService twoFactorAuthService)
+        private readonly IBaseService _baseService;
+
+        public AccountController(ISessionService sessionService, IBaseService baseService)
         {
-            this.sessionService = sessionService;
-            this.twoFactorAuthService = twoFactorAuthService;
+            _sessionService = sessionService;
+            _baseService = baseService;
         }
 
-        [HttpGet]
-        public IActionResult Profile()
+        public IActionResult ChangePassword()
         {
-            var model = new UserProfileViewModel
-            {
-                //QRImageUrl = twoFactorAuthService.GenerateQrImageUrl(sessionService.Username, "1234aa"),
-                //SetupCode = twoFactorAuthService.GenerateSetupCode(sessionService.Username, "1234aa")
-            };
+            return View();
+        }
 
-            return View(model);
+        public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new UpdateUserPasswordCriteria
+                {
+                    UserId = _sessionService.UserId,
+                    Password = BCrypt.HashPassword(viewlModel.Password)
+                };
+
+                var result = _baseService.ExecuteNonQuery(criteria);
+            }
+
+            return View();
         }
     }
 }
