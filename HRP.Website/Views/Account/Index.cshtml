@@ -26,6 +26,8 @@
                         success: function (res, status, xhr) {
                             $("#verify-setup-otp-fail").hide();
                             $("#verify-setup-otp-success").show();
+
+                            $(location).attr("href", '/Account/VerifyOTP').delay(3000);
                         },
                         error: function (request, error) {
                             $("#verify-setup-otp-fail").show();

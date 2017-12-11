@@ -2,17 +2,22 @@ namespace HRP.Website.Controllers
 {
     using BCrypt.Net;
     using Core.Filters;
+    using Core.Model;
     using Core.Services;
+    using Criteria;
     using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
-    using HRP.Resources;
-    using HRP.Services;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class AccountController : Controller
@@ -89,7 +94,7 @@ namespace HRP.Website.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult VerifyOTP(SetupOtpViewModel viewModel)
+        public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
         {
             var user = _userService.GetUserByUsername(viewModel.Username);
 
@@ -111,6 +116,7 @@ namespace HRP.Website.Controllers
 
                 if (result)
                 {
+                    _sessionService.Username = user.Username;
                     return new OkResult();
                 }
             }
@@ -119,6 +125,68 @@ namespace HRP.Website.Controllers
             ViewBag.ErrorMessage = Message.InvalidOTP;
 
             return BadRequest();
+        }
+
+        [AllowAnonymous]
+        public IActionResult VerifyOTP()
+        {
+            if (string.IsNullOrEmpty(_sessionService.Username))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            return View(new TwoFactorAuthenticatorViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
+        {
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+
+            if (!ModelState.IsValid || user == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
+
+            var isSkipOTP = viewModel.IsByPassTwoFactor;
+
+            if (isOTPValid || isSkipOTP)
+            {
+                _sessionService.UserId = user.UserId;
+                _sessionService.Username = user.Username;
+
+                _sessionService.MenuItems = await _baseService.GetDataAsync<MenuItem>(
+                    new GetMenuByUserIdCriteria
+                    {
+                        UserId = user.UserId
+                    }).ConfigureAwait(false);
+
+                _sessionService.Functions = await _baseService.GetDataAsync<FunctionModel>(
+                    new GetFunctionByUserIdCriteria
+                    {
+                        UserId = user.UserId
+                    }).ConfigureAwait(false);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                };
+
+                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).ConfigureAwait(false);
+
+                _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.ErrorMessage = Message.InvalidOTP;
+
+            return RedirectToAction(nameof(VerifyOTP));
         }
 
         private bool IsAuthenticated()
