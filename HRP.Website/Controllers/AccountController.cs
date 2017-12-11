@@ -45,12 +45,12 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult Index(AccountViewModel viewModel)
         {
-            if (viewModel == null)
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+            if (viewModel.ActivePanel == null)
             {
-                viewModel = new AccountViewModel();
-                viewModel.ActivePanel = "password";
-                viewModel.ChangePasswordViewModel = new ChangePasswordViewModel();
+                
             }
+
             return View(viewModel);
         }
 
