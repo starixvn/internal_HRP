@@ -15,6 +15,7 @@ namespace HRP.Website.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using HRP.Models.Account;
 
     public class AuthController : Controller
     {
@@ -85,7 +86,14 @@ namespace HRP.Website.Controllers
                     if (!user.IsOTPRegistered)
                     {
                         _userService.OTPRegister(user.Username);
-                        return RedirectToAction("Index","Account", "otp");
+
+                        AccountViewModel accountViewModel = new AccountViewModel
+                        {
+                            ActivePanel = "otp",
+                            IsOTPRegistered = false
+                        };
+
+                        return RedirectToAction("Index","Account", accountViewModel);
                     }
 
                     _sessionService.Username = user.Username;

@@ -5,6 +5,7 @@ namespace HRP.Website.Controllers
     using Core.Services;
     using Criteria.User;
     using HRP.Models;
+    using HRP.Models.Account;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -22,24 +23,9 @@ namespace HRP.Website.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string activePanel)
+        public IActionResult Index(AccountViewModel viewModel)
         {
-            return View(activePanel);
-        }
-
-        public IActionResult Profile()
-        {
-            return View("_Profile");
-        }
-
-        public IActionResult Password()
-        {
-            return View("_Password");
-        }
-
-        public IActionResult OTP()
-        {
-            return View("_OTP");
+            return View(viewModel);
         }
 
         public IActionResult ChangePassword()

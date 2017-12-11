@@ -1,27 +1,37 @@
-﻿@model string
+﻿@using HRP.Models.Account
+@model AccountViewModel
+
 @{
     ViewData["Title"] = "Account";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Scripts
-{
+    {
     <script>
-        $('#@Model').tab('show');
+        $(document).ready(function() {
+            $('.nav-tabs a[href="#@Model.ActivePanel"]').tab('show');
+        });
     </script>
 }
 
 <section class="content-container">
     <div class="content">
+
+        @{
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+            var limitFunctionClass = isAuthenticated ? "" : "limited";
+        }
+
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation">
+            <li role="presentation" class="@limitFunctionClass">
                 <a href="#profile" aria-controls="home" role="tab" data-toggle="tab">Profile</a>
             </li>
-            <li role="presentation">
+            <li role="presentation" class="@limitFunctionClass">
                 <a href="#password" aria-controls="profile" role="tab" data-toggle="tab">Change your password</a>
             </li>
-            <li role="presentation" class="active">
+            <li role="presentation">
                 <a href="#otp" aria-controls="messages" role="tab" data-toggle="tab">OTP</a>
             </li>
         </ul>
@@ -29,13 +39,19 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="profile">
-                @Html.Partial("_Profile")
+                @if (isAuthenticated)
+                {
+                    @Html.Partial("_Profile")
+                }
             </div>
             <div role="tabpanel" class="tab-pane" id="password">
-                @Html.Partial("_Password")
+                @if (isAuthenticated)
+                {
+                    @Html.Partial("_Password")
+                }
             </div>
-            <div role="tabpanel" class="tab-pane otp active" id="otp">
-                @Html.Partial("_OTP")
+            <div role="tabpanel" class="tab-pane otp" id="otp">
+                @(Model.IsOTPRegistered ? Html.Partial("_OTP") : Html.Partial("_RegisterOTP"))
             </div>
         </div>
     </div>
