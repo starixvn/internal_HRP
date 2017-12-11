@@ -4,6 +4,7 @@ namespace HRP.Website.Controllers
     using Core.Filters;
     using Core.Services;
     using Criteria.User;
+    using HRP.Models.Account;
     using HRP.Models.UserProfile;
     using HRP.Resources;
     using HRP.Services;
