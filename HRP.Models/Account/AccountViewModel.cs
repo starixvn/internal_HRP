@@ -1,9 +1,13 @@
 ﻿namespace HRP.Models.Account
 {
+    using Authentication;
+
     public class AccountViewModel
     {
         public string ActivePanel { get; set; }
 
         public bool IsOTPRegistered { get; set; }
+
+        public SetupOtpViewModel SetupOtpViewModel { get; set; }
     }
 }

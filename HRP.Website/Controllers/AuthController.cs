@@ -86,15 +86,11 @@ namespace HRP.Website.Controllers
                 {
                     if (!user.IsOTPRegistered)
                     {
-                        _userService.OTPRegister(user.Username);
+                        var otpRegisterToken = _userService.GenerateTokenOTPRegister(user.Username);
+                        
+                        _userService.SendMailToRegisterOTP(user.Username, otpRegisterToken);
 
-                        AccountViewModel accountViewModel = new AccountViewModel
-                        {
-                            ActivePanel = "otp",
-                            IsOTPRegistered = false
-                        };
-
-                        return RedirectToAction("Index", "Account", accountViewModel);
+                        return RedirectToAction("RegisterOTPNotification", "Account");
                     }
 
                     _sessionService.Username = user.Username;

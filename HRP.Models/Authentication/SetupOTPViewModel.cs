@@ -9,5 +9,7 @@
         public string TextCode { get; set; }
 
         public string Otp { get; set; }
+
+        public string Username { get; set; }
     }
 }

@@ -1,9 +1,13 @@
 ﻿@using HRP.Models.Account
 @model AccountViewModel
 
+
 @{
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+    var limitFunctionClass = isAuthenticated ? "" : "limited";
+
     ViewData["Title"] = "Account";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = isAuthenticated ? "~/Views/Shared/_Layout.cshtml" : "~/Views/Shared/_LoginLayout.cshtml";
 }
 
 @section Scripts
@@ -11,6 +15,25 @@
     <script>
         $(document).ready(function() {
             $('.nav-tabs a[href="#@Model.ActivePanel"]').tab('show');
+
+            $("#verify-setup-otp-form").on("submit",
+                function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        method: $(this).attr('method'),
+                        data: $(this).serialize(),
+                        success: function (res, status, xhr) {
+                            $("#verify-setup-otp-fail").hide();
+                            $("#verify-setup-otp-success").show();
+                        },
+                        error: function (request, error) {
+                            $("#verify-setup-otp-fail").show();
+                            $("#verify-setup-otp-success").hide();
+                        }
+                    });
+                    return false;
+                });
         });
     </script>
 }
@@ -18,10 +41,7 @@
 <section class="content-container">
     <div class="content">
 
-        @{
-            bool isAuthenticated = User.Identity.IsAuthenticated;
-            var limitFunctionClass = isAuthenticated ? "" : "limited";
-        }
+        
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -51,7 +71,7 @@
                 }
             </div>
             <div role="tabpanel" class="tab-pane otp" id="otp">
-                @(Model.IsOTPRegistered ? Html.Partial("_OTP") : Html.Partial("_RegisterOTP"))
+                @(Model.IsOTPRegistered ? Html.Partial("_OTP") : Html.Partial("_RegisterOTP", Model.SetupOtpViewModel))
             </div>
         </div>
     </div>

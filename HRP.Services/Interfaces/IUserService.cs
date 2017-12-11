@@ -1,6 +1,6 @@
 namespace HRP.Services
 {
-    using HRP.Models;
+    using Models;
 
     public interface IUserService
     {
@@ -8,6 +8,12 @@ namespace HRP.Services
 
         void ResetUserPassword(string username);
 
-        void OTPRegister(string username);
+        bool UpdateSecretKey(string username, string secretKey);
+
+        string GenerateTokenOTPRegister(string username);
+
+        void SendMailToRegisterOTP(string username, string tokenOTPRegister);
+
+        bool UpdateOTPStatus(int userId, bool isOTPRegistered);
     }
 }

@@ -1,13 +1,13 @@
 namespace HRP.Services
 {
+    using Core.Constants;
     using Core.Model;
     using Core.Services;
-    using HRP.Core.Constants;
-    using HRP.Criteria;
-    using HRP.Criteria.User;
-    using HRP.Models;
-    using HRP.Resources;
+    using Criteria;
+    using Criteria.User;
     using Microsoft.Extensions.Options;
+    using Models;
+    using Resources;
 
     public class UserService : IUserService
     {
@@ -78,30 +78,29 @@ namespace HRP.Services
             _emailService.SendEmail(mailModel);
         }
 
-        public void OTPRegister(string username)
+        public string GenerateTokenOTPRegister(string username)
         {
             string tokenOTPRegister = Utilities.GenerateRadomString();
+
             var criteria = new UpdateTokenOTPRegisterCriteria
             {
                 Username = username,
-                TokenRegisterOTP = tokenOTPRegister
+                TokenOTPRegister = tokenOTPRegister
             };
 
             CommandResult result = _baseService.ExecuteNonQuery(criteria);
 
-            if (result.IsSuccessful)
-            {
-                SendMailToRegisterOTP(username, tokenOTPRegister);
-            }
+            return result.IsSuccessful ? tokenOTPRegister : null;
         }
 
-        private void SendMailToRegisterOTP(string username, string tokenOTPRegister)
+        public void SendMailToRegisterOTP(string username, string tokenOTPRegister)
         {
             var user = GetUserByUsername(username);
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
-
-            string linkToRegisterOTP = _configuration.Value.BaseHostUrl + "/Auth/SetupOTP?token=" + tokenOTPRegister;
+            
+            string linkToRegisterOTP =
+                $"{_configuration.Value.BaseHostUrl}/Account/SetupOTP?token={tokenOTPRegister}&username={username}";
 
             body = string.Format(body, username, linkToRegisterOTP);
 
@@ -114,6 +113,32 @@ namespace HRP.Services
             };
 
             _emailService.SendEmail(mailModel);
+        }
+
+        public bool UpdateOTPStatus(int userId, bool isOTPRegistered)
+        {
+            var criteria = new UpdateUserOTPStatusCriteria
+            {
+                UserId = userId,
+                IsOTPRegistered = isOTPRegistered
+            };
+
+            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+
+            return result.IsSuccessful;
+        }
+
+        public bool UpdateSecretKey(string username, string secretKey)
+        {
+            var criteria = new UpdateSecretKeyCriteria
+            {
+                Username = username,
+                SecretKey = secretKey
+            };
+
+            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+
+            return result.IsSuccessful;
         }
     }
 }

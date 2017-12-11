@@ -1,4 +1,4 @@
-$("form").submit(function( event ) {
+$("#login").submit(function( event ) {
     event.preventDefault();
     var allInputs = $( "input").length;
     var filledInputs = 0;

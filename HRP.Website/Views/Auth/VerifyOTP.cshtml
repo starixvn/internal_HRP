@@ -2,10 +2,10 @@
 
 @{
     Layout = "_LoginLayout";
+    ViewData["Title"] = "OTP Code Validation";
 }
 
 <section class="block -otp-code-validation">
-    @section title{ OTP Code Validation }
     <form asp-action="VerifyOTP" asp-controller="Auth">
         <div class="circle-large">
             <span class="icon-otp"></span>
