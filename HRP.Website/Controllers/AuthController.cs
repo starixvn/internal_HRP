@@ -85,7 +85,7 @@ namespace HRP.Website.Controllers
                     if (!user.IsOTPRegistered)
                     {
                         _userService.OTPRegister(user.Username);
-                        return RedirectToAction(nameof(RegisterOTPNoti));
+                        return RedirectToAction("Index","Account", "otp");
                     }
 
                     _sessionService.Username = user.Username;

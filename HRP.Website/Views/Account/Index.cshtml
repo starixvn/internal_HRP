@@ -1,0 +1,42 @@
+﻿@model string
+@{
+    ViewData["Title"] = "Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script>
+        $('#@Model').tab('show');
+    </script>
+}
+
+<section class="content-container">
+    <div class="content">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation">
+                <a href="#profile" aria-controls="home" role="tab" data-toggle="tab">Profile</a>
+            </li>
+            <li role="presentation">
+                <a href="#password" aria-controls="profile" role="tab" data-toggle="tab">Change your password</a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="#otp" aria-controls="messages" role="tab" data-toggle="tab">OTP</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="profile">
+                @Html.Partial("_Profile")
+            </div>
+            <div role="tabpanel" class="tab-pane" id="password">
+                @Html.Partial("_Password")
+            </div>
+            <div role="tabpanel" class="tab-pane otp active" id="otp">
+                @Html.Partial("_OTP")
+            </div>
+        </div>
+    </div>
+</section>

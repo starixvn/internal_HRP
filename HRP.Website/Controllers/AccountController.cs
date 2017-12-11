@@ -1,11 +1,12 @@
 namespace HRP.Website.Controllers
 {
-    using HRP.Core.Filters;
-    using HRP.Core.Services;
-    using HRP.Criteria.User;
-    using HRP.Models;
-    using Microsoft.AspNetCore.Mvc;
     using BCrypt.Net;
+    using Core.Filters;
+    using Core.Services;
+    using Criteria.User;
+    using HRP.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
     public class AccountController : Controller
@@ -18,6 +19,27 @@ namespace HRP.Website.Controllers
         {
             _sessionService = sessionService;
             _baseService = baseService;
+        }
+
+        [AllowAnonymous]
+        public IActionResult Index(string activePanel)
+        {
+            return View(activePanel);
+        }
+
+        public IActionResult Profile()
+        {
+            return View("_Profile");
+        }
+
+        public IActionResult Password()
+        {
+            return View("_Password");
+        }
+
+        public IActionResult OTP()
+        {
+            return View("_OTP");
         }
 
         public IActionResult ChangePassword()
