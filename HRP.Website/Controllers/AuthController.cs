@@ -1,5 +1,6 @@
 namespace HRP.Website.Controllers
 {
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
     using Criteria.User;
@@ -10,7 +11,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
-    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {
@@ -103,11 +103,6 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        ////public IActionResult RegisterOTPNoti()
-        ////{
-        ////    return View();
-        ////}
-
         public IActionResult ResetPassword(string token)
         {
             var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
@@ -143,99 +138,9 @@ namespace HRP.Website.Controllers
             return BadRequest();
         }
 
-        ////public IActionResult SetupOtp(string token)
-        ////{
-        ////    var secretKey = Utilities.GenerateSecretKey();
-        ////    var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
-
-        ////    if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
-        ////    {
-        ////        var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
-        ////        if (user == null)
-        ////        {
-        ////            return BadRequest();
-        ////        }
-        ////    }
-
-        ////    var viewModel = new SetupOtpViewModel
-        ////    {
-        ////        SecretKey = secretKey,
-        ////        QrCodeLink = setupCode.QrCodeSetupImageUrl,
-        ////        TextCode = setupCode.ManualEntryKey
-        ////    };
-
-        ////    return View(viewModel);
-        ////}
-
-        ////public IActionResult VerifyOTP()
-        ////{
-        ////    if (string.IsNullOrEmpty(_sessionService.Username))
-        ////    {
-        ////        return RedirectToAction(nameof(Login));
-        ////    }
-
-        ////    return View(new TwoFactorAuthenticatorViewModel());
-        ////}
-
-        ////[HttpPost]
-        ////public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
-        ////{
-        ////    var user = _userService.GetUserByUsername(_sessionService.Username);
-
-        ////    if (!ModelState.IsValid || user == null)
-        ////    {
-        ////        return RedirectToAction(nameof(Login));
-        ////    }
-
-        ////    var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
-
-        ////    var isSkipOTP = viewModel.IsByPassTwoFactor;
-
-        ////    if (isOTPValid || isSkipOTP)
-        ////    {
-        ////        _sessionService.UserId = user.UserId;
-        ////        _sessionService.Username = user.Username;
-
-        ////        _sessionService.MenuItems = await _baseService.GetDataAsync<MenuItem>(
-        ////            new GetMenuByUserIdCriteria
-        ////            {
-        ////                UserId = user.UserId
-        ////            }).ConfigureAwait(false);
-
-        ////        _sessionService.Functions = await _baseService.GetDataAsync<FunctionModel>(
-        ////            new GetFunctionByUserIdCriteria
-        ////            {
-        ////                UserId = user.UserId
-        ////            }).ConfigureAwait(false);
-
-        ////        var claims = new List<Claim>
-        ////        {
-        ////            new Claim(ClaimTypes.Name, user.Username),
-        ////            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-        ////        };
-
-        ////        var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
-
-        ////        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).ConfigureAwait(false);
-
-        ////        _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
-
-        ////        return RedirectToAction("Index", "Home");
-        ////    }
-
-        ////    ViewBag.ErrorMessage = Message.InvalidOTP;
-
-        ////    return RedirectToAction(nameof(VerifyOTP));
-        ////}
-
         private static bool IsPasswordValid(string modelPassword, string hashedPassword)
         {
             return BCrypt.Verify(modelPassword, hashedPassword);
         }
-
-        ////private bool IsAuthenticated()
-        ////{
-        ////    return _sessionService.UserId > 0 && !string.IsNullOrEmpty(_sessionService.Username);
-        ////}
     }
 }

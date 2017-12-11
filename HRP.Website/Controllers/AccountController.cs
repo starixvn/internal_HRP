@@ -106,10 +106,6 @@ namespace HRP.Website.Controllers
 
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.Otp);
 
-////#if DEBUG
-////            isOTPValid = true;
-////#endif
-
             if (isOTPValid)
             {
                 var result = _userService.UpdateOTPStatus(user.UserId, true);
