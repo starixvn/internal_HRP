@@ -36,7 +36,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             <li><a href="#"><span class="icon-edit"></span>Edit Details</a></li>
-                            <li><a href="#"><span class="icon-permission"></span>Edit Permission</a></li>
+                            <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
                         </ul>
                     </div>
                 </td>

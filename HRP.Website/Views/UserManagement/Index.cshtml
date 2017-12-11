@@ -4,7 +4,7 @@
     <div class="content">
         <h2 class="title">User Management</h2>
         <form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
-            data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
+              data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
             <div class="group">
                 <label class="text">@ViewLang.Status</label>
                 <select class="control" name="status">
@@ -16,18 +16,43 @@
             <button type="submit" class="button -primary">@ViewLang.Submit</button>
         </form>
 
-        <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
-            <span class="icon-add"></span>
-            @ViewLang.CreateNewUser
-        </a>
+        <div class="clearfix ">
+            <div class="pull-left">
+                <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
+                    <span class="icon-add"></span>
+                    @ViewLang.CreateNewUser
+                </a>
+            </div>
+
+            <div class="pull-right">
+                <input type="search" id="quick-search" />
+            </div>
+        </div>
+
         <div id="result">
+            <table id="user-table" class="dataTable table table-bordered table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>@ViewLang.UserTable_UserId</th>
+                        <th>@ViewLang.UserTable_Username</th>
+                        <th>@ViewLang.UserTable_FullName</th>
+                        <th>@ViewLang.UserTable_Phone</th>
+                        <th>@ViewLang.UserTable_Email</th>
+                        <th>@ViewLang.UserTable_Creator</th>
+                        <th>@ViewLang.UserTable_Creator</th>
+                        <th>@ViewLang.UserTable_Active</th>
+                        <th>@ViewLang.UserTable_Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
 
         <div class="modal fade" id="user-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <form asp-action="UpdateUserStatus" asp-controller="UserManagement"
-                        data-ajax-method="post" data-ajax="true" data-ajax-success="userManagement.onUpdateUserStatus">
+                          data-ajax-method="post" data-ajax="true" data-ajax-success="userManagement.onUpdateUserStatus">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Confirmation</h4>
@@ -48,14 +73,27 @@
     </div>
 </section>
 
+<environment include="Development">
+    @section Styles{
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+    }
 
-@section Styles{
-    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
-}
+    @section Scripts{
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+    }
+</environment>
+<environment exclude="Development">
+    @section Styles{
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
+    }
 
-@section Scripts{
-    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
-}
+    @section Scripts{
+        <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
+    }
+</environment>
