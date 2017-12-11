@@ -1,5 +1,6 @@
 ﻿@using HRP.Resources
-
+@using HRP.Models.UserManagement
+@model UserManagementViewModel
 <section class="wrapper">
     <div class="content">
         <h2 class="title">User Management</h2>
@@ -18,10 +19,13 @@
 
         <div class="clearfix ">
             <div class="pull-left">
-                <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
-                    <span class="icon-add"></span>
-                    @ViewLang.CreateNewUser
-                </a>
+                @if (Model.CanCreateNewUser)
+                {
+                    <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
+                        <span class="icon-add"></span>
+                        @ViewLang.CreateNewUser
+                    </a>
+                }
             </div>
 
             <div class="pull-right">

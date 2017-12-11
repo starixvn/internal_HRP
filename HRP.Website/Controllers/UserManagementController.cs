@@ -14,6 +14,7 @@
     using HRP.Criteria;
     using HRP.Criteria.User;
     using HRP.Models;
+    using HRP.Models.UserManagement;
     using HRP.Models.UserPermisson;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
@@ -33,16 +34,24 @@
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new UserManagementViewModel
+            {
+                CanCreateNewUser = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host)
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult GetUsers(bool? status)
         {
             var criteria = new GetUsersCriteria { IsActive = status };
             var users = baseService.GetData<UserModel>(criteria);
+            ViewBag.CanEditUserInfo = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
 
             return PartialView("_Users", users);
         }
@@ -126,6 +135,7 @@
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult CreateUser()
         {
             var viewModel = new CreateUserViewModel();
@@ -134,6 +144,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult CreateUser(CreateUserViewModel viewModel)
         {
             if (ModelState.IsValid)
