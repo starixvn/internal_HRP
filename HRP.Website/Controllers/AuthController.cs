@@ -1,17 +1,17 @@
 namespace HRP.Website.Controllers
 {
     using BCrypt.Net;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Criteria.User;
+    using Core.Model;
+    using Core.Services;
+    using Criteria;
+    using Criteria.User;
     using HRP.Models;
     using HRP.Models.Authentication;
-    using HRP.Resources;
-    using HRP.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using Resources;
+    using Services;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -45,7 +45,6 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -68,7 +67,7 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-        public ActionResult Login()
+        public IActionResult Login()
         {
             var model = new LoginViewModel();
             return View(model);
@@ -100,7 +99,6 @@ namespace HRP.Website.Controllers
             return View(viewModel);
         }
 
-        [HttpGet("[action]"), HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {
             _sessionService.ClearAll();
@@ -114,7 +112,6 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult ResetPassword(string token)
         {
             var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
