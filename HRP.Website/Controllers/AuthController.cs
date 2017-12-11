@@ -94,7 +94,7 @@ namespace HRP.Website.Controllers
                             IsOTPRegistered = false
                         };
 
-                        return RedirectToAction("Index","Account", accountViewModel);
+                        return RedirectToAction("Index", "Account", accountViewModel);
                     }
 
                     _sessionService.Username = user.Username;
@@ -125,7 +125,7 @@ namespace HRP.Website.Controllers
         {
             var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
-            if (user != null)
+            if (user == null)
             {
                 return NotFound();
             }

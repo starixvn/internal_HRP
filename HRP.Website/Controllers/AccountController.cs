@@ -50,7 +50,7 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult Password(ChangePasswordViewModel viewlModel)
+        public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
         {
             if (ModelState.IsValid)
             {
