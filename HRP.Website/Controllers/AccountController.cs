@@ -51,13 +51,13 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {
-#if DEBUG
-            var testUser = _userService.GetUserByUsername(username);
-            var secretKey = testUser.SecretKey;
-#else
+//#if DEBUG
+//            var testUser = _userService.GetUserByUsername(username);
+//            var secretKey = testUser.SecretKey;
+//#else
             var secretKey = Utilities.GenerateSecretKey();
             _userService.UpdateSecretKey(username, secretKey);
-#endif
+//#endif
 
             var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
 

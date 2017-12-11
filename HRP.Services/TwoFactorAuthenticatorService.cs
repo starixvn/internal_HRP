@@ -1,5 +1,6 @@
 namespace HRP.Services
 {
+    using System;
     using Google.Authenticator;
 
     public class TwoFactorAuthenticatorService : ITwoFactorAuthenticatorService
@@ -7,7 +8,7 @@ namespace HRP.Services
         private readonly string AppName = "HRP";
         private readonly int qrImageWidth = 200;
         private readonly int qrImageHeight = 200;
-        ////private readonly int otpExpireTime = 30;
+        private readonly int otpExpireTime = 0;
 
         public SetupCode SetupGoogleAuthInfo(string username, string secretKey)
         {
@@ -32,10 +33,10 @@ namespace HRP.Services
         public bool ValidateOTPCode(string username, string secretKey, string otpCode)
         {
             var uniqueKey = username + secretKey;
-            ////var timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
+            var timeExpireOTP = TimeSpan.FromSeconds(otpExpireTime);
 
             var twoFactorAuthenticator = new TwoFactorAuthenticator();
-            ////twoFactorAuthenticator.ValidateTwoFactorPIN(uniqueKey, otpCode.ToString(), timeExpireOTP);
+            twoFactorAuthenticator.ValidateTwoFactorPIN(uniqueKey, otpCode, timeExpireOTP);
 
             // document: http://brandonpotter.com/2014/09/07/implementing-free-two-factor-authentication-in-net-using-google-authenticator/
             // accept +/- 5 minute tolerate
