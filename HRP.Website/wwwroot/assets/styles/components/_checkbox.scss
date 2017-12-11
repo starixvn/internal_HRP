@@ -9,6 +9,7 @@
         cursor: pointer;        
 
         &:before {    
+            @include border-radius(2px);
             content: "";
             position: absolute;
             left: 0;            
@@ -16,8 +17,7 @@
             height: 18px;            
             width: 18px;
             border: 1px solid #ccc;
-            background-color: #fff;
-        
+            background-color: #fff;        
         }
 
         &:after {
@@ -40,16 +40,16 @@
       margin: 0;
     }
 
-    input[type="checkbox"]:checked + label:after {
+    input[type="checkbox"]:checked ~ label:after {
       border-color: #fff;
     }
 
-    input[type="checkbox"]:checked + label:before {
+    input[type="checkbox"]:checked ~ label:before {
       border-color: #1973b2;
       background-color: #1973b2;
     }
 
-    input[type="checkbox"]:checked + label:after {
+    input[type="checkbox"]:checked ~ label:after {
       opacity: 1;
     }
 }

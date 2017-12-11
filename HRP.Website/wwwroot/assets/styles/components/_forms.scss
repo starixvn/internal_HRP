@@ -11,19 +11,33 @@
 
         .control {
             display: block;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
     }
 }
 
 .form-information {
     .text {
+        position: relative;
         display: block;
         margin-bottom: 10px;
         font-weight: normal;
         text-transform: capitalize;
         font-weight: bold;
         color: #666;
+
+        &.-has-required {
+            display: inline-block;
+            clear: both;
+        }
+
+        &.-has-required:after {
+            content: "*";
+            position: absolute;
+            right: -12px;
+            top: 2px;
+            color: #ff0000;
+        }
     }
 
     .control {
@@ -54,12 +68,29 @@
         }
     }
 
+    .group-control.-option-check {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 10px;
+
+        .text {
+            margin-right: 16px;
+            margin-bottom: 0;
+        }
+
+        .checkbox {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+
     .required {
         color: #ff0000;
         margin-left: 4px;
     }
-
-    .msg-error {
+    
+    .msg-error, .text-danger {
         margin-top: 10px;
     }
+    
 }

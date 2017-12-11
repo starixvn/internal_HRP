@@ -10,8 +10,8 @@
             'paginate': {
                 'first': 'First',
                 'last': 'Last',
-                'next': '<i class="glyphicon glyphicon-menu-right"></i>',
-                'previous': '<i class="glyphicon glyphicon-menu-left"></i>'
+                'next': '<i class="glyphicon glyphicon-menu-right icon-next"></i>',
+                'previous': '<i class="glyphicon glyphicon-menu-left icon-prev"></i>'
             },
         },
 

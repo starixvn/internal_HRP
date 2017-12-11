@@ -17,7 +17,7 @@
             <button type="submit" class="button -primary">@ViewLang.Submit</button>
         </form>
 
-        <div class="clearfix ">
+        <div class="top-header">
             <div class="pull-left">
                 @if (Model.CanCreateNewUser)
                 {
@@ -27,9 +27,9 @@
                     </a>
                 }
             </div>
-
-            <div class="pull-right">
-                <input type="search" id="quick-search" />
+            <div class="pull-right search-box">
+                <input type="search" id="quick-search" class="control" placeholder="Search" />
+                <span class="glyphicon glyphicon-search icon-search"></span>
             </div>
         </div>
 

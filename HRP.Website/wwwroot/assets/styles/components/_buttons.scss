@@ -1,17 +1,18 @@
 ﻿.button {
+    @include border-radius(2px); 
+    @include transition($transition-common);
+    @include box-shadow-multiple("0 2px 2px 0px rgba(0,0,0,0.3)");
     display: inline-block;
     height: 36px;
     line-height: 36px;
     padding-left: 24px;
     padding-right: 24px;
     border: none;
-    outline: none;    
-    @include border-radius(2px);    
+    outline: none;
     cursor: pointer;
     font-size: inherit;
     font-weight: bold;  
     text-transform: capitalize;
-    @include transition($transition-common);
 
     &.-primary {
         background-color: $btn-primary-bg;

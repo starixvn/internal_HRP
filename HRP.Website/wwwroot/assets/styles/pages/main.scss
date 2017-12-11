@@ -212,6 +212,26 @@ body {
     color: #333;
 }
 
+.breadcrumb {
+    padding-left: 0;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 20px;
+
+    a {
+        color: $text-color;
+    }
+
+    a:hover {
+        color: $link-color;
+        text-decoration: none;
+    }
+
+    > .active {
+        color: #0175c7;
+    }
+}
+
 /* Icons */
 
 .icon-arrow-down {

@@ -11,16 +11,30 @@
 
 .search-form .group .control {
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .form-information .text {
+  position: relative;
   display: block;
   margin-bottom: 10px;
   font-weight: normal;
   text-transform: capitalize;
   font-weight: bold;
   color: #666;
+}
+
+.form-information .text.-has-required {
+  display: inline-block;
+  clear: both;
+}
+
+.form-information .text.-has-required:after {
+  content: "*";
+  position: absolute;
+  right: -12px;
+  top: 2px;
+  color: #ff0000;
 }
 
 .form-information .control {
@@ -55,13 +69,69 @@
   font-size: 20px;
 }
 
+.form-information .group-control.-option-check {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-information .group-control.-option-check .text {
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+.form-information .group-control.-option-check .checkbox {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .form-information .required {
   color: #ff0000;
   margin-left: 4px;
 }
 
-.form-information .msg-error {
+.form-information .msg-error, .form-information .text-danger {
   margin-top: 10px;
+}
+
+.top-header {
+  -webkit-border-radius: 2px 2px 0 0;
+  -khtml-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  -ms-border-radius: 2px 2px 0 0;
+  -o-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+}
+
+.top-header .create-user:hover {
+  text-decoration: none;
+}
+
+.top-header .create-user .icon-add {
+  font-size: 11px;
+}
+
+.top-header .search-box {
+  position: relative;
+  width: 185px;
+  height: 36px;
+  font-weight: bold;
+}
+
+.top-header .control {
+  width: 100%;
+}
+
+.top-header .icon-search {
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .table th, .table td {
@@ -90,37 +160,14 @@
   border-bottom-width: 1px;
 }
 
-.create-user:hover {
-  text-decoration: none;
+.table .checkbox label:before {
+  height: 16px;
+  width: 16px;
 }
 
-.search-box {
-  width: 185px;
-}
-
-.table .config-action {
-  display: inline-block;
-}
-
-.table .icon-configuration {
-  color: #1973b2;
-}
-
-.table .dropdown-menu {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  right: 0;
-  left: auto;
-  border: 1px solid #1973b2;
-}
-
-.table .dropdown-menu > li > a {
-  padding-top: 6px;
-  padding-bottom: 6px;
+.table .checkbox label:after {
+  top: 4px;
+  width: 9px;
 }
 
 .dataTables_wrapper .dataTables_length .form-control {
@@ -130,6 +177,12 @@
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
+  -webkit-box-shadow: none;
+  -khtml-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
   outline: none;
   height: 32px;
   line-height: 32px;
@@ -139,6 +192,11 @@
   border: 1px solid #d9d9d9;
   font-size: inherit;
   color: #333;
+}
+
+.pagination .icon-prev, .pagination .icon-next {
+  font-size: 10px;
+  font-family: 'Glyphicons Halflings';
 }
 
 .pagination .paginate_button.active a,
@@ -170,6 +228,13 @@
   color: #fff;
 }
 
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+  background-color: #fff;
+}
+
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
   border-top-left-radius: 2px;
@@ -180,6 +245,40 @@
 .pagination > li:last-child > span {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
+}
+
+.create-user:hover {
+  text-decoration: none;
+}
+
+.search-box {
+  width: 185px;
+}
+
+.table .config-action {
+  display: inline-block;
+}
+
+.table .icon-configuration {
+  padding-right: 5px;
+  color: #1973b2;
+}
+
+.table .dropdown-menu {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  right: 0;
+  left: auto;
+  border: 1px solid #1973b2;
+}
+
+.table .dropdown-menu > li > a {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 /* Create User */
