@@ -108,7 +108,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.Otp);
+            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.Username, user.SecretKey, viewModel.Otp);
 
             if (isOTPValid)
             {
