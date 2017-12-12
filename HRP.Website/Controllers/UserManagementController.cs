@@ -164,6 +164,11 @@
         public IActionResult EditUser(int id)
         {
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
+            if(viewModel.IsSystemAdmin && !Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value))
+            {
+                return RedirectToAction("Index");
+            }
+
             return View(viewModel);
         }
 

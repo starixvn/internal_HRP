@@ -21,5 +21,7 @@
         public string CreatedBy { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsSystemAdmin { get; set; }
     }
 }

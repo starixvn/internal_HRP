@@ -28,5 +28,7 @@
 
         [Display(ResourceType = typeof(Message), Name = "UserIsActiveLabel")]
         public bool IsActive { get; set; }
+
+        public bool IsSystemAdmin { get; set; }
     }
 }

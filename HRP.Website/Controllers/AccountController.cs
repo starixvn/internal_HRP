@@ -8,6 +8,7 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using HRP.Core.Constants;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -174,7 +175,8 @@ namespace HRP.Website.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.GivenName, user.FullName)
+                    new Claim(ClaimTypes.GivenName, user.FullName),
+                    new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
                 };
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));

@@ -1,4 +1,5 @@
-﻿@using HRP.Models
+﻿@using HRP.Core.Constants
+@using HRP.Models
 @using HRP.Resources
 @model IEnumerable<UserModel>
 
@@ -45,8 +46,21 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             @if (canEditUserInfo)
                             {
-                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
-                                <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
+                                var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
+
+                                if (!user.IsSystemAdmin)
+                                {
+                                    <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
+                                    <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
+                                }
+                                else
+                                {
+                                    if (isSystemAdmin)
+                                    {
+                                        <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
+                                    }
+                                }
+
                             }
                         </ul>
                     </div>

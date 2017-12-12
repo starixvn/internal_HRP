@@ -27,5 +27,7 @@ namespace HRP.Models
         public int CreatedBy { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        public bool IsSystemAdmin { get; set; }
     }
 }
