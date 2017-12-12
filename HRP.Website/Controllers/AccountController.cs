@@ -45,12 +45,6 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult Index(AccountViewModel viewModel)
         {
-            var user = _userService.GetUserByUsername(_sessionService.Username);
-            if (viewModel.ActivePanel == null)
-            {
-                
-            }
-
             return View(viewModel);
         }
 

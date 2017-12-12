@@ -37,9 +37,8 @@
     <li class="steps">
         <h2 class="sub-title">Create an account by scanning this QR code with Sophos</h2>
         <div class="qr-code">
-            @*<img class="img" src="@Model.QrCodeLink" />*@
             <canvas id="setup-otp-qrcode"></canvas>
-            <p>The new account will be named after your username "<span class="text-username">@User.Identity.Name</span>"</p>
+            <p>The new account will be named after your username "<span class="text-username">@Model.Username</span>"</p>
         </div>
 
         <div class="panel-group manualQRCode" id="manualQRCode" role="tablist" aria-multiselectable="true">
@@ -78,11 +77,9 @@
               method="post"
               id="verify-setup-otp-form">
             <div class="msg-success -has-icon" id="verify-setup-otp-success" style="display: none;">Your Authenticator App is verified</div>
-            <div class="msg-fail -has-icon" id="verify-setup-otp-fail" style="display: none;">Your Authenticator App is verified</div>
+            <div class="msg-fail -has-icon" id="verify-setup-otp-fail" style="display: none;">Your Authenticator App is NOT verified</div>
             <div class="form-group">
-                @*<label class="text">OTP</label>*@
                 <label asp-for="Otp" class="text"></label>
-                @*<input maxlength="6" type="password" class="control" name="otp" id="txtOtp" />*@
                 <input asp-for="Otp" />
                 <input type="hidden" asp-for="Username" />
             </div>

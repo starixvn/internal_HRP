@@ -27,7 +27,7 @@
             <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
         </div>
         <div class="group list-button">
-            <input type="button" class="button -second" value="Cancel">
+            <a asp-action="Login" asp-controller="Auth" class="button -second">Cancel</a>
             <input type="submit" class="button -primary" value="Validate OTP" />
         </div>
     </form>

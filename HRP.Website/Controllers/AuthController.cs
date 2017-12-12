@@ -62,6 +62,7 @@ namespace HRP.Website.Controllers
 
         public IActionResult Login()
         {
+            _sessionService.ClearAll();
             var model = new LoginViewModel();
             return View(model);
         }
