@@ -10,6 +10,6 @@
 
         public override string GetSettingKey() => "User_UpdateTokenOTPRegister";
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(TokenOTPRegister);
+        public override bool IsValid() => !string.IsNullOrEmpty(Username);
     }
 }

@@ -92,6 +92,19 @@ namespace HRP.Services
             return result.IsSuccessful ? tokenOTPRegister : null;
         }
 
+        public bool ResetTokenOTPRegister(string username)
+        {
+            var criteria = new UpdateTokenOTPRegisterCriteria
+            {
+                Username = username,
+                TokenOTPRegister = null
+            };
+
+            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+
+            return result.IsSuccessful;
+        }
+
         public void SendMailToRegisterOTP(string username, string tokenOTPRegister)
         {
             var user = GetUserByUsername(username);

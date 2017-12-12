@@ -12,6 +12,8 @@ namespace HRP.Services
 
         string GenerateTokenOTPRegister(string username);
 
+        bool ResetTokenOTPRegister(string username);
+
         void SendMailToRegisterOTP(string username, string tokenOTPRegister);
 
         bool UpdateOTPStatus(int userId, bool isOTPRegistered);
