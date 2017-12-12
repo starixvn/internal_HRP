@@ -14,14 +14,12 @@ namespace HRP.Services
         public SetupCode SetupGoogleAuthInfo(string username, string secretKey)
         {
             var twoFactorAuthen = new TwoFactorAuthenticator();
-            var uniqueKey = username + secretKey;
-            var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, uniqueKey, _qrImageWidth, _qrImageHeight);
+            var setupInfo = twoFactorAuthen.GenerateSetupCode(_appName, username, secretKey, _qrImageWidth, _qrImageHeight);
             return setupInfo;
         }
 
-        public bool ValidateOTPCode(string username, string secretKey, string otpCode)
+        public bool ValidateOTPCode(string secretKey, string otpCode)
         {
-            var uniqueKey = username + secretKey;
             var timeExpireOTP = TimeSpan.FromSeconds(_otpExpireTime);
 
             var twoFactorAuthenticator = new TwoFactorAuthenticator();
@@ -29,9 +27,9 @@ namespace HRP.Services
             // document: http://brandonpotter.com/2014/09/07/implementing-free-two-factor-authentication-in-net-using-google-authenticator/
             // accept +/- 5 minute tolerate
 
-            var validOTP = twoFactorAuthenticator.ValidateTwoFactorPIN(uniqueKey, otpCode, timeExpireOTP);
+            var validOTP = twoFactorAuthenticator.ValidateTwoFactorPIN(secretKey, otpCode, timeExpireOTP);
             Debug.WriteLine("OTP: " + otpCode);
-            Debug.WriteLine("Valid codes" + twoFactorAuthenticator.GetCurrentPINs(uniqueKey, timeExpireOTP)[0]);
+            Debug.WriteLine("Valid codes" + twoFactorAuthenticator.GetCurrentPINs(secretKey, timeExpireOTP)[0]);
 
             return validOTP;
         }

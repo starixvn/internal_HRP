@@ -6,6 +6,6 @@ namespace HRP.Services
     {
         SetupCode SetupGoogleAuthInfo(string username, string secretKey);
 
-        bool ValidateOTPCode(string username, string secretKey, string otpCode);
+        bool ValidateOTPCode(string secretKey, string otpCode);
     }
 }

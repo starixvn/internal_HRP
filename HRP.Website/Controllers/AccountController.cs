@@ -108,7 +108,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.Username, user.SecretKey, viewModel.Otp);
+            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 
             if (isOTPValid)
             {
@@ -149,7 +149,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(_sessionService.Username, user.SecretKey, viewModel.OTPCode);
+            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
 
             var isSkipOTP = viewModel.IsByPassTwoFactor;
 
@@ -194,11 +194,6 @@ namespace HRP.Website.Controllers
         private bool IsAuthenticated()
         {
             return _sessionService.UserId > 0 && !string.IsNullOrEmpty(_sessionService.Username);
-        }
-
-        public IActionResult ChangePassword()
-        {
-            return View();
         }
 
         [HttpPost]
