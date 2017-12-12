@@ -12,7 +12,6 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Criteria.User;
     using HRP.Models;
     using HRP.Models.UserManagement;
     using HRP.Models.UserPermisson;
@@ -80,7 +79,8 @@
         {
             var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
-            var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = sessionService.UserId }).ConfigureAwait(false);
+            var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id }).ConfigureAwait(false);
+            var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id }).ConfigureAwait(false);
             var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
 
             var model = new AssignPermissonViewModel
@@ -89,6 +89,7 @@
                 Functions = functions,
                 Companies = companies,
                 UserPermissions = permissions,
+                Username = user != null ? user.Username : string.Empty,
                 IsHost = isHost
             };
 
@@ -162,7 +163,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult EditUser(int id)
         {
-            var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserCriteria { UserId = id });
+            var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
             return View(viewModel);
         }
 

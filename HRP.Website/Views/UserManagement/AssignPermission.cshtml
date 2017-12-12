@@ -11,7 +11,7 @@
 
 <ol class="breadcrumb">
     <li><a asp-action="index">@ViewLang.UserManagement</a></li>
-    <li class="active">@ViewData["Title"]</li>
+    <li class="active">@(string.Format("{0} to User '{1}'", ViewData["Title"], Model.Username))</li>
 </ol>
 
 <input type="hidden" asp-for="@Model.UserId" />

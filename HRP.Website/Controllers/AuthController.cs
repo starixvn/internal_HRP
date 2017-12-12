@@ -3,9 +3,9 @@ namespace HRP.Website.Controllers
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
-    using Criteria.User;
     using HRP.Models;
     using HRP.Models.UserProfile;
+    using HRP.Criteria;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
@@ -79,7 +79,7 @@ namespace HRP.Website.Controllers
                     if (!user.IsOTPRegistered)
                     {
                         var otpRegisterToken = _userService.GenerateTokenOTPRegister(user.Username);
-                        
+
                         _userService.SendMailToRegisterOTP(user.Username, otpRegisterToken);
 
                         return RedirectToAction("RegisterOTPNotification", "Account");
@@ -136,6 +136,7 @@ namespace HRP.Website.Controllers
                     return RedirectToAction(nameof(ChangePasswordSuccessful));
                 }
             }
+
             return BadRequest();
         }
 

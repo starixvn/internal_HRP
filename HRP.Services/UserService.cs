@@ -4,7 +4,6 @@ namespace HRP.Services
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using Criteria.User;
     using Microsoft.Extensions.Options;
     using Models;
     using Resources;
@@ -98,7 +97,7 @@ namespace HRP.Services
             var user = GetUserByUsername(username);
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
-            
+
             string linkToRegisterOTP =
                 $"{_configuration.Value.BaseHostUrl}/Account/SetupOTP?token={tokenOTPRegister}&username={username}";
 

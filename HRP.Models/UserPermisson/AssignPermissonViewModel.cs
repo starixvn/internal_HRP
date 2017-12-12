@@ -12,6 +12,8 @@
 
         public IEnumerable<UserPermissionModel> UserPermissions { get; set; }
 
+        public string Username { get; set; }
+
         public bool IsHost { get; set; }
     }
 }
