@@ -1,7 +1,7 @@
 ﻿var userManagement = (function ($) {
     $('#user-table').dataTable({
         'ordering': false,
-        'lengthMenu': [[10 ,20, 50, 100], [10 ,20, 50, 100]],
+        'lengthMenu': [[20, 50, 100], [20, 50, 100]],
         'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
         'info': false,
         'language': {
