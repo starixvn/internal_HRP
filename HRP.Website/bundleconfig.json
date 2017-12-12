@@ -90,5 +90,13 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/js/change-password.min.js",
+    "inputFiles": [ "wwwroot/assets/js/change-password.js" ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

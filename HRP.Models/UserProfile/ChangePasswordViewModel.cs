@@ -1,10 +1,12 @@
 ﻿namespace HRP.Models.UserProfile
 {
     using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
 
     public class ChangePasswordViewModel : ResetPasswordViewModel
     {
-        [Required]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PasswordRequired")]
         public string OldPassword { get; set; }
     }
 }

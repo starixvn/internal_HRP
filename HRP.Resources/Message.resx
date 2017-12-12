@@ -177,4 +177,7 @@
   <data name="PasswordChangeSuccessful" xml:space="preserve">
     <value>Your password has been successfully changed.</value>
   </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>This password don't match. Try again?</value>
+  </data>
 </root>

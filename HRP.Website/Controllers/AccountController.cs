@@ -8,6 +8,7 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -41,18 +42,26 @@ namespace HRP.Website.Controllers
             _userService = userService;
         }
 
-        [AllowAnonymous]
-        public IActionResult Index(AccountViewModel viewModel)
-        {
-            return View(viewModel);
-        }
+        //[AllowAnonymous]
+        //public IActionResult Index(AccountViewModel viewModel)
+        //{
+        //    var user = _userService.GetUserByUsername(_sessionService.Username);
+        //    if (viewModel.ActivePanel == null)
+        //    {
+        //    }
 
-        [AllowAnonymous]
+        //    return View(viewModel);
+        //}
+                [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {
+            //#if DEBUG
+            //            var testUser = _userService.GetUserByUsername(username);
+            //            var secretKey = testUser.SecretKey;
+            //#else
             var secretKey = Utilities.GenerateSecretKey();
             _userService.UpdateSecretKey(username, secretKey);
-
+            //#endif
             //TODO: remove after test
             ////var secretKey = _userService.GetUserByUsername(username).SecretKey;
 
@@ -198,29 +207,25 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(_sessionService.Username);
+                var isValidOldPassword = BCrypt.Verify(viewlModel.OldPassword, user.Password);
 
-                if (BCrypt.Verify(viewlModel.OldPassword, user.Password))
+                if (!isValidOldPassword)
                 {
-                    var criteria = new UpdateUserPasswordCriteria
-                    {
-                        UserId = _sessionService.UserId,
-                        Password = BCrypt.HashPassword(viewlModel.Password)
-                    };
-
-                    var result = _baseService.ExecuteNonQuery(criteria);
-
-                    if (result.IsSuccessful)
-                    {
-                        ViewBag.Message = Message.PasswordChangeSuccessful;
-                    }
+                    return Json(new { code = -2, message = Message.OldPasswordIncorrect });
                 }
-                else
+
+                var criteria = new UpdateUserPasswordCriteria
                 {
-                    ViewBag.Message = Message.OldPasswordIncorrect;
-                }
+                    UserId = _sessionService.UserId,
+                    Password = BCrypt.HashPassword(viewlModel.Password)
+                };
+
+                var result = _baseService.ExecuteNonQuery(criteria);
+
+                return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
             }
 
-            return RedirectToAction("Index", "Account", "password");
+            return Json(new { code = -1, message = "Error" });
         }
     }
 }

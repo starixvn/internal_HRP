@@ -133,7 +133,8 @@ namespace HRP.Website.Controllers
 
                 if (result.IsSuccessful)
                 {
-                    return RedirectToAction(nameof(ChangePasswordSuccessful));
+                    ViewBag.Message = Message.PasswordChangeSuccessful;
+                    return View();
                 }
             }
 
