@@ -234,6 +234,10 @@ body {
     > li + li:before {
         font-family: "hrp" !important;
         content: "\e90c";
+        color: #333;
+        position: relative;
+        top: 2px;
+        font-weight: normal;
     }
 }
 

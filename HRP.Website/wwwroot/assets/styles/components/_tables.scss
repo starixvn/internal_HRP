@@ -49,11 +49,23 @@
     background-color: $table-header-bg;
     color: $table-header-color;
     text-align: center;
+
+    &.sub-header {
+      background-color: $table-sub-header-bg;
+    }
   }
   
   tbody {
-    td:hover {
+    tr:hover {
       background-color: $table-td-bg-hover;
+    }
+
+    .row-level-parent {
+      background-color: $table-row-level-parent;
+    }
+
+    .col-odd {
+      background-color: $table-col-odd-bg;
     }
   }
 

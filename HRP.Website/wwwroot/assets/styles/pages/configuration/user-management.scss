@@ -26,12 +26,18 @@
         @include border-radius(2px);
         right: 0;
         left: auto;        
-        border: 1px solid #1973b2;        
-    }
+        border: 1px solid #1973b2;       
+        
+        [class^="icon"] {
+            font-size: 18px;
+            position: relative;
+            top: 2px;
+        }
 
-    .dropdown-menu > li >a {
-        padding-top: 6px;
-        padding-bottom: 6px;
+        > li >a {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
     }
 
     &.super-admin-func {
@@ -50,6 +56,42 @@
         &:before {
             top: 85px;
             bottom: auto;
+        }
+    }
+}
+
+/* Assign Permission */
+
+.assign-permission {   
+    .level-parent {
+        color: #1973b2;
+    }
+    
+    .icon-level-first {
+        font-size: 8px;
+        margin-right: 8px;
+    }
+
+    .icon-level-second {
+        font-size: 25px;
+        margin-right: 6px;
+        line-height: 0;
+        position: relative;
+        top: 2px;
+    }
+
+    .icon-level-third {
+        @extend .icon-level-second;
+        padding-left: 30px;
+    }
+
+    .list-button {
+        .button:hover {
+            text-decoration: none;
+        }
+
+        .button.-primary {
+            margin-left: 16px;
         }
     }
 }
