@@ -89,11 +89,11 @@
     "inputFiles": [
       "wwwroot/assets/js/account/otp.js",
       "wwwroot/assets/js/account/index.js",
-      "wwwroot/lib/qrious/qrious.min.js",
-      "wwwroot/assets/js/change-password.js"
+      "wwwroot/assets/js/account/change-password.js",
+      "wwwroot/lib/qrious/qrious.min.js"
     ],
     "minify": {
-      "enabled": true,
+      "enabled": false,
       "renameLocals": true
     }
   }
