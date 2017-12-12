@@ -43,7 +43,6 @@ namespace HRP.Website.Controllers
             _userService = userService;
         }
 
-
         public IActionResult Index(AccountTab tab = AccountTab.Profile)
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
@@ -57,13 +56,22 @@ namespace HRP.Website.Controllers
             return View(accountViewModel);
         }
 
-        public IActionResult ResetOtpDevice()
+        public async Task<IActionResult> ResetOtpDevice()
         {
             // step 1: Reset IsOTPRegistered
             _userService.UpdateOTPStatus(_sessionService.UserId, false);
 
-            // step 2: Sign user out
-            return RedirectToAction("Logout", "Auth");
+            // step 2: Reset OTP token
+            var otpRegisterToken = _userService.GenerateTokenOTPRegister(_sessionService.Username);
+
+            // step 3: Sign user out
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+
+            // step 4: Show SetupOtp screen
+            return RedirectToAction(
+                "SetupOtp",
+                "Account",
+                new { token = otpRegisterToken, username = _sessionService.Username });
         }
 
         [AllowAnonymous]
@@ -76,7 +84,8 @@ namespace HRP.Website.Controllers
 
             if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
             {
-                var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
+                var user = _baseService.GetDataEntity<User>(
+                    new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
                 if (user == null)
                 {
                     return BadRequest();
@@ -187,9 +196,11 @@ namespace HRP.Website.Controllers
                     new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
                 };
 
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+                var principal =
+                    new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).ConfigureAwait(false);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
+                    .ConfigureAwait(false);
 
                 _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
 
