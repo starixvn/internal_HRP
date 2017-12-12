@@ -60,7 +60,7 @@
       background-color: $table-td-bg-hover;
     }
 
-    .row-level-parent {
+    .row-special {
       background-color: $table-row-level-parent;
     }
 
@@ -148,7 +148,7 @@
   > li > a:hover,
   > li > span:focus,
   > li > span:hover {
-    background-color: #fff;
+    background-color: lighten(#1973b2, .1);
   }
 
   > li:first-child > a,

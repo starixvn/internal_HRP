@@ -13,6 +13,17 @@
 }
 
 .table {
+    thead {
+        input[type='checkbox']:checked:before {
+            border-color: 1px solid #fff;
+            background-color: #fff;
+        }
+
+        input[type='checkbox']:checked:after {
+            border-color: #1973b2;
+        }
+    } 
+
     .config-action {
         display: inline-block;
     }
@@ -20,6 +31,12 @@
     .icon-configuration {
         padding-right: 5px;
         color: #1973b2;
+        font-size: 16px;
+    }
+
+    .icon-active {
+        color: #1973b2;
+        font-size: 20px;
     }
 
     .dropdown-menu {
@@ -41,13 +58,16 @@
     }
 
     &.super-admin-func {
-        width: 570px;
+        width: 577px;
     }
+
+    
 }
 
 /* Create User */
 .form-information {
     position: relative;
+    padding-top: 10px;
     
     .note {
         margin-left: 30px;
@@ -63,7 +83,7 @@
 /* Assign Permission */
 
 .assign-permission {   
-    .level-parent {
+    .level-first {
         color: #1973b2;
     }
     
@@ -84,14 +104,22 @@
         @extend .icon-level-second;
         padding-left: 30px;
     }
+    
+    .vertical-bottom {
+        vertical-align: bottom;
+    }
 
-    .list-button {
-        .button:hover {
-            text-decoration: none;
-        }
+    .sub-header input[type='checkbox'] {
+        margin-top: 5px;
+    }   
+}
 
-        .button.-primary {
-            margin-left: 16px;
-        }
+.list-button {
+    .button:hover {
+        text-decoration: none;
+    }
+
+    .button.-primary {
+        margin-left: 16px;
     }
 }

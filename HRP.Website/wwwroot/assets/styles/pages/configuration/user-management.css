@@ -156,7 +156,7 @@
   background-color: #ffe3cb;
 }
 
-.table tbody .row-level-parent {
+.table tbody .row-special {
   background-color: #eee;
 }
 
@@ -251,7 +251,7 @@
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-  background-color: #fff;
+  background-color: #1973b2;
 }
 
 .pagination > li:first-child > a,
@@ -274,6 +274,15 @@
   width: 185px;
 }
 
+.table thead input[type='checkbox']:checked:before {
+  border-color: 1px solid #fff;
+  background-color: #fff;
+}
+
+.table thead input[type='checkbox']:checked:after {
+  border-color: #1973b2;
+}
+
 .table .config-action {
   display: inline-block;
 }
@@ -281,6 +290,12 @@
 .table .icon-configuration {
   padding-right: 5px;
   color: #1973b2;
+  font-size: 16px;
+}
+
+.table .icon-active {
+  color: #1973b2;
+  font-size: 20px;
 }
 
 .table .dropdown-menu {
@@ -307,12 +322,13 @@
 }
 
 .table.super-admin-func {
-  width: 570px;
+  width: 577px;
 }
 
 /* Create User */
 .form-information {
   position: relative;
+  padding-top: 10px;
 }
 
 .form-information .note {
@@ -326,7 +342,7 @@
 }
 
 /* Assign Permission */
-.assign-permission .level-parent {
+.assign-permission .level-first {
   color: #1973b2;
 }
 
@@ -347,11 +363,19 @@
   padding-left: 30px;
 }
 
-.assign-permission .list-button .button:hover {
+.assign-permission .vertical-bottom {
+  vertical-align: bottom;
+}
+
+.assign-permission .sub-header input[type='checkbox'] {
+  margin-top: 5px;
+}
+
+.list-button .button:hover {
   text-decoration: none;
 }
 
-.assign-permission .list-button .button.-primary {
+.list-button .button.-primary {
   margin-left: 16px;
 }
  

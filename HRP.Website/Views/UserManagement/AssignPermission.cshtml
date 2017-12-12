@@ -16,7 +16,7 @@
 
 <input type="hidden" asp-for="@Model.UserId" />
 
-<table class="table table-bordered super-admin-func" id="adminPermissionTable">
+<table class="table table-bordered super-admin-func assign-permission" id="adminPermissionTable">
     <thead>
         <tr>
             <th rowspan="2">@ViewLang.SuperAdminFunction</th>
@@ -33,8 +33,8 @@
             foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && x.IsAdmin))
             {
                 var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == parent.FunctionId && x.CompanyId < 0);
-                <tr>
-                    <td>@parent.Name</td>
+                <tr class="row-special">
+                    <td class="level-first"><span class="icon-ui icon-level-first"></span> @parent.Name</td>
                     <td class="text-center">
                         <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
                                @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
@@ -48,7 +48,7 @@
                 {
                     permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == child.FunctionId && x.CompanyId < 0);
                     <tr>
-                        <td><span>└── </span>@child.Name</td>
+                        <td><span class="icon-root_tree icon-level-second"></span>@child.Name</td>
                         <td class="text-center">
                             <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
                                    @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
@@ -64,11 +64,11 @@
     </tbody>
 </table>
 
-<table class="table table-bordered func" id="userPermissionTable">
+<table class="table table-bordered func assign-permission" id="userPermissionTable">
     <thead>
         <tr>
-            <th rowspan="3">@ViewLang.Function</th>
-            <th rowspan="2"></th>
+            <th rowspan="2">@ViewLang.Function</th>
+            <th rowspan="2" class="vertical-bottom"><input type="checkbox" id="checkAllFunc" @disabled /></th>
             @foreach (Company company in Model.Companies)
             {
                 <th colspan="2">@company.Name</th>
@@ -77,16 +77,14 @@
         <tr>
             @foreach (Company company in Model.Companies)
             {
-                <th>@ViewLang.Read</th>
-                <th>@ViewLang.Host</th>
-            }
-        </tr>
-        <tr>
-            <th><input type="checkbox" id="checkAllFunc" @disabled /></th>
-            @foreach (Company company in Model.Companies)
-            {
-                <th><input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled /></th>
-                <th><input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled /></th>
+                <th class="sub-header">
+                    <div class="">@ViewLang.Read</div>                    
+                    <input type="checkbox" class="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled />
+                </th>
+                <th class="sub-header">
+                    <div class="">@ViewLang.Host</div>
+                    <input type="checkbox" class="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled />
+                </th>
             }
         </tr>
     </thead>
@@ -95,8 +93,8 @@
         {
             foreach (FunctionModel parent in Model.Functions.Where(x => !x.ParentId.HasValue && !x.IsAdmin))
             {
-                <tr>
-                    <td>@parent.Name</td>
+                <tr class="row-special">
+                    <td class="level-first"><span class="icon-ui icon-level-first"></span> @parent.Name</td>
                     <td class="text-center"><input type="checkbox" class="checkAllRowFunc" data-fid="@parent.FunctionId" data-pid="" @disabled /></td>
                     @foreach (Company company in Model.Companies)
                     {
@@ -114,7 +112,7 @@
                 foreach (FunctionModel child in Model.Functions.Where(x => x.ParentId.HasValue && x.ParentId == parent.FunctionId))
                 {
                     <tr>
-                        <td><span>└── </span>@child.Name</td>
+                        <td><span class="icon-root_tree icon-level-second"></span> @child.Name</td>
                         <td class="text-center"><input type="checkbox" class="checkAllRowFunc" data-fid="@child.FunctionId" data-pid="@parent.FunctionId" @disabled /></td>
                         @foreach (Company company in Model.Companies)
                         {
