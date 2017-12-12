@@ -24,7 +24,7 @@
     <header class="header">
         <div class="wrapper">
             <a asp-controller="home" asp-action="index" class="logo">
-                        <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
+                <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
             </a>
             <ul class="main-menu">
                 <li class="menu">
@@ -57,9 +57,13 @@
                     </ul>
                 </div>
             </div>
-        </div>        
+        </div>
     </header>
-    @RenderBody()
+    <section class="wrapper">
+        <div class="content">
+            @RenderBody()
+        </div>
+    </section>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

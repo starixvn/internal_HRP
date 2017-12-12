@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="AssignPermission" xml:space="preserve">
+    <value>Assign Permission</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
   <data name="CreateNewUser" xml:space="preserve">
     <value>Create New User</value>
+  </data>
+  <data name="Creator" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="EditDetails" xml:space="preserve">
+    <value>Edit Details</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
   </data>
   <data name="Function" xml:space="preserve">
     <value>Function</value>
@@ -156,6 +174,9 @@
   <data name="SuperAdminFunction" xml:space="preserve">
     <value>Super Admin Function</value>
   </data>
+  <data name="SymbolCount" xml:space="preserve">
+    <value>#</value>
+  </data>
   <data name="UserActiveStatus" xml:space="preserve">
     <value>Active</value>
   </data>
@@ -165,34 +186,19 @@
   <data name="UserInactiveStatus" xml:space="preserve">
     <value>Inactive</value>
   </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
   <data name="UserPermission" xml:space="preserve">
     <value>User Permission</value>
-  </data>
-  <data name="UserTable_Action" xml:space="preserve">
-    <value>Action</value>
-  </data>
-  <data name="UserTable_Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="UserTable_CreatedDate" xml:space="preserve">
-    <value>Created Date</value>
-  </data>
-  <data name="UserTable_Creator" xml:space="preserve">
-    <value>Creator</value>
   </data>
   <data name="UserTable_Email" xml:space="preserve">
     <value>Email Add.</value>
   </data>
-  <data name="UserTable_FullName" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
   <data name="UserTable_Phone" xml:space="preserve">
     <value>Phone No.</value>
-  </data>
-  <data name="UserTable_UserId" xml:space="preserve">
-    <value>#</value>
-  </data>
-  <data name="UserTable_Username" xml:space="preserve">
-    <value>Username</value>
   </data>
 </root>

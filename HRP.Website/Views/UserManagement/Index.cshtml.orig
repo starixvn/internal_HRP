@@ -1,0 +1,118 @@
+﻿@using HRP.Resources
+@using HRP.Models.UserManagement
+@model UserManagementViewModel
+
+<<<<<<< HEAD
+        <div class="top-header">
+            <div class="pull-left">
+                @if (Model.CanCreateNewUser)
+                {
+                    <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
+                        <span class="icon-add"></span>
+                        @ViewLang.CreateNewUser
+                    </a>
+                }
+            </div>
+            <div class="pull-right search-box">
+                <input type="search" id="quick-search" class="control" placeholder="Search" />
+                <span class="icon-search"></span>
+            </div>
+        </div>
+=======
+<h2 class="title">@ViewLang.UserManagement</h2>
+<form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
+      data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
+    <div class="group">
+        <label class="text">@ViewLang.Status</label>
+        <select class="control" name="status">
+            <option>@ViewLang.UserAllStatus</option>
+            <option value="true">@ViewLang.UserActiveStatus</option>
+            <option value="false">@ViewLang.UserInactiveStatus</option>
+        </select>
+    </div>
+    <button type="submit" class="button -primary">@ViewLang.Submit</button>
+</form>
+>>>>>>> 000 - refactor code
+
+<div class="top-header">
+    <div class="pull-left">
+        @if (Model.CanCreateNewUser)
+        {
+            <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
+                <span class="icon-add"></span>
+                @ViewLang.CreateNewUser
+            </a>
+        }
+    </div>
+    <div class="pull-right search-box">
+        <input type="search" id="quick-search" class="control" placeholder="Search" />
+        <span class="glyphicon glyphicon-search icon-search"></span>
+    </div>
+</div>
+
+<div id="result">
+    <table id="user-table" class="dataTable table table-bordered table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>@ViewLang.SymbolCount</th>
+                <th>@ViewLang.Username</th>
+                <th>@ViewLang.FullName</th>
+                <th>@ViewLang.UserTable_Phone</th>
+                <th>@ViewLang.UserTable_Email</th>
+                <th>@ViewLang.Creator</th>
+                <th>@ViewLang.CreatedDate</th>
+                <th>@ViewLang.Active</th>
+                <th>@ViewLang.Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="user-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="UpdateUserStatus" asp-controller="UserManagement"
+                  data-ajax-method="post" data-ajax="true" data-ajax-success="userManagement.onUpdateUserStatus">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to active/inactive this user?
+                    <input type="hidden" id="user-id" name="userid" />
+                    <input type="hidden" id="user-status" name="isactive" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<environment include="Development">
+    @section Styles{
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+    }
+
+    @section Scripts{
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+    }
+</environment>
+<environment exclude="Development">
+    @section Styles{
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
+    }
+
+    @section Scripts{
+        <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
+    }
+</environment>
