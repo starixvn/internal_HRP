@@ -1,10 +1,11 @@
 ﻿namespace HRP.Models.Account
 {
+    using Core.Enumerations;
     using UserProfile;
 
     public class AccountViewModel
     {
-        public string ActivePanel { get; set; }
+        public AccountTab ActivePanel { get; set; }
 
         public bool IsOTPRegistered { get; set; }
 

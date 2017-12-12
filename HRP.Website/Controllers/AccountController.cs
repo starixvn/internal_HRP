@@ -4,11 +4,12 @@ namespace HRP.Website.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BCrypt.Net;
+    using Core.Constants;
+    using Core.Enumerations;
     using Core.Filters;
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using HRP.Core.Constants;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -42,16 +43,20 @@ namespace HRP.Website.Controllers
             _userService = userService;
         }
 
-        //[AllowAnonymous]
-        //public IActionResult Index(AccountViewModel viewModel)
-        //{
-        //    var user = _userService.GetUserByUsername(_sessionService.Username);
-        //    if (viewModel.ActivePanel == null)
-        //    {
-        //    }
 
-        //    return View(viewModel);
-        //}
+        public IActionResult Index(AccountTab tab = AccountTab.Profile)
+        {
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+
+            AccountViewModel accountViewModel = new AccountViewModel
+            {
+                ActivePanel = tab,
+                IsOTPRegistered = user.IsOTPRegistered
+            };
+
+            return View(accountViewModel);
+        }
+
         [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {
@@ -71,7 +76,7 @@ namespace HRP.Website.Controllers
 
             AccountViewModel accountViewModel = new AccountViewModel
             {
-                ActivePanel = "otp",
+                ActivePanel = AccountTab.Otp,
                 IsOTPRegistered = false,
                 SetupOtpViewModel = new SetupOtpViewModel
                 {

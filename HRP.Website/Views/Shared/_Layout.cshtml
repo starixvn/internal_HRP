@@ -51,9 +51,9 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="/changeProfile.html"><span class="icon-user"></span>Profile</a></li>
-                        <li><a href="/changePassword.html"><span class="icon-password"></span>Password</a></li>
-                        <li><a href="/registerOTP.html"><span class="icon-otp"></span>OTP</a></li>
+                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="Profile"><span class="icon-user"></span>Profile</a></li>
+                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="ChangePassword"><span class="icon-password"></span>Password</a></li>
+                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="Otp"><span class="icon-otp"></span>OTP</a></li>
                         <li><a asp-controller="Auth" asp-action="Logout"><span class="icon-logout"></span>@ViewLang.SignOut</a></li>
                     </ul>
                 </div>
