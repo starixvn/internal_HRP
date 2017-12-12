@@ -370,8 +370,27 @@ input[type='checkbox']:checked:after {
   color: #fe0000;
 }
 
+.msg-error.-has-icon, .text-danger.-has-icon {
+  position: relative;
+  border: 1px solid #329a37;
+  padding: 10px 20px 10px 36px;
+  margin-bottom: 16px;
+  background-color: #e5ffeb;
+  color: #18aa3a;
+}
+
+.msg-error.-has-icon:before, .text-danger.-has-icon:before {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-family: "hrp";
+  content: "\e903";
+  color: #18aa3a;
+  font-size: 20px;
+}
+
 .msg-success {
-  display: inline-block;
+  display: block;
   line-height: 18px;
   color: #18aa3a;
 }
@@ -380,9 +399,9 @@ input[type='checkbox']:checked:after {
   position: relative;
   border: 1px solid #329a37;
   padding: 10px 20px 10px 36px;
+  margin-bottom: 16px;
   background-color: #e5ffeb;
   color: #18aa3a;
-  font-weight: bold;
 }
 
 .msg-success.-has-icon:before {
@@ -392,6 +411,25 @@ input[type='checkbox']:checked:after {
   font-family: "hrp";
   content: "\e913";
   color: #18aa3a;
+  font-size: 20px;
+}
+
+.msg-warning {
+  position: relative;
+  border: 1px solid #ffac63;
+  padding: 10px 20px 10px 36px;
+  margin-bottom: 16px;
+  background-color: #ffedd3;
+  color: #ff7a04;
+}
+
+.msg-warning:before {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-family: "hrp";
+  content: "\e913";
+  color: #ff7a04;
   font-size: 20px;
 }
 

@@ -11,6 +11,10 @@
       data-ajax-success="editUser.onEditSuccess" data-ajax-complete="editUser.onEditComplete">
 
     <input type="hidden" asp-for="UserId" />
+    
+    <div class="msg-success -has-icon hidden" role="alert" id="edit-user-alert">
+        <span>User @Model.Username has been successfully updated.</span>
+    </div>
 
     <label asp-for="FullName" class="text"></label>
     <div class="group-control">
@@ -50,10 +54,7 @@
         <button id="btn-edit" type="submit" class="button -primary" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
     </div>
 </form>
-<div class="alert alert-success alert-dismissible hidden" role="alert" id="edit-user-alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <span>User @Model.Username has been successfully updated.</span>
-</div>
+
 
 @section Styles{
     <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />

@@ -2,10 +2,29 @@
     display: block;
     line-height: 18px;
     color: $msg-error;
+
+    &.-has-icon {
+        position: relative;
+        border: 1px solid $msg-success-border;
+        padding: 10px 20px 10px 36px;
+        margin-bottom: 16px;
+        background-color: $msg-success-bg;
+        color: $msg-success;        
+        
+        &:before {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: "hrp";
+            content: "\e903";
+            color: $msg-success; 
+            font-size: 20px;
+        }     
+    }
 }
 
 .msg-success {
-    display: inline-block;
+    display: block;
     line-height: 18px;
     color: $msg-success;
 
@@ -13,9 +32,9 @@
         position: relative;
         border: 1px solid $msg-success-border;
         padding: 10px 20px 10px 36px;
+        margin-bottom: 16px;
         background-color: $msg-success-bg;
         color: $msg-success;
-        font-weight: bold;   
         
         &:before {
             position: absolute;
@@ -27,6 +46,25 @@
             font-size: 20px;
         }     
     }
+}
+
+.msg-warning {
+    position: relative;
+    border: 1px solid $msg-warning-border;
+    padding: 10px 20px 10px 36px;
+    margin-bottom: 16px;
+    background-color: $msg-warning-bg;
+    color: $msg-warning;
+    
+    &:before {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-family: "hrp";
+        content: "\e913";
+        color: $msg-warning; 
+        font-size: 20px;
+    }     
 }
 
 .note {
