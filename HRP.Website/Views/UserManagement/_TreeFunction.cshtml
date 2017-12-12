@@ -1,0 +1,58 @@
+﻿@using HRP.Models
+@using HRP.Models.UserPermisson
+
+@model AssignPermissonViewModel
+
+@{
+    var disabled = Model.IsHost ? string.Empty : "disabled";
+}
+
+@foreach (FunctionModel function in Model.Functions)
+{
+    int colIndex = 1;
+    <tr class="row-special">
+        @if (function.Level == 0)
+        {
+            <td class="level-first">
+                <span class="icon-ui icon-level-first"></span> @function.Name
+            </td>
+        }
+        else
+        {
+            <td>
+                @for(int i = 0; i < function.Level - 1; i++)
+                {
+                    <span class="icon-root_tree icon-level-second" style="visibility: hidden"></span>
+                }
+                <span class="icon-root_tree icon-level-second "></span> @function.Name</td>
+        }
+
+        <td class="text-center"><input type="checkbox" class="checkAllRowFunc" data-fid="@function.FunctionId" data-pid="@function.ParentId" @disabled /></td>
+        @foreach (Company company in Model.Companies)
+        {
+            var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == function.FunctionId && x.CompanyId == company.CompanyId);
+            <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
+                <input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+            </td>
+            <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
+                <input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+            </td>
+
+            colIndex++;
+        }
+    </tr>
+
+    var model = new AssignPermissonViewModel
+    {
+        UserId = Model.UserId,
+        Username = Model.Username,
+        Functions = function.Childs.OrderBy(x => x.Level),
+        Companies = Model.Companies,
+        UserPermissions = Model.UserPermissions,
+        IsHost = Model.IsHost
+    };
+
+    @Html.Partial("_TreeFunction", model)
+}

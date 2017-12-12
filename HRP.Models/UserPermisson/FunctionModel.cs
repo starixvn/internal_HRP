@@ -25,6 +25,8 @@
 
         public bool IsAdmin { get; set; }
 
+        public int Level { get; set; }
+
         public IList<FunctionModel> Childs { get; set; }
     }
 }

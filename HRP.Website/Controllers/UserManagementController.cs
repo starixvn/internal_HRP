@@ -77,7 +77,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public async Task<IActionResult> AssignPermission(int id)
         {
-            var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
+            var functions = await GetFunction().ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id }).ConfigureAwait(false);
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id }).ConfigureAwait(false);
@@ -193,6 +193,44 @@
             }
 
             return View(viewModel);
+        }
+
+        private async Task<IEnumerable<HRP.Models.UserPermisson.FunctionModel>> GetFunction()
+        {
+            var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
+            IEnumerable<HRP.Models.UserPermisson.FunctionModel> parentFunctions;
+
+            if (functions != null && functions.Any())
+            {
+                parentFunctions = functions.Where(x => !x.ParentId.HasValue);
+
+                foreach (var function in parentFunctions)
+                {
+                    function.Level = 0;
+                    BuildTreeFunction(function, functions);
+                }
+            }
+            else
+            {
+                parentFunctions = new List<HRP.Models.UserPermisson.FunctionModel>();
+            }
+
+            return parentFunctions;
+        }
+
+        private void BuildTreeFunction(HRP.Models.UserPermisson.FunctionModel function, IEnumerable<HRP.Models.UserPermisson.FunctionModel> functions)
+        {
+            IEnumerable<HRP.Models.UserPermisson.FunctionModel> functionItems = functions.Where(x => x.ParentId == function.FunctionId);
+
+            if (functionItems != null && functionItems.Any())
+            {
+                foreach (var item in functionItems)
+                {
+                    item.Level = function.Level + 1;
+                    function.Childs.Add(item);
+                    BuildTreeFunction(item, functions);
+                }
+            }
         }
     }
 }
