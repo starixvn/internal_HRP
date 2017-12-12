@@ -37,7 +37,8 @@
     <li class="steps">
         <h2 class="sub-title">Create an account by scanning this QR code with Sophos</h2>
         <div class="qr-code">
-            <img class="img" src="@Model.QrCodeLink" />
+            @*<img class="img" src="@Model.QrCodeLink" />*@
+            <canvas id="setup-otp-qrcode"></canvas>
             <p>The new account will be named after your username "<span class="text-username">@User.Identity.Name</span>"</p>
         </div>
 

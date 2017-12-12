@@ -57,13 +57,11 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {
-//#if DEBUG
-//            var testUser = _userService.GetUserByUsername(username);
-//            var secretKey = testUser.SecretKey;
-//#else
             var secretKey = Utilities.GenerateSecretKey();
             _userService.UpdateSecretKey(username, secretKey);
-//#endif
+
+            //TODO: remove after test
+            ////var secretKey = _userService.GetUserByUsername(username).SecretKey;
 
             var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
 
@@ -82,10 +80,9 @@ namespace HRP.Website.Controllers
                 IsOTPRegistered = false,
                 SetupOtpViewModel = new SetupOtpViewModel
                 {
-                    SecretKey = secretKey,
-                    QrCodeLink = setupCode.QrCodeSetupImageUrl,
                     TextCode = setupCode.ManualEntryKey,
-                    Username = username
+                    Username = username,
+                    SystemName = "HRP"
                 }
             };
 

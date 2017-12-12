@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.Account
 {
-    using HRP.Models.UserProfile;
+    using UserProfile;
 
     public class AccountViewModel
     {
