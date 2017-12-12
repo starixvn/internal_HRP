@@ -9,9 +9,9 @@ namespace HRP.Core.Services
 
     public class BaseMailService : IBaseMailService
     {
-        private readonly IOptionsSnapshot<Core.Model.MailConfig> _configuration;
+        private readonly IOptionsSnapshot<Model.MailConfig> _configuration;
 
-        public BaseMailService(IOptionsSnapshot<Core.Model.MailConfig> configuration)
+        public BaseMailService(IOptionsSnapshot<Model.MailConfig> configuration)
         {
             _configuration = configuration;
         }
