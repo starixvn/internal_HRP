@@ -10,24 +10,20 @@
 
     public class MailDeliver : IMailDeliver, IDisposable
     {
-        private EndpointAddress _endpoint;
         private MailServiceClient _mailClient;
-        private MailRecord _mailRecord;
-        private Binding _binding;
+        private readonly MailRecord _mailRecord;
         private readonly int _appId;
-        private readonly string _mailAddress;
 
         public MailDeliver(int appId, string mailAddress)
         {
             _appId = appId;
-            _mailAddress = mailAddress;
-            _endpoint = new EndpointAddress(_mailAddress);
+            var endpoint = new EndpointAddress(mailAddress);
 
             // Setting binding
-            _binding = GetBinding(_endpoint);
+            var binding = GetBinding(endpoint);
 
             // Create mail client service
-            _mailClient = new MailServiceClient(_binding, _endpoint);
+            _mailClient = new MailServiceClient(binding, endpoint);
 
             // Create Mail Record for send Mail
             _mailRecord = new MailRecord();
@@ -83,7 +79,7 @@
                     };
                 }
 
-                Util.AttachmentUtil.Format(ref mail);
+                AttachmentUtil.Format(ref mail);
 
                 mail.CanRetry = canRetry;
                 var stream = MailFormatter.Serialize(mail);
@@ -440,8 +436,6 @@
             }
 
             _mailClient = null;
-            _binding = null;
-            _endpoint = null;
         }
     }
 }

@@ -11,13 +11,5 @@ namespace HRP.Services.UnitTest
         {
             _userService = new UserService();
         }
-
-        [Theory]
-        [InlineData("admin")]
-        public void GetUserByUsername(string username)
-        {
-            var result = _userService.GetUserByUsername(username);
-            Assert.NotNull(result);
-        }
     }
 }
