@@ -57,6 +57,15 @@ namespace HRP.Website.Controllers
             return View(accountViewModel);
         }
 
+        public IActionResult ResetOtpDevice()
+        {
+            // step 1: Reset IsOTPRegistered
+            _userService.UpdateOTPStatus(_sessionService.UserId, false);
+
+            // step 2: Sign user out
+            return RedirectToAction("Logout", "Auth");
+        }
+
         [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {

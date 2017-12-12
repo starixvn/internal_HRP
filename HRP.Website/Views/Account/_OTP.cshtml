@@ -6,5 +6,23 @@
     </p>
     <p class="info bold msg-success">Register Sophos Authenticator Mobile App</p>
     <p class="info">Click the button below to change the registered device from you secret key.</p>
-    <button class="button -primary">Change secret key</button>
+    <button class="button -primary" data-toggle="modal" data-target="#otp-device-change-warning">Change secret key</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="otp-device-change-warning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>The system will no longer accept the secret key generated on the registered device. Do you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                <a asp-action="ResetOtpDevice" asp-controller="Account" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+    </div>
 </div>
