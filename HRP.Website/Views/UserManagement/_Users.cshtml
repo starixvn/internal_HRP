@@ -34,8 +34,10 @@
                 <td class="text-center">@user.CreatedBy</td>
                 <td class="text-center">@Html.DisplayFor(x => user.CreatedDate)</td>
                 <td class="text-center">
-                    <span class="icon-active"></span>
-                    <!-- <input type="checkbox" asp-for="@user.IsActive" data-user-id="@user.UserId" class="toggle-user-status" /> -->
+                    @if (user.IsActive)
+                    {
+                        <span class="icon-active"></span>
+                    }
                 </td>
                 <td class="text-center">
                     <div class="dropdown config-action">

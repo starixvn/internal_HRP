@@ -20,19 +20,4 @@
     $('#quick-search').off('keyup').on('keyup', function () {
         $('#user-table').DataTable().search($(this).val()).draw();
     });
-
-    $(".toggle-user-status").on('click', function (e) {
-        e.preventDefault();
-        $('#user-status').val(this.checked);
-        $('#user-id').val($(this).data('user-id'));
-        $('#user-status-modal').modal('show');
-        return false;
-    });
-
-    return {
-        onUpdateUserStatus: function (result, status) {
-            $('.modal').modal('hide');
-            $('.toggle-user-status', '#user-' + result.userId)[0].checked = result.isActive;
-        }
-    }
 }(jQuery));
