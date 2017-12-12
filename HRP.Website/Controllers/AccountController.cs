@@ -8,7 +8,6 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -52,7 +51,7 @@ namespace HRP.Website.Controllers
 
         //    return View(viewModel);
         //}
-                [AllowAnonymous]
+        [AllowAnonymous]
         public IActionResult SetupOtp(string token, string username)
         {
             //#if DEBUG
