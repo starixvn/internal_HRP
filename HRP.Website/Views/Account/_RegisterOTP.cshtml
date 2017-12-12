@@ -1,6 +1,8 @@
 ﻿@using HRP.Models.Account
 @model SetupOtpViewModel
 
+
+
 <h1 class="title">Register Mobile Authenticator App</h1>
 <ul class="register-otp list-unstyled">
     <li class="steps">
@@ -52,7 +54,7 @@
                 </div>
                 <div id="unableScan" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingQR">
                     <div class="panel-body">
-                        <p>Key: <span class="text-key">@Model.TextCode</span></p>
+                        <p>Key: <span class="text-key" id="qrcodetext" data-qrcodetext="@Html.Raw(Model.QrCodeText)">@Model.TextCode</span></p>
                         <div class="example">
                             <div class="col-left">
                                 <img src="~/assets/styles/images/otp/manual-ios.png" title="IOS" />

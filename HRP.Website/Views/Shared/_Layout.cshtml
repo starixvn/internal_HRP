@@ -1,4 +1,5 @@
-﻿@using HRP.Resources
+﻿@using System.IdentityModel.Claims
+@using HRP.Resources
 
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@
             <div class="user-info">
                 <div class="dropdown">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Jennie Thompson
+                        @User.Claims.First(x => x.Type == ClaimTypes.GivenName).Value
                         <span class="circle-gray">
                             <span class="icon-user"></span>
                         </span>

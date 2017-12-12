@@ -1,9 +1,6 @@
-﻿// Configure bundling and minification for the project.
-// More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
     "outputFileName": "wwwroot/assets/bundles/login.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
@@ -12,7 +9,6 @@
   },
   {
     "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
@@ -21,7 +17,6 @@
   },
   {
     "outputFileName": "wwwroot/assets/bundles/main.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
@@ -30,14 +25,12 @@
   },
   {
     "outputFileName": "wwwroot/assets/bundles/otp.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/assets/styles/pages/auth/otp.css"
     ]
   },
   {
     "outputFileName": "wwwroot/assets/bundles/user-management.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/assets/styles/pages/configuration/user-management.css"
     ]
@@ -47,13 +40,10 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ],
-    // Optionally specify minification options
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    // Optionally generate .map file
-    "sourceMap": false
+    }
   },
   {
     "outputFileName": "wwwroot/js/jquery.min.js",
@@ -72,12 +62,13 @@
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    "sourceMap": false
+    }
   },
   {
     "outputFileName": "wwwroot/assets/js/user-management.min.js",
-    "inputFiles": [ "wwwroot/assets/js/user-management.js" ],
+    "inputFiles": [
+      "wwwroot/assets/js/user-management.js"
+    ],
     "minify": {
       "enabled": true,
       "renameLocals": true
@@ -85,15 +76,22 @@
   },
   {
     "outputFileName": "wwwroot/assets/js/create-user.min.js",
-    "inputFiles": [ "wwwroot/assets/js/create-user.js" ],
+    "inputFiles": [
+      "wwwroot/assets/js/create-user.js"
+    ],
     "minify": {
       "enabled": true,
       "renameLocals": true
     }
   },
   {
-    "outputFileName": "wwwroot/assets/js/change-password.min.js",
-    "inputFiles": [ "wwwroot/assets/js/change-password.js" ],
+    "outputFileName": "wwwroot/assets/js/account/account.min.js",
+    "inputFiles": [
+      "wwwroot/assets/js/account/otp.js",
+      "wwwroot/assets/js/account/index.js",
+      "wwwroot/lib/qrious/qrious.min.js",
+      "wwwroot/assets/js/change-password.js"
+    ],
     "minify": {
       "enabled": true,
       "renameLocals": true
