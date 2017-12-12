@@ -113,7 +113,8 @@
 }
 
 .top-header .create-user .icon-add {
-  font-size: 11px;
+  font-size: 10px;
+  margin-right: 2px;
 }
 
 .top-header .search-box {
@@ -123,20 +124,22 @@
   font-weight: bold;
 }
 
-.top-header .control {
+.top-header .search-box .control {
   width: 100%;
 }
 
-.top-header .icon-search {
-  font-family: 'Glyphicons Halflings';
+.top-header .search-box .icon-search {
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 8px;
+  font-size: 18px;
+  color: #888;
 }
 
-.table th, .table td {
-  padding-top: 12px;
-  padding-bottom: 12px;
+.table thead tr th, .table tbody tr td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  vertical-align: middle;
 }
 
 .table thead th {
@@ -160,12 +163,17 @@
   border-bottom-width: 1px;
 }
 
-.table .checkbox label:before {
+.table input[type='checkbox'] {
+  display: inline-block;
+  margin: 0;
+}
+
+.table input[type='checkbox']:before {
   height: 16px;
   width: 16px;
 }
 
-.table .checkbox label:after {
+.table input[type='checkbox']:after {
   top: 4px;
   width: 9px;
 }
@@ -194,9 +202,8 @@
   color: #333;
 }
 
-.pagination .icon-prev, .pagination .icon-next {
+.pagination .icon-back, .pagination .icon-next {
   font-size: 10px;
-  font-family: 'Glyphicons Halflings';
 }
 
 .pagination .paginate_button.active a,

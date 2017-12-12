@@ -13,7 +13,8 @@
     }
 
     .icon-add {
-      font-size: 11px;
+      font-size: 10px;
+      margin-right: 2px;
     }
   }
  
@@ -22,24 +23,26 @@
       width: 185px;
       height: 36px;
       font-weight: bold;
-  }
 
-  .control {    
-    width: 100%;
-  }
-
-  .icon-search {
-    font-family: 'Glyphicons Halflings';
-    position: absolute;
-    right: 10px;
-    top: 10px;
-  }
+      .control {    
+        width: 100%;
+      }
+    
+      .icon-search {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        font-size: 18px;
+        color: #888;
+      }
+  }  
 }
 
 .table {
-  th, td {
-    padding-top: 12px;
-    padding-bottom: 12px;
+  thead tr th, tbody tr td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    vertical-align: middle;
   }
 
   thead th {    
@@ -65,15 +68,21 @@
     border-bottom-width: 1px;
   }
 
-  .checkbox label:before {
-    height: 16px;
-    width: 16px;
-  }
+  input[type='checkbox'] {
+    display: inline-block;
+    margin: 0;
 
-  .checkbox label:after {
-    top: 4px;
-    width: 9px;
+    &:before {
+      height: 16px;
+      width: 16px;
+    }
+  
+    &:after {
+      top: 4px;
+      width: 9px;
+    }
   }
+  
 }
 
 .dataTables_wrapper {
@@ -95,9 +104,8 @@
 }
 
 .pagination {
-  .icon-prev, .icon-next {
+  .icon-back, .icon-next {
     font-size: 10px;
-    font-family: 'Glyphicons Halflings';
   }
 
   .paginate_button.active a,
