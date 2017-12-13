@@ -24,12 +24,9 @@ namespace HRP.Website.Controllers
     [HRPAuthorize]
     public class AccountController : Controller
     {
-        private readonly ISessionService _sessionService;
-
         private readonly IBaseService _baseService;
-
+        private readonly ISessionService _sessionService;
         private readonly ITwoFactorAuthenticatorService _twoFactorAuthService;
-
         private readonly IUserService _userService;
 
         public AccountController(
@@ -44,6 +41,33 @@ namespace HRP.Website.Controllers
             _userService = userService;
         }
 
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userService.GetUserByUsername(_sessionService.Username);
+                var isValidOldPassword = BCrypt.Verify(viewlModel.OldPassword, user.Password);
+
+                if (!isValidOldPassword)
+                {
+                    return Json(new { code = -2, message = Message.OldPasswordIncorrect });
+                }
+
+                var criteria = new UpdateUserPasswordCriteria
+                {
+                    UserId = _sessionService.UserId,
+                    Password = BCrypt.HashPassword(viewlModel.Password)
+                };
+
+                var result = _baseService.ExecuteNonQuery(criteria);
+
+                return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
+            }
+
+            return Json(new { code = -1, message = "Error" });
+        }
+
         public IActionResult Index(AccountTab tab = AccountTab.Profile)
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
@@ -55,6 +79,12 @@ namespace HRP.Website.Controllers
             };
 
             return View(accountViewModel);
+        }
+
+        [AllowAnonymous]
+        public IActionResult RegisterOTPNotification()
+        {
+            return View();
         }
 
         public IActionResult ResetOtpDevice()
@@ -73,14 +103,6 @@ namespace HRP.Website.Controllers
                 "SetupOtp",
                 "Account",
                 new { token = otpRegisterToken, username = _sessionService.Username });
-        }
-
-        private SetupCode GetOtpSetupCode(string username)
-        {
-            var secretKey = Utilities.GenerateSecretKey();
-            _userService.UpdateSecretKey(username, secretKey);
-
-            return _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
         }
 
         [AllowAnonymous]
@@ -109,44 +131,6 @@ namespace HRP.Website.Controllers
             };
 
             return View("Index", accountViewModel);
-        }
-
-        [AllowAnonymous]
-        public IActionResult RegisterOTPNotification()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
-        {
-            var user = _userService.GetUserByUsername(viewModel.Username);
-
-            if (!ModelState.IsValid || user == null)
-            {
-                //TODO: Re-enable when test complete
-                return RedirectToAction("Login", "Auth");
-            }
-
-            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
-
-            if (isOTPValid)
-            {
-                var result = _userService.UpdateOTPStatus(user.UserId, true);
-
-                if (result)
-                {
-                    _userService.ResetTokenOTPRegister(user.Username);
-                    _sessionService.Username = user.Username;
-                    return new OkResult();
-                }
-            }
-
-            //TODO: show error message
-            ViewBag.ErrorMessage = Message.InvalidOTP;
-
-            return BadRequest();
         }
 
         [AllowAnonymous]
@@ -216,31 +200,44 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(VerifyOTP));
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
+        public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            var user = _userService.GetUserByUsername(viewModel.Username);
+
+            if (!ModelState.IsValid || user == null)
             {
-                var user = _userService.GetUserByUsername(_sessionService.Username);
-                var isValidOldPassword = BCrypt.Verify(viewlModel.OldPassword, user.Password);
-
-                if (!isValidOldPassword)
-                {
-                    return Json(new { code = -2, message = Message.OldPasswordIncorrect });
-                }
-
-                var criteria = new UpdateUserPasswordCriteria
-                {
-                    UserId = _sessionService.UserId,
-                    Password = BCrypt.HashPassword(viewlModel.Password)
-                };
-
-                var result = _baseService.ExecuteNonQuery(criteria);
-
-                return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
+                //TODO: Re-enable when test complete
+                return RedirectToAction("Login", "Auth");
             }
 
-            return Json(new { code = -1, message = "Error" });
+            var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
+
+            if (isOTPValid)
+            {
+                var result = _userService.UpdateOTPStatus(user.UserId, true);
+
+                if (result)
+                {
+                    _userService.ResetTokenOTPRegister(user.Username);
+                    _sessionService.Username = user.Username;
+                    return new OkResult();
+                }
+            }
+
+            //TODO: show error message
+            ViewBag.ErrorMessage = Message.InvalidOTP;
+
+            return BadRequest();
+        }
+
+        private SetupCode GetOtpSetupCode(string username)
+        {
+            var secretKey = Utilities.GenerateSecretKey();
+            _userService.UpdateSecretKey(username, secretKey);
+
+            return _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
         }
     }
 }
