@@ -1,7 +1,4 @@
-﻿@using System.IdentityModel.Claims
-@using HRP.Resources
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,37 +15,7 @@
             <a asp-controller="home" asp-action="index" class="logo">
                 <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
             </a>
-            <ul class="main-menu">
-                <li class="menu">
-                    <a href="#" class="link active"><span class="icon-configuration"></span>Configuration</a>
-                    <ul class="submenu">
-                        <li><a asp-controller="usermanagement" asp-action="index" class="link">User Management</a></li>
-                        <li><a href="#" class="link">Data Management</a></li>
-                    </ul>
-                </li>
-                <li class="menu"><a href="#" class="link"><span class="icon-employee_management"></span>Employee Management</a></li>
-                <li class="menu"><a href="#" class="link"><span class="icon-payment"></span>Payment Process</a></li>
-                <li class="menu"><a href="#" class="link"><span class="icon-payslip"></span>Payslip</a></li>
-                <li class="menu"><a href="#" class="link"><span class="icon-report"></span>Report</a></li>
-                <li class="menu"><a href="#" class="link"><span class="icon-exit"></span>Exit</a></li>
-            </ul>
-            <div class="user-info">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        @User.Claims.First(x => x.Type == ClaimTypes.GivenName).Value
-                        <span class="circle-gray">
-                            <span class="icon-user"></span>
-                        </span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="Profile"><span class="icon-user"></span>Profile</a></li>
-                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="ChangePassword"><span class="icon-password"></span>Password</a></li>
-                        <li><a asp-action="Index" asp-controller="Account" asp-route-tab="Otp"><span class="icon-otp"></span>OTP</a></li>
-                        <li><a asp-controller="Auth" asp-action="Logout"><span class="icon-logout"></span>@ViewLang.SignOut</a></li>
-                    </ul>
-                </div>
-            </div>
+            @await Component.InvokeAsync("Menu")
         </div>
     </header>
     <section class="wrapper">

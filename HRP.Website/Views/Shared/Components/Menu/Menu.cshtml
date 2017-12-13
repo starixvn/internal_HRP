@@ -1,0 +1,92 @@
+﻿@using HRP.Resources
+@model IEnumerable<HRP.Core.Model.MenuItem>
+
+<ul class="main-menu">
+    @if (Model != null && Model.Any())
+    {
+        var menuGroups = Model.Where(x => !x.ParentId.HasValue).OrderBy(x => x.DisplayOrder);
+
+        @foreach (var parent in menuGroups)
+        {
+            var childMenus = Model.Where(x => x.ParentId == parent.MenuId).OrderBy(x => x.DisplayOrder);
+            var icon = string.Empty;
+
+            @switch (parent.Name.ToLower())
+            {
+                case "configuration":
+                    icon = "icon-configuration";
+                    break;
+
+                case "employee management":
+                    icon = "icon-employee_management";
+                    break;
+
+                case "payment process":
+                    icon = "icon-payment";
+                    break;
+
+                case "payslip":
+                    icon = "icon-payslip";
+                    break;
+
+                case "report":
+                    icon = "icon-payment";
+                    break;
+
+                default:
+                    icon = string.Empty;
+                    break;
+            }
+
+            <li class="menu">
+                <a href="@parent.Url" class="link"><span class="@icon"></span>@parent.Name</a>
+                @if (childMenus != null && childMenus.Any())
+                {
+                    <ul class="submenu">
+                        @foreach (var child in childMenus)
+                        {
+                            <li>
+                                <a href="@child.Url" class="link">@child.Name</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    }
+</ul>
+<div class="user-info">
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            @ViewData["Username"]
+            <span class="circle-gray">
+                <span class="icon-user"></span>
+            </span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li>
+                <a asp-action="Index" asp-controller="Account" asp-route-tab="Profile">
+                    <span class="icon-user"></span>@ViewLang.Profile
+                </a>
+            </li>
+            <li>
+                <a asp-action="Index" asp-controller="Account" asp-route-tab="ChangePassword">
+                    <span class="icon-password"></span>@ViewLang.Password
+                </a>
+            </li>
+            <li>
+                <a asp-action="Index" asp-controller="Account" asp-route-tab="Otp">
+                    <span class="icon-otp"></span>OTP
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Auth" asp-action="Logout">
+                    <span class="icon-logout">
+                    </span>@ViewLang.SignOut
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
