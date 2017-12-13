@@ -160,43 +160,54 @@ namespace HRP.Website.Controllers
 
             if (isOTPValid || isSkipOTP)
             {
-                _sessionService.UserId = user.UserId;
-                _sessionService.Username = user.Username;
-
-                _sessionService.MenuItems = await _baseService.GetDataAsync<MenuItem>(
-                    new GetMenuByUserIdCriteria
-                    {
-                        UserId = user.UserId
-                    }).ConfigureAwait(false);
-
-                _sessionService.Functions = await _baseService.GetDataAsync<FunctionModel>(
-                    new GetFunctionByUserIdCriteria
-                    {
-                        UserId = user.UserId
-                    }).ConfigureAwait(false);
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.GivenName, user.FullName),
-                    new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
-                };
-
-                var principal =
-                    new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
-                    .ConfigureAwait(false);
-
-                _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
-
-                return RedirectToAction("Index", "Home");
+                return await SignUserIn(user);
             }
 
             ViewBag.ErrorMessage = Message.InvalidOTP;
 
             return RedirectToAction(nameof(VerifyOTP));
+        }
+
+        private async Task<IActionResult> SignUserIn(User user)
+        {
+            _sessionService.UserId = user.UserId;
+            _sessionService.Username = user.Username;
+
+            _sessionService.MenuItems = await _baseService.GetDataAsync<MenuItem>(
+                new GetMenuByUserIdCriteria
+                {
+                    UserId = user.UserId
+                }).ConfigureAwait(false);
+
+            _sessionService.Functions = await _baseService.GetDataAsync<FunctionModel>(
+                new GetFunctionByUserIdCriteria
+                {
+                    UserId = user.UserId
+                }).ConfigureAwait(false);
+
+            ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
+                .ConfigureAwait(false);
+
+            _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        private static ClaimsPrincipal InitUserClaimsPrinciple(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.GivenName, user.FullName),
+                new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return new ClaimsPrincipal(claimsIdentity);
         }
 
         [AllowAnonymous]
