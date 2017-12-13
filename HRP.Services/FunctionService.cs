@@ -29,7 +29,7 @@
         public async Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive)
         {
             IEnumerable<FunctionModel> functions = await GetFunctions(isActive).ConfigureAwait(false);
-            IEnumerable<FunctionModel> parentFunctions;
+            IEnumerable<FunctionModel> parentFunctions = new List<FunctionModel>();
 
             if (functions != null && functions.Any())
             {
@@ -40,10 +40,6 @@
                     function.Level = 0;
                     GetChildFunctions(function, functions);
                 }
-            }
-            else
-            {
-                parentFunctions = new List<FunctionModel>();
             }
 
             return parentFunctions;
