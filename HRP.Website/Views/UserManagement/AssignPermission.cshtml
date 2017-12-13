@@ -14,6 +14,9 @@
     <li class="active">@(string.Format("{0} to User '{1}'", ViewData["Title"], Model.Username))</li>
 </ol>
 
+<div class="msg-success -has-icon hidden"></div>
+<div class="msg-error -has-icon hidden"></div>
+
 <input type="hidden" asp-for="@Model.UserId" />
 
 <table class="table table-bordered super-admin-func assign-permission" id="adminPermissionTable">

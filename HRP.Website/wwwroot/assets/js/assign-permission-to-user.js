@@ -297,16 +297,18 @@ var assignPermissionToUser = (function ($) {
                 var permissions = JSON.stringify(model);
                 $.ajax({
                     type: 'POST',
-                    url: '/UserManagement/AssignPermission',
+                    url: commonFunctions.rootURL + 'UserManagement/AssignPermission',
                     data: {
                         'permissions': permissions
                     },
                     success: function (response) {
-                        if (response.IsSuccessful) {
+                        if (response.isSuccessful) {
+                            commonFunctions.showSuccessMessage('Update successfully!');
+                        } else {
+                            commonFunctions.showErrorMessage(response.Message);
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                    }
+                    error: commonFunctions.handleAjaxError
                 });
             }
         });
