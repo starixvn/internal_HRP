@@ -10,7 +10,6 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using Google.Authenticator;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -41,6 +40,19 @@ namespace HRP.Website.Controllers
             _userService = userService;
         }
 
+        public IActionResult Index(AccountTab tab = AccountTab.Profile)
+        {
+            var user = _userService.GetUserByUsername(_sessionService.Username);
+
+            AccountViewModel accountViewModel = new AccountViewModel
+            {
+                ActivePanel = tab,
+                IsOTPRegistered = user.IsOTPRegistered
+            };
+
+            return View(accountViewModel);
+        }
+
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
         {
@@ -67,20 +79,7 @@ namespace HRP.Website.Controllers
 
             return Json(new { code = -1, message = "Error" });
         }
-
-        public IActionResult Index(AccountTab tab = AccountTab.Profile)
-        {
-            var user = _userService.GetUserByUsername(_sessionService.Username);
-
-            AccountViewModel accountViewModel = new AccountViewModel
-            {
-                ActivePanel = tab,
-                IsOTPRegistered = user.IsOTPRegistered
-            };
-
-            return View(accountViewModel);
-        }
-
+        
         [AllowAnonymous]
         public IActionResult RegisterOTPNotification()
         {
@@ -124,7 +123,7 @@ namespace HRP.Website.Controllers
                 IsOTPRegistered = false,
                 SetupOtpViewModel = new SetupOtpViewModel
                 {
-                    TextCode = GetOtpSetupCode(user.Username).ManualEntryKey,
+                    TextCode = GetOtpSetupCode(user.Username),
                     Username = user.Username,
                     SystemName = "HRP"
                 }
@@ -208,7 +207,6 @@ namespace HRP.Website.Controllers
 
             if (!ModelState.IsValid || user == null)
             {
-                //TODO: Re-enable when test complete
                 return RedirectToAction("Login", "Auth");
             }
 
@@ -226,13 +224,10 @@ namespace HRP.Website.Controllers
                 }
             }
 
-            //TODO: show error message
-            ViewBag.ErrorMessage = Message.InvalidOTP;
-
             return BadRequest();
         }
 
-        private SetupCode GetOtpSetupCode(string username)
+        private string GetOtpSetupCode(string username)
         {
             var secretKey = Utilities.GenerateSecretKey();
             _userService.UpdateSecretKey(username, secretKey);

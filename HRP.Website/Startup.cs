@@ -5,10 +5,9 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Model;
+    using Core.Services;
     using Fanex.Data;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Services;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -16,6 +15,7 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services;
 
     public class Startup
     {
@@ -44,6 +44,7 @@
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
             services.Configure<MailConfig>(options => Configuration.GetSection("MailConfig").Bind(options));
+            services.Configure<OtpConfig>(options => Configuration.GetSection(nameof(OtpConfig)).Bind(options));
 
             // Cookie Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -1,15 +1,37 @@
-namespace HRP.Services.UnitTest
+namespace HRP.Services.UnitTests
 {
-    using HRP.Services;
-    using Xunit;
+    using Core.Model;
+    using Core.Services;
+    using Microsoft.Extensions.Options;
+    using NSubstitute;
+    using Services;
 
     public class UserServiceTests
     {
-        readonly UserService _userService;
+        private readonly UserService _userService;
+
+        private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
+        private readonly IBaseMailService _emailService;
+        private readonly IBaseService _baseService;
 
         public UserServiceTests()
         {
-            _userService = new UserService();
+            _baseService = Substitute.For<IBaseService>();
+            _emailService = Substitute.For<IBaseMailService>();
+
+            var appSettingsOptions = new AppSettingsOptions
+            {
+                SessionTimeout = 60,
+                EnableEncrypt = true,
+                CertificateFilePath = "D=\\Test.pfx",
+                PasswordToSignTheCertificateFile = "123456",
+                BaseHostUrl = "http=//localhost=56977"
+            };
+
+            //_configuration = Options.Create(appSettingsOptions);
+
+            _userService = new UserService(_emailService, _configuration, _baseService);
+
         }
     }
 }
