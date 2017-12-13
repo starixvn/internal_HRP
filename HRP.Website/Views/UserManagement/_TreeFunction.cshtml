@@ -32,11 +32,13 @@
         {
             var permission = Model.UserPermissions.FirstOrDefault(x => x.FunctionId == function.FunctionId && x.CompanyId == company.CompanyId);
             <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
-                <input type="checkbox" name="criteria.funcRead" data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                <input type="checkbox" name="criteria.funcRead" id="funcRead@(function.FunctionId)@(company.CompanyId)"
+                       data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
                        @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
             </td>
             <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
-                <input type="checkbox" name="criteria.funcHost" data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                <input type="checkbox" name="criteria.funcHost" id="funcHost@(function.FunctionId)@(company.CompanyId)"
+                       data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
                        @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
             </td>
 

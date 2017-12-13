@@ -7,6 +7,7 @@
     using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.UserPermisson;
+    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -16,6 +17,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IFunctionService functionService;
         private UserManagementController userManagementController;
 
         #region AssignPermission
@@ -82,11 +84,19 @@
             return service;
         }
 
+        private IFunctionService FakeFunctionService()
+        {
+            var service = Substitute.For<IFunctionService>();
+
+            return service;
+        }
+
         private UserManagementController GetUserManagementController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            var controller = new UserManagementController(sessionService, baseService);
+            functionService = FakeFunctionService();
+            var controller = new UserManagementController(sessionService, baseService, functionService);
 
             return controller;
         }

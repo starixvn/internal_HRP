@@ -15,6 +15,7 @@
     using HRP.Models;
     using HRP.Models.UserManagement;
     using HRP.Models.UserPermisson;
+    using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
@@ -23,13 +24,16 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly IFunctionService functionService;
 
         public UserManagementController(
             ISessionService sessionService,
-            IBaseService baseService)
+            IBaseService baseService,
+            IFunctionService functionService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.functionService = functionService;
         }
 
         [HttpGet]
@@ -77,7 +81,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public async Task<IActionResult> AssignPermission(int id)
         {
-            var functions = await GetFunction().ConfigureAwait(false);
+            var functions = await functionService.GetFunctions(true).ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id }).ConfigureAwait(false);
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id }).ConfigureAwait(false);
@@ -86,7 +90,7 @@
             var model = new AssignPermissonViewModel
             {
                 UserId = id,
-                Functions = functions,
+                Functions = functionService.BuildTreeFunction(functions),
                 Companies = companies,
                 UserPermissions = permissions,
                 Username = user != null ? user.Username : string.Empty,
@@ -164,7 +168,7 @@
         public IActionResult EditUser(int id)
         {
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
-            if(viewModel.IsSystemAdmin && !Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value))
+            if (viewModel.IsSystemAdmin && !Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value))
             {
                 return RedirectToAction("Index");
             }
@@ -193,44 +197,6 @@
             }
 
             return View(viewModel);
-        }
-
-        private async Task<IEnumerable<HRP.Models.UserPermisson.FunctionModel>> GetFunction()
-        {
-            var functions = await baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(new GetAllFunctionCriteria { IsActive = true }).ConfigureAwait(false);
-            IEnumerable<HRP.Models.UserPermisson.FunctionModel> parentFunctions;
-
-            if (functions != null && functions.Any())
-            {
-                parentFunctions = functions.Where(x => !x.ParentId.HasValue);
-
-                foreach (var function in parentFunctions)
-                {
-                    function.Level = 0;
-                    BuildTreeFunction(function, functions);
-                }
-            }
-            else
-            {
-                parentFunctions = new List<HRP.Models.UserPermisson.FunctionModel>();
-            }
-
-            return parentFunctions;
-        }
-
-        private void BuildTreeFunction(HRP.Models.UserPermisson.FunctionModel function, IEnumerable<HRP.Models.UserPermisson.FunctionModel> functions)
-        {
-            IEnumerable<HRP.Models.UserPermisson.FunctionModel> functionItems = functions.Where(x => x.ParentId == function.FunctionId);
-
-            if (functionItems != null && functionItems.Any())
-            {
-                foreach (var item in functionItems)
-                {
-                    item.Level = function.Level + 1;
-                    function.Childs.Add(item);
-                    BuildTreeFunction(item, functions);
-                }
-            }
         }
     }
 }
