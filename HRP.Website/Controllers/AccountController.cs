@@ -101,7 +101,7 @@ namespace HRP.Website.Controllers
             return RedirectToAction(
                 "SetupOtp",
                 "Account",
-                new { token = otpRegisterToken, username = _sessionService.Username });
+                new { token = otpRegisterToken });
         }
 
         [AllowAnonymous]

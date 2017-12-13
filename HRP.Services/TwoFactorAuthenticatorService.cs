@@ -13,10 +13,6 @@ namespace HRP.Services
 
         private readonly IOptionsSnapshot<OtpConfig> _config;
 
-        public TwoFactorAuthenticatorService() : this(null)
-        {
-        }
-
         public TwoFactorAuthenticatorService(IOptionsSnapshot<OtpConfig> config)
         {
             _config = config;

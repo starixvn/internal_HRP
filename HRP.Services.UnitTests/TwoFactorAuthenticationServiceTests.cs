@@ -2,7 +2,6 @@
 {
     using Core.Model;
     using Microsoft.Extensions.Options;
-    using Moq;
     using NSubstitute;
     using Services;
     using Xunit;
@@ -19,10 +18,10 @@
                 OtpExpireTime = 0
             };
 
-            var otpConfig = new Mock<IOptionsSnapshot<OtpConfig>>();
-            otpConfig.Setup(m => m.Value).Returns(config);
-            
-            _twoFactorAuthenticationService = new TwoFactorAuthenticatorService(otpConfig.Object);
+            var otpConfig = Substitute.For<IOptionsSnapshot<OtpConfig>>();
+            otpConfig.Value.Returns(config);
+
+            _twoFactorAuthenticationService = new TwoFactorAuthenticatorService(otpConfig);
         }
 
         [Theory]
