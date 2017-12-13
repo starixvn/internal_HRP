@@ -106,6 +106,7 @@
     "inputFiles": [
       "wwwroot/assets/js/account/otp.js",
       "wwwroot/assets/js/account/index.js",
+      "wwwroot/assets/js/account/update-profile.js",
       "wwwroot/assets/js/account/change-password.js",
       "wwwroot/lib/qrious/qrious.min.js"
     ],

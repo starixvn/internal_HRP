@@ -40,7 +40,7 @@
             <div role="tabpanel" class="tab-pane" id="@AccountTab.Profile.ToString()">
                 @if (isAuthenticated)
                 {
-                    @Html.Partial("_Profile")
+                    @Html.Partial("_Profile", Model.UserProfileViewModel)
                 }
             </div>
             <div role="tabpanel" class="tab-pane" id="@AccountTab.ChangePassword.ToString()">

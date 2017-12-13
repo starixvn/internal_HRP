@@ -20,21 +20,5 @@
         {
             return View();
         }
-
-        [HttpGet]
-        public IActionResult Profile()
-        {
-            var twoFactorAuthen = new TwoFactorAuthenticator();
-            string SecretKey = "1234aa";
-            string UniqueKey = sessionService.Username + SecretKey;
-            var setupInfo = twoFactorAuthen.GenerateSetupCode("HRP Authenticator", sessionService.Username, UniqueKey, 200, 200);
-            var model = new UserProfileViewModel
-            {
-                QRImageUrl = setupInfo.QrCodeSetupImageUrl,
-                SetupCode = setupInfo.ManualEntryKey
-            };
-
-            return View(model);
-        }
     }
 }

@@ -180,4 +180,10 @@
   <data name="PasswordNotMatch" xml:space="preserve">
     <value>This password don't match. Try again?</value>
   </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>Update failed</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>Updated successfully</value>
+  </data>
 </root>

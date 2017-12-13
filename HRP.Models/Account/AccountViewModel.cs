@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.Account
 {
     using Core.Enumerations;
-    using UserProfile;
 
     public class AccountViewModel
     {
@@ -12,5 +11,7 @@
         public SetupOtpViewModel SetupOtpViewModel { get; set; }
 
         public ChangePasswordViewModel ChangePasswordViewModel { get; set; }
+
+        public UserProfileViewModel UserProfileViewModel { get; set; }
     }
 }

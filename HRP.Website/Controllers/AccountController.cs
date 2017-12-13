@@ -10,9 +10,9 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using HRP.Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
-    using HRP.Models.UserProfile;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
@@ -44,10 +44,18 @@ namespace HRP.Website.Controllers
         {
             var user = _userService.GetUserByUsername(_sessionService.Username);
 
+            var userProfile = new UserProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
             AccountViewModel accountViewModel = new AccountViewModel
             {
                 ActivePanel = tab,
-                IsOTPRegistered = user.IsOTPRegistered
+                IsOTPRegistered = user.IsOTPRegistered,
+                UserProfileViewModel = userProfile
             };
 
             return View(accountViewModel);
@@ -77,9 +85,29 @@ namespace HRP.Website.Controllers
                 return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
             }
 
-            return Json(new { code = -1, message = "Error" });
+            return Json(new { code = -1, message = Message.UpdateFail });
         }
-        
+
+        [HttpPost]
+        public IActionResult UpdateProfile(UserProfileViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new UpdateUserProfileCriteria
+                {
+                    UserId = _sessionService.UserId,
+                    FullName = !string.IsNullOrEmpty(viewModel.FullName) ? viewModel.FullName : string.Empty,
+                    Phone = !string.IsNullOrEmpty(viewModel.Phone) ? viewModel.Phone : string.Empty,
+                    Email = viewModel.Email
+                };
+
+                var result = _baseService.ExecuteNonQuery(criteria);
+
+                return Json(new { code = result.Code, message = Message.UpdateSuccess });
+            }
+            return Json(new { code = -1, message = Message.UpdateFail });
+        }
+
         [AllowAnonymous]
         public IActionResult RegisterOTPNotification()
         {

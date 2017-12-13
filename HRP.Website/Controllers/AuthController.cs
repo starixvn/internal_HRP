@@ -4,13 +4,13 @@ namespace HRP.Website.Controllers
     using BCrypt.Net;
     using Core.Services;
     using HRP.Models;
-    using HRP.Models.UserProfile;
     using HRP.Criteria;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
+    using HRP.Models.Account;
 
     public class AuthController : Controller
     {

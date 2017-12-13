@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.UserProfile
+﻿namespace HRP.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
