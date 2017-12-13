@@ -317,35 +317,35 @@ var assignPermissionToUser = (function ($) {
     function initCheckedInUserTable() {
         if ($userPermissionTable.find('input[type=checkbox][name=' + attrRead + ']:not(:checked)').length === 0
             && $userPermissionTable.find('input[type=checkbox][name=' + attrHost + ']:not(:checked)').length === 0) {
-            $checkAllFunc.trigger('click');
-        } else {
-            $('.checkAllRowFunc').each(function () {
-                var tr = $(this);
-
-                if (tr.find('input[type=checkbox][name=' + attrRead + ']:not(:checked)').length === 0
-                    && tr.find('input[type=checkbox][name=' + attrHost + ']:not(:checked)').length === 0) {
-                    tr.find('.checkAllRowFunc').prop('checked', true);
-                }
-            });
-
-            $('.checkAllColFuncRead').each(function () {
-                var td = $(this),
-                    companyId = td.data('cid');
-
-                if ($userPermissionTable.find('input[type=checkbox][name=' + attrRead + '][data-cid=' + companyId + ']:not(:checked)').length === 0) {
-                    td.prop('checked', true);
-                }
-            });
-
-            $('.checkAllColFuncHost').each(function () {
-                var td = $(this),
-                    companyId = td.data('cid');
-
-                if ($userPermissionTable.find('input[type=checkbox][name=' + attrHost + '][data-cid=' + companyId + ']:not(:checked)').length === 0) {
-                    td.prop('checked', true);
-                }
-            });
+            $checkAllFunc.prop('checked', true);
         }
+
+        $('.checkAllRowFunc').each(function () {
+            var tr = $(this).closest('tr');
+
+            if (tr.find('input[type=checkbox][name=' + attrRead + ']:not(:checked)').length === 0
+                && tr.find('input[type=checkbox][name=' + attrHost + ']:not(:checked)').length === 0) {
+                tr.find('.checkAllRowFunc').prop('checked', true);
+            }
+        });
+
+        $('.checkAllColFuncRead').each(function () {
+            var td = $(this),
+                companyId = td.data('cid');
+
+            if ($userPermissionTable.find('input[type=checkbox][name=' + attrRead + '][data-cid=' + companyId + ']:not(:checked)').length === 0) {
+                td.prop('checked', true);
+            }
+        });
+
+        $('.checkAllColFuncHost').each(function () {
+            var td = $(this),
+                companyId = td.data('cid');
+
+            if ($userPermissionTable.find('input[type=checkbox][name=' + attrHost + '][data-cid=' + companyId + ']:not(:checked)').length === 0) {
+                td.prop('checked', true);
+            }
+        });
     }
 
     function registerEvents() {
@@ -357,10 +357,10 @@ var assignPermissionToUser = (function ($) {
     function initModule() {
         $adminPermissionTable = $('#adminPermissionTable');
         $userPermissionTable = $('#userPermissionTable');
-        $checkAllFunc = $('#checkAllFunc:not(:disabled)');
-        $checkAllColFuncRead = $('.checkAllColFuncRead:not(:disabled)');
-        $checkAllColFuncHost = $('.checkAllColFuncHost:not(:disabled)');
-        $checkAllRowFunc = $('.checkAllRowFunc:not(:disabled)');
+        $checkAllFunc = $('#checkAllFunc');
+        $checkAllColFuncRead = $('.checkAllColFuncRead');
+        $checkAllColFuncHost = $('.checkAllColFuncHost');
+        $checkAllRowFunc = $('.checkAllRowFunc');
         $btnSave = $('#btnSave');
 
         registerEvents();

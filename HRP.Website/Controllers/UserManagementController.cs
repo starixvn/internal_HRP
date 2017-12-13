@@ -85,7 +85,7 @@
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id }).ConfigureAwait(false);
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id }).ConfigureAwait(false);
-            var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
+            var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && user != null && !user.IsSystemAdmin;
 
             var model = new AssignPermissonViewModel
             {
