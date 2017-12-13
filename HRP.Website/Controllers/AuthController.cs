@@ -73,8 +73,9 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
+                var password = Utilities.DecryptStringAES(viewModel.Password);
 
-                if (user != null && IsPasswordValid(viewModel.Password, user.Password) && user.IsActive)
+                if (user != null && IsPasswordValid(password, user.Password) && user.IsActive)
                 {
                     if (!user.IsOTPRegistered)
                     {

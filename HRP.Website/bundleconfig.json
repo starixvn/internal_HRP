@@ -4,7 +4,9 @@
     "inputFiles": [
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
-      "wwwroot/assets/styles/pages/before-login/login.css"
+      "wwwroot/assets/styles/pages/before-login/login.css",
+      "wwwroot/lib/jquery-ui/jquery-ui.css"
+
     ]
   },
   {
@@ -49,11 +51,24 @@
     }
   },
   {
+    "outputFileName": "wwwroot/js/login.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/login.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/js/jquery-validate.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"
     ]
   },
   {
