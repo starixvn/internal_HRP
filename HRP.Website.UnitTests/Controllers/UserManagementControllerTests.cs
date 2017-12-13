@@ -29,10 +29,12 @@
             IEnumerable<Company> companies = new List<Company>();
             IEnumerable<HRP.Models.UserPermisson.FunctionModel> functions = new List<HRP.Models.UserPermisson.FunctionModel>();
             IEnumerable<UserPermissionModel> permissions = new List<UserPermissionModel>();
+            var user = new UserModel { Username = "tim", IsSystemAdmin = false };
             userManagementController = GetUserManagementController();
-            baseService.GetDataAsync<HRP.Models.UserPermisson.FunctionModel>(Arg.Any<GetAllFunctionCriteria>()).Returns(Task.FromResult(functions));
-            baseService.GetDataAsync<Company>(Arg.Any<GetAllCompanyCriteria>()).Returns(Task.FromResult(companies));
-            baseService.GetDataAsync<UserPermissionModel>(Arg.Any<GetFunctionByUserIdCriteria>()).Returns(Task.FromResult(permissions));
+            functionService.GetTreeFunctions(Arg.Any<bool?>()).Returns(functions);
+            baseService.GetDataAsync<Company>(Arg.Any<GetAllCompanyCriteria>()).Returns(companies);
+            baseService.GetDataAsync<UserPermissionModel>(Arg.Any<GetFunctionByUserIdCriteria>()).Returns(permissions);
+            baseService.GetDataEntityAsync<UserModel>(Arg.Any<GetUserByIdCriteria>()).Returns(user);
             sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Core.Enumerations.Policy>()).Returns(true);
 
             // Act
@@ -42,6 +44,7 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<AssignPermissonViewModel>(viewResult.Model);
             Assert.True(viewModel.IsHost);
+            Assert.Equal(user.Username, viewModel.Username);
             Assert.Equal(companies, viewModel.Companies);
             Assert.Equal(functions, viewModel.Functions);
             Assert.Equal(permissions, viewModel.UserPermissions);

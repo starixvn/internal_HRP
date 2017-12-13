@@ -81,7 +81,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public async Task<IActionResult> AssignPermission(int id)
         {
-            var functions = await functionService.GetFunctions(true).ConfigureAwait(false);
+            var functions = await functionService.GetTreeFunctions(true).ConfigureAwait(false);
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true }).ConfigureAwait(false);
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id }).ConfigureAwait(false);
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id }).ConfigureAwait(false);
@@ -90,7 +90,7 @@
             var model = new AssignPermissonViewModel
             {
                 UserId = id,
-                Functions = functionService.BuildTreeFunction(functions),
+                Functions = functions,
                 Companies = companies,
                 UserPermissions = permissions,
                 Username = user != null ? user.Username : string.Empty,

@@ -8,6 +8,6 @@
     {
         Task<IEnumerable<FunctionModel>> GetFunctions(bool? isActive);
 
-        IEnumerable<FunctionModel> BuildTreeFunction(IEnumerable<FunctionModel> functions);
+        Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive);
     }
 }

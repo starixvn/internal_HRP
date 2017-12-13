@@ -26,8 +26,9 @@
             return await baseService.GetDataAsync<FunctionModel>(criteria).ConfigureAwait(false);
         }
 
-        public IEnumerable<FunctionModel> BuildTreeFunction(IEnumerable<FunctionModel> functions)
+        public async Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive)
         {
+            IEnumerable<FunctionModel> functions = await GetFunctions(isActive).ConfigureAwait(false);
             IEnumerable<FunctionModel> parentFunctions;
 
             if (functions != null && functions.Any())
