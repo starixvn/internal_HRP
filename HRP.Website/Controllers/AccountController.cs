@@ -10,6 +10,7 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using Google.Authenticator;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Models.UserProfile;
@@ -56,7 +57,7 @@ namespace HRP.Website.Controllers
             return View(accountViewModel);
         }
 
-        public async Task<IActionResult> ResetOtpDevice()
+        public IActionResult ResetOtpDevice()
         {
             // step 1: Reset IsOTPRegistered
             _userService.UpdateOTPStatus(_sessionService.UserId, false);
@@ -65,7 +66,7 @@ namespace HRP.Website.Controllers
             var otpRegisterToken = _userService.GenerateTokenOTPRegister(_sessionService.Username);
 
             // step 3: Sign user out
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+            ////await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
 
             // step 4: Show SetupOtp screen
             return RedirectToAction(
@@ -74,22 +75,25 @@ namespace HRP.Website.Controllers
                 new { token = otpRegisterToken, username = _sessionService.Username });
         }
 
-        [AllowAnonymous]
-        public IActionResult SetupOtp(string token, string username)
+        private SetupCode GetOtpSetupCode(string username)
         {
             var secretKey = Utilities.GenerateSecretKey();
             _userService.UpdateSecretKey(username, secretKey);
 
-            var setupCode = _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
+            return _twoFactorAuthService.SetupGoogleAuthInfo(_sessionService.Username, secretKey);
+        }
 
-            if (!string.IsNullOrEmpty(token) && !IsAuthenticated())
+        [AllowAnonymous]
+        public IActionResult SetupOtp(string token)
+        {
+            var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria
             {
-                var user = _baseService.GetDataEntity<User>(
-                    new GetUserByTokenOTPRegisterCriteria { TokenOTPRegister = token });
-                if (user == null)
-                {
-                    return BadRequest();
-                }
+                TokenOTPRegister = token
+            });
+
+            if (string.IsNullOrEmpty(token) || user == null)
+            {
+                return BadRequest();
             }
 
             AccountViewModel accountViewModel = new AccountViewModel
@@ -98,8 +102,8 @@ namespace HRP.Website.Controllers
                 IsOTPRegistered = false,
                 SetupOtpViewModel = new SetupOtpViewModel
                 {
-                    TextCode = setupCode.ManualEntryKey,
-                    Username = username,
+                    TextCode = GetOtpSetupCode(user.Username).ManualEntryKey,
+                    Username = user.Username,
                     SystemName = "HRP"
                 }
             };
@@ -210,11 +214,6 @@ namespace HRP.Website.Controllers
             ViewBag.ErrorMessage = Message.InvalidOTP;
 
             return RedirectToAction(nameof(VerifyOTP));
-        }
-
-        private bool IsAuthenticated()
-        {
-            return _sessionService.UserId > 0 && !string.IsNullOrEmpty(_sessionService.Username);
         }
 
         [HttpPost]

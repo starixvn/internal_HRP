@@ -80,7 +80,7 @@ namespace HRP.Website.Controllers
                     {
                         var otpRegisterToken = _userService.GenerateTokenOTPRegister(user.Username);
 
-                        _userService.SendMailToRegisterOTP(user.Username, otpRegisterToken);
+                        _userService.SendMailToRegisterOTP(otpRegisterToken);
 
                         return RedirectToAction("RegisterOTPNotification", "Account");
                     }

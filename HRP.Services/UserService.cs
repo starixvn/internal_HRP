@@ -105,16 +105,19 @@ namespace HRP.Services
             return result.IsSuccessful;
         }
 
-        public void SendMailToRegisterOTP(string username, string tokenOTPRegister)
+        public void SendMailToRegisterOTP(string tokenOTPRegister)
         {
-            var user = GetUserByUsername(username);
+            var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = tokenOTPRegister
+            });
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
 
             string linkToRegisterOTP =
-                $"{_configuration.Value.BaseHostUrl}/Account/SetupOTP?token={tokenOTPRegister}&username={username}";
+                $"{_configuration.Value.BaseHostUrl}/Account/SetupOTP?token={tokenOTPRegister}";
 
-            body = string.Format(body, username, linkToRegisterOTP);
+            body = string.Format(body, user.Username, linkToRegisterOTP);
 
             var mailModel = new MailModel
             {
