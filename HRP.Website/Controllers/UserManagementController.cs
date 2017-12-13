@@ -52,11 +52,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult GetUsers(bool? status)
         {
-            var criteria = new GetUsersCriteria { IsActive = status };
-            var users = baseService.GetData<UserModel>(criteria);
-            ViewBag.CanEditUserInfo = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
-
-            return PartialView("_Users", users);
+            return PartialView("_GetUsers", status);
         }
 
         [HttpPost]
@@ -150,11 +146,14 @@
                 var result = baseService.ExecuteNonQuery(criteria);
                 if (result.IsSuccessful)
                 {
-                    return Json(new { username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
+                    return Json(new { isSuccessful = result.IsSuccessful, result.Message, username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
                 }
             }
 
-            return View(viewModel);
+            var errors = from item in ModelState
+                         where item.Value.Errors.Any()
+                         select new { item.Key, item.Value.Errors.FirstOrDefault().ErrorMessage };
+            return Json(new { isSuccessful = false, errors });
         }
 
         [HttpGet]
@@ -196,7 +195,10 @@
                 return Json(result);
             }
 
-            return View(viewModel);
+            var errors = from item in ModelState
+                         where item.Value.Errors.Any()
+                         select new { item.Key, item.Value.Errors.FirstOrDefault().ErrorMessage };
+            return Json(new { isSuccessful = false, errors });
         }
     }
 }

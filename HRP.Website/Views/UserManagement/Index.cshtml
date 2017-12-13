@@ -4,7 +4,7 @@
 
 <h2 class="title">@ViewLang.UserManagement</h2>
 <form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
-      data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result">
+      data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="userManagement.onSearchSuccess">
     <div class="group">
         <label class="text">@ViewLang.Status</label>
         <select class="control" name="status">
@@ -33,22 +33,7 @@
 </div>
 
 <div id="result">
-    <table id="user-table" class="dataTable table table-bordered table-hover table-responsive">
-        <thead>
-            <tr>
-                <th>@ViewLang.SymbolCount</th>
-                <th>@ViewLang.Username</th>
-                <th>@ViewLang.FullName</th>
-                <th>@ViewLang.UserTable_Phone</th>
-                <th>@ViewLang.UserTable_Email</th>
-                <th>@ViewLang.Creator</th>
-                <th>@ViewLang.CreatedDate</th>
-                <th>@ViewLang.Active</th>
-                <th>@ViewLang.Action</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    @await Component.InvokeAsync("UserTable")
 </div>
 
 <environment include="Development">
@@ -61,6 +46,7 @@
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/assets/js/user-management.js"></script>
     }
 </environment>
 <environment exclude="Development">
@@ -73,5 +59,7 @@
         <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/assets/js/user-management.min.js"></script>
+
     }
 </environment>

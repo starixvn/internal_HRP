@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Model;
@@ -69,6 +70,35 @@
         }
 
         #endregion AssignPermission
+
+        [Fact]
+        public async Task CreateUser_InvalidModel_ReturnErrors()
+        {
+            var model = new CreateUserViewModel();
+            userManagementController = GetUserManagementController();
+
+            userManagementController.ModelState.AddModelError("", "Error");
+            var actual = userManagementController.CreateUser(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
+        }
+
+        [Fact]
+        public async Task CreateUser_ValidModel_ReturnSucessfully()
+        {
+            var model = new CreateUserViewModel { Password = "Admin1234" };
+            userManagementController = GetUserManagementController();
+
+            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0 });
+            userManagementController.Url = Substitute.For<IUrlHelper>();
+            userManagementController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
+
+            var actual = userManagementController.CreateUser(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool) jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
 
         #region Helpers
 

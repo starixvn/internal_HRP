@@ -9,6 +9,13 @@
 <form class="form-information block" asp-action="CreateUser" asp-controller="UserManagement" id="create-user-form"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="createUser.onCreateBegin"
       data-ajax-success="createUser.onCreateSuccess" data-ajax-complete="createUser.onCreateComplete">
+    <div class="-has-icon msg-success hidden" id="create-user-alert">
+        <span id="alert-message"></span>
+    </div>
+
+    <div class="-has-icon msg-err hidden" id="create-user-error-alert">
+        <span></span>
+    </div>
 
     <label asp-for="Username" class="text -has-required"></label>
     <div class="group-control">
@@ -59,10 +66,6 @@
         </ul>
     </div>
 </form>
-<div class="alert alert-success alert-dismissible hidden" role="alert" id="create-user-alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <span id="alert-message"></span>
-</div>
 
 @section Styles{
     <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
