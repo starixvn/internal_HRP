@@ -3,6 +3,7 @@
 @import "../../abstracts/mixins";
 @import "../../components/forms";
 @import "../../components/tables";
+@import "../../components/popups";
 
 .create-user:hover {
     text-decoration: none;
@@ -42,7 +43,8 @@
     .dropdown-menu {
         @include border-radius(2px);
         right: 0;
-        left: auto;        
+        left: auto;  
+        min-width: auto;      
         border: 1px solid #1973b2;       
         
         [class^="icon"] {

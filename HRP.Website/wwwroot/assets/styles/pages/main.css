@@ -69,8 +69,8 @@ input, button {
   display: inline-block;
   height: 36px;
   line-height: 36px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
   border: none;
   outline: none;
   cursor: pointer;
@@ -138,7 +138,9 @@ select:focus {
 .dropdown.open > .btn.dropdown-toggle,
 .dropdown.open > .btn.dropdown-toggle:hover,
 .dropdown.open > .btn.dropdown-toggle:focus,
-.dropdown.open > .btn.dropdown-toggle.focus {
+.dropdown.open > .btn.dropdown-toggle.focus,
+.dropdown .btn-default:active:hover,
+.dropdown .btn-default:active:focus {
   background: none;
   border: none;
   outline: none;
@@ -320,6 +322,11 @@ input[type='checkbox']:checked:after {
   border-right: none;
   height: 5px;
   width: 11px;
+}
+
+input[type="checkbox"][disabled],
+input[type="checkbox"].disabled {
+  opacity: 0.3;
 }
 
 .panel-group {
@@ -555,10 +562,14 @@ body {
 }
 
 .header {
-  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 61px;
-  padding-left: 16px;
+  background-color: #fff;
   border-bottom: 1px solid #dcdcdc;
+  z-index: 1000;
 }
 
 .header .wrapper {
@@ -689,6 +700,7 @@ body {
 }
 
 .user-info .dropdown .btn {
+  float: right;
   color: #1973b2;
   font-weight: bold;
 }
@@ -721,7 +733,16 @@ body {
   font-size: 16px;
 }
 
+.user-info .dropdown-menu {
+  margin-top: 49px;
+}
+
 /* Content */
+.content-container {
+  position: relative;
+  top: 60px;
+}
+
 .content {
   -webkit-border-radius: 5px;
   -khtml-border-radius: 5px;
@@ -758,17 +779,18 @@ body {
 
 .title {
   margin: 0;
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 16px;
+  font-size: 16px;
   font-weight: bold;
   color: #333;
 }
 
 .breadcrumb {
   padding: 0;
+  margin-bottom: 16px;
   background-color: transparent;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .breadcrumb a {
@@ -785,12 +807,13 @@ body {
 }
 
 .breadcrumb > li + li:before {
-  font-family: "hrp" !important;
-  content: "\e90c";
-  color: #333;
   position: relative;
   top: 2px;
+  padding: 0;
+  font-family: "hrp" !important;
   font-weight: normal;
+  content: "\e90c";
+  color: #333;
 }
 
 /* Icons */

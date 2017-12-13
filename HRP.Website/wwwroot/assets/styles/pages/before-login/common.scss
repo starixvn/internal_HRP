@@ -32,10 +32,11 @@ body {
 }
 
 .block {
-    margin: 106px auto 0;
+    margin: 0 auto;
     padding-top: 70px;
     width: 410px;
     position: relative;
+    top: 165px;
 
     .circle-large {
         display: flex;
