@@ -82,7 +82,10 @@ namespace HRP.Website.Controllers
 
                 var result = _baseService.ExecuteNonQuery(criteria);
 
-                return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
+                if (result.IsSuccessful)
+                {
+                    return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
+                }
             }
 
             return Json(new { code = -1, message = Message.UpdateFail });
@@ -103,7 +106,10 @@ namespace HRP.Website.Controllers
 
                 var result = _baseService.ExecuteNonQuery(criteria);
 
-                return Json(new { code = result.Code, message = Message.UpdateSuccess });
+                if (result.IsSuccessful)
+                {
+                    return Json(new { code = result.Code, message = Message.UpdateSuccess });
+                }
             }
             return Json(new { code = -1, message = Message.UpdateFail });
         }
