@@ -28,11 +28,6 @@ namespace HRP.Website.Controllers
             _baseService = baseService;
         }
 
-        public IActionResult ChangePasswordSuccessful()
-        {
-            return View();
-        }
-
         public IActionResult ConfirmationEmailSent()
         {
             return View();
@@ -135,8 +130,12 @@ namespace HRP.Website.Controllers
                 if (result.IsSuccessful)
                 {
                     ViewBag.Message = Message.PasswordChangeSuccessful;
-                    return View();
                 }
+                else
+                {
+                    ViewBag.ErrorMessage = Message.UpdateFail;
+                }
+                return View();
             }
 
             return BadRequest();
