@@ -6,7 +6,6 @@
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/before-login/login.css",
       "wwwroot/lib/jquery-ui/jquery-ui.css"
-
     ]
   },
   {
@@ -104,11 +103,11 @@
   {
     "outputFileName": "wwwroot/assets/js/account/account.min.js",
     "inputFiles": [
+      "wwwroot/lib/qrious/qrious.min.js",
       "wwwroot/assets/js/account/otp.js",
       "wwwroot/assets/js/account/index.js",
       "wwwroot/assets/js/account/update-profile.js",
-      "wwwroot/assets/js/account/change-password.js",
-      "wwwroot/lib/qrious/qrious.min.js"
+      "wwwroot/assets/js/account/change-password.js"
     ],
     "minify": {
       "enabled": false,
