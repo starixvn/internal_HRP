@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
-    using HRP.Core.Model;
-    using HRP.Core.Repositories;
-    using HRP.Core.Services;
+    using Model;
     using NSubstitute;
+    using Repositories;
+    using Services;
     using Xunit;
 
     public class BaseServiceTests
@@ -39,7 +39,7 @@
             baseService = GetBaseService();
 
             // Act
-            var actual = baseService.GetData<int>(criteria);
+            var actual = baseService.GetData<MenuItem>(criteria);
 
             // Assert
             Assert.Empty(actual);
@@ -49,14 +49,17 @@
         public void GetData_CriteriaIsValid_ReturnExpectedData()
         {
             // Arrange
-            var expected = new List<int> { 1, 2, 3 };
+            var expected = new List<MenuItem>
+            {
+                new MenuItem { MenuId = 1, Name = "configuration", Description = "", Url = "/", FunctionId = 1, ParentId = null, IsActive = true, DisplayOrder = 1 }
+            };
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
             baseService = GetBaseService();
-            dynamicRepository.Fetch<int>(criteria).Returns(expected);
+            dynamicRepository.Fetch<MenuItem>(criteria).Returns(expected);
 
             // Act
-            var actual = baseService.GetData<int>(criteria);
+            var actual = baseService.GetData<MenuItem>(criteria);
 
             // Assert
             Assert.NotEmpty(actual);
@@ -89,7 +92,7 @@
             baseService = GetBaseService();
 
             // Act
-            var actual = await baseService.GetDataAsync<int>(criteria);
+            var actual = await baseService.GetDataAsync<FunctionModel>(criteria);
 
             // Assert
             Assert.Empty(actual);
@@ -99,14 +102,16 @@
         public async Task GetDataAsync_CriteriaIsValid_ReturnExpectedData()
         {
             // Arrange
-            var expected = new List<int> { 1, 2, 3 };
+            var expected = new List<FunctionModel> {
+                new FunctionModel { FunctionId = 1, FunctionKey = "Configuration", Name = "Configuration", CompanyId = 1, ParentId = null, IsReadOnly = false, IsRead = true, IsHost = true }
+            };
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
             baseService = GetBaseService();
-            dynamicRepository.FetchAsync<int>(criteria).Returns(expected);
+            dynamicRepository.FetchAsync<FunctionModel>(criteria).Returns(expected);
 
             // Act
-            var actual = await baseService.GetDataAsync<int>(criteria);
+            var actual = await baseService.GetDataAsync<FunctionModel>(criteria);
 
             // Assert
             Assert.NotEmpty(actual);
