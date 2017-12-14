@@ -18,11 +18,13 @@
             @await Component.InvokeAsync("Menu")
         </div>
     </header>
-    <section class="wrapper">
-        <div class="content">
-            @RenderBody()
-        </div>
-    </section>
+    <div class="content-container">
+        <section class="wrapper">
+            <div class="content">
+                @RenderBody()
+            </div>
+        </section>
+    </div>    
 
     @Html.Hidden("RootURL", Url.Content("~/"))
 

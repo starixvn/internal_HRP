@@ -2,14 +2,22 @@
   {
     "outputFileName": "wwwroot/assets/bundles/login.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
+<<<<<<< HEAD
+      "wwwroot/assets/styles/pages/before-login/login.css",
+      "wwwroot/lib/jquery-ui/jquery-ui.css"
+=======
+      "wwwroot/lib/jquery-ui/jquery-ui.css",
       "wwwroot/assets/styles/pages/before-login/login.css"
+>>>>>>> 000 - resolve conflict
     ]
   },
   {
     "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/before-login/common.css"
@@ -18,6 +26,8 @@
   {
     "outputFileName": "wwwroot/assets/bundles/main.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/main.css"
@@ -38,7 +48,9 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "wwwroot/js/common-functions.js"
     ],
     "minify": {
       "enabled": true,
@@ -46,12 +58,24 @@
     }
   },
   {
-    "outputFileName": "wwwroot/js/jquery.min.js",
+    "outputFileName": "wwwroot/js/login.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/login.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/jquery-validate.min.js",
+    "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/jquery-ui/jquery-ui.js"
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"
     ]
   },
   {
@@ -85,20 +109,17 @@
     }
   },
   {
-<<<<<<< HEAD
-    "outputFileName": "wwwroot/assets/js/change-password.min.js",
-    "inputFiles": [ "wwwroot/assets/js/change-password.js" ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-=======
     "outputFileName": "wwwroot/assets/js/account/account.min.js",
     "inputFiles": [
+      "wwwroot/lib/qrious/qrious.min.js",
       "wwwroot/assets/js/account/otp.js",
       "wwwroot/assets/js/account/index.js",
-      "wwwroot/lib/qrious/qrious.min.js"
-    ]
->>>>>>> 87873 - javascript to files
+      "wwwroot/assets/js/account/update-profile.js",
+      "wwwroot/assets/js/account/change-password.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
   }
 ]

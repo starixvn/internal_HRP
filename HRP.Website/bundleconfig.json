@@ -2,15 +2,17 @@
   {
     "outputFileName": "wwwroot/assets/bundles/login.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
-      "wwwroot/assets/styles/pages/before-login/login.css",
-      "wwwroot/lib/jquery-ui/jquery-ui.css"
+      "wwwroot/lib/jquery-ui/jquery-ui.css",
+      "wwwroot/assets/styles/pages/before-login/login.css"
     ]
   },
   {
     "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/before-login/common.css"
@@ -19,6 +21,7 @@
   {
     "outputFileName": "wwwroot/assets/bundles/main.min.css",
     "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "wwwroot/assets/styles/fonts/hrp/style.css",
       "wwwroot/assets/styles/base/reset.css",
