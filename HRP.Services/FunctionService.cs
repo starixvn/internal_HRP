@@ -16,16 +16,6 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<FunctionModel>> GetFunctions(bool? isActive)
-        {
-            var criteria = new GetAllFunctionCriteria
-            {
-                IsActive = isActive
-            };
-
-            return await baseService.GetDataAsync<FunctionModel>(criteria).ConfigureAwait(false);
-        }
-
         public async Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive)
         {
             IEnumerable<FunctionModel> functions = await GetFunctions(isActive).ConfigureAwait(false);
@@ -43,6 +33,16 @@
             }
 
             return parentFunctions;
+        }
+
+        private async Task<IEnumerable<FunctionModel>> GetFunctions(bool? isActive)
+        {
+            var criteria = new GetAllFunctionCriteria
+            {
+                IsActive = isActive
+            };
+
+            return await baseService.GetDataAsync<FunctionModel>(criteria).ConfigureAwait(false);
         }
 
         private void GetChildFunctions(FunctionModel function, IEnumerable<FunctionModel> functions)

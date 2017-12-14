@@ -6,8 +6,6 @@
 
     public interface IFunctionService
     {
-        Task<IEnumerable<FunctionModel>> GetFunctions(bool? isActive);
-
         Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive);
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
     using HRP.Criteria;
@@ -16,21 +17,25 @@
         #region GetFunctions
 
         [Fact]
-        public async Task GetFunctions_WhenCalled_ReturnExpectedFunctions()
+        public async Task GetTreeFunctions_WhenCalled_ReturnExpectedTreeFunctions()
         {
             // Arrange
             var expected = new List<FunctionModel>
             {
-                new FunctionModel { FunctionId = 1 }
+                new FunctionModel { FunctionId = 1 },
+                new FunctionModel { FunctionId = 2, ParentId = 1 }
             };
             functionService = GetFunctionService();
             baseService.GetDataAsync<FunctionModel>(Arg.Any<GetAllFunctionCriteria>()).Returns(expected);
 
             // Act
-            var actual = await functionService.GetFunctions(Arg.Any<bool?>());
+            var actual = await functionService.GetTreeFunctions(Arg.Any<bool?>());
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Single(actual);
+            Assert.Single(actual.First().Childs);
+            Assert.Equal(expected.First(), actual.First());
+            Assert.Equal(expected[1], actual.First().Childs.First());
         }
 
         #endregion GetFunctions

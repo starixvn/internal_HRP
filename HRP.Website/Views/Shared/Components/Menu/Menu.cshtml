@@ -9,37 +9,9 @@
         @foreach (var parent in menuGroups)
         {
             var childMenus = Model.Where(x => x.ParentId == parent.MenuId).OrderBy(x => x.DisplayOrder);
-            var icon = string.Empty;
-
-            @switch (parent.Name.ToLower())
-            {
-                case "configuration":
-                    icon = "icon-configuration";
-                    break;
-
-                case "employee management":
-                    icon = "icon-employee_management";
-                    break;
-
-                case "payment process":
-                    icon = "icon-payment";
-                    break;
-
-                case "payslip":
-                    icon = "icon-payslip";
-                    break;
-
-                case "report":
-                    icon = "icon-payment";
-                    break;
-
-                default:
-                    icon = string.Empty;
-                    break;
-            }
 
             <li class="menu">
-                <a href="@parent.Url" class="link"><span class="@icon"></span>@parent.Name</a>
+                <a href="@parent.Url" class="link"><span class="@parent.Description"></span>@parent.Name</a>
                 @if (childMenus != null && childMenus.Any())
                 {
                     <ul class="submenu">
@@ -57,7 +29,8 @@
 </ul>
 <div class="user-info">
     <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+        @{ var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N")); }
+        <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             @ViewData["Username"]
             <span class="circle-gray">
@@ -65,7 +38,7 @@
             </span>
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <ul class="dropdown-menu" aria-labelledby="@dropdownId">
             <li>
                 <a asp-action="Index" asp-controller="Account" asp-route-tab="Profile">
                     <span class="icon-user"></span>@ViewLang.Profile
