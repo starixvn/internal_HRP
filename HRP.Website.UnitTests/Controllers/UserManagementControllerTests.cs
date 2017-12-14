@@ -72,7 +72,7 @@
         #endregion AssignPermission
 
         [Fact]
-        public async Task CreateUser_InvalidModel_ReturnErrors()
+        public void CreateUser_InvalidModel_ReturnErrors()
         {
             var model = new CreateUserViewModel();
             userManagementController = GetUserManagementController();
@@ -85,7 +85,7 @@
         }
 
         [Fact]
-        public async Task CreateUser_ValidModel_ReturnSucessfully()
+        public void CreateUser_ValidModel_ReturnSucessfully()
         {
             var model = new CreateUserViewModel { Password = "Admin1234" };
             userManagementController = GetUserManagementController();
@@ -97,7 +97,7 @@
             var actual = userManagementController.CreateUser(model);
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool) jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
         #region Helpers

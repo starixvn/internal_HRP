@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
-    public enum MailStatus : int
+    public enum MailStatus
     {
         All = 0,
         Success = 1,
@@ -15,7 +15,7 @@
     [DataContract]
     public class MailRecord
     {
-        private bool _isReady = false;
+        private bool _isReady;
 
         public MailRecord()
         {
@@ -39,123 +39,55 @@
         }
 
         [DataMember]
-        public long MailID
-        {
-            get;
-            set;
-        }
+        public long MailID { get; set; }
 
         [DataMember]
-        public MailConfig Config
-        {
-            get;
-            set;
-        }
+        public MailConfig Config { get; set; }
 
         [DataMember]
-        public int AppID
-        {
-            get;
-            set;
-        }
+        public int AppID { get; set; }
 
         [DataMember]
-        public int FuncID
-        {
-            get;
-            set;
-        }
+        public int FuncID { get; set; }
 
         [DataMember]
-        public MailFunction Function
-        {
-            get;
-            set;
-        }
+        public MailFunction Function { get; set; }
 
         [DataMember]
-        public string MailTo
-        {
-            get;
-            set;
-        }
+        public string MailTo { get; set; }
 
         [DataMember]
-        public string Title
-        {
-            get;
-            set;
-        }
+        public string Title { get; set; }
 
         [DataMember]
-        public string Subject
-        {
-            get;
-            set;
-        }
+        public string Subject { get; set; }
 
         [DataMember]
-        public string Body
-        {
-            get;
-            set;
-        }
+        public string Body { get; set; }
 
         [DataMember]
-        public string MailCc
-        {
-            get;
-            set;
-        }
+        public string MailCc { get; set; }
 
         [DataMember]
-        public string MailFrom
-        {
-            get;
-            set;
-        }
+        public string MailFrom { get; set; }
 
         [DataMember]
-        public string MailBcc
-        {
-            get;
-            set;
-        }
+        public string MailBcc { get; set; }
 
         [DataMember]
-        public string FileAttachments
-        {
-            get;
-            set;
-        }
+        public string FileAttachments { get; set; }
 
         [DataMember]
-        public List<MailAttachment> Attachments
-        {
-            get;
-            set;
-        }
+        public List<MailAttachment> Attachments { get; set; }
 
         [DataMember]
-        public string MailDate
-        {
-            get;
-            set;
-        }
+        public string MailDate { get; set; }
 
         [DataMember]
-        public string MailUpdatedDate
-        {
-            get;
-            set;
-        }
+        public string MailUpdatedDate { get; set; }
 
         [DataMember]
-        public List<MailLinkedResource> AlternateView
-        {
-            get;
-            set;
-        }
+        public List<MailLinkedResource> AlternateView { get; set; }
 
         public bool IsReady
         {
@@ -171,11 +103,7 @@
         }
 
         [DataMember]
-        public int CountSend
-        {
-            get;
-            set;
-        }
+        public int CountSend { get; set; }
 
         [DataMember]
         public int SentSuccess { get; set; }
@@ -190,10 +118,6 @@
         public int ResentCount { get; set; }
 
         [DataMember]
-        public bool IsEncrypt
-        {
-            get;
-            set;
-        }
+        public bool IsEncrypt { get; set; }
     }
 }

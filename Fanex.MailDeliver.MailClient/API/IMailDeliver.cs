@@ -49,9 +49,9 @@
 
         IMailDeliver AddTitle(string mailTitle = "");
 
-        IMailDeliver ToCcMails(string toCCMails = "");
+        IMailDeliver ToCcMails(string mailCc = "");
 
-        IMailDeliver ToBccMails(string toBccMails = "");
+        IMailDeliver ToBccMails(string mailBc = "");
 
         IMailDeliver AddAttachments(List<MailAttachment> mailAttachments);
 

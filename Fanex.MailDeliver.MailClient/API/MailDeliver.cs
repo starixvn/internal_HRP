@@ -33,12 +33,14 @@
         {
             if (endpoint.Uri.Scheme.IndexOf("http") != -1)
             {
-                BasicHttpBinding httpBinding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-                httpBinding.SendTimeout = new TimeSpan(0, 0, 5);
-                httpBinding.OpenTimeout = new TimeSpan(0, 0, 5);
-                httpBinding.MaxBufferSize = 2097152; // max 2M
-                httpBinding.MaxReceivedMessageSize = 2097152;
-                httpBinding.MaxBufferPoolSize = 2097152 * 4; // max 8M
+                var httpBinding = new BasicHttpBinding(BasicHttpSecurityMode.None)
+                {
+                    SendTimeout = new TimeSpan(0, 0, 5),
+                    OpenTimeout = new TimeSpan(0, 0, 5),
+                    MaxBufferSize = 2097152, // max 2M
+                    MaxReceivedMessageSize = 2097152,
+                    MaxBufferPoolSize = 2097152 * 4 // max 8M
+                };
                 httpBinding.ReaderQuotas.MaxArrayLength = 2097152;
                 httpBinding.ReaderQuotas.MaxDepth = 32;
                 httpBinding.ReaderQuotas.MaxBytesPerRead = 4096;
@@ -187,11 +189,11 @@
 
         #region Mail Setting
 
-        public MailSetting StoreSetting(MailSetting setting)
+        public MailSetting StoreSetting(MailSetting config)
         {
-            if (setting != null)
+            if (config != null)
             {
-                var stream = MailFormatter.Serialize(setting);
+                var stream = MailFormatter.Serialize(config);
                 return MailFormatter.Deserialize<MailSetting>(_mailClient.StoreSetting(stream.ToArray()));
             }
 
@@ -383,15 +385,15 @@
             return this;
         }
 
-        public IMailDeliver ToCcMails(string toCCMails = "")
+        public IMailDeliver ToCcMails(string mailCc = "")
         {
-            _mailRecord.MailCc = toCCMails;
+            _mailRecord.MailCc = mailCc;
             return this;
         }
 
-        public IMailDeliver ToBccMails(string toBccMails = "")
+        public IMailDeliver ToBccMails(string mailBc = "")
         {
-            _mailRecord.MailBcc = toBccMails;
+            _mailRecord.MailBcc = mailBc;
             return this;
         }
 

@@ -8,6 +8,7 @@ namespace HRP.Core.Filters
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
 
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class HRPPermissionAttribute : Attribute, IAuthorizationFilter
     {
         public string FunctionKey { get; set; }

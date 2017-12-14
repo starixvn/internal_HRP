@@ -13,7 +13,7 @@
                 {
                     if (attachment.Content == null && !string.IsNullOrEmpty(attachment.FileName))
                     {
-                        var stream = System.IO.File.Open(attachment.FileName, FileMode.Open);
+                        var stream = File.Open(attachment.FileName, FileMode.Open);
                         var buffer = new byte[stream.Length];
                         stream.Read(buffer, 0, buffer.Length);
                         stream.Flush();
@@ -31,7 +31,7 @@
                 {
                     if (resource.StreamContent == null && !string.IsNullOrEmpty(resource.FileName))
                     {
-                        var stream = System.IO.File.Open(resource.FileName, FileMode.Open);
+                        var stream = File.Open(resource.FileName, FileMode.Open);
                         var buffer = new byte[stream.Length];
                         stream.Read(buffer, 0, buffer.Length);
                         stream.Flush();
@@ -50,7 +50,7 @@
             {
                 if (resource.StreamContent == null)
                 {
-                    var stream = System.IO.File.Open(resource.FileName, FileMode.Open);
+                    var stream = File.Open(resource.FileName, FileMode.Open);
                     var buffer = new byte[stream.Length];
                     stream.Read(buffer, 0, buffer.Length);
                     stream.Flush();
