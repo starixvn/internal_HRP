@@ -28,10 +28,10 @@ namespace HRP.Services.UnitTests
                 BaseHostUrl = "http=//localhost=56977"
             };
 
-            //_configuration = Options.Create(appSettingsOptions);
+            _configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
+            _configuration.Value.Returns(appSettingsOptions);
 
             _userService = new UserService(_emailService, _configuration, _baseService);
-
         }
     }
 }

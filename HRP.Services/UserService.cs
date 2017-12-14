@@ -10,71 +10,22 @@ namespace HRP.Services
 
     public class UserService : IUserService
     {
+        private readonly IBaseService _baseService;
         private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
         private readonly IBaseMailService _emailService;
-        private readonly IBaseService _baseService;
 
         public UserService() : this(null, null, null)
         {
         }
 
-        public UserService(IBaseMailService emailService,
-                IOptionsSnapshot<AppSettingsOptions> configuration,
-                IBaseService baseService)
+        public UserService(
+            IBaseMailService emailService,
+            IOptionsSnapshot<AppSettingsOptions> configuration,
+            IBaseService baseService)
         {
             _emailService = emailService;
             _configuration = configuration;
             _baseService = baseService;
-        }
-
-        public User GetUserByUsername(string username)
-        {
-            var criteria = new GetUserByUsernameCriteria
-            {
-                Username = username
-            };
-
-            var user = _baseService.GetDataEntity<User>(criteria);
-
-            return user;
-        }
-
-        public void ResetUserPassword(string username)
-        {
-            string tokenResetPassword = Utilities.GenerateRadomString();
-            var criteria = new UpdateTokenResetPasswordCriteria
-            {
-                Username = username,
-                TokenResetPassword = tokenResetPassword
-            };
-
-            CommandResult updateToken = _baseService.ExecuteNonQuery(criteria);
-
-            if (updateToken.IsSuccessful)
-            {
-                SendMailToResetPassword(username, tokenResetPassword);
-            }
-        }
-
-        private void SendMailToResetPassword(string username, string tokenResetPassword)
-        {
-            var user = GetUserByUsername(username);
-
-            var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
-
-            string linkToReset = _configuration.Value.BaseHostUrl + "/Auth/ResetPassword?token=" + tokenResetPassword;
-
-            body = string.Format(body, username, linkToReset);
-
-            var mailModel = new MailModel
-            {
-                Subject = Message.ResetPasswordEmailSubject,
-                ReceiverEmail = user.Email,
-                MailCC = string.Empty,
-                Body = body
-            };
-
-            _emailService.SendEmail(mailModel);
         }
 
         public string GenerateTokenOTPRegister(string username)
@@ -92,6 +43,18 @@ namespace HRP.Services
             return result.IsSuccessful ? tokenOTPRegister : null;
         }
 
+        public User GetUserByUsername(string username)
+        {
+            var criteria = new GetUserByUsernameCriteria
+            {
+                Username = username
+            };
+
+            var user = _baseService.GetDataEntity<User>(criteria);
+
+            return user;
+        }
+
         public bool ResetTokenOTPRegister(string username)
         {
             var criteria = new UpdateTokenOTPRegisterCriteria
@@ -103,6 +66,23 @@ namespace HRP.Services
             CommandResult result = _baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful;
+        }
+
+        public void ResetUserPassword(string username)
+        {
+            string tokenResetPassword = Utilities.GenerateRadomString();
+            var criteria = new UpdateTokenResetPasswordCriteria
+            {
+                Username = username,
+                TokenResetPassword = tokenResetPassword
+            };
+
+            CommandResult updateToken = _baseService.ExecuteNonQuery(criteria);
+
+            if (updateToken.IsSuccessful)
+            {
+                SendMailToResetPassword(username, tokenResetPassword);
+            }
         }
 
         public void SendMailToRegisterOTP(string tokenOTPRegister)
@@ -154,6 +134,27 @@ namespace HRP.Services
             CommandResult result = _baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful;
+        }
+
+        private void SendMailToResetPassword(string username, string tokenResetPassword)
+        {
+            var user = GetUserByUsername(username);
+
+            var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
+
+            string linkToReset = _configuration.Value.BaseHostUrl + "/Auth/ResetPassword?token=" + tokenResetPassword;
+
+            body = string.Format(body, username, linkToReset);
+
+            var mailModel = new MailModel
+            {
+                Subject = Message.ResetPasswordEmailSubject,
+                ReceiverEmail = user.Email,
+                MailCC = string.Empty,
+                Body = body
+            };
+
+            _emailService.SendEmail(mailModel);
         }
     }
 }
