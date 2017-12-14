@@ -118,7 +118,11 @@ select:focus {
 .dropdown.open > .btn.dropdown-toggle,
 .dropdown.open > .btn.dropdown-toggle:hover,
 .dropdown.open > .btn.dropdown-toggle:focus,
-.dropdown.open > .btn.dropdown-toggle.focus {
+.dropdown.open > .btn.dropdown-toggle.focus,
+.dropdown .btn-default.active:focus,
+.dropdown .btn-default.active:hover,
+.dropdown .btn-default:active:focus,
+.dropdown .btn-default:active:hover {
   background: none;
   border: none;
   outline: none;
@@ -349,6 +353,91 @@ input[type="checkbox"].disabled {
   border-color: #0b599c transparent transparent transparent;
 }
 
+.modal-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.modal-content .modal-header {
+  padding: 11px 0;
+}
+
+.modal-content .modal-header .close {
+  margin-top: 2px;
+  color: #858585;
+  font-size: 18px;
+  opacity: 1;
+}
+
+.modal-content .modal-header .close:hover {
+  color: #333;
+}
+
+.modal-content .modal-body {
+  padding: 25px 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.modal-content .modal-footer {
+  border-top: none;
+  padding: 20px 0 30px;
+}
+
+.modal-content .modal-footer .button:first-child {
+  margin-right: 16px;
+}
+
+.modal-content.-has-title .modal-header {
+  border-bottom-color: #dbdbdb;
+}
+
+.modal-content.-has-title .modal-title {
+  font-size: 16px;
+}
+
+.modal-content.-has-title .modal-footer {
+  text-align: right;
+}
+
+.modal-content.-has-icon .modal-header {
+  border-bottom: none;
+}
+
+.modal-content.-has-icon .circle {
+  -webkit-border-radius: 50%;
+  -khtml-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: -24px;
+  margin-left: -33px;
+  height: 70px;
+  width: 70px;
+  background-color: #f57d14;
+  font-size: 27px;
+  color: #fff;
+}
+
+.modal-content.-has-icon .modal-body {
+  padding-top: 70px;
+}
+
+.modal-content.-has-icon .modal-footer {
+  padding-top: 0;
+  text-align: center;
+}
+
+.modal-dialog.-small {
+  width: 370px;
+}
+
 .msg-error, .text-danger {
   display: block;
   line-height: 18px;
@@ -479,7 +568,7 @@ input[type="checkbox"].disabled {
 }
 
 .nav.nav-tabs > li > a {
-  font-size: 18px;
+  font-size: 16px;
   padding: 10px 30px;
   border: none;
 }
@@ -525,6 +614,7 @@ input[type="checkbox"].disabled {
 
 body {
   background-color: #f2f4f6;
+  overflow: hidden;
 }
 
 .wrapper {
@@ -717,8 +807,12 @@ body {
 
 /* Content */
 .content-container {
-  position: relative;
+  position: absolute;
   top: 60px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  overflow: auto;
 }
 
 .content {
@@ -742,7 +836,7 @@ body {
 .content .username {
   color: #1973b2;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 20px;
 }
 

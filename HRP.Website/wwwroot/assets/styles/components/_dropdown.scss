@@ -20,12 +20,16 @@ select {
     &.open > .btn.dropdown-toggle,
     &.open > .btn.dropdown-toggle:hover,
     &.open > .btn.dropdown-toggle:focus,
-    &.open > .btn.dropdown-toggle.focus {
+    &.open > .btn.dropdown-toggle.focus,
+    .btn-default.active:focus,
+    .btn-default.active:hover,
+    .btn-default:active:focus,
+    .btn-default:active:hover {
         background: none;
         border: none;
         outline: none;
     }
-
+    
     .btn {
         background: no-repeat;
         border: none;

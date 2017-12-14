@@ -118,7 +118,7 @@
         text-decoration: none;
     }
 
-    .button.-primary {
-        margin-left: 16px;
+    .button:first-child {
+        margin-right: 16px;
     }
 }

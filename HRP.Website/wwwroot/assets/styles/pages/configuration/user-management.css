@@ -53,8 +53,8 @@
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
 }
 
-.form-information .button.-primary {
-  margin-left: 16px;
+.form-information .list-button .button:first-child {
+  margin-right: 16px;
 }
 
 .form-information .group-control {
@@ -153,6 +153,10 @@
 }
 
 .table tbody tr:hover {
+  background-color: #ffe3cb;
+}
+
+.table tbody tr:hover .col-odd {
   background-color: #ffe3cb;
 }
 
@@ -460,8 +464,8 @@
   text-decoration: none;
 }
 
-.list-button .button.-primary {
-  margin-left: 16px;
+.list-button .button:first-child {
+  margin-right: 16px;
 }
  
 

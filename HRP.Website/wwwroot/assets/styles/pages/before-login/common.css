@@ -151,6 +151,64 @@ input[type="password"]:focus {
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
 }
 
+input[type='checkbox'] {
+  -webkit-transition: all .3s ease-in-out;
+  -khtml-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  position: relative;
+  margin: 0;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+input[type='checkbox']:before {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 18px;
+  width: 18px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+input[type='checkbox']:checked:before {
+  border: 1px solid #1973b2;
+  background-color: #1973b2;
+}
+
+input[type='checkbox']:checked:after {
+  -webkit-transform: rotate(-45deg);
+  -khtml-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-right: none;
+  height: 5px;
+  width: 11px;
+}
+
+input[type="checkbox"][disabled],
+input[type="checkbox"].disabled {
+  opacity: 0.3;
+}
+
 .msg-error, .text-danger {
   display: block;
   line-height: 18px;
@@ -263,11 +321,6 @@ input[type="password"]:focus {
 }
 
 .block {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  width: 350px;
   -webkit-border-radius: 4px;
   -khtml-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -280,6 +333,11 @@ input[type="password"]:focus {
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 350px;
   background-color: #fff;
 }
 

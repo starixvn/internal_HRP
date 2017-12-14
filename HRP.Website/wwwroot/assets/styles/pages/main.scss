@@ -7,12 +7,13 @@
 @import "../components/textbox";
 @import "../components/checkbox";
 @import "../components/panels";
+@import "../components/popups";
 @import "../components/messages";
 @import "../components/tabs";
 
-
 body { 
     background-color: $page-bg;
+    overflow: hidden;
 }
 
 
@@ -190,8 +191,12 @@ body {
 /* Content */
 
 .content-container {
-    position: relative;
-    top: 60px
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
 }
 
 .content {
@@ -204,7 +209,7 @@ body {
     .username {
         color: #1973b2;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 16px;
         margin-bottom: 20px;
     }
 

@@ -1,6 +1,7 @@
 
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
+@import "../../components/forms";
 
 /* Change  OTP */
 .otp {
@@ -9,6 +10,8 @@
     }
 
     .info {
+        display: inline-block;
+        width: 100%;
         margin: 5px 0;
         line-height: 20px;
     }
@@ -147,11 +150,22 @@
 
 /* Notication OTP */
 .notication-otp {
+    @include border-radius(4px);
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");  
     width: 690px;
     margin: 106px auto 0;
     padding: 34px 24px;
+    background-color: #fff;
     font-size: 14px;
     color: #666;
+
+    .title {
+        margin-bottom: 20px;
+        color: $text-color;
+        font-size: 16px;
+        font-style: italic;        
+        font-weight: bold;
+    }
 
     .info {
         margin-bottom: 16px;

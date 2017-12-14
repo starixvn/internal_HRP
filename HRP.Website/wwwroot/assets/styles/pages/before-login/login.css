@@ -152,11 +152,6 @@ input[type="password"]:focus {
 }
 
 .block {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  width: 350px;
   -webkit-border-radius: 4px;
   -khtml-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -169,6 +164,11 @@ input[type="password"]:focus {
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 350px;
   background-color: #fff;
 }
 

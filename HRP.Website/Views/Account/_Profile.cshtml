@@ -6,11 +6,12 @@
 <form asp-controller="Account" asp-action="UpdateProfile" id="update-profile-form"
       data-ajax-method="post" data-ajax="true" data-ajax-success="updateProfile.onUpdateSuccess"
       data-ajax-failure="updateProfile.OnUpdateFailure">
-    <div class="alert alert-success alert-dismissible hidden" role="alert" id="update-profile-alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span>@Message.UpdateSuccess</span>
-    </div>
+    
     <div class="form-information block">
+        <div class="msg-success -has-icon hidden" role="alert" id="update-profile-alert">
+            <span>@Message.UpdateSuccess</span>
+        </div>
+        
         <label class="text" for="fullName">Full name</label>
         <div class="group-control">
             <input type="text" class="control" asp-for="FullName" value="@Model.FullName" />
@@ -26,9 +27,9 @@
             <input type="text" class="control" asp-for="Email" value="@Model.Email" />
             <span class="msg-error" asp-validation-for="Email"></span>
         </div>
-        <div class="btn-list">
-            <button class="button -primary">Save</button>
+        <div class="list-button">
             <button class="button -second">Cancel</button>
+            <button class="button -primary">Save</button>            
         </div>
     </div>
 </form>

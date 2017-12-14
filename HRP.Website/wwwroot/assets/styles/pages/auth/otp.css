@@ -1,9 +1,107 @@
+.search-form .group {
+  display: inline-block;
+  padding-right: 16px;
+}
+
+.search-form .group .text {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.search-form .group .control {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-information .text {
+  position: relative;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: normal;
+  text-transform: capitalize;
+  font-weight: bold;
+  color: #666;
+}
+
+.form-information .text.-has-required {
+  display: inline-block;
+  clear: both;
+}
+
+.form-information .text.-has-required:after {
+  content: "*";
+  position: absolute;
+  right: -12px;
+  top: 2px;
+  color: #ff0000;
+}
+
+.form-information .control {
+  display: block;
+  width: 100%;
+  padding-right: 40px;
+}
+
+.form-information .control.error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+}
+
+.form-information .list-button .button:first-child {
+  margin-right: 16px;
+}
+
+.form-information .group-control {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-information .group-control .icon-close, .form-information .group-control .icon-successful {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  font-size: 20px;
+}
+
+.form-information .group-control.-option-check {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-information .group-control.-option-check .text {
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+.form-information .group-control.-option-check .checkbox {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.form-information .required {
+  color: #ff0000;
+  margin-left: 4px;
+}
+
+.form-information .msg-error, .form-information .text-danger {
+  margin-top: 10px;
+}
+
 /* Change  OTP */
 .otp .title {
   font-size: 16px;
 }
 
 .otp .info {
+  display: inline-block;
+  width: 100%;
   margin: 5px 0;
   line-height: 20px;
 }
@@ -146,11 +244,32 @@
 
 /* Notication OTP */
 .notication-otp {
+  -webkit-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   width: 690px;
   margin: 106px auto 0;
   padding: 34px 24px;
+  background-color: #fff;
   font-size: 14px;
   color: #666;
+}
+
+.notication-otp .title {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: bold;
 }
 
 .notication-otp .info {

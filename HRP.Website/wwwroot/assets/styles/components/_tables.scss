@@ -58,6 +58,10 @@
   tbody {
     tr:hover {
       background-color: $table-td-bg-hover;
+
+      .col-odd {
+        background-color: $table-td-bg-hover;
+      }
     }
 
     .row-special {
