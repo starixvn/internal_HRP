@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Castle.Core.Internal;
     using Core.Enumerations;
     using Core.Services;
     using Fanex.Data.Repository;
@@ -17,11 +16,12 @@
 
     public class AccountControllerTests
     {
-        private AccountController _accountController;
-        private readonly ISessionService _sessionService;
+        private readonly AccountController _accountController;
         private readonly IBaseService _baseService;
+        private readonly ISessionService _sessionService;
         private readonly IUserService _userService;
-        private readonly ITwoFactorAuthenticatorService _twoFactorAuthService;
+
+        private const string SkipOtpCheck = "skip";
 
         public AccountControllerTests()
         {
@@ -29,15 +29,14 @@
             
             _baseService = Substitute.For<IBaseService>();
 
-            _twoFactorAuthService = FakeTwoFactorAuthenticatorService();
-
-
+            var twoFactorAuthService = FakeTwoFactorAuthenticatorService();
+            
             _userService = FakeUserService();
 
             _accountController = new AccountController(
                 _sessionService,
                 _baseService,
-                _twoFactorAuthService,
+                twoFactorAuthService,
                 _userService);
         }
 
@@ -48,6 +47,15 @@
             sessionService.UserId = 23;
 
             return sessionService;
+        }
+
+        public static ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
+        {
+            var twoFactorAuthService = Substitute.For<ITwoFactorAuthenticatorService>();
+            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), SkipOtpCheck).Returns(false);
+
+            return twoFactorAuthService;
         }
 
         public static IUserService FakeUserService()
@@ -75,15 +83,6 @@
             userService.UpdateOTPStatus(Arg.Any<int>(), Arg.Any<bool>()).Returns(true);
 
             return userService;
-        }
-
-        public static ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
-        {
-            var twoFactorAuthService = Substitute.For<ITwoFactorAuthenticatorService>();
-            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), "skip").Returns(false);
-
-            return twoFactorAuthService;
         }
 
         [Theory]
@@ -119,41 +118,26 @@
         }
 
         [Theory]
-        [InlineData("")]
-        [InlineData("sampletoken")]
-        public void SetupOtp_None_ReturnRedirectToActionResult(string token)
+        [InlineData("", typeof(BadRequestResult))]
+        [InlineData("sampletoken", typeof(ViewResult))]
+        public void SetupOtp_NullOrValid_BadRequestOrOkResult(string token, Type type)
         {
             //Arrange
             var user = _userService.GetUserByUsername(_sessionService.Username);
             _baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
 
             var actual = _accountController.SetupOtp(token);
-            if (token.IsNullOrEmpty())
-            {
-                Assert.IsType<BadRequestResult>(actual);
-            }
-            else
-            {
-                Assert.IsType<ViewResult>(actual);
-            }
+            Assert.IsType(type, actual);
         }
 
         [Theory]
-        [InlineData(null)]
-        [InlineData("test")]
-        public void VerifyOTP_None_ReturnViewResult(string username)
+        [InlineData(null, typeof(RedirectToActionResult))]
+        [InlineData("test", typeof(ViewResult))]
+        public void VerifyOTP_None_ReturnViewResult(string username, Type type)
         {
             _sessionService.Username = username;
             var actual = _accountController.VerifyOTP();
-
-            if (username.IsNullOrEmpty())
-            {
-                Assert.IsType<RedirectToActionResult>(actual);
-            }
-            else
-            {
-                Assert.IsType<ViewResult>(actual);
-            }
+            Assert.IsType(type, actual);
         }
 
         [Fact]
@@ -163,7 +147,7 @@
             var actual = _accountController.VerifyOTP(viewModel);
             Assert.IsType<Task<IActionResult>>(actual);
 
-            viewModel.OTPCode = "skip";
+            viewModel.OTPCode = SkipOtpCheck;
             actual = _accountController.VerifyOTP(viewModel);
             Assert.IsType<Task<IActionResult>>(actual);
 
@@ -173,26 +157,18 @@
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void VerifySetupOTP_None_ReturnOkResult(bool isOTPValid)
+        [InlineData(true, typeof(OkResult))]
+        [InlineData(false, typeof(BadRequestResult))]
+        public void VerifySetupOTP_None_ReturnOkResult(bool isOTPValid, Type type)
         {
             SetupOtpViewModel viewModel = new SetupOtpViewModel
             {
                 Username = _sessionService.Username,
-                Otp = isOTPValid ? "sample" : "skip"
+                Otp = isOTPValid ? "sample" : SkipOtpCheck
             };
 
             var actual = _accountController.VerifySetupOTP(viewModel);
-
-            if (isOTPValid)
-            {
-                Assert.IsType<OkResult>(actual);
-            }
-            else
-            {
-                Assert.IsType<BadRequestResult>(actual);
-            }
+            Assert.IsType(type, actual);
 
             _userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
             actual = _accountController.VerifySetupOTP(viewModel);
