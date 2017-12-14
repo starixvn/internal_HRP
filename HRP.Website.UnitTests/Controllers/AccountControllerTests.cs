@@ -14,16 +14,18 @@
     public class AccountControllerTests
     {
         private readonly AccountController _accountController;
+        private readonly ISessionService _sessionService;
 
         public AccountControllerTests()
         {
-            var sessionService = FakeSessionService();
+            _sessionService = FakeSessionService();
             var baseService = Substitute.For<IBaseService>();
-            var twoFactorAuthService = Substitute.For<ITwoFactorAuthenticatorService>();
+            var twoFactorAuthService = FakeTwoFactorAuthenticatorService();
+            
             var userService = FakeUserService();
 
             _accountController = new AccountController(
-                sessionService,
+                _sessionService,
                 baseService,
                 twoFactorAuthService,
                 userService);
@@ -60,8 +62,17 @@
             };
 
             userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.UpdateOTPStatus(Arg.Any<int>(), Arg.Any<bool>()).Returns(true);
 
             return userService;
+        }
+
+        public static ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
+        {
+            var twoFactorAuthService = Substitute.For<ITwoFactorAuthenticatorService>();
+            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+
+            return twoFactorAuthService;
         }
 
         [Theory]
@@ -130,6 +141,27 @@
             var actual = _accountController.VerifyOTP();
 
             Assert.IsType<ViewResult>(actual);
+        }
+
+        [Fact]
+        public void VerifyOTP_OtpInputed_ReturnViewResult()
+        {
+            TwoFactorAuthenticatorViewModel viewModel = new TwoFactorAuthenticatorViewModel();
+            var actual = _accountController.VerifyOTP(viewModel);
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
+        public void VerifySetupOTP_None_ReturnOkResult()
+        {
+            SetupOtpViewModel viewModel = new SetupOtpViewModel
+            {
+                Username = _sessionService.Username
+            };
+
+            var actual = _accountController.VerifySetupOTP(viewModel);
+
+            Assert.IsType<OkResult>(actual);
         }
     }
 }

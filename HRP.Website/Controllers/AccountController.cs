@@ -10,7 +10,7 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using HRP.Criteria.User;
+    using Criteria.User;
     using HRP.Models;
     using HRP.Models.Account;
     using Microsoft.AspNetCore.Authentication;
