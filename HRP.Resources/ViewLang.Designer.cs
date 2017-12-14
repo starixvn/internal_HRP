@@ -133,6 +133,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User {0} has been successfully updated..
+        /// </summary>
+        public static string EditUserSuccess {
+            get {
+                return ResourceManager.GetString("EditUserSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string FullName {

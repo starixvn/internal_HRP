@@ -13,7 +13,7 @@
     <input type="hidden" asp-for="UserId" />
 
     <div class="msg-success -has-icon hidden" role="alert" id="edit-user-alert">
-        <span>User @Model.Username has been successfully updated.</span>
+        @string.Format(ViewLang.EditUserSuccess, Model.Username)
     </div>
 
     <div class="-has-icon msg-err hidden" id="edit-user-error-alert">

@@ -7,6 +7,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
+    using HRP.Models.UserManagement;
     using HRP.Models.UserPermisson;
     using HRP.Services;
     using HRP.Website.Controllers;
@@ -90,7 +91,7 @@
             var model = new CreateUserViewModel { Password = "Admin1234" };
             userManagementController = GetUserManagementController();
 
-            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
             userManagementController.Url = Substitute.For<IUrlHelper>();
             userManagementController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
 
@@ -98,6 +99,32 @@
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
+
+        [Fact]
+        public async Task EditUser_InvalidModel_ReturnErrors()
+        {
+            var model = new EditUserViewModel();
+            userManagementController = GetUserManagementController();
+
+            userManagementController.ModelState.AddModelError("", "Error");
+            var actual = userManagementController.EditUser(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
+        }
+
+        [Fact]
+        public async Task EditUser_ValidModel_ReturnSucessfully()
+        {
+            var model = new EditUserViewModel();
+            userManagementController = GetUserManagementController();
+
+            baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            var actual = userManagementController.EditUser(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
         }
 
         #region Helpers

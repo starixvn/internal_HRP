@@ -207,4 +207,7 @@
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="EditUserSuccess" xml:space="preserve">
+    <value>User {0} has been successfully updated.</value>
+  </data>
 </root>

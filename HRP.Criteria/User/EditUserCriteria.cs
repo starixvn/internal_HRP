@@ -20,7 +20,7 @@
 
         public override bool IsValid()
         {
-            return !string.IsNullOrEmpty(Email) && UserId > 0;
+            return !string.IsNullOrEmpty(Email) && UserId > 0 && EditedBy > 0;
         }
     }
 }

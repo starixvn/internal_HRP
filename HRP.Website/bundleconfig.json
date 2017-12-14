@@ -116,5 +116,15 @@
       "enabled": false,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/js/edit-user.min.js",
+    "inputFiles": [
+      "wwwroot/assets/js/edit-user.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]
