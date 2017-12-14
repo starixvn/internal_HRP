@@ -10,7 +10,7 @@
 @foreach (FunctionModel function in Model.Functions)
 {
     int colIndex = 1;
-    <tr class="row-special">
+    <tr class="@(function.Level == 0 ? "row-special" : string.Empty)">
         @if (function.Level == 0)
         {
             <td class="level-first">
