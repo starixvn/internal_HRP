@@ -102,7 +102,7 @@
         }
 
         [Fact]
-        public async Task EditUser_InvalidModel_ReturnErrors()
+        public void EditUser_InvalidModel_ReturnErrors()
         {
             var model = new EditUserViewModel();
             userManagementController = GetUserManagementController();
@@ -115,7 +115,7 @@
         }
 
         [Fact]
-        public async Task EditUser_ValidModel_ReturnSucessfully()
+        public void EditUser_ValidModel_ReturnSucessfully()
         {
             var model = new EditUserViewModel();
             userManagementController = GetUserManagementController();
