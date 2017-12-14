@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Model;
@@ -37,9 +36,7 @@
             DbSettingProviderManager
             .StartNewSession()
             .UseConnectionStrings(connections)
-            .UseDefaultDbSettingProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "SPNames.xml"),
-                true)
+            .UseDefaultDbSettingProvider("~/App_Data")
             .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
