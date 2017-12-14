@@ -207,6 +207,20 @@ namespace HRP.Website.Controllers
             _sessionService.UserId = user.UserId;
             _sessionService.Username = user.Username;
 
+            await PopulateMenusAndFunctions(user);
+
+            ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
+                .ConfigureAwait(false);
+
+            _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        private async Task PopulateMenusAndFunctions(User user)
+        {
             _sessionService.MenuItems = await _baseService.GetDataAsync<MenuItem>(
                 new GetMenuByUserIdCriteria
                 {
@@ -218,15 +232,6 @@ namespace HRP.Website.Controllers
                 {
                     UserId = user.UserId
                 }).ConfigureAwait(false);
-
-            ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
-                .ConfigureAwait(false);
-
-            _baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = _sessionService.UserId });
-
-            return RedirectToAction("Index", "Home");
         }
 
         private static ClaimsPrincipal InitUserClaimsPrinciple(User user)
@@ -257,19 +262,15 @@ namespace HRP.Website.Controllers
 
             var isOTPValid = _twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 
-            if (isOTPValid)
+            if (!isOTPValid)
             {
-                var result = _userService.UpdateOTPStatus(user.UserId, true);
-
-                if (result)
-                {
-                    _userService.ResetTokenOTPRegister(user.Username);
-                    _sessionService.Username = user.Username;
-                    return new OkResult();
-                }
+                return BadRequest();
             }
 
-            return BadRequest();
+            _userService.UpdateOTPStatus(user.UserId, true);
+            _userService.ResetTokenOTPRegister(user.Username);
+            _sessionService.Username = user.Username;
+            return new OkResult();
         }
 
         private string GetOtpSetupCode(string username)
