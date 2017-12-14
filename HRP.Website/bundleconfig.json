@@ -106,11 +106,20 @@
   {
     "outputFileName": "wwwroot/assets/js/account/account.min.js",
     "inputFiles": [
-      "wwwroot/lib/qrious/qrious.min.js",
-      "wwwroot/assets/js/account/otp.js",
       "wwwroot/assets/js/account/index.js",
       "wwwroot/assets/js/account/update-profile.js",
       "wwwroot/assets/js/account/change-password.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/js/account/setupotp.min.js",
+    "inputFiles": [
+      "wwwroot/lib/qrious/qrious.min.js",
+      "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {
       "enabled": false,

@@ -151,24 +151,38 @@ namespace HRP.Website.Controllers
                 return BadRequest();
             }
 
+            var userProfile = new UserProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
+            var setupOtpViewModel = new SetupOtpViewModel
+            {
+                TextCode = GetOtpSetupCode(user.Username),
+                Username = user.Username
+            };
+
             AccountViewModel accountViewModel = new AccountViewModel
             {
                 ActivePanel = AccountTab.Otp,
                 IsOTPRegistered = false,
-                SetupOtpViewModel = new SetupOtpViewModel
-                {
-                    TextCode = GetOtpSetupCode(user.Username),
-                    Username = user.Username,
-                    SystemName = "HRP"
-                }
+                SetupOtpViewModel = setupOtpViewModel,
+                UserProfileViewModel = userProfile
             };
 
-            return View("Index", accountViewModel);
+            return User.Identity.IsAuthenticated ? View("Index", accountViewModel) : View("SetupOtp", accountViewModel.SetupOtpViewModel);
         }
 
         [AllowAnonymous]
         public IActionResult VerifyOTP()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (string.IsNullOrEmpty(_sessionService.Username))
             {
                 return RedirectToAction("Login", "Auth");
@@ -181,6 +195,11 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> VerifyOTP(TwoFactorAuthenticatorViewModel viewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+
             var user = _userService.GetUserByUsername(_sessionService.Username);
 
             if (!ModelState.IsValid || user == null)
