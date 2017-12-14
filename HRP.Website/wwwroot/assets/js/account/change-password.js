@@ -21,6 +21,7 @@
                     $('.icon-close').removeClass('hidden');
                     $('#old-password-incorrect').removeClass('hidden');
                     $('#old-password-incorrect').text(msg);
+                    $('#OldPassword').addClass('error');
                 }
             },
             onChangeFail: function () {
