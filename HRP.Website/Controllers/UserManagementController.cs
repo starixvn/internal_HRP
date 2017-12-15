@@ -55,24 +55,6 @@
             return PartialView("_GetUsers", status);
         }
 
-        [HttpPost]
-        public IActionResult UpdateUserStatus(int userId, bool isActive)
-        {
-            var criteria = new UpdateUserStatusCriteria
-            {
-                UserId = userId,
-                IsActive = isActive,
-                EditedBy = sessionService.UserId
-            };
-            var result = baseService.ExecuteNonQuery(criteria);
-            if (result.IsSuccessful)
-            {
-                return Json(new { userId, isActive });
-            }
-
-            return StatusCode(500);
-        }
-
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public async Task<IActionResult> AssignPermission(int id)
