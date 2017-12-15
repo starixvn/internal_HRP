@@ -56,4 +56,9 @@
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="wwwroot\assets\bundles\js\" />
+  </ItemGroup>
+
 </Project>
