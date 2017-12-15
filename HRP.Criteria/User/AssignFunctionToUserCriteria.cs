@@ -1,8 +1,6 @@
 namespace HRP.Criteria
 {
-    using Fanex.Data.Repository;
-
-    public class AssignFunctionToUserCriteria : HRPCriteriaBase
+    public class AssignFunctionToUserCriteria : CommandBaseCriteria
     {
         public int UserId { get; set; }
 

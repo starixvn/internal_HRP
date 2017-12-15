@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateUserLastLoginDateCriteria : HRPCriteriaBase
+    public class UpdateUserLastLoginDateCriteria : CommandBaseCriteria
     {
         public int UserId { get; set; }
 

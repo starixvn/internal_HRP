@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateSecretKeyCriteria : HRPCriteriaBase
+    public class UpdateSecretKeyCriteria : CommandBaseCriteria
     {
         public string Username { get; set; }
 

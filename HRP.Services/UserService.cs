@@ -1,5 +1,6 @@
 namespace HRP.Services
 {
+    using System.Globalization;
     using Core.Constants;
     using Core.Model;
     using Core.Services;
@@ -13,10 +14,6 @@ namespace HRP.Services
         private readonly IBaseService _baseService;
         private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
         private readonly IBaseMailService _emailService;
-
-        public UserService() : this(null, null, null)
-        {
-        }
 
         public UserService(
             IBaseMailService emailService,
@@ -93,11 +90,8 @@ namespace HRP.Services
             });
 
             var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
-
-            string linkToRegisterOTP =
-                $"{_configuration.Value.BaseHostUrl}/Account/SetupOTP?token={tokenOTPRegister}";
-
-            body = string.Format(body, user.Username, linkToRegisterOTP);
+            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", _configuration.Value.BaseHostUrl, tokenOTPRegister);
+            body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
             var mailModel = new MailModel
             {
@@ -139,12 +133,9 @@ namespace HRP.Services
         private void SendMailToResetPassword(string username, string tokenResetPassword)
         {
             var user = GetUserByUsername(username);
-
             var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
-
-            string linkToReset = _configuration.Value.BaseHostUrl + "/Auth/ResetPassword?token=" + tokenResetPassword;
-
-            body = string.Format(body, username, linkToReset);
+            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", _configuration.Value.BaseHostUrl, tokenResetPassword);
+            body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
 
             var mailModel = new MailModel
             {

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateUserOTPStatusCriteria : HRPCriteriaBase
+    public class UpdateUserOTPStatusCriteria : CommandBaseCriteria
     {
         public int UserId { get; set; }
 

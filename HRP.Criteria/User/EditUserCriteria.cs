@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class EditUserCriteria : HRPCriteriaBase
+    public class EditUserCriteria : CommandBaseCriteria
     {
         public int UserId { get; set; }
 
