@@ -60,7 +60,7 @@
     tr:first-child td {
       border-top: none;
     }
-    
+
     tr:hover {
       background-color: $table-td-bg-hover;
 
@@ -157,7 +157,7 @@
   > li > a:hover,
   > li > span:focus,
   > li > span:hover {
-    background-color: lighten(#1973b2, .1);
+    background-color: lighten(#1973b2, 56%);
   }
 
   > li:first-child > a,

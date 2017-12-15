@@ -260,7 +260,7 @@
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-  background-color: #1973b2;
+  background-color: #ecf6fc;
 }
 
 .pagination > li:first-child > a,
