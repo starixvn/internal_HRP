@@ -2,6 +2,13 @@
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
 @import "../../components/forms";
+@import "../../components/panels";
+
+.intro {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: $text-color;
+}
 
 /* Change  OTP */
 .otp {
@@ -23,6 +30,7 @@
     .icon-successful {
         position: relative;
         top: 5px;
+        margin-left: 8px;
         font-size: 20px;
     }
 }
@@ -31,6 +39,7 @@
 
 .register-otp  {
     padding-top: 10px;
+    color: $text-color;
 
     .sub-title {
         position: relative;
@@ -58,7 +67,7 @@
     }
 
     .steps {
-        padding-bottom: 26px;
+        padding-bottom: 25px;
 
         &:last-child {
             padding-bottom: 0;
@@ -107,7 +116,9 @@
             @include border-radius(5px);
             padding: 6px;
             border: 1px solid $border-color;    
-            margin-bottom: 17px;        
+            margin-bottom: 17px;    
+            width: 186px;
+            height: 187px;    
         }
 
         .text-username {
@@ -135,15 +146,20 @@
         }
     }
 
-    .block {
+    .form-register {
+        width: 297px;
         padding-top: 20px;
-
-        .msg-success {
-            margin-bottom: 12px;
+        
+        [class^="msg"] {
+            margin-bottom: 15px;
         }
 
         .control {
-            width: 252px;
+            width: 209px;
+        }
+
+        .button {
+            margin-left: 16px;
         }
     }
 }

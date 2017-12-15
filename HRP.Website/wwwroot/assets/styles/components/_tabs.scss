@@ -18,7 +18,7 @@
 
 .nav.nav-tabs > li > a {
     font-size: 16px;
-    padding: 10px 30px;
+    padding: 0 30px 10px;
     border: none;
 }
 
@@ -35,7 +35,9 @@
     transition: width 0.4s;
 }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+.nav-tabs > li.active > a, 
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
     border: none;
     color: $tab-active-color;
     background: transparent;

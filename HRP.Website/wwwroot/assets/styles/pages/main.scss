@@ -6,7 +6,6 @@
 @import "../components/dropdown";
 @import "../components/textbox";
 @import "../components/checkbox";
-@import "../components/panels";
 @import "../components/popups";
 @import "../components/messages";
 @import "../components/tabs";
@@ -117,7 +116,7 @@ body {
         }
 
         &.active, &.active [class^="icon"] {
-            color: #f57d14;
+            color: #0175c7;
         }
     }
 }
@@ -204,7 +203,6 @@ body {
     @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
     background-color: #fff;
     padding: 16px;
-    counter-reset: section;
 
     .username {
         color: #1973b2;

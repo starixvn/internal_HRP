@@ -1,6 +1,7 @@
 input[type='checkbox'] {
   @include transition("all .3s ease-in-out");
   position: relative;
+  top: -1px;
   margin: 0;
   margin-right: 10px;
   cursor: pointer;  

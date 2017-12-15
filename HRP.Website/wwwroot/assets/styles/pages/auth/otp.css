@@ -94,6 +94,54 @@
   margin-top: 10px;
 }
 
+.panel-group {
+  margin-bottom: 0;
+}
+
+.panel-group .panel-heading + .panel-collapse > .panel-body {
+  border-top: none;
+}
+
+.panel {
+  border: none;
+  -webkit-box-shadow: none;
+  -khtml-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+
+.panel .panel-title > a {
+  position: relative;
+  color: #0b599c;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.panel .panel-title > a:hover, .panel .panel-title > a:focus {
+  text-decoration: none;
+}
+
+.panel .panel-title > a:before {
+  position: absolute;
+  left: -10px;
+  top: 5px;
+  margin-right: 8px;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 3px 0 3px;
+  border-color: #0b599c transparent transparent transparent;
+}
+
+.intro {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #333;
+}
+
 /* Change  OTP */
 .otp .title {
   font-size: 16px;
@@ -113,12 +161,14 @@
 .otp .icon-successful {
   position: relative;
   top: 5px;
+  margin-left: 8px;
   font-size: 20px;
 }
 
 /* Register OTP */
 .register-otp {
   padding-top: 10px;
+  color: #333;
 }
 
 .register-otp .sub-title {
@@ -152,7 +202,7 @@
 }
 
 .register-otp .steps {
-  padding-bottom: 26px;
+  padding-bottom: 25px;
 }
 
 .register-otp .steps:last-child {
@@ -206,6 +256,8 @@
   padding: 6px;
   border: 1px solid #d9d9d9;
   margin-bottom: 17px;
+  width: 186px;
+  height: 187px;
 }
 
 .register-otp .qr-code .text-username {
@@ -230,16 +282,21 @@
   margin-left: 36px;
 }
 
-.register-otp .block {
+.register-otp .form-register {
+  width: 297px;
   padding-top: 20px;
 }
 
-.register-otp .block .msg-success {
-  margin-bottom: 12px;
+.register-otp .form-register [class^="msg"] {
+  margin-bottom: 15px;
 }
 
-.register-otp .block .control {
-  width: 252px;
+.register-otp .form-register .control {
+  width: 209px;
+}
+
+.register-otp .form-register .button {
+  margin-left: 16px;
 }
 
 /* Notication OTP */

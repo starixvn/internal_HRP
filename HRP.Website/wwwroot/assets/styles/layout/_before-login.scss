@@ -59,4 +59,13 @@
         background-color: #e7e7e7;
         text-align: center;
     }
+
+    .link {
+        font-weight: bold;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }

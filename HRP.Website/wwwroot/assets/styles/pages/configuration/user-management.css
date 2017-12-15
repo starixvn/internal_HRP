@@ -106,6 +106,7 @@
   margin-top: 10px;
   padding: 8px;
   border: 1px solid #d9d9d9;
+  border-bottom: none;
 }
 
 .top-header .create-user:hover {
@@ -150,6 +151,10 @@
 
 .table thead th.sub-header {
   background-color: #095b94;
+}
+
+.table tbody tr:first-child td {
+  border-top: none;
 }
 
 .table tbody tr:hover {
@@ -344,6 +349,7 @@
 
 .modal-content.-has-icon .modal-body {
   padding-top: 70px;
+  text-align: center;
 }
 
 .modal-content.-has-icon .modal-footer {
@@ -364,7 +370,7 @@
 }
 
 .table thead input[type='checkbox']:checked:before {
-  border-color: 1px solid #fff;
+  border-color: #fff;
   background-color: #fff;
 }
 
@@ -437,19 +443,18 @@
 
 .assign-permission .icon-level-first {
   font-size: 8px;
-  margin-right: 8px;
+  margin-right: 3px;
 }
 
-.assign-permission .icon-level-second, .assign-permission .icon-level-third {
-  font-size: 25px;
-  margin-right: 6px;
+.assign-permission .icon-level-second {
+  font-size: 24px;
   line-height: 0;
   position: relative;
   top: 2px;
 }
 
-.assign-permission .icon-level-third {
-  padding-left: 30px;
+.assign-permission .func-name {
+  margin-left: 6px;
 }
 
 .assign-permission .vertical-bottom {
@@ -458,10 +463,6 @@
 
 .assign-permission .sub-header input[type='checkbox'] {
   margin-top: 5px;
-}
-
-.list-button .button:hover {
-  text-decoration: none;
 }
 
 .list-button .button:first-child {

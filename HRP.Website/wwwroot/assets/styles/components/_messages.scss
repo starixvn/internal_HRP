@@ -5,11 +5,11 @@
 
     &.-has-icon {
         position: relative;
-        border: 1px solid $msg-success-border;
+        border: 1px solid $msg-error-border;
         padding: 10px 20px 10px 36px;
         margin-bottom: 16px;
-        background-color: $msg-success-bg;
-        color: $msg-success;        
+        background-color: $msg-error-bg;
+        color: $msg-error;        
         
         &:before {
             position: absolute;
@@ -17,7 +17,7 @@
             top: 10px;
             font-family: "hrp";
             content: "\e903";
-            color: $msg-success; 
+            color: $msg-error; 
             font-size: 20px;
         }     
     }

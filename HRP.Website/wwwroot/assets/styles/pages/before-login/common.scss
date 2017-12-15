@@ -15,13 +15,22 @@ body {
     color: #666;
 }
 
+.wrapper {
+    width: 100%;
+    padding: 15px 20px;
+
+    @media screen and (min-device-width: 1366px) {
+        width: 1360px;
+        margin: auto;
+    }    
+}
+
 .header {
     display: flex;    
     justify-content: flex-start;
     align-items: center;
     background-color: #fff;
     height: 61px;
-    padding-left: 16px;
     border-bottom: 1px solid #dcdcdc;    
 
     .logo img {
@@ -31,12 +40,32 @@ body {
     }
 }
 
+.content-container {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
+
+    .content {
+        @include border-radius(5px);
+        @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+        background-color: #fff;
+        padding: 16px;
+    }
+}
+
 .block {
     margin: 0 auto;
     padding-top: 70px;
     width: 410px;
     position: relative;
-    top: 165px;
+    top: 90px;
+
+    @media screen and (min-device-width: 1367px) {
+        top: 165px;
+    } 
 
     .circle-large {
         display: flex;
@@ -90,6 +119,7 @@ body {
         font-size: 20px;
         text-transform: uppercase;
         text-align: center;
+        font-weight: bold;
     }
 
     .intro {
@@ -152,9 +182,7 @@ body {
     width: 8px;
 }
 
-.link {
-    font-weight: bold;
-
+.link {  
     &.action-back:before {   
         @extend %action; 
         margin-right: 4px;

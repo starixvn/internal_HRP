@@ -26,6 +26,10 @@ input, button {
   font-family: inherit;
 }
 
+.display-none {
+  display: none;
+}
+
 .button {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -85,6 +89,10 @@ input, button {
 
 .button.-add:hover {
   background-color: #188a38;
+}
+
+a.button:hover {
+  text-decoration: none;
 }
 
 ::-webkit-input-placeholder {
@@ -159,6 +167,7 @@ input[type='checkbox'] {
   -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   position: relative;
+  top: -1px;
   margin: 0;
   margin-right: 10px;
   cursor: pointer;
@@ -217,11 +226,11 @@ input[type="checkbox"].disabled {
 
 .msg-error.-has-icon, .text-danger.-has-icon {
   position: relative;
-  border: 1px solid #329a37;
+  border: 1px solid #ff0000;
   padding: 10px 20px 10px 36px;
   margin-bottom: 16px;
-  background-color: #e5ffeb;
-  color: #18aa3a;
+  background-color: #ffebea;
+  color: #fe0000;
 }
 
 .msg-error.-has-icon:before, .text-danger.-has-icon:before {
@@ -230,7 +239,7 @@ input[type="checkbox"].disabled {
   top: 10px;
   font-family: "hrp";
   content: "\e903";
-  color: #18aa3a;
+  color: #fe0000;
   font-size: 20px;
 }
 
@@ -395,6 +404,15 @@ input[type="checkbox"].disabled {
   text-align: center;
 }
 
+.block .link {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.block .link:hover {
+  text-decoration: underline;
+}
+
 body {
   height: 100vh;
   width: 100%;
@@ -403,13 +421,24 @@ body {
   color: #666;
 }
 
+.wrapper {
+  width: 100%;
+  padding: 15px 20px;
+}
+
+@media screen and (min-device-width: 1366px) {
+  .wrapper {
+    width: 1360px;
+    margin: auto;
+  }
+}
+
 .header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
   height: 61px;
-  padding-left: 16px;
   border-bottom: 1px solid #dcdcdc;
 }
 
@@ -419,12 +448,44 @@ body {
   height: 30px;
 }
 
+.content-container {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  overflow: auto;
+}
+
+.content-container .content {
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
+  background-color: #fff;
+  padding: 16px;
+}
+
 .block {
   margin: 0 auto;
   padding-top: 70px;
   width: 410px;
   position: relative;
-  top: 165px;
+  top: 90px;
+}
+
+@media screen and (min-device-width: 1367px) {
+  .block {
+    top: 165px;
+  }
 }
 
 .block .circle-large {
@@ -484,6 +545,7 @@ body {
   font-size: 20px;
   text-transform: uppercase;
   text-align: center;
+  font-weight: bold;
 }
 
 .block .intro {
@@ -541,10 +603,6 @@ body {
   content: "";
   height: 8px;
   width: 8px;
-}
-
-.link {
-  font-weight: bold;
 }
 
 .link.action-back:before {

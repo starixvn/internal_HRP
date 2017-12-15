@@ -26,6 +26,10 @@ input, button {
   font-family: inherit;
 }
 
+.display-none {
+  display: none;
+}
+
 .button {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -87,6 +91,10 @@ input, button {
   background-color: #188a38;
 }
 
+a.button:hover {
+  text-decoration: none;
+}
+
 select {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -97,7 +105,7 @@ select {
   outline: none;
   height: 36px;
   line-height: 36px;
-  padding-left: 10px;
+  padding-left: 6px;
   padding-right: 10px;
   background-color: #fafafa;
   border: 1px solid #d9d9d9;
@@ -113,6 +121,10 @@ select:focus {
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+}
+
+select option {
+  padding: 2px 6px;
 }
 
 .dropdown.open > .btn.dropdown-toggle,
@@ -261,6 +273,7 @@ input[type='checkbox'] {
   -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   position: relative;
+  top: -1px;
   margin: 0;
   margin-right: 10px;
   cursor: pointer;
@@ -309,48 +322,6 @@ input[type='checkbox']:checked:after {
 input[type="checkbox"][disabled],
 input[type="checkbox"].disabled {
   opacity: 0.3;
-}
-
-.panel-group {
-  margin-bottom: 0;
-}
-
-.panel-group .panel-heading + .panel-collapse > .panel-body {
-  border-top: none;
-}
-
-.panel {
-  border: none;
-  -webkit-box-shadow: none;
-  -khtml-box-shadow: none;
-  -moz-box-shadow: none;
-  -ms-box-shadow: none;
-  -o-box-shadow: none;
-  box-shadow: none;
-}
-
-.panel .panel-title > a {
-  position: relative;
-  color: #0b599c;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.panel .panel-title > a:hover, .panel .panel-title > a:focus {
-  text-decoration: none;
-}
-
-.panel .panel-title > a:before {
-  position: absolute;
-  left: -10px;
-  top: 5px;
-  margin-right: 8px;
-  content: "";
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 3px 0 3px;
-  border-color: #0b599c transparent transparent transparent;
 }
 
 .modal-content {
@@ -427,6 +398,7 @@ input[type="checkbox"].disabled {
 
 .modal-content.-has-icon .modal-body {
   padding-top: 70px;
+  text-align: center;
 }
 
 .modal-content.-has-icon .modal-footer {
@@ -446,11 +418,11 @@ input[type="checkbox"].disabled {
 
 .msg-error.-has-icon, .text-danger.-has-icon {
   position: relative;
-  border: 1px solid #329a37;
+  border: 1px solid #ff0000;
   padding: 10px 20px 10px 36px;
   margin-bottom: 16px;
-  background-color: #e5ffeb;
-  color: #18aa3a;
+  background-color: #ffebea;
+  color: #fe0000;
 }
 
 .msg-error.-has-icon:before, .text-danger.-has-icon:before {
@@ -459,7 +431,7 @@ input[type="checkbox"].disabled {
   top: 10px;
   font-family: "hrp";
   content: "\e903";
-  color: #18aa3a;
+  color: #fe0000;
   font-size: 20px;
 }
 
@@ -569,7 +541,7 @@ input[type="checkbox"].disabled {
 
 .nav.nav-tabs > li > a {
   font-size: 16px;
-  padding: 10px 30px;
+  padding: 0 30px 10px;
   border: none;
 }
 
@@ -586,7 +558,9 @@ input[type="checkbox"].disabled {
   transition: width 0.4s;
 }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
   border: none;
   color: #333;
   background: transparent;
@@ -718,7 +692,7 @@ body {
 }
 
 .main-menu .menu > .link.active, .main-menu .menu > .link.active [class^="icon"] {
-  color: #f57d14;
+  color: #0175c7;
 }
 
 .submenu {
@@ -830,7 +804,6 @@ body {
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   background-color: #fff;
   padding: 16px;
-  counter-reset: section;
 }
 
 .content .username {

@@ -26,6 +26,10 @@ input, button {
   font-family: inherit;
 }
 
+.display-none {
+  display: none;
+}
+
 .button {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -85,6 +89,10 @@ input, button {
 
 .button.-add:hover {
   background-color: #188a38;
+}
+
+a.button:hover {
+  text-decoration: none;
 }
 
 ::-webkit-input-placeholder {
@@ -224,6 +232,15 @@ input[type="password"]:focus {
   border-top: 1px solid #dadada;
   background-color: #e7e7e7;
   text-align: center;
+}
+
+.block .link {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.block .link:hover {
+  text-decoration: underline;
 }
 
 body {
