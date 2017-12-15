@@ -1,8 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateUserStatusCriteria : CriteriaBase
+    public class UpdateUserStatusCriteria : HRPCriteriaBase
     {
         public int UserId { get; set; }
 

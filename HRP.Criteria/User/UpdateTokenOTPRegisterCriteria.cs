@@ -1,8 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateTokenOTPRegisterCriteria : CriteriaBase
+    public class UpdateTokenOTPRegisterCriteria : HRPCriteriaBase
     {
         public string Username { get; set; }
 

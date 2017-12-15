@@ -1,8 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateSecretKeyCriteria : CriteriaBase
+    public class UpdateSecretKeyCriteria : HRPCriteriaBase
     {
         public string Username { get; set; }
 

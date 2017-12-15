@@ -13,12 +13,8 @@ namespace HRP.Core.Repositories
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
-                Hashtable hash = criteria.GetSpParams();
-                hash.Add("ErrCode", 0);
-                hash.Add("ErrMsg", string.Empty);
-
-                db.ExecuteNonQuery(hash);
-                CommandResult commandResult = GetCommandResult(hash);
+                db.ExecuteNonQuery(criteria);
+                CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
 
                 return commandResult;
             }
@@ -28,12 +24,8 @@ namespace HRP.Core.Repositories
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
-                Hashtable hash = criteria.GetSpParams();
-                hash.Add("ErrCode", 0);
-                hash.Add("ErrMsg", string.Empty);
-
-                await db.ExecuteNonQueryAsync(hash).ConfigureAwait(false);
-                CommandResult commandResult = GetCommandResult(hash);
+                await db.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+                CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
 
                 return commandResult;
             }
