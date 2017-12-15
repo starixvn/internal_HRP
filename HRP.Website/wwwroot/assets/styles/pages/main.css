@@ -617,6 +617,7 @@ body {
 .header .wrapper {
   display: grid;
   grid-template-columns: 177px 1fr 210px;
+  grid-template-rows: 60px;
   justify-content: space-between;
   align-items: center;
   padding: 0;
