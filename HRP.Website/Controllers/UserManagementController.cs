@@ -52,7 +52,7 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult GetUsers(bool? status)
         {
-            return PartialView("_GetUsers", status);
+            return ViewComponent("UserTable", new { status });
         }
 
         [HttpGet]
