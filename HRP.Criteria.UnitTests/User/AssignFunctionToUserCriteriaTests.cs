@@ -40,7 +40,7 @@
         }
 
         [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_CheckParameter_ReturnAsExpected(int userId, int modifiedBy, string value, bool expected)
+        public void IsValid_CheckParams_ReturnAsExpected(int userId, int modifiedBy, string value, bool expected)
         {
             // Arrange
             var criteria = new AssignFunctionToUserCriteria
