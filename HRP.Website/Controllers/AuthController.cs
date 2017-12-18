@@ -135,6 +135,7 @@ namespace HRP.Website.Controllers
                 {
                     ViewBag.ErrorMessage = Message.UpdateFail;
                 }
+
                 return View();
             }
 
