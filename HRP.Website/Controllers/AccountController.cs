@@ -112,7 +112,7 @@ namespace HRP.Website.Controllers
 
             // step 4: Show SetupOtp screen
             return RedirectToAction(
-                "SetupOtp",
+                "SetupOtpAfterReset",
                 "Account",
                 new { token = otpRegisterToken });
         }
@@ -124,7 +124,7 @@ namespace HRP.Website.Controllers
 
             if (string.IsNullOrEmpty(token) || user == null)
             {
-                return Forbid();
+                return RedirectToAction("Login", "Auth");
             }
 
             var setupOtpViewModel = new SetupOtpViewModel
@@ -133,7 +133,40 @@ namespace HRP.Website.Controllers
                 Username = user.Username
             };
 
-            return View(setupOtpViewModel);
+            return View("SetupOtp", setupOtpViewModel);
+        }
+
+        public IActionResult SetupOtpAfterReset(string token)
+        {
+            var user = GetUserByTokenOTPRegister(token);
+
+            if (string.IsNullOrEmpty(token) || user == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userProfile = new UserProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
+            var setupOtpViewModel = new SetupOtpViewModel
+            {
+                TextCode = GetOtpSetupCode(user.Username),
+                Username = user.Username
+            };
+
+            AccountViewModel accountViewModel = new AccountViewModel
+            {
+                ActivePanel = AccountTab.Otp,
+                IsOTPRegistered = false,
+                SetupOtpViewModel = setupOtpViewModel,
+                UserProfileViewModel = userProfile
+            };
+
+            return View("Index", accountViewModel);
         }
 
         [HttpPost]
