@@ -40,7 +40,7 @@
                 }
 
                 if (reponse.message) {
-                    $('#create-user-error-alert').removeClass('hidden').find('span').text(response.message);
+                    $('#create-user-error-alert').removeClass('hidden').text(response.message);
                 }
             }
         },

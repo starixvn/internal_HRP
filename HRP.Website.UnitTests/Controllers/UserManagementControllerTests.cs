@@ -2,6 +2,8 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Security.Principal;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -73,6 +75,15 @@
         #endregion AssignPermission
 
         [Fact]
+        public void CreateUser_WhenCalled_ReturnExpectedView()
+        {
+            userManagementController = GetUserManagementController();
+            var actual = userManagementController.CreateUser();
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsAssignableFrom<CreateUserViewModel>(viewResult.Model);
+        }
+
+        [Fact]
         public void CreateUser_InvalidModel_ReturnErrors()
         {
             var model = new CreateUserViewModel();
@@ -127,6 +138,27 @@
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
         }
 
+        [Fact]
+        public void EditUser_InvalidId_RetdirectToIndexPage()
+        {
+            userManagementController = GetUserManagementController();
+
+            var actual = userManagementController.EditUser(0);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Index", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void EditUser_ValidId_ReturnExpectedView()
+        {
+            var id = 1;
+            userManagementController = GetUserManagementController();
+            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
+
+            var actual = userManagementController.EditUser(id);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
+        }
         #region Helpers
 
         private ISessionService FakeSessionService()

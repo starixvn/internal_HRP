@@ -126,10 +126,11 @@
                 };
 
                 var result = baseService.ExecuteNonQuery(criteria);
-                if (result.IsSuccessful)
-                {
-                    return Json(new { isSuccessful = result.IsSuccessful, result.Message, username = viewModel.Username, redirectTo = Url.Action("AssignPermission", new { id = criteria.UserId }) });
-                }
+                return Json(new {
+                    isSuccessful = result.IsSuccessful,
+                    result.Message, username = viewModel.Username,
+                    redirectTo = result.IsSuccessful && criteria.UserId > 0 ? Url.Action("AssignPermission", new { id = criteria.UserId }) : string.Empty
+                });
             }
 
             var errors = from item in ModelState
@@ -148,6 +149,11 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult EditUser(int id)
         {
+            if (id <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
             if (viewModel.IsSystemAdmin && !Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value))
             {
