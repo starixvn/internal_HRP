@@ -9,6 +9,10 @@
     var disabled = Model.IsHost ? string.Empty : "disabled";
 }
 
+@section Styles {
+    <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+}
+
 <ol class="breadcrumb">
     <li><a asp-action="index">@ViewLang.UserManagement</a></li>
     <li class="active">@(string.Format("{0} to User '{1}'", ViewData["Title"], Model.Username))</li>
@@ -39,7 +43,8 @@
                 <tr class="row-special">
                     <td class="level-first">
                         <span class="icon-ui icon-level-first"></span>
-                        <span class="func-name">@parent.Name</span></td>
+                        <span class="func-name">@parent.Name</span>
+                    </td>
                     <td class="text-center">
                         <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
                                @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
@@ -55,7 +60,7 @@
                     <tr>
                         <td>
                             <span class="icon-root_tree icon-level-second"></span>
-                            <span class="func-name">@child.Name</span
+                            <span class="func-name">@child.Name</span>
                         </td>
                         <td class="text-center">
                             <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
@@ -111,10 +116,6 @@
         <a class="button -primary" id="btnSave">@ViewLang.Save</a>
     }
 </div>
-
-@section Styles {
-    <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
-}
 
 @section Scripts {
     <environment include="Development">

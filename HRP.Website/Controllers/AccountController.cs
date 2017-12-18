@@ -51,12 +51,14 @@ namespace HRP.Website.Controllers
                 Phone = user.Phone
             };
 
-            AccountViewModel accountViewModel = new AccountViewModel
+            var accountViewModel = new AccountViewModel
             {
                 ActivePanel = tab,
                 IsOTPRegistered = user.IsOTPRegistered,
                 UserProfileViewModel = userProfile
             };
+
+            ViewData["Username"] = _sessionService.Username;
 
             return View(accountViewModel);
         }

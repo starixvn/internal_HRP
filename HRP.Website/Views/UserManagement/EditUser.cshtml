@@ -2,6 +2,10 @@
 @using HRP.Resources
 @model EditUserViewModel
 
+@section Styles {
+    <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
+}
+
 <ol class="breadcrumb">
     <li><a asp-action="index">@ViewLang.UserManagement</a></li>
     <li class="active">@(string.Format("{0} {1}", ViewLang.EditDetails, Model.Username))</li>
@@ -59,11 +63,6 @@
     </div>
 </form>
 
-
-@section Styles{
-    <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
-}
-
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
@@ -72,9 +71,6 @@
         <script src="~/assets/js/edit-user.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
         <script src="~/assets/js/edit-user.min.js"></script>
     </environment>
 }

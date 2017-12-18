@@ -2,6 +2,19 @@
 @using HRP.Models.UserManagement
 @model UserManagementViewModel
 
+<environment include="Development">
+    @section Styles {
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+    }
+</environment>
+<environment exclude="Development">
+    @section Styles {
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
+    }
+</environment>
+
 <h2 class="title">@ViewLang.UserManagement</h2>
 <form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
       data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="userManagement.onSearchSuccess">
@@ -36,14 +49,8 @@
     @await Component.InvokeAsync("UserTable")
 </div>
 
-
 <environment include="Development">
-    @section Styles{
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
-    }
-
-    @section Scripts{
+    @section Scripts {
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
@@ -51,16 +58,7 @@
     }
 </environment>
 <environment exclude="Development">
-    @section Styles{
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-        <link href="~/assets/bundles/user-management.min.css" rel="stylesheet" />
-    }
-
-    @section Scripts{
-        <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
+    @section Scripts {
         <script src="~/assets/js/user-management.min.js"></script>
-
     }
 </environment>
