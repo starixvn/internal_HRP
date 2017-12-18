@@ -1,5 +1,6 @@
 ﻿namespace HRP.Criteria.UnitTests.User
 {
+    using System;
     using Xunit;
 
     public class UpdateSecretKeyCriteriaTests

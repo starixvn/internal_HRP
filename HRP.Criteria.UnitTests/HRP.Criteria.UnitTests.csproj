@@ -77,6 +77,8 @@
     <Compile Include="User\GetUserByTokenOTPRegisterCriteriaTests.cs" />
     <Compile Include="User\GetUserByUsernameCriteriaTest.cs" />
     <Compile Include="User\UpdateSecretKeyCriteriaTests.cs" />
+    <Compile Include="User\UpdateTokenOTPRegisterCriteriaTests.cs" />
+    <Compile Include="User\UpdateUserOTPStatusCriteriaTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj">
