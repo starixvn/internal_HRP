@@ -40,29 +40,6 @@ namespace HRP.Website.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Index(AccountTab tab = AccountTab.Profile)
-        {
-            var user = userService.GetUserByUsername(sessionService.Username);
-
-            var userProfile = new UserProfileViewModel
-            {
-                FullName = user.FullName,
-                Email = user.Email,
-                Phone = user.Phone
-            };
-
-            var accountViewModel = new AccountViewModel
-            {
-                ActivePanel = tab,
-                IsOTPRegistered = user.IsOTPRegistered,
-                UserProfileViewModel = userProfile
-            };
-
-            ViewData["Username"] = sessionService.Username;
-
-            return View(accountViewModel);
-        }
-
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
         {
@@ -93,28 +70,27 @@ namespace HRP.Website.Controllers
             return Json(new { code = -1, message = Message.UpdateFail });
         }
 
-        [HttpPost]
-        public IActionResult UpdateProfile(UserProfileViewModel viewModel)
+        public IActionResult Index(AccountTab tab = AccountTab.Profile)
         {
-            if (ModelState.IsValid)
+            var user = userService.GetUserByUsername(sessionService.Username);
+
+            var userProfile = new UserProfileViewModel
             {
-                var criteria = new UpdateUserProfileCriteria
-                {
-                    UserId = sessionService.UserId,
-                    FullName = !string.IsNullOrEmpty(viewModel.FullName) ? viewModel.FullName : string.Empty,
-                    Phone = !string.IsNullOrEmpty(viewModel.Phone) ? viewModel.Phone : string.Empty,
-                    Email = viewModel.Email
-                };
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone
+            };
 
-                var result = baseService.ExecuteNonQuery(criteria);
+            var accountViewModel = new AccountViewModel
+            {
+                ActivePanel = tab,
+                IsOTPRegistered = user.IsOTPRegistered,
+                UserProfileViewModel = userProfile
+            };
 
-                if (result.IsSuccessful)
-                {
-                    return Json(new { code = result.Code, message = Message.UpdateSuccess });
-                }
-            }
+            ViewData["Username"] = sessionService.Username;
 
-            return Json(new { code = -1, message = Message.UpdateFail });
+            return View(accountViewModel);
         }
 
         [AllowAnonymous]
@@ -158,6 +134,30 @@ namespace HRP.Website.Controllers
             };
 
             return View(setupOtpViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProfile(UserProfileViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new UpdateUserProfileCriteria
+                {
+                    UserId = sessionService.UserId,
+                    FullName = !string.IsNullOrEmpty(viewModel.FullName) ? viewModel.FullName : string.Empty,
+                    Phone = !string.IsNullOrEmpty(viewModel.Phone) ? viewModel.Phone : string.Empty,
+                    Email = viewModel.Email
+                };
+
+                var result = baseService.ExecuteNonQuery(criteria);
+
+                if (result.IsSuccessful)
+                {
+                    return Json(new { code = result.Code, message = Message.UpdateSuccess });
+                }
+            }
+
+            return Json(new { code = -1, message = Message.UpdateFail });
         }
 
         [AllowAnonymous]
@@ -206,55 +206,6 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(VerifyOTP));
         }
 
-        private async Task SignUserIn(User user)
-        {
-            // Step 1: setup userId and username in Session
-            sessionService.UserId = user.UserId;
-            sessionService.Username = user.Username;
-
-            // Step 2: Get menus and functions
-            await PopulateMenusAndFunctions(user);
-
-            // Step 3: sign user in
-            ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
-                .ConfigureAwait(false);
-
-            // Step 4: Update last login date
-            baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
-        }
-
-        private async Task PopulateMenusAndFunctions(User user)
-        {
-            sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(
-                new GetMenuByUserIdCriteria
-                {
-                    UserId = user.UserId
-                }).ConfigureAwait(false);
-
-            sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(
-                new GetFunctionByUserIdCriteria
-                {
-                    UserId = user.UserId
-                }).ConfigureAwait(false);
-        }
-
-        private static ClaimsPrincipal InitUserClaimsPrinciple(User user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.GivenName, user.FullName),
-                new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return new ClaimsPrincipal(claimsIdentity);
-        }
-
         [AllowAnonymous]
         [HttpPost]
         public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
@@ -279,12 +230,61 @@ namespace HRP.Website.Controllers
             return new OkResult();
         }
 
+        private static ClaimsPrincipal InitUserClaimsPrinciple(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.GivenName, user.FullName),
+                new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return new ClaimsPrincipal(claimsIdentity);
+        }
+
         private string GetOtpSetupCode(string username)
         {
             var secretKey = Utilities.GenerateSecretKey();
             userService.UpdateSecretKey(username, secretKey);
 
             return twoFactorAuthService.SetupGoogleAuthInfo(sessionService.Username, secretKey);
+        }
+
+        private async Task PopulateMenusAndFunctions(User user)
+        {
+            sessionService.MenuItems = await baseService.GetDataAsync<MenuItem>(
+                new GetMenuByUserIdCriteria
+                {
+                    UserId = user.UserId
+                }).ConfigureAwait(false);
+
+            sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(
+                new GetFunctionByUserIdCriteria
+                {
+                    UserId = user.UserId
+                }).ConfigureAwait(false);
+        }
+
+        private async Task SignUserIn(User user)
+        {
+            // Step 1: setup userId and username in Session
+            sessionService.UserId = user.UserId;
+            sessionService.Username = user.Username;
+
+            // Step 2: Get menus and functions
+            await PopulateMenusAndFunctions(user);
+
+            // Step 3: sign user in
+            ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
+                .ConfigureAwait(false);
+
+            // Step 4: Update last login date
+            baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
         }
     }
 }
