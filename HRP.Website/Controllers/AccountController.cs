@@ -120,11 +120,11 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public IActionResult SetupOtp(string token)
         {
-            var user = userService.GetUserByTokenOTPRegister(token);
+            var user = GetUserByTokenOTPRegister(token);
 
             if (string.IsNullOrEmpty(token) || user == null)
             {
-                return BadRequest();
+                return Forbid();
             }
 
             var setupOtpViewModel = new SetupOtpViewModel
@@ -221,7 +221,7 @@ namespace HRP.Website.Controllers
 
             if (!isOTPValid)
             {
-                return BadRequest();
+                return Forbid();
             }
 
             userService.UpdateOTPStatus(user.UserId, true);
@@ -285,6 +285,18 @@ namespace HRP.Website.Controllers
 
             // Step 4: Update last login date
             baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
+        }
+
+        private User GetUserByTokenOTPRegister(string token)
+        {
+            var criteria = new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = token
+            };
+
+            var user = baseService.GetDataEntity<User>(criteria);
+
+            return user;
         }
     }
 }

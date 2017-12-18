@@ -5,9 +5,9 @@
     using Core.Enumerations;
     using Core.Services;
     using Fanex.Data.Repository;
-    using HRP.Models;
-    using HRP.Models.Account;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Models.Account;
     using NSubstitute;
     using NSubstitute.Core;
     using Services;
@@ -16,28 +16,28 @@
 
     public class AccountControllerTests
     {
-        private readonly AccountController _accountController;
-        private readonly IBaseService _baseService;
-        private readonly ISessionService _sessionService;
-        private readonly IUserService _userService;
+        private readonly AccountController accountController;
+        private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
+        private readonly IUserService userService;
 
         private const string SkipOtpCheck = "skip";
 
         public AccountControllerTests()
         {
-            _sessionService = FakeSessionService();
+            sessionService = FakeSessionService();
             
-            _baseService = Substitute.For<IBaseService>();
+            baseService = Substitute.For<IBaseService>();
 
             var twoFactorAuthService = FakeTwoFactorAuthenticatorService();
             
-            _userService = FakeUserService();
+            userService = FakeUserService();
 
-            _accountController = new AccountController(
-                _sessionService,
-                _baseService,
+            accountController = new AccountController(
+                sessionService,
+                baseService,
                 twoFactorAuthService,
-                _userService);
+                userService);
         }
 
         public static ISessionService FakeSessionService()
@@ -92,7 +92,7 @@
         public void Index_TabSelected_ReturnViewResultWithActivePanelEqualSelectedTab(AccountTab tab)
         {
             // Act
-            var actual = _accountController.Index(tab);
+            var actual = accountController.Index(tab);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -105,7 +105,7 @@
         [Fact]
         public void RegisterOTPNotification_None_ReturnViewResult()
         {
-            var actual = _accountController.RegisterOTPNotification();
+            var actual = accountController.RegisterOTPNotification(sessionService.Username);
 
             Assert.IsType<ViewResult>(actual);
         }
@@ -113,7 +113,7 @@
         [Fact]
         public void ResetOtpDevice_None_ReturnRedirectToActionResult()
         {
-            var actual = _accountController.ResetOtpDevice();
+            var actual = accountController.ResetOtpDevice();
             Assert.IsType<RedirectToActionResult>(actual);
         }
 
@@ -123,10 +123,10 @@
         public void SetupOtp_NullOrValid_BadRequestOrOkResult(string token, Type type)
         {
             //Arrange
-            var user = _userService.GetUserByUsername(_sessionService.Username);
-            _baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+            var user = userService.GetUserByUsername(sessionService.Username);
+            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
 
-            var actual = _accountController.SetupOtp(token);
+            var actual = accountController.SetupOtp(token);
             Assert.IsType(type, actual);
         }
 
@@ -135,8 +135,8 @@
         [InlineData("test", typeof(ViewResult))]
         public void VerifyOTP_None_ReturnViewResult(string username, Type type)
         {
-            _sessionService.Username = username;
-            var actual = _accountController.VerifyOTP();
+            sessionService.Username = username;
+            var actual = accountController.VerifyOTP();
             Assert.IsType(type, actual);
         }
 
@@ -144,15 +144,15 @@
         public void VerifyOTP_OtpInputed_ReturnViewResult()
         {
             TwoFactorAuthenticatorViewModel viewModel = new TwoFactorAuthenticatorViewModel();
-            var actual = _accountController.VerifyOTP(viewModel);
+            var actual = accountController.VerifyOTP(viewModel);
             Assert.IsType<Task<IActionResult>>(actual);
 
             viewModel.OTPCode = SkipOtpCheck;
-            actual = _accountController.VerifyOTP(viewModel);
+            actual = accountController.VerifyOTP(viewModel);
             Assert.IsType<Task<IActionResult>>(actual);
 
-            _userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            actual = _accountController.VerifyOTP(viewModel);
+            userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
+            actual = accountController.VerifyOTP(viewModel);
             Assert.IsType<Task<IActionResult>>(actual);
         }
 
@@ -163,15 +163,15 @@
         {
             SetupOtpViewModel viewModel = new SetupOtpViewModel
             {
-                Username = _sessionService.Username,
+                Username = sessionService.Username,
                 Otp = isOTPValid ? "sample" : SkipOtpCheck
             };
 
-            var actual = _accountController.VerifySetupOTP(viewModel);
+            var actual = accountController.VerifySetupOTP(viewModel);
             Assert.IsType(type, actual);
 
-            _userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            actual = _accountController.VerifySetupOTP(viewModel);
+            userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
+            actual = accountController.VerifySetupOTP(viewModel);
             Assert.IsType<RedirectToActionResult>(actual);
         }
     }
