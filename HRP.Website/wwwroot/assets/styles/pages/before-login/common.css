@@ -594,6 +594,11 @@ body {
   margin-left: 16px;
 }
 
+.block .msg-error.-has-icon, .block .msg-success.-has-icon {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
 .msg-error {
   margin-top: 10px;
 }

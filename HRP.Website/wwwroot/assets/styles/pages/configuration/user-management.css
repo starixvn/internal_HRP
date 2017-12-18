@@ -421,21 +421,6 @@
   width: 577px;
 }
 
-/* Create User */
-.form-information {
-  position: relative;
-}
-
-.form-information .note {
-  margin-left: 30px;
-  top: 28px;
-}
-
-.form-information .note:before {
-  top: 85px;
-  bottom: auto;
-}
-
 /* Assign Permission */
 .assign-permission .level-first {
   color: #1973b2;

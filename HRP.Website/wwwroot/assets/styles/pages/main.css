@@ -878,6 +878,21 @@ body {
 .icon-close {
   color: #ff0000;
 }
+
+/* Create/Edit Form */
+.form-information {
+  position: relative;
+}
+
+.form-information .note {
+  margin-left: 30px;
+  top: 28px;
+}
+
+.form-information .note:before {
+  top: 85px;
+  bottom: auto;
+}
  
 
  /*# sourceMappingURL= main.css.map */
