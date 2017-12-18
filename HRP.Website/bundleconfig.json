@@ -66,6 +66,17 @@
     }
   },
   {
+    "outputFileName": "wwwroot/js/reset-password.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/assets/js/reset-password.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/js/jquery-validate.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",

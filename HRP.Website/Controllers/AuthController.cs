@@ -127,10 +127,20 @@ namespace HRP.Website.Controllers
                 };
 
                 CommandResult result = _baseService.ExecuteNonQuery(criteria);
-                ViewBag.IsSuccessful = result.IsSuccessful;
+                if (result.IsSuccessful)
+                {
+                    return RedirectToAction(nameof(ResetPasswordSuccessfully));
+                }
             }
 
+            ViewBag.ErrorMessage = Message.UpdateFail;
+
             return View(model);
+        }
+
+        public IActionResult ResetPasswordSuccessfully()
+        {
+            return View();
         }
 
         private static bool IsPasswordValid(string modelPassword, string hashedPassword)
