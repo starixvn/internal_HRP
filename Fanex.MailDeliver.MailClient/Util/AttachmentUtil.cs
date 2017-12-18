@@ -3,7 +3,7 @@
     using System.IO;
     using Fanex.MailDeliver.Model;
 
-    public class AttachmentUtil
+    public static class AttachmentUtil
     {
         public static void Format(ref MailRecord record)
         {

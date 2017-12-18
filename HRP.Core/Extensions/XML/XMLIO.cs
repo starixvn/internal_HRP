@@ -54,13 +54,14 @@
         private static IEnumerable<Expression> GetExpressions(PropertyInfo p, Expression obj, Expression lambda)
         {
             var prop = Expression.Property(obj, p);
+            var isGenericType = p.PropertyType.IsGenericType
+                    && p.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)
+                    && p.PropertyType.GetGenericArguments()[0].IsPrimitive;
 
             if (p.PropertyType.IsPrimitive
                 || p.PropertyType == typeof(string)
                 || p.PropertyType == typeof(DateTime)
-                || (p.PropertyType.IsGenericType
-                    && p.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)
-                    && p.PropertyType.GetGenericArguments()[0].IsPrimitive))
+                || isGenericType)
             {
                 var name = GetPropertyName(p);
                 return new[] { Expression.Invoke(lambda, Expression.Constant(name), Expression.Convert(prop, typeof(object))) };

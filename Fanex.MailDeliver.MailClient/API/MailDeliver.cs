@@ -31,7 +31,7 @@
 
         public Binding GetBinding(EndpointAddress endpoint)
         {
-            if (endpoint.Uri.Scheme.IndexOf("http") != -1)
+            if (endpoint.Uri.Scheme.IndexOf("http", StringComparison.InvariantCulture) != -1)
             {
                 var httpBinding = new BasicHttpBinding(BasicHttpSecurityMode.None)
                 {
@@ -112,18 +112,20 @@
             int counter)
         {
             var mailList = new List<MailRecord>();
-            if (appID > 0)
+            if(appID <= 0)
             {
-                IEnumerable<byte[]> buffers = _mailClient.GetListMail(appID, mailDate, page, counter);
-                if (buffers != null)
+                return mailList;
+            }
+
+            IEnumerable<byte[]> buffers = _mailClient.GetListMail(appID, mailDate, page, counter);
+            if (buffers != null)
+            {
+                foreach (var buffer in buffers)
                 {
-                    foreach (var buffer in buffers)
+                    var record = MailFormatter.Deserialize<MailRecord>(buffer);
+                    if (record != null)
                     {
-                        var record = MailFormatter.Deserialize<MailRecord>(buffer);
-                        if (record != null)
-                        {
-                            mailList.Add(record);
-                        }
+                        mailList.Add(record);
                     }
                 }
             }
@@ -141,18 +143,20 @@
             MailStatus status)
         {
             var mailList = new List<MailRecord>();
-            if (appID >= 0)
+            if(appID < 0)
             {
-                IEnumerable<byte[]> buffers = _mailClient.GetListMailByDate(appID, fromDate, toDate, ref totalRows, page, counter, (int)status);
-                if (buffers != null)
+                return mailList;
+            }
+
+            IEnumerable<byte[]> buffers = _mailClient.GetListMailByDate(appID, fromDate, toDate, ref totalRows, page, counter, (int)status);
+            if (buffers != null)
+            {
+                foreach (var buffer in buffers)
                 {
-                    foreach (var buffer in buffers)
+                    var record = MailFormatter.Deserialize<MailRecord>(buffer);
+                    if (record != null)
                     {
-                        var record = MailFormatter.Deserialize<MailRecord>(buffer);
-                        if (record != null)
-                        {
-                            mailList.Add(record);
-                        }
+                        mailList.Add(record);
                     }
                 }
             }

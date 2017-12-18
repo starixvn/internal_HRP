@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics;
 
-    [DebuggerStepThroughAttribute]
-    public partial class MailServiceClient : System.ServiceModel.ClientBase<IMailService>, IMailService
+    [DebuggerStepThrough]
+    public class MailServiceClient : System.ServiceModel.ClientBase<IMailService>, IMailService
     {
         public MailServiceClient()
         {
