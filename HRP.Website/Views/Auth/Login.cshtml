@@ -19,13 +19,14 @@
         <a href="#" class="logo">
             <img src="/assets/styles/images/logo_login.svg" alt="logo" />
         </a>
-        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-        {
-            <div class="msg-error -has-icon">
-                @ViewBag.ErrorMessage
-            </div>
-        }
+        
         <form asp-controller="Auth" asp-action="Login" method="POST" id="login">
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="msg-error -has-icon">
+                    @ViewBag.ErrorMessage
+                </div>
+             }
             <div class="group">
                 <span class="icon-user"></span>
                 <input asp-for="Username" class="form-control" placeholder="Username">
