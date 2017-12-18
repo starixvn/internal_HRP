@@ -94,9 +94,9 @@ namespace HRP.Website.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult RegisterOTPNotification()
+        public IActionResult RegisterOTPNotification(string name)
         {
-            return View();
+            return View("RegisterOTPNotification", name);
         }
 
         public IActionResult ResetOtpDevice()
