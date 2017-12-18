@@ -3,14 +3,15 @@ namespace HRP.Website.Controllers
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
-    using HRP.Models;
+    using HRP.Core.Model;
     using HRP.Criteria;
+    using HRP.Models;
+    using HRP.Models.Account;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
-    using HRP.Models.Account;
 
     public class AuthController : Controller
     {
@@ -125,16 +126,8 @@ namespace HRP.Website.Controllers
                     Password = BCrypt.HashPassword(model.Password)
                 };
 
-                var result = _baseService.ExecuteNonQuery(criteria);
-
-                if (result.IsSuccessful)
-                {
-                    ViewBag.Message = Message.PasswordChangeSuccessful;
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = Message.UpdateFail;
-                }
+                CommandResult result = _baseService.ExecuteNonQuery(criteria);
+                ViewBag.IsSuccessful = result.IsSuccessful;
 
                 return View();
             }

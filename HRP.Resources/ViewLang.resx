@@ -225,4 +225,7 @@
   <data name="ResetPassword" xml:space="preserve">
     <value>Reset Password</value>
   </data>
+  <data name="ResetYourPassword" xml:space="preserve">
+    <value>Reset your password</value>
+  </data>
 </root>
