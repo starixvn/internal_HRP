@@ -15,6 +15,7 @@
                     $('.icon-close').addClass('hidden');
                     $('#old-password-incorrect').addClass('hidden');
                     $('input').val('');
+                    $('#OldPassword').removeClass('error');
                     setInterval(function () { alert.addClass('hidden'); }, 3000);
                 }
                 if (code === -2) {

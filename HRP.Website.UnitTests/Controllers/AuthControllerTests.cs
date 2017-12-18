@@ -75,12 +75,12 @@
 
             var user = new User
             {
-                UserId = 23,
+                UserId = 16,
                 Username = "oliver",
                 FullName = "Hải",
                 Phone = "0909120393",
                 Email = "oliver.dang@nexcel.vn",
-                Password = "$2a$10$W6FBVhwpAOXt2u3FNoU9h.nuipn0bbvMW6oO8w9i015MzOJgnGlsm",
+                Password = "$2a$10$lTZ4z7TmyQhLYoBFLS6p9uqqCGQAmxOkaPREcqapnUNsmRPzKdvUy",
                 IsActive = true,
                 LastLoginDate = DateTime.Parse("2017-12-13 13:51:59.087"),
                 IsOTPRegistered = true,
