@@ -1,5 +1,8 @@
 ﻿var qrcode = {
     init: function () {
+
+        qrcode.hideOtpStatus();
+
         var qrcodetext = $("#qrcodetext").data("qrcodetext");
 
         var qr = new QRious({
@@ -29,6 +32,11 @@
                 });
                 return false;
             });
+    },
+
+    hideOtpStatus: function() {
+        $("#verify-setup-otp-fail").hide();
+        $("#verify-setup-otp-success").hide();
     },
 
     otpFail: function () {
