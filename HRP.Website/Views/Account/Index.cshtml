@@ -3,11 +3,8 @@
 @model AccountViewModel
 
 @{
-    //bool isAuthenticated = User.Identity.IsAuthenticated;
-    //var limitFunctionClass = isAuthenticated ? "" : "limited";
-
     ViewData["Title"] = "Account";
-    //Layout = isAuthenticated ? "~/Views/Shared/_Layout.cshtml" : "~/Views/Shared/_LoginLayout.cshtml";
+    Layout = "_Layout";
 }
 
 @section Styles {
