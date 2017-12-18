@@ -3,8 +3,8 @@
         var qrcodetext = $("#qrcodetext").data("qrcodetext");
 
         var qr = new QRious({
-            element: document.getElementById('setup-otp-qrcode'),
-            padding: 30,
+            element: document.getElementById("setup-otp-qrcode"),
+            padding: 0,
             value: qrcodetext,
             size: 300
         });
@@ -40,7 +40,7 @@
         $("#verify-setup-otp-fail").hide();
         $("#verify-setup-otp-success").show();
 
-        $(location).attr("href", '/Account/VerifyOTP').delay(3000);
+        $(location).attr("href", "/Account/VerifyOTP").delay(3000);
     }
 };
 
