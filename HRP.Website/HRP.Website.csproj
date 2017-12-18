@@ -64,7 +64,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\assets\bundles\js\" />
+    <Folder Include="wwwroot\assets\bundles\js\account\" />
+    <Folder Include="wwwroot\assets\bundles\js\user\" />
   </ItemGroup>
 
   <ItemGroup>

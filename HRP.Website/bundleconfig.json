@@ -74,7 +74,7 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/assets/js/assign-permission-to-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/js/user/assign-permission-to-user.min.js",
     "inputFiles": [
       "wwwroot/assets/js/assign-permission-to-user.js"
     ],
@@ -84,7 +84,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/js/user-management.min.js",
+    "outputFileName": "wwwroot/assets/bundles/js/user/user-management.min.js",
     "inputFiles": [
       "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
@@ -97,7 +97,32 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/js/create-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/js/account/account.min.js",
+    "inputFiles": [
+      "wwwroot/lib/qrious/qrious.min.js",
+      "wwwroot/assets/js/account/index.js",
+      "wwwroot/assets/js/account/update-profile.js",
+      "wwwroot/assets/js/account/change-password.js",
+      "wwwroot/assets/js/account/otp.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/js/account/setupotp.min.js",
+    "inputFiles": [
+      "wwwroot/lib/qrious/qrious.min.js",
+      "wwwroot/assets/js/account/otp.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/js/user/create-user.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
@@ -110,30 +135,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/js/account/account.min.js",
-    "inputFiles": [
-      "wwwroot/assets/js/account/index.js",
-      "wwwroot/assets/js/account/update-profile.js",
-      "wwwroot/assets/js/account/change-password.js"
-    ],
-    "minify": {
-      "enabled": false,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/js/account/setupotp.min.js",
-    "inputFiles": [
-      "wwwroot/lib/qrious/qrious.min.js",
-      "wwwroot/assets/js/account/otp.js"
-    ],
-    "minify": {
-      "enabled": false,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/js/edit-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/js/user/edit-user.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
