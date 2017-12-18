@@ -113,6 +113,7 @@ namespace HRP.Website.Controllers
                     return Json(new { code = result.Code, message = Message.UpdateSuccess });
                 }
             }
+
             return Json(new { code = -1, message = Message.UpdateFail });
         }
 
@@ -192,12 +193,12 @@ namespace HRP.Website.Controllers
             }
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
-
-            var isSkipOTP = viewModel.IsByPassTwoFactor;
-
-            if (isOTPValid || isSkipOTP)
+            
+            // TODO: Remove IsByPassTwoFactor
+            if (isOTPValid || viewModel.IsByPassTwoFactor)
             {
-                return await SignUserIn(user);
+                await SignUserIn(user);
+                return RedirectToAction("Index", "Home");
             }
 
             ViewBag.ErrorMessage = Message.InvalidOTP;
@@ -205,7 +206,7 @@ namespace HRP.Website.Controllers
             return RedirectToAction(nameof(VerifyOTP));
         }
 
-        private async Task<IActionResult> SignUserIn(User user)
+        private async Task SignUserIn(User user)
         {
             // Step 1: setup userId and username in Session
             sessionService.UserId = user.UserId;
@@ -222,9 +223,6 @@ namespace HRP.Website.Controllers
 
             // Step 4: Update last login date
             baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
-
-            // Step 5: Redirect to home
-            return RedirectToAction("Index", "Home");
         }
 
         private async Task PopulateMenusAndFunctions(User user)
