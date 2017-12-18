@@ -5,6 +5,8 @@ namespace HRP.Models
     public class TwoFactorAuthenticatorViewModel
     {
         [Required]
+        [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "OTP code must be 6 digits")]
+        [Display(Name = "OTP code")]
         public string OTPCode { get; set; }
 
         // TODO: Remove when 2 factor completed
