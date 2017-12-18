@@ -84,5 +84,23 @@
                 <input type="submit" class="button -primary" id="btnSubmitOtp" value="Verify" />
             </div>
         </form>
+        @*<form class="form-information form-register"
+              asp-action="VerifySetupOTP"
+              asp-controller="Account"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-success="qrcode.otpSuccess"
+              data-ajax-failure="qrcode.otpFail">
+
+            <div class="msg-success -has-icon hidden" id="verify-setup-otp-success">Your Authenticator App is verified</div>
+            <div class="msg-error -has-icon hidden" id="verify-setup-otp-fail">Your Authenticator App is NOT verified</div>
+
+            <label asp-for="Otp" class="text"></label>
+            <div>
+                <input asp-for="Otp" class="control" />
+                <input type="hidden" asp-for="Username" />
+                <input type="submit" class="button -primary" id="btnSubmitOtp" value="Verify" />
+            </div>
+        </form>*@
     </li>
 </ul>

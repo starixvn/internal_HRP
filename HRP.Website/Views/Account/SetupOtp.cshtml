@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Setup OTP";
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    Layout = "_LoginLayout";
 }
 
 @section Styles {
@@ -11,6 +11,7 @@
 }
 
 @section Scripts {
+    <script src="~/js/jquery-validate.min.js" type="text/javascript"></script>
     <script src="~/assets/js/account/setupotp.min.js" type="text/javascript"></script>
 }
 
