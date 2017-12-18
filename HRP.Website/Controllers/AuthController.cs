@@ -128,11 +128,9 @@ namespace HRP.Website.Controllers
 
                 CommandResult result = _baseService.ExecuteNonQuery(criteria);
                 ViewBag.IsSuccessful = result.IsSuccessful;
-
-                return View();
             }
 
-            return BadRequest();
+            return View(model);
         }
 
         private static bool IsPasswordValid(string modelPassword, string hashedPassword)
