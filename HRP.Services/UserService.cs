@@ -52,6 +52,18 @@ namespace HRP.Services
             return user;
         }
 
+        public User GetUserByTokenOTPRegister(string token)
+        {
+            var criteria = new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = token
+            };
+
+            var user = _baseService.GetDataEntity<User>(criteria);
+
+            return user;
+        }
+
         public bool ResetTokenOTPRegister(string username)
         {
             var criteria = new UpdateTokenOTPRegisterCriteria
