@@ -44,7 +44,7 @@ namespace HRP.Website.Controllers
         {
             var user = _userService.GetUserByUsername(username);
 
-            if (user != null || username == "admin")
+            if (user != null)
             {
                 _userService.ResetUserPassword(username);
 
