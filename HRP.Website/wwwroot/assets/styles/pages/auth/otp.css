@@ -136,6 +136,10 @@
   border-color: #0b599c transparent transparent transparent;
 }
 
+body {
+  counter-reset: section;
+}
+
 .intro {
   margin-bottom: 15px;
   font-size: 14px;
@@ -177,7 +181,6 @@
   color: #1973b2;
   font-weight: bold;
   font-size: 14px;
-  counter-reset: subsection;
 }
 
 .register-otp .sub-title:before {
@@ -292,6 +295,7 @@
 }
 
 .register-otp .form-register .control {
+  display: inline-block;
   width: 209px;
 }
 

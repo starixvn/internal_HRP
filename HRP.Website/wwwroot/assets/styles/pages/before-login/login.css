@@ -91,7 +91,7 @@ input, button {
   background-color: #188a38;
 }
 
-a.button:hover {
+a.button, a.button:hover {
   text-decoration: none;
 }
 
