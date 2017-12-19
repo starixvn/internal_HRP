@@ -78,11 +78,11 @@
             <div class="msg-error -has-icon" id="verify-setup-otp-fail">Your Authenticator App is NOT verified</div>
 
             <label asp-for="Otp" class="text"></label>
-            <div>
+            <fieldset>
                 <input asp-for="Otp" class="control" />
                 <input type="hidden" asp-for="Username" />
                 <input type="submit" class="button -primary" id="btnSubmitOtp" value="Verify" />
-            </div>
+            </fieldset>
         </form>
     </li>
 </ul>

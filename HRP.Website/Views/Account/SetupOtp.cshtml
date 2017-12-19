@@ -7,8 +7,16 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/assets/bundles/account/css/setupotp-standalone.min.css" />
-    <link rel="stylesheet" href="~/assets/bundles/account/css/otp.min.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/styles/pages/main.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/styles/pages/auth/otp.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/assets/bundles/account/css/setupotp-standalone.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/bundles/account/css/otp.min.css" asp-append-version="true" />
+    </environment>
+
 }
 
 <div class="content-container">
@@ -20,7 +28,17 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/jquery-validate.min.js" type="text/javascript"></script>
-    <script src="~/assets/bundles/account/js/setupotp-standalone.min.js" type="text/javascript"></script>
-    <script src="~/assets/bundles/account/js/setupotp.min.js" type="text/javascript"></script>
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/lib/qrious/qrious.min.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/assets/js/account/otp.js" type="text/javascript" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/jquery-validate.min.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/assets/bundles/account/js/setupotp-standalone.min.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/assets/bundles/account/js/setupotp.min.js" type="text/javascript" asp-append-version="true"></script>
+    </environment>
 }

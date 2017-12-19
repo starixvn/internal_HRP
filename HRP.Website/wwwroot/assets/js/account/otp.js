@@ -48,6 +48,8 @@
         $("#verify-setup-otp-fail").hide();
         $("#verify-setup-otp-success").show();
 
+        $("#verify-setup-otp-form > fieldset").prop("disabled", true);
+
         window.setTimeout(qrcode.navigateToVerifyOTP, 3000);
     },
 
