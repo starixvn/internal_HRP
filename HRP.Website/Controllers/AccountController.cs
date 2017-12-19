@@ -198,13 +198,7 @@ namespace HRP.Website.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                // User is changing Otp device, do not required to re-enter otp
-                AccountViewModel accountViewModel = new AccountViewModel
-                {
-                    ActivePanel = AccountTab.Otp
-                };
-
-                return RedirectToAction("Index", accountViewModel);
+                return RedirectToAction("Index", new { tab = AccountTab.Otp });
             }
 
             if (string.IsNullOrEmpty(sessionService.Username))
@@ -221,13 +215,7 @@ namespace HRP.Website.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                // User is changing Otp device, do not required to re-enter otp
-                AccountViewModel accountViewModel = new AccountViewModel
-                {
-                    ActivePanel = AccountTab.Otp
-                };
-
-                return RedirectToAction("Index", accountViewModel);
+                return RedirectToAction("Index", new { tab = AccountTab.Otp });
             }
 
             var user = userService.GetUserByUsername(sessionService.Username);
