@@ -261,19 +261,25 @@ var assignPermissionToUser = (function ($) {
             var userId = $('#UserId').val(),
                 model = [],
                 els = [],
-                totalItems;
+                totalItems,
+                el,
+                i,
+                functionId,
+                companyId,
+                isRead,
+                isHost;
 
             els = $adminPermissionTable.find('input[type=checkbox][name=' + attrRead + ']:not(:disabled)');
             totalItems = els.length;
 
-            for (var i = 0; i < totalItems; i++) {
-                var el = $(els[i]),
-                    functionId = el.data('fid'),
-                    companyId = el.data('cid'),
-                    isRead = el.prop('checked'),
-                    isHost = $adminPermissionTable
-                        .find('input[type=checkbox][name=' + attrHost + '][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
-                        .prop('checked');
+            for (i = 0; i < totalItems; i++) {
+                el = $(els[i]);
+                functionId = el.data('fid');
+                companyId = el.data('cid');
+                isRead = el.prop('checked');
+                isHost = $adminPermissionTable
+                    .find('input[type=checkbox][name=' + attrHost + '][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
+                    .prop('checked');
 
                 model.push({ UserId: userId, FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
@@ -281,14 +287,14 @@ var assignPermissionToUser = (function ($) {
             els = $userPermissionTable.find('input[type=checkbox][name=' + attrRead + ']:not(:disabled)');
             totalItems = els.length;
 
-            for (var i = 0; i < totalItems; i++) {
-                var el = $(els[i]),
-                    functionId = el.data('fid'),
-                    companyId = el.data('cid'),
-                    isRead = el.prop('checked'),
-                    isHost = $userPermissionTable
-                        .find('input[type=checkbox][name=' + attrHost + '][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
-                        .prop('checked');
+            for (i = 0; i < totalItems; i++) {
+                el = $(els[i]);
+                functionId = el.data('fid');
+                companyId = el.data('cid');
+                isRead = el.prop('checked');
+                isHost = $userPermissionTable
+                    .find('input[type=checkbox][name=' + attrHost + '][data-fid=' + functionId + '][data-cid=' + companyId + ']:not(:disabled)')
+                    .prop('checked');
 
                 model.push({ UserId: userId, FunctionId: functionId, CompanyId: companyId, IsRead: isRead, IsHost: isHost });
             }
