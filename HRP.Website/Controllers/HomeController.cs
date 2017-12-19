@@ -1,6 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using HRP.Core.Filters;
+    using Core.Filters;
     using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
