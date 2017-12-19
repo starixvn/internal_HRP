@@ -98,24 +98,6 @@
             Assert.IsType<ViewResult>(actual);
         }
 
-        [Fact]
-        public void ResetPassword_ValidModel_RedirectToAction()
-        {
-            _authController = GetAuthController();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
-
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
-        }
-
-        [Fact]
-        public void Logout_Successfully_ReturnRedirectLogin()
-        {
-            _authController = GetAuthController();
-            var actual = _authController.Logout();
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Login", viewResult.ActionName);
-        }
-
         #region Helpers
 
         private ISessionService FakeSessionService()
