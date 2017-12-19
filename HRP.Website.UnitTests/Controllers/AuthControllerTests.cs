@@ -2,7 +2,9 @@
 {
     using System;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Models;
+    using HRP.Models.Account;
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,30 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IUserService userService;
-        private readonly AuthController _authController;
+        private AuthController _authController;
+
+        private User user = new User
+        {
+            UserId = 16,
+            Username = "oliver",
+            FullName = "Hải",
+            Phone = "0909120393",
+            Email = "oliver.dang@nexcel.vn",
+            Password = "$2a$10$lTZ4z7TmyQhLYoBFLS6p9uqqCGQAmxOkaPREcqapnUNsmRPzKdvUy",
+            IsActive = true,
+            LastLoginDate = DateTime.Parse("2017-12-13 13:51:59.087"),
+            IsOTPRegistered = true,
+            SecretKey = "4b7be5aea6fd",
+            CreatedBy = 1,
+            CreatedDate = DateTime.Parse("2017-12-11 09:04:56.543"),
+            IsSystemAdmin = false,
+        };
 
         [Fact]
         public void Login_None_ReturnViewResult()
         {
+            _authController = GetAuthController();
+
             var actual = _authController.Login();
 
             Assert.IsType<ViewResult>(actual);
@@ -27,6 +48,8 @@
         [Fact]
         public void ConfirmationEmail_None_ReturnViewResult()
         {
+            _authController = GetAuthController();
+
             var actual = _authController.ConfirmationEmailSent();
 
             Assert.IsType<ViewResult>(actual);
@@ -35,6 +58,8 @@
         [Fact]
         public void ForgotPassword_None_ReturnViewResult()
         {
+            _authController = GetAuthController();
+
             var actual = _authController.ForgotPassword();
 
             Assert.IsType<ViewResult>(actual);
@@ -43,13 +68,32 @@
         [Fact]
         public void Login_ValidModel_ReturnSuccessfully()
         {
-            var authController = GetAuthController();
+            _authController = GetAuthController();
+
             var model = new LoginViewModel
             {
                 Username = "admin",
-                Password = "1234aa"
+                Password = "r2RzX0EqeQCSjpXCp/GMnA=="
             };
-            authController.Login(model);
+            var actual = _authController.Login(model);
+            Assert.IsType<ViewResult>(actual);
+        }
+
+        [Fact]
+        public void ResetPassword_NullOrEmptyToken_ReturnNotFound()
+        {
+            _authController = GetAuthController();
+            var actual = _authController.ResetPassword(string.Empty);
+            Assert.IsNotType<NotFoundResult>(actual);
+        }
+
+        [Fact]
+        public void ResetPassword_ReturnActionResult()
+        {
+            _authController = GetAuthController();
+            var model = new ResetPasswordViewModel();
+            var actual = _authController.ResetPassword("test", model);
+            Assert.IsType<ViewResult>(actual);
         }
 
         #region Helpers
@@ -58,7 +102,6 @@
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
-
             return service;
         }
 
@@ -73,24 +116,8 @@
         {
             var service = Substitute.For<IUserService>();
 
-            var user = new User
-            {
-                UserId = 16,
-                Username = "oliver",
-                FullName = "Hải",
-                Phone = "0909120393",
-                Email = "oliver.dang@nexcel.vn",
-                Password = "$2a$10$lTZ4z7TmyQhLYoBFLS6p9uqqCGQAmxOkaPREcqapnUNsmRPzKdvUy",
-                IsActive = true,
-                LastLoginDate = DateTime.Parse("2017-12-13 13:51:59.087"),
-                IsOTPRegistered = true,
-                SecretKey = "4b7be5aea6fd",
-                CreatedBy = 1,
-                CreatedDate = DateTime.Parse("2017-12-11 09:04:56.543"),
-                IsSystemAdmin = false,
-            };
-
             service.GetUserByUsername(Arg.Any<string>()).Returns(user);
+
             return service;
         }
 
