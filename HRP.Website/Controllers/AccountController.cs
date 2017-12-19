@@ -215,7 +215,13 @@ namespace HRP.Website.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index");
+                // User is changing Otp device, do not required to re-enter otp
+                AccountViewModel accountViewModel = new AccountViewModel
+                {
+                    ActivePanel = AccountTab.Otp
+                };
+
+                return RedirectToAction("Index", accountViewModel);
             }
 
             var user = userService.GetUserByUsername(sessionService.Username);
