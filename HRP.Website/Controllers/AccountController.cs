@@ -269,7 +269,6 @@ namespace HRP.Website.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.GivenName, user.FullName),
                 new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
             };
 
