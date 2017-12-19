@@ -151,11 +151,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} has been successfully updated..
+        ///   Looks up a localized string similar to Email Add..
         /// </summary>
-        public static string EditUserSuccess {
+        public static string EmailAdd {
             get {
-                return ResourceManager.GetString("EditUserSuccess", resourceCulture);
+                return ResourceManager.GetString("EmailAdd", resourceCulture);
             }
         }
         
@@ -255,6 +255,15 @@ namespace HRP.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No..
+        /// </summary>
+        public static string PhoneNo {
+            get {
+                return ResourceManager.GetString("PhoneNo", resourceCulture);
             }
         }
         
@@ -426,24 +435,6 @@ namespace HRP.Resources {
         public static string UserPermission {
             get {
                 return ResourceManager.GetString("UserPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email Add..
-        /// </summary>
-        public static string UserTable_Email {
-            get {
-                return ResourceManager.GetString("UserTable_Email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone No..
-        /// </summary>
-        public static string UserTable_Phone {
-            get {
-                return ResourceManager.GetString("UserTable_Phone", resourceCulture);
             }
         }
     }

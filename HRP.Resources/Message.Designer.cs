@@ -61,11 +61,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email Address.
+        ///   Looks up a localized string similar to User {0} has been successfully updated..
         /// </summary>
-        public static string EmailLabel {
+        public static string EditUserSuccess {
             get {
-                return ResourceManager.GetString("EmailLabel", resourceCulture);
+                return ResourceManager.GetString("EditUserSuccess", resourceCulture);
             }
         }
         
@@ -93,15 +93,6 @@ namespace HRP.Resources {
         public static string ForgotPasswordInvalidUser {
             get {
                 return ResourceManager.GetString("ForgotPasswordInvalidUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full Name.
-        /// </summary>
-        public static string FullNameLabel {
-            get {
-                return ResourceManager.GetString("FullNameLabel", resourceCulture);
             }
         }
         
@@ -178,15 +169,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Phone No..
-        /// </summary>
-        public static string PhoneNumberLabel {
-            get {
-                return ResourceManager.GetString("PhoneNumberLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Phone No. must not over {1} characters long..
         /// </summary>
         public static string PhoneNumberMaxLength {
@@ -228,15 +210,6 @@ namespace HRP.Resources {
         public static string UpdateSuccess {
             get {
                 return ResourceManager.GetString("UpdateSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        public static string UserIsActiveLabel {
-            get {
-                return ResourceManager.GetString("UserIsActiveLabel", resourceCulture);
             }
         }
         
