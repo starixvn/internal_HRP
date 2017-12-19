@@ -48,7 +48,11 @@
         $("#verify-setup-otp-fail").hide();
         $("#verify-setup-otp-success").show();
 
-        $(location).attr("href", "/Account/VerifyOTP").delay(3000);
+        window.setTimeout(qrcode.navigateToVerifyOTP, 3000);
+    },
+
+    navigateToVerifyOTP: function() {
+        $(location).attr("href", "/Account/VerifyOTP");
     }
 };
 
