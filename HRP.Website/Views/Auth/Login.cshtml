@@ -10,22 +10,21 @@
 <head>
     <title>@ViewLang.Login</title>
     <meta charset="utf-8" />
-    <link href="/assets/bundles/auth/css/login.min.css" rel="stylesheet" />
-
+    <link href="~/assets/bundles/auth/css/login.min.css" rel="stylesheet" />
 </head>
 <body>
     <section class="block">
         <a href="#" class="logo">
-            <img src="/assets/styles/images/logo_login.svg" alt="logo" />
+            <img src="~/assets/styles/images/logo_login.svg" alt="logo" />
         </a>
-        
+
         <form asp-controller="Auth" asp-action="Login" method="POST" id="login">
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
             {
                 <div class="msg-error -has-icon">
                     @ViewBag.ErrorMessage
                 </div>
-             }
+            }
             <div class="group">
                 <span class="icon-user"></span>
                 <input asp-for="Username" class="form-control" placeholder="Username">

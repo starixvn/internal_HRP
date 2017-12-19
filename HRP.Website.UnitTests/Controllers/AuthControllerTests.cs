@@ -2,7 +2,6 @@
 {
     using System;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Services;
@@ -84,7 +83,7 @@
         {
             _authController = GetAuthController();
             var actual = _authController.ResetPassword(string.Empty);
-            Assert.IsNotType<NotFoundResult>(actual);
+            Assert.IsType<NotFoundResult>(actual);
         }
 
         [Fact]
