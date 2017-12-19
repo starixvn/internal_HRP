@@ -31,5 +31,7 @@
         public bool IsActive { get; set; }
 
         public bool IsSystemAdmin { get; set; }
+
+        public bool CanEdit { get; set; }
     }
 }

@@ -1,4 +1,10 @@
 ﻿var editUser = (function ($) {
+    if ($('#CanEdit').val() === 'False') {
+        $('input[type="text"]').attr('readonly', 'readonly');
+        $('input[type="checkbox"]').attr('disabled', 'disabled');
+        $('form').submit(false);
+    }
+
     var displaySuccessMessage = function () {
         var alert = $('#edit-user-alert');
 

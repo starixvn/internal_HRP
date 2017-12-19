@@ -157,24 +157,11 @@
             var id = 1;
             userManagementController = GetUserManagementController();
             baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
+            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             var actual = userManagementController.EditUser(id);
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
-        }
-
-        [Fact]
-        public void EditUser_NotHavePermissionToEditSystemAdmin_RedirectToIndex()
-        { 
-            var id = 1;
-            userManagementController = GetUserManagementController();
-            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = true });
-
-            var userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(Constants.IsSystemAdmin, false.ToString()) }));
-            userManagementController.ControllerContext.HttpContext = new DefaultHttpContext { User = userPrincipal };
-            var actual = userManagementController.EditUser(id);
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Index", viewResult.ActionName);
         }
 
         [Fact]

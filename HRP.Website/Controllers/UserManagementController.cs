@@ -145,7 +145,7 @@
         }
 
         [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult EditUser(int id)
         {
             if (id <= 0)
@@ -154,10 +154,8 @@
             }
 
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
-            if (viewModel.IsSystemAdmin && !Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value))
-            {
-                return RedirectToAction("Index");
-            }
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) 
+                && (!viewModel.IsSystemAdmin || Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value));
 
             return View(viewModel);
         }
