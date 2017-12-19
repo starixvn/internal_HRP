@@ -177,4 +177,7 @@
   <data name="EditUserSuccess" xml:space="preserve">
     <value>User {0} has been successfully updated.</value>
   </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Invalid Phone No.</value>
+  </data>
 </root>

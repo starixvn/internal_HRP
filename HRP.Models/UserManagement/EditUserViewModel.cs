@@ -16,6 +16,7 @@
         [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PhoneNumberMaxLength")]
         [Display(ResourceType = typeof(ViewLang), Name = "PhoneNo")]
         [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^[0-9]+$", ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidPhoneNumber")]
         [Phone]
         public string Phone { get; set; }
 
