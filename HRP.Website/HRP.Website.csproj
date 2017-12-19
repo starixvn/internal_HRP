@@ -46,11 +46,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
@@ -69,8 +64,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\assets\bundles\js\account\" />
-    <Folder Include="wwwroot\assets\bundles\js\user\" />
+    <Folder Include="wwwroot\assets\bundles\account\css\" />
+    <Folder Include="wwwroot\assets\bundles\account\js\" />
+    <Folder Include="wwwroot\assets\bundles\auth\js\" />
+    <Folder Include="wwwroot\assets\bundles\auth\css\" />
+    <Folder Include="wwwroot\assets\bundles\user\css\" />
+    <Folder Include="wwwroot\assets\bundles\user\js\" />
   </ItemGroup>
 
   <ItemGroup>

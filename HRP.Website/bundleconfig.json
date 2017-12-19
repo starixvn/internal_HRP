@@ -1,24 +1,5 @@
 [
   {
-    "outputFileName": "wwwroot/assets/bundles/login.min.css",
-    "inputFiles": [
-      "wwwroot/assets/styles/base/font-roboto.css",
-      "wwwroot/assets/styles/fonts/hrp/style.css",
-      "wwwroot/assets/styles/base/reset.css",
-      "wwwroot/lib/jquery-ui/jquery-ui.css",
-      "wwwroot/assets/styles/pages/before-login/login.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/before-login.min.css",
-    "inputFiles": [
-      "wwwroot/assets/styles/base/font-roboto.css",
-      "wwwroot/assets/styles/fonts/hrp/style.css",
-      "wwwroot/assets/styles/base/reset.css",
-      "wwwroot/assets/styles/pages/before-login/common.css"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/assets/bundles/main.min.css",
     "inputFiles": [
       "wwwroot/assets/styles/base/font-roboto.css",
@@ -29,13 +10,32 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/otp.min.css",
+    "outputFileName": "wwwroot/assets/bundles/auth/css/login.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/lib/jquery-ui/jquery-ui.css",
+      "wwwroot/assets/styles/pages/before-login/login.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/auth/css/before-login.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/assets/styles/pages/before-login/common.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/account/css/otp.min.css",
     "inputFiles": [
       "wwwroot/assets/styles/pages/auth/otp.css"
     ]
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/user-management.min.css",
+    "outputFileName": "wwwroot/assets/bundles/user/css/user-management.min.css",
     "inputFiles": [
       "wwwroot/assets/styles/pages/configuration/user-management.css"
     ]
@@ -53,7 +53,15 @@
     }
   },
   {
-    "outputFileName": "wwwroot/js/login.min.js",
+    "outputFileName": "wwwroot/js/jquery-validate.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/auth/js/login.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/jquery-ui/jquery-ui.js",
@@ -66,7 +74,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/js/reset-password.min.js",
+    "outputFileName": "wwwroot/assets/bundles/auth/js/reset-password.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/assets/js/reset-password.js"
@@ -77,15 +85,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/js/jquery-validate.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/js/user/assign-permission-to-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/user/js/assign-permission-to-user.min.js",
     "inputFiles": [
       "wwwroot/assets/js/assign-permission-to-user.js"
     ],
@@ -95,7 +95,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/js/user/user-management.min.js",
+    "outputFileName": "wwwroot/assets/bundles/user/js/user-management.min.js",
     "inputFiles": [
       "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
@@ -108,7 +108,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/js/account/account.min.js",
+    "outputFileName": "wwwroot/assets/bundles/account/js/account.min.js",
     "inputFiles": [
       "wwwroot/lib/qrious/qrious.min.js",
       "wwwroot/assets/js/account/index.js",
@@ -117,23 +117,23 @@
       "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {
-      "enabled": false,
+      "enabled": true,
       "renameLocals": true
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/js/account/setupotp.min.js",
+    "outputFileName": "wwwroot/assets/bundles/account/js/setupotp.min.js",
     "inputFiles": [
       "wwwroot/lib/qrious/qrious.min.js",
       "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {
-      "enabled": false,
+      "enabled": true,
       "renameLocals": true
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/js/user/create-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/user/js/create-user.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
@@ -146,7 +146,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/js/user/edit-user.min.js",
+    "outputFileName": "wwwroot/assets/bundles/user/js/edit-user.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
@@ -159,7 +159,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/setupotp-standalone.min.css",
+    "outputFileName": "wwwroot/assets/bundles/account/css/setupotp-standalone.min.css",
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "wwwroot/assets/styles/pages/main.css"
@@ -170,7 +170,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/setupotp-standalone.min.js",
+    "outputFileName": "wwwroot/assets/bundles/account/js/setupotp-standalone.min.js",
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js"
     ],
