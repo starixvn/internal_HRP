@@ -206,7 +206,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            return View(new TwoFactorAuthenticatorViewModel());
+            return View("VerifyOTP", new TwoFactorAuthenticatorViewModel());
         }
 
         [HttpPost]

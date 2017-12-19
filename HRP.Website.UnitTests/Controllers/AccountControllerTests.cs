@@ -1,10 +1,17 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using System.Security.Claims;
     using System.Threading.Tasks;
+    using Core.Constants;
     using Core.Enumerations;
     using Core.Services;
     using Fanex.Data.Repository;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Account;
@@ -16,21 +23,22 @@
 
     public class AccountControllerTests
     {
-        private readonly AccountController accountController;
+        private AccountController accountController;
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly IUserService userService;
+        private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
 
         private const string SkipOtpCheck = "skip";
 
         public AccountControllerTests()
         {
             sessionService = FakeSessionService();
-            
+
             baseService = Substitute.For<IBaseService>();
 
-            var twoFactorAuthService = FakeTwoFactorAuthenticatorService();
-            
+            twoFactorAuthService = FakeTwoFactorAuthenticatorService();
+
             userService = FakeUserService();
 
             accountController = new AccountController(
@@ -120,7 +128,7 @@
         [Theory]
         [InlineData("", typeof(BadRequestResult))]
         [InlineData("sampletoken", typeof(ViewResult))]
-        public void SetupOtp_NullOrValid_BadRequestOrOkResult(string token, Type type)
+        public void SetupOtp_NullOrValid_RedirectOrView(string token, Type type)
         {
             //Arrange
             var user = userService.GetUserByUsername(sessionService.Username);
@@ -131,12 +139,55 @@
         }
 
         [Theory]
-        [InlineData(null, typeof(RedirectToActionResult))]
-        [InlineData("test", typeof(ViewResult))]
-        public void VerifyOTP_None_ReturnViewResult(string username, Type type)
+        [InlineData("", typeof(RedirectToActionResult))]
+        [InlineData("sampletoken", typeof(ViewResult))]
+        public void SetupOtpAfterReset_NullOrValid_LoginOrAccountIndexResult(string token, Type type)
         {
+            //Arrange
+            var user = userService.GetUserByUsername(sessionService.Username);
+            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+
+            var actual = accountController.SetupOtpAfterReset(token);
+            Assert.IsType(type, actual);
+        }
+
+        [Theory]
+        [InlineData(null, false, typeof(RedirectToActionResult))]
+        [InlineData(null, true, typeof(RedirectToActionResult))]
+        [InlineData("test", false, typeof(ViewResult))]
+        [InlineData("test", true, typeof(RedirectToActionResult))]
+        public void VerifyOTP_None_ReturnViewResult(string username, bool isAuthenticated, Type type)
+        {
+            // Arrange
             sessionService.Username = username;
+            var claims = new List<Claim>();
+            ControllerContext controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            if (isAuthenticated)
+            {
+                controllerContext.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+            }
+            else
+            {
+                controllerContext.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(claims));
+            }
+
+            accountController =
+                Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
+
+            accountController.ControllerContext = controllerContext;
+            accountController.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
+                .Returns(new RedirectToActionResult("test", "test", "test"));
+            accountController.RedirectToAction(Arg.Any<string>()).Returns(new RedirectToActionResult("test","test", "test"));
+            accountController.View(Arg.Any<string>(), Arg.Any<object>()).Returns(new ViewResult());
+
+            // Test
             var actual = accountController.VerifyOTP();
+
+            // Assert
             Assert.IsType(type, actual);
         }
 
