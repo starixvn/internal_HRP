@@ -224,7 +224,7 @@ namespace HRP.Website.Controllers
 
             var user = userService.GetUserByUsername(sessionService.Username);
 
-            if (!ModelState.IsValid || user == null)
+            if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
             }
@@ -232,7 +232,7 @@ namespace HRP.Website.Controllers
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
 
             // TODO: Remove IsByPassTwoFactor
-            if (isOTPValid || viewModel.IsByPassTwoFactor)
+            if (ModelState.IsValid || isOTPValid || viewModel.IsByPassTwoFactor)
             {
                 await SignUserIn(user);
                 return RedirectToAction("Index", "Home");
@@ -249,14 +249,14 @@ namespace HRP.Website.Controllers
         {
             var user = userService.GetUserByUsername(viewModel.Username);
 
-            if (!ModelState.IsValid || user == null)
+            if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
             }
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 
-            if (!isOTPValid)
+            if (!ModelState.IsValid || !isOTPValid)
             {
                 return Forbid();
             }
