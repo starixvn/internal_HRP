@@ -40,17 +40,19 @@
                     }
                 </td>
                 <td class="text-center">
-                    <div class="dropdown config-action">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <span class="icon-configuration"></span>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            @if (canEditUserInfo)
-                            {
-                                var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
+                    @if (canEditUserInfo)
+                    {
+                        <div class="dropdown config-action">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="icon-configuration"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                @{
+                                    var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
+                                }
 
-                                if (!user.IsSystemAdmin)
+                                @if (!user.IsSystemAdmin)
                                 {
                                     <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
                                     <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
@@ -62,10 +64,9 @@
                                         <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
                                     }
                                 }
-
-                            }
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    }
                 </td>
             </tr>
             rowNumber++;
