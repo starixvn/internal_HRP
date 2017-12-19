@@ -121,7 +121,6 @@
                     Email = viewModel.Email,
                     Password = BCrypt.HashPassword(viewModel.Password),
                     IsActive = viewModel.IsActive,
-                    CreatedDate = DateTime.Now,
                     CreatedBy = sessionService.UserId
                 };
 

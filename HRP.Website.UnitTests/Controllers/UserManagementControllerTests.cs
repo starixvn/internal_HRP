@@ -3,8 +3,9 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Security.Claims;
-    using System.Security.Principal;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -13,6 +14,8 @@
     using HRP.Models.UserPermisson;
     using HRP.Services;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http.Features;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -152,13 +155,47 @@
         public void EditUser_ValidId_ReturnExpectedView()
         {
             var id = 1;
-            userManagementController = GetUserManagementController();
+            userManagementController = GetUserManagementController(); //Substitute.For <UserManagementController>(sessionService, baseService, functionService);
             baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
 
             var actual = userManagementController.EditUser(id);
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
         }
+
+        [Fact]
+        public void Index_WhenCalled_ReturnExpectedView()
+        {
+            userManagementController = GetUserManagementController();
+            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
+
+            var actual = userManagementController.Index();
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void GetUsers_WhenCalled_ReturnExpectedView()
+        {
+            userManagementController = GetUserManagementController();
+            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
+
+            var actual = userManagementController.GetUsers(true);
+            Assert.IsType<ViewComponentResult>(actual);
+        }
+
+        [Fact]
+        public void CheckUsernameExisted_ExistedUserName_ReturnFalse()
+        {
+            var username = "admin";
+            userManagementController = GetUserManagementController();
+            baseService.GetData<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
+
+            var actual = userManagementController.CheckUsernameExisted(username);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False((bool)jsonResult.Value);
+        }
+
         #region Helpers
 
         private ISessionService FakeSessionService()

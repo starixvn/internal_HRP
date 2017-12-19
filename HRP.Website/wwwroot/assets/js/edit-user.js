@@ -17,7 +17,7 @@
 
     return {
         onEditBegin: function () {
-            $('#btn-edit').button('loading')
+            $('#btn-edit').button('loading');
         },
         onEditSuccess: function (response, status) {
             if (response.isSuccessful) {

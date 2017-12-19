@@ -133,6 +133,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username must be uniques, between 2 and 30 characters long and does not contain the space.;Password must be has at least 8 characters and maximum 50 characters in length, contains UPER/lowercase letters and numbers.;Username, Password and Email Address are required..
+        /// </summary>
+        public static string CreateUserNotes {
+            get {
+                return ResourceManager.GetString("CreateUserNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For the safety and security of your account, you should create a new user that has:.
+        /// </summary>
+        public static string CreateUserNoteTitle {
+            get {
+                return ResourceManager.GetString("CreateUserNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creator.
         /// </summary>
         public static string Creator {

@@ -61,11 +61,16 @@
         <button id="btn-create" type="submit" class="button -primary" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
     </div>
     <div class="note">
-        <p>For the safety and security of your account, you should create a new user that has:</p>
+        <p>@ViewLang.CreateUserNoteTitle</p>
         <ul class="list">
-            <li>Username must be uniques, between 2 and 30 characters long and does not contain the space.</li>
-            <li>Password must be has at least 8 characters and maximum 50 characters in length, contains UPER/lowercase letters and numbers.</li>
-            <li>Username, Password and Email Address are required.</li>
+            @{ 
+                var notes = ViewLang.CreateUserNotes.Split(';');
+                foreach(var note in notes)
+                {
+                    <li>@note</li>
+                }
+            }
+
         </ul>
     </div>
 </form>

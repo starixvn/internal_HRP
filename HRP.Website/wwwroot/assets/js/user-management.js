@@ -13,11 +13,10 @@
                     'last': 'Last',
                     'next': '<i class="icon-next"></i>',
                     'previous': '<i class="icon-back"></i>'
-                },
-            },
-
+                }
+            }
         });
-    }
+    };
 
     $('#quick-search').off('keyup').on('keyup', function () {
         $('#user-table').DataTable().search($(this).val()).draw();
@@ -28,8 +27,7 @@
             init();
         },
         init: init
-    }
-
+    };
 }(jQuery));
 
 userManagement.init();

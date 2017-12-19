@@ -20,8 +20,6 @@
 
         public int CreatedBy { get; set; }
 
-        public DateTime CreatedDate { get; set; }
-
         public override string GetSettingKey() => "User_CreateUser";
 
         public override bool IsValid() => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(Email);

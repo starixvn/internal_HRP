@@ -25,11 +25,11 @@
                 $('#alert-message', alert).text(textAlert + delay + ' seconds.');
             }
         }, 1000);
-    }
+    };
 
     return {
         onCreateBegin: function () {
-            $('#btn-create').button('loading')
+            $('#btn-create').button('loading');
         },
         onCreateSuccess: function (response, status) {
             if (response.isSuccessful) {
