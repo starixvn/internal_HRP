@@ -20,7 +20,6 @@ namespace HRP.Website.Controllers
     using Resources;
     using Services;
 
-    [HRPAuthorize]
     public class AccountController : Controller
     {
         private readonly IBaseService baseService;
@@ -40,6 +39,7 @@ namespace HRP.Website.Controllers
             this.userService = userService;
         }
 
+        [HRPAuthorize]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
         {
@@ -70,6 +70,7 @@ namespace HRP.Website.Controllers
             return Json(new { code = -1, message = Message.UpdateFail });
         }
 
+        [HRPAuthorize]
         public IActionResult Index(AccountTab tab = AccountTab.Profile)
         {
             var user = userService.GetUserByUsername(sessionService.Username);
@@ -99,6 +100,7 @@ namespace HRP.Website.Controllers
             return View("RegisterOTPNotification", name);
         }
 
+        [HRPAuthorize]
         public IActionResult ResetOtpDevice()
         {
             // step 1: Reset IsOTPRegistered
@@ -136,6 +138,7 @@ namespace HRP.Website.Controllers
             return View("SetupOtp", setupOtpViewModel);
         }
 
+        [HRPAuthorize]
         public IActionResult SetupOtpAfterReset(string token)
         {
             var user = GetUserByTokenOTPRegister(token);
@@ -169,6 +172,7 @@ namespace HRP.Website.Controllers
             return View("Index", accountViewModel);
         }
 
+        [HRPAuthorize]
         [HttpPost]
         public IActionResult UpdateProfile(UserProfileViewModel viewModel)
         {
@@ -226,7 +230,7 @@ namespace HRP.Website.Controllers
             }
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
-            
+
             // TODO: Remove IsByPassTwoFactor
             if (isOTPValid || viewModel.IsByPassTwoFactor)
             {
