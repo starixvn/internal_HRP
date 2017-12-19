@@ -66,6 +66,8 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel viewModel)
         {
+            string errorMsg = string.Empty;
+
             if (ModelState.IsValid)
             {
                 var user = _userService.GetUserByUsername(viewModel.Username);
@@ -86,10 +88,11 @@ namespace HRP.Website.Controllers
 
                     return RedirectToAction("VerifyOTP", "Account");
                 }
+
+                errorMsg = (user != null && IsPasswordValid(password, user.Password) && !user.IsActive) ? Message.AccountInactive : Message.LoginInvalid;
             }
 
-            ViewBag.ErrorMessage = Message.LoginInvalid;
-
+            ViewBag.ErrorMessage = errorMsg;
             return View(viewModel);
         }
 

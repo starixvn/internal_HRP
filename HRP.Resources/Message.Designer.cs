@@ -61,6 +61,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your account is inactive. Please contact the system administrator..
+        /// </summary>
+        public static string AccountInactive {
+            get {
+                return ResourceManager.GetString("AccountInactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} has been successfully updated..
         /// </summary>
         public static string EditUserSuccess {

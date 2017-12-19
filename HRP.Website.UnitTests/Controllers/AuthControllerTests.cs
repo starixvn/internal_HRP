@@ -1,7 +1,9 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
     using System;
+    using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.Account;
     using HRP.Services;
@@ -87,12 +89,31 @@
         }
 
         [Fact]
-        public void ResetPassword_ReturnActionResult()
+        public void ResetPassword_InvalidModel_ReturnViewResult()
         {
             _authController = GetAuthController();
             var model = new ResetPasswordViewModel();
+            _authController.ModelState.AddModelError("", "Error");
             var actual = _authController.ResetPassword("test", model);
             Assert.IsType<ViewResult>(actual);
+        }
+
+        [Fact]
+        public void ResetPassword_ValidModel_RedirectToAction()
+        {
+            _authController = GetAuthController();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+        }
+
+        [Fact]
+        public void Logout_Successfully_ReturnRedirectLogin()
+        {
+            _authController = GetAuthController();
+            var actual = _authController.Logout();
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", viewResult.ActionName);
         }
 
         #region Helpers
