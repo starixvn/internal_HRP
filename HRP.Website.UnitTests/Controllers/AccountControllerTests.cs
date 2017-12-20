@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Security.Claims;
+    using System.Threading.Tasks;
     using Core.Enumerations;
     using Core.Services;
     using Fanex.Data.Repository;
@@ -92,9 +93,23 @@
 
         public AccountController FakeAccountController(bool isAuthenticated)
         {
+            var authService = Substitute.For<IAuthenticationService>();
+            authService.SignInAsync(
+                    Arg.Any<HttpContext>(),
+                    Arg.Any<string>(),
+                    Arg.Any<ClaimsPrincipal>(),
+                    Arg.Any<AuthenticationProperties>())
+                .Returns(Task.FromResult((object)null));
+
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+
             ControllerContext controllerContext = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext()
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = serviceProvider
+                }
             };
 
             controllerContext.HttpContext.User = isAuthenticated
@@ -102,16 +117,19 @@
                     CookieAuthenticationDefaults.AuthenticationScheme))
                 : new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()));
 
-            controllerContext.HttpContext.SignInAsync(Arg.Any<string>(), Arg.Any<ClaimsPrincipal>());
-            
             var controller =
                 Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
 
             controller.ControllerContext = controllerContext;
+
             controller.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
                 .Returns(new RedirectToActionResult("test", "test", "test"));
             controller.RedirectToAction(Arg.Any<string>()).Returns(new RedirectToActionResult("test", "test", "test"));
+            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<object>())
+                .Returns(new RedirectToActionResult("test", "test", new { test = "test" }));
+
             controller.View(Arg.Any<string>(), Arg.Any<object>()).Returns(new ViewResult());
+            controller.View(Arg.Any<string>()).Returns(new ViewResult());
 
             return controller;
         }
@@ -195,19 +213,22 @@
         [Theory]
         [InlineData(true, "test", true, typeof(RedirectToActionResult))]
         [InlineData(false, "test", true, typeof(RedirectToActionResult))]
+        [InlineData(false, "test", false, typeof(RedirectToActionResult))]
+        [InlineData(true, "test", false, typeof(RedirectToActionResult))]
         [InlineData(false, SkipOtpCheck, true, typeof(ViewResult))]
         [InlineData(false, SkipOtpCheck, false, typeof(RedirectToActionResult))]
+        [InlineData(true, SkipOtpCheck, true, typeof(RedirectToActionResult))]
         public void VerifyOTP_OtpInputed_ReturnViewResult(bool isAuthenticated, string otp, bool isUserExist, Type type)
         {
             // Arrange
             sessionService.UserId = 1;
 
             accountController = FakeAccountController(isAuthenticated);
-            TwoFactorAuthenticatorViewModel viewModel = new TwoFactorAuthenticatorViewModel
+            var viewModel = new TwoFactorAuthenticatorViewModel
             {
                 OTPCode = otp
             };
-            
+
             if (!isUserExist)
             {
                 userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
@@ -218,20 +239,13 @@
 
             // Assert
             Assert.IsType(type, actual.Result);
-
-            ////viewModel.OTPCode = SkipOtpCheck;
-            ////actual = accountController.VerifyOTP(viewModel);
-            ////Assert.IsType<Task<IActionResult>>(actual);
-
-            ////userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            ////actual = accountController.VerifyOTP(viewModel);
-            ////Assert.IsType<Task<IActionResult>>(actual);
         }
 
         [Theory]
-        [InlineData(true, typeof(OkResult))]
-        [InlineData(false, typeof(BadRequestResult))]
-        public void VerifySetupOTP_None_ReturnOkResult(bool isOTPValid, Type type)
+        [InlineData(true, true, typeof(OkResult))]
+        [InlineData(true, false, typeof(ForbidResult))]
+        [InlineData(false, true, typeof(RedirectToActionResult))]
+        public void VerifySetupOTP_None_ReturnOkResult(bool isUserExist, bool isOTPValid, Type type)
         {
             SetupOtpViewModel viewModel = new SetupOtpViewModel
             {
@@ -239,12 +253,13 @@
                 Otp = isOTPValid ? "sample" : SkipOtpCheck
             };
 
+            if (!isUserExist)
+            {
+                userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
+            }
+
             var actual = accountController.VerifySetupOTP(viewModel);
             Assert.IsType(type, actual);
-
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            actual = accountController.VerifySetupOTP(viewModel);
-            Assert.IsType<RedirectToActionResult>(actual);
         }
     }
 }

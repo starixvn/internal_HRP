@@ -240,7 +240,7 @@ namespace HRP.Website.Controllers
 
             ViewBag.ErrorMessage = Message.InvalidOTP;
 
-            return View();
+            return View("VerifyOTP");
         }
 
         [AllowAnonymous]
