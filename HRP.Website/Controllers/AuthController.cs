@@ -108,7 +108,7 @@ namespace HRP.Website.Controllers
         {
             var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
-            if (user == null)
+            if (user == null || user.UserId == 0)
             {
                 return NotFound();
             }

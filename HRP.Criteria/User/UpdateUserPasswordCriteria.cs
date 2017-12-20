@@ -8,6 +8,6 @@
 
         public override string GetSettingKey() => "User_UpdatePassword";
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Password) && UserId != 0;
+        public override bool IsValid() => !string.IsNullOrEmpty(Password) && UserId > 0;
     }
 }

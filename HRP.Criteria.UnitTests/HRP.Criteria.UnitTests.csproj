@@ -78,7 +78,11 @@
     <Compile Include="User\GetUserByUsernameCriteriaTest.cs" />
     <Compile Include="User\UpdateSecretKeyCriteriaTests.cs" />
     <Compile Include="User\UpdateTokenOTPRegisterCriteriaTests.cs" />
+    <Compile Include="User\UpdateTokenResetPasswordCriteriaTests.cs" />
+    <Compile Include="User\UpdateUserLastLoginDateCriteriaTests.cs" />
     <Compile Include="User\UpdateUserOTPStatusCriteriaTests.cs" />
+    <Compile Include="User\UpdateUserPasswordCriteriaTests.cs" />
+    <Compile Include="User\UpdateUserProfileCriteriaTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj">

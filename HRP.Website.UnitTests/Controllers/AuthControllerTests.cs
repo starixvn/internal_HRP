@@ -37,7 +37,7 @@
         };
 
         [Fact]
-        public void Login_None_ReturnViewResult()
+        public void Login_ReturnExpectedViewResult()
         {
             _authController = GetAuthController();
 
@@ -47,7 +47,7 @@
         }
 
         [Fact]
-        public void ConfirmationEmail_None_ReturnViewResult()
+        public void ConfirmationEmail_ReturnExpectedViewResult()
         {
             _authController = GetAuthController();
 
@@ -57,13 +57,20 @@
         }
 
         [Fact]
-        public void ForgotPassword_None_ReturnViewResult()
+        public void ResetPasswordSuccessfully_ReturnExpectedViewResult()
         {
             _authController = GetAuthController();
-
-            var actual = _authController.ForgotPassword();
-
+            var actual = _authController.ResetPasswordSuccessfully();
             Assert.IsType<ViewResult>(actual);
+        }
+
+        [Fact]
+        public void ForgotPassword_ValidUser_RedirectSuccessful()
+        {
+            _authController = GetAuthController();
+            var actual = _authController.ForgotPassword("test");
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("ConfirmationEmailSent", viewResult.ActionName);
         }
 
         [Fact]
@@ -81,10 +88,11 @@
         }
 
         [Fact]
-        public void ResetPassword_NullOrEmptyToken_ReturnNotFound()
+        public void ResetPassword_InvalidUser_ReturnNotFound()
         {
             _authController = GetAuthController();
-            var actual = _authController.ResetPassword(string.Empty);
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
+            var actual = _authController.ResetPassword("test");
             Assert.IsType<NotFoundResult>(actual);
         }
 
@@ -96,6 +104,18 @@
             _authController.ModelState.AddModelError("", "Error");
             var actual = _authController.ResetPassword("test", model);
             Assert.IsType<ViewResult>(actual);
+        }
+
+        [Fact]
+        public void ResetPassword_ValidModel_RedirectToAction()
+        {
+            _authController = GetAuthController();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+            var model = new ResetPasswordViewModel { Password = "1234aa" };
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            var actual = _authController.ResetPassword("abc", model);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("ResetPasswordSuccessfully", viewResult.ActionName);
         }
 
         #region Helpers
