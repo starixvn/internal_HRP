@@ -74,7 +74,7 @@ namespace HRP.Services.UnitTests
 
         [Theory]
         [InlineData("test")]
-        public void GenerateTokenOTPRegisterTest(string username)
+        public void GenerateTokenOTPRegister_Username_ReturnToken(string username)
         {
             var token = userService.GenerateTokenOTPRegister(username);
 
@@ -83,7 +83,7 @@ namespace HRP.Services.UnitTests
 
         [Theory]
         [InlineData("test")]
-        public void GetUserByUsernameTest(string username)
+        public void GetUserByUsername_Username_ReturnUser(string username)
         {
             var user = userService.GetUserByUsername(username);
 
@@ -91,7 +91,7 @@ namespace HRP.Services.UnitTests
         }
 
         [Fact]
-        public void ResetTokenOTPRegisterTest()
+        public void ResetTokenOTPRegister_ReturnTrue()
         {
             var result = userService.ResetTokenOTPRegister("test");
 
@@ -99,19 +99,19 @@ namespace HRP.Services.UnitTests
         }
 
         [Fact]
-        public void ResetUserPasswordTest()
+        public void ResetUserPassword_Void()
         {
             userService.ResetUserPassword("test");
         }
 
         [Fact]
-        public void SendMailToRegisterOTPTest()
+        public void SendMailToRegisterOTP_Void()
         {
             userService.SendMailToRegisterOTP("test");
         }
 
         [Fact]
-        public void UpdateOTPStatusTest()
+        public void UpdateOTPStatus_UserIdAndOtpStatus_ReturnTrue()
         {
             var result = userService.UpdateOTPStatus(1, true);
 
@@ -119,7 +119,7 @@ namespace HRP.Services.UnitTests
         }
 
         [Fact]
-        public void UpdateSecretKeyTest()
+        public void UpdateSecretKey_UsernameAndSecretKey_ReturnTrue()
         {
             var result = userService.UpdateSecretKey("test", "test");
 
