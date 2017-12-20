@@ -9,7 +9,7 @@
 
         public string Username { get; set; }
 
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
         [Display(ResourceType = typeof(ViewLang), Name = "FullName")]
         public string FullName { get; set; }
 

@@ -169,6 +169,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Details.
+        /// </summary>
+        public static string EditUserDetails {
+            get {
+                return ResourceManager.GetString("EditUserDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Permission.
+        /// </summary>
+        public static string EditUserPermission {
+            get {
+                return ResourceManager.GetString("EditUserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Add..
         /// </summary>
         public static string EmailAdd {
@@ -453,6 +471,24 @@ namespace HRP.Resources {
         public static string UserPermission {
             get {
                 return ResourceManager.GetString("UserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Details.
+        /// </summary>
+        public static string ViewUserDetails {
+            get {
+                return ResourceManager.GetString("ViewUserDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Permission.
+        /// </summary>
+        public static string ViewUserPermission {
+            get {
+                return ResourceManager.GetString("ViewUserPermission", resourceCulture);
             }
         }
     }

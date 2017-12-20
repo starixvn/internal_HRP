@@ -249,4 +249,16 @@
   <data name="CreateUserNoteTitle" xml:space="preserve">
     <value>For the safety and security of your account, you should create a new user that has:</value>
   </data>
+  <data name="EditUserDetails" xml:space="preserve">
+    <value>Edit Details</value>
+  </data>
+  <data name="EditUserPermission" xml:space="preserve">
+    <value>Edit Permission</value>
+  </data>
+  <data name="ViewUserDetails" xml:space="preserve">
+    <value>View Details</value>
+  </data>
+  <data name="ViewUserPermission" xml:space="preserve">
+    <value>View Permission</value>
+  </data>
 </root>

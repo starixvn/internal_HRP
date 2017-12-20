@@ -1,10 +1,12 @@
-﻿@using HRP.Core.Constants
-@using HRP.Models
+﻿@using HRP.Models
 @using HRP.Resources
 @model IEnumerable<UserModel>
 
 @{
     var rowNumber = 1;
+    var canEdit = (bool) ViewBag.CanEdit;
+    var userDetailsLabel = canEdit ? ViewLang.EditUserDetails : ViewLang.ViewUserDetails;
+    var userPermissionLabel = canEdit ? ViewLang.EditUserPermission : ViewLang.ViewUserPermission;
 }
 
 <table id="user-table" class="table table table-bordered table-hover table-responsive">
@@ -45,8 +47,8 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-@user.UserId">
-                            <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>Edit Details</a></li>
-                            <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>Edit Permission</a></li>
+                            <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>@userDetailsLabel</a></li>
+                            <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>@userPermissionLabel</a></li>
                         </ul>
                     </div>
                 </td>
