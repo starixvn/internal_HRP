@@ -7,6 +7,7 @@
     using Core.Model;
     using Core.Services;
     using Fanex.Data;
+    using HRP.Core;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -101,6 +102,7 @@
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSession();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseMvc(routes =>
             {

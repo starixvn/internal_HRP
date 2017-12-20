@@ -24,7 +24,7 @@ namespace HRP.Core.Filters
 
             if (currentSession.UserId <= 0 || !currentSession.HasPermissionOnFunction(FunctionKey, Policy))
             {
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                context.HttpContext.Request.Path = "/error/405";
             }
         }
     }
