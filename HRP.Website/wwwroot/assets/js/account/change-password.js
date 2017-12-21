@@ -16,14 +16,15 @@
                     $('#old-password-incorrect').addClass('hidden');
                     $('input').val('');
                     $('#OldPassword').removeClass('error');
-                    setInterval(function () { alert.addClass('hidden'); }, 3000);
+                    setInterval(function () { location.reload(); }, 3000);
                 }
                 if (code === -2) {
                     $('.icon-close').removeClass('hidden');
                     $('#old-password-incorrect').removeClass('hidden');
                     $('#old-password-incorrect').text(msg);
                     $('#OldPassword').addClass('error');
-                } else {
+                }
+                if (code === -1) {
                     var failAlert = $('#update-password-fail-alert');
                     failAlert.removeClass('hidden');
                     setInterval(function () {
