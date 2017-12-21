@@ -7,8 +7,12 @@
       data-ajax-failure="updateProfile.OnUpdateFailure">
 
     <div class="form-information block">
-        <div class="msg-success -has-icon hidden" role="alert" id="update-profile-alert">
+        <div class="msg-success -has-icon hidden" role="alert" id="update-profile-success-alert">
             <span>@Message.UpdateSuccess</span>
+        </div>
+
+        <div class="msg-error -has-icon hidden" role="alert" id="update-profile-fail-alert">
+            <span>@Message.UpdateFail</span>
         </div>
 
         <label class="text" for="fullName">@ViewLang.FullName</label>
@@ -16,16 +20,19 @@
             <input type="text" class="control" asp-for="FullName" value="@Model.FullName" />
             <span class="msg-error" asp-validation-for="FullName "></span>
         </div>
+
         <label class="text" for="phoneNumber">@ViewLang.PhoneNumber</label>
         <div class="group-control">
             <input type="text" class="control" asp-for="Phone" value="@Model.Phone" />
             <span class="msg-error" asp-validation-for="Phone"></span>
         </div>
+
         <label class="text" for="email">@ViewLang.EmailAddress<span class="required">*</span></label>
         <div class="group-control">
             <input type="text" class="control" asp-for="Email" value="@Model.Email" />
             <span class="msg-error" asp-validation-for="Email"></span>
         </div>
+
         <div class="list-button">
             <button class="button -second goback" type="button">@ViewLang.Cancel</button>
             <button class="button -primary">@ViewLang.Save</button>

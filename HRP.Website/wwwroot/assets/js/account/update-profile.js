@@ -8,20 +8,21 @@
         return {
             onUpdateSuccess: function (response, status) {
                 var code = response.code;
-                var msg = response.message;
                 if (!code) {
-                    var alert = $('#update-profile-alert');
+                    var alert = $('#update-profile-success-alert');
                     alert.removeClass('hidden');
                     setInterval(function () {
                         alert.addClass('hidden');
                         location.reload();
                     }, 3000);
+                } else {
+                    var failAlert = $('#update-profile-fail-alert');
+                    failAlert.removeClass('hidden');
+                    setInterval(function () {
+                        failAlert.addClass('hidden');
+                        location.reload();
+                    }, 3000);
                 }
-                if (code === -2) {
-                }
-            },
-            OnUpdateFailure: function () {
-                alert('Server Error');
             }
         };
     }(jQuery));

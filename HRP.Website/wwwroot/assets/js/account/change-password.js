@@ -10,7 +10,7 @@
                 var code = response.code;
                 var msg = response.message;
                 if (!code) {
-                    var alert = $('#update-password-alert');
+                    var alert = $('#update-password-success-alert');
                     alert.removeClass('hidden');
                     $('.icon-close').addClass('hidden');
                     $('#old-password-incorrect').addClass('hidden');
@@ -23,10 +23,14 @@
                     $('#old-password-incorrect').removeClass('hidden');
                     $('#old-password-incorrect').text(msg);
                     $('#OldPassword').addClass('error');
+                } else {
+                    var failAlert = $('#update-password-fail-alert');
+                    failAlert.removeClass('hidden');
+                    setInterval(function () {
+                        failAlert.addClass('hidden');
+                        location.reload();
+                    }, 3000);
                 }
-            },
-            onChangeFail: function () {
-                alert('Server Error');
             }
         };
     }(jQuery));
