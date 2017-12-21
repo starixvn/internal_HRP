@@ -115,7 +115,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid OTP or OTP expired.
+        ///   Looks up a localized string similar to The OTP is invalid or expired. Please try another OTP..
         /// </summary>
         public static string InvalidOTP {
             get {
