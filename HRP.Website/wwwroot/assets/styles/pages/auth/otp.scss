@@ -120,11 +120,8 @@ body {
 
         .img {
             @include border-radius(5px);
-            padding: 6px;
             border: 1px solid $border-color;    
-            margin-bottom: 5px;    
-            width: 186px;
-            height: 187px;    
+            margin-bottom: 5px;   
         }
 
         .text-username {
