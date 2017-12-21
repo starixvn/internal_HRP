@@ -7,7 +7,7 @@
 
         var qr = new QRious({
             element: document.getElementById("setup-otp-qrcode"),
-            padding: 0,
+            padding: null,
             value: qrcodetext,
             size: 185
         });
