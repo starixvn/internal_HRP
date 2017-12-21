@@ -173,6 +173,10 @@ body {
             margin-left: 10px;
         }
     }
+
+    .fieldset[disabled] {
+        opacity: 0.3;
+    }
 }
 
 /* Notication OTP */

@@ -315,6 +315,10 @@ body {
   margin-left: 10px;
 }
 
+.register-otp .fieldset[disabled] {
+  opacity: 0.3;
+}
+
 /* Notication OTP */
 .notication-otp {
   -webkit-border-radius: 4px;
