@@ -24,7 +24,7 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailRequired")]
         [DataType(DataType.EmailAddress)]
         [Display(ResourceType = typeof(ViewLang), Name = "EmailAddress")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
         public string Email { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "Status")]
