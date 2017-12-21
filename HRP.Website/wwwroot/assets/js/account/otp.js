@@ -9,7 +9,7 @@
             element: document.getElementById("setup-otp-qrcode"),
             padding: 0,
             value: qrcodetext,
-            size: 300
+            size: 185
         });
 
         qrcode.setup();

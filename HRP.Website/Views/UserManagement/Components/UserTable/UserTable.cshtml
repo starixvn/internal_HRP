@@ -9,7 +9,7 @@
     var userPermissionLabel = canEdit ? ViewLang.EditUserPermission : ViewLang.ViewUserPermission;
 }
 
-<table id="user-table" class="table table table-bordered table-hover table-responsive">
+<table id="user-table" class="table table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
             <th>@ViewLang.SymbolCount</th>
@@ -34,13 +34,13 @@
                 <td>@user.Email</td>
                 <td class="text-center">@user.CreatedBy</td>
                 <td class="text-center">@Html.DisplayFor(x => user.CreatedDate)</td>
-                <td class="text-center">
+                <td class="text-center has-icon">
                     @if (user.IsActive)
                     {
                         <span class="icon-active"></span>
                     }
                 </td>
-                <td class="text-center">
+                <td class="text-center has-icon">
                     <div class="dropdown config-action">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-@user.UserId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <span class="icon-configuration"></span>

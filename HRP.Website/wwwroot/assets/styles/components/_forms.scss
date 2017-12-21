@@ -1,11 +1,11 @@
 ﻿.search-form {
     .group {
         display: inline-block;
-        padding-right: 16px;
+        padding-right: 10px;
         
         .text {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: #666;
         }
 
@@ -20,7 +20,7 @@
     .text {
         position: relative;
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         font-weight: normal;
         text-transform: capitalize;
         font-weight: bold;
@@ -42,8 +42,7 @@
 
     .control {
         display: block;
-        width: 100%;
-        
+        width: 100%;        
         padding-right: 40px;
 
         &.error {
@@ -53,12 +52,12 @@
     }
 
     .list-button .button:first-child {
-        margin-right: 16px;
+        margin-right: 10px;
     }
 
     .group-control {
         position: relative;
-        margin-bottom: 20px;
+        margin-bottom: 12px;
 
         .icon-close, .icon-successful {
             position: absolute;
@@ -71,7 +70,7 @@
     .group-control.-option-check {
         display: inline-block;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 12px;
 
         .text {
             margin-right: 16px;

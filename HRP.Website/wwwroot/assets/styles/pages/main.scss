@@ -18,7 +18,7 @@ body {
 
 .wrapper {
     width: 100%;
-    padding: 15px 20px;
+    padding: 10px;
 
     @media screen and (min-device-width: 1366px) {
         width: 1360px;
@@ -31,7 +31,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 61px;    
+    height: 55px;    
     background-color: #fff;    
     border-bottom: 1px solid #dcdcdc;  
     z-index: 1000;
@@ -39,14 +39,14 @@ body {
     .wrapper {
         display: grid;    
         grid-template-columns: 177px 1fr 210px;
-        grid-template-rows: 60px;
+        grid-template-rows: 54px;
         justify-content: space-between;
         align-items: center;
         padding: 0;
     }
 
     .logo img {
-        height: 30px;
+        height: 26px;
     }
 
     .main-menu {
@@ -76,7 +76,7 @@ body {
         display: flex;    
         justify-content: center;
         align-items: center;
-        line-height: 60px;    
+        line-height: 55px;    
         padding-left: 16px;
         padding-right: 16px;
         margin-right: 16px;
@@ -128,7 +128,9 @@ body {
     @include transition("all .3s ease-in-out");
     position: absolute;
     top: 80%;
-    left: 0;    
+    left: 0;  
+    padding-top: 4px;
+    padding-bottom: 4px;  
     text-transform: capitalize;
     background-color: #fff;
     opacity: 0;
@@ -137,7 +139,7 @@ body {
         
     .link {
         display: block;
-        padding: 12px 24px;
+        padding: 8px 24px;
         color: #333;
         white-space: nowrap;
     }
@@ -158,6 +160,7 @@ body {
         float: right;
         color: #1973b2;
         font-weight: bold;
+        font-size: $font-size;
     }
 
     .username {
@@ -171,20 +174,22 @@ body {
         align-items: center;
         margin-left: 10px;
         margin-right: 10px;
-        height: 36px;
-        width: 36px;
+        height: 32px;
+        width: 32px;
         background-color: #f57d14;
         border: 2px solid #cbcbcb;
         @include border-radius(50%);
 
         .icon-user {
             color: #fff;
-            font-size: 16px;
+            font-size: 12px;
         }
     }
 
     .dropdown-menu {
-        margin-top: 49px;
+        margin-top: 44px;
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
 }
 
@@ -192,7 +197,7 @@ body {
 
 .content-container {
     position: absolute;
-    top: 60px;
+    top: 55px;
     left: 0;
     width: 100%;
     bottom: 0;
@@ -203,18 +208,13 @@ body {
     @include border-radius(5px);
     @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
     background-color: #fff;
-    padding: 16px;
+    padding: 16px 10px;
 
     .username {
         color: #1973b2;
         font-weight: bold;
         font-size: 16px;
-        margin-bottom: 20px;
-    }
-
-    .tab-content > .tab-pane {
-        padding-left: 0;
-        padding-right: 0;
+        margin-bottom: 12px;
     }
 
     .block {
@@ -232,22 +232,17 @@ body {
 
 .breadcrumb {
     padding: 0;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background-color: transparent;
     font-weight: bold;
     font-size: 16px;
 
     a {
-        color: $text-color;
-    }
-
-    a:hover {
         color: $link-color;
-        text-decoration: none;
     }
 
     > .active {
-        color: #0175c7;
+        color: $text-color;
     }
 
     > li + li:before {

@@ -1,7 +1,6 @@
 input[type='checkbox'] {
   @include transition("all .3s ease-in-out");
   position: relative;
-  top: -1px;
   margin: 0;
   margin-right: 10px;
   cursor: pointer;  
@@ -12,28 +11,23 @@ input[type='checkbox'] {
     position: absolute;
     left: 0;            
     top: 0;        
-    height: 18px;            
-    width: 18px;
-    border: 1px solid #ccc;
+    height: 16px;            
+    width: 16px;
+    border: 1px solid #c8c8c8;
     background-color: #fff;
-  }
-
-  &:checked:before {
-    border: 1px solid #1973b2;
-    background-color: #1973b2;
   }
   
   &:checked:after {
     @include transform(rotate(-45deg));
     content: "";
     position: absolute;
-    top: 5px;
+    top: 4px;
     left: 4px;
-    border: 2px solid #fff;
+    border: 2px solid #1973b2;
     border-top: none;
     border-right: none;
     height: 5px;
-    width: 11px;
+    width: 8px;
   }
 }
 

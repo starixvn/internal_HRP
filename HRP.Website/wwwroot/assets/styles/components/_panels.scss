@@ -1,5 +1,10 @@
 .panel-group {
     margin-bottom: 0;
+    
+    .panel-heading {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
 }
 
 .panel-group .panel-heading + .panel-collapse > .panel-body {

@@ -50,8 +50,8 @@ input, button {
   -o-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   display: inline-block;
-  height: 36px;
-  line-height: 36px;
+  height: 32px;
+  line-height: 32px;
   padding-left: 16px;
   padding-right: 16px;
   border: none;
@@ -123,10 +123,10 @@ input[type="email"],
 input[type="number"],
 input[type="password"] {
   outline: none;
-  height: 36px;
-  line-height: 36px;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 5px;
+  padding-right: 5px;
   background-color: #fafafa;
   border: 1px solid #d9d9d9;
   -webkit-border-radius: 2px;
@@ -159,6 +159,22 @@ input[type="password"]:focus {
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
 }
 
+.msg-error.-has-icon, .text-danger.-has-icon, .msg-success.-has-icon, .msg-warning {
+  position: relative;
+  border-width: 1px;
+  border-style: solid;
+  padding: 8px 20px 8px 36px;
+  margin-bottom: 12px;
+}
+
+.msg-error.-has-icon:before, .text-danger.-has-icon:before, .msg-success.-has-icon:before, .msg-warning:before {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  font-family: "hrp";
+  font-size: 20px;
+}
+
 .msg-error, .text-danger {
   display: block;
   line-height: 18px;
@@ -166,22 +182,14 @@ input[type="password"]:focus {
 }
 
 .msg-error.-has-icon, .text-danger.-has-icon {
-  position: relative;
-  border: 1px solid #ff0000;
-  padding: 10px 20px 10px 36px;
-  margin-bottom: 16px;
+  border-color: #ff0000;
   background-color: #ffebea;
   color: #fe0000;
 }
 
 .msg-error.-has-icon:before, .text-danger.-has-icon:before {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  font-family: "hrp";
   content: "\e903";
   color: #fe0000;
-  font-size: 20px;
 }
 
 .msg-success {
@@ -191,41 +199,25 @@ input[type="password"]:focus {
 }
 
 .msg-success.-has-icon {
-  position: relative;
-  border: 1px solid #329a37;
-  padding: 10px 20px 10px 36px;
-  margin-bottom: 16px;
+  border-color: #329a37;
   background-color: #e5ffeb;
   color: #18aa3a;
 }
 
 .msg-success.-has-icon:before {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  font-family: "hrp";
   content: "\e913";
   color: #18aa3a;
-  font-size: 20px;
 }
 
 .msg-warning {
-  position: relative;
-  border: 1px solid #ffac63;
-  padding: 10px 20px 10px 36px;
-  margin-bottom: 16px;
+  border-color: #ffac63;
   background-color: #ffedd3;
   color: #ff7a04;
 }
 
 .msg-warning:before {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  font-family: "hrp";
   content: "\e913";
   color: #ff7a04;
-  font-size: 20px;
 }
 
 .note {
@@ -233,9 +225,9 @@ input[type="password"]:focus {
   left: 100%;
   top: -86px;
   width: 364px;
-  line-height: 20px;
+  line-height: 18px;
   margin-left: -8px;
-  padding: 12px 16px;
+  padding: 10px;
   border: 1px solid #3475c7;
   background-color: #e3f5fa;
   color: #1973b2;
@@ -270,6 +262,10 @@ input[type="password"]:focus {
   margin-bottom: 4px;
 }
 
+.note .list li:last-child {
+  margin-bottom: 0;
+}
+
 .block {
   -webkit-border-radius: 4px;
   -khtml-border-radius: 4px;
@@ -294,7 +290,7 @@ input[type="password"]:focus {
 .block .group {
   padding-left: 24px;
   padding-right: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   position: relative;
 }
 
@@ -303,7 +299,7 @@ input[type="password"]:focus {
   align-items: center;
   position: absolute;
   left: 35px;
-  top: 11px;
+  top: 6px;
   color: #888;
 }
 
@@ -317,8 +313,8 @@ input[type="password"]:focus {
 
 .block .form-control {
   width: 100%;
-  height: 44px;
-  line-height: 44px;
+  height: 36px;
+  line-height: 36px;
   padding-left: 42px;
   padding-right: 8px;
   font-weight: bold;
@@ -326,8 +322,8 @@ input[type="password"]:focus {
 
 .block .button {
   width: 100%;
-  height: 44px;
-  line-height: 44px;
+  height: 36px;
+  line-height: 36px;
 }
 
 .block .footer {
@@ -360,13 +356,7 @@ body {
   align-items: center;
   height: 100vh;
   width: 100%;
-  font-size: 14px;
   background-color: #1973b2;
-}
-
-.block .button {
-  font-size: 16px;
-  text-transform: uppercase;
 }
 
 .block .msg-error.-has-icon, .block .msg-success.-has-icon {
@@ -375,9 +365,9 @@ body {
 }
 
 .logo {
-  width: 172px;
-  height: 100px;
-  margin: 48px auto 34px;
+  width: 160px;
+  height: 90px;
+  margin: 40px auto 30px;
 }
  
 
