@@ -2,11 +2,9 @@
 {
     using System;
     using System.Globalization;
-    using System.Net;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
 
     public class ErrorHandlingMiddleware
     {
@@ -27,11 +25,11 @@
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex).ConfigureAwait(false);
+                HandleException(context, ex);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private void HandleException(HttpContext context, Exception exception)
         {
             string message = string.Format(
                     CultureInfo.InvariantCulture,
@@ -43,11 +41,7 @@
                     exception.StackTrace);
             logger.LogError(message);
 
-            var result = JsonConvert.SerializeObject(new { error = exception.Message });
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            return context.Response.WriteAsync(result);
+            context.Response.Redirect("/error/500");
         }
     }
 }

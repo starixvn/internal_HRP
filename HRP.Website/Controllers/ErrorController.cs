@@ -4,19 +4,19 @@
 
     public class ErrorController : Controller
     {
-        [Route("404")]
+        [Route("error/404")]
         public IActionResult PageNotFound()
         {
             return View();
         }
 
-        [Route("405")]
+        [Route("error/405")]
         public IActionResult AccessDenied()
         {
             return View();
         }
 
-        [Route("500")]
+        [Route("error/500")]
         public IActionResult InternalError()
         {
             return View();
