@@ -12,7 +12,7 @@
 
 <ol class="breadcrumb">
     <li><a asp-action="index">@ViewLang.UserManagement</a></li>
-    <li class="active">@(string.Format("{0} of {1}", title, Model.Username))</li>
+    <li class="active">@(string.Format("{0} '{1}'", title, Model.Username))</li>
 </ol>
 <form class="form-information block" asp-action="EditUser" asp-controller="UserManagement" id="edit-user-form"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="editUser.onEditBegin"

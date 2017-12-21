@@ -250,7 +250,7 @@
     <value>For the safety and security of your account, you should create a new user that has:</value>
   </data>
   <data name="EditUserDetails" xml:space="preserve">
-    <value>Edit Details</value>
+    <value>Edit User</value>
   </data>
   <data name="EditUserPermission" xml:space="preserve">
     <value>Edit Permission</value>

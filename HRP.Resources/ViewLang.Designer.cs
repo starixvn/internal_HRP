@@ -169,7 +169,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Details.
+        ///   Looks up a localized string similar to Edit User.
         /// </summary>
         public static string EditUserDetails {
             get {
