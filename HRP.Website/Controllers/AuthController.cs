@@ -81,7 +81,7 @@ namespace HRP.Website.Controllers
 
                         _userService.SendMailToRegisterOTP(otpRegisterToken);
 
-                        return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.FullName });
+                        return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
                     }
 
                     _sessionService.Username = user.Username;
