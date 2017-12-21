@@ -256,7 +256,7 @@
     <value>Edit Permission</value>
   </data>
   <data name="ViewUserDetails" xml:space="preserve">
-    <value>View Details</value>
+    <value>View User</value>
   </data>
   <data name="ViewUserPermission" xml:space="preserve">
     <value>View Permission</value>

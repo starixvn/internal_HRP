@@ -475,7 +475,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Details.
+        ///   Looks up a localized string similar to View User.
         /// </summary>
         public static string ViewUserDetails {
             get {
