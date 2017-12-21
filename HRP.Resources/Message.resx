@@ -179,8 +179,11 @@
   </data>
   <data name="InvalidPhoneNumber" xml:space="preserve">
     <value>Invalid Phone No.</value>
-   </data>
+  </data>
   <data name="AccountInactive" xml:space="preserve">
     <value>Your account is inactive. Please contact the system administrator.</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Invalid email address entered</value>
   </data>
 </root>
