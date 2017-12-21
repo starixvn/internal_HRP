@@ -1,0 +1,210 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../base/scaffolding";
+@import "../../components/buttons";
+@import "../../components/textbox";
+@import "../../components/checkbox";
+@import "../../components/messages";
+@import "../../layout/before-login";
+
+body { 
+    height: 100vh;
+    width: 100%;
+    background-color: $page-bg;
+    color: #666;
+}
+
+.wrapper {
+    width: 100%;
+    padding: 15px 20px;
+
+    @media screen and (min-device-width: 1366px) {
+        width: 1360px;
+        margin: auto;
+    }    
+}
+
+.header {
+    display: flex;    
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #fff;
+    height: 55px;
+    border-bottom: 1px solid #dcdcdc;    
+
+    .logo img {
+        float: left;
+        height: 26px;
+    }
+}
+
+.content-container {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
+
+    .content {
+        @include border-radius(5px);
+        @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+        background-color: #fff;
+        padding: 16px;
+    }
+}
+
+.block {
+    margin: 0 auto;
+    padding-top: 65px;
+    width: 410px;
+    position: relative;
+    top: 90px;
+
+    @media screen and (min-device-width: 1367px) {
+        top: 165px;
+    } 
+
+    .circle-large {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -42px;
+        left: 50%;
+        margin-left: -40px;
+        height: 75px;
+        width: 75px;
+        @include border-radius(50%);
+        background-color: #f57d14;        
+
+        .icon-password,
+        .icon-done,
+        .icon-mailconfirm,
+        .icon-key, .icon-otp {
+            color: #fff;
+        }
+
+        .icon-password,
+        .icon-done {            
+            font-size: 27px;
+        }
+
+        .icon-mailconfirm {
+            font-size: 36px;
+        }
+
+        .icon-otp {
+            font-size: 34px;  
+        }
+
+        .icon-key {
+            font-size: 42px;
+        }
+
+        .icon-question {
+            position: absolute;
+            right: -23px;            
+            top: -10px;
+            font-size: 36px;
+            color: #bdbdbd;
+        }        
+    }
+
+    .title {
+        margin-bottom: 20px;
+        color: #1973b2;
+        font-size: 18px;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .intro {
+        line-height: 20px;
+        text-align: center;
+        padding: 0 36px 20px;
+    }
+
+    .text-special {
+        color: #f57d14;
+        font-weight: bold;        
+    }
+
+    &.-confirmation-email .intro {
+        padding: 0 24px 20px;
+    }
+
+    &.-reset-password, &.-otp-code-validation {
+        width: 350px;    
+    }   
+
+    &.-otp-code-validation {  
+        .intro {
+            line-height: 20px;
+            line-height: 20px;
+            padding: 0 20px 14px;
+        }
+
+        .intro .text-special {
+            margin-top: 10px;
+        }
+
+        .form-control {
+            padding-left: 16px;
+        }
+        
+        .list-button {
+            display: grid;
+            grid-template-columns: 100px 203px;
+        }
+
+        .button {
+            width: initial;
+        }
+
+        .button.-primary {
+            margin-left: 16px;
+        }
+    }   
+    
+    .msg-error.-has-icon, .msg-success.-has-icon {
+        margin-left: 24px;
+        margin-right: 24px;
+    }
+}
+
+.msg-error {    
+    margin-top: 10px;
+}
+
+%action {
+    display: inline-block;
+    content: "";
+    height: 8px;
+    width: 8px;
+}
+
+.link {  
+    &.action-back:before {   
+        @extend %action; 
+        margin-right: 4px;
+        border: 1px solid $link-color;
+        border-width: 0 0 1px 1px;
+        @include transform(rotate(45deg));
+    }
+
+    &.action-next:after {
+        @extend %action;
+        margin-left: 4px;
+        border: 1px solid $link-color;
+        border-width: 0 1px 1px 0;
+        @include transform(rotate(-45deg));
+    }
+
+    &.action-back:hover:before,
+    &.action-next:hover:after  {
+        border-color: $link-hover-color;
+    }
+}
+
