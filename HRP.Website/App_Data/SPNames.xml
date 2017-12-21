@@ -18,7 +18,6 @@
     <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateTokenOTPRegister" SpName="User_UpdateTokenOTPRegister" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdatePassword" SpName="User_UpdatePassword" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="User_UpdateLastLoginDate" SpName="User_UpdateLastLoginDate" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateUserOTPStatus" SpName="User_UpdateUserOTPStatus" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateSecretKey" SpName="User_UpdateSecretKey" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_UpdateProfile" SpName="User_UpdateProfile" DbName="bodb_HRP" Plain="0"></Setting>
@@ -27,5 +26,8 @@
     <Setting Key="User_CreateUser" SpName="User_CreateUser" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetById" SpName="User_GetById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_EditUser" SpName="User_EditUser" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CheckIn" SpName="User_CheckIn" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_Logout" SpName="User_Logout" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_ReCheckIn" SpName="User_ReCheckIn" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

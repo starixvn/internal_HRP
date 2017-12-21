@@ -3,6 +3,7 @@ namespace HRP.Website.Controllers
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
+    using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Criteria;
     using HRP.Models;
@@ -15,18 +16,18 @@ namespace HRP.Website.Controllers
 
     public class AuthController : Controller
     {
-        private readonly IBaseService _baseService;
-        private readonly ISessionService _sessionService;
-        private readonly IUserService _userService;
+        private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
+        private readonly IUserService userService;
 
         public AuthController(
             IUserService userService,
             ISessionService sessionService,
             IBaseService baseService)
         {
-            _userService = userService;
-            _sessionService = sessionService;
-            _baseService = baseService;
+            this.userService = userService;
+            this.sessionService = sessionService;
+            this.baseService = baseService;
         }
 
         public IActionResult ConfirmationEmailSent()
@@ -42,11 +43,11 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult ForgotPassword(string username)
         {
-            var user = _userService.GetUserByUsername(username);
+            var user = userService.GetUserByUsername(username);
 
             if (user != null)
             {
-                _userService.ResetUserPassword(username);
+                userService.ResetUserPassword(username);
 
                 return RedirectToAction(nameof(ConfirmationEmailSent));
             }
@@ -58,7 +59,7 @@ namespace HRP.Website.Controllers
 
         public IActionResult Login()
         {
-            _sessionService.ClearAll();
+            sessionService.ClearAll();
             var model = new LoginViewModel();
             return View(model);
         }
@@ -70,21 +71,21 @@ namespace HRP.Website.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = _userService.GetUserByUsername(viewModel.Username);
+                var user = userService.GetUserByUsername(viewModel.Username);
                 var password = Utilities.DecryptStringAES(viewModel.Password);
 
                 if (user != null && IsPasswordValid(password, user.Password) && user.IsActive)
                 {
                     if (!user.IsOTPRegistered)
                     {
-                        var otpRegisterToken = _userService.GenerateTokenOTPRegister(user.Username);
+                        var otpRegisterToken = userService.GenerateTokenOTPRegister(user.Username);
 
-                        _userService.SendMailToRegisterOTP(otpRegisterToken);
+                        userService.SendMailToRegisterOTP(otpRegisterToken);
 
                         return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
                     }
 
-                    _sessionService.Username = user.Username;
+                    sessionService.Username = user.Username;
 
                     return RedirectToAction("VerifyOTP", "Account");
                 }
@@ -98,15 +99,14 @@ namespace HRP.Website.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            _sessionService.ClearAll();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+            await DoSignOut();
 
             return RedirectToAction(nameof(Login));
         }
 
         public IActionResult ResetPassword(string token)
         {
-            var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
+            var user = baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (user == null || user.UserId == 0)
             {
@@ -119,7 +119,7 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult ResetPassword(string token, ResetPasswordViewModel model)
         {
-            var user = _baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
+            var user = baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (model != null && ModelState.IsValid && user != null)
             {
@@ -129,7 +129,7 @@ namespace HRP.Website.Controllers
                     Password = BCrypt.HashPassword(model.Password)
                 };
 
-                CommandResult result = _baseService.ExecuteNonQuery(criteria);
+                CommandResult result = baseService.ExecuteNonQuery(criteria);
                 if (result.IsSuccessful)
                 {
                     return RedirectToAction(nameof(ResetPasswordSuccessfully));
@@ -149,6 +149,20 @@ namespace HRP.Website.Controllers
         private static bool IsPasswordValid(string modelPassword, string hashedPassword)
         {
             return BCrypt.Verify(modelPassword, hashedPassword);
+        }
+
+        private async Task DoSignOut()
+        {
+            var criteria = new LogOutUserCriteria
+            {
+                OnUserId = sessionService.OnUserId,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString(),
+                Platform = HttpContext.Request.Headers["User-Agent"].ToString()
+            };
+            await baseService.ExecuteNonQueryAsync(criteria);
+
+            sessionService.ClearAll();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

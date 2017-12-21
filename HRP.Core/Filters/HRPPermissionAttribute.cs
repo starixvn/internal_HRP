@@ -1,7 +1,6 @@
 namespace HRP.Core.Filters
 {
     using System;
-    using System.Net;
     using Enumerations;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
@@ -24,7 +23,7 @@ namespace HRP.Core.Filters
 
             if (currentSession.UserId <= 0 || !currentSession.HasPermissionOnFunction(FunctionKey, Policy))
             {
-                context.HttpContext.Request.Path = "/error/405";
+                context.HttpContext.Response.Redirect("/error/405");
             }
         }
     }

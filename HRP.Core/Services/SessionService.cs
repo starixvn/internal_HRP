@@ -10,6 +10,7 @@ namespace HRP.Core.Services
     {
         public const string InternalUsername = "InternalUsername";
         public const string InternalUserId = "InternalUserId";
+        public const string InternalOnUserId = "InternalOnUserId";
         public const string InternalMenuItemList = "InternalMenuItemList";
         public const string InternalFunctionList = "InternalFunctionList";
 
@@ -29,6 +30,12 @@ namespace HRP.Core.Services
         {
             get => _session?.GetInt32(InternalUserId) ?? 0;
             set => _session?.SetInt32(InternalUserId, value);
+        }
+
+        public int OnUserId
+        {
+            get => _session?.GetInt32(InternalOnUserId) ?? 0;
+            set => _session?.SetInt32(InternalOnUserId, value);
         }
 
         public string Username

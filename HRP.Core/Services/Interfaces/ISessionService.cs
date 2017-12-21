@@ -7,6 +7,7 @@ namespace HRP.Core.Services
     public interface ISessionService
     {
         int UserId { get; set; }
+        int OnUserId { get; set; }
         string Username { get; set; }
         IEnumerable<MenuItem> MenuItems { get; set; }
         IEnumerable<FunctionModel> Functions { get; set; }

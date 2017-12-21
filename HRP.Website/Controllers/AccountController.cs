@@ -316,11 +316,9 @@ namespace HRP.Website.Controllers
             // Step 3: sign user in
             ClaimsPrincipal principal = InitUserClaimsPrinciple(user);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal)
-                .ConfigureAwait(false);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            // Step 4: Update last login date
-            baseService.ExecuteNonQuery(new UpdateUserLastLoginDateCriteria { UserId = sessionService.UserId });
+            await DoCheckin(user);
         }
 
         private User GetUserByTokenOTPRegister(string token)
@@ -333,6 +331,21 @@ namespace HRP.Website.Controllers
             var user = baseService.GetDataEntity<User>(criteria);
 
             return user;
+        }
+
+        private async Task DoCheckin(User user)
+        {
+            var criteria = new CheckInUserCriteria
+            {
+                UserId = user.UserId,
+                NetSessionId = HttpContext.Session.Id,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString(),
+                Platform = Request.Headers["User-Agent"].ToString()
+            };
+
+            await baseService.ExecuteNonQueryAsync(criteria);
+
+            sessionService.OnUserId = criteria.OnUserId;
         }
     }
 }
