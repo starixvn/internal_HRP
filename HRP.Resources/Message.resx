@@ -186,4 +186,7 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email address entered.</value>
   </data>
+  <data name="ProfileUpdateSuccessful" xml:space="preserve">
+    <value>Your profile has been successfully updated.</value>
+  </data>
 </root>

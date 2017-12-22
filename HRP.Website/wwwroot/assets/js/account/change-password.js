@@ -14,9 +14,9 @@
                     alert.removeClass('hidden');
                     $('.icon-close').addClass('hidden');
                     $('#old-password-incorrect').addClass('hidden');
-                    $('input').val('');
+                    $('#change-password-form input').val('');
                     $('#OldPassword').removeClass('error');
-                    setInterval(function () { location.reload(); }, 3000);
+                    setInterval(function () { alert.addClass('hidden'); }, 3000);
                 }
                 if (code === -2) {
                     $('.icon-close').removeClass('hidden');
@@ -29,7 +29,6 @@
                     failAlert.removeClass('hidden');
                     setInterval(function () {
                         failAlert.addClass('hidden');
-                        location.reload();
                     }, 3000);
                 }
             }
@@ -39,9 +38,9 @@
     $('#showPassword').on('click', function () {
         var value = $(this).prop("checked");
         if (value) {
-            $('input[type=password').attr("type", "text");
+            $('#change-password-form input[type=password').attr("type", "text");
         } else {
-            $('input[type=text').attr("type", "password");
+            $('#change-password-form input[type=text').attr("type", "password");
         }
     });
 }

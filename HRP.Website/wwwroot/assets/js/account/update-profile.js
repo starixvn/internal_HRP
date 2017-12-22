@@ -13,14 +13,12 @@
                     alert.removeClass('hidden');
                     setInterval(function () {
                         alert.addClass('hidden');
-                        location.reload();
                     }, 3000);
                 } else {
                     var failAlert = $('#update-profile-fail-alert');
                     failAlert.removeClass('hidden');
                     setInterval(function () {
                         failAlert.addClass('hidden');
-                        location.reload();
                     }, 3000);
                 }
             }

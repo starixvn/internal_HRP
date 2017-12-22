@@ -16,9 +16,9 @@
 
         [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailMaxLength")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailRequired")]
-        [DataType(DataType.EmailAddress, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
+        [DataType(DataType.EmailAddress)]
         [Display(ResourceType = typeof(ViewLang), Name = "EmailAddress")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
         public string Email { get; set; }
     }
 }

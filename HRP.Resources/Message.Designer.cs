@@ -115,7 +115,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid email address entered.
+        ///   Looks up a localized string similar to Invalid email address entered..
         /// </summary>
         public static string InvalidEmail {
             get {
@@ -201,6 +201,15 @@ namespace HRP.Resources {
         public static string PhoneNumberMaxLength {
             get {
                 return ResourceManager.GetString("PhoneNumberMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your profile has been successfully updated..
+        /// </summary>
+        public static string ProfileUpdateSuccessful {
+            get {
+                return ResourceManager.GetString("ProfileUpdateSuccessful", resourceCulture);
             }
         }
         
