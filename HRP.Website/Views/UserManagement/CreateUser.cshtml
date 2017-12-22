@@ -11,7 +11,7 @@
     <li class="active">@ViewLang.CreateNewUser</li>
 </ol>
 <form class="form-information block" asp-action="CreateUser" asp-controller="UserManagement" id="create-user-form"
-      data-ajax-method="post" data-ajax="true" data-ajax-begin="createUser.onCreateBegin"
+      data-ajax-method="post" data-ajax="true" data-ajax-begin="createUser.onCreateBegin" data-ajax-failure="commonFunctions.handleAjaxError"
       data-ajax-success="createUser.onCreateSuccess" data-ajax-complete="createUser.onCreateComplete">
     <div class="-has-icon msg-success hidden" id="create-user-alert">
         <span id="alert-message"></span>
