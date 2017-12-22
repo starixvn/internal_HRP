@@ -1,8 +1,5 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
@@ -15,6 +12,9 @@
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Xunit;
 
     public class UserManagementControllerTests

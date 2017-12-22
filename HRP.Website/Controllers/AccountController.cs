@@ -17,6 +17,7 @@ namespace HRP.Website.Controllers
     using Resources;
     using Services;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -63,7 +64,6 @@ namespace HRP.Website.Controllers
         {
             var user = userService.GetUserByUsername(sessionService.Username);
             var isValidOldPassword = BCrypt.Verify(oldPassword, user.Password);
-
             return isValidOldPassword;
         }
 
@@ -198,13 +198,17 @@ namespace HRP.Website.Controllers
 
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                if (result.IsSuccessful)
+                return Json(new
                 {
-                    return Json(new { code = result.Code, message = Message.UpdateSuccess });
-                }
+                    isSuccessful = result.IsSuccessful,
+                    result.Message
+                });
             }
 
-            return Json(new { code = -1, message = Message.UpdateFail });
+            var errors = from item in ModelState
+                         where item.Value.Errors.Any()
+                         select new { item.Key, item.Value.Errors.FirstOrDefault().ErrorMessage };
+            return Json(new { isSuccessful = false, errors });
         }
 
         [AllowAnonymous]

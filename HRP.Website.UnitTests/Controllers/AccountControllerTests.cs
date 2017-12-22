@@ -1,13 +1,10 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using Core.Enumerations;
     using Core.Services;
     using Fanex.Data.Repository;
+    using HRP.Core.Model;
+    using HRP.Criteria.User;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
@@ -17,6 +14,11 @@
     using NSubstitute;
     using NSubstitute.Core;
     using Services;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using Website.Controllers;
     using Xunit;
 
@@ -66,22 +68,36 @@
         }
 
         [Fact]
-        public void ChangePassword_InvalidModel_ReturnErrors()
+        public void UpdateProfile_InvalidModel_ReturnErrors()
         {
             // Arrange
-            var model = new ChangePasswordViewModel();
+            var model = new UserProfileViewModel();
             accountController.ModelState.AddModelError("", "Error");
 
             // Act
-            var actual = accountController.ChangePassword(model);
+            var actual = accountController.UpdateProfile(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
         }
 
-        public static IUserService FakeUserService()
+        [Fact]
+        public void UpdateProfile_ValidModel_ReturnSuccessfully()
         {
+            var model = new UserProfileViewModel();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+
+            // Act
+            var actual = accountController.UpdateProfile(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
+
+        public static IUserService FakeUserService()
+        {   
             var userService = Substitute.For<IUserService>();
 
             var user = new User

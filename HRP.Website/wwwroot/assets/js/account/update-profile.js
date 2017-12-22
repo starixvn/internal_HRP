@@ -7,8 +7,7 @@
 
         return {
             onUpdateSuccess: function (response, status) {
-                var code = response.code;
-                if (!code) {
+                if (response.isSuccessful) {
                     var alert = $('#update-profile-success-alert');
                     alert.removeClass('hidden');
                     setInterval(function () {

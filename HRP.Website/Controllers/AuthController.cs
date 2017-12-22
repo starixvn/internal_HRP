@@ -1,10 +1,8 @@
 namespace HRP.Website.Controllers
 {
-    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
     using HRP.Core.Criteria;
-    using HRP.Core.Model;
     using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.Account;
@@ -13,6 +11,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
+    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {
@@ -74,27 +73,33 @@ namespace HRP.Website.Controllers
                 var user = userService.GetUserByUsername(viewModel.Username);
                 var password = Utilities.DecryptStringAES(viewModel.Password);
 
-                if (user != null && IsPasswordValid(password, user.Password) && user.IsActive)
+                if (user != null && userService.IsCorrectPassword(password, user.Password) && user.IsActive)
                 {
-                    if (!user.IsOTPRegistered)
-                    {
-                        var otpRegisterToken = userService.GenerateTokenOTPRegister(user.Username);
-
-                        userService.SendMailToRegisterOTP(otpRegisterToken);
-
-                        return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
-                    }
-
-                    sessionService.Username = user.Username;
-
-                    return RedirectToAction("VerifyOTP", "Account");
+                    return AfterLoginSuccessful(user);
                 }
 
-                errorMsg = (user != null && IsPasswordValid(password, user.Password) && !user.IsActive) ? Message.AccountInactive : Message.LoginInvalid;
+                errorMsg = (user != null && userService.IsCorrectPassword(password, user.Password) && !user.IsActive) ? Message.AccountInactive : Message.LoginInvalid;
             }
 
             ModelState.AddModelError(string.Empty, errorMsg);
+
             return View(viewModel);
+        }
+
+        private IActionResult AfterLoginSuccessful(User user)
+        {
+            if (!user.IsOTPRegistered)
+            {
+                var otpRegisterToken = userService.GenerateTokenOTPRegister(user.Username);
+
+                userService.SendMailToRegisterOTP(otpRegisterToken);
+
+                return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
+            }
+
+            sessionService.Username = user.Username;
+
+            return RedirectToAction("VerifyOTP", "Account");
         }
 
         public async Task<IActionResult> Logout()
@@ -110,7 +115,7 @@ namespace HRP.Website.Controllers
 
             if (user == null || user.UserId <= 0)
             {
-                return NotFound();
+                return RedirectToAction("404", "error");
             }
 
             return View();
@@ -129,14 +134,14 @@ namespace HRP.Website.Controllers
                     Password = BCrypt.HashPassword(model.Password)
                 };
 
-                CommandResult result = baseService.ExecuteNonQuery(criteria);
+                var result = baseService.ExecuteNonQuery(criteria);
                 if (result.IsSuccessful)
                 {
                     return RedirectToAction(nameof(ResetPasswordSuccessfully));
                 }
-            }
 
-            ViewBag.ErrorMessage = Message.UpdateFail;
+                ModelState.AddModelError(string.Empty, result.Message);
+            }
 
             return View(model);
         }
@@ -144,11 +149,6 @@ namespace HRP.Website.Controllers
         public IActionResult ResetPasswordSuccessfully()
         {
             return View();
-        }
-
-        private static bool IsPasswordValid(string modelPassword, string hashedPassword)
-        {
-            return BCrypt.Verify(modelPassword, hashedPassword);
         }
 
         private async Task DoSignOut()

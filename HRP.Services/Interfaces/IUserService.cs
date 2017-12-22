@@ -17,5 +17,7 @@ namespace HRP.Services
         void SendMailToRegisterOTP(string tokenOTPRegister);
 
         bool UpdateOTPStatus(int userId, bool isOTPRegistered);
+
+        bool IsCorrectPassword(string password, string hashedPassword);
     }
 }

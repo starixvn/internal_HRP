@@ -1,6 +1,6 @@
 namespace HRP.Services
 {
-    using System.Globalization;
+    using BCrypt.Net;
     using Core.Constants;
     using Core.Model;
     using Core.Services;
@@ -8,6 +8,7 @@ namespace HRP.Services
     using Microsoft.Extensions.Options;
     using Models;
     using Resources;
+    using System.Globalization;
 
     public class UserService : IUserService
     {
@@ -51,6 +52,8 @@ namespace HRP.Services
 
             return user;
         }
+
+        public bool IsCorrectPassword(string password, string hashedPassword) => BCrypt.Verify(password, hashedPassword);
 
         public bool ResetTokenOTPRegister(string username)
         {
