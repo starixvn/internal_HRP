@@ -1,12 +1,12 @@
-﻿@using HRP.Models
+﻿@using HRP.Core.Constants
+@using HRP.Models
 @using HRP.Resources
 @model IEnumerable<UserModel>
 
 @{
     var rowNumber = 1;
-    var canEdit = (bool) ViewBag.CanEdit;
-    var userDetailsLabel = canEdit ? ViewLang.EditUserDetails : ViewLang.ViewUserDetails;
-    var userPermissionLabel = canEdit ? ViewLang.EditUserPermission : ViewLang.ViewUserPermission;
+    var canEdit = (bool)ViewBag.CanEdit;
+    var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
 }
 
 <table id="user-table" class="table table table-bordered table-hover table-responsive table-striped">
@@ -47,8 +47,16 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-@user.UserId">
-                            <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>@userDetailsLabel</a></li>
-                            <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>@userPermissionLabel</a></li>
+                            @if (canEdit && (!user.IsSystemAdmin || isSystemAdmin))
+                            {
+                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>@ViewLang.EditUserDetails</a></li>
+                                <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>@ViewLang.EditUserPermission</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>@ViewLang.ViewUserDetails</a></li>
+                                <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>@ViewLang.ViewUserPermission</a></li>
+                            }
                         </ul>
                     </div>
                 </td>
