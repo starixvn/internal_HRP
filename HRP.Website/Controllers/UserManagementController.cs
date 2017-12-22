@@ -1,9 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -18,6 +14,10 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class UserManagementController : Controller
@@ -125,9 +125,11 @@
                 };
 
                 var result = baseService.ExecuteNonQuery(criteria);
-                return Json(new {
+                return Json(new
+                {
                     isSuccessful = result.IsSuccessful,
-                    result.Message, username = viewModel.Username,
+                    result.Message,
+                    username = viewModel.Username,
                     redirectTo = result.IsSuccessful && criteria.UserId > 0 ? Url.Action("AssignPermission", new { id = criteria.UserId }) : string.Empty
                 });
             }
@@ -154,7 +156,7 @@
             }
 
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
-            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) 
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host)
                 && (!viewModel.IsSystemAdmin || Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value));
 
             return View(viewModel);

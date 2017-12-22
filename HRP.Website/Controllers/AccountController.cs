@@ -1,8 +1,5 @@
 namespace HRP.Website.Controllers
 {
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Constants;
     using Core.Enumerations;
@@ -19,6 +16,9 @@ namespace HRP.Website.Controllers
     using Models.Account;
     using Resources;
     using Services;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     public class AccountController : Controller
     {
@@ -41,33 +41,43 @@ namespace HRP.Website.Controllers
 
         [HRPAuthorize]
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel viewlModel)
+        public IActionResult ChangePassword(ChangePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var user = userService.GetUserByUsername(sessionService.Username);
-                var isValidOldPassword = BCrypt.Verify(viewlModel.OldPassword, user.Password);
-
-                if (!isValidOldPassword)
+                if (!IsCorrectOldPassword(viewModel.OldPassword))
                 {
                     return Json(new { code = -2, message = Message.OldPasswordIncorrect });
                 }
 
-                var criteria = new UpdateUserPasswordCriteria
+                if (IsSuccessUpdatePassword(viewModel.Password))
                 {
-                    UserId = sessionService.UserId,
-                    Password = BCrypt.HashPassword(viewlModel.Password)
-                };
-
-                var result = baseService.ExecuteNonQuery(criteria);
-
-                if (result.IsSuccessful)
-                {
-                    return Json(new { code = result.Code, message = Message.PasswordChangeSuccessful });
+                    return Json(new { code = 0, message = Message.PasswordChangeSuccessful });
                 }
             }
 
             return Json(new { code = -1, message = Message.UpdateFail });
+        }
+
+        private bool IsCorrectOldPassword(string oldPassword)
+        {
+            var user = userService.GetUserByUsername(sessionService.Username);
+            var isValidOldPassword = BCrypt.Verify(oldPassword, user.Password);
+
+            return isValidOldPassword;
+        }
+
+        private bool IsSuccessUpdatePassword(string newPassword)
+        {
+            var criteria = new UpdateUserPasswordCriteria
+            {
+                UserId = sessionService.UserId,
+                Password = BCrypt.HashPassword(newPassword)
+            };
+
+            var result = baseService.ExecuteNonQuery(criteria);
+
+            return result.IsSuccessful;
         }
 
         [HRPAuthorize]

@@ -18,18 +18,20 @@
                     $('#OldPassword').removeClass('error');
                     setInterval(function () { alert.addClass('hidden'); }, 3000);
                 }
-                if (code === -2) {
-                    $('.icon-close').removeClass('hidden');
-                    $('#old-password-incorrect').removeClass('hidden');
-                    $('#old-password-incorrect').text(msg);
-                    $('#OldPassword').addClass('error');
-                }
+
                 if (code === -1) {
                     var failAlert = $('#update-password-fail-alert');
                     failAlert.removeClass('hidden');
                     setInterval(function () {
                         failAlert.addClass('hidden');
                     }, 3000);
+                }
+
+                if (code === -2) {
+                    $('.icon-close').removeClass('hidden');
+                    $('#old-password-incorrect').removeClass('hidden');
+                    $('#old-password-incorrect').text(msg);
+                    $('#OldPassword').addClass('error');
                 }
             }
         };
