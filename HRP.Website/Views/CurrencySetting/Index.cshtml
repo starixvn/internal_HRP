@@ -1,0 +1,29 @@
+﻿@using HRP.Resources
+@using HRP.Models.Currency
+@model CurrencySettingViewModel
+
+<table id="currency-table" class="table table-bordered table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>@ViewLang.Currency</th>
+            @foreach (var currency in Model.Currencies)
+            {
+                <th>@currency.CurrencyCode</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fromCurrency in Model.Currencies)
+        {
+            <tr>
+                <td>@fromCurrency.CurrencyCode</td>
+                @foreach (var toCurrency in Model.Currencies)
+                {
+                    var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
+
+                    <td><input type="text" value="@rate?.ExchangeRate" /></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -382,6 +382,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
     <Compile Include="Controllers\AuthControllerTests.cs" />
+    <Compile Include="Controllers\CurrencySettingControllerTests.cs" />
     <Compile Include="Controllers\UserManagementControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewComponents\MenuViewComponentTests.cs" />

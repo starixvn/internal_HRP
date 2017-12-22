@@ -261,4 +261,7 @@
   <data name="ViewUserPermission" xml:space="preserve">
     <value>View Permission</value>
   </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
 </root>

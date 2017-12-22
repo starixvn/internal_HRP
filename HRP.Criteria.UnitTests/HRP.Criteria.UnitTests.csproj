@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
+    <Compile Include="Currency\GetExchangeRateCriteriaTest.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
     <Compile Include="Menu\GetMenuByUserIdCriteriaTests.cs" />
@@ -102,6 +103,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
