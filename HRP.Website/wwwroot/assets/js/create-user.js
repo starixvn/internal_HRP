@@ -39,7 +39,7 @@
                     displayValidationErrorMessages(response.errors);
                 }
 
-                if (reponse.message) {
+                if (response.message) {
                     $('#create-user-error-alert').removeClass('hidden').text(response.message);
                 }
             }
