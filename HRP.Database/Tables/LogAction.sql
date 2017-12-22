@@ -1,0 +1,27 @@
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[LogAction](
+	[ActionId] [smallint] IDENTITY(1,1) NOT NULL,
+	[ActionName] [nvarchar](200) NOT NULL,
+	[ActionTypeId] [tinyint] NOT NULL,
+	[SPName] [varchar](50) NOT NULL,
+	[Items] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_LogAction] PRIMARY KEY CLUSTERED 
+(
+	[ActionId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [HRP_Data]
+) ON [HRP_Data] TEXTIMAGE_ON [HRP_Data]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
