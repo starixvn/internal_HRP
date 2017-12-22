@@ -11,18 +11,18 @@ namespace HRP.Services
 
     public class UserService : IUserService
     {
-        private readonly IBaseService _baseService;
-        private readonly IOptionsSnapshot<AppSettingsOptions> _configuration;
-        private readonly IBaseMailService _emailService;
+        private readonly IBaseService baseService;
+        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
+        private readonly IBaseMailService emailService;
 
         public UserService(
             IBaseMailService emailService,
             IOptionsSnapshot<AppSettingsOptions> configuration,
             IBaseService baseService)
         {
-            _emailService = emailService;
-            _configuration = configuration;
-            _baseService = baseService;
+            this.emailService = emailService;
+            this.configuration = configuration;
+            this.baseService = baseService;
         }
 
         public string GenerateTokenOTPRegister(string username)
@@ -35,7 +35,7 @@ namespace HRP.Services
                 TokenOTPRegister = tokenOTPRegister
             };
 
-            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+            CommandResult result = baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful ? tokenOTPRegister : null;
         }
@@ -47,7 +47,7 @@ namespace HRP.Services
                 Username = username
             };
 
-            var user = _baseService.GetDataEntity<User>(criteria);
+            var user = baseService.GetDataEntity<User>(criteria);
 
             return user;
         }
@@ -60,7 +60,7 @@ namespace HRP.Services
                 TokenOTPRegister = null
             };
 
-            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+            CommandResult result = baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful;
         }
@@ -74,7 +74,7 @@ namespace HRP.Services
                 TokenResetPassword = tokenResetPassword
             };
 
-            CommandResult updateToken = _baseService.ExecuteNonQuery(criteria);
+            CommandResult updateToken = baseService.ExecuteNonQuery(criteria);
 
             if (updateToken.IsSuccessful)
             {
@@ -84,13 +84,13 @@ namespace HRP.Services
 
         public void SendMailToRegisterOTP(string tokenOTPRegister)
         {
-            var user = _baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria
+            var user = baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria
             {
                 TokenOTPRegister = tokenOTPRegister
             });
 
-            var body = _emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
-            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", _configuration.Value.BaseHostUrl, tokenOTPRegister);
+            var body = emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
+            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.BaseHostUrl, tokenOTPRegister);
             body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
             var mailModel = new MailModel
@@ -101,7 +101,7 @@ namespace HRP.Services
                 Body = body
             };
 
-            _emailService.SendEmail(mailModel);
+            emailService.SendEmail(mailModel);
         }
 
         public bool UpdateOTPStatus(int userId, bool isOTPRegistered)
@@ -112,7 +112,7 @@ namespace HRP.Services
                 IsOTPRegistered = isOTPRegistered
             };
 
-            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+            CommandResult result = baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful;
         }
@@ -125,7 +125,7 @@ namespace HRP.Services
                 SecretKey = secretKey
             };
 
-            CommandResult result = _baseService.ExecuteNonQuery(criteria);
+            CommandResult result = baseService.ExecuteNonQuery(criteria);
 
             return result.IsSuccessful;
         }
@@ -133,8 +133,8 @@ namespace HRP.Services
         private void SendMailToResetPassword(string username, string tokenResetPassword)
         {
             var user = GetUserByUsername(username);
-            var body = _emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
-            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", _configuration.Value.BaseHostUrl, tokenResetPassword);
+            var body = emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
+            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.BaseHostUrl, tokenResetPassword);
             body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
 
             var mailModel = new MailModel
@@ -145,7 +145,7 @@ namespace HRP.Services
                 Body = body
             };
 
-            _emailService.SendEmail(mailModel);
+            emailService.SendEmail(mailModel);
         }
     }
 }

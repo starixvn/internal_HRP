@@ -1,9 +1,8 @@
 namespace HRP.Services.UnitTests
 {
     using Core.Model;
-    using Core.Repositories;
     using Core.Services;
-    using Fanex.Data.Repository;
+    using HRP.Criteria;
     using Microsoft.Extensions.Options;
     using Models;
     using NSubstitute;
@@ -12,17 +11,170 @@ namespace HRP.Services.UnitTests
 
     public class UserServiceTests
     {
-        private readonly UserService userService;
+        private UserService userService;
+        private IOptionsSnapshot<AppSettingsOptions> configuration;
+        private IBaseMailService emailService;
+        private IBaseService baseService;
 
-        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
-        private readonly IBaseMailService emailService;
-        private readonly IBaseService baseService;
-        private IDynamicRepository dynamicRepository;
-        private IBaseRepository baseRepository;
+        #region GenerateTokenOTPRegister
 
-        public UserServiceTests()
+        [Fact]
+        public void GenerateTokenOTPRegister_UpdateSuccessful_ReturnExpectedToken()
         {
-            baseService = GetBaseService();
+            // Arrange
+            var commandResult = new CommandResult
+            {
+                Code = 0
+            };
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+
+            // Act
+            var token = userService.GenerateTokenOTPRegister("test");
+
+            // Assert
+            Assert.NotNull(token);
+        }
+
+        [Fact]
+        public void GenerateTokenOTPRegister_UpdateUnsuccessful_ReturnNull()
+        {
+            // Arrange
+            var commandResult = new CommandResult
+            {
+                Code = 1
+            };
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+
+            // Act
+            var token = userService.GenerateTokenOTPRegister(Arg.Any<string>());
+
+            // Assert
+            Assert.Null(token);
+        }
+
+        #endregion GenerateTokenOTPRegister
+
+        [Fact]
+        public void GetUserByUsername_WhenCalled_ReturnExpectedUser()
+        {
+            // Arrange
+            userService = GetUserService();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
+
+            // Act
+            var user = userService.GetUserByUsername(Arg.Any<string>());
+
+            // Assert
+            Assert.IsType<User>(user);
+        }
+
+        [Fact]
+        public void ResetTokenOTPRegister_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+
+            // Act
+            var result = userService.ResetTokenOTPRegister(Arg.Any<string>());
+
+            // Assert
+            Assert.Equal(commandResult.IsSuccessful, result);
+        }
+
+        #region ResetUserPassword
+
+        [Fact]
+        public void ResetUserPassword_UpdateSuccessful_ExpectedSendMail()
+        {
+            // Arrange
+            var commandResult = new CommandResult
+            {
+                Code = 0
+            };
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
+
+            // Act
+            userService.ResetUserPassword("test");
+
+            // Assert
+            emailService.Received().SendEmail(Arg.Any<MailModel>());
+        }
+
+        [Fact]
+        public void ResetUserPassword_UpdateUnsuccessful_ExpectedNotSendMail()
+        {
+            // Arrange
+            var commandResult = new CommandResult
+            {
+                Code = 1
+            };
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
+
+            // Act
+            userService.ResetUserPassword("test");
+
+            // Assert
+            emailService.DidNotReceive().SendEmail(Arg.Any<MailModel>());
+        }
+
+        #endregion ResetUserPassword
+
+        [Fact]
+        public void SendMailToRegisterOTP_WhenCalled_ExpectedSendMail()
+        {
+            // Arrange
+            userService = GetUserService();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(new User());
+
+            // Act
+            userService.SendMailToRegisterOTP("test");
+
+            // Assert
+            emailService.Received().SendEmail(Arg.Any<MailModel>());
+        }
+
+        [Fact]
+        public void UpdateOTPStatus_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserOTPStatusCriteria>()).Returns(commandResult);
+
+            // Act
+            var result = userService.UpdateOTPStatus(1, true);
+
+            // Assert
+            Assert.Equal(commandResult.IsSuccessful, result);
+        }
+
+        [Fact]
+        public void UpdateSecretKey_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            userService = GetUserService();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateSecretKeyCriteria>()).Returns(commandResult);
+
+            // Act
+            var result = userService.UpdateSecretKey("test", "test");
+
+            // Assert
+            Assert.Equal(commandResult.IsSuccessful, result);
+        }
+
+        #region Helpers
+
+        private UserService GetUserService()
+        {
+            baseService = Substitute.For<IBaseService>();
             emailService = Substitute.For<IBaseMailService>();
 
             var appSettingsOptions = new AppSettingsOptions
@@ -37,93 +189,11 @@ namespace HRP.Services.UnitTests
             configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
             configuration.Value.Returns(appSettingsOptions);
 
-            userService = new UserService(emailService, configuration, baseService);
-        }
-
-        private static IDynamicRepository FakeDynamicRepository()
-        {
-            var repository = Substitute.For<IDynamicRepository>();
-
-            repository.Get<User>(Arg.Any<ICriteria>()).Returns(new User());
-
-            return repository;
-        }
-
-        private static IBaseRepository FakeBaseRepository()
-        {
-            var repository = Substitute.For<IBaseRepository>();
-
-            var commandResult = new CommandResult
-            {
-                Code = 0
-            };
-
-            repository.ExecuteNonQuery(Arg.Any<ICriteria>()).Returns(commandResult);
-
-            return repository;
-        }
-
-        private BaseService GetBaseService()
-        {
-            dynamicRepository = FakeDynamicRepository();
-            baseRepository = FakeBaseRepository();
-            var service = new BaseService(dynamicRepository, baseRepository);
+            var service = new UserService(emailService, configuration, baseService);
 
             return service;
         }
 
-        [Theory]
-        [InlineData("test")]
-        public void GenerateTokenOTPRegister_Username_ReturnToken(string username)
-        {
-            var token = userService.GenerateTokenOTPRegister(username);
-
-            Assert.NotEmpty(token);
-        }
-
-        [Theory]
-        [InlineData("test")]
-        public void GetUserByUsername_Username_ReturnUser(string username)
-        {
-            var user = userService.GetUserByUsername(username);
-
-            Assert.IsType<User>(user);
-        }
-
-        [Fact]
-        public void ResetTokenOTPRegister_ReturnTrue()
-        {
-            var result = userService.ResetTokenOTPRegister("test");
-
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void ResetUserPassword_Void()
-        {
-            userService.ResetUserPassword("test");
-        }
-
-        [Fact]
-        public void SendMailToRegisterOTP_Void()
-        {
-            userService.SendMailToRegisterOTP("test");
-        }
-
-        [Fact]
-        public void UpdateOTPStatus_UserIdAndOtpStatus_ReturnTrue()
-        {
-            var result = userService.UpdateOTPStatus(1, true);
-
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void UpdateSecretKey_UsernameAndSecretKey_ReturnTrue()
-        {
-            var result = userService.UpdateSecretKey("test", "test");
-
-            Assert.True(result);
-        }
+        #endregion Helpers
     }
 }

@@ -1,7 +1,6 @@
 namespace HRP.Services
 {
     using System;
-    using System.Diagnostics;
     using Core.Model;
     using Google.Authenticator;
     using Microsoft.Extensions.Options;
@@ -35,8 +34,6 @@ namespace HRP.Services
             // accept +/- 5 minute tolerate
 
             var validOTP = twoFactorAuthenticator.ValidateTwoFactorPIN(secretKey, otpCode, timeExpireOTP);
-            Debug.WriteLine("OTP: " + otpCode);
-            Debug.WriteLine("Valid codes" + twoFactorAuthenticator.GetCurrentPINs(secretKey, timeExpireOTP)[0]);
 
             return validOTP;
         }
