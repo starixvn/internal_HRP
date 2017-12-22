@@ -2,7 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -14,8 +13,6 @@
     using HRP.Models.UserPermisson;
     using HRP.Services;
     using HRP.Website.Controllers;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Http.Features;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -34,7 +31,7 @@
         {
             // Arrange
             IEnumerable<Company> companies = new List<Company>();
-            IEnumerable<HRP.Models.UserPermisson.FunctionModel> functions = new List<HRP.Models.UserPermisson.FunctionModel>();
+            IEnumerable<Models.UserPermisson.FunctionModel> functions = new List<Models.UserPermisson.FunctionModel>();
             IEnumerable<UserPermissionModel> permissions = new List<UserPermissionModel>();
             var user = new UserModel { Username = "tim", IsSystemAdmin = false };
             userManagementController = GetUserManagementController();
@@ -42,7 +39,7 @@
             baseService.GetDataAsync<Company>(Arg.Any<GetAllCompanyCriteria>()).Returns(companies);
             baseService.GetDataAsync<UserPermissionModel>(Arg.Any<GetFunctionByUserIdCriteria>()).Returns(permissions);
             baseService.GetDataEntityAsync<UserModel>(Arg.Any<GetUserByIdCriteria>()).Returns(user);
-            sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Core.Enumerations.Policy>()).Returns(true);
+            sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
 
             // Act
             var actual = await userManagementController.AssignPermission(1);
@@ -80,8 +77,13 @@
         [Fact]
         public void CreateUser_WhenCalled_ReturnExpectedView()
         {
+            // Arrange
             userManagementController = GetUserManagementController();
+
+            // Act
             var actual = userManagementController.CreateUser();
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<CreateUserViewModel>(viewResult.Model);
         }
@@ -89,12 +91,15 @@
         [Fact]
         public void CreateUser_InvalidModel_ReturnErrors()
         {
+            // Arrange
             var model = new CreateUserViewModel();
             userManagementController = GetUserManagementController();
-
             userManagementController.ModelState.AddModelError("", "Error");
+
+            // Act
             var actual = userManagementController.CreateUser(model);
 
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
         }
@@ -102,15 +107,17 @@
         [Fact]
         public void CreateUser_ValidModel_ReturnSucessfully()
         {
+            // Arrange
             var model = new CreateUserViewModel { Password = "Admin1234" };
             userManagementController = GetUserManagementController();
-
             baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
             userManagementController.Url = Substitute.For<IUrlHelper>();
             userManagementController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
 
+            // Act
             var actual = userManagementController.CreateUser(model);
 
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
@@ -118,12 +125,15 @@
         [Fact]
         public void EditUser_InvalidModel_ReturnErrors()
         {
+            // Arrange
             var model = new EditUserViewModel();
             userManagementController = GetUserManagementController();
-
             userManagementController.ModelState.AddModelError("", "Error");
+
+            // Act
             var actual = userManagementController.EditUser(model);
 
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
         }
@@ -131,12 +141,15 @@
         [Fact]
         public void EditUser_ValidModel_ReturnSucessfully()
         {
+            // Arrange
             var model = new EditUserViewModel();
             userManagementController = GetUserManagementController();
-
             baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+
+            // Act
             var actual = userManagementController.EditUser(model);
 
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
         }
@@ -144,9 +157,13 @@
         [Fact]
         public void EditUser_InvalidId_RetdirectToIndexPage()
         {
+            // Arrange
             userManagementController = GetUserManagementController();
 
+            // Act
             var actual = userManagementController.EditUser(0);
+
+            // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Index", viewResult.ActionName);
         }
@@ -154,12 +171,16 @@
         [Fact]
         public void EditUser_ValidId_ReturnExpectedView()
         {
+            // Arrange
             var id = 1;
             userManagementController = GetUserManagementController();
             baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
+            // Act
             var actual = userManagementController.EditUser(id);
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
         }
@@ -167,10 +188,14 @@
         [Fact]
         public void Index_WhenCalled_ReturnExpectedView()
         {
+            // Arrange
             userManagementController = GetUserManagementController();
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
+            // Act
             var actual = userManagementController.Index();
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
         }
@@ -178,21 +203,29 @@
         [Fact]
         public void GetUsers_WhenCalled_ReturnExpectedView()
         {
+            // Arrange
             userManagementController = GetUserManagementController();
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
+            // Act
             var actual = userManagementController.GetUsers(true);
+
+            // Assert
             Assert.IsType<ViewComponentResult>(actual);
         }
 
         [Fact]
         public void CheckUsernameExisted_ExistedUserName_ReturnFalse()
         {
+            // Arrange
             var username = "admin";
             userManagementController = GetUserManagementController();
             baseService.GetData<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
 
+            // Act
             var actual = userManagementController.CheckUsernameExisted(username);
+
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.False((bool)jsonResult.Value);
         }
