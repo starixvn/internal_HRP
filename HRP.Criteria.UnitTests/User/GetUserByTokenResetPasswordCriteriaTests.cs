@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.UnitTests.User
+﻿namespace HRP.Criteria.UnitTests
 {
     using Xunit;
 
@@ -24,12 +24,17 @@
         [InlineData("abc", true)]
         public void IsValid_ReturnAsExpected(string token, bool expected)
         {
+            // Arrage
             var criteria = new GetUserByTokenResetPasswordCriteria
             {
                 TokenResetPassword = token
             };
 
-            Assert.Equal(expected, criteria.IsValid());
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
     }
 }

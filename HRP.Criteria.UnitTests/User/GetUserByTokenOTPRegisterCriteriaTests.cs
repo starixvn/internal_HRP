@@ -1,33 +1,34 @@
-﻿namespace HRP.Criteria.UnitTests.User
+﻿namespace HRP.Criteria.UnitTests
 {
     using Xunit;
 
     public class GetUserByTokenOTPRegisterCriteriaTests
     {
-        private readonly GetUserByTokenOTPRegisterCriteria criteria;
-        private readonly string settingKey;
-
-        public GetUserByTokenOTPRegisterCriteriaTests()
-        {
-            criteria = new GetUserByTokenOTPRegisterCriteria();
-            settingKey = "User_GetByTokenOTPRegister";
-        }
-
         [Fact]
         public virtual void GetSettingKey_ReturnCorrectSettingKey()
         {
+            // Arrange
+            var expected = "User_GetByTokenOTPRegister";
+            var criteria = new GetUserByTokenOTPRegisterCriteria();
+
+            // Act
             var actual = criteria.GetSettingKey();
-            Assert.Equal(settingKey, actual);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
         [InlineData("", false)]
         [InlineData(null, false)]
         [InlineData("test", true)]
-        public void IsValid_CheckParams_ReturnAsExpected(string value, bool expected)
+        public void IsValid_CheckParams_ReturnAsExpected(string token, bool expected)
         {
             // Arrange
-            criteria.TokenOTPRegister = value;
+            var criteria = new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = token
+            };
 
             // Act
             var actual = criteria.IsValid();

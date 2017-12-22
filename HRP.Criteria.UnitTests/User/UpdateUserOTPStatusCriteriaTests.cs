@@ -1,24 +1,21 @@
-﻿namespace HRP.Criteria.UnitTests.User
+﻿namespace HRP.Criteria.UnitTests
 {
     using Xunit;
 
     public class UpdateUserOTPStatusCriteriaTests
     {
-        private readonly UpdateUserOTPStatusCriteria criteria;
-        private readonly string settingKey;
-
-        public UpdateUserOTPStatusCriteriaTests()
-        {
-            criteria = new UpdateUserOTPStatusCriteria();
-            criteria.IsOTPRegistered = true;
-            settingKey = "User_UpdateUserOTPStatus";
-        }
-
         [Fact]
         public virtual void GetSettingKey_ReturnCorrectSettingKey()
         {
+            // Arrange
+            var expected = "User_UpdateUserOTPStatus";
+            var criteria = new UpdateUserOTPStatusCriteria();
+
+            // Act
             var actual = criteria.GetSettingKey();
-            Assert.Equal(settingKey, actual);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
@@ -27,7 +24,11 @@
         public void IsValid_CheckParams_ReturnAsExpected(int userId, bool expected)
         {
             // Arrange
-            criteria.UserId = userId;
+            var criteria = new UpdateUserOTPStatusCriteria
+            {
+                UserId = userId,
+                IsOTPRegistered = true
+            };
 
             // Act
             var actual = criteria.IsValid();

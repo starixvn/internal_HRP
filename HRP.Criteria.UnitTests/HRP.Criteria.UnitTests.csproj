@@ -68,8 +68,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
+    <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
+    <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
+    <Compile Include="Menu\GetMenuByUserIdCriteriaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\AssignFunctionToUserCriteriaTests.cs" />
+    <Compile Include="User\CheckInUserCriteriaTests.cs" />
     <Compile Include="User\CheckUsernameExistedCriteriaTest.cs" />
     <Compile Include="User\CreateUserCriteriaTests.cs" />
     <Compile Include="User\GetUserByIdCriteriaTests.cs" />
@@ -77,6 +82,7 @@
     <Compile Include="User\GetUserByTokenOTPRegisterCriteriaTests.cs" />
     <Compile Include="User\GetUserByTokenResetPasswordCriteriaTests.cs" />
     <Compile Include="User\GetUserByUsernameCriteriaTest.cs" />
+    <Compile Include="User\GetUsersCriteriaTests.cs" />
     <Compile Include="User\UpdateSecretKeyCriteriaTests.cs" />
     <Compile Include="User\UpdateTokenOTPRegisterCriteriaTests.cs" />
     <Compile Include="User\UpdateTokenResetPasswordCriteriaTests.cs" />

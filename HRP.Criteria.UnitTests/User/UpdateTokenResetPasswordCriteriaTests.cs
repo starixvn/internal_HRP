@@ -1,23 +1,21 @@
-﻿namespace HRP.Criteria.UnitTests.User
+﻿namespace HRP.Criteria.UnitTests
 {
     using Xunit;
 
     public class UpdateTokenResetPasswordCriteriaTests
     {
-        private readonly UpdateTokenResetPasswordCriteria criteria;
-        private readonly string settingKey;
-
-        public UpdateTokenResetPasswordCriteriaTests()
-        {
-            criteria = new UpdateTokenResetPasswordCriteria();
-            settingKey = "User_UpdateTokenResetPassword";
-        }
-
         [Fact]
         public virtual void GetSettingKey_ReturnCorrectSettingKey()
         {
+            // Arrange
+            var expected = "User_UpdateTokenResetPassword";
+            var criteria = new UpdateTokenResetPasswordCriteria();
+
+            // Act
             var actual = criteria.GetSettingKey();
-            Assert.Equal(settingKey, actual);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
@@ -27,7 +25,10 @@
         public void IsValid_CheckParams_ReturnAsExpected(string username, bool expected)
         {
             // Arrange
-            criteria.Username = username;
+            var criteria = new UpdateTokenResetPasswordCriteria
+            {
+                Username = username
+            };
 
             // Act
             var actual = criteria.IsValid();

@@ -1,41 +1,37 @@
-﻿namespace HRP.Criteria.UnitTests.User
+﻿namespace HRP.Criteria.UnitTests
 {
     using HRP.Criteria.User;
     using Xunit;
 
     public class UpdateUserProfileCriteriaTests
     {
-        private readonly UpdateUserProfileCriteria criteria;
-        private readonly string settingKey;
-
-        public UpdateUserProfileCriteriaTests()
-        {
-            criteria = new UpdateUserProfileCriteria();
-            settingKey = "User_UpdateProfile";
-        }
-
         [Fact]
         public virtual void GetSettingKey_ReturnCorrectSettingKey()
         {
+            // Arrange
+            var expected = "User_UpdateProfile";
+            var criteria = new UpdateUserProfileCriteria();
+
+            // Act
             var actual = criteria.GetSettingKey();
-            Assert.Equal(settingKey, actual);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
         [InlineData(0, "", false)]
-        [InlineData(-1, "", false)]
         [InlineData(1, "", false)]
-        [InlineData(0, null, false)]
-        [InlineData(-1, null, false)]
-        [InlineData(1, null, false)]
         [InlineData(0, "test", false)]
-        [InlineData(-1, "test", false)]
         [InlineData(1, "test", true)]
         public void IsValid_CheckParams_ReturnAsExpected(int userId, string email, bool expected)
         {
             // Arrange
-            criteria.UserId = userId;
-            criteria.Email = email;
+            var criteria = new UpdateUserProfileCriteria
+            {
+                UserId = userId,
+                Email = email
+            };
 
             // Act
             var actual = criteria.IsValid();
