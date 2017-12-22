@@ -1,6 +1,7 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -62,6 +63,21 @@
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), SkipOtpCheck).Returns(false);
 
             return twoFactorAuthService;
+        }
+
+        [Fact]
+        public void ChangePassword_InvalidModel_ReturnErrors()
+        {
+            // Arrange
+            var model = new ChangePasswordViewModel();
+            accountController.ModelState.AddModelError("", "Error");
+
+            // Act
+            var actual = accountController.ChangePassword(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
         }
 
         public static IUserService FakeUserService()

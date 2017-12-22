@@ -52,7 +52,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction(nameof(ConfirmationEmailSent));
             }
 
-            ViewBag.ErrorMessage = Message.ForgotPasswordInvalidUser;
+            ModelState.AddModelError(string.Empty, Message.ForgotPasswordInvalidUser);
 
             return View();
         }
@@ -93,7 +93,7 @@ namespace HRP.Website.Controllers
                 errorMsg = (user != null && IsPasswordValid(password, user.Password) && !user.IsActive) ? Message.AccountInactive : Message.LoginInvalid;
             }
 
-            ViewBag.ErrorMessage = errorMsg;
+            ModelState.AddModelError(string.Empty, errorMsg);
             return View(viewModel);
         }
 
