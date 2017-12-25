@@ -45,4 +45,8 @@
             $('#change-password-form input[type=text').attr("type", "password");
         }
     });
+
+    $('.icon-close').on("click", function () {
+        $('#OldPassword').val('');
+    })
 }

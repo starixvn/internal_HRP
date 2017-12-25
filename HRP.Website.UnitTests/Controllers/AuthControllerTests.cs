@@ -8,10 +8,12 @@
     using HRP.Models.Account;
     using HRP.Services;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using System;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Xunit;
 
@@ -156,17 +158,48 @@
             Assert.Equal("VerifyOTP", viewResult.ActionName);
         }
 
-        [Fact]
-        public async Task Logout_Successfully()
+        private AuthController ArrangeForSignOutTestFunction()
         {
+            var authService = Substitute.For<IAuthenticationService>();
+            authService.SignInAsync(
+                    Arg.Any<HttpContext>(),
+                    Arg.Any<string>(),
+                    Arg.Any<ClaimsPrincipal>(),
+                    Arg.Any<AuthenticationProperties>())
+                .Returns(Task.FromResult((object)null));
+
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+
+            ControllerContext controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = serviceProvider
+                }
+            };
+
             authController = GetAuthController();
-            authController.ControllerContext = new ControllerContext();
-            authController.ControllerContext.HttpContext = new DefaultHttpContext();
-            authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "20317";
+            authController.ControllerContext = controllerContext;
+            authController.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Any;
+            authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "12345";
+            authController.Url = Substitute.For<IUrlHelper>();
             baseService.ExecuteNonQueryAsync(Arg.Any<LogOutUserCriteria>()).Returns(new CommandResult { Code = 0 });
-            sessionService.UserId = 1;
+            return authController;
+        }
+
+        [Fact]
+        public async Task Logout_Successful_RedirectToLogin()
+        {
+            //Arrange
+            authController = ArrangeForSignOutTestFunction();
+
+            //Act
             var actual = await authController.Logout();
-            Assert.Equal(0, sessionService.UserId);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+
+            //Assert
+            Assert.Equal("Login", viewResult.ActionName);
         }
 
         [Fact]
@@ -222,7 +255,6 @@
         private ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
-            service.UserId = 1;
             return service;
         }
 
