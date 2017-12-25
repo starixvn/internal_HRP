@@ -178,5 +178,15 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/currency/js/currency-setting.min.js",
+    "inputFiles": [
+      "wwwroot/assets/js/currency-setting.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

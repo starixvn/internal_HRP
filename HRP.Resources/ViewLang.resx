@@ -264,4 +264,10 @@
   <data name="Currency" xml:space="preserve">
     <value>Currency</value>
   </data>
+  <data name="CurrencySetting" xml:space="preserve">
+    <value>Currency Setting</value>
+  </data>
+  <data name="MonthYear" xml:space="preserve">
+    <value>Month/Year</value>
+  </data>
 </root>

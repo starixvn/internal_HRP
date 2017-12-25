@@ -169,6 +169,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currency Setting.
+        /// </summary>
+        public static string CurrencySetting {
+            get {
+                return ResourceManager.GetString("CurrencySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Details.
         /// </summary>
         public static string EditDetails {
@@ -273,6 +282,15 @@ namespace HRP.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month/Year.
+        /// </summary>
+        public static string MonthYear {
+            get {
+                return ResourceManager.GetString("MonthYear", resourceCulture);
             }
         }
         

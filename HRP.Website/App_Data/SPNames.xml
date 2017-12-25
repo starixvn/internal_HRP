@@ -32,6 +32,7 @@
   </Function>
   <Function Name="Currency">
     <Setting Key="Currency_GetExchangeRates" SpName="Currency_GetExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Currency_GetActiveCurrencyCodes" SpName="Currency_GetActiveCurrencyCodes" DbName="bodb_HRP" Plain="0"></Setting>   
+    <Setting Key="Currency_GetActiveCurrencyCodes" SpName="Currency_GetActiveCurrencyCodes" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetExchageRateMonths" SpName="Currency_GetExchageRateMonths" DbName="bodb_HRP" Plain="0"></Setting>   
   </Function>
 </Functions>
