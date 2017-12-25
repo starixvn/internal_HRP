@@ -1,11 +1,16 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using Core.Enumerations;
+    using Core.Model;
     using Core.Services;
+    using Criteria;
+    using Criteria.User;
     using Fanex.Data.Repository;
-    using HRP.Core.Model;
-    using HRP.Criteria;
-    using HRP.Criteria.User;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
@@ -15,11 +20,6 @@
     using NSubstitute;
     using NSubstitute.Core;
     using Services;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using Website.Controllers;
     using Xunit;
 
