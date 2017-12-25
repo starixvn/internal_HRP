@@ -119,7 +119,7 @@
             };
 
             //Act
-            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+            var actual = accountController.ChangePassword(viewModel);
             var jsonResult = Assert.IsType<JsonResult>(actual);
 
             //Assert

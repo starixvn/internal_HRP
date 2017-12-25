@@ -8,6 +8,7 @@
     using HRP.Models.Account;
     using HRP.Services;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using System;
@@ -159,6 +160,9 @@
         public async Task Logout_Successfully()
         {
             authController = GetAuthController();
+            authController.ControllerContext = new ControllerContext();
+            authController.ControllerContext.HttpContext = new DefaultHttpContext();
+            authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "20317";
             baseService.ExecuteNonQueryAsync(Arg.Any<LogOutUserCriteria>()).Returns(new CommandResult { Code = 0 });
             sessionService.UserId = 1;
             var actual = await authController.Logout();
