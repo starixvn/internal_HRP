@@ -49,6 +49,8 @@
                 userService);
         }
 
+        #region Helper
+
         public static ISessionService FakeSessionService()
         {
             var sessionService = Substitute.For<ISessionService>();
@@ -93,6 +95,8 @@
 
             return userService;
         }
+
+        #endregion
 
         [Fact]
         public void ChangePassword_AnyModel_ReturnJsonResult()
@@ -176,13 +180,23 @@
             controller.ControllerContext = controllerContext;
 
             controller.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(new RedirectToActionResult("test", "test", "test"));
-            controller.RedirectToAction(Arg.Any<string>()).Returns(new RedirectToActionResult("test", "test", "test"));
-            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<object>())
-                .Returns(new RedirectToActionResult("test", "test", new { test = "test" }));
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
 
-            controller.View(Arg.Any<string>(), Arg.Any<object>()).Returns(new ViewResult());
-            controller.View(Arg.Any<string>()).Returns(new ViewResult());
+            controller.RedirectToAction(Arg.Any<string>())
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, null));
+
+            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<object>())
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, x.ArgAt<object>(1)));
+
+            controller.View(Arg.Any<string>(), Arg.Any<object>()).Returns(x => new ViewResult
+            {
+                ViewName = x.ArgAt<string>(0)
+            });
+
+            controller.View(Arg.Any<string>()).Returns(x => new ViewResult
+            {
+                ViewName = x.ArgAt<string>(0)
+            });
 
             return controller;
         }
@@ -232,17 +246,34 @@
             Assert.IsType(type, actual);
         }
 
-        [Theory]
-        [InlineData("", typeof(RedirectToActionResult))]
-        [InlineData("sampletoken", typeof(ViewResult))]
-        public void SetupOtpAfterReset_NullOrValid_LoginOrAccountIndexResult(string token, Type type)
+        [Fact]
+        public void SetupOtpAfterReset_NullUser_RedirectToLogin()
         {
-            //Arrange
+            // Arrange
             var user = userService.GetUserByUsername(sessionService.Username);
             baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
 
-            var actual = accountController.SetupOtpAfterReset(token);
-            Assert.IsType(type, actual);
+            // Test
+            var actual = accountController.SetupOtpAfterReset(string.Empty);
+
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void SetupOtpAfterReset_ValidUser_ReturnIndex()
+        {
+            // Arrange
+            var user = userService.GetUserByUsername(sessionService.Username);
+            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+
+            // Test
+            var actual = accountController.SetupOtpAfterReset("sampletoken");
+
+            // Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal("Index", ((ViewResult)actual).ViewName);
         }
 
         [Fact]
@@ -274,22 +305,49 @@
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
-        [Theory]
-        [InlineData(null, false, typeof(RedirectToActionResult))]
-        [InlineData(null, true, typeof(RedirectToActionResult))]
-        [InlineData("test", false, typeof(ViewResult))]
-        [InlineData("test", true, typeof(RedirectToActionResult))]
-        public void VerifyOTP_None_ReturnViewResult(string username, bool isAuthenticated, Type type)
+        [Fact]
+        public void VerifyOTP_AuthenticatedUser_ReturnIndex()
         {
             // Arrange
-            sessionService.Username = username;
-            accountController = FakeAccountController(isAuthenticated);
+            sessionService.Username = "test";
+            accountController = FakeAccountController(true);
 
             // Test
             var actual = accountController.VerifyOTP();
 
             // Assert
-            Assert.IsType(type, actual);
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Index", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void VerifyOTP_NullUserName_ReturnLogin()
+        {
+            // Arrange
+            sessionService.Username = null;
+            accountController = FakeAccountController(false);
+
+            // Test
+            var actual = accountController.VerifyOTP();
+
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void VerifyOTP_CorrectUsername_ReturnVerifyOTP()
+        {
+            // Arrange
+            sessionService.Username = "hunter.tran.hrp";
+            accountController = FakeAccountController(false);
+
+            // Test
+            var actual = accountController.VerifyOTP();
+
+            // Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal("VerifyOTP", ((ViewResult)actual).ViewName);
         }
 
         [Theory]
