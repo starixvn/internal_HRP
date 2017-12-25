@@ -1,23 +1,10 @@
 ﻿namespace HRP.Core.UnitTests
 {
-    using System.Collections.Generic;
     using HRP.Core.Criteria;
     using Xunit;
 
     public class LogOutUserCriteriaTests
     {
-        public static IEnumerable<object[]> TestCase()
-        {
-            yield return new object[]
-            {
-                1, true
-            };
-            yield return new object[]
-            {
-                0, false
-            };
-        }
-
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
@@ -32,8 +19,10 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_CheckParams_ReturnAsExpected(int userId, bool expected)
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void IsValid_UserIdLessThanZero_ReturnFalse(int userId)
         {
             // Arrange
             var criteria = new LogOutUserCriteria
@@ -45,7 +34,23 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_UserIdGreaterThanZero_ReturnFalse()
+        {
+            // Arrange
+            var criteria = new LogOutUserCriteria
+            {
+                OnUserId = 1
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.False(actual);
         }
     }
 }
