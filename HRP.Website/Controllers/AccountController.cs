@@ -63,8 +63,8 @@ namespace HRP.Website.Controllers
         private bool IsCorrectOldPassword(string oldPassword)
         {
             var user = userService.GetUserByUsername(sessionService.Username);
-            var isValidOldPassword = BCrypt.Verify(oldPassword, user.Password);
-            return isValidOldPassword;
+            var isCorrectOldPassword = userService.IsCorrectPassword(oldPassword, user.Password);
+            return isCorrectOldPassword;
         }
 
         private bool IsSuccessUpdatePassword(string newPassword)

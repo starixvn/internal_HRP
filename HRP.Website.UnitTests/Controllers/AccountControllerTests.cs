@@ -4,6 +4,7 @@
     using Core.Services;
     using Fanex.Data.Repository;
     using HRP.Core.Model;
+    using HRP.Criteria;
     using HRP.Criteria.User;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
@@ -97,7 +98,7 @@
         }
 
         public static IUserService FakeUserService()
-        {   
+        {
             var userService = Substitute.For<IUserService>();
 
             var user = new User
@@ -196,6 +197,56 @@
         {
             var actual = accountController.ResetOtpDevice();
             Assert.IsType<RedirectToActionResult>(actual);
+        }
+
+        [Fact]
+        public void ChangePassword_AnyModel_ReturnJsonResult()
+        {
+            //Act
+            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
+        }
+
+        [Fact]
+        public void ChangePassword_IncorrectOldPassword_ReturnJsonResult()
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
+        }
+
+        [Theory]
+        [InlineData(0, 0, "Your password has been successfully changed.")]
+        [InlineData(-1, -1, "Update failed")]
+        public void ChangePassword_CorrectOldPassword_AndUpdatePassword(int codeCommandResult, int expectedCode, string expectedMessage)
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+
+            //Assert
+            Assert.Equal(expectedCode, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
+            Assert.Equal(expectedMessage, (string)jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
         }
 
         [Theory]
