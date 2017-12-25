@@ -25,13 +25,12 @@
 
     public class AccountControllerTests
     {
-        private AccountController accountController;
+        private const string SkipOtpCheck = "skip";
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
-        private readonly IUserService userService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
-
-        private const string SkipOtpCheck = "skip";
+        private readonly IUserService userService;
+        private AccountController accountController;
 
         public AccountControllerTests()
         {
@@ -68,35 +67,6 @@
             return twoFactorAuthService;
         }
 
-        [Fact]
-        public void UpdateProfile_InvalidModel_ReturnErrors()
-        {
-            // Arrange
-            var model = new UserProfileViewModel();
-            accountController.ModelState.AddModelError("", "Error");
-
-            // Act
-            var actual = accountController.UpdateProfile(model);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
-        }
-
-        [Fact]
-        public void UpdateProfile_ValidModel_ReturnSuccessfully()
-        {
-            var model = new UserProfileViewModel();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
-
-            // Act
-            var actual = accountController.UpdateProfile(model);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        }
-
         public static IUserService FakeUserService()
         {
             var userService = Substitute.For<IUserService>();
@@ -122,6 +92,56 @@
             userService.UpdateOTPStatus(Arg.Any<int>(), Arg.Any<bool>()).Returns(true);
 
             return userService;
+        }
+
+        [Fact]
+        public void ChangePassword_AnyModel_ReturnJsonResult()
+        {
+            //Act
+            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
+        }
+
+        [Theory]
+        [InlineData(0, 0, "Your password has been successfully changed.")]
+        [InlineData(-1, -1, "Update failed")]
+        public void ChangePassword_CorrectOldPassword_AndUpdatePassword(int codeCommandResult, int expectedCode, string expectedMessage)
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+
+            //Assert
+            Assert.Equal(expectedCode, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
+            Assert.Equal(expectedMessage, (string)jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
+        }
+
+        [Fact]
+        public void ChangePassword_IncorrectOldPassword_ReturnJsonResult()
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
         }
 
         public AccountController FakeAccountController(bool isAuthenticated)
@@ -199,56 +219,6 @@
             Assert.IsType<RedirectToActionResult>(actual);
         }
 
-        [Fact]
-        public void ChangePassword_AnyModel_ReturnJsonResult()
-        {
-            //Act
-            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
-
-            //Assert
-            Assert.IsType<JsonResult>(actual);
-        }
-
-        [Fact]
-        public void ChangePassword_IncorrectOldPassword_ReturnJsonResult()
-        {
-            //Arrange
-            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
-            var viewModel = new ChangePasswordViewModel
-            {
-                OldPassword = string.Empty,
-                Password = "test_password"
-            };
-
-            //Act
-            var actual = accountController.ChangePassword(viewModel) as JsonResult;
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
-        }
-
-        [Theory]
-        [InlineData(0, 0, "Your password has been successfully changed.")]
-        [InlineData(-1, -1, "Update failed")]
-        public void ChangePassword_CorrectOldPassword_AndUpdatePassword(int codeCommandResult, int expectedCode, string expectedMessage)
-        {
-            //Arrange
-            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
-            var viewModel = new ChangePasswordViewModel
-            {
-                OldPassword = string.Empty,
-                Password = "test_password"
-            };
-
-            //Act
-            var actual = accountController.ChangePassword(viewModel) as JsonResult;
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-
-            //Assert
-            Assert.Equal(expectedCode, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
-            Assert.Equal(expectedMessage, (string)jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
-        }
-
         [Theory]
         [InlineData("", typeof(RedirectToActionResult))]
         [InlineData("sampletoken", typeof(ViewResult))]
@@ -273,6 +243,35 @@
 
             var actual = accountController.SetupOtpAfterReset(token);
             Assert.IsType(type, actual);
+        }
+
+        [Fact]
+        public void UpdateProfile_InvalidModel_ReturnErrors()
+        {
+            // Arrange
+            var model = new UserProfileViewModel();
+            accountController.ModelState.AddModelError("", "Error");
+
+            // Act
+            var actual = accountController.UpdateProfile(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.NotEmpty(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value) as IEnumerable);
+        }
+
+        [Fact]
+        public void UpdateProfile_ValidModel_ReturnSuccessfully()
+        {
+            var model = new UserProfileViewModel();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+
+            // Act
+            var actual = accountController.UpdateProfile(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
         [Theory]
