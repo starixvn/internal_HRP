@@ -50,7 +50,8 @@
             var actual = authController.Login();
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
@@ -63,7 +64,8 @@
             var actual = authController.ConfirmationEmailSent();
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
@@ -76,7 +78,8 @@
             var actual = authController.ResetPasswordSuccessfully();
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
@@ -109,7 +112,8 @@
             var actual = authController.Login(model);
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
@@ -199,7 +203,8 @@
             var actual = authController.ResetPassword("test", model);
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
