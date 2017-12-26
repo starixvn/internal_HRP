@@ -1,9 +1,21 @@
 ﻿namespace HRP.Criteria.UnitTests
 {
+    using System.Collections.Generic;
     using Xunit;
 
     public class EditUserCriteriaTest
     {
+        public static IEnumerable<object[]> TestCase()
+        {
+            yield return new object[] { 1, 1, string.Empty };
+            yield return new object[] { 1, 0, "myemail@email.com" };
+            yield return new object[] { 1, 0, string.Empty };
+            yield return new object[] { 0, 1, "myemail@email.com" };
+            yield return new object[] { 0, 1, string.Empty };
+            yield return new object[] { 0, 0, "myemail@email.com" };
+            yield return new object[] { 0, 0, string.Empty };
+        }
+
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
@@ -18,12 +30,8 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(0, "myemail@email.com", 1, false)]
-        [InlineData(1, "myemail@email.com", 0, false)]
-        [InlineData(1, "myemail@email.com", 1, true)]
-        [InlineData(1, null, 1, false)]
-        public void IsValid_ReturnAsExpected(int userId, string email, int editedBy, bool expected)
+        [Theory, MemberData(nameof(TestCase))]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, int editedBy, string email)
         {
             // Arrange
             var criteria = new EditUserCriteria
@@ -37,7 +45,25 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new EditUserCriteria
+            {
+                UserId = 1,
+                EditedBy = 1,
+                Email = "myemail@email.com"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

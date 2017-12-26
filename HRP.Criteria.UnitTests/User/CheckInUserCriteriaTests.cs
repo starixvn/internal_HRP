@@ -1,30 +1,9 @@
 ﻿namespace HRP.Criteria.UnitTests
 {
-    using System.Collections.Generic;
     using Xunit;
 
     public class CheckInUserCriteriaTests
     {
-        public static IEnumerable<object[]> TestCase()
-        {
-            yield return new object[]
-            {
-                1, "session", true
-            };
-            yield return new object[]
-            {
-                1, string.Empty, false
-            };
-            yield return new object[]
-            {
-                0, "session", false
-            };
-            yield return new object[]
-            {
-                0, string.Empty, false
-            };
-        }
-
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
@@ -39,8 +18,11 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_CheckParams_ReturnAsExpected(int userId, string sessionId, bool expected)
+        [Theory]
+        [InlineData(1, null)]
+        [InlineData(0, "session")]
+        [InlineData(0, null)]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, string sessionId)
         {
             // Arrange
             var criteria = new CheckInUserCriteria
@@ -53,7 +35,24 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new CheckInUserCriteria
+            {
+                UserId = 1,
+                NetSessionId = "sessionId"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

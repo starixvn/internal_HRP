@@ -19,10 +19,9 @@
         }
 
         [Theory]
-        [InlineData("", false)]
-        [InlineData(null, false)]
-        [InlineData("test", true)]
-        public void IsValid_CheckParams_ReturnAsExpected(string token, bool expected)
+        [InlineData("")]
+        [InlineData(null)]
+        public void IsValid_TokenIsInvalid_ReturnFalse(string token)
         {
             // Arrange
             var criteria = new GetUserByTokenOTPRegisterCriteria
@@ -34,7 +33,23 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_TokenIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = "token"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

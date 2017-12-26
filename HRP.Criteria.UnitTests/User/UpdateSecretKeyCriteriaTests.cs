@@ -19,12 +19,10 @@
         }
 
         [Theory]
-        [InlineData("", "", false)]
-        [InlineData(null, null, false)]
-        [InlineData(null, "", false)]
-        [InlineData("", null, false)]
-        [InlineData("test", "test", true)]
-        public void IsValid_CheckParams_ReturnAsExpected(string username, string secretKey, bool expected)
+        [InlineData("secret-key", "")]
+        [InlineData("", "admin")]
+        [InlineData("", "")]
+        public void IsValid_CheckParams_ReturnAsExpected(string username, string secretKey)
         {
             // Arrange
             var criteria = new UpdateSecretKeyCriteria
@@ -37,7 +35,24 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new UpdateSecretKeyCriteria
+            {
+                SecretKey = "secret-key",
+                Username = "admin"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

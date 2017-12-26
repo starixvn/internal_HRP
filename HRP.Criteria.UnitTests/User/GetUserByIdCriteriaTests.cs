@@ -19,9 +19,9 @@
         }
 
         [Theory]
-        [InlineData(0, false)]
-        [InlineData(1, true)]
-        public void IsValid_ReturnAsExpected(int userId, bool expected)
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void IsValid_UserIdIsInvalid_ReturnFalse(int userId)
         {
             // Arrange
             var criteria = new GetUserByIdCriteria
@@ -33,7 +33,23 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_UserIdIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetUserByIdCriteria
+            {
+                UserId = 1
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

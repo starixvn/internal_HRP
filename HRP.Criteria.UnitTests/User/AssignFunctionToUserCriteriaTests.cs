@@ -7,22 +7,13 @@
     {
         public static IEnumerable<object[]> TestCase()
         {
-            yield return new object[]
-            {
-                1, 1, "<root></root>", true
-            };
-            yield return new object[]
-            {
-                0, 1, "<root></root>", false
-            };
-            yield return new object[]
-            {
-                0, 0, "<root></root>", false
-            };
-            yield return new object[]
-            {
-                0, 0, string.Empty, false
-            };
+            yield return new object[] { 1, 1, string.Empty };
+            yield return new object[] { 1, 0, "<root></root>" };
+            yield return new object[] { 1, 0, string.Empty };
+            yield return new object[] { 0, 1, "<root></root>" };
+            yield return new object[] { 0, 1, string.Empty };
+            yield return new object[] { 0, 0, "<root></root>" };
+            yield return new object[] { 0, 0, string.Empty };
         }
 
         [Fact]
@@ -40,7 +31,7 @@
         }
 
         [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_CheckParams_ReturnAsExpected(int userId, int modifiedBy, string value, bool expected)
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, int modifiedBy, string value)
         {
             // Arrange
             var criteria = new AssignFunctionToUserCriteria
@@ -54,7 +45,25 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new AssignFunctionToUserCriteria
+            {
+                UserId = 1,
+                ModifiedBy = 1,
+                Value = "<root></root>"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

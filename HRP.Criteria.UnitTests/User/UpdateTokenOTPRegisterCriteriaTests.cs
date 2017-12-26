@@ -19,15 +19,14 @@
         }
 
         [Theory]
-        [InlineData(null, false)]
-        [InlineData("", false)]
-        [InlineData("test", true)]
-        public void IsValid_CheckParams_ReturnAsExpected(string username, bool expected)
+        [InlineData(null)]
+        [InlineData("")]
+        public void IsValid_UsernameIsInvalid_ReturnFalse(string username)
         {
             // Arrange
             var criteria = new UpdateTokenOTPRegisterCriteria
             {
-                TokenOTPRegister = "test",
+                TokenOTPRegister = "token",
                 Username = username
             };
 
@@ -35,8 +34,20 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.NotNull(criteria.TokenOTPRegister);
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_UsernameIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new UpdateTokenOTPRegisterCriteria { Username = "admin" };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

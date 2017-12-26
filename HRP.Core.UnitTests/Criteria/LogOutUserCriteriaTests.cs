@@ -50,7 +50,7 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.False(actual);
+            Assert.True(actual);
         }
     }
 }

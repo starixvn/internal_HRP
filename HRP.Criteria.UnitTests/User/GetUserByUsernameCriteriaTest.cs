@@ -19,10 +19,9 @@
         }
 
         [Theory]
-        [InlineData(null, false)]
-        [InlineData("", false)]
-        [InlineData("abc", true)]
-        public void IsValid_ReturnAsExpected(string username, bool expected)
+        [InlineData(null)]
+        [InlineData("")]
+        public void IsValid_UsernameIsInvalid_ReturnFalse(string username)
         {
             // Arrange
             var criteria = new GetUserByUsernameCriteria
@@ -34,7 +33,20 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_UsernameIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetUserByUsernameCriteria { Username = "admin" };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

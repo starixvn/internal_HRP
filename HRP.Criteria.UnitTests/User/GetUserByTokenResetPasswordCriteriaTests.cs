@@ -19,12 +19,11 @@
         }
 
         [Theory]
-        [InlineData(null, false)]
-        [InlineData("", false)]
-        [InlineData("abc", true)]
-        public void IsValid_ReturnAsExpected(string token, bool expected)
+        [InlineData("")]
+        [InlineData(null)]
+        public void IsValid_TokenIsInvalid_ReturnFalse(string token)
         {
-            // Arrage
+            // Arrange
             var criteria = new GetUserByTokenResetPasswordCriteria
             {
                 TokenResetPassword = token
@@ -34,7 +33,23 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_TokenIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetUserByTokenResetPasswordCriteria
+            {
+                TokenResetPassword = "token"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

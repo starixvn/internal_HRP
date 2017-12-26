@@ -1,22 +1,9 @@
 ﻿namespace HRP.Criteria.UnitTests.Function
 {
-    using System.Collections.Generic;
     using Xunit;
 
     public class GetFunctionByUserIdCriteriaTests
     {
-        public static IEnumerable<object[]> TestCase()
-        {
-            yield return new object[]
-            {
-                1, true
-            };
-            yield return new object[]
-            {
-                0, false
-            };
-        }
-
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
@@ -31,8 +18,10 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_CheckParams_ReturnAsExpected(int userId, bool expected)
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void IsValid_UserIdIsInvalid_ReturnFalse(int userId)
         {
             // Arrange
             var criteria = new GetFunctionByUserIdCriteria
@@ -44,7 +33,23 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_UserIdIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetFunctionByUserIdCriteria
+            {
+                UserId = 1
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }

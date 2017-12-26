@@ -20,11 +20,10 @@
         }
 
         [Theory]
-        [InlineData(0, "", false)]
-        [InlineData(1, "", false)]
-        [InlineData(0, "test", false)]
-        [InlineData(1, "test", true)]
-        public void IsValid_CheckParams_ReturnAsExpected(int userId, string email, bool expected)
+        [InlineData(0, "")]
+        [InlineData(1, "")]
+        [InlineData(0, "test")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, string email)
         {
             // Arrange
             var criteria = new UpdateUserProfileCriteria
@@ -37,7 +36,24 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new UpdateUserProfileCriteria
+            {
+                UserId = 1,
+                Email = "test"
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
         }
     }
 }
