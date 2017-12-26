@@ -15,7 +15,10 @@
     }
 </environment>
 
-<h2 class="title">@ViewLang.UserManagement</h2>
+<ol class="breadcrumb">
+    <li class="like-link">Configuration</li>
+    <li class="active">@ViewLang.UserManagement</li>
+</ol>
 <form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
       data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="userManagement.onSearchSuccess">
     <div class="group">

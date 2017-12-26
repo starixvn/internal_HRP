@@ -76,7 +76,7 @@
       background-color: $table-row-level-parent;
     }
 
-    .col-odd {
+    .col-odd, .col-highlight {
       background-color: rgba(255,253,202,.65);
     }
   }
@@ -99,8 +99,7 @@
 
   .has-icon {
     line-height: 1;
-  }
-  
+  }  
 }
 
 .dataTables_wrapper {

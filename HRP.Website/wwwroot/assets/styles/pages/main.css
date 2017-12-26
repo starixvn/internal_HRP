@@ -18,6 +18,10 @@ a:hover, .link:hover {
   color: #135685;
 }
 
+.like-link {
+  color: #1973b2;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -229,6 +233,18 @@ input[type="search"],
 input[type="email"],
 input[type="number"],
 input[type="password"] {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition: all ease-in-out 0.3s;
+  -khtml-transition: all ease-in-out 0.3s;
+  -moz-transition: all ease-in-out 0.3s;
+  -ms-transition: all ease-in-out 0.3s;
+  -o-transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.3s;
   outline: none;
   height: 32px;
   line-height: 32px;
@@ -236,20 +252,8 @@ input[type="password"] {
   padding-right: 5px;
   background-color: #fafafa;
   border: 1px solid #d9d9d9;
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
   font-size: inherit;
   color: #333;
-  -webkit-transition: all ease-in-out 0.3s;
-  -khtml-transition: all ease-in-out 0.3s;
-  -moz-transition: all ease-in-out 0.3s;
-  -ms-transition: all ease-in-out 0.3s;
-  -o-transition: all ease-in-out 0.3s;
-  transition: all ease-in-out 0.3s;
 }
 
 input[type="text"]:focus,
@@ -257,13 +261,20 @@ input[type="search"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="password"]:focus {
-  border-color: #1a87d3;
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  border-color: #1a87d3;
+}
+
+input[type="text"][disabled],
+input[type="number"][disabled] {
+  background-color: #ededed;
+  border-color: #d9d9d9;
+  color: #777;
 }
 
 input[type='checkbox'] {

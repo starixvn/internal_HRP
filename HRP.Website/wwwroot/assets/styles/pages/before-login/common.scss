@@ -10,6 +10,7 @@
 body { 
     height: 100vh;
     width: 100%;
+    font-size: $font-size + 1;
     background-color: $page-bg;
     color: #666;
 }
@@ -29,18 +30,19 @@ body {
     justify-content: flex-start;
     align-items: center;
     background-color: #fff;
-    height: 55px;
+    height: 61px;
     border-bottom: 1px solid #dcdcdc;    
 
     .logo img {
         float: left;
-        height: 26px;
+        width: 177px;
+        height: 30px;
     }
 }
 
 .content-container {
     position: absolute;
-    top: 55px;
+    top: 60px;
     left: 0;
     width: 100%;
     bottom: 0;
@@ -56,7 +58,7 @@ body {
 
 .block {
     margin: 0 auto;
-    padding-top: 65px;
+    padding-top: 70px;
     width: 410px;
     position: relative;
     top: 90px;
@@ -73,8 +75,8 @@ body {
         top: -42px;
         left: 50%;
         margin-left: -40px;
-        height: 75px;
-        width: 75px;
+        height: 80px;
+        width: 80px;
         @include border-radius(50%);
         background-color: #f57d14;        
 
@@ -112,18 +114,18 @@ body {
     }
 
     .title {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         color: #1973b2;
-        font-size: 18px;
+        font-size: 20px;
         text-transform: uppercase;
         text-align: center;
         font-weight: bold;
     }
 
     .intro {
-        line-height: 20px;
+        line-height: 24px;
         text-align: center;
-        padding: 0 36px 20px;
+        padding: 0 36px 26px;
     }
 
     .text-special {
@@ -132,7 +134,7 @@ body {
     }
 
     &.-confirmation-email .intro {
-        padding: 0 24px 20px;
+        padding: 0 24px 40px;
     }
 
     &.-reset-password, &.-otp-code-validation {

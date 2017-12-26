@@ -2,8 +2,22 @@
 @using HRP.Models.Currency
 @model CurrencySettingViewModel
 
+<environment include="Development">
+    @section Styles {
+        <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
+    }
+</environment>
+<environment exclude="Development">
+    @section Styles {
+        <link href="~/assets/bundles/currency/css/currency-setting.min.css" rel="stylesheet" />
+    }
+</environment>
 
-<h2 class="title">@ViewLang.CurrencySetting</h2>
+<ol class="breadcrumb">
+    <li class="like-link">Configuration</li>
+    <li class="active">@ViewLang.CurrencySetting</li>
+</ol>
+
 <form class="search-form" asp-action="Index">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
@@ -24,7 +38,7 @@
 
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
 <form id="currency-form">
-    <table id="currency-table" class="table table-bordered table-hover table-responsive table-striped">
+    <table id="currency-table" class="table table-bordered table-hover table-responsive">
         <thead>
             <tr>
                 <th>@ViewLang.Currency</th>
@@ -40,7 +54,7 @@
                 var isDisabled = false;
                 var disabled = string.Empty;
                 <tr>
-                    <td>@fromCurrency.CurrencyCode</td>
+                    <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
                     @foreach (var toCurrency in Model.Currencies)
                     {
                         var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
@@ -57,7 +71,7 @@
                         isDisabled = true;
 
                         <td>
-                            <input @disabled type="number" step="any" min="0.00001" max="@decimal.MaxValue" value="@rate?.ExchangeRate"
+                            <input class="input" @disabled type="text" maxlength="12" step="any" min="0.00001" max="@decimal.MaxValue" value="@rate?.ExchangeRate"
                                    class="rate" data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
                                    name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
                                    data-msg-min="Please enter value greater than 0" />
