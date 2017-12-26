@@ -126,7 +126,7 @@
         [Theory]
         [InlineData(0, 0, "Your password has been successfully changed.")]
         [InlineData(-1, -1, "Update failed")]
-        public void ChangePassword_CorrectOldPassword_AndUpdatePassword(int codeCommandResult, int expectedCode, string expectedMessage)
+        public void ChangePassword_CorrectOldPasswordAndUpdatePassword_ReturnJsonResult(int codeCommandResult, int expectedCode, string expectedMessage)
         {
             //Arrange
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
