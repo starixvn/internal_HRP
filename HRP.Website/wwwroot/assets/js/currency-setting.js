@@ -89,14 +89,11 @@
                 });
             });
 
-            var selectedTime = $("#SelectedMonth").val().split('-');
-
             $.ajax({
                 type: 'POST',
                 url: commonFunctions.rootURL + 'CurrencySetting/Save',
                 data: {
-                    month: selectedTime[0],
-                    year: selected[1],
+                    selectedTime: $("#SelectedTime").val(),
                     exchangeRates: data
                 },
                 success: function (response) {

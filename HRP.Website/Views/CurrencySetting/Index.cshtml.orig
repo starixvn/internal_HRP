@@ -1,0 +1,112 @@
+﻿@using HRP.Resources
+@using HRP.Models.Currency
+@model CurrencySettingViewModel
+
+<environment include="Development">
+    @section Styles {
+        <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
+    }
+</environment>
+<environment exclude="Development">
+    @section Styles {
+        <link href="~/assets/bundles/currency/css/currency-setting.min.css" rel="stylesheet" />
+    }
+</environment>
+
+<ol class="breadcrumb">
+    <li class="like-link">Configuration</li>
+    <li class="active">@ViewLang.CurrencySetting</li>
+</ol>
+
+<<<<<<< HEAD
+<form class="search-form" asp-action="Index">
+=======
+<h2 class="title">@ViewLang.CurrencySetting</h2>
+<form class="search-form" asp-action="Index" method="get">
+>>>>>>> #88620 - Curency setting - Save
+    <div class="group">
+        <label class="text">@ViewLang.MonthYear</label>
+        <select class="control" asp-for="SelectedTime">
+            @foreach (var group in Model.Months.GroupBy(x => x.Year))
+            {
+                <optgroup label="@group.Key">
+                    @foreach (var item in group.OrderByDescending(x => x))
+                    {
+                        <option value="@item.ToString("MM-yyyy")">@item.ToString("MM-yyyy")</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+    <button type="submit" class="button -primary">@ViewLang.Submit</button>
+</form>
+
+<div class="msg-success -has-icon hidden"></div>
+<div class="msg-error -has-icon hidden"></div>
+
+<input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
+<form id="currency-form">
+    <table id="currency-table" class="table table-bordered table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>@ViewLang.Currency</th>
+                @foreach (var currency in Model.Currencies)
+                {
+                    <th>@currency.CurrencyCode</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fromCurrency in Model.Currencies)
+            {
+                var isDisabled = false;
+                var disabled = string.Empty;
+                <tr>
+                    <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
+                    @foreach (var toCurrency in Model.Currencies)
+                    {
+                        var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
+                        if (isDisabled || fromCurrency.CurrencyCode == "VND")
+                        {
+                            disabled = "disabled";
+                        }
+
+                        if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
+                        {
+                            disabled = string.Empty;
+                        }
+
+                        isDisabled = true;
+
+                        <td>
+<<<<<<< HEAD
+                            <input class="input" @disabled type="text" maxlength="12" step="any" min="0.00001" max="@decimal.MaxValue" value="@rate?.ExchangeRate"
+=======
+                            <input @disabled type="number" step="any" min="0.00001" max="@decimal.MaxValue" value="@rate?.ExchangeRate.ToString("0.#####")"
+>>>>>>> #88620 - Curency setting - Save
+                                   class="rate" data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
+                                   name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
+                                   data-msg-min="Please enter value greater than 0" />
+
+                            <span class="text-danger field-validation-valid" data-valmsg-for="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-valmsg-replace="true">
+
+                            </span>
+                        </td>
+
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<button id="btn-save" class="button -primary">@ViewLang.Save</button>
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/assets/js/currency-setting.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/currency/js/currency-setting.min.js"></script>
+    </environment>
+}

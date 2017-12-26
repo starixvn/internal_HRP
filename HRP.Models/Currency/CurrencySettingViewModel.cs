@@ -5,17 +5,7 @@
 
     public class CurrencySettingViewModel
     {
-        public int Month { get; set; }
-
-        public int Year { get; set; }
-
-        public string SelectedMonth
-        {
-            get
-            {
-                return $"{Month}-{Year}";
-            }
-        }
+        public DateTime SelectedTime { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; }
 

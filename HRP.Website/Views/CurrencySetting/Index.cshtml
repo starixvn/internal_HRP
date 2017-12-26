@@ -18,10 +18,10 @@
     <li class="active">@ViewLang.CurrencySetting</li>
 </ol>
 
-<form class="search-form" asp-action="Index">
+<form class="search-form" asp-action="Index" method="get">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
-        <select class="control" asp-for="SelectedMonth">
+        <select class="control" asp-for="SelectedTime">
             @foreach (var group in Model.Months.GroupBy(x => x.Year))
             {
                 <optgroup label="@group.Key">
@@ -35,6 +35,9 @@
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
 </form>
+
+<div class="msg-success -has-icon hidden"></div>
+<div class="msg-error -has-icon hidden"></div>
 
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
 <form id="currency-form">

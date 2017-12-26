@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -33,8 +34,9 @@
             var controller = GetController();
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
+            baseService.GetData<DateTime>(Arg.Any<GetExchageRateMonthsCriteria>()).Returns(new List<DateTime> { DateTime.Today });
 
-            var actual = controller.Index(1, 2017);
+            var actual = controller.Index(DateTime.Today);
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<CurrencySettingViewModel>(viewResult.Model);
         }
