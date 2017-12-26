@@ -1,0 +1,122 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  font-family: Roboto, Arial, Tahoma, sans-serif;
+  color: #333;
+}
+
+*, :before, :after {
+  box-sizing: border-box;
+}
+
+a, .link {
+  color: #1973b2;
+}
+
+a:hover, .link:hover {
+  color: #135685;
+}
+
+.like-link {
+  color: #1973b2;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+.display-none {
+  display: none;
+}
+
+.button {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition: all ease-in-out 0.3s;
+  -khtml-transition: all ease-in-out 0.3s;
+  -moz-transition: all ease-in-out 0.3s;
+  -ms-transition: all ease-in-out 0.3s;
+  -o-transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.3s;
+  -webkit-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  -khtml-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  -o-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: bold;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.button.-primary {
+  background-color: #1973b2;
+  color: #fff;
+}
+
+.button.-primary:hover {
+  background-color: #16659c;
+}
+
+.button.-second {
+  background-color: #777777;
+  color: #fff;
+}
+
+.button.-second:hover {
+  background-color: #6a6a6a;
+  text-decoration: none;
+}
+
+.button.-add {
+  background-color: #1ca041;
+  color: #fff;
+}
+
+.button.-add:hover {
+  background-color: #188a38;
+}
+
+a.button, a.button:hover {
+  text-decoration: none;
+}
+
+.block {
+  margin: 220px auto 0;
+  width: 240px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.title {
+  padding-top: 32px;
+  padding-bottom: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info {
+  padding-bottom: 20px;
+}
+ 
+
+ /*# sourceMappingURL= error.css.map */

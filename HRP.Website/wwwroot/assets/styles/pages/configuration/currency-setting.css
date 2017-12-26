@@ -372,6 +372,10 @@
   border-color: #c0c0c0;
   text-align: right;
 }
+
+.table-responsive {
+  height: 355px;
+}
  
 
  /*# sourceMappingURL= currency-setting.css.map */

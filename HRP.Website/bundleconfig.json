@@ -45,6 +45,14 @@
     "inputFiles": [
       "wwwroot/assets/styles/pages/configuration/currency-setting.css"
     ]
+  },  
+  {
+    "outputFileName": "wwwroot/assets/bundles/errors/error.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/base/font-roboto.css",
+      "wwwroot/assets/styles/base/reset.css",
+      "wwwroot/assets/styles/pages/errors/error.css"
+    ]
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",

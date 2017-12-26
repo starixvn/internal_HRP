@@ -1,0 +1,23 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../base/scaffolding";
+@import "../../components/buttons";
+
+.block {
+    margin: 220px auto 0;
+    width: 240px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.title {
+    padding-top: 32px;
+    padding-bottom: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.info {
+    padding-bottom: 20px;
+}
