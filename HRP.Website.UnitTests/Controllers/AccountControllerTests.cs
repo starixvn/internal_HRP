@@ -1,10 +1,5 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using Core.Enumerations;
     using Core.Model;
     using Core.Services;
@@ -20,6 +15,11 @@
     using NSubstitute;
     using NSubstitute.Core;
     using Services;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using Website.Controllers;
     using Xunit;
 
@@ -96,13 +96,28 @@
             return userService;
         }
 
-        #endregion
+        #endregion Helper
 
         [Fact]
         public void ChangePassword_AnyModel_ReturnJsonResult()
         {
             //Act
             var actual = accountController.ChangePassword(new ChangePasswordViewModel());
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void UpdateProfile_AnyModel_ReturnJsonResult(int code)
+        {
+            //Arrange
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = code, Message = string.Empty });
+
+            //Act
+            var actual = accountController.UpdateProfile(new UserProfileViewModel());
 
             //Assert
             Assert.IsType<JsonResult>(actual);
@@ -145,6 +160,8 @@
             //Act
             var actual = accountController.ChangePassword(viewModel) as JsonResult;
             var jsonResult = Assert.IsType<JsonResult>(actual);
+
+            //Assert
             Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
         }
 
