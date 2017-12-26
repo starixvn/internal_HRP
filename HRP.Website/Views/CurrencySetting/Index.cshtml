@@ -4,7 +4,9 @@
 
 <environment include="Development">
     @section Styles {
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/fixedcolumns/3.2.4/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
     }
 </environment>
 <environment exclude="Development">
@@ -41,62 +43,67 @@
 
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
 <form id="currency-form">
-    <table id="currency-table" class="table table-bordered table-hover table-responsive">
-        <thead>
-            <tr>
-                <th>@ViewLang.Currency</th>
-                @foreach (var currency in Model.Currencies)
-                {
-                    <th>@currency.CurrencyCode</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var fromCurrency in Model.Currencies)
-            {
-                var isDisabled = false;
-                var disabled = string.Empty;
+    <div class="">
+        <table id="currency-table" class="table table-bordered table-hover table-responsive">
+            <thead>
                 <tr>
-                    <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
-                    @foreach (var toCurrency in Model.Currencies)
+                    <th>@ViewLang.Currency</th>
+                    @foreach (var currency in Model.Currencies)
                     {
-                        var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
-                        if (isDisabled || fromCurrency.CurrencyCode == "VND")
-                        {
-                            disabled = "disabled";
-                        }
-
-                        if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
-                        {
-                            disabled = string.Empty;
-                        }
-
-                        isDisabled = true;
-
-                        <td>
-                            <input class="input" @disabled type="text" maxlength="12" step="any" min="0.00001" max="@decimal.MaxValue" value="@rate?.ExchangeRate"
-                                   class="rate" data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
-                                   name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
-                                   data-msg-min="Please enter value greater than 0" />
-
-                            <span class="text-danger field-validation-valid" data-valmsg-for="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-valmsg-replace="true">
-
-                            </span>
-                        </td>
-
+                        <th>@currency.CurrencyCode</th>
                     }
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var fromCurrency in Model.Currencies)
+                {
+                    var isDisabled = false;
+                    var disabled = string.Empty;
+                    <tr>
+                        <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
+                        @foreach (var toCurrency in Model.Currencies)
+                        {
+                            var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
+                            if (isDisabled || fromCurrency.CurrencyCode == "VND")
+                            {
+                                disabled = "disabled";
+                            }
+
+                            if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
+                            {
+                                disabled = string.Empty;
+                            }
+
+                            isDisabled = true;
+
+                            <td>
+                                <input class="input rate" @disabled type="text" maxlength="12" step="any" min="0.00001" value="@rate?.ExchangeRate.ToString("0.#####")"
+                                       data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
+                                       name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-rule-number="true"
+                                       data-msg-min="Please enter value greater than 0" />
+
+                                <span class="text-danger field-validation-valid" data-valmsg-for="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-valmsg-replace="true">
+
+                                </span>
+                            </td>
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </form>
 
 <button id="btn-save" class="button -primary">@ViewLang.Save</button>
 @section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/assets/js/currency-setting.js"></script>
-    </environment>
+<environment include="Development">
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.2.4/js/dataTables.fixedColumns.min.js"></script>
+    <script src="~/assets/js/currency-setting.js"></script>
+</environment>
     <environment exclude="Development">
         <script src="~/assets/bundles/currency/js/currency-setting.min.js"></script>
     </environment>
