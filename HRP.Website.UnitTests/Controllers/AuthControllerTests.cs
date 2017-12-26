@@ -1,5 +1,7 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -12,9 +14,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
-    using System;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class AuthControllerTests
@@ -89,9 +88,9 @@
 
             //Act
             var actual = authController.ForgotPassword("test");
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("ConfirmationEmailSent", viewResult.ActionName);
         }
 
@@ -129,9 +128,9 @@
 
             //Act
             var actual = authController.Login(model);
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("RegisterOTPNotification", viewResult.ActionName);
         }
 
@@ -151,41 +150,11 @@
 
             //Act
             var actual = authController.Login(model);
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Account", viewResult.ControllerName);
             Assert.Equal("VerifyOTP", viewResult.ActionName);
-        }
-
-        private AuthController ArrangeForSignOutTestFunction()
-        {
-            var authService = Substitute.For<IAuthenticationService>();
-            authService.SignInAsync(
-                    Arg.Any<HttpContext>(),
-                    Arg.Any<string>(),
-                    Arg.Any<ClaimsPrincipal>(),
-                    Arg.Any<AuthenticationProperties>())
-                .Returns(Task.FromResult((object)null));
-
-            var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
-
-            ControllerContext controllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = serviceProvider
-                }
-            };
-
-            authController = GetAuthController();
-            authController.ControllerContext = controllerContext;
-            authController.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Any;
-            authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "12345";
-            authController.Url = Substitute.For<IUrlHelper>();
-            baseService.ExecuteNonQueryAsync(Arg.Any<LogOutUserCriteria>()).Returns(new CommandResult { Code = 0 });
-            return authController;
         }
 
         [Fact]
@@ -196,9 +165,9 @@
 
             //Act
             var actual = await authController.Logout();
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Login", viewResult.ActionName);
         }
 
@@ -211,9 +180,9 @@
 
             //Act
             var actual = authController.ResetPassword("test");
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("error", viewResult.ControllerName);
             Assert.Equal("404", viewResult.ActionName);
         }
@@ -244,9 +213,9 @@
 
             //Act
             var actual = authController.ResetPassword("abc", model);
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("ResetPasswordSuccessfully", viewResult.ActionName);
         }
 
@@ -280,6 +249,29 @@
             var controller = new AuthController(userService, sessionService, baseService);
 
             return controller;
+        }
+
+        private AuthController ArrangeForSignOutTestFunction()
+        {
+            var authService = Substitute.For<IAuthenticationService>();
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = serviceProvider
+                }
+            };
+
+            authController = GetAuthController();
+            authController.ControllerContext = controllerContext;
+            authController.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Any;
+            authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "12345";
+            authController.Url = Substitute.For<IUrlHelper>();
+            baseService.ExecuteNonQueryAsync(Arg.Any<LogOutUserCriteria>()).Returns(new CommandResult { Code = 0 });
+
+            return authController;
         }
 
         #endregion Helpers
