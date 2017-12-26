@@ -1,7 +1,5 @@
 ﻿namespace HRP.Criteria
 {
-    using System;
-
     public class CreateUserCriteria : CommandBaseCriteria
     {
         public int UserId { get; set; }

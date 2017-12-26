@@ -38,7 +38,7 @@
         }
 
         [Fact]
-        public void IsValid_UserIdGreaterThanZero_ReturnFalse()
+        public void IsValid_UserIdGreaterThanZero_ReturnTrue()
         {
             // Arrange
             var criteria = new LogOutUserCriteria

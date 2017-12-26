@@ -8,7 +8,10 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetAllFunctionCriteria();
+            var criteria = new GetAllFunctionCriteria
+            {
+                IsActive = true
+            };
             var expected = "Function_GetAll";
 
             // Act
@@ -16,6 +19,7 @@
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.True(criteria.IsActive);
         }
 
         [Fact]

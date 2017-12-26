@@ -51,6 +51,7 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
 
             //Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
         }
 

@@ -8,7 +8,10 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetAllCompanyCriteria();
+            var criteria = new GetAllCompanyCriteria
+            {
+                IsActive = true
+            };
             var expected = "Company_GetAll";
 
             // Act
@@ -16,6 +19,7 @@
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.True(criteria.IsActive);
         }
 
         [Fact]

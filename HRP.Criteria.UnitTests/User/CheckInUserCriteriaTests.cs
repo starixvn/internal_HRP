@@ -25,10 +25,16 @@
         public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, string sessionId)
         {
             // Arrange
+            var ip = string.Empty;
+            var onUserId = 1;
+            var platform = string.Empty;
             var criteria = new CheckInUserCriteria
             {
                 UserId = userId,
-                NetSessionId = sessionId
+                NetSessionId = sessionId,
+                IP = ip,
+                OnUserId = onUserId,
+                Platform = platform
             };
 
             // Act
@@ -36,9 +42,11 @@
 
             // Assert
             Assert.False(actual);
+            Assert.Equal(criteria.IP, ip);
+            Assert.Equal(criteria.OnUserId, onUserId);
+            Assert.Equal(criteria.Platform, platform);
         }
-
-        [Fact]
+        
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
