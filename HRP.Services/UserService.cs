@@ -1,5 +1,6 @@
 namespace HRP.Services
 {
+    using System.Globalization;
     using BCrypt.Net;
     using Core.Constants;
     using Core.Model;
@@ -8,7 +9,6 @@ namespace HRP.Services
     using Microsoft.Extensions.Options;
     using Models;
     using Resources;
-    using System.Globalization;
 
     public class UserService : IUserService
     {

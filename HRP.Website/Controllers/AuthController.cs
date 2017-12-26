@@ -1,5 +1,6 @@
 namespace HRP.Website.Controllers
 {
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Services;
     using HRP.Core.Criteria;
@@ -11,7 +12,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Resources;
     using Services;
-    using System.Threading.Tasks;
 
     public class AuthController : Controller
     {

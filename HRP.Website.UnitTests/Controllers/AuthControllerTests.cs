@@ -1,5 +1,7 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -12,8 +14,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
-    using System;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class AuthControllerTests

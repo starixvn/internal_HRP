@@ -1,5 +1,9 @@
 namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Constants;
     using Core.Enumerations;
@@ -16,10 +20,6 @@ namespace HRP.Website.Controllers
     using Models.Account;
     using Resources;
     using Services;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
 
     public class AccountController : Controller
     {

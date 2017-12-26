@@ -1,5 +1,9 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -14,10 +18,6 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class UserManagementController : Controller
