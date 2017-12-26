@@ -1,7 +1,7 @@
 ﻿namespace HRP.Models.Account
 {
-    using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
+    using System.ComponentModel.DataAnnotations;
 
     public class ChangePasswordViewModel : ResetPasswordViewModel
     {

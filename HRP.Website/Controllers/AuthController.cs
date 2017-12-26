@@ -29,37 +29,11 @@ namespace HRP.Website.Controllers
             this.baseService = baseService;
         }
 
-        public IActionResult ConfirmationEmailSent()
-        {
-            return View();
-        }
-
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ForgotPassword(string username)
-        {
-            var user = userService.GetUserByUsername(username);
-
-            if (user != null)
-            {
-                userService.ResetUserPassword(username);
-
-                return RedirectToAction(nameof(ConfirmationEmailSent));
-            }
-
-            ModelState.AddModelError(string.Empty, Message.ForgotPasswordInvalidUser);
-
-            return View();
-        }
-
         public IActionResult Login()
         {
             sessionService.ClearAll();
-            return View();
+            var viewModel = new LoginViewModel();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -101,11 +75,31 @@ namespace HRP.Website.Controllers
             return RedirectToAction("VerifyOTP", "Account");
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult ForgotPassword()
         {
-            await DoSignOut();
+            return View();
+        }
 
-            return RedirectToAction(nameof(Login));
+        [HttpPost]
+        public IActionResult ForgotPassword(string username)
+        {
+            var user = userService.GetUserByUsername(username);
+
+            if (user != null)
+            {
+                userService.ResetUserPassword(username);
+
+                return RedirectToAction(nameof(ConfirmationEmailSent));
+            }
+
+            ModelState.AddModelError(string.Empty, Message.ForgotPasswordInvalidUser);
+
+            return View();
+        }
+
+        public IActionResult ConfirmationEmailSent()
+        {
+            return View();
         }
 
         public IActionResult ResetPassword(string token)
@@ -117,6 +111,11 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("404", "error");
             }
 
+            return View();
+        }
+
+        public IActionResult ResetPasswordSuccessfully()
+        {
             return View();
         }
 
@@ -145,9 +144,11 @@ namespace HRP.Website.Controllers
             return View(model);
         }
 
-        public IActionResult ResetPasswordSuccessfully()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await DoSignOut();
+
+            return RedirectToAction(nameof(Login));
         }
 
         private async Task DoSignOut()
