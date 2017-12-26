@@ -48,7 +48,6 @@
 
             //Act
             var actual = authController.Login();
-            var viewResult = Assert.IsType<ViewResult>(actual);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
