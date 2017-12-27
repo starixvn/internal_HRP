@@ -53,6 +53,10 @@
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
 }
 
+.form-information .control.without-label {
+  margin-top: 18px;
+}
+
 .form-information .list-button .button:first-child {
   margin-right: 10px;
 }
@@ -376,6 +380,4 @@
 .table-responsive {
   height: 355px;
 }
- 
-
- /*# sourceMappingURL= currency-setting.css.map */
+/*# sourceMappingURL=currency-setting.css.map */

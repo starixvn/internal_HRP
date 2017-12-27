@@ -49,6 +49,10 @@
             border-color: #ff4545;
             @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
         }
+
+        &.without-label {
+            margin-top: 18px;
+        }
     }
 
     .list-button .button:first-child {

@@ -1,0 +1,112 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/tables";
+@import "../../components/tabs";
+
+.personal-detail {
+    display: grid;
+    grid-template-columns: 160px 530px 638px;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    align-items: flex-start;
+}
+
+.has-space {
+    margin-left: 10px;
+    margin-right: 50px;
+}
+
+.profile {
+    text-align: center;
+
+    .change-picture {
+        margin-top: 10px;
+        color: $link-color;
+    }
+}
+
+.form-information {
+    /* Personal Detail */
+    .width-80 {
+        width: 80px;
+    }
+
+    .width-110 {
+        width: 110px;
+    }
+
+    .width-200 {
+        width: 200px;
+    }
+
+    .width-230 {
+        width: 230px;
+    }
+
+    .width-260 {
+        width: 260px;
+    }
+
+    .width-350 {
+        width: 350px;
+    }
+
+    /* Employment */
+    .width-185 {
+        width: 185px;
+    }
+
+    .width-205 {
+        width: 205px;
+    }
+
+    .width-240 {
+        width: 240px;
+    }
+
+    .group-complex {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 12px;
+
+        .component {
+            margin-right: 10px;
+        } 
+
+        .component:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .calendar {
+        width: 110px;
+        position: relative;
+
+        .icon-calendar {
+            position: absolute;
+            bottom: 5px;
+            right: 4px;
+            color: #f57d14;
+            font-size: 22px;           
+        }
+    }
+
+    .group-title, .like-group-title {
+        color: #1973b2;
+        font-weight: bold;
+    }
+
+    .group-title {
+        margin-bottom: 8px;
+    }
+}
+
+.employment {
+    display: flex;
+    justify-content: space-between;
+
+    .col:first-child {
+        margin-right: 140px;
+    }
+}
