@@ -300,12 +300,11 @@ var assignPermissionToUser = (function ($) {
             }
 
             if (model.length > 0) {
-                var permissions = JSON.stringify(model);
                 $.ajax({
                     type: 'POST',
                     url: commonFunctions.rootURL + 'UserManagement/AssignPermission',
                     data: {
-                        'permissions': permissions
+                        permissions: model
                     },
                     success: function (response) {
                         if (response.isSuccessful) {

@@ -17,7 +17,6 @@
     using HRP.Models.UserPermisson;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
-    using Newtonsoft.Json;
 
     [HRPAuthorize]
     public class UserManagementController : Controller
@@ -80,16 +79,14 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
-        public async Task<JsonResult> AssignPermission(string permissions)
+        public async Task<JsonResult> AssignPermission(IEnumerable<UserPermissionModel> permissions)
         {
-            var userPermissions = !string.IsNullOrWhiteSpace(permissions)
-                ? JsonConvert.DeserializeObject<IEnumerable<UserPermissionModel>>(permissions) : new List<UserPermissionModel>();
-            var userId = userPermissions.Any() ? userPermissions.First().UserId : 0;
+            var userId = permissions != null && permissions.Any() ? permissions.First().UserId : 0;
 
             var criteria = new AssignFunctionToUserCriteria
             {
                 UserId = userId,
-                Value = userPermissions.ToXML().ToString(),
+                Value = permissions != null && permissions.Any() ? permissions.ToXML().ToString() : string.Empty,
                 ModifiedBy = sessionService.UserId
             };
 

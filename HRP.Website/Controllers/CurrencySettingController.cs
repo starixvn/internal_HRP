@@ -12,7 +12,6 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
 
-    [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
     public class CurrencySettingController : Controller
     {
         private readonly ISessionService sessionService;
@@ -25,6 +24,7 @@
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
         public IActionResult Index(DateTime? selectedTime)
         {
             var criteria = new GetExchangeRateCriteria
@@ -53,6 +53,7 @@
         }
 
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Host)]
         public IActionResult Save(DateTime selectedTime, IEnumerable<CurrencyExchangeRateModel> exchangeRates)
         {
             var criteria = new UpdateExchangeRatesCriteria

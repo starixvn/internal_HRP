@@ -47,6 +47,7 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<AssignPermissonViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
             Assert.True(viewModel.IsHost);
             Assert.Equal(user.Username, viewModel.Username);
             Assert.Equal(companies, viewModel.Companies);
@@ -55,11 +56,30 @@
         }
 
         [Fact]
-        public async Task AssignPermissionPost_WhenCalled_ReturnExpectedResult()
+        public async Task AssignPermissionPost_PermissionIsNull_ReturnDefaultCommandResult()
         {
             // Arrange
             var expected = new CommandResult();
-            var permissions = string.Empty;
+            userManagementController = GetUserManagementController();
+            baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
+
+            // Act
+            var actual = await userManagementController.AssignPermission(null);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.False(commandResult.IsSuccessful);
+            Assert.Equal(expected.Code, commandResult.Code);
+            Assert.Equal(expected.Message, commandResult.Message);
+        }
+
+        [Fact]
+        public async Task AssignPermissionPost_PermissionIsEmpty_ReturnDefaultCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult();
+            var permissions = new List<UserPermissionModel>();
             userManagementController = GetUserManagementController();
             baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
 
@@ -68,8 +88,36 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            var value = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
-            Assert.False(value.IsSuccessful);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.False(commandResult.IsSuccessful);
+            Assert.Equal(expected.Code, commandResult.Code);
+            Assert.Equal(expected.Message, commandResult.Message);
+        }
+
+        [Fact]
+        public async Task AssignPermissionPost_PermissionIsValid_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
+            var permissions = new List<UserPermissionModel>
+            {
+                new UserPermissionModel { UserId = 1, FunctionId = 1, CompanyId = 1, IsHost = true, IsRead = true }
+            };
+            userManagementController = GetUserManagementController();
+            baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
+
+            // Act
+            var actual = await userManagementController.AssignPermission(permissions);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.True(commandResult.IsSuccessful);
+            Assert.Equal(expected.Code, commandResult.Code);
+            Assert.Equal(expected.Message, commandResult.Message);
         }
 
         #endregion AssignPermission
