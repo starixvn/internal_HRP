@@ -45,5 +45,8 @@
       "termSemicolons": true,
       "gzip": false
     }
+  },
+  "options": {
+    "linefeed":  "crlf"
   }
 }
