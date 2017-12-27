@@ -230,7 +230,7 @@
         }
 
         [Fact]
-        public void ResetPassword_IncorrectUser_RedirectTo404()
+        public void ResetPassword_IncorrectUser_RedirectToPageNotFound()
         {
             //Arrange
             authController = GetAuthController();
@@ -241,8 +241,23 @@
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("error", viewResult.ControllerName);
-            Assert.Equal("404", viewResult.ActionName);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void ResetPassword_CorrectUser_ReturnViewResult()
+        {
+            //Arrange
+            authController = GetAuthController();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+
+            //Act
+            var actual = authController.ResetPassword("test");
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]

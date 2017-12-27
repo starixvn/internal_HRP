@@ -108,7 +108,7 @@ namespace HRP.Website.Controllers
 
             if (user == null || user.UserId <= 0)
             {
-                return RedirectToAction("404", "error");
+                return RedirectToAction("PageNotFound", "Error");
             }
 
             return View();

@@ -21,7 +21,9 @@
         [Theory]
         [InlineData(0, "")]
         [InlineData(1, "")]
+        [InlineData(-1, "")]
         [InlineData(0, "test")]
+        [InlineData(-1, "test")]
         public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, string password)
         {
             // Arrange
