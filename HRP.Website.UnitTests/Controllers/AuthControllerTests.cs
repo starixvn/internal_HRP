@@ -271,7 +271,8 @@
             var actual = authController.ResetPasswordSuccessfully();
 
             //Assert
-            Assert.IsType<ViewResult>(actual);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
@@ -286,6 +287,19 @@
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Login", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task Logout_Successful_UserNotAuthenticated()
+        {
+            //Arrange
+            authController = ArrangeForSignOutTestFunction();
+
+            //Act
+            var actual = await authController.Logout();
+
+            //Assert
+            Assert.False(authController.HttpContext.User.Identity.IsAuthenticated);
         }
 
         #region Helpers
