@@ -106,6 +106,72 @@
             return userService;
         }
 
+        public AccountController FakeAccountController(bool isAuthenticated)
+        {
+            var authService = Substitute.For<IAuthenticationService>();
+
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+
+            var session = Substitute.For<ISession>();
+            session.Id.Returns("sessionId");
+
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = serviceProvider,
+                    Session = session,
+                    Connection =
+                    {
+                        RemoteIpAddress = new IPAddress(0x2414188f)
+                    },
+                    Request =
+                    {
+                        Headers =
+                        {
+                            new KeyValuePair<string, StringValues>("User-Agent", "test-user-agent")
+                        }
+                    }
+                }
+            };
+
+            controllerContext.HttpContext.User = isAuthenticated
+                ? new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>(),
+                    CookieAuthenticationDefaults.AuthenticationScheme))
+                : new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()));
+
+            var controller =
+                Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
+
+            controller.ControllerContext = controllerContext;
+
+            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
+
+            controller.RedirectToAction(Arg.Any<string>())
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, null));
+
+            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<object>())
+                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, x.ArgAt<object>(1)));
+
+            controller.View(Arg.Any<string>(), Arg.Any<object>()).Returns(x => new ViewResult
+            {
+                ViewName = x.ArgAt<string>(0)
+            });
+
+            controller.View(Arg.Any<string>()).Returns(x => new ViewResult
+            {
+                ViewName = x.ArgAt<string>(0)
+            });
+
+            controller.Forbid().Returns(new ForbidResult());
+
+            controller.Ok().Returns(new OkResult());
+
+            return controller;
+        }
+
         #endregion Helper
 
         [Fact]
@@ -175,78 +241,6 @@
             Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
         }
 
-        public AccountController FakeAccountController(bool isAuthenticated)
-        {
-            var authService = Substitute.For<IAuthenticationService>();
-            authService.SignInAsync(
-                    Arg.Any<HttpContext>(),
-                    Arg.Any<string>(),
-                    Arg.Any<ClaimsPrincipal>(),
-                    Arg.Any<AuthenticationProperties>())
-                .Returns(Task.FromResult((object)null));
-
-            var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
-
-            var session = Substitute.For<ISession>();
-            session.Id.Returns("sessionId");
-
-            var controllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = serviceProvider,
-                    Session = session,
-                    Connection =
-                    {
-                        RemoteIpAddress = new IPAddress(0x2414188f)
-                    },
-                    Request =
-                    {
-                        Headers =
-                        {
-                            new KeyValuePair<string, StringValues>("User-Agent", "test-user-agent")
-                        }
-                    }
-                }
-            };
-
-            controllerContext.HttpContext.User = isAuthenticated
-                ? new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>(),
-                    CookieAuthenticationDefaults.AuthenticationScheme))
-                : new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()));
-
-            var controller =
-                Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
-
-            controller.ControllerContext = controllerContext;
-
-            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
-                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
-
-            controller.RedirectToAction(Arg.Any<string>())
-                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, null));
-
-            controller.RedirectToAction(Arg.Any<string>(), Arg.Any<object>())
-                .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), null, x.ArgAt<object>(1)));
-
-            controller.View(Arg.Any<string>(), Arg.Any<object>()).Returns(x => new ViewResult
-            {
-                ViewName = x.ArgAt<string>(0)
-            });
-
-            controller.View(Arg.Any<string>()).Returns(x => new ViewResult
-            {
-                ViewName = x.ArgAt<string>(0)
-            });
-
-            controller.Forbid().Returns(new ForbidResult());
-
-            controller.Ok().Returns(new OkResult());
-
-            return controller;
-        }
-
         [Theory]
         [InlineData(AccountTab.Profile)]
         [InlineData(AccountTab.ChangePassword)]
@@ -267,9 +261,15 @@
         [Fact]
         public void RegisterOTPNotification_None_ReturnViewResult()
         {
+            // Test
             var actual = accountController.RegisterOTPNotification(sessionService.Username);
 
+            var viewResult = Assert.IsType<ViewResult>(actual);
+
+            // Assert
             Assert.IsType<ViewResult>(actual);
+            Assert.Equal("RegisterOTPNotification", viewResult.ViewName);
+            Assert.Equal(sessionService.Username, viewResult.Model.ToString());
         }
 
         [Fact]
@@ -458,27 +458,6 @@
             Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Index", ((RedirectToActionResult)actual).ActionName);
         }
-
-        ////[Theory]
-        ////[InlineData(true, true, typeof(OkResult))]
-        ////[InlineData(true, false, typeof(ForbidResult))]
-        ////[InlineData(false, true, typeof(RedirectToActionResult))]
-        ////public void VerifySetupOTP_None_ReturnOkResult(bool isUserExist, bool isOTPValid, Type type)
-        ////{
-        ////    SetupOtpViewModel viewModel = new SetupOtpViewModel
-        ////    {
-        ////        Username = sessionService.Username,
-        ////        Otp = isOTPValid ? "sample" : SkipOtpCheck
-        ////    };
-
-        ////    if (!isUserExist)
-        ////    {
-        ////        userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-        ////    }
-
-        ////    var actual = accountController.VerifySetupOTP(viewModel);
-        ////    Assert.IsType(type, actual);
-        ////}
         
         [Fact]
         public void VerifySetupOTP_NullUser_RedirectToLogin()
