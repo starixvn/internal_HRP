@@ -1,20 +1,20 @@
 ﻿namespace HRP.Core
 {
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Logging;
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
 
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate next;
         private readonly ILogger logger;
 
-        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             this.next = next;
-            logger = loggerFactory.CreateLogger<ErrorHandlingMiddleware>();
+            this.logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
