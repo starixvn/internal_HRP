@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Net;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Core.Enumerations;
@@ -15,6 +16,7 @@
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Primitives;
     using Models;
     using Models.Account;
     using NSubstitute;
@@ -36,7 +38,7 @@
         {
             sessionService = FakeSessionService();
 
-            baseService = Substitute.For<IBaseService>();
+            baseService = FakeBaseService();
 
             twoFactorAuthService = FakeTwoFactorAuthenticatorService();
 
@@ -50,6 +52,14 @@
         }
 
         #region Helper
+
+        public static IBaseService FakeBaseService()
+        {
+            var baseService = Substitute.For<IBaseService>();
+            baseService.ExecuteNonQueryAsync(Arg.Any<ICriteria>()).Returns(new CommandResult());
+
+            return baseService;
+        }
 
         public static ISessionService FakeSessionService()
         {
@@ -178,11 +188,26 @@
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
 
-            ControllerContext controllerContext = new ControllerContext
+            var session = Substitute.For<ISession>();
+            session.Id.Returns("sessionId");
+
+            var controllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
                 {
-                    RequestServices = serviceProvider
+                    RequestServices = serviceProvider,
+                    Session = session,
+                    Connection =
+                    {
+                        RemoteIpAddress = new IPAddress(0x2414188f)
+                    },
+                    Request =
+                    {
+                        Headers =
+                        {
+                            new KeyValuePair<string, StringValues>("User-Agent", "test-user-agent")
+                        }
+                    }
                 }
             };
 
@@ -214,6 +239,10 @@
             {
                 ViewName = x.ArgAt<string>(0)
             });
+
+            controller.Forbid().Returns(new ForbidResult());
+
+            controller.Ok().Returns(new OkResult());
 
             return controller;
         }
@@ -367,56 +396,134 @@
             Assert.Equal("VerifyOTP", ((ViewResult)actual).ViewName);
         }
 
-        [Theory]
-        [InlineData(true, "test", true, typeof(RedirectToActionResult))]
-        [InlineData(false, "test", true, typeof(RedirectToActionResult))]
-        [InlineData(false, "test", false, typeof(RedirectToActionResult))]
-        [InlineData(true, "test", false, typeof(RedirectToActionResult))]
-        [InlineData(false, SkipOtpCheck, true, typeof(ViewResult))]
-        [InlineData(false, SkipOtpCheck, false, typeof(RedirectToActionResult))]
-        [InlineData(true, SkipOtpCheck, true, typeof(RedirectToActionResult))]
-        public void VerifyOTP_OtpInputed_ReturnViewResult(bool isAuthenticated, string otp, bool isUserExist, Type type)
+        [Fact]
+        public void VerifyOTP_OtpInputedAuthenticatedUser_ReturnIndex()
         {
             // Arrange
-            sessionService.UserId = 1;
-
-            accountController = FakeAccountController(isAuthenticated);
-            var viewModel = new TwoFactorAuthenticatorViewModel
-            {
-                OTPCode = otp
-            };
-
-            if (!isUserExist)
-            {
-                userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            }
+            sessionService.Username = "test";
+            accountController = FakeAccountController(true);
 
             // Test
-            var actual = accountController.VerifyOTP(viewModel);
+            var actual = accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel()).Result;
 
             // Assert
-            Assert.IsType(type, actual.Result);
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Index", ((RedirectToActionResult)actual).ActionName);
         }
 
-        [Theory]
-        [InlineData(true, true, typeof(OkResult))]
-        [InlineData(true, false, typeof(ForbidResult))]
-        [InlineData(false, true, typeof(RedirectToActionResult))]
-        public void VerifySetupOTP_None_ReturnOkResult(bool isUserExist, bool isOTPValid, Type type)
+        [Fact]
+        public void VerifyOTP_OtpInputedNullUser_RedirectToLogin()
         {
-            SetupOtpViewModel viewModel = new SetupOtpViewModel
-            {
-                Username = sessionService.Username,
-                Otp = isOTPValid ? "sample" : SkipOtpCheck
-            };
+            // Arrange
+            sessionService.Username = null;
+            accountController = FakeAccountController(false);
+            userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
 
-            if (!isUserExist)
-            {
-                userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
-            }
+            // Test
+            var actual = accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel()).Result;
 
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void VerifyOTP_OtpInputedInvalidOtp_ReturnIndex()
+        {
+            // Arrange
+            sessionService.Username = "test";
+            accountController = FakeAccountController(false);
+            var viewModel = new TwoFactorAuthenticatorViewModel { OTPCode = SkipOtpCheck };
+
+            // Test
+            var actual = accountController.VerifyOTP(viewModel).Result;
+
+            // Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal("VerifyOTP", ((ViewResult)actual).ViewName);
+        }
+
+        [Fact]
+        public void VerifyOTP_OtpInputedValidOtp_ReturnIndex()
+        {
+            // Arrange
+            sessionService.Username = "test";
+            accountController = FakeAccountController(false);
+            var viewModel = new TwoFactorAuthenticatorViewModel { OTPCode = "test" };
+
+            // Test
+            var actual = accountController.VerifyOTP(viewModel).Result;
+
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Index", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        ////[Theory]
+        ////[InlineData(true, true, typeof(OkResult))]
+        ////[InlineData(true, false, typeof(ForbidResult))]
+        ////[InlineData(false, true, typeof(RedirectToActionResult))]
+        ////public void VerifySetupOTP_None_ReturnOkResult(bool isUserExist, bool isOTPValid, Type type)
+        ////{
+        ////    SetupOtpViewModel viewModel = new SetupOtpViewModel
+        ////    {
+        ////        Username = sessionService.Username,
+        ////        Otp = isOTPValid ? "sample" : SkipOtpCheck
+        ////    };
+
+        ////    if (!isUserExist)
+        ////    {
+        ////        userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
+        ////    }
+
+        ////    var actual = accountController.VerifySetupOTP(viewModel);
+        ////    Assert.IsType(type, actual);
+        ////}
+        
+        [Fact]
+        public void VerifySetupOTP_NullUser_RedirectToLogin()
+        {
+            // Arrange
+            sessionService.Username = null;
+            accountController = FakeAccountController(false);
+            userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
+
+            // Test
+            var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
+
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void VerifySetupOTP_InvalidOtp_ForbidResult()
+        {
+            // Arrange
+            sessionService.Username = "test";
+            accountController = FakeAccountController(false);
+            var viewModel = new SetupOtpViewModel { Otp = SkipOtpCheck };
+
+            // Test
             var actual = accountController.VerifySetupOTP(viewModel);
-            Assert.IsType(type, actual);
+
+            // Assert
+            Assert.IsType<ForbidResult>(actual);
+        }
+
+        [Fact]
+        public void VerifySetupOTP_ValidOtp_OkResult()
+        {
+            // Arrange
+            sessionService.Username = "test";
+            accountController = FakeAccountController(false);
+            var viewModel = new SetupOtpViewModel { Otp = "test" };
+
+            // Test
+            var actual = accountController.VerifySetupOTP(viewModel);
+
+            // Assert
+            Assert.IsType<OkResult>(actual);
         }
     }
 }
