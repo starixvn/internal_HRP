@@ -289,19 +289,6 @@
             Assert.Equal("Login", viewResult.ActionName);
         }
 
-        [Fact]
-        public async Task Logout_Successful_UserNotAuthenticated()
-        {
-            //Arrange
-            authController = ArrangeForSignOutTestFunction();
-
-            //Act
-            var actual = await authController.Logout();
-
-            //Assert
-            Assert.False(authController.HttpContext.User.Identity.IsAuthenticated);
-        }
-
         #region Helpers
 
         private ISessionService FakeSessionService()
