@@ -46,7 +46,8 @@
             Assert.Equal(criteria.OnUserId, onUserId);
             Assert.Equal(criteria.Platform, platform);
         }
-        
+
+        [Fact]
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
