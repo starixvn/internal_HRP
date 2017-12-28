@@ -37,6 +37,10 @@
   color: #ff0000;
 }
 
+.form-information .text.without-control {
+  margin-bottom: 18px;
+}
+
 .form-information .control {
   display: block;
   width: 100%;
@@ -216,6 +220,7 @@
   -o-box-shadow: none;
   box-shadow: none;
   outline: none;
+  width: 50px;
   height: 28px;
   line-height: 28px;
   padding-left: 5px;

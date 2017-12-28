@@ -117,11 +117,10 @@
                                     <input type="text" class="control" id="NickName">
                                 </div>
                                 <div class="group-complex">
-                                    <div class="component width-80">
+                                    <div class="component width-140">
                                         <label class="text -has-required" for="Gender">Gender</label>
                                         <select class="control">
-                                            <option>Male</option>
-                                            <option>Female</option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
@@ -129,45 +128,45 @@
                                         <input type="text" class="control " id="Date">
                                         <span class="icon-calendar"></span>
                                     </div>
-                                    <div class="component width-260">
+                                    <div class="component width-200">
                                         <label class="text" for="PlaceOfBirth">Place of Birth</label>
                                         <input type="text" class="control" id="PlaceOfBirth">
                                     </div>
                                 </div>
                                 <div class="group-complex">
-                                    <div class="component width-110">
+                                    <div class="component width-140">
                                         <label class="text -has-required" for="Gender">Nationality</label>
                                         <select class="control">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
-                                    <div class="component width-350">
+                                    <div class="component width-318">
                                         <label class="text -has-required" for="NRIC">NRIC No.</label>
                                         <input type="text" class="control " id="NRIC">
                                     </div>
                                 </div>
                                 <div class="group-complex">
-                                    <div class="component width-110">
+                                    <div class="component width-140">
                                         <label class="text -has-required" for="MaritalStatus">Marital Status</label>
                                         <select class="control" id="MaritalStatus">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
-                                    <div class="component width-110">
+                                    <div class="component width-140">
                                         <label class="text -has-required" for="NoChildren">No of Children</label>
                                         <select class="control" id="NoChildren">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="group-title"><span></span>Telephone</div>
+                                <div class="group-title"><span class="icon-group"></span>Telephone</div>
                                 <div class="group-complex">
                                     <div class="component width-200">
                                         <label class="text -has-required" for="OverseasNo">Overseas No.</label>
                                         <input type="text" class="control" id="OverseasNo">
                                     </div>
-                                    <div class="component width-200">
+                                    <div class="component width-260">
                                         <label class="text" for="LocalNo">Local No.</label>
                                         <input type="text" class="control" id="LocalNo">
                                     </div>
@@ -177,7 +176,7 @@
                                     <input type="text" class="control" id="Other">
                                 </div>
 
-                                <div class="group-title"><span></span>Passport</div>
+                                <div class="group-title"><span class="icon-group"></span>Passport</div>
                                 <div class="group-complex">
                                     <div class="component width-230">
                                         <label class="text -has-required" for="PassportNo">Passport No.</label>
@@ -221,7 +220,7 @@
                                     <input type="text" class="control" id="MailingAddress">
                                 </div>
 
-                                <div class="group-title"><span></span>Emergency Contact</div>
+                                <div class="group-title"><span class="icon-group"></span>Emergency Contact</div>
                                 <label class="text -has-required" for="EmergencyName">Name</label>
                                 <div class="group-control">
                                     <input type="text" class="control" id="ContactName">
@@ -252,21 +251,22 @@
                     <div role="tabpanel" class="tab-pane active" id="employment">
                         <form class="form-information employment">
                             <div class="col">
-                                <div class="group-title"><span></span>Company</div>
+                                <div class="group-title"><span class="icon-group"></span>Company</div>
                                 <div class="group-complex">
                                     <div class="component width-185">
                                         <label class="text -has-required" for="CompanyBVI">BVI</label>
                                         <select class="control" id="CompanyBVI">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="CompanyBVIDate">Change Date</label>
+                                        <label class="text" for="CompanyBVIDate">Change Date</label>
                                         <input type="text" class="control" id="CompanyBVIDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="CompanyBVIReason">Reason</label>
+                                        <select class="control" id="CompanyBVIReason">
                                             <option></option>
                                         </select>
                                     </div>
@@ -275,7 +275,7 @@
                                     <div class="component width-185">
                                         <label class="text -has-required" for="CompanyLocal">Local</label>
                                         <select class="control" id="CompanyLocal">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
@@ -284,18 +284,19 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="CompanyLocalReason">Reason</label>
+                                        <select class="control" id="CompanyLocalReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="group-title"><span></span>Job Title</div>
+                                <div class="group-title"><span class="icon-group"></span>Job Title</div>
                                 <div class="group-complex">
                                     <div class="component width-185">
                                         <label class="text -has-required" for="JobBVI">BVI</label>
                                         <select class="control" id="CompanyBVI">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
@@ -304,7 +305,8 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="JobBVIReason">Reason</label>
+                                        <select class="control" id="JobBVIReason">
                                             <option></option>
                                         </select>
                                     </div>
@@ -313,7 +315,7 @@
                                     <div class="component width-185">
                                         <label class="text -has-required" for="JobLocal">Local</label>
                                         <select class="control" id="JobLocal">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
@@ -322,13 +324,14 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="JobLocalReason">Reason</label>
+                                        <select class="control" id="JobLocalReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="group-title"><span></span>Date Commencement</div>
+                                <div class="group-title"><span class="icon-group"></span>Date Commencement</div>
                                 <div class="group-complex">
                                     <div class="component calendar">
                                         <label class="text -has-required" for="CommencementGroup">Group</label>
@@ -336,12 +339,13 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="CommencementGroupEndDate">End Date</label>
+                                        <label class="text" for="CommencementGroupEndDate">End Date</label>
                                         <input type="text" class="control" id="CommencementGroupEndDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="CommencementGroupReason">Reason</label>
+                                        <select class="control" id="CommencementGroupReason">
                                             <option></option>
                                         </select>
                                     </div>
@@ -353,37 +357,41 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="CommencementCompanyEndDate">End Date</label>
+                                        <label class="text" for="CommencementCompanyEndDate">End Date</label>
                                         <input type="text" class="control" id="CommencementCompanyEndDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="CommencementCompanyReason">Reason</label>
+                                        <select class="control" id="CommencementCompanyReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="group-title"><span></span>Length Of Service</div>
+                                <div class="group-title"><span class="icon-group"></span>Length Of Service</div>
                                 <div class="group-complex">
                                     <div class="component width-185">
                                         <label class="text" for="ServiceGroup">Group</label>
-                                        <input type="text" class="control" id="ServiceGroup">
+                                        <input type="text" class="control" id="ServiceGroup" disabled>
                                     </div>
                                     <div class="component width-185">
                                         <label class="text" for="ServiceCompany">Company</label>
-                                        <input type="text" class="control" id="ServiceCompany">
+                                        <input type="text" class="control" id="ServiceCompany"  disabled>
                                     </div>
                                 </div>
+
+                                <div class="group-title"><span class="icon-group"></span>ID No.</div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="IDNo"><span></span>ID No.</label>
-                                        <select class="control" id="IDNo">
+                                        <label class="text -has-required" for="CompanyCode">Company Code</label>
+                                        <select class="control" id="CompanyCode">
                                             <option></option>
                                         </select>
                                     </div>
                                     <div class="component width-110">
-                                        <input type="text" class="control without-label" id="ServiceCompany">
+                                        <label class="text -has-required" for="CompanyCode">Emp. Code</label>
+                                        <input type="text" class="control" id="ServiceCompany">
                                     </div>
                                     <div class="component calendar">
                                         <label class="text -has-required" for="IDDate">Change Date</label>
@@ -391,18 +399,20 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="IDNoReason">Reason</label>
+                                        <select class="control" id="IDNoReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
-                                <label class="text like-group-title" for="EmploymentType"><span></span>Employment Type</label>
+
+                                <label class="text like-group-title -has-required"><span class="icon-group"></span>Employment Type</label>
                                 <div class="group-control">
                                     <input type="text" class="control width-185" id="EmploymentType">
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="EmploymentStatus"><span></span>Employment Status</label>
+                                        <label class="text like-group-title -has-required" for="EmploymentStatus"><span class="icon-group"></span>Employment Status</label>
                                         <select class="control" id="EmploymentStatus">
                                             <option></option>
                                         </select>
@@ -413,126 +423,350 @@
                                         <span class="icon-calendar"></span>
                                     </div>
                                 </div>
+
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="JobCategory"><span></span>Job Category</label>
+                                        <label class="text like-group-title -has-required" for="JobCategory"><span class="icon-group"></span>Job Category</label>
                                         <select class="control" id="JobCategory">
                                             <option></option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="JobCategoryDate">Change Date</label>
+                                        <label class="text" for="JobCategoryDate">Change Date</label>
                                         <input type="text" class="control" id="JobCategoryDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="JobCategoryReason">Reason</label>
+                                        <select class="control" id="JobCategoryReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="JobGrade"><span></span>Job Grade</label>
+                                        <label class="text like-group-title -has-required" for="JobGrade"><span class="icon-group"></span>Job Grade</label>
                                         <select class="control" id="JobGrade">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
-                                            <option></option>
+                                        <label class="text -has-required" for="GradeLevel">Grade Level</label>
+                                        <select class="control" id="GradeLevel">
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="JobGradeDate">Change Date</label>
+                                        <label class="text" for="JobGradeDate">Change Date</label>
                                         <input type="text" class="control" id="JobGradeDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="GradeReason">Reason</label>
+                                        <select class="control" id="GradeReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="Division"><span></span>Division</label>
+                                        <label class="text like-group-title -has-required" for="Division"><span class="icon-group"></span>Division</label>
                                         <select class="control" id="Division">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="DivisionDate">Change Date</label>
+                                        <label class="text" for="DivisionDate">Change Date</label>
                                         <input type="text" class="control" id="DivisionDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="DivisionReason">Reason</label>
+                                        <select class="control" id="DivisionReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="Department"><span></span>Department</label>
+                                        <label class="text like-group-title -has-required" for="Department"><span class="icon-group"></span>Department</label>
                                         <select class="control" id="Division">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="DepartmentDate">Change Date</label>
+                                        <label class="text" for="DepartmentDate">Change Date</label>
                                         <input type="text" class="control" id="DepartmentDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="DepartmentReason">Reason</label>
+                                        <select class="control" id="DepartmentReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="Section"><span></span>Section</label>
+                                        <label class="text like-group-title -has-required" for="Section"><span class="icon-group"></span>Section</label>
                                         <select class="control" id="Division">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="SectionDate">Change Date</label>
+                                        <label class="text" for="SectionDate">Change Date</label>
                                         <input type="text" class="control" id="SectionDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="SectionReason">Reason</label>
+                                        <select class="control" id="SectionReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="group-complex">
                                     <div class="component width-185">
-                                        <label class="text like-group-title" for="CostCenter"><span></span>Cost Center</label>
+                                        <label class="text like-group-title -has-required" for="CostCenter"><span class="icon-group"></span>Cost Center</label>
                                         <select class="control" id="Division">
-                                            <option></option>
+                                            <option>--Please select--</option>
                                         </select>
                                     </div>
                                     <div class="component calendar">
-                                        <label class="text -has-required" for="CostCenterDate">Change Date</label>
+                                        <label class="text" for="CostCenterDate">Change Date</label>
                                         <input type="text" class="control" id="CostCenterDate">
                                         <span class="icon-calendar"></span>
                                     </div>
                                     <div class="component width-110">
-                                        <select class="control without-label">
+                                        <label class="text" for="CostCenterReason">Reason</label>
+                                        <select class="control" id="CostCenterReason">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
-                                <label class="text like-group-title" for="Email"><span></span>Email Address</label>
+                                <label class="text like-group-title -has-required" for="Email"><span class="icon-group"></span>Email Address</label>
                                 <div class="group-control">
-                                    <input type="text" class="control" id="Email">
+                                    <input type="text" class="control width-424" id="Email">
                                 </div>
                             </div>
                             <div class="col">
+                                <div class="group-title"><span class="icon-group"></span>Work Location</div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="Country">Country</label>
+                                        <select class="control" id="Country">
+                                            <option>--Please select--</option>
+                                        </select>
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="City">City</label>
+                                        <select class="control" id="City">
+                                            <option>--Please select--</option>
+                                        </select>
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="Office">Office</label>
+                                        <select class="control" id="Office">
+                                            <option>--Please select--</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="group-title"><span class="icon-group"></span>Work Permit</div>
+                                <label class="text -has-required" for="Company">Company</label>
+                                <div class="group-control">
+                                    <select class="control width-205" id="Company">
+                                        <option>--Please select--</option>
+                                    </select>
+                                </div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="Type1">Type1</label>
+                                        <select class="control" id="Type1">
+                                            <option>--Please select--</option>
+                                        </select>
+                                    </div>
+                                    <div class="component calendar">
+                                        <label class="text -has-required" for="Type1StartDate">Start Date</label>
+                                        <input type="text" class="control" id="Type1StartDate">
+                                        <span class="icon-calendar"></span>
+                                    </div>
+                                    <div class="component calendar">
+                                        <label class="text -has-required" for="Type1EndDate">End Date</label>
+                                        <input type="text" class="control" id="Type1EndDate">
+                                        <span class="icon-calendar"></span>
+                                    </div>
+                                </div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text" for="Type2">Type2</label>
+                                        <select class="control" id="Type2">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="component calendar">
+                                        <label class="text" for="Type2StartDate">Start Date</label>
+                                        <input type="text" class="control" id="Type2StartDate">
+                                        <span class="icon-calendar"></span>
+                                    </div>
+                                    <div class="component calendar">
+                                        <label class="text" for="Type2EndDate">End Date</label>
+                                        <input type="text" class="control" id="Type2EndDate">
+                                        <span class="icon-calendar"></span>
+                                    </div>
+                                </div>
+
+                                <div class="group-title"><span class="icon-group"></span>Tax Declaration</div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="DST">DST</label>
+                                        <select class="control" id="DST">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="DBT">DBT</label>
+                                        <select class="control" id="DBT">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="group-title"><span class="icon-group"></span>Local Statulory</div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="TaxIDNo">Tax ID No.</label>
+                                        <input type="text" class="control" id="TaxIDNo">
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="SSSNo">SSS No.</label>
+                                        <input type="text" class="control" id="SSSNo">
+                                    </div>
+                                </div>
+                                <div class="group-complex">
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="HealthInsNo">Health Ins No.</label>
+                                        <input type="text" class="control" id="HealthInsNo">
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text -has-required" for="HDMFNo">HDMF No.</label>
+                                        <input type="text" class="control" id="HDMFNo">
+                                    </div>
+                                </div>
                                 
+                                <div class="group-complex">
+                                    <div class="component width-98">
+                                        <label class="text like-group-title without-control"><span class="icon-group"></span>P-File Admin</label>
+                                    </div>
+                                    <div class="component width-140">
+                                        <label class="text" for="AdminNoneOrIDNo">None or ID No.</label>
+                                        <input type="text" class="control" id="AdminNoneOrIDNo">
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text" for="AdminFullName">Full Name</label>
+                                        <input type="text" class="control" id="AdminFullName">
+                                    </div>
+                                    <div class="component width-164">
+                                        <label class="text" for="AdminNickname">Nickname</label>
+                                        <input type="text" class="control" id="AdminNickname">
+                                    </div>
+                                </div>
+
+                                <div class="group-complex">
+                                    <div class="component width-98">
+                                        <label class="text like-group-title"><span class="icon-group"></span>Paymaster</label>
+                                        <labe class="text-group">BVI Salary</label>
+                                    </div>
+                                    <div class="component width-140">
+                                        <label class="text" for="PaymasterNoneOrIDNo">None or ID No.</label>
+                                        <input type="text" class="control" id="PaymasterNoneOrIDNo">
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text" for="PaymasterFullName">Full Name</label>
+                                        <input type="text" class="control" id="PaymasterFullName">
+                                    </div>
+                                    <div class="component width-164">
+                                        <label class="text" for="PaymasterNickname">Nickname</label>
+                                        <input type="text" class="control" id="PaymasterNickname">
+                                    </div>
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">BVI Allowance</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Local Salary</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+
+                                <div class="group-complex">
+                                    <div class="component width-98">
+                                        <label class="text like-group-title"><span class="icon-group"></span>EPA</label>
+                                        <labe class="text-group">Administrator</label>
+                                    </div>
+                                    <div class="component width-140">
+                                        <label class="text" for="EPANoneOrIDNo">None or ID No.</label>
+                                        <input type="text" class="control" id="EPANoneOrIDNo">
+                                    </div>
+                                    <div class="component width-205">
+                                        <label class="text" for="EPAFullName">Full Name</label>
+                                        <input type="text" class="control" id="EPAFullName">
+                                    </div>
+                                    <div class="component width-164">
+                                        <label class="text" for="EPANickname">Nickname</label>
+                                        <input type="text" class="control" id="EPANickname">
+                                    </div>
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Evaluator #1</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Evaluator #2</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Reviewer</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Management</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Increment</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">BVI Bonus</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <div class="group-complex -without-label">
+                                    <label class="text-group width-98">Local Bonus</label>
+                                    <input type="text" class="control width-140">
+                                    <input type="text" class="control width-205">
+                                    <input type="text" class="control width-164">
+                                </div>
+                                <label class="text like-group-title -has-required" for="PDFPassword"><span class="icon-group"></span>PDF Password</label>
+                                <div class="group-control">
+                                    <input type="text" class="control width-240" id="PDFPassword">
+                                </div>
                             </div>
                         </form>
                     </div>

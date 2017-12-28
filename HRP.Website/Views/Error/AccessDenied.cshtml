@@ -8,8 +8,21 @@
     <title>Access Denied</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/assets/styles/base/font-roboto.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/styles/base/reset.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/assets/styles/pages/errors/error.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/assets/bundles/errors/error.min.css" asp-append-version="true" />
+    </environment>
 </head>
 <body>
-    <h1>Access Denied</h1>
+    <div class="block">
+        <img src="~/assets/styles/images/405.png" title="The page not found">
+        <h1 class="title">Access Denied</h1>
+        <p class="info">Sorry, The Page isn't available</p>
+        <a href="/" class="button -primary">Back to Home</a>
+    </div> 
 </body>
 </html>

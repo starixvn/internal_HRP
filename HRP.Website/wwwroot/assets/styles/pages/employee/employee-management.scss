@@ -23,6 +23,7 @@
     .change-picture {
         margin-top: 10px;
         color: $link-color;
+        font-weight: bold;
     }
 }
 
@@ -48,11 +49,28 @@
         width: 260px;
     }
 
+    .width-318 {
+        width: 318px;
+    }
+
     .width-350 {
         width: 350px;
     }
 
     /* Employment */
+
+    .width-98 {
+        width: 98px;
+    }
+
+    .width-140 {
+        width: 140px;
+    }
+
+    .width-164 {
+        width: 164px;
+    }
+
     .width-185 {
         width: 185px;
     }
@@ -63,6 +81,10 @@
 
     .width-240 {
         width: 240px;
+    }
+    
+    .width-424 {
+        width: 424px;
     }
 
     .group-complex {
@@ -76,6 +98,10 @@
 
         .component:last-child {
             margin-right: 0;
+        }
+
+        &.-without-label * {
+            margin-right: 10px;
         }
     }
 
@@ -97,8 +123,28 @@
         font-weight: bold;
     }
 
+    .control {
+        padding-right: 5px;
+    }
+
     .group-title {
         margin-bottom: 8px;
+    }
+
+    .icon-group {
+        position: relative;
+        top: 2px;
+        margin-right: 2px;
+        font-size: 16px;
+        line-height: 0;
+    }
+
+    .text-group {
+        display: block;
+        color: #333;
+        font-weight: bold;
+        line-height: 28px;
+        text-align: right;        
     }
 }
 

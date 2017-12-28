@@ -37,6 +37,10 @@
   color: #ff0000;
 }
 
+.form-information .text.without-control {
+  margin-bottom: 18px;
+}
+
 .form-information .control {
   display: block;
   width: 100%;

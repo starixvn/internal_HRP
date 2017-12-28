@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'hrp';
-  src:  url('fonts/hrp.eot?hv0gbi');
-  src:  url('fonts/hrp.eot?hv0gbi#iefix') format('embedded-opentype'),
-    url('fonts/hrp.ttf?hv0gbi') format('truetype'),
-    url('fonts/hrp.woff?hv0gbi') format('woff'),
-    url('fonts/hrp.svg?hv0gbi#hrp') format('svg');
+  src:  url('fonts/hrp.eot?d906iq');
+  src:  url('fonts/hrp.eot?d906iq#iefix') format('embedded-opentype'),
+    url('fonts/hrp.ttf?d906iq') format('truetype'),
+    url('fonts/hrp.woff?d906iq') format('woff'),
+    url('fonts/hrp.svg?d906iq#hrp') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-group:before {
+  content: "\e920";
+}
+.icon-details:before {
+  content: "\e91e";
+}
+.icon-edit_payroll:before {
+  content: "\e91f";
+}
 .icon-root_tree:before {
   content: "\e918";
 }

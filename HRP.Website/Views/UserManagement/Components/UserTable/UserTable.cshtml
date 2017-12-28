@@ -49,7 +49,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdown-@user.UserId">
                             @if (canEdit && (!user.IsSystemAdmin || isSystemAdmin))
                             {
-                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-edit"></span>@ViewLang.EditUserDetails</a></li>
+                                <li><a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-details"></span>@ViewLang.EditUserDetails</a></li>
                                 <li><a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId"><span class="icon-permission"></span>@ViewLang.EditUserPermission</a></li>
                             }
                             else

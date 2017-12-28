@@ -42,12 +42,19 @@
         border: 1px solid #1973b2;       
         
         [class^="icon"] {
-            font-size: 18px;
             position: relative;
             top: 2px;
             line-height: 0;
         }
 
+        .icon-details {
+            font-size: 16px;
+        }
+
+        .icon-permission {
+            font-size: 18px;
+        }
+        
         > li >a {
             padding-top: 6px;
             padding-bottom: 6px;

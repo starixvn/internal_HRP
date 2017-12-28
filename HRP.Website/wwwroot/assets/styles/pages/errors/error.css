@@ -101,7 +101,7 @@ a.button, a.button:hover {
 
 .block {
   margin: 220px auto 0;
-  width: 240px;
+  width: 300px;
   text-align: center;
   font-size: 14px;
 }
@@ -111,10 +111,12 @@ a.button, a.button:hover {
   padding-bottom: 12px;
   font-size: 24px;
   font-weight: bold;
+  text-transform: uppercase;
   color: #333;
 }
 
 .info {
   padding-bottom: 20px;
+  text-transform: capitalize;
 }
 /*# sourceMappingURL=error.css.map */
