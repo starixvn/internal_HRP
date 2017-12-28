@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Functions>
+  <Function Name="Reference Resource">
+    <Setting Key="RefResource_GetByName" SpName="RefResource_GetByName" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
   <Function Name="Function">
     <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Function_GetByUserId" SpName="Function_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -33,7 +36,7 @@
   <Function Name="Currency">
     <Setting Key="Currency_GetExchangeRates" SpName="Currency_GetExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_GetActiveCurrencyCodes" SpName="Currency_GetActiveCurrencyCodes" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Currency_GetExchageRateMonths" SpName="Currency_GetExchageRateMonths" DbName="bodb_HRP" Plain="0"></Setting>   
-    <Setting Key="Currency_UpdateExchangeRates" SpName="Currency_UpdateExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>   
+    <Setting Key="Currency_GetExchageRateMonths" SpName="Currency_GetExchageRateMonths" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_UpdateExchangeRates" SpName="Currency_UpdateExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>
