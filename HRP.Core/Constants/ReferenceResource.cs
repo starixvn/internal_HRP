@@ -2,6 +2,9 @@
 {
     public static class ReferenceResource
     {
+        public const string Gender = "Gender";
+        public const string Nationality = "Nationality";
+        public const string MaritalStatus = "MaritalStatus";
         public const string City = "City";
         public const string Country = "Country";
         public const string Office = "Office";
