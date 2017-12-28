@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Security.Claims;
-    using System.Threading.Tasks;
     using Core.Enumerations;
     using Core.Model;
     using Core.Services;
@@ -279,17 +278,36 @@
             Assert.IsType<RedirectToActionResult>(actual);
         }
 
-        [Theory]
-        [InlineData("", typeof(RedirectToActionResult))]
-        [InlineData("sampletoken", typeof(ViewResult))]
-        public void SetupOtp_NullOrValid_RedirectOrView(string token, Type type)
+        [Fact]
+        public void SetupOtp_EmptyOtp_RedirectToLogin()
         {
-            //Arrange
+            // Arrage
             var user = userService.GetUserByUsername(sessionService.Username);
             baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
 
-            var actual = accountController.SetupOtp(token);
-            Assert.IsType(type, actual);
+            // Test
+            var actual = accountController.SetupOtp(string.Empty);
+
+            // Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+        }
+
+        [Fact]
+        public void SetupOtp_OtpInputed_RedirectToView()
+        {
+            // Arrage
+            var user = userService.GetUserByUsername(sessionService.Username);
+            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+
+            // Test
+            var actual = accountController.SetupOtp("test");
+            var viewModel = ((ViewResult)actual).Model;
+
+            // Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal("SetupOtp", ((ViewResult)actual).ViewName);
+            Assert.NotNull(viewModel);
         }
 
         [Fact]
