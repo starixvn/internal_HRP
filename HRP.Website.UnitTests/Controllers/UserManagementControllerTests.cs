@@ -56,46 +56,7 @@
         }
 
         [Fact]
-        public async Task AssignPermissionPost_PermissionIsNull_ReturnDefaultCommandResult()
-        {
-            // Arrange
-            var expected = new CommandResult();
-            userManagementController = GetUserManagementController();
-            baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
-
-            // Act
-            var actual = await userManagementController.AssignPermission(null);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
-            Assert.False(commandResult.IsSuccessful);
-            Assert.Equal(expected.Code, commandResult.Code);
-            Assert.Equal(expected.Message, commandResult.Message);
-        }
-
-        [Fact]
-        public async Task AssignPermissionPost_PermissionIsEmpty_ReturnDefaultCommandResult()
-        {
-            // Arrange
-            var expected = new CommandResult();
-            var permissions = new List<UserPermissionModel>();
-            userManagementController = GetUserManagementController();
-            baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
-
-            // Act
-            var actual = await userManagementController.AssignPermission(permissions);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
-            Assert.False(commandResult.IsSuccessful);
-            Assert.Equal(expected.Code, commandResult.Code);
-            Assert.Equal(expected.Message, commandResult.Message);
-        }
-
-        [Fact]
-        public async Task AssignPermissionPost_PermissionIsValid_ReturnExpectedCommandResult()
+        public async Task AssignPermissionPost_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
             var expected = new CommandResult
@@ -133,6 +94,7 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
             Assert.IsAssignableFrom<CreateUserViewModel>(viewResult.Model);
         }
 
