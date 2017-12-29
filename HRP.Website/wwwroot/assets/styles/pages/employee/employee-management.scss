@@ -27,86 +27,9 @@
     }
 }
 
-.form-information {
-    /* Personal Detail */
-    .width-80 {
-        width: 80px;
-    }
 
-    .width-110 {
-        width: 110px;
-    }
-
-    .width-200 {
-        width: 200px;
-    }
-
-    .width-230 {
-        width: 230px;
-    }
-
-    .width-260 {
-        width: 260px;
-    }
-
-    .width-318 {
-        width: 318px;
-    }
-
-    .width-350 {
-        width: 350px;
-    }
-
-    /* Employment */
-
-    .width-98 {
-        width: 98px;
-    }
-
-    .width-140 {
-        width: 140px;
-    }
-
-    .width-164 {
-        width: 164px;
-    }
-
-    .width-185 {
-        width: 185px;
-    }
-
-    .width-205 {
-        width: 205px;
-    }
-
-    .width-240 {
-        width: 240px;
-    }
-    
-    .width-424 {
-        width: 424px;
-    }
-
-    .group-complex {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 12px;
-
-        .component {
-            margin-right: 10px;
-        } 
-
-        .component:last-child {
-            margin-right: 0;
-        }
-
-        &.-without-label * {
-            margin-right: 10px;
-        }
-    }
-
+.form-information {  
     .calendar {
-        width: 110px;
         position: relative;
 
         .icon-calendar {
@@ -128,7 +51,12 @@
     }
 
     .group-title {
+        margin-top: 18px;
         margin-bottom: 8px;
+
+        &.-first {
+            margin-top: 0;
+        }
     }
 
     .icon-group {
@@ -146,6 +74,25 @@
         line-height: 28px;
         text-align: right;        
     }
+
+    /* Employment */
+
+    .width-185 {
+        width: 185px;
+    }
+
+    .width-206 {
+        width: 206px;
+    }
+
+    .width-240 {
+        width: 240px;
+    }
+
+    .width-424 {
+        width: 424px;
+    }  
+
 }
 
 .employment {
@@ -153,6 +100,105 @@
     justify-content: space-between;
 
     .col:first-child {
-        margin-right: 140px;
+        margin-right: 135px;
     }
+}
+
+.group-complex { 
+    display: grid;      
+    grid-gap: 10px;
+    grid-template-rows: 1fr; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 12px;
+
+    /* Personal detail */
+
+    &.-per-layout1 {        
+        grid-template-columns: 140px 110px 200px;        
+    }
+
+    &.-per-layout2 {        
+        grid-template-columns: 140px 318px;        
+    }
+
+    &.-per-layout3 {        
+        grid-template-columns: 140px 140px;        
+    }
+
+    &.-per-layout4 {        
+        grid-template-columns: 200px 262px;        
+    }
+
+    &.-per-layout5 {        
+        grid-template-columns: 228px 110px 110px;        
+    }
+
+    /* Employment */
+
+    &.-emp-layout1 {        
+        grid-template-columns: 185px repeat(2, 110px);        
+    }
+
+    &.-emp-layout2 {        
+        grid-template-columns: repeat(3, 110px);        
+    }
+
+    &.-emp-layout3 {        
+        grid-template-columns: 185px 185px;        
+    }
+
+    &.-emp-layout4 {        
+        grid-template-columns: 185px repeat(3, 110px);        
+    }
+
+    &.-emp-layout5 {        
+        grid-template-columns: 185px 110px;        
+    }
+
+    &.-emp-layout6 {        
+        grid-template-columns: repeat(3, 206px);        
+    }
+
+    &.-emp-layout7 {        
+        grid-template-columns: 206px repeat(2, 110px);        
+    }
+
+    &.-emp-layout8 {        
+        grid-template-columns: repeat(2, 206px);        
+    }
+
+    &.-emp-layout9 {        
+        grid-template-columns: 100px 129px 215px 165px;        
+    }
+
+    &.-emp-without-label * {
+        margin-right: 10px;
+    }
+
+    .padding-right-10 {
+        padding-right: 10px;
+    }
+
+    .element-required {
+        position: relative;
+        padding-right: 10px;
+
+        &:after {
+            content: "*";
+            position: absolute;
+            right: 0;
+            top: 10px;
+            color: #ff0000;
+            font-weight: bold;;
+        }
+    }
+}
+
+.list-button {
+    margin-top: 8px;
+}
+
+.space-between-parts {
+    margin-top: 18px;
 }
