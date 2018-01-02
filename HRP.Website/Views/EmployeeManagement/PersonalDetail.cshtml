@@ -25,8 +25,11 @@
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
         <form class="personal-detail">
             <figure class="profile">
+                <input id="profilePicture" type="file" accept="image/*" name="ProfilePicture" style="display:none" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture">
-                <figcaption class="change-picture">Change picture</figcaption>
+                <figcaption class="change-picture">
+                    <a href="#" class="js-changePicture">Change picture</a>
+                </figcaption>
             </figure>
             <div class="col has-space">
                 <label class="text -has-required" for="FullName">Full Name</label>
@@ -745,3 +748,12 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/assets/js/employee/create-employee.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/employee/js/create-employee.min.js"></script>
+    </environment>
+}

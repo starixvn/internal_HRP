@@ -217,5 +217,15 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/employee/js/create-employee.min.js",
+    "inputFiles": [
+      "wwwroot/assets/js/employee/create-employee.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]
