@@ -46,7 +46,7 @@
                 var list = viewModel.Months.ToList();
                 list.Add(DateTime.Today);
 
-                viewModel.Months = list;
+                viewModel.Months = list.OrderByDescending(x => x);
             }
 
             return View(viewModel);

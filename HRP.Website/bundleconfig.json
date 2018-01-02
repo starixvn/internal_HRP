@@ -43,6 +43,9 @@
   {
     "outputFileName": "wwwroot/assets/bundles/currency/css/currency-setting.min.css",
     "inputFiles": [
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.min.css",
+      "wwwroot/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.min.css",
+      "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/assets/styles/pages/configuration/currency-setting.css"
     ]
   },  
@@ -196,6 +199,11 @@
   {
     "outputFileName": "wwwroot/assets/bundles/currency/js/currency-setting.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
+      "wwwroot/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js",
+      "wwwrootlib/select2/dist/js/select2.min.js",
       "wwwroot/assets/js/currency-setting.js"
     ],
     "minify": {

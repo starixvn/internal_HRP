@@ -106,6 +106,33 @@
                 error: commonFunctions.handleAjaxError
             });
         });
+
+        $('#currency-table').DataTable({
+            info: false,
+            ordering: false,
+            filter: false,
+            scrollY: 355,
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: true
+        });
+
+        $('#SelectedTime').select2({
+            templateResult: function (state) {
+                if (state.children) {
+                    return $('<span><i class="glyphicon glyphicon-chevron-right"></i> ' + state.text + '</span>');
+                } else {
+                    return state.text;
+                }
+            }
+        });
+
+        $('body').on('click', '.select2-results__option', function () {
+            var $this = $(this);
+            $this.find('ul').toggle();
+            $this.find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+        });
     }
 
     return {

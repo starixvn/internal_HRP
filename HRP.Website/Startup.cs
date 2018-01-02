@@ -102,7 +102,10 @@
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSession();
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            if (!env.IsDevelopment())
+            {
+                app.UseMiddleware<ErrorHandlingMiddleware>();
+            }
 
             app.UseMvc(routes =>
             {

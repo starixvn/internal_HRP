@@ -2,18 +2,25 @@
 @using HRP.Models.Currency
 @model CurrencySettingViewModel
 
-<environment include="Development">
-    @section Styles {
+@section Styles {
+    <environment include="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
-        <link href="https://cdn.datatables.net/fixedcolumns/3.2.4/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
-    }
-</environment>
-<environment exclude="Development">
-    @section Styles {
+    </environment>
+
+    <environment exclude="Development">
         <link href="~/assets/bundles/currency/css/currency-setting.min.css" rel="stylesheet" />
-    }
-</environment>
+    </environment>
+
+    <style>
+        .select2-results__options--nested {
+            display: none;
+        }
+    </style>
+}
+
 
 <ol class="breadcrumb">
     <li class="like-link">Configuration</li>
@@ -100,7 +107,8 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-        <script src="https://cdn.datatables.net/fixedcolumns/3.2.4/js/dataTables.fixedColumns.min.js"></script>
+        <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/assets/js/currency-setting.js"></script>
     </environment>
     <environment exclude="Development">
