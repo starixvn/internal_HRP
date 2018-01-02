@@ -6,6 +6,8 @@
     {
         public bool? IsActive { get; set; }
 
+        public int? Type { get; set; }
+
         public override bool IsValid() => true;
 
         public override string GetSettingKey() => "Company_GetAll";
