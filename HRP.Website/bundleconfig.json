@@ -57,9 +57,10 @@
       "wwwroot/assets/styles/pages/errors/error.css"
     ]
   },
-  { // Employee management css
-    "outputFileName": "wwwroot/assets/bundles/employee/employee-management.min.css",
+  {
+    "outputFileName": "wwwroot/assets/bundles/employee/css/employee-management.min.css",
     "inputFiles": [
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
       "wwwroot/assets/styles/pages/employee/employee-management.css"
     ]
   },

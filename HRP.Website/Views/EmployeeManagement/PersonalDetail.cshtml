@@ -2,30 +2,30 @@
     ViewData["Title"] = "Personal Detail";
 }
 @section Styles {
-    <link href="~/assets/bundles/employee/employee-management.min.css" rel="stylesheet" />
+    <link href="~/assets/bundles/employee/css/employee-management.min.css" rel="stylesheet" />
 }
 
 <ol class="breadcrumb">
     <li class="like-link">Empoloyee Management</li>
-    <li><a href="/index.html">Employee List</a></li>
+    <li><a href="/employeemanagement">Employee List</a></li>
     <li class="active">Create New Employee</li>
 </ol>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation">
+    <li role="presentation" class="active">
         <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">Personal Detail</a>
     </li>
-    <li role="presentation" class="active">
+    <li role="presentation">
         <a href="#employment" aria-controls="profile" role="tab" data-toggle="tab">Employment</a>
     </li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane form-information" id="personalDetail">
+    <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
         <form class="personal-detail">
             <figure class="profile">
-                <img src="../../wwwroot/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture">
+                <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture">
                 <figcaption class="change-picture">Change picture</figcaption>
             </figure>
             <div class="col has-space">
@@ -169,7 +169,7 @@
             </div>
         </form>
     </div>
-    <div role="tabpanel" class="tab-pane active" id="employment">
+    <div role="tabpanel" class="tab-pane" id="employment">
         <form class="form-information employment">
             <div class="col">
                 <div class="group-title -first"><span class="icon-group"></span>Company</div>
