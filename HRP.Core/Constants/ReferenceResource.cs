@@ -12,5 +12,8 @@
         public const string TaxDeclaration = "TaxDeclaration";
         public const string EmploymentType = "EmploymentType";
         public const string EmploymentStatus = "EmploymentStatus";
+        public const string Grade = "Grade";
+        public const string GradeLevel = "GradeLevel";
+        public const string LocalJobTitle = "LocalJobTitle";
     }
 }
