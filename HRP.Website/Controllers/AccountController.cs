@@ -201,7 +201,7 @@ namespace HRP.Website.Controllers
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
-                    result.Message
+                    message = result.Message
                 });
             }
 
