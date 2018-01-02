@@ -1,5 +1,6 @@
 namespace HRP.Services.UnitTests
 {
+    using BCrypt.Net;
     using Core.Model;
     using Core.Services;
     using HRP.Criteria;
@@ -68,6 +69,34 @@ namespace HRP.Services.UnitTests
 
             // Assert
             Assert.IsType<User>(user);
+        }
+
+        [Fact]
+        public void IsCorrectPassword_MatchPassword_ReturnTrue()
+        {
+            //Arrange
+            userService = GetUserService();
+            var hashedPassword = BCrypt.HashPassword("test");
+
+            //Act
+            var verifyPassword = userService.IsCorrectPassword("test", hashedPassword);
+
+            //Assert
+            Assert.True(verifyPassword);
+        }
+
+        [Fact]
+        public void IsCorrectPassword_NotMatchPassword_ReturnFalse()
+        {
+            //Arrange
+            userService = GetUserService();
+            var hashedPassword = BCrypt.HashPassword("wrongPassword");
+
+            //Act
+            var verifyPassword = userService.IsCorrectPassword("test", hashedPassword);
+
+            //Assert
+            Assert.False(verifyPassword);
         }
 
         [Fact]
