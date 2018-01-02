@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models.Currency;
@@ -35,10 +38,36 @@
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
             baseService.GetData<DateTime>(Arg.Any<GetExchageRateMonthsCriteria>()).Returns(new List<DateTime> { DateTime.Today });
+            sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host).Returns(true);
 
             var actual = controller.Index(DateTime.Today);
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<CurrencySettingViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void Save_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var exchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel
+                {
+                    FromCurrency = "USD",
+                    ToCurrency = "VND",
+                    ExchangeRate = 22500
+                }
+            };
+
+            var controller = GetController();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateExchangeRatesCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+
+            // Act
+            var actual = controller.Save(DateTime.Today, exchangeRates);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.True(commandResult.IsSuccessful);
         }
 
         private ISessionService FakeSessionService()

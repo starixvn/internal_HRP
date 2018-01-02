@@ -49,6 +49,8 @@
 <div class="msg-error -has-icon hidden"></div>
 
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
+<input type="hidden" asp-for="CanUpdate" />
+
 <form id="currency-form">
     <div class="">
         <table id="currency-table" class="table table-bordered table-hover table-responsive">
@@ -65,32 +67,31 @@
                 @foreach (var fromCurrency in Model.Currencies)
                 {
                     var isDisabled = false;
-                    var disabled = string.Empty;
+                    var disabled = Model.CanUpdate ? string.Empty : "disabled";
                     <tr>
                         <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
                         @foreach (var toCurrency in Model.Currencies)
                         {
                             var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
-                            if (isDisabled || fromCurrency.CurrencyCode == "VND")
+                            if (Model.CanUpdate)
                             {
-                                disabled = "disabled";
-                            }
+                                if (isDisabled || fromCurrency.CurrencyCode == "VND")
+                                {
+                                    disabled = "disabled";
+                                }
 
-                            if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
-                            {
-                                disabled = string.Empty;
+                                if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
+                                {
+                                    disabled = string.Empty;
+                                }
+                                isDisabled = true;
                             }
-
-                            isDisabled = true;
 
                             <td>
                                 <input class="input rate" @disabled type="text" maxlength="12" step="any" min="0.00001" value="@rate?.ExchangeRate.ToString("0.#####")"
                                        data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
                                        name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-rule-number="true"
                                        data-msg-min="Please enter value greater than 0" />
-
-                                <span class="text-danger field-validation-valid" data-valmsg-for="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-valmsg-replace="true">
-                                </span>
                             </td>
 
                         }
@@ -101,7 +102,11 @@
     </div>
 </form>
 
-<button id="btn-save" class="button -primary">@ViewLang.Save</button>
+@if (Model.CanUpdate)
+{
+    <button id="btn-save" class="button -primary">@ViewLang.Save</button>
+}
+
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>

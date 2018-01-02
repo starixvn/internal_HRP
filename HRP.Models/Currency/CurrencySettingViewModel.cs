@@ -12,5 +12,7 @@
         public IEnumerable<CurrencyCodeModel> Currencies { get; set; }
 
         public IEnumerable<DateTime> Months { get; set; }
+
+        public bool CanUpdate { get; set; }
     }
 }
