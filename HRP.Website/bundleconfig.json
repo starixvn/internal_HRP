@@ -48,13 +48,19 @@
       "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/assets/styles/pages/configuration/currency-setting.css"
     ]
-  },  
+  },
   {
     "outputFileName": "wwwroot/assets/bundles/errors/error.min.css",
     "inputFiles": [
       "wwwroot/assets/styles/base/font-roboto.css",
       "wwwroot/assets/styles/base/reset.css",
       "wwwroot/assets/styles/pages/errors/error.css"
+    ]
+  },
+  { // Employee management css
+    "outputFileName": "wwwroot/assets/bundles/employee/employee-management.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/pages/employee/employee-management.css"
     ]
   },
   {

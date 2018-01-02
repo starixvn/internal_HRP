@@ -70,6 +70,7 @@
     <Folder Include="wwwroot\assets\bundles\auth\js\" />
     <Folder Include="wwwroot\assets\bundles\auth\css\" />
     <Folder Include="wwwroot\assets\bundles\currency\js\" />
+    <Folder Include="wwwroot\assets\bundles\employee\" />
     <Folder Include="wwwroot\assets\bundles\user\css\" />
     <Folder Include="wwwroot\assets\bundles\user\js\" />
   </ItemGroup>
