@@ -1,18 +1,19 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
-    using HRP.Core.Extensions;
-    using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
-    using HRP.Core.Filters;
-    using HRP.Core.Model;
-    using HRP.Models.EmployeeManagement;
-    using Microsoft.AspNetCore.Http;
-    using HRP.Models;
-    using HRP.Models.EmployeeManagement;
-    using Microsoft.AspNetCore.Mvc;
     using System.IO;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
+    using HRP.Core.Filters;
+    using HRP.Core.Model;
+    using HRP.Core.Services;
+    using HRP.Criteria;
+    using HRP.Models;
+    using HRP.Models.EmployeeManagement;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
     public class EmployeeManagementController : Controller
@@ -81,7 +82,7 @@
 
             return Json(result);
         }
-        
+
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(int employeeId)
