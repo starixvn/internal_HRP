@@ -47,7 +47,7 @@
   padding-right: 40px;
 }
 
-.form-information .control.error {
+.form-information .control.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
