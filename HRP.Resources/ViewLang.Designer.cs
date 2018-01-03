@@ -232,6 +232,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New Employee.
+        /// </summary>
+        public static string CreateNewEmployee {
+            get {
+                return ResourceManager.GetString("CreateNewEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create New User.
         /// </summary>
         public static string CreateNewUser {
@@ -367,6 +376,33 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        public static string Employee {
+            get {
+                return ResourceManager.GetString("Employee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee List.
+        /// </summary>
+        public static string EmployeeList {
+            get {
+                return ResourceManager.GetString("EmployeeList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee Management.
+        /// </summary>
+        public static string EmployeeManagement {
+            get {
+                return ResourceManager.GetString("EmployeeManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment Status.
         /// </summary>
         public static string EmploymentStatus {
@@ -489,6 +525,24 @@ namespace HRP.Resources {
         public static string Increment {
             get {
                 return ResourceManager.GetString("Increment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Probation.
+        /// </summary>
+        public static string InProbation {
+            get {
+                return ResourceManager.GetString("InProbation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InService.
+        /// </summary>
+        public static string InService {
+            get {
+                return ResourceManager.GetString("InService", resourceCulture);
             }
         }
         
@@ -669,6 +723,15 @@ namespace HRP.Resources {
         public static string PhoneNumber {
             get {
                 return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probation.
+        /// </summary>
+        public static string Probation {
+            get {
+                return ResourceManager.GetString("Probation", resourceCulture);
             }
         }
         

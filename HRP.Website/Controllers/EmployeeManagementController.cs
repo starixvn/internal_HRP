@@ -2,10 +2,14 @@
 {
     using System;
     using HRP.Core.Extensions;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Http;
+    using HRP.Models;
+    using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Mvc;
     using System.IO;
     using System.Threading.Tasks;
@@ -13,6 +17,17 @@
     [HRPAuthorize]
     public class EmployeeManagementController : Controller
     {
+        private readonly ISessionService sessionService;
+        private readonly IBaseService baseService;
+
+        public EmployeeManagementController(
+            ISessionService sessionService,
+            IBaseService baseService)
+        {
+            this.sessionService = sessionService;
+            this.baseService = baseService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -65,6 +80,42 @@
             }
 
             return Json(result);
+        }
+        
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateEmployment(int employeeId)
+        {
+            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.PVI, IsActive = true });
+            var localCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.Local, IsActive = true });
+            var localJobTitles = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.LocalJobTitle });
+            var employmentTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentType });
+            var employmentStatuses = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentStatus });
+            var jobCategories = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.JobCategory });
+            var grades = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Grade });
+            var gradeLevels = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.GradeLevel });
+            var countries = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Country });
+            var cities = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.City });
+            var offices = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Office });
+            var taxDeclarations = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.TaxDeclaration });
+            var viewModel = new CreateEmploymentViewModel
+            {
+                EmployeeId = employeeId,
+                BVICompanies = bviCompanies,
+                LocalCompanies = localCompanies,
+                LocalJobTitles = localJobTitles,
+                EmploymentTypes = employmentTypes,
+                EmploymentStatuses = employmentStatuses,
+                JobCategories = jobCategories,
+                Grades = grades,
+                GradeLevels = gradeLevels,
+                Countries = countries,
+                Cities = cities,
+                Offices = offices,
+                TaxDeclarations = taxDeclarations
+            };
+
+            return PartialView("_CreateEmployment", viewModel);
         }
     }
 }

@@ -70,6 +70,87 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BVI Company is required!.
+        /// </summary>
+        public static string BVICompanyRequired {
+            get {
+                return ResourceManager.GetString("BVICompanyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BVI Job Title must not over {1} characters long..
+        /// </summary>
+        public static string BVIJobTitleMaxLength {
+            get {
+                return ResourceManager.GetString("BVIJobTitleMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BVI Job Title is required!.
+        /// </summary>
+        public static string BVIJobTitleRequired {
+            get {
+                return ResourceManager.GetString("BVIJobTitleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City is required!.
+        /// </summary>
+        public static string CityRequired {
+            get {
+                return ResourceManager.GetString("CityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Code is required!.
+        /// </summary>
+        public static string CompanyCodeRequired {
+            get {
+                return ResourceManager.GetString("CompanyCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cost Center is required!.
+        /// </summary>
+        public static string CostCenterRequired {
+            get {
+                return ResourceManager.GetString("CostCenterRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country is required!.
+        /// </summary>
+        public static string CountryRequired {
+            get {
+                return ResourceManager.GetString("CountryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department is required!.
+        /// </summary>
+        public static string DepartmentRequired {
+            get {
+                return ResourceManager.GetString("DepartmentRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Division is required!.
+        /// </summary>
+        public static string DivisionRequired {
+            get {
+                return ResourceManager.GetString("DivisionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} has been successfully updated..
         /// </summary>
         public static string EditUserSuccess {
@@ -97,6 +178,42 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emp. Code must not over {1} characters long..
+        /// </summary>
+        public static string EmployeeCodeMaxLength {
+            get {
+                return ResourceManager.GetString("EmployeeCodeMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emp. Code is required!.
+        /// </summary>
+        public static string EmployeeCodeRequired {
+            get {
+                return ResourceManager.GetString("EmployeeCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employment Status is required!.
+        /// </summary>
+        public static string EmploymentStatusRequired {
+            get {
+                return ResourceManager.GetString("EmploymentStatusRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employment Type is required!.
+        /// </summary>
+        public static string EmploymentTypeRequired {
+            get {
+                return ResourceManager.GetString("EmploymentTypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username that you&apos;ve entered doesn&apos;t  match any account. Please try again..
         /// </summary>
         public static string ForgotPasswordInvalidUser {
@@ -111,6 +228,42 @@ namespace HRP.Resources {
         public static string FullNameMaxLength {
             get {
                 return ResourceManager.GetString("FullNameMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grade Level is required!.
+        /// </summary>
+        public static string GradeLevelRequired {
+            get {
+                return ResourceManager.GetString("GradeLevelRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grade is required!.
+        /// </summary>
+        public static string GradeRequired {
+            get {
+                return ResourceManager.GetString("GradeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HDMF No. must not over {1} characters long..
+        /// </summary>
+        public static string HDMFNoMaxLength {
+            get {
+                return ResourceManager.GetString("HDMFNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Ins No. must not over {1} characters long..
+        /// </summary>
+        public static string HealthInsNoMaxLength {
+            get {
+                return ResourceManager.GetString("HealthInsNoMaxLength", resourceCulture);
             }
         }
         
@@ -142,11 +295,56 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Category is required!.
+        /// </summary>
+        public static string JobCategoryRequired {
+            get {
+                return ResourceManager.GetString("JobCategoryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Company is required!.
+        /// </summary>
+        public static string LocalCompanyRequired {
+            get {
+                return ResourceManager.GetString("LocalCompanyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Job Title is required!.
+        /// </summary>
+        public static string LocalJobTitleRequired {
+            get {
+                return ResourceManager.GetString("LocalJobTitleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Username or Password..
         /// </summary>
         public static string LoginInvalid {
             get {
                 return ResourceManager.GetString("LoginInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name must not over {1} characters long..
+        /// </summary>
+        public static string NickNameMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Office is required!.
+        /// </summary>
+        public static string OfficeRequired {
+            get {
+                return ResourceManager.GetString("OfficeRequired", resourceCulture);
             }
         }
         
@@ -228,6 +426,33 @@ namespace HRP.Resources {
         public static string ResetPasswordEmailSubject {
             get {
                 return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section is required!.
+        /// </summary>
+        public static string SectionRequired {
+            get {
+                return ResourceManager.GetString("SectionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSS No. must not over {1} characters long..
+        /// </summary>
+        public static string SSSNoMaxLength {
+            get {
+                return ResourceManager.GetString("SSSNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax ID No. must not over {1} characters long..
+        /// </summary>
+        public static string TaxIDNoMaxLength {
+            get {
+                return ResourceManager.GetString("TaxIDNoMaxLength", resourceCulture);
             }
         }
         

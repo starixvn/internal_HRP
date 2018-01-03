@@ -1,4 +1,6 @@
-﻿@{
+﻿@using HRP.Resources;
+
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -9,45 +11,45 @@
     }
 </environment>
 <environment exclude="Development">
-    @section Styles {        
+    @section Styles {
         <link href="~/assets/bundles/employee/css/employee-management.min.css" rel="stylesheet" />
     }
 </environment>
 
 <ol class="breadcrumb">
-    <li class="like-link">Employee Management</li>
-    <li class="active">Employee List</li>
+    <li class="like-link">@ViewLang.EmployeeManagement</li>
+    <li class="active">@ViewLang.EmployeeList</li>
 </ol>
 <form class="search-form">
     <div class="group">
-        <label class="text">Company</label>
+        <label class="text">@ViewLang.Company</label>
         <select class="control company" name="status">
-            <option>All</option>
+            <option>@ViewLang.All</option>
         </select>
     </div>
     <div class="group">
-        <label class="text">In Service</label>
+        <label class="text">@ViewLang.InService</label>
         <select class="control service" name="status">
-            <option>All</option>
+            <option>@ViewLang.All</option>
         </select>
     </div>
     <div class="group">
-        <label class="text">In Probation</label>
+        <label class="text">@ViewLang.InProbation</label>
         <select class="control probation" name="status">
-            <option>All</option>
+            <option>@ViewLang.All</option>
         </select>
     </div>
     <div class="group">
-        <label class="text">Employee</label>
+        <label class="text">@ViewLang.Employee</label>
         <input type="text" class="control employee" placeholder="Full name or Nick name">
     </div>
-    <button type="submit" class="button -primary">Submit</button>
+    <button type="submit" class="button -primary">@ViewLang.Submit</button>
 </form>
 <div class="top-header">
-    <div class="pull-left">        
-        <a href="/employeemanagement/CreateEmployee" class="button -add create-user">
+    <div class="pull-left">
+        <a asp-action="CreateEmployee" class="button -add create-user">
             <span class="icon-add"></span>
-            Create New Employee
+            @ViewLang.CreateNewEmployee
         </a>
     </div>
     <div class="pull-right search-box">
@@ -58,17 +60,17 @@
 <table id="user-table" class="table table-bordered table-hover table-striped dataTable">
     <thead>
         <tr>
-            <th>#</th>
-            <th>ID No.</th>
-            <th>Nickname</th>
-            <th>Full Name</th>
-            <th>Company</th>
-            <th>Division</th>
-            <th>Department</th>
-            <th>Job Title</th>
-            <th>In Service</th>
-            <th>Probation</th>
-            <th>Action</th>
+            <th>@ViewLang.SymbolCount</th>
+            <th>@ViewLang.IDNo</th>
+            <th>@ViewLang.Nickname</th>
+            <th>@ViewLang.FullName</th>
+            <th>@ViewLang.Company</th>
+            <th>@ViewLang.Division</th>
+            <th>@ViewLang.Department</th>
+            <th>@ViewLang.JobTitle</th>
+            <th>@ViewLang.InService</th>
+            <th>@ViewLang.Probation</th>
+            <th>@ViewLang.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -89,12 +91,11 @@
                         <span class="icon-configuration"></span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">                           
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
                         <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
                         <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
                     </ul>
                 </div>
-                
             </td>
         </tr>
         <tr>
@@ -114,12 +115,11 @@
                         <span class="icon-configuration"></span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">                           
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
                         <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
                         <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
                     </ul>
                 </div>
-                
             </td>
         </tr>
         <tr>
@@ -139,12 +139,11 @@
                         <span class="icon-configuration"></span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">                           
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
                         <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
                         <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
                     </ul>
                 </div>
-                
             </td>
         </tr>
     </tbody>
@@ -158,5 +157,4 @@
     }
 </environment>
 <environment exclude="Development">
-    
 </environment>

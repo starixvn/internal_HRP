@@ -1,42 +1,48 @@
-﻿@using HRP.Resources;
+﻿@using HRP.Resources
+@using HRP.Models.EmployeeManagement
 
-<form class="form-information employment">
+@model CreateEmploymentViewModel
+
+<form class="form-information employment" asp-action="CreateEmployment" method="post">
     <div class="col">
+        <input hidden asp-for="EmployeeId" />
         <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
         <div class="group-complex -emp-layout1">
             <div class="component">
-                <label class="text -has-required" for="CompanyBVI">@ViewLang.BVI</label>
-                <select class="control" id="CompanyBVI">
+                <label class="text -has-required" asp-for="BVICompanyId">@ViewLang.BVI</label>
+                <select class="control" asp-for="BVICompanyId" asp-items="@(new SelectList(Model.BVICompanies, "CompanyId", "Code"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="BVICompanyId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="CompanyBVIDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="CompanyBVIDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="BVICompanyChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="BVICompanyChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="CompanyBVIReason">@ViewLang.Reason</label>
-                <select class="control" id="CompanyBVIReason">
+                <label class="text" for="BVICompanyReasonId">@ViewLang.Reason</label>
+                <select class="control" name="BVICompanyReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout1">
             <div class="component">
-                <label class="text -has-required" for="CompanyLocal">@ViewLang.Local</label>
-                <select class="control" id="CompanyLocal">
+                <label class="text -has-required" asp-for="LocalCompanyId">@ViewLang.Local</label>
+                <select class="control" asp-for="LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="LocalCompanyId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text -has-required" for="CompanyLocalDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="CompanyLocalDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="LocalCompanyChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="LocalCompanyChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="CompanyLocalReason">@ViewLang.Reason</label>
-                <select class="control" id="CompanyLocalReason">
+                <label class="text" for="LocalCompanyReasonId">@ViewLang.Reason</label>
+                <select class="control" id="LocalCompanyReasonId" disabled>
                     <option></option>
                 </select>
             </div>
@@ -45,36 +51,43 @@
         <div class="group-title"><span class="icon-group"></span>@ViewLang.JobTitle</div>
         <div class="group-complex -emp-layout1">
             <div class="component">
+<<<<<<< HEAD:HRP.Website/Views/EmployeeManagement/_Employment.cshtml
                 <label class="text -has-required" for="JobBVI">@ViewLang.BVI</label>
                 <input type="text" class="control" id="JobBVI">
+=======
+                <label class="text -has-required" asp-for="BVIJobTitle">@ViewLang.BVI</label>
+                <input type="text" class="control" asp-for="BVIJobTitle" />
+                <span asp-validation-for="BVIJobTitle" class="text-danger"></span>
+>>>>>>> 88830 - Create Employee - Employment:HRP.Website/Views/EmployeeManagement/_CreateEmployment.cshtml
             </div>
             <div class="component calendar">
-                <label class="text" for="JobBVIDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="JobBVIDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="BVIJobTitleChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="BVIJobTitleChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="JobBVIReason">@ViewLang.Reason</label>
-                <select class="control" id="JobBVIReason">
+                <label class="text" for="BVIJobTitleReason">@ViewLang.Reason</label>
+                <select class="control" name="BVIJobTitleReason" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout1">
             <div class="component">
-                <label class="text -has-required" for="JobLocal">@ViewLang.Local</label>
-                <select class="control" id="JobLocal">
+                <label class="text -has-required" asp-for="LocalJobTitleId">@ViewLang.Local</label>
+                <select class="control" asp-for="LocalJobTitleId" asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="LocalJobTitleId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="JobLocalDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="JobLocalDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="LocalJobTitleChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="LocalJobTitleChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="JobLocalReason">@ViewLang.Reason</label>
-                <select class="control" id="JobLocalReason">
+                <label class="text" for="LocalJobTitleReasonId">@ViewLang.Reason</label>
+                <select class="control" name="LocalJobTitleReason" disabled>
                     <option></option>
                 </select>
             </div>
@@ -83,36 +96,36 @@
         <div class="group-title"><span class="icon-group"></span>@ViewLang.DateCommencement</div>
         <div class="group-complex -emp-layout2">
             <div class="component calendar">
-                <label class="text -has-required" for="CommencementGroup">@ViewLang.Group</label>
-                <input type="text" class="control" id="CommencementGroup">
+                <label class="text -has-required" asp-for="GroupStartDate">@ViewLang.Group</label>
+                <input type="text" class="control" asp-for="GroupStartDate" readonly />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="CommencementGroupEndDate">@ViewLang.EndDate</label>
-                <input type="text" class="control" id="CommencementGroupEndDate">
+                <label class="text" asp-for="GroupEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" asp-for="GroupEndDate" readonly />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component">
-                <label class="text" for="CommencementGroupReason">@ViewLang.Reason</label>
-                <select class="control" id="CommencementGroupReason">
+                <label class="text" for="GroupDateReasonId">@ViewLang.Reason</label>
+                <select class="control" name="GroupDateReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout2">
             <div class="component calendar">
-                <label class="text" for="CommencementCompany">@ViewLang.Company</label>
-                <input type="text" class="control" id="CommencementCompany">
+                <label class="text" asp-for="CompanyStartDate">@ViewLang.Company</label>
+                <input type="text" class="control" asp-for="CompanyStartDate" readonly />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="CommencementCompanyEndDate">@ViewLang.EndDate</label>
-                <input type="text" class="control" id="CommencementCompanyEndDate">
+                <label class="text" asp-for="CompanyEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" asp-for="CompanyEndDate">
                 <span class="icon-calendar"></span>
             </div>
             <div class="component">
-                <label class="text" for="CommencementCompanyReason">@ViewLang.Reason</label>
-                <select class="control" id="CommencementCompanyReason">
+                <label class="text" for="CompanyDateReasonId">@ViewLang.Reason</label>
+                <select class="control" id="CompanyDateReasonId" disabled>
                     <option></option>
                 </select>
             </div>
@@ -122,34 +135,36 @@
         <div class="group-complex -emp-layout3">
             <div class="component">
                 <label class="text" for="ServiceGroup">@ViewLang.Group</label>
-                <input type="text" class="control" id="ServiceGroup" disabled>
+                <input type="text" class="control" id="ServiceGroup" disabled />
             </div>
             <div class="component">
                 <label class="text" for="ServiceCompany">@ViewLang.Company</label>
-                <input type="text" class="control" id="ServiceCompany" disabled>
+                <input type="text" class="control" id="ServiceCompany" disabled />
             </div>
         </div>
 
         <div class="group-title"><span class="icon-group"></span>@ViewLang.IDNo</div>
         <div class="group-complex -emp-layout4">
             <div class="component">
-                <label class="text -has-required" for="CompanyCode">@ViewLang.CompanyCode</label>
-                <select class="control" id="CompanyCode">
+                <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
+                <select class="control" asp-for="CompanyCode">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="CompanyCode" class="text-danger"></span>
             </div>
             <div class="component">
-                <label class="text -has-required" for="CompanyCode">@ViewLang.EmpCode</label>
-                <input type="text" class="control" id="ServiceCompany">
+                <label class="text -has-required" asp-for="EmployeeCode">@ViewLang.EmpCode</label>
+                <input type="text" class="control" asp-for="EmployeeCode" />
+                <span asp-validation-for="EmployeeCode" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="IDDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="IDDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="IDNoChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="IDNoChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="IDNoReason">@ViewLang.Reason</label>
-                <select class="control" id="IDNoReason">
+                <label class="text" for="IDNoReasonId">@ViewLang.Reason</label>
+                <select class="control" name="IDNoReasonId" disabled>
                     <option></option>
                 </select>
             </div>
@@ -157,167 +172,177 @@
 
         <div class="group-complex space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required " for="EmploymentType">
+                <label class="text like-group-title -has-required " asp-for="EmploymentType">
                     <span class="icon-group"></span>@ViewLang.EmploymentType
                 </label>
-                <select class="control width-185" id="EmploymentType">
+                <select class="control width-185" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="EmploymentType" class="text-danger"></span>
             </div>
         </div>
 
         <div class="group-complex -emp-layout5 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="EmploymentStatus">
+                <label class="text like-group-title -has-required" asp-for="EmploymentStatus">
                     <span class="icon-group"></span>@ViewLang.EmploymentStatus
                 </label>
-                <select class="control" id="EmploymentStatus">
+                <select class="control" asp-for="EmploymentStatus" asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="EmploymentStatus" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text -has-required" for="EmploymentDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="EmploymentDate">
-                <span class="icon-calendar"></span>
+                <label class="text -has-required" for="EmploymentStatusChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="EmploymentStatusChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
         </div>
 
         <div class="group-complex -emp-layout1 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="JobCategory">
+                <label class="text like-group-title -has-required" asp-for="JobCategoryId">
                     <span class="icon-group"></span>@ViewLang.JobCategory
                 </label>
-                <select class="control" id="JobCategory">
+                <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="JobCategoryId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="JobCategoryDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="JobCategoryDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="JobCategoryChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="JobCategoryChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="JobCategoryReason">@ViewLang.Reason</label>
-                <select class="control" id="JobCategoryReason">
+                <label class="text" for="JobCategoryReasonId">@ViewLang.Reason</label>
+                <select class="control" name="JobCategoryReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout4 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="JobGrade">
+                <label class="text like-group-title -has-required" asp-for="GradeId">
                     <span class="icon-group"></span>@ViewLang.JobGrade
                 </label>
-                <select class="control" id="JobGrade">
+                <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.Grades, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="GradeId" class="text-danger"></span>
             </div>
             <div class="component">
-                <label class="text -has-required" for="GradeLevel">@ViewLang.GradeLevel</label>
-                <select class="control" id="GradeLevel">
+                <label class="text -has-required" asp-for="GradeLevelId">@ViewLang.GradeLevel</label>
+                <select class="control" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="GradeLevelId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="JobGradeDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="JobGradeDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="JobGradeChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" for="JobGradeChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="GradeReason">@ViewLang.Reason</label>
-                <select class="control" id="GradeReason">
+                <label class="text" for="JobGradeReasonId">@ViewLang.Reason</label>
+                <select class="control" name="JobGradeReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout4 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="Division">
+                <label class="text like-group-title -has-required" asp-for="DivisionId">
                     <span class="icon-group"></span>@ViewLang.Division
                 </label>
-                <select class="control" id="Division">
+                <select class="control" asp-for="DivisionId">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="DivisionId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="DivisionDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="DivisionDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="DivisionChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="DivisionChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="DivisionReason">@ViewLang.Reason</label>
-                <select class="control" id="DivisionReason">
+                <label class="text" for="DivisionReasonId">@ViewLang.Reason</label>
+                <select class="control" name="DivisionReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout4 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="Department">
+                <label class="text like-group-title -has-required" asp-for="DepartmentId">
                     <span class="icon-group"></span>@ViewLang.Department
                 </label>
-                <select class="control" id="Division">
+                <select class="control" asp-for="DepartmentId">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="DepartmentDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="DepartmentDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="DepartmentChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="DepartmentChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="DepartmentReason">@ViewLang.Reason</label>
-                <select class="control" id="DepartmentReason">
+                <label class="text" for="DepartmentReasonId">@ViewLang.Reason</label>
+                <select class="control" name="DepartmentReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout4 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="Section">
+                <label class="text like-group-title -has-required" asp-for="SectionId">
                     <span class="icon-group"></span>@ViewLang.Section
                 </label>
-                <select class="control" id="Section">
+                <select class="control" asp-for="SectionId">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="SectionId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="SectionDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="SectionDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="SectionChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="SectionChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="SectionReason">@ViewLang.Reason</label>
-                <select class="control" id="SectionReason">
+                <label class="text" for="SectionReasonId">@ViewLang.Reason</label>
+                <select class="control" name="SectionReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex -emp-layout4 space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="CostCenter">
+                <label class="text like-group-title -has-required" asp-for="CostCenterId">
                     <span class="icon-group"></span>@ViewLang.CostCenter
                 </label>
-                <select class="control" id="Division">
+                <select class="control" asp-for="CostCenterId">
                     <option>--Please select--</option>
                 </select>
+                <span asp-validation-for="CostCenterId" class="text-danger"></span>
             </div>
             <div class="component calendar">
-                <label class="text" for="CostCenterDate">@ViewLang.ChangeDate</label>
-                <input type="text" class="control" id="CostCenterDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="CostCenterChangeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" name="CostCenterChangeDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
-                <label class="text" for="CostCenterReason">@ViewLang.Reason</label>
-                <select class="control" id="CostCenterReason">
+                <label class="text" for="CostCenterReasonId">@ViewLang.Reason</label>
+                <select class="control" name="CostCenterReasonId" disabled>
                     <option></option>
                 </select>
             </div>
         </div>
         <div class="group-complex space-between-parts">
             <div class="component">
-                <label class="text like-group-title -has-required" for="Email"><span class="icon-group"></span>@ViewLang.EmailAddress</label>
-                <input type="text" class="control width-424" id="Email">
+                <label class="text like-group-title -has-required" asp-for="Email"><span class="icon-group"></span>@ViewLang.EmailAddress</label>
+                <input type="text" class="control width-424" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -325,20 +350,20 @@
         <div class="group-title -first"><span class="icon-group"></span>@ViewLang.WorkLocation</div>
         <div class="group-complex -emp-layout6">
             <div class="component">
-                <label class="text -has-required" for="Country">@ViewLang.Country</label>
-                <select class="control" id="Country">
+                <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
+                <select class="control" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
             </div>
             <div class="component">
-                <label class="text -has-required" for="City">@ViewLang.City</label>
-                <select class="control" id="City">
+                <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
+                <select class="control" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
             </div>
             <div class="component">
-                <label class="text -has-required" for="Office">@ViewLang.Office</label>
-                <select class="control" id="Office">
+                <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
+                <select class="control" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "ResourceId", "Value"))">
                     <option>--Please select--</option>
                 </select>
             </div>
@@ -566,8 +591,8 @@
             </div>
         </div>
     </div>
-    <div class="list-button">
-        <button class="button -second">@ViewLang.Cancel</button>
-        <button class="button -primary">@ViewLang.Save</button>
-    </div>
 </form>
+<div class="row list-button">
+    <button class="button -second">@ViewLang.Cancel</button>
+    <button class="button -primary">@ViewLang.Save</button>
+</div>

@@ -189,4 +189,79 @@
   <data name="ProfileUpdateSuccessful" xml:space="preserve">
     <value>Your profile has been successfully updated.</value>
   </data>
+  <data name="BVICompanyRequired" xml:space="preserve">
+    <value>BVI Company is required!</value>
+  </data>
+  <data name="BVIJobTitleMaxLength" xml:space="preserve">
+    <value>BVI Job Title must not over {1} characters long.</value>
+  </data>
+  <data name="BVIJobTitleRequired" xml:space="preserve">
+    <value>BVI Job Title is required!</value>
+  </data>
+  <data name="CityRequired" xml:space="preserve">
+    <value>City is required!</value>
+  </data>
+  <data name="CompanyCodeRequired" xml:space="preserve">
+    <value>Company Code is required!</value>
+  </data>
+  <data name="CostCenterRequired" xml:space="preserve">
+    <value>Cost Center is required!</value>
+  </data>
+  <data name="CountryRequired" xml:space="preserve">
+    <value>Country is required!</value>
+  </data>
+  <data name="DepartmentRequired" xml:space="preserve">
+    <value>Department is required!</value>
+  </data>
+  <data name="DivisionRequired" xml:space="preserve">
+    <value>Division is required!</value>
+  </data>
+  <data name="EmployeeCodeMaxLength" xml:space="preserve">
+    <value>Emp. Code must not over {1} characters long.</value>
+  </data>
+  <data name="EmployeeCodeRequired" xml:space="preserve">
+    <value>Emp. Code is required!</value>
+  </data>
+  <data name="EmploymentStatusRequired" xml:space="preserve">
+    <value>Employment Status is required!</value>
+  </data>
+  <data name="EmploymentTypeRequired" xml:space="preserve">
+    <value>Employment Type is required!</value>
+  </data>
+  <data name="GradeLevelRequired" xml:space="preserve">
+    <value>Grade Level is required!</value>
+  </data>
+  <data name="GradeRequired" xml:space="preserve">
+    <value>Grade is required!</value>
+  </data>
+  <data name="HDMFNoMaxLength" xml:space="preserve">
+    <value>HDMF No. must not over {1} characters long.</value>
+  </data>
+  <data name="HealthInsNoMaxLength" xml:space="preserve">
+    <value>Health Ins No. must not over {1} characters long.</value>
+  </data>
+  <data name="JobCategoryRequired" xml:space="preserve">
+    <value>Job Category is required!</value>
+  </data>
+  <data name="LocalCompanyRequired" xml:space="preserve">
+    <value>Local Company is required!</value>
+  </data>
+  <data name="LocalJobTitleRequired" xml:space="preserve">
+    <value>Local Job Title is required!</value>
+  </data>
+  <data name="NickNameMaxLength" xml:space="preserve">
+    <value>Nick Name must not over {1} characters long.</value>
+  </data>
+  <data name="OfficeRequired" xml:space="preserve">
+    <value>Office is required!</value>
+  </data>
+  <data name="SectionRequired" xml:space="preserve">
+    <value>Section is required!</value>
+  </data>
+  <data name="SSSNoMaxLength" xml:space="preserve">
+    <value>SSS No. must not over {1} characters long.</value>
+  </data>
+  <data name="TaxIDNoMaxLength" xml:space="preserve">
+    <value>Tax ID No. must not over {1} characters long.</value>
+  </data>
 </root>

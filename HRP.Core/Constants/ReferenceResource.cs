@@ -15,5 +15,6 @@
         public const string Grade = "Grade";
         public const string GradeLevel = "GradeLevel";
         public const string LocalJobTitle = "LocalJobTitle";
+        public const string JobCategory = "JobCategory";
     }
 }
