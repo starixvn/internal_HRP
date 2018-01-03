@@ -221,6 +221,8 @@
   {
     "outputFileName": "wwwroot/assets/bundles/employee/js/create-employee.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/assets/js/employee/create-employee.js"
     ],
     "minify": {

@@ -1,24 +1,16 @@
 ﻿var createEmployee = (function ($) {
     function uploadProfilePicture() {
-        var message;
         var formData = new FormData();
+        var guidToken = $('#GuidToken');
         var image = $('#profilePicture').prop('files')[0];
-        if (image === undefined) {
-            return;
-        }
+        var isValid = validatePicture(image);
 
-        if (image.size / (1024 * 1024) > 5) {
-            message = 'This file is larger than 5MB. Sorry, it cannot be uploaded.';
-            return;
-        }
-
-        var pass = /\.(gif|jpe?g|png)$/i.test(image.name);
-        if (!pass) {
-            message = 'Please choose an image!';
+        if (!isValid) {
             return;
         }
 
         formData.append('image', image);
+        formData.append('token', guidToken.val());
         $.ajax({
             type: "POST",
             url: '/EmployeeManagement/UploadImage',
@@ -27,12 +19,56 @@
             contentType: false,
             processData: false,
             success: function (response) {
-                message = response.Message;
+                if (response.code === 1) {
+                    displayMessageValidattionPicture(response.message);
+                } else {
+                    var imagePath = response.message;
+                    $('.js-displayProfilePicture').attr('src', imagePath);
+                }
             },
             error: function (error) {
-                message = 'Error';
+                displayMessageValidattionPicture('Upload failed');
             }
         });
+    }
+
+    function validatePicture(image) {
+        var message;
+        var isValid = false;
+
+        clearMessageValidattionPicture();
+        if (image !== undefined) {
+            if (image.size / (1024 * 1024) > 5) {
+                isValid = false;
+                message = 'This file is larger than 5MB. Sorry, it cannot be uploaded.';
+            } else {
+                var pass = /\.(gif|jpe?g|png)$/i.test(image.name);
+                if (!pass) {
+                    isValid = false;
+                    message = 'Please choose an image!';
+                } else {
+                    isValid = true;
+                }
+            }
+
+            if (!isValid) {
+                displayMessageValidattionPicture(message);
+            }
+        }
+
+        return isValid;
+    }
+
+    function displayMessageValidattionPicture(message) {
+        var labelValidation = $('.js-validationPicture');
+        labelValidation.text(message);
+        labelValidation.show();
+    }
+
+    function clearMessageValidattionPicture() {
+        var labelValidation = $('.js-validationPicture');
+        labelValidation.empty();
+        labelValidation.hide();
     }
 
     function registerEventChangePicture() {

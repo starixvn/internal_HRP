@@ -1,14 +1,19 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class EmployeePersonalDetail
     {
         public int EmployeeId { get; set; }
 
-        public string NickName { get; set; }
-
+        [Required]
+        [StringLength(70)]
         public string FullName { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string NickName { get; set; }
 
         public int Gender { get; set; }
 
@@ -57,5 +62,7 @@
         public string ECAddress { get; set; }
 
         public string ECTelephoneNo { get; set; }
+
+        public Guid GuidToken { get; set; }
     }
 }

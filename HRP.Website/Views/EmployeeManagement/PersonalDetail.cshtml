@@ -25,22 +25,26 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
-        <form class="personal-detail">
+        <form class="personal-detail" method="post" asp-action="CreateEmployee" asp-controller="EmployeeManagement">
+            <input type="hidden" asp-for="GuidToken" />
             <figure class="profile">
                 <input id="profilePicture" type="file" accept="image/*" style="display:none" />
-                <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture">
+                <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
                 <figcaption class="change-picture">
                     <a href="#" class="js-changePicture">Change picture</a>
                 </figcaption>
+                <span class="text-danger js-validationPicture" style="display:none"></span>
             </figure>
             <div class="col has-space">
                 <label class="text -has-required" for="FullName">Full Name</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="FullName" asp-for="FullName">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                    <input type="text" class="control" id="FullName" asp-for="FullName" maxlength="70">
                 </div>
                 <label class="text -has-required" for="NickName">Nick Name</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="NickName" asp-for="NickName">
+                    <span asp-validation-for="NickName" class="text-danger"></span>
+                    <input type="text" class="control" id="NickName" asp-for="NickName" maxlength="30">
                 </div>
                 <div class="group-complex -per-layout1">
                     <div class="component">
@@ -170,7 +174,7 @@
             </div>
             <div class="list-button">
                 <button class="button -second">Cancel</button>
-                <button class="button -primary">Save</button>
+                <button class="button -primary" type="submit">Save</button>
             </div>
         </form>
     </div>
@@ -624,7 +628,7 @@
                 <div class="group-complex -emp-layout9 space-between-parts">
                     <div class="component">
                         <label class="text like-group-title"><span class="icon-group"></span>Paymaster</label>
-                        <labe class="text-group">BVI Salary</label>
+                        <label class="text-group">BVI Salary</label>
                     </div>
                     <div class="component">
                         <label class="text" for="PaymasterNoneOrIDNo">None or ID No.</label>
@@ -661,7 +665,7 @@
                 <div class="group-complex -emp-layout9 space-between-parts">
                     <div class="component">
                         <label class="text like-group-title"><span class="icon-group"></span>EPA</label>
-                        <labe class="text-group">Administrator</label>
+                        <label class="text-group">Administrator</label>
                     </div>
                     <div class="component">
                         <label class="text" for="EPANoneOrIDNo">None or ID No.</label>
@@ -751,6 +755,8 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/assets/js/employee/create-employee.js"></script>
     </environment>
     <environment exclude="Development">
