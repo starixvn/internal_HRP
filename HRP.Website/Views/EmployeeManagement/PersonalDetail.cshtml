@@ -1,4 +1,6 @@
-﻿@{
+﻿@using HRP.Models.EmployeeManagement
+@model EmployeePersonalDetail
+@{
     ViewData["Title"] = "Personal Detail";
 }
 @section Styles {
@@ -25,7 +27,7 @@
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
         <form class="personal-detail">
             <figure class="profile">
-                <input id="profilePicture" type="file" accept="image/*" name="ProfilePicture" style="display:none" />
+                <input id="profilePicture" type="file" accept="image/*" style="display:none" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture">
                 <figcaption class="change-picture">
                     <a href="#" class="js-changePicture">Change picture</a>
@@ -34,11 +36,11 @@
             <div class="col has-space">
                 <label class="text -has-required" for="FullName">Full Name</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="FullName">
+                    <input type="text" class="control" id="FullName" asp-for="FullName">
                 </div>
                 <label class="text -has-required" for="NickName">Nick Name</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="NickName">
+                    <input type="text" class="control" id="NickName" asp-for="NickName">
                 </div>
                 <div class="group-complex -per-layout1">
                     <div class="component">
