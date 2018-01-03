@@ -177,14 +177,8 @@
   <data name="SymbolCount" xml:space="preserve">
     <value>#</value>
   </data>
-  <data name="UserActiveStatus" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="UserAllStatus" xml:space="preserve">
+  <data name="All" xml:space="preserve">
     <value>All</value>
-  </data>
-  <data name="UserInactiveStatus" xml:space="preserve">
-    <value>Inactive</value>
   </data>
   <data name="UserManagement" xml:space="preserve">
     <value>User Management</value>
@@ -269,5 +263,134 @@
   </data>
   <data name="MonthYear" xml:space="preserve">
     <value>Month/Year</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="BVI" xml:space="preserve">
+    <value>BVI</value>
+  </data>
+  <data name="BVIAllowance" xml:space="preserve">
+    <value>BVI Allowance</value>
+  </data>
+  <data name="BVIBonus" xml:space="preserve">
+    <value>BVI Bonus</value>
+  </data>
+  <data name="BVISalary" xml:space="preserve">
+    <value>BVI Salary</value>
+  </data>
+  <data name="ChangeDate" xml:space="preserve">
+    <value>Change Date</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="CompanyCode" xml:space="preserve">
+    <value>Company Code</value>
+  </data>
+  <data name="CostCenter" xml:space="preserve">
+    <value>Cost Center</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="DateCommencement" xml:space="preserve">
+    <value>Date Commencement</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Division" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="EmpCode" xml:space="preserve">
+    <value>Emp. Code</value>
+  </data>
+  <data name="EmploymentStatus" xml:space="preserve">
+    <value>Employment Status</value>
+  </data>
+  <data name="EmploymentType" xml:space="preserve">
+    <value>Employment Type</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Evaluator" xml:space="preserve">
+    <value>Evaluator</value>
+  </data>
+  <data name="GradeLevel" xml:space="preserve">
+    <value>Grade Level</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="IDNo" xml:space="preserve">
+    <value>ID No.</value>
+  </data>
+  <data name="Increment" xml:space="preserve">
+    <value>Increment</value>
+  </data>
+  <data name="JobCategory" xml:space="preserve">
+    <value>Job Category</value>
+  </data>
+  <data name="JobGrade" xml:space="preserve">
+    <value>Job Grade</value>
+  </data>
+  <data name="JobTitle" xml:space="preserve">
+    <value>Job Title</value>
+  </data>
+  <data name="LengthOfService" xml:space="preserve">
+    <value>Length Of Service</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="LocalBonus" xml:space="preserve">
+    <value>Local Bonus</value>
+  </data>
+  <data name="LocalSalary" xml:space="preserve">
+    <value>Local Salary</value>
+  </data>
+  <data name="LocalStatutory" xml:space="preserve">
+    <value>Local Statutory</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="Office" xml:space="preserve">
+    <value>Office</value>
+  </data>
+  <data name="Paymaster" xml:space="preserve">
+    <value>Paymaster</value>
+  </data>
+  <data name="PDFPassword" xml:space="preserve">
+    <value>PDF Password</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Reviewer" xml:space="preserve">
+    <value>Reviewer</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="TaxDeclaration" xml:space="preserve">
+    <value>Tax Declaration</value>
+  </data>
+  <data name="WorkPermit" xml:space="preserve">
+    <value>Work Permit</value>
+  </data>
+  <data name="Nickname" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="WorkLocation" xml:space="preserve">
+    <value>Work Location</value>
   </data>
 </root>

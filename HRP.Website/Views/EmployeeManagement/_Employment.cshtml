@@ -1,0 +1,575 @@
+﻿@using HRP.Resources;
+
+<form class="form-information employment">
+    <div class="col">
+        <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
+        <div class="group-complex -emp-layout1">
+            <div class="component">
+                <label class="text -has-required" for="CompanyBVI">@ViewLang.BVI</label>
+                <select class="control" id="CompanyBVI">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="CompanyBVIDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="CompanyBVIDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="CompanyBVIReason">@ViewLang.Reason</label>
+                <select class="control" id="CompanyBVIReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout1">
+            <div class="component">
+                <label class="text -has-required" for="CompanyLocal">@ViewLang.Local</label>
+                <select class="control" id="CompanyLocal">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text -has-required" for="CompanyLocalDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="CompanyLocalDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="CompanyLocalReason">@ViewLang.Reason</label>
+                <select class="control" id="CompanyLocalReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.JobTitle</div>
+        <div class="group-complex -emp-layout1">
+            <div class="component">
+                <label class="text -has-required" for="JobBVI">@ViewLang.BVI</label>
+                <select class="control" id="CompanyBVI">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="JobBVIDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="JobBVIDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="JobBVIReason">@ViewLang.Reason</label>
+                <select class="control" id="JobBVIReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout1">
+            <div class="component">
+                <label class="text -has-required" for="JobLocal">@ViewLang.Local</label>
+                <select class="control" id="JobLocal">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="JobLocalDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="JobLocalDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="JobLocalReason">@ViewLang.Reason</label>
+                <select class="control" id="JobLocalReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.DateCommencement</div>
+        <div class="group-complex -emp-layout2">
+            <div class="component calendar">
+                <label class="text -has-required" for="CommencementGroup">@ViewLang.Group</label>
+                <input type="text" class="control" id="CommencementGroup">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="CommencementGroupEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" id="CommencementGroupEndDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="CommencementGroupReason">@ViewLang.Reason</label>
+                <select class="control" id="CommencementGroupReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout2">
+            <div class="component calendar">
+                <label class="text" for="CommencementCompany">@ViewLang.Company</label>
+                <input type="text" class="control" id="CommencementCompany">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="CommencementCompanyEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" id="CommencementCompanyEndDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="CommencementCompanyReason">@ViewLang.Reason</label>
+                <select class="control" id="CommencementCompanyReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.LengthOfService</div>
+        <div class="group-complex -emp-layout3">
+            <div class="component">
+                <label class="text" for="ServiceGroup">@ViewLang.Group</label>
+                <input type="text" class="control" id="ServiceGroup" disabled>
+            </div>
+            <div class="component">
+                <label class="text" for="ServiceCompany">@ViewLang.Company</label>
+                <input type="text" class="control" id="ServiceCompany" disabled>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.IDNo</div>
+        <div class="group-complex -emp-layout4">
+            <div class="component">
+                <label class="text -has-required" for="CompanyCode">@ViewLang.CompanyCode</label>
+                <select class="control" id="CompanyCode">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component">
+                <label class="text -has-required" for="CompanyCode">@ViewLang.EmpCode</label>
+                <input type="text" class="control" id="ServiceCompany">
+            </div>
+            <div class="component calendar">
+                <label class="text" for="IDDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="IDDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="IDNoReason">@ViewLang.Reason</label>
+                <select class="control" id="IDNoReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-complex space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required " for="EmploymentType">
+                    <span class="icon-group"></span>@ViewLang.EmploymentType
+                </label>
+                <select class="control width-185" id="EmploymentType">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-complex -emp-layout5 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="EmploymentStatus">
+                    <span class="icon-group"></span>@ViewLang.EmploymentStatus
+                </label>
+                <select class="control" id="EmploymentStatus">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text -has-required" for="EmploymentDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="EmploymentDate">
+                <span class="icon-calendar"></span>
+            </div>
+        </div>
+
+        <div class="group-complex -emp-layout1 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="JobCategory">
+                    <span class="icon-group"></span>@ViewLang.JobCategory
+                </label>
+                <select class="control" id="JobCategory">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="JobCategoryDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="JobCategoryDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="JobCategoryReason">@ViewLang.Reason</label>
+                <select class="control" id="JobCategoryReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout4 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="JobGrade">
+                    <span class="icon-group"></span>@ViewLang.JobGrade
+                </label>
+                <select class="control" id="JobGrade">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component">
+                <label class="text -has-required" for="GradeLevel">@ViewLang.GradeLevel</label>
+                <select class="control" id="GradeLevel">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="JobGradeDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="JobGradeDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="GradeReason">@ViewLang.Reason</label>
+                <select class="control" id="GradeReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout4 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="Division">
+                    <span class="icon-group"></span>@ViewLang.Division
+                </label>
+                <select class="control" id="Division">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="DivisionDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="DivisionDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="DivisionReason">@ViewLang.Reason</label>
+                <select class="control" id="DivisionReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout4 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="Department">
+                    <span class="icon-group"></span>@ViewLang.Department
+                </label>
+                <select class="control" id="Division">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="DepartmentDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="DepartmentDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="DepartmentReason">@ViewLang.Reason</label>
+                <select class="control" id="DepartmentReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout4 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="Section">
+                    <span class="icon-group"></span>@ViewLang.Section
+                </label>
+                <select class="control" id="Section">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="SectionDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="SectionDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="SectionReason">@ViewLang.Reason</label>
+                <select class="control" id="SectionReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout4 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="CostCenter">
+                    <span class="icon-group"></span>@ViewLang.CostCenter
+                </label>
+                <select class="control" id="Division">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="CostCenterDate">@ViewLang.ChangeDate</label>
+                <input type="text" class="control" id="CostCenterDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component">
+                <label class="text" for="CostCenterReason">@ViewLang.Reason</label>
+                <select class="control" id="CostCenterReason">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="Email"><span class="icon-group"></span>@ViewLang.EmailAddress</label>
+                <input type="text" class="control width-424" id="Email">
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="group-title -first"><span class="icon-group"></span>@ViewLang.WorkLocation</div>
+        <div class="group-complex -emp-layout6">
+            <div class="component">
+                <label class="text -has-required" for="Country">@ViewLang.Country</label>
+                <select class="control" id="Country">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component">
+                <label class="text -has-required" for="City">@ViewLang.City</label>
+                <select class="control" id="City">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component">
+                <label class="text -has-required" for="Office">@ViewLang.Office</label>
+                <select class="control" id="Office">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.WorkPermit</div>
+        <label class="text -has-required" for="Company">@ViewLang.Company</label>
+        <div class="group-control">
+            <select class="control width-206" id="Company">
+                <option>--Please select--</option>
+            </select>
+        </div>
+        <div class="group-complex -emp-layout7">
+            <div class="component">
+                <label class="text -has-required" for="Type1">Type1</label>
+                <select class="control" id="Type1">
+                    <option>--Please select--</option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text -has-required" for="Type1StartDate">@ViewLang.StartDate</label>
+                <input type="text" class="control" id="Type1StartDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component calendar">
+                <label class="text -has-required" for="Type1EndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" id="Type1EndDate">
+                <span class="icon-calendar"></span>
+            </div>
+        </div>
+        <div class="group-complex -emp-layout7">
+            <div class="component">
+                <label class="text" for="Type2">Type2</label>
+                <select class="control" id="Type2">
+                    <option></option>
+                </select>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="Type2StartDate">@ViewLang.StartDate</label>
+                <input type="text" class="control" id="Type2StartDate">
+                <span class="icon-calendar"></span>
+            </div>
+            <div class="component calendar">
+                <label class="text" for="Type2EndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" id="Type2EndDate">
+                <span class="icon-calendar"></span>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.TaxDeclaration</div>
+        <div class="group-complex -emp-layout8">
+            <div class="component">
+                <label class="text" for="DST">DST</label>
+                <select class="control" id="DST">
+                    <option></option>
+                </select>
+            </div>
+            <div class="component">
+                <label class="text" for="DBT">DBT</label>
+                <select class="control" id="DBT">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.LocalStatutory</div>
+        <div class="group-complex -emp-layout8">
+            <div class="component">
+                <label class="text" for="TaxIDNo">Tax ID No.</label>
+                <input type="text" class="control" id="TaxIDNo">
+            </div>
+            <div class="component">
+                <label class="text" for="SSSNo">SSS No.</label>
+                <input type="text" class="control" id="SSSNo">
+            </div>
+        </div>
+        <div class="group-complex -emp-layout8">
+            <div class="component">
+                <label class="text" for="HealthInsNo">Health Ins No.</label>
+                <input type="text" class="control" id="HealthInsNo">
+            </div>
+            <div class="component">
+                <label class="text" for="HDMFNo">HDMF No.</label>
+                <input type="text" class="control" id="HDMFNo">
+            </div>
+        </div>
+
+        <div class="group-complex -emp-layout9 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title without-control"><span class="icon-group"></span>P-File Admin</label>
+            </div>
+            <div class="component">
+                <label class="text" for="AdminNoneOrIDNo">None or ID No.</label>
+                <input type="text" class="control" id="AdminNoneOrIDNo">
+            </div>
+            <div class="component">
+                <label class="text" for="AdminFullName">@ViewLang.FullName</label>
+                <div class="element-required">
+                    <input type="text" class="control" id="AdminFullName">
+                </div>
+            </div>
+            <div class="component">
+                <label class="text" for="AdminNickname">@ViewLang.Nickname</label>
+                <input type="text" class="control" id="AdminNickname">
+            </div>
+        </div>
+
+        <div class="group-complex -emp-layout9 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title"><span class="icon-group"></span>@ViewLang.Paymaster</label>
+                <label class="text-group">@ViewLang.BVISalary</label>
+            </div>
+            <div class="component">
+                <label class="text" for="PaymasterNoneOrIDNo">None or ID No.</label>
+                <input type="text" class="control" id="PaymasterNoneOrIDNo">
+            </div>
+            <div class="component">
+                <label class="text" for="PaymasterFullName">@ViewLang.FullName</label>
+                <div class="element-required">
+                    <input type="text" class="control" id="PaymasterFullName">
+                </div>
+            </div>
+            <div class="component">
+                <label class="text" for="PaymasterNickname">@ViewLang.Nickname</label>
+                <input type="text" class="control" id="PaymasterNickname">
+            </div>
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.BVIAllowance</label>
+            <input type="text" class="control">
+            <div class="element-required">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.LocalSalary</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+
+        <div class="group-complex -emp-layout9 space-between-parts">
+            <div class="component">
+                <label class="text like-group-title"><span class="icon-group"></span>EPA</label>
+                <label class="text-group">@ViewLang.Administrator</label>
+            </div>
+            <div class="component">
+                <label class="text" for="EPANoneOrIDNo">None or ID No.</label>
+                <input type="text" class="control" id="EPANoneOrIDNo">
+            </div>
+            <div class="component">
+                <label class="text" for="EPAFullName">@ViewLang.FullName</label>
+                <div class="element-required">
+                    <input type="text" class="control" id="EPAFullName">
+                </div>
+            </div>
+            <div class="component">
+                <label class="text" for="EPANickname">@ViewLang.Nickname</label>
+                <input type="text" class="control" id="EPANickname">
+            </div>
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.Evaluator #1</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.Evaluator #2</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.Reviewer</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.Management</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.Increment</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.BVIBonus</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex -emp-layout9">
+            <label class="text-group">@ViewLang.LocalBonus</label>
+            <input type="text" class="control">
+            <div class="padding-right-10">
+                <input type="text" class="control">
+            </div>
+            <input type="text" class="control">
+        </div>
+        <div class="group-complex space-between-parts">
+            <div class="component">
+                <label class="text like-group-title -has-required" for="PDFPassword"><span class="icon-group"></span>@ViewLang.PDFPassword</label>
+                <input type="text" class="control width-240" id="PDFPassword">
+            </div>
+        </div>
+    </div>
+    <div class="list-button">
+        <button class="button -second">@ViewLang.Cancel</button>
+        <button class="button -primary">@ViewLang.Save</button>
+    </div>
+</form>

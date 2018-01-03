@@ -1,7 +1,9 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using HRP.Core.Filters;
     using Microsoft.AspNetCore.Mvc;
 
+    [HRPAuthorize]
     public class EmployeeManagementController : Controller
     {
         public IActionResult Index()
@@ -11,7 +13,6 @@
 
         public IActionResult CreateEmployee()
         {
-            
             return View("PersonalDetail");
         }
     }
