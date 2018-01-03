@@ -196,6 +196,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emp. Code must be unique. Please choose another Emp. Code..
+        /// </summary>
+        public static string EmployeeCodeUnique {
+            get {
+                return ResourceManager.GetString("EmployeeCodeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment Status is required!.
         /// </summary>
         public static string EmploymentStatusRequired {

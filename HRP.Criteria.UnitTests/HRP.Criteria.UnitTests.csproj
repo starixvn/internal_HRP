@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
     <Compile Include="Currency\GetExchangeRateCriteriaTest.cs" />
+    <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
     <Compile Include="GetRefResourceByNameCriteriaTests.cs" />

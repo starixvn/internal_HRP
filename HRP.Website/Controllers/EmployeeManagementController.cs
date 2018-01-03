@@ -10,6 +10,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Http;
@@ -117,6 +118,19 @@
             };
 
             return PartialView("_CreateEmployment", viewModel);
+        }
+
+        public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)
+        {
+            var criteria = new CheckEmpCodeExistedCriteria
+            {
+                CompanyCode = companyCode,
+                EmployeeCode = employeeCode
+            };
+
+            var existed = await baseService.GetDataEntityAsync<bool>(criteria);
+
+            return Json(existed);
         }
     }
 }

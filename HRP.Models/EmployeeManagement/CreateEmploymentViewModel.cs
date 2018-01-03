@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc;
 
     public class CreateEmploymentViewModel
     {
@@ -22,19 +23,17 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
         public int LocalJobTitleId { get; set; }
 
-        public DateTime GroupStartDate { get; set; }
+        public DateTime GroupStartDate { get; set; } = DateTime.Now;
 
-        public DateTime GroupEndDate { get; set; }
-
-        public DateTime CompanyStartDate { get; set; }
-
-        public DateTime CompanyEndDate { get; set; }
+        public DateTime? CompanyStartDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeCode), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public string CompanyCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public string EmployeeCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentTypeRequired")]

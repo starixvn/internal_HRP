@@ -96,9 +96,9 @@
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
-                <label class="text" asp-for="GroupEndDate">@ViewLang.EndDate</label>
-                <input type="text" class="control" asp-for="GroupEndDate" readonly />
-                <span class="icon-calendar"></span>
+                <label class="text" for="GroupEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" name="GroupEndDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
                 <label class="text" for="GroupDateReasonId">@ViewLang.Reason</label>
@@ -114,9 +114,9 @@
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
-                <label class="text" asp-for="CompanyEndDate">@ViewLang.EndDate</label>
-                <input type="text" class="control" asp-for="CompanyEndDate">
-                <span class="icon-calendar"></span>
+                <label class="text" for="CompanyEndDate">@ViewLang.EndDate</label>
+                <input type="text" class="control" name="CompanyEndDate" disabled />
+                <span class="icon-calendar disabled"></span>
             </div>
             <div class="component">
                 <label class="text" for="CompanyDateReasonId">@ViewLang.Reason</label>
@@ -142,7 +142,7 @@
         <div class="group-complex -emp-layout4">
             <div class="component">
                 <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
-                <select class="control" asp-for="CompanyCode">
+                <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.LocalCompanies, "Code", "Code"))">
                     <option>--Please select--</option>
                 </select>
                 <span asp-validation-for="CompanyCode" class="text-danger"></span>
@@ -411,14 +411,14 @@
         <div class="group-title"><span class="icon-group"></span>@ViewLang.TaxDeclaration</div>
         <div class="group-complex -emp-layout8">
             <div class="component">
-                <label class="text" for="DST">DST</label>
-                <select class="control" id="DST">
+                <label class="text" asp-for="DST">DST</label>
+                <select class="control" asp-for="DST" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
                     <option></option>
                 </select>
             </div>
             <div class="component">
-                <label class="text" for="DBT">DBT</label>
-                <select class="control" id="DBT">
+                <label class="text" asp-for="DBT">DBT</label>
+                <select class="control" asp-for="DBT" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
                     <option></option>
                 </select>
             </div>

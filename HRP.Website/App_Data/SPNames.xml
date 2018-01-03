@@ -39,4 +39,7 @@
     <Setting Key="Currency_GetExchageRateMonths" SpName="Currency_GetExchageRateMonths" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_UpdateExchangeRates" SpName="Currency_UpdateExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="Employee">
+    <Setting Key="Employee_CheckEmpCodeExisted" SpName="Employee_CheckEmpCodeExisted" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
 </Functions>
