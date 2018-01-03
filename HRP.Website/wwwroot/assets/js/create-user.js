@@ -2,6 +2,14 @@
     $(function () {
         var settings = $.data($('#create-user-form')[0], 'validator').settings;
         settings.onkeyup = false;
+
+        $('#show-password').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#Password').attr('type', 'text');
+            } else {
+                $('#Password').attr('type', 'password');
+            }
+        });
     });
 
     var displayValidationErrorMessages = function (errors) {

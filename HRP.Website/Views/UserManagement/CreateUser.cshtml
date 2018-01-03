@@ -56,6 +56,11 @@
             <input type="checkbox" asp-for="IsActive" id="IsStatus" />
             <label class="label-text" for="IsStatus">@ViewLang.Active</label>
         </div>
+
+        <div class="pull-left">
+            <input type="checkbox" name="show-password" id="show-password" />
+            <label class="label-text" for="show-password">@ViewLang.ShowPassword</label>
+        </div>
     </div>
     <div class="list-button">
         <a asp-action="Index" asp-controller="UserManagement" class="button -second">@ViewLang.Cancel</a>
@@ -71,7 +76,6 @@
                     <li>@note</li>
                 }
             }
-
         </ul>
     </div>
 </form>
