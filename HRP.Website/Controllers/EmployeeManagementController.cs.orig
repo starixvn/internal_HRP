@@ -1,0 +1,152 @@
+﻿namespace HRP.Website.Controllers
+{
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
+    using HRP.Core.Filters;
+    using HRP.Core.Model;
+    using HRP.Core.Services;
+    using HRP.Criteria;
+<<<<<<< HEAD
+    using HRP.Criteria.Employee;
+=======
+    using HRP.Criteria.EmployeeManagement;
+>>>>>>> #88949 - Create new employee
+    using HRP.Models;
+    using HRP.Models.EmployeeManagement;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
+    [HRPAuthorize]
+    public class EmployeeManagementController : Controller
+    {
+        private readonly ISessionService sessionService;
+        private readonly IBaseService baseService;
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public EmployeeManagementController(
+            ISessionService sessionService,
+            IBaseService baseService,
+            IHostingEnvironment hostingEnvironment)
+        {
+            this.sessionService = sessionService;
+            this.baseService = baseService;
+            this.hostingEnvironment = hostingEnvironment;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult CreateEmployee()
+        {
+            var model = new EmployeePersonalDetail
+            {
+                GuidToken = Guid.NewGuid()
+            };
+
+            return View("PersonalDetail", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new CreateEmployeeCriteria
+                {
+                    FullName = employee.FullName,
+                    NickName = employee.NickName
+                };
+
+                await baseService.ExecuteNonQueryAsync(criteria);
+
+                return RedirectToAction("Index");
+            }
+
+            return View("PersonalDetail", employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile image, string token)
+        {
+            var result = new CommandResult
+            {
+                Message = "Invalid picture."
+            };
+
+            if (image != null && image.Length != 0 && !string.IsNullOrEmpty(token))
+            {
+                var directoryPath = Path.Combine(hostingEnvironment.WebRootPath, "ProfilePicture", "Temp");
+                Directory.CreateDirectory(directoryPath);
+
+                var fileName = image.GetFilename();
+                var path = Path.Combine(directoryPath, fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                    result.Code = 0;
+                    result.Message = "/ProfilePicture/Temp/" + fileName;
+                }
+            }
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateEmployment(int employeeId)
+        {
+            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.PVI, IsActive = true });
+            var localCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.Local, IsActive = true });
+            var localJobTitles = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.LocalJobTitle });
+            var employmentTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentType });
+            var employmentStatuses = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentStatus });
+            var jobCategories = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.JobCategory });
+            var grades = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Grade });
+            var gradeLevels = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.GradeLevel });
+            var countries = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Country });
+            var cities = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.City });
+            var offices = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Office });
+            var taxDeclarations = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.TaxDeclaration });
+            var viewModel = new CreateEmploymentViewModel
+            {
+                EmployeeId = employeeId,
+                BVICompanies = bviCompanies,
+                LocalCompanies = localCompanies,
+                LocalJobTitles = localJobTitles,
+                EmploymentTypes = employmentTypes,
+                EmploymentStatuses = employmentStatuses,
+                JobCategories = jobCategories,
+                Grades = grades,
+                GradeLevels = gradeLevels,
+                Countries = countries,
+                Cities = cities,
+                Offices = offices,
+                TaxDeclarations = taxDeclarations
+            };
+
+            return PartialView("_CreateEmployment", viewModel);
+        }
+
+        public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)
+        {
+            var criteria = new CheckEmpCodeExistedCriteria
+            {
+                CompanyCode = companyCode,
+                EmployeeCode = employeeCode
+            };
+
+            var existed = await baseService.GetDataEntityAsync<bool>(criteria);
+
+            return Json(existed);
+        }
+    }
+}

@@ -24,35 +24,34 @@
                 } else {
                     var imagePath = response.message;
                     $('.js-displayProfilePicture').attr('src', imagePath);
+                    $('#ProfilePic').val(imagePath);
                 }
             },
             error: function (error) {
-                displayMessageValidattionPicture('Upload failed');
+                displayMessageValidattionPicture('Upload failed.');
             }
         });
     }
 
     function validatePicture(image) {
-        var message;
+        var errorMessage;
         var isValid = false;
 
         clearMessageValidattionPicture();
         if (image !== undefined) {
             if (image.size / (1024 * 1024) > 5) {
-                isValid = false;
-                message = 'This file is larger than 5MB. Sorry, it cannot be uploaded.';
+                errorMessage = 'This file is larger than 5MB. Sorry, it cannot be uploaded.';
             } else {
                 var pass = /\.(gif|jpe?g|png)$/i.test(image.name);
                 if (!pass) {
-                    isValid = false;
-                    message = 'Please choose an image!';
+                    errorMessage = 'Please choose an image.';
                 } else {
                     isValid = true;
                 }
             }
 
             if (!isValid) {
-                displayMessageValidattionPicture(message);
+                displayMessageValidattionPicture(errorMessage);
             }
         }
 

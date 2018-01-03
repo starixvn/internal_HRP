@@ -26,9 +26,10 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
-        <form class="personal-detail" method="post" asp-action="CreateEmployee" asp-controller="EmployeeManagement">
+        <form class="personal-detail" method="post" asp-action="CreateEmployeeAsync" asp-controller="EmployeeManagement">
             <input type="hidden" asp-for="GuidToken" />
             <figure class="profile">
+                <input type="hidden" asp-for="ProfilePic" />
                 <input id="profilePicture" type="file" accept="image/*" style="display:none" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
                 <figcaption class="change-picture">

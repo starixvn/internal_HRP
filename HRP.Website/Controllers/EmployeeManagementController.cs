@@ -11,8 +11,10 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Employee;
+    using HRP.Criteria.EmployeeManagement;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -21,13 +23,16 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public EmployeeManagementController(
             ISessionService sessionService,
-            IBaseService baseService)
+            IBaseService baseService,
+            IHostingEnvironment hostingEnvironment)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -47,10 +52,18 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateEmployee(EmployeePersonalDetail employee)
+        public async Task<IActionResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
         {
             if (ModelState.IsValid)
             {
+                var criteria = new CreateEmployeeCriteria
+                {
+                    FullName = employee.FullName,
+                    NickName = employee.NickName
+                };
+
+                await baseService.ExecuteNonQueryAsync(criteria);
+
                 return RedirectToAction("Index");
             }
 
@@ -62,12 +75,12 @@
         {
             var result = new CommandResult
             {
-                Message = "Invalid picture"
+                Message = "Invalid picture."
             };
 
             if (image != null && image.Length != 0 && !string.IsNullOrEmpty(token))
             {
-                var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfilePicture", "Temp");
+                var directoryPath = Path.Combine(hostingEnvironment.WebRootPath, "ProfilePicture", "Temp");
                 Directory.CreateDirectory(directoryPath);
 
                 var fileName = image.GetFilename();
