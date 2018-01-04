@@ -28,26 +28,25 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
-        <form class="personal-detail" enctype="multipart/form-data" method="post" asp-action="CreateEmployeeAsync" asp-controller="EmployeeManagement" id="personalDetailForm">
+        <form class="personal-detail" enctype="multipart/form-data" method="post" asp-action="CreateEmployee" asp-controller="EmployeeManagement" id="personalDetailForm">
             <figure class="profile">
                 <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
                 <figcaption class="change-picture">
                     <a href="#" class="js-changePicture">Change picture</a>
                 </figcaption>
-                <span class="text-danger js-validationPicture" style="display:none"></span>
                 <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             </figure>
             <div class="col has-space">
                 <label class="text -has-required" for="FullName">Full Name</label>
                 <div class="group-control">
                     <span asp-validation-for="FullName" class="text-danger"></span>
-                    <input type="text" class="control" id="FullName" asp-for="FullName" maxlength="70">
+                    <input type="text" class="control" id="FullName" asp-for="FullName">
                 </div>
                 <label class="text -has-required" for="NickName">Nick Name</label>
                 <div class="group-control">
                     <span asp-validation-for="NickName" class="text-danger"></span>
-                    <input type="text" class="control" id="NickName" asp-for="NickName" maxlength="30">
+                    <input type="text" class="control" id="NickName" asp-for="NickName">
                 </div>
                 <div class="group-complex -per-layout1">
                     <div class="component">

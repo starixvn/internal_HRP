@@ -403,6 +403,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nick Name is required!.
+        /// </summary>
+        public static string NickNameRequired {
+            get {
+                return ResourceManager.GetString("NickNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Office is required!.
         /// </summary>
         public static string OfficeRequired {

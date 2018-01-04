@@ -291,4 +291,7 @@
   <data name="InvalidImageType" xml:space="preserve">
     <value>Invalid file type. Please choose an image file.</value>
   </data>
+  <data name="NickNameRequired" xml:space="preserve">
+    <value>Nick Name is required!</value>
+  </data>
 </root>

@@ -1,20 +1,15 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
-    using HRP.Core.Extensions;
     using HRP.Core.Filters;
-    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using HRP.Services;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
@@ -22,18 +17,15 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
-        private readonly IHostingEnvironment hostingEnvironment;
         private readonly IEmployeeManagementService employeeManagementService;
 
         public EmployeeManagementController(
             ISessionService sessionService,
             IBaseService baseService,
-            IHostingEnvironment hostingEnvironment,
             IEmployeeManagementService employeeManagementService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
-            this.hostingEnvironment = hostingEnvironment;
             this.employeeManagementService = employeeManagementService;
         }
 
@@ -42,6 +34,7 @@
             return View();
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreateEmployee()
         {
             var model = new EmployeePersonalDetail();
@@ -50,7 +43,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateEmployee(EmployeePersonalDetail employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
@@ -66,33 +60,6 @@
             }
 
             return View("PersonalDetail", employee);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile image)
-        {
-            var result = new CommandResult
-            {
-                Message = "Invalid picture."
-            };
-
-            if (image != null && image.Length != 0)
-            {
-                var directoryPath = Path.Combine(hostingEnvironment.WebRootPath, "ProfilePicture", "Temp");
-                Directory.CreateDirectory(directoryPath);
-
-                var fileName = image.GetFilename();
-                var path = Path.Combine(directoryPath, fileName);
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await image.CopyToAsync(stream);
-                    result.Code = 0;
-                    result.Message = "/ProfilePicture/Temp/" + fileName;
-                }
-            }
-
-            return Json(result);
         }
 
         [HttpGet]

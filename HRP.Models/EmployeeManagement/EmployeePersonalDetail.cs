@@ -2,18 +2,19 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Http;
 
     public class EmployeePersonalDetail
     {
         public int EmployeeId { get; set; }
 
-        [Required]
-        [StringLength(70)]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameRequired")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
         public string FullName { get; set; }
 
-        [Required]
-        [StringLength(30)]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameRequired")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameMaxLength")]
         public string NickName { get; set; }
 
         public int Gender { get; set; }
