@@ -10,6 +10,10 @@
 
         public string NickName { get; set; }
 
+        public string PictureExtension { get; set; }
+
+        public int CreatedBy { get; set; }
+
         public override string GetSettingKey() => "Employee_CreateEmployee";
 
         public override bool IsValid()

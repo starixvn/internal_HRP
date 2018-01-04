@@ -14,21 +14,27 @@
     {
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ISessionService sessionService;
 
         public EmployeeManagementService(
             IHostingEnvironment hostingEnvironment,
-            IBaseService baseService)
+            IBaseService baseService,
+            ISessionService sessionService)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
+            this.sessionService = sessionService;
         }
 
         public async Task<CommandResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
         {
+            var pictureExtension = employee.ProfilePicture != null ? Path.GetExtension(employee.ProfilePicture.FileName) : string.Empty;
             var criteria = new CreateEmployeeCriteria
             {
                 FullName = employee.FullName,
-                NickName = employee.NickName
+                NickName = employee.NickName,
+                PictureExtension = pictureExtension,
+                CreatedBy = sessionService.UserId
             };
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
