@@ -3,6 +3,12 @@
 var createEmployment = (function ($) {
     var $employmentHeaderTab, $employmentTab;
 
+    function initDatepicker() {
+        $employmentTab.find('input.datetimepicker:not(:disabled)').datetimepicker({
+            format: 'MMM dd, YYYY'
+        });
+    }
+
     function loadEmploymentForm() {
         $employmentHeaderTab.on('click', function () {
             var $this = $(this);
@@ -20,6 +26,8 @@ var createEmployment = (function ($) {
                     },
                     success: function (data) {
                         $employmentTab.html(data);
+
+                        initDatepicker();
                     },
                     error: commonFunctions.handleAjaxError
                 });
