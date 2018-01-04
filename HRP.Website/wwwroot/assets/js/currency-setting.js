@@ -43,6 +43,14 @@
 
                         return round(fromCurrencyOnBaseCurrency / value);
                     });
+
+                    $('.rate:enabled[data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
+                        var $element = $(element);
+                        if ($element.val() === '' || $element.val() === '0')
+                            return;
+
+                        $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(round(value / $element.val()));
+                    });
                 } else {
                     var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
                     var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').val();
@@ -120,20 +128,10 @@
             fixedColumns: true
         });
 
-        $('#SelectedTime').select2({
-            templateResult: function (state) {
-                if (state.children) {
-                    return $('<span><i class="glyphicon glyphicon-chevron-right"></i> ' + state.text + '</span>');
-                } else {
-                    return state.text;
-                }
-            }
-        });
-
-        $('body').on('click', '.select2-results__option', function () {
-            var $this = $(this);
-            $this.find('ul').toggle();
-            $this.find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+        $('#SelectedTime').datetimepicker({
+            viewMode: 'months',
+            format: 'MM-YYYY',
+            minDate: $('#SelectedTime').data('min-month')
         });
     }
 

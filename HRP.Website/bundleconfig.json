@@ -45,7 +45,7 @@
     "inputFiles": [
       "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.min.css",
       "wwwroot/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.min.css",
-      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
       "wwwroot/assets/styles/pages/configuration/currency-setting.css"
     ]
   },
@@ -210,7 +210,8 @@
       "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
       "wwwroot/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js",
-      "wwwrootlib/select2/dist/js/select2.min.js",
+      "wwwroot/lib/moment/min/moment.min.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
       "wwwroot/assets/js/currency-setting.js"
     ],
     "minify": {

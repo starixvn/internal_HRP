@@ -7,20 +7,24 @@
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
 
     public class CurrencySettingController : Controller
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
-        public CurrencySettingController(ISessionService sessionService, IBaseService baseService)
+        public CurrencySettingController(ISessionService sessionService, IBaseService baseService, IOptionsSnapshot<AppSettingsOptions> configuration)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -41,19 +45,11 @@
             var viewModel = new CurrencySettingViewModel
             {
                 SelectedTime = selectedTime.Value,
+                MinMonth = configuration.Value.LaunchMonth,
                 CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(criteria),
                 Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                Months = baseService.GetData<DateTime>(new GetExchageRateMonthsCriteria()),
                 CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && selectedTime.Value.Month == DateTime.Today.Month
             };
-
-            if (!viewModel.Months.Any(x => x.Month == DateTime.Today.Month && x.Year == DateTime.Today.Year))
-            {
-                var list = viewModel.Months.ToList();
-                list.Add(DateTime.Today);
-
-                viewModel.Months = list.OrderByDescending(x => x);
-            }
 
             return View(viewModel);
         }

@@ -10,6 +10,7 @@
     using HRP.Models.Currency;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
@@ -17,6 +18,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IOptionsSnapshot<AppSettingsOptions> configuration;
 
         [Fact]
         public void Index_WhenCalled_ReturnCurrentData()
@@ -37,7 +39,6 @@
             var controller = GetController();
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
-            baseService.GetData<DateTime>(Arg.Any<GetExchageRateMonthsCriteria>()).Returns(new List<DateTime> { DateTime.Today });
             sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host).Returns(true);
 
             var actual = controller.Index(DateTime.Today);
@@ -85,11 +86,30 @@
             return service;
         }
 
+        private IOptionsSnapshot<AppSettingsOptions> FakeConfiguration()
+        {
+            var appSettingsOptions = new AppSettingsOptions
+            {
+                SessionTimeout = 60,
+                EnableEncrypt = true,
+                CertificateFilePath = "D=\\Test.pfx",
+                PasswordToSignTheCertificateFile = "123456",
+                BaseHostUrl = "http=//localhost=56977",
+                LaunchMonth = DateTime.Today
+            };
+
+            configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
+            configuration.Value.Returns(appSettingsOptions);
+
+            return configuration;
+        }
+
         private CurrencySettingController GetController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            var controller = new CurrencySettingController(sessionService, baseService);
+            configuration = FakeConfiguration();
+            var controller = new CurrencySettingController(sessionService, baseService, configuration);
 
             return controller;
         }

@@ -1,5 +1,7 @@
 ﻿namespace HRP.Core.Model
 {
+    using System;
+
     public class AppSettingsOptions
     {
         public int SessionTimeout { set; get; }
@@ -11,5 +13,7 @@
         public string PasswordToSignTheCertificateFile { get; set; }
 
         public string BaseHostUrl { get; set; }
+
+        public DateTime LaunchMonth { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     <environment include="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
     </environment>
 
@@ -30,17 +30,7 @@
 <form class="search-form" asp-action="Index" method="get">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
-        <select class="control" asp-for="SelectedTime">
-            @foreach (var group in Model.Months.GroupBy(x => x.Year))
-            {
-                <optgroup label="@group.Key">
-                    @foreach (var item in group.OrderByDescending(x => x))
-                    {
-                        <option value="@item.ToString("MM-yyyy")">@item.ToString("MM-yyyy")</option>
-                    }
-                </optgroup>
-            }
-        </select>
+        <input type="text" class="control" asp-for="SelectedTime" data-min-month="@Model.MinMonth" />
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
 </form>
@@ -113,7 +103,8 @@
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/assets/js/currency-setting.js"></script>
     </environment>
     <environment exclude="Development">
