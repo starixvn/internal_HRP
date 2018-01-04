@@ -414,4 +414,37 @@
   <data name="Probation" xml:space="preserve">
     <value>Probation</value>
   </data>
+  <data name="DBT" xml:space="preserve">
+    <value>DBT</value>
+  </data>
+  <data name="DST" xml:space="preserve">
+    <value>DST</value>
+  </data>
+  <data name="EPA" xml:space="preserve">
+    <value>EPA</value>
+  </data>
+  <data name="HDMFNo" xml:space="preserve">
+    <value>HDMF No.</value>
+  </data>
+  <data name="HealthInsNo" xml:space="preserve">
+    <value>Health Ins No.</value>
+  </data>
+  <data name="NoneOrIDNo" xml:space="preserve">
+    <value>None Or ID No.</value>
+  </data>
+  <data name="PFileAdmin" xml:space="preserve">
+    <value>P-File Admin</value>
+  </data>
+  <data name="SSSNo" xml:space="preserve">
+    <value>SSS No.</value>
+  </data>
+  <data name="TaxIDNo" xml:space="preserve">
+    <value>Tax ID No.</value>
+  </data>
+  <data name="Type1" xml:space="preserve">
+    <value>Type1</value>
+  </data>
+  <data name="Type2" xml:space="preserve">
+    <value>Type2</value>
+  </data>
 </root>

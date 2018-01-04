@@ -2,11 +2,11 @@ namespace HRP.Core.Constants
 {
     public static class Constants
     {
-        public const string DateFormat = "dd MMM, yyyy";
+        public const string DateFormat = "MMM dd, yyyy";
 
         public const string TimeFormat = "HH:mm";
 
-        public const string DateTimeFormat = "dd MMM, yyyy HH:mm";
+        public const string DateTimeFormat = "MMM dd, yyyy HH:mm";
 
         public const string BeginRootTag = "<ROOT>";
 

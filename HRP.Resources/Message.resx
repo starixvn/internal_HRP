@@ -267,4 +267,19 @@
   <data name="TaxIDNoMaxLength" xml:space="preserve">
     <value>Tax ID No. must not over {1} characters long.</value>
   </data>
+  <data name="CompanyRequired" xml:space="preserve">
+    <value>Company is required!</value>
+  </data>
+  <data name="EndDateRequired" xml:space="preserve">
+    <value>End Date is required!</value>
+  </data>
+  <data name="FullNameRequired" xml:space="preserve">
+    <value>Full Name is required!</value>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>Start Date is required!</value>
+  </data>
+  <data name="WorkPermitType1Required" xml:space="preserve">
+    <value>Work Permit - Type1 is required!</value>
+  </data>
 </root>

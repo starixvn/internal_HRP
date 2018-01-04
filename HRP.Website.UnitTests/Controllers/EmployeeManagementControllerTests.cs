@@ -1,7 +1,10 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System.Threading.Tasks;
     using HRP.Core.Services;
+    using HRP.Criteria.Employee;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -10,6 +13,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IHostingEnvironment hostingEnvironment;
         private EmployeeManagementController employeeManagementController;
 
         [Fact]
@@ -24,6 +28,22 @@
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.Null(viewResult.ViewName);
+        }
+
+        [Fact]
+        public async Task CheckEmployeeCodeExisted_WhenCalled_ReturnAsExpected()
+        {
+            //Arrange
+            var expected = true;
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataEntityAsync<bool>(Arg.Any<CheckEmpCodeExistedCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.CheckEmployeeCodeExisted("DAR", "1234");
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (bool)jsonResult.Value);
         }
 
         #region Helpers
@@ -43,11 +63,19 @@
             return service;
         }
 
+        private IHostingEnvironment FakeHostingEnvironment()
+        {
+            var environment = Substitute.For<IHostingEnvironment>();
+
+            return environment;
+        }
+
         private EmployeeManagementController GetEmployeeManagementController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            var controller = new EmployeeManagementController(sessionService, baseService);
+            hostingEnvironment = FakeHostingEnvironment();
+            var controller = new EmployeeManagementController(sessionService, baseService, hostingEnvironment);
 
             return controller;
         }

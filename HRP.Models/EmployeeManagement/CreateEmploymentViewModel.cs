@@ -23,8 +23,10 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
         public int LocalJobTitleId { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime GroupStartDate { get; set; } = DateTime.Now;
 
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime? CompanyStartDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
@@ -95,11 +97,18 @@
         [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "HDMFNoMaxLength")]
         public string HDMFNo { get; set; }
 
+        public WorkPermit WorkPermit { get; set; } = new WorkPermit();
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameRequired")]
         [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
         public string FullNamePFileAdmin { get; set; }
 
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameMaxLength")]
         public string NickNamePFileAdmin { get; set; }
+
+        public Paymaster Paymaster { get; set; } = new Paymaster();
+
+        public EPA EPA { get; set; } = new EPA();
 
         public string PDFPassword { get; set; }
 

@@ -115,6 +115,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company is required!.
+        /// </summary>
+        public static string CompanyRequired {
+            get {
+                return ResourceManager.GetString("CompanyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cost Center is required!.
         /// </summary>
         public static string CostCenterRequired {
@@ -223,6 +232,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Date is required!.
+        /// </summary>
+        public static string EndDateRequired {
+            get {
+                return ResourceManager.GetString("EndDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username that you&apos;ve entered doesn&apos;t  match any account. Please try again..
         /// </summary>
         public static string ForgotPasswordInvalidUser {
@@ -237,6 +255,15 @@ namespace HRP.Resources {
         public static string FullNameMaxLength {
             get {
                 return ResourceManager.GetString("FullNameMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name is required!.
+        /// </summary>
+        public static string FullNameRequired {
+            get {
+                return ResourceManager.GetString("FullNameRequired", resourceCulture);
             }
         }
         
@@ -457,6 +484,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Date is required!.
+        /// </summary>
+        public static string StartDateRequired {
+            get {
+                return ResourceManager.GetString("StartDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tax ID No. must not over {1} characters long..
         /// </summary>
         public static string TaxIDNoMaxLength {
@@ -507,6 +543,15 @@ namespace HRP.Resources {
         public static string UsernameUnique {
             get {
                 return ResourceManager.GetString("UsernameUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Permit - Type1 is required!.
+        /// </summary>
+        public static string WorkPermitType1Required {
+            get {
+                return ResourceManager.GetString("WorkPermitType1Required", resourceCulture);
             }
         }
     }

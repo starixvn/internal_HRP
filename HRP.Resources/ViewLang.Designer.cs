@@ -304,6 +304,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DBT.
+        /// </summary>
+        public static string DBT {
+            get {
+                return ResourceManager.GetString("DBT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         public static string Department {
@@ -318,6 +327,15 @@ namespace HRP.Resources {
         public static string Division {
             get {
                 return ResourceManager.GetString("Division", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DST.
+        /// </summary>
+        public static string DST {
+            get {
+                return ResourceManager.GetString("DST", resourceCulture);
             }
         }
         
@@ -430,6 +448,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EPA.
+        /// </summary>
+        public static string EPA {
+            get {
+                return ResourceManager.GetString("EPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluator.
         /// </summary>
         public static string Evaluator {
@@ -489,6 +516,24 @@ namespace HRP.Resources {
         public static string Group {
             get {
                 return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HDMF No..
+        /// </summary>
+        public static string HDMFNo {
+            get {
+                return ResourceManager.GetString("HDMFNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Ins No..
+        /// </summary>
+        public static string HealthInsNo {
+            get {
+                return ResourceManager.GetString("HealthInsNo", resourceCulture);
             }
         }
         
@@ -664,6 +709,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None Or ID No..
+        /// </summary>
+        public static string NoneOrIDNo {
+            get {
+                return ResourceManager.GetString("NoneOrIDNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Office.
         /// </summary>
         public static string Office {
@@ -705,6 +759,15 @@ namespace HRP.Resources {
         public static string PDFPassword {
             get {
                 return ResourceManager.GetString("PDFPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to P-File Admin.
+        /// </summary>
+        public static string PFileAdmin {
+            get {
+                return ResourceManager.GetString("PFileAdmin", resourceCulture);
             }
         }
         
@@ -835,6 +898,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SSS No..
+        /// </summary>
+        public static string SSSNo {
+            get {
+                return ResourceManager.GetString("SSSNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string StartDate {
@@ -885,6 +957,33 @@ namespace HRP.Resources {
         public static string TaxDeclaration {
             get {
                 return ResourceManager.GetString("TaxDeclaration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax ID No..
+        /// </summary>
+        public static string TaxIDNo {
+            get {
+                return ResourceManager.GetString("TaxIDNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type1.
+        /// </summary>
+        public static string Type1 {
+            get {
+                return ResourceManager.GetString("Type1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type2.
+        /// </summary>
+        public static string Type2 {
+            get {
+                return ResourceManager.GetString("Type2", resourceCulture);
             }
         }
         
