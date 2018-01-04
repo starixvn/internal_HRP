@@ -30,7 +30,7 @@
 <form class="search-form" asp-action="Index" method="get">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
-        <input type="text" class="control" asp-for="SelectedTime" data-min-month="@Model.MinMonth" />
+        <input type="text" class="control" asp-for="SelectedTime" data-min-month="@Model.MinMonth.ToString("yyyy-MM-dd")" />
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
 </form>
