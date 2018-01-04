@@ -9,6 +9,7 @@
     "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
     "datatables.net-bs": "2.1.1",
     "datatables.net-fixedcolumns-bs": "3.2.3",
+    "select2": "^4.0.5",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "moment": "^2.20.1"
   }

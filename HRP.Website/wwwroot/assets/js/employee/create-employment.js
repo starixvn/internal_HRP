@@ -3,9 +3,17 @@
 var createEmployment = (function ($) {
     var $employmentHeaderTab, $employmentTab;
 
+    function registerEventChangeBVICompany() {
+
+    }
+
+    function initSelect2() {
+        $employmentTab.find('select.search-suggestion').select2();
+    }
+
     function initDatepicker() {
-        $employmentTab.find('input.datetimepicker:not(:disabled)').datetimepicker({
-            format: 'MMM dd, YYYY'
+        $employmentTab.find('input.datetimepicker').datetimepicker({
+            format: 'MMM DD, YYYY'
         });
     }
 
@@ -28,6 +36,7 @@ var createEmployment = (function ($) {
                         $employmentTab.html(data);
 
                         initDatepicker();
+                        initSelect2();
                     },
                     error: commonFunctions.handleAjaxError
                 });

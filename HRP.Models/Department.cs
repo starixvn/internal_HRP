@@ -8,8 +8,6 @@
 
         public string Name { get; set; }
 
-        public int DivisionId { get; set; }
-
         public bool IsActive { get; set; }
     }
 }

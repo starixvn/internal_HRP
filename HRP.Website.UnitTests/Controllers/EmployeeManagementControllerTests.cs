@@ -1,8 +1,11 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Employee;
+    using HRP.Models;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -44,6 +47,82 @@
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (bool)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetDivisionByCompanyId_WhenCalled_ReturnExpectedDivisions()
+        {
+            //Arrange
+            var expected = new List<Division>
+            {
+                new Division { DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetDivisionByCompanyId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<Division>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetDepartmentByDivisionId_WhenCalled_ReturnExpectedDepartments()
+        {
+            //Arrange
+            var expected = new List<Department>
+            {
+                new Department { DepartmentId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<Department>(Arg.Any<GetDepartmentByDivisionIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetDepartmentByDivisionId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<Department>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetSectionByDepartmentId_WhenCalled_ReturnExpectedSections()
+        {
+            //Arrange
+            var expected = new List<Section>
+            {
+                new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<Section>(Arg.Any<GetSectionByDepartmentIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetSectionByDepartmentId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<Section>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetCostCenterBySectionId_WhenCalled_ReturnExpectedDivisions()
+        {
+            //Arrange
+            var expected = new List<CostCenter>
+            {
+                new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterBySectionIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetCostCenterBySectionId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<CostCenter>)jsonResult.Value);
         }
 
         #region Helpers

@@ -143,5 +143,45 @@
 
             return Json(existed);
         }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetDivisionByCompanyId(int companyId)
+        {
+            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId };
+            var divisions = await baseService.GetDataAsync<Division>(criteria);
+
+            return Json(divisions);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetDepartmentByDivisionId(int divisionId)
+        {
+            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId };
+            var departments = await baseService.GetDataAsync<Department>(criteria);
+
+            return Json(departments);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetSectionByDepartmentId(int departmentId)
+        {
+            var criteria = new GetSectionByDepartmentIdCriteria { DepartmentId = departmentId };
+            var sections = await baseService.GetDataAsync<Section>(criteria);
+
+            return Json(sections);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetCostCenterBySectionId(int sectionId)
+        {
+            var criteria = new GetCostCenterBySectionIdCriteria { SectionId = sectionId };
+            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
+
+            return Json(costCenters);
+        }
     }
 }

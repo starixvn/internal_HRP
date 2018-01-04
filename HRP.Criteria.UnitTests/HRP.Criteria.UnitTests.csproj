@@ -69,13 +69,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
+    <Compile Include="CostCenter\GetCostCenterBySectionIdCriteriaTests.cs" />
     <Compile Include="Currency\GetExchangeRateCriteriaTest.cs" />
+    <Compile Include="Department\GetDepartmentByDivisionIdCriteriaTests.cs" />
+    <Compile Include="Division\GetDivisionByCompanyIdCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
     <Compile Include="GetRefResourceByNameCriteriaTests.cs" />
     <Compile Include="Menu\GetMenuByUserIdCriteriaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Section\GetSectionByDepartmentIdCriteriaTests.cs" />
     <Compile Include="User\AssignFunctionToUserCriteriaTests.cs" />
     <Compile Include="User\CheckInUserCriteriaTests.cs" />
     <Compile Include="User\CheckUsernameExistedCriteriaTest.cs" />
