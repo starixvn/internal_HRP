@@ -282,4 +282,13 @@
   <data name="WorkPermitType1Required" xml:space="preserve">
     <value>Work Permit - Type1 is required!</value>
   </data>
+  <data name="FileTooLarge" xml:space="preserve">
+    <value>This file is too large. Maximum file size is 5Mb.</value>
+  </data>
+  <data name="InvalidData" xml:space="preserve">
+    <value>Invalid data.</value>
+  </data>
+  <data name="InvalidImageType" xml:space="preserve">
+    <value>Invalid file type. Please choose an image file.</value>
+  </data>
 </root>

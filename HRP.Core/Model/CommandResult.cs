@@ -5,7 +5,7 @@ namespace HRP.Core.Model
         public CommandResult()
         {
             Code = 1;
-            Message = "Invalid data";
+            Message = Resources.Message.InvalidData;
         }
 
         public int Code { get; set; }

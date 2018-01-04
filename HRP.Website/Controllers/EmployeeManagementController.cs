@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
     using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -11,9 +10,9 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Employee;
-    using HRP.Criteria.EmployeeManagement;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -24,15 +23,18 @@
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IEmployeeManagementService employeeManagementService;
 
         public EmployeeManagementController(
             ISessionService sessionService,
             IBaseService baseService,
-            IHostingEnvironment hostingEnvironment)
+            IHostingEnvironment hostingEnvironment,
+            IEmployeeManagementService employeeManagementService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
+            this.employeeManagementService = employeeManagementService;
         }
 
         public IActionResult Index()
@@ -42,11 +44,7 @@
 
         public IActionResult CreateEmployee()
         {
-            var model = new EmployeePersonalDetail
-            {
-                GuidToken = Guid.NewGuid()
-            };
-
+            var model = new EmployeePersonalDetail();
             return View("PersonalDetail", model);
         }
 
@@ -54,15 +52,15 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
         {
+            var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
+            if (!validatePicture.IsSuccessful)
+            {
+                ModelState.AddModelError(nameof(employee.ProfilePicture), validatePicture.Message);
+            }
+
             if (ModelState.IsValid)
             {
-                var criteria = new CreateEmployeeCriteria
-                {
-                    FullName = employee.FullName,
-                    NickName = employee.NickName
-                };
-
-                await baseService.ExecuteNonQueryAsync(criteria);
+                await employeeManagementService.CreateEmployeeAsync(employee);
 
                 return RedirectToAction("Index");
             }
@@ -71,14 +69,14 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile image, string token)
+        public async Task<IActionResult> UploadImage(IFormFile image)
         {
             var result = new CommandResult
             {
                 Message = "Invalid picture."
             };
 
-            if (image != null && image.Length != 0 && !string.IsNullOrEmpty(token))
+            if (image != null && image.Length != 0)
             {
                 var directoryPath = Path.Combine(hostingEnvironment.WebRootPath, "ProfilePicture", "Temp");
                 Directory.CreateDirectory(directoryPath);

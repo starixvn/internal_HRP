@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
 
     public class EmployeePersonalDetail
     {
@@ -53,8 +54,6 @@
 
         public string MailingAddress { get; set; }
 
-        public string ProfilePic { get; set; }
-
         public string ECName { get; set; }
 
         public string ECRelationship { get; set; }
@@ -63,6 +62,6 @@
 
         public string ECTelephoneNo { get; set; }
 
-        public Guid GuidToken { get; set; }
+        public IFormFile ProfilePicture { get; set; }
     }
 }

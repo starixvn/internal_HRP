@@ -241,6 +241,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This file is too large. Maximum file size is 5Mb..
+        /// </summary>
+        public static string FileTooLarge {
+            get {
+                return ResourceManager.GetString("FileTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username that you&apos;ve entered doesn&apos;t  match any account. Please try again..
         /// </summary>
         public static string ForgotPasswordInvalidUser {
@@ -304,11 +313,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid data..
+        /// </summary>
+        public static string InvalidData {
+            get {
+                return ResourceManager.GetString("InvalidData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email address entered..
         /// </summary>
         public static string InvalidEmail {
             get {
                 return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid file type. Please choose an image file..
+        /// </summary>
+        public static string InvalidImageType {
+            get {
+                return ResourceManager.GetString("InvalidImageType", resourceCulture);
             }
         }
         

@@ -27,16 +27,15 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
-        <form class="personal-detail" method="post" asp-action="CreateEmployeeAsync" asp-controller="EmployeeManagement">
-            <input type="hidden" asp-for="GuidToken" />
+        <form class="personal-detail" enctype="multipart/form-data" method="post" asp-action="CreateEmployeeAsync" asp-controller="EmployeeManagement" id="personalDetailForm">
             <figure class="profile">
-                <input type="hidden" asp-for="ProfilePic" />
-                <input id="profilePicture" type="file" accept="image/*" style="display:none" />
+                <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
                 <figcaption class="change-picture">
                     <a href="#" class="js-changePicture">Change picture</a>
                 </figcaption>
                 <span class="text-danger js-validationPicture" style="display:none"></span>
+                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             </figure>
             <div class="col has-space">
                 <label class="text -has-required" for="FullName">Full Name</label>

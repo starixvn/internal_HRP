@@ -85,6 +85,7 @@
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();
+            services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

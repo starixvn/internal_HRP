@@ -27,5 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj" />
+    <ProjectReference Include="..\HRP.Resources\HRP.Resources.csproj" />
   </ItemGroup>
 </Project>
