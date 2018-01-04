@@ -128,10 +128,17 @@
             fixedColumns: true
         });
 
-        $('#SelectedTime').datetimepicker({
+        var calendar = $('.calendar');
+        calendar.datetimepicker({
             viewMode: 'months',
             format: 'MM-YYYY',
             minDate: $('#SelectedTime').data('min-month')
+        });
+
+        calendar.on('click', function () {
+            $(this).data("DateTimePicker").toggle();
+        }).on('dp.show', function () {
+            $(this).find('.bootstrap-datetimepicker-widget').css('top', '32px');
         });
     }
 

@@ -25,7 +25,7 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control" asp-for="SelectedTime" data-min-month="@Model.MinMonth.ToString("yyyy-MM-dd")" />
+            <input type="text" class="control datepickerinput" asp-for="SelectedTime" data-min-month="@Model.MinMonth.ToString("yyyy-MM-dd")" />
         </div>        
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
