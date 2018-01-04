@@ -13,7 +13,7 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="BVICompanyId">@ViewLang.BVI</label>
                     <select class="control" asp-for="BVICompanyId" asp-items="@(new SelectList(Model.BVICompanies, "CompanyId", "Code"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="BVICompanyId" class="text-danger"></span>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalCompanyId">@ViewLang.Local</label>
                     <select class="control" asp-for="LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="LocalCompanyId" class="text-danger"></span>
                 </div>
@@ -73,7 +73,7 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalJobTitleId">@ViewLang.Local</label>
                     <select class="control search-suggestion" asp-for="LocalJobTitleId" asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="LocalJobTitleId" class="text-danger"></span>
                 </div>
@@ -145,7 +145,7 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
                     <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.LocalCompanies, "Code", "Code"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="CompanyCode" class="text-danger"></span>
                 </div>
@@ -173,7 +173,7 @@
                         <span class="icon-group"></span>@ViewLang.EmploymentType
                     </label>
                     <select class="control width-185" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="EmploymentType" class="text-danger"></span>
                 </div>
@@ -185,7 +185,7 @@
                         <span class="icon-group"></span>@ViewLang.EmploymentStatus
                     </label>
                     <select class="control" asp-for="EmploymentStatus" asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="EmploymentStatus" class="text-danger"></span>
                 </div>
@@ -202,7 +202,7 @@
                         <span class="icon-group"></span>@ViewLang.JobCategory
                     </label>
                     <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="JobCategoryId" class="text-danger"></span>
                 </div>
@@ -224,14 +224,14 @@
                         <span class="icon-group"></span>@ViewLang.JobGrade
                     </label>
                     <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.Grades, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="GradeId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="GradeLevelId">@ViewLang.GradeLevel</label>
                     <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="GradeLevelId" class="text-danger"></span>
                 </div>
@@ -252,8 +252,8 @@
                     <label class="text like-group-title -has-required" asp-for="DivisionId">
                         <span class="icon-group"></span>@ViewLang.Division
                     </label>
-                    <select class="control" asp-for="DivisionId">
-                        <option>--Please select--</option>
+                <select class="control search-suggestion" asp-for="DivisionId">
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="DivisionId" class="text-danger"></span>
                 </div>
@@ -274,8 +274,8 @@
                     <label class="text like-group-title -has-required" asp-for="DepartmentId">
                         <span class="icon-group"></span>@ViewLang.Department
                     </label>
-                    <select class="control" asp-for="DepartmentId">
-                        <option>--Please select--</option>
+                <select class="control search-suggestion" asp-for="DepartmentId">
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="DepartmentId" class="text-danger"></span>
                 </div>
@@ -296,8 +296,8 @@
                     <label class="text like-group-title -has-required" asp-for="SectionId">
                         <span class="icon-group"></span>@ViewLang.Section
                     </label>
-                    <select class="control" asp-for="SectionId">
-                        <option>--Please select--</option>
+                <select class="control search-suggestion" asp-for="SectionId">
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="SectionId" class="text-danger"></span>
                 </div>
@@ -318,8 +318,8 @@
                     <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
-                    <select class="control" asp-for="CostCenterId">
-                        <option>--Please select--</option>
+                <select class="control search-suggestion" asp-for="CostCenterId">
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="CostCenterId" class="text-danger"></span>
                 </div>
@@ -349,21 +349,21 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
                     <select class="control search-suggestion" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="CountryId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
                     <select class="control search-suggestion" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="CityId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
                     <select class="control search-suggestion" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "ResourceId", "Value"))">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="OfficeId" class="text-danger"></span>
                 </div>
@@ -373,7 +373,7 @@
             <label class="text -has-required" asp-for="WorkPermit.CompanyId">@ViewLang.Company</label>
             <div class="group-control">
                 <select class="control width-206" asp-for="WorkPermit.CompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
-                    <option>--Please select--</option>
+                <option style="display: none;">--Please select--</option>
                 </select>
                 <span asp-validation-for="WorkPermit.CompanyId" class="text-danger"></span>
             </div>
@@ -381,7 +381,7 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
                     <select class="control" asp-for="WorkPermit.Type1">
-                        <option>--Please select--</option>
+                    <option style="display: none;">--Please select--</option>
                     </select>
                     <span asp-validation-for="WorkPermit.Type1" class="text-danger"></span>
                 </div>
