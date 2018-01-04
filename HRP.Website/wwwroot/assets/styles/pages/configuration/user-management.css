@@ -14,6 +14,26 @@
   margin-bottom: 10px;
 }
 
+.search-form .calendar {
+  position: relative;
+  width: 105px;
+}
+
+.search-form .calendar .control {
+  width: 100%;
+  padding-right: 26px;
+}
+
+.search-form .calendar:after {
+  position: absolute;
+  bottom: 5px;
+  right: 6px;
+  font-family: 'hrp';
+  content: "\e902";
+  color: #f57d14;
+  font-size: 22px;
+}
+
 .form-information .text {
   position: relative;
   display: block;
