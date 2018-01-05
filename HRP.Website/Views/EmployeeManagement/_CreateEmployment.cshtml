@@ -1,9 +1,10 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Constants
+@using HRP.Resources
 @using HRP.Models.EmployeeManagement
 
 @model CreateEmploymentViewModel
 
-<form class="form-information" asp-action="CreateEmployment"
+<form id="createEmploymentForm" class="form-information" asp-action="CreateEmployment" asp-controller="EmployeeManagement"
       data-ajax-method="post" data-ajax="true" data-ajax-failure="commonFunctions.handleAjaxError">
     <div class="employment">
         <div class="col">
@@ -13,9 +14,8 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="BVICompanyId">@ViewLang.BVI</label>
                     <select class="control" asp-for="BVICompanyId" asp-items="@(new SelectList(Model.BVICompanies, "CompanyId", "Code"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="BVICompanyId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="BVICompanyChangeDate">@ViewLang.ChangeDate</label>
@@ -33,9 +33,8 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalCompanyId">@ViewLang.Local</label>
                     <select class="control" asp-for="LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="LocalCompanyId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="LocalCompanyChangeDate">@ViewLang.ChangeDate</label>
@@ -55,7 +54,6 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="BVIJobTitle">@ViewLang.BVI</label>
                     <input type="text" class="control" asp-for="BVIJobTitle">
-                    <span asp-validation-for="BVIJobTitle" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="BVIJobTitleChangeDate">@ViewLang.ChangeDate</label>
@@ -73,9 +71,8 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalJobTitleId">@ViewLang.Local</label>
                     <select class="control search-suggestion" asp-for="LocalJobTitleId" asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="LocalJobTitleId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="LocalJobTitleChangeDate">@ViewLang.ChangeDate</label>
@@ -94,7 +91,8 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="GroupStartDate">@ViewLang.Group</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
@@ -112,7 +110,8 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyStartDate">@ViewLang.Company</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
@@ -145,14 +144,12 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
                     <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.LocalCompanies, "Code", "Code"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="CompanyCode" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="EmployeeCode">@ViewLang.EmpCode</label>
                     <input type="text" class="control" asp-for="EmployeeCode">
-                    <span asp-validation-for="EmployeeCode" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="IDNoChangeDate">@ViewLang.ChangeDate</label>
@@ -173,9 +170,8 @@
                         <span class="icon-group"></span>@ViewLang.EmploymentType
                     </label>
                     <select class="control width-185" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="EmploymentType" class="text-danger"></span>
                 </div>
             </div>
 
@@ -185,9 +181,8 @@
                         <span class="icon-group"></span>@ViewLang.EmploymentStatus
                     </label>
                     <select class="control" asp-for="EmploymentStatus" asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="EmploymentStatus" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="EmploymentStatusChangeDate">@ViewLang.ChangeDate</label>
@@ -202,9 +197,8 @@
                         <span class="icon-group"></span>@ViewLang.JobCategory
                     </label>
                     <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="JobCategoryId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="JobCategoryChangeDate">@ViewLang.ChangeDate</label>
@@ -224,16 +218,14 @@
                         <span class="icon-group"></span>@ViewLang.JobGrade
                     </label>
                     <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.Grades, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="GradeId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="GradeLevelId">@ViewLang.GradeLevel</label>
                     <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="GradeLevelId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="JobGradeChangeDate">@ViewLang.ChangeDate</label>
@@ -252,10 +244,9 @@
                     <label class="text like-group-title -has-required" asp-for="DivisionId">
                         <span class="icon-group"></span>@ViewLang.Division
                     </label>
-                <select class="control search-suggestion" asp-for="DivisionId">
-                    <option style="display: none;">--Please select--</option>
+                    <select class="control search-suggestion" asp-for="DivisionId">
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="DivisionId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="DivisionChangeDate">@ViewLang.ChangeDate</label>
@@ -274,10 +265,9 @@
                     <label class="text like-group-title -has-required" asp-for="DepartmentId">
                         <span class="icon-group"></span>@ViewLang.Department
                     </label>
-                <select class="control search-suggestion" asp-for="DepartmentId">
-                    <option style="display: none;">--Please select--</option>
+                    <select class="control search-suggestion" asp-for="DepartmentId">
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="DepartmentChangeDate">@ViewLang.ChangeDate</label>
@@ -296,10 +286,9 @@
                     <label class="text like-group-title -has-required" asp-for="SectionId">
                         <span class="icon-group"></span>@ViewLang.Section
                     </label>
-                <select class="control search-suggestion" asp-for="SectionId">
-                    <option style="display: none;">--Please select--</option>
+                    <select class="control search-suggestion" asp-for="SectionId">
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="SectionId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="SectionChangeDate">@ViewLang.ChangeDate</label>
@@ -318,10 +307,9 @@
                     <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
-                <select class="control search-suggestion" asp-for="CostCenterId">
-                    <option style="display: none;">--Please select--</option>
+                    <select class="control search-suggestion" asp-for="CostCenterId">
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="CostCenterId" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" for="CostCenterChangeDate">@ViewLang.ChangeDate</label>
@@ -339,7 +327,6 @@
                 <div class="component">
                     <label class="text like-group-title -has-required" asp-for="Email"><span class="icon-group"></span>@ViewLang.EmailAddress</label>
                     <input type="text" class="control width-424" asp-for="Email">
-                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -349,23 +336,20 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
                     <select class="control search-suggestion" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="CountryId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
                     <select class="control search-suggestion" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="CityId" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
                     <select class="control search-suggestion" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "ResourceId", "Value"))">
-                    <option style="display: none;">--Please select--</option>
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="OfficeId" class="text-danger"></span>
                 </div>
             </div>
 
@@ -373,46 +357,46 @@
             <label class="text -has-required" asp-for="WorkPermit.CompanyId">@ViewLang.Company</label>
             <div class="group-control">
                 <select class="control width-206" asp-for="WorkPermit.CompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
-                <option style="display: none;">--Please select--</option>
+                    <option value="0" style="display: none;">--Please select--</option>
                 </select>
-                <span asp-validation-for="WorkPermit.CompanyId" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text -has-required" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
-                    <select class="control" asp-for="WorkPermit.Type1">
-                    <option style="display: none;">--Please select--</option>
+                    <select class="control" asp-for="WorkPermit.Type1" asp-items="@(new SelectList(Model.WorkPermitType1s, "ResourceId", "Value"))">
+                        <option value="0" style="display: none;">--Please select--</option>
                     </select>
-                    <span asp-validation-for="WorkPermit.Type1" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
-                    <span asp-validation-for="WorkPermit.StartDateType1" class="text-danger"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.EndDateType1">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
-                    <span asp-validation-for="WorkPermit.EndDateType1" class="text-danger"></span>
                 </div>
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text" asp-for="WorkPermit.Type2">@ViewLang.Type2</label>
-                    <select class="control" asp-for="WorkPermit.Type2">
+                    <select class="control" asp-for="WorkPermit.Type2" asp-items="@(new SelectList(Model.WorkPermitType2s, "ResourceId", "Value"))">
                         <option></option>
                     </select>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.StartDateType2">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.EndDateType2">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2"
+                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
                     <span class="icon-calendar"></span>
                 </div>
             </div>
@@ -438,24 +422,20 @@
                 <div class="component">
                     <label class="text" asp-for="TaxIDNo">@ViewLang.TaxIDNo</label>
                     <input type="text" class="control" asp-for="TaxIDNo">
-                    <span asp-validation-for="TaxIDNo" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="SSSNo">@ViewLang.SSSNo</label>
                     <input type="text" class="control" asp-for="SSSNo">
-                    <span asp-validation-for="SSSNo" class="text-danger"></span>
                 </div>
             </div>
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="HealthInsNo">@ViewLang.HealthInsNo</label>
                     <input type="text" class="control" asp-for="HealthInsNo">
-                    <span asp-validation-for="HealthInsNo" class="text-danger"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="HDMFNo">@ViewLang.HDMFNo</label>
                     <input type="text" class="control" asp-for="HDMFNo">
-                    <span asp-validation-for="HDMFNo" class="text-danger"></span>
                 </div>
             </div>
 
@@ -471,13 +451,11 @@
                     <label class="text" asp-for="FullNamePFileAdmin">@ViewLang.FullName</label>
                     <div class="element-required">
                         <input type="text" class="control" asp-for="FullNamePFileAdmin">
-                        <span asp-validation-for="FullNamePFileAdmin" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="NickNamePFileAdmin">@ViewLang.Nickname</label>
                     <input type="text" class="control" asp-for="NickNamePFileAdmin">
-                    <span asp-validation-for="NickNamePFileAdmin" class="text-danger"></span>
                 </div>
             </div>
 
@@ -494,13 +472,11 @@
                     <label class="text" asp-for="Paymaster.FullNameBVISalary">@ViewLang.FullName</label>
                     <div class="element-required">
                         <input type="text" class="control" asp-for="Paymaster.FullNameBVISalary">
-                        <span asp-validation-for="Paymaster.FullNameBVISalary" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="Paymaster.NickNameBVISalary">@ViewLang.Nickname</label>
                     <input type="text" class="control" asp-for="Paymaster.NickNameBVISalary">
-                    <span asp-validation-for="Paymaster.NickNameBVISalary" class="text-danger"></span>
                 </div>
             </div>
             <div class="group-complex -emp-layout9">
@@ -508,20 +484,16 @@
                 <input type="text" class="control" id="NoneOrIDNoBVIAllowance">
                 <div class="element-required">
                     <input type="text" class="control" asp-for="Paymaster.FullNameBVIAllowance">
-                    <span asp-validation-for="Paymaster.FullNameBVIAllowance" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="Paymaster.NickNameBVIAllowance">
-                <span asp-validation-for="Paymaster.NickNameBVIAllowance" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.LocalSalary</label>
                 <input type="text" class="control" id="NoneOrIDNoLocalSalary">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary">
-                    <span asp-validation-for="Paymaster.FullNameLocalSalary" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary">
-                <span asp-validation-for="Paymaster.NickNameLocalSalary" class="text-danger"></span>
             </div>
 
             <div class="group-complex -emp-layout9 space-between-parts">
@@ -537,13 +509,11 @@
                     <label class="text" asp-for="EPA.FullNameAdministrator">@ViewLang.FullName</label>
                     <div class="element-required">
                         <input type="text" class="control" asp-for="EPA.FullNameAdministrator">
-                        <span asp-validation-for="EPA.FullNameAdministrator" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="EPA.NickNameAdministrator">@ViewLang.Nickname</label>
                     <input type="text" class="control" asp-for="EPA.NickNameAdministrator">
-                    <span asp-validation-for="EPA.NickNameAdministrator" class="text-danger"></span>
                 </div>
             </div>
             <div class="group-complex -emp-layout9">
@@ -551,70 +521,56 @@
                 <input type="text" class="control" id="NoneOrIDNoEvaluator1">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameEvaluator1">
-                    <span asp-validation-for="EPA.FullNameEvaluator1" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameEvaluator1">
-                <span asp-validation-for="EPA.NickNameEvaluator1" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Evaluator #2</label>
                 <input type="text" class="control" id="NoneOrIDNoEvaluator2">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameEvaluator2">
-                    <span asp-validation-for="EPA.FullNameEvaluator2" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameEvaluator2">
-                <span asp-validation-for="EPA.NickNameEvaluator2" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Reviewer</label>
                 <input type="text" class="control" id="NoneOrIDNoReviewer">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameReviewer">
-                    <span asp-validation-for="EPA.FullNameReviewer" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameReviewer">
-                <span asp-validation-for="EPA.NickNameReviewer" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Management</label>
                 <input type="text" class="control" id="NoneOrIDNoManagement">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameManagement">
-                    <span asp-validation-for="EPA.FullNameManagement" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameManagement">
-                <span asp-validation-for="EPA.NickNameManagement" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Increment</label>
                 <input type="text" class="control" id="NoneOrIDNoIncrement">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameIncrement">
-                    <span asp-validation-for="EPA.FullNameIncrement" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameIncrement">
-                <span asp-validation-for="EPA.NickNameIncrement" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.BVIBonus</label>
                 <input type="text" class="control" id="NoneOrIDNoBVIBonus">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameBVIBonus">
-                    <span asp-validation-for="EPA.FullNameBVIBonus" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameBVIBonus">
-                <span asp-validation-for="EPA.NickNameBVIBonus" class="text-danger"></span>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.LocalBonus</label>
                 <input type="text" class="control" id="NoneOrIDNoLocalBonus">
                 <div class="padding-right-10">
                     <input type="text" class="control" asp-for="EPA.FullNameLocalBonus">
-                    <span asp-validation-for="EPA.FullNameLocalBonus" class="text-danger"></span>
                 </div>
                 <input type="text" class="control" asp-for="EPA.NickNameLocalBonus">
-                <span asp-validation-for="EPA.NickNameLocalBonus" class="text-danger"></span>
             </div>
             <div class="group-complex space-between-parts">
                 <div class="component">

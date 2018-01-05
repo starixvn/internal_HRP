@@ -10,7 +10,6 @@
     {
         public int EmployeeId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
         public int BVICompanyId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyRequired")]
@@ -23,10 +22,10 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
         public int LocalJobTitleId { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime GroupStartDate { get; set; } = DateTime.Now;
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime? CompanyStartDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
@@ -81,9 +80,9 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OfficeRequired")]
         public int OfficeId { get; set; }
 
-        public int DST { get; set; }
+        public int? DST { get; set; }
 
-        public int DBT { get; set; }
+        public int? DBT { get; set; }
 
         [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "TaxIDNoMaxLength")]
         public string TaxIDNo { get; set; }
@@ -110,6 +109,8 @@
 
         public EPA EPA { get; set; } = new EPA();
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordRequired")]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordMaxLength")]
         public string PDFPassword { get; set; }
 
         public IEnumerable<Company> BVICompanies { get; set; } = new List<Company>();
@@ -135,5 +136,9 @@
         public IEnumerable<ReferenceResourceModel> Offices { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> TaxDeclarations { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> WorkPermitType2s { get; set; } = new List<ReferenceResourceModel>();
     }
 }

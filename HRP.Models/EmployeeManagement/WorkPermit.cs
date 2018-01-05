@@ -12,18 +12,18 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "WorkPermitType1Required")]
         public int Type1 { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime StartDateType1 { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime EndDateType1 { get; set; }
 
         public int? Type2 { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime? StartDateType2 { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DataType(DataType.DateTime)]
         public DateTime? EndDateType2 { get; set; }
     }
 }

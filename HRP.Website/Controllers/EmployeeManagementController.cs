@@ -78,6 +78,8 @@
             var cities = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.City });
             var offices = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Office });
             var taxDeclarations = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.TaxDeclaration });
+            var workPermitType1s = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.WorkPermitType1 });
+            var workPermitType2s = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.WorkPermitType2 });
             var viewModel = new CreateEmploymentViewModel
             {
                 EmployeeId = employeeId,
@@ -92,10 +94,24 @@
                 Countries = countries,
                 Cities = cities,
                 Offices = offices,
-                TaxDeclarations = taxDeclarations
+                TaxDeclarations = taxDeclarations,
+                WorkPermitType1s = workPermitType1s,
+                WorkPermitType2s = workPermitType2s
             };
 
             return PartialView("_CreateEmployment", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return Json(0);
+            }
+
+            return Json(1);
         }
 
         public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)
@@ -108,7 +124,7 @@
 
             var existed = await baseService.GetDataEntityAsync<bool>(criteria);
 
-            return Json(existed);
+            return Json(!existed);
         }
 
         [HttpGet]

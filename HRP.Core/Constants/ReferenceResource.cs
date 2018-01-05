@@ -16,5 +16,7 @@
         public const string GradeLevel = "GradeLevel";
         public const string LocalJobTitle = "LocalJobTitle";
         public const string JobCategory = "JobCategory";
+        public const string WorkPermitType1 = "WorkPermitType1";
+        public const string WorkPermitType2 = "WorkPermitType2";
     }
 }

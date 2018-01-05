@@ -294,4 +294,10 @@
   <data name="NickNameRequired" xml:space="preserve">
     <value>Nick Name is required!</value>
   </data>
+  <data name="PDFPasswordMaxLength" xml:space="preserve">
+    <value>PDF Password must not over {1} characters long.</value>
+  </data>
+  <data name="PDFPasswordRequired" xml:space="preserve">
+    <value>PDF Password is required!</value>
+  </data>
 </root>

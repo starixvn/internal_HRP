@@ -6,8 +6,8 @@
     using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
+    using HRP.Services;
     using HRP.Website.Controllers;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -16,7 +16,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
-        private IHostingEnvironment hostingEnvironment;
+        private IEmployeeManagementService employeeManagementService;
         private EmployeeManagementController employeeManagementController;
 
         [Fact]
@@ -142,19 +142,19 @@
             return service;
         }
 
-        private IHostingEnvironment FakeHostingEnvironment()
+        private IEmployeeManagementService FakeEmployeeManagementService()
         {
-            var environment = Substitute.For<IHostingEnvironment>();
+            var service = Substitute.For<IEmployeeManagementService>();
 
-            return environment;
+            return service;
         }
 
         private EmployeeManagementController GetEmployeeManagementController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            hostingEnvironment = FakeHostingEnvironment();
-            var controller = new EmployeeManagementController(sessionService, baseService, hostingEnvironment);
+            employeeManagementService = FakeEmployeeManagementService();
+            var controller = new EmployeeManagementController(sessionService, baseService, employeeManagementService);
 
             return controller;
         }

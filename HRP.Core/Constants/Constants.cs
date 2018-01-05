@@ -8,6 +8,8 @@ namespace HRP.Core.Constants
 
         public const string DateTimeFormat = "MMM dd, yyyy HH:mm";
 
+        public const string MinDate = "01/01/1900";
+
         public const string BeginRootTag = "<ROOT>";
 
         public const string EndRootTag = "</ROOT>";

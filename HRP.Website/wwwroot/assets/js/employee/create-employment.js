@@ -1,8 +1,9 @@
 ﻿'use strict';
 
 var createEmployment = (function ($) {
-    var $employmentHeaderTab, $employmentTab, $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
-        defaultOption = '<option style="display: none;">--Please select--</option>';
+    var $employmentHeaderTab, $employmentTab, $createEmploymentForm,
+        $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
+        defaultOption = '<option value="0" style="display: none;">--Please select--</option>';
 
     function registerEventChangeBVICompany() {
         $bviCompanyElement.on('change', function () {
@@ -146,9 +147,24 @@ var createEmployment = (function ($) {
     }
 
     function initDatepicker() {
-        $employmentTab.find('input.datetimepicker').datetimepicker({
-            format: 'MMM DD, YYYY'
+        $employmentTab.find('input.datetimepicker').each(function () {
+            var $this = $(this),
+                mindate = $this.data('mindate'),
+                maxdate = $this.data('maxdate');
+
+            $this.datetimepicker({
+                format: 'MMM DD, YYYY',
+                minDate: mindate,
+                maxDate: maxdate
+            });
+
+            $this.val('');
         });
+    }
+
+    function reparseform() {
+        $createEmploymentForm.removeData('validator').removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse('#createEmploymentForm');
     }
 
     function loadEmploymentForm() {
@@ -169,12 +185,14 @@ var createEmployment = (function ($) {
                     success: function (data) {
                         $employmentTab.html(data);
 
+                        $createEmploymentForm = $('#createEmploymentForm');
                         $bviCompanyElement = $('#BVICompanyId');
                         $divisionElement = $('#DivisionId');
                         $departmentElement = $('#DepartmentId');
                         $sectionElement = $('#SectionId');
                         $costCenterElement = $('#CostCenterId');
 
+                        reparseform();
                         initDatepicker();
                         initSelect2();
 

@@ -466,6 +466,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PDF Password must not over {1} characters long..
+        /// </summary>
+        public static string PDFPasswordMaxLength {
+            get {
+                return ResourceManager.GetString("PDFPasswordMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PDF Password is required!.
+        /// </summary>
+        public static string PDFPasswordRequired {
+            get {
+                return ResourceManager.GetString("PDFPasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone No. must not over {1} characters long..
         /// </summary>
         public static string PhoneNumberMaxLength {
