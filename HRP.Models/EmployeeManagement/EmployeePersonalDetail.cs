@@ -14,7 +14,7 @@
         public string FullName { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameMaxLength")]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameMaxLength")]
         public string NickName { get; set; }
 
         public int Gender { get; set; }

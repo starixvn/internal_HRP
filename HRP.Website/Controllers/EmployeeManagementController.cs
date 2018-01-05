@@ -39,14 +39,15 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreateEmployee()
         {
-            var model = new EmployeePersonalDetail();
-            return View("PersonalDetail", model);
+            var viewModel = employeeManagementService.GetEmployeeById(0);
+
+            return View("PersonalDetail", viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployee(EmployeePersonalDetail employee)
+        public async Task<IActionResult> CreateEmployee(CreateEmployeeViewModel employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)

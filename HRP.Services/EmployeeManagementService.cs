@@ -1,14 +1,19 @@
 ﻿namespace HRP.Services
 {
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.Employee;
+    using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class EmployeeManagementService : IEmployeeManagementService
     {
@@ -26,7 +31,7 @@
             this.sessionService = sessionService;
         }
 
-        public async Task<CommandResult> CreateEmployeeAsync(EmployeePersonalDetail employee)
+        public async Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee)
         {
             var pictureExtension = employee.ProfilePicture != null ? Path.GetExtension(employee.ProfilePicture.FileName) : string.Empty;
             var criteria = new CreateEmployeeCriteria
@@ -41,6 +46,43 @@
             await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString()).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        public CreateEmployeeViewModel GetEmployeeById(int employeeId)
+        {
+            var result = new CreateEmployeeViewModel();
+            var criteria = new GetEmployeeByIdCriteria
+            {
+                EmployeeId = employeeId
+            };
+
+            if (criteria.IsValid())
+            {
+                using (var db = new ObjectDb(criteria.GetSettingKey()))
+                {
+                    using (var multi = db.QueryMultiple(criteria))
+                    {
+                        var employee = multi.Read<CreateEmployeeViewModel>().FirstOrDefault();
+                        var genderList = multi.Read<ReferenceResourceModel>();
+                        var nationalityList = multi.Read<ReferenceResourceModel>();
+                        var maritalStatusList = multi.Read<ReferenceResourceModel>();
+                        var noOfChildrenList = multi.Read<ReferenceResourceModel>();
+
+                        result = employee ?? result;
+                        result.GenderList = GetSelectList(genderList);
+                        result.NationalityList = GetSelectList(nationalityList);
+                        result.MaritalStatusList = GetSelectList(maritalStatusList);
+                        result.NoOfChildrenList = GetSelectList(noOfChildrenList);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
+        {
+            return new SelectList(refResource, "ResourceId", "Value");
         }
 
         public CommandResult CheckValidPicture(IFormFile file)

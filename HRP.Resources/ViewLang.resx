@@ -447,4 +447,31 @@
   <data name="Type2" xml:space="preserve">
     <value>Type2</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="FullNameSpacing" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="NickNameSpacing" xml:space="preserve">
+    <value>Nick Name</value>
+  </data>
+  <data name="PlaceOfBirth" xml:space="preserve">
+    <value>Place of Birth</value>
+  </data>
+  <data name="ChangePicture" xml:space="preserve">
+    <value>Change Picture</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="NoOfChildren" xml:space="preserve">
+    <value>No Of Children</value>
+  </data>
 </root>

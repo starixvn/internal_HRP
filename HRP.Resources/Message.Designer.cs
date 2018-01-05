@@ -277,6 +277,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gender is required!.
+        /// </summary>
+        public static string GenderRequired {
+            get {
+                return ResourceManager.GetString("GenderRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grade Level is required!.
         /// </summary>
         public static string GradeLevelRequired {
@@ -394,6 +403,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marital Status is required!.
+        /// </summary>
+        public static string MaritalStatusRequired {
+            get {
+                return ResourceManager.GetString("MaritalStatusRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nationality is required!.
+        /// </summary>
+        public static string NationalityRequired {
+            get {
+                return ResourceManager.GetString("NationalityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nick Name must not over {1} characters long..
         /// </summary>
         public static string NickNameMaxLength {
@@ -408,6 +435,15 @@ namespace HRP.Resources {
         public static string NickNameRequired {
             get {
                 return ResourceManager.GetString("NickNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Of Children is required!.
+        /// </summary>
+        public static string NoOfChildrenRequired {
+            get {
+                return ResourceManager.GetString("NoOfChildrenRequired", resourceCulture);
             }
         }
         

@@ -300,4 +300,16 @@
   <data name="PDFPasswordRequired" xml:space="preserve">
     <value>PDF Password is required!</value>
   </data>
+  <data name="NationalityRequired" xml:space="preserve">
+    <value>Nationality is required!</value>
+  </data>
+  <data name="NoOfChildrenRequired" xml:space="preserve">
+    <value>No Of Children is required!</value>
+  </data>
+  <data name="GenderRequired" xml:space="preserve">
+    <value>Gender is required!</value>
+  </data>
+  <data name="MaritalStatusRequired" xml:space="preserve">
+    <value>Marital Status is required!</value>
+  </data>
 </root>

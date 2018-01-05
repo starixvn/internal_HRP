@@ -1,5 +1,6 @@
 ﻿@using HRP.Models.EmployeeManagement
-@model EmployeePersonalDetail
+@using HRP.Resources
+@model CreateEmployeeViewModel
 @{
     ViewData["Title"] = "Personal Detail";
 }
@@ -33,43 +34,41 @@
                 <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
                 <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
                 <figcaption class="change-picture">
-                    <a href="#" class="js-changePicture">Change picture</a>
+                    <a href="#" class="js-changePicture">@ViewLang.ChangePicture</a>
                 </figcaption>
                 <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             </figure>
             <div class="col has-space">
-                <label class="text -has-required" for="FullName">Full Name</label>
+                <label class="text -has-required">@ViewLang.FullNameSpacing</label>
                 <div class="group-control">
-                    <span asp-validation-for="FullName" class="text-danger"></span>
                     <input type="text" class="control" id="FullName" asp-for="FullName">
                 </div>
-                <label class="text -has-required" for="NickName">Nick Name</label>
+                <label class="text -has-required" for="NickName">@ViewLang.NickNameSpacing</label>
                 <div class="group-control">
-                    <span asp-validation-for="NickName" class="text-danger"></span>
                     <input type="text" class="control" id="NickName" asp-for="NickName">
                 </div>
                 <div class="group-complex -per-layout1">
                     <div class="component">
-                        <label class="text -has-required" for="Gender">Gender</label>
-                        <select class="control">
-                            <option>--Please select--</option>
+                        <label class="text -has-required">@ViewLang.Gender</label>
+                        <select class="control" asp-for="Gender" asp-items="@Model.GenderList">
+                            <option value="">--Please select--</option>
                         </select>
                     </div>
                     <div class="component calendar">
-                        <label class="text -has-required" for="Date">Date</label>
+                        <label class="text -has-required">@ViewLang.Date</label>
                         <input type="text" class="control " id="Date">
                         <span class="icon-calendar"></span>
                     </div>
                     <div class="component">
-                        <label class="text" for="PlaceOfBirth">Place of Birth</label>
+                        <label class="text">@ViewLang.PlaceOfBirth</label>
                         <input type="text" class="control" id="PlaceOfBirth">
                     </div>
                 </div>
                 <div class="group-complex -per-layout2">
                     <div class="component">
-                        <label class="text -has-required" for="Gender">Nationality</label>
-                        <select class="control">
-                            <option>--Please select--</option>
+                        <label class="text -has-required">@ViewLang.Nationality</label>
+                        <select class="control" asp-for="Nationality" asp-items="@Model.NationalityList">
+                            <option value="">--Please select--</option>
                         </select>
                     </div>
                     <div class="component">
@@ -79,15 +78,15 @@
                 </div>
                 <div class="group-complex -per-layout3">
                     <div class="component">
-                        <label class="text -has-required" for="MaritalStatus">Marital Status</label>
-                        <select class="control" id="MaritalStatus">
-                            <option>--Please select--</option>
+                        <label class="text -has-required">@ViewLang.MaritalStatus</label>
+                        <select class="control" asp-for="MaritalStatus" asp-items="@Model.MaritalStatusList">
+                            <option value="">--Please select--</option>
                         </select>
                     </div>
                     <div class="component">
-                        <label class="text -has-required" for="NoChildren">No of Children</label>
-                        <select class="control" id="NoChildren">
-                            <option>--Please select--</option>
+                        <label class="text -has-required">@ViewLang.NoOfChildren</label>
+                        <select class="control" asp-for="NoOfChildren" asp-items="@Model.NoOfChildrenList">
+                            <option value="">--Please select--</option>
                         </select>
                     </div>
                 </div>
@@ -178,6 +177,7 @@
                 <button class="button -second">Cancel</button>
                 <button class="button -primary" type="submit">Save</button>
             </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
         </form>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-employment"></div>

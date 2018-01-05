@@ -169,6 +169,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Picture.
+        /// </summary>
+        public static string ChangePicture {
+            get {
+                return ResourceManager.GetString("ChangePicture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
@@ -291,6 +300,15 @@ namespace HRP.Resources {
         public static string CurrencySetting {
             get {
                 return ResourceManager.GetString("CurrencySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
             }
         }
         
@@ -493,11 +511,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Name.
+        /// </summary>
+        public static string FullNameSpacing {
+            get {
+                return ResourceManager.GetString("FullNameSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function.
         /// </summary>
         public static string Function {
             get {
                 return ResourceManager.GetString("Function", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
             }
         }
         
@@ -682,11 +718,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marital Status.
+        /// </summary>
+        public static string MaritalStatus {
+            get {
+                return ResourceManager.GetString("MaritalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month/Year.
         /// </summary>
         public static string MonthYear {
             get {
                 return ResourceManager.GetString("MonthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nationality.
+        /// </summary>
+        public static string Nationality {
+            get {
+                return ResourceManager.GetString("Nationality", resourceCulture);
             }
         }
         
@@ -709,11 +763,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nick Name.
+        /// </summary>
+        public static string NickNameSpacing {
+            get {
+                return ResourceManager.GetString("NickNameSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None Or ID No..
         /// </summary>
         public static string NoneOrIDNo {
             get {
                 return ResourceManager.GetString("NoneOrIDNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Of Children.
+        /// </summary>
+        public static string NoOfChildren {
+            get {
+                return ResourceManager.GetString("NoOfChildren", resourceCulture);
             }
         }
         
@@ -786,6 +858,15 @@ namespace HRP.Resources {
         public static string PhoneNumber {
             get {
                 return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Place of Birth.
+        /// </summary>
+        public static string PlaceOfBirth {
+            get {
+                return ResourceManager.GetString("PlaceOfBirth", resourceCulture);
             }
         }
         
