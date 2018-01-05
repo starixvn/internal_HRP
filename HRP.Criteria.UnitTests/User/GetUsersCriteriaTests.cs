@@ -22,13 +22,17 @@
         public void IsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetUsersCriteria();
+            var criteria = new GetUsersCriteria
+            {
+                IsActive = true
+            };
 
             // Act
             var actual = criteria.IsValid();
 
             // Assert
             Assert.True(actual);
+            Assert.True(criteria.IsActive);
         }
     }
 }

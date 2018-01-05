@@ -1,22 +1,9 @@
 ﻿namespace HRP.Criteria.UnitTests
 {
-    using System.Collections.Generic;
     using Xunit;
 
     public class GetMenuByUserIdCriteriaTests
     {
-        public static IEnumerable<object[]> TestCase()
-        {
-            yield return new object[]
-            {
-                1, true
-            };
-            yield return new object[]
-            {
-                0, false
-            };
-        }
-
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {

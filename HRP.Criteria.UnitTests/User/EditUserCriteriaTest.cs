@@ -52,11 +52,25 @@
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
+            var userId = 1;
+            var phone = string.Empty;
+            var isActive = true;
+            var editedBy = 1;
+            var fullName = string.Empty;
+            var email = "myemail@email.com";
+            var errCode = 0;
+            var errMsg = string.Empty;
+
             var criteria = new EditUserCriteria
             {
-                UserId = 1,
-                EditedBy = 1,
-                Email = "myemail@email.com"
+                UserId = userId,
+                FullName = fullName,
+                Phone = phone,
+                IsActive = isActive,
+                EditedBy = editedBy,
+                Email = email,
+                ErrCode = errCode,
+                ErrMsg = errMsg
             };
 
             // Act
@@ -64,6 +78,14 @@
 
             // Assert
             Assert.True(actual);
+            Assert.Equal(criteria.UserId, userId);
+            Assert.Equal(criteria.FullName, fullName);
+            Assert.Equal(criteria.Phone, phone);
+            Assert.Equal(criteria.Email, email);
+            Assert.Equal(criteria.IsActive, isActive);
+            Assert.Equal(criteria.EditedBy, editedBy);
+            Assert.Equal(criteria.ErrCode, errCode);
+            Assert.Equal(criteria.ErrMsg, errMsg);
         }
     }
 }

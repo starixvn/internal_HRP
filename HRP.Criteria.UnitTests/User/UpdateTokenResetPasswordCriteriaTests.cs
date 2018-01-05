@@ -40,13 +40,19 @@
         public void IsValid_UsernameIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new UpdateTokenResetPasswordCriteria { Username = "admin" };
+            var token = "token";
+            var criteria = new UpdateTokenResetPasswordCriteria
+            {
+                Username = "admin",
+                TokenResetPassword = token
+            };
 
             // Act
             var actual = criteria.IsValid();
 
             // Assert
             Assert.True(actual);
+            Assert.Equal(criteria.TokenResetPassword, token);
         }
     }
 }

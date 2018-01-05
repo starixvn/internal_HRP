@@ -43,7 +43,8 @@
             // Arrange
             var criteria = new UpdateUserOTPStatusCriteria
             {
-                UserId = 1
+                UserId = 1,
+                IsOTPRegistered = true
             };
 
             // Act
@@ -51,6 +52,7 @@
 
             // Assert
             Assert.True(actual);
+            Assert.True(criteria.IsOTPRegistered);
         }
     }
 }

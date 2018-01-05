@@ -41,13 +41,18 @@
         public void IsValid_UsernameIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new UpdateTokenOTPRegisterCriteria { Username = "admin" };
+            var token = "token";
+            var criteria = new UpdateTokenOTPRegisterCriteria {
+                Username = "admin",
+                TokenOTPRegister = token
+            };
 
             // Act
             var actual = criteria.IsValid();
 
             // Assert
             Assert.True(actual);
+            Assert.Equal(criteria.TokenOTPRegister, token);
         }
     }
 }

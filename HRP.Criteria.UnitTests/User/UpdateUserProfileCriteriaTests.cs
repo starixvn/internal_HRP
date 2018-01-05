@@ -45,10 +45,14 @@
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
+            var fullName = string.Empty;
+            var phone = string.Empty;
             var criteria = new UpdateUserProfileCriteria
             {
                 UserId = 1,
-                Email = "test"
+                Email = "test",
+                FullName = fullName,
+                Phone = phone
             };
 
             // Act
@@ -56,6 +60,8 @@
 
             // Assert
             Assert.True(actual);
+            Assert.Equal(criteria.FullName, fullName);
+            Assert.Equal(criteria.Phone, phone);
         }
     }
 }
