@@ -1,9 +1,11 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Employee;
@@ -108,10 +110,49 @@
         {
             if (ModelState.IsValid)
             {
-                return Json(0);
+                var criteria = new CreateEmploymentCriteria
+                {
+                    EmployeeId = viewModel.EmployeeId,
+                    BVICompanyId = viewModel.BVICompanyId,
+                    LocalCompanyId = viewModel.LocalCompanyId,
+                    BVIJobTitle = viewModel.BVIJobTitle,
+                    LocalJobTitleId = viewModel.LocalJobTitleId,
+                    CompanyCode = viewModel.CompanyCode,
+                    EmployeeCode = viewModel.EmployeeCode,
+                    EmploymentType = viewModel.EmploymentType,
+                    EmploymentStatus = viewModel.EmploymentStatus,
+                    JobCategoryId = viewModel.JobCategoryId,
+                    GradeId = viewModel.GradeId,
+                    GradeLevelId = viewModel.GradeLevelId,
+                    DivisionId = viewModel.DivisionId,
+                    DepartmentId = viewModel.DepartmentId,
+                    SectionId = viewModel.SectionId,
+                    CostCenterId = viewModel.CostCenterId,
+                    GroupStartDate = viewModel.GroupStartDate,
+                    CompanyStartDate = viewModel.CompanyStartDate,
+                    Email = viewModel.Email,
+                    CountryId = viewModel.CountryId,
+                    CityId = viewModel.CountryId,
+                    OfficeId = viewModel.OfficeId,
+                    DST = viewModel.DST,
+                    DBT = viewModel.DBT,
+                    TaxIDNo = viewModel.TaxIDNo,
+                    SSSNo = viewModel.SSSNo,
+                    HealthInsNo = viewModel.HealthInsNo,
+                    HDMFNo = viewModel.HDMFNo,
+                    PDFPassword = viewModel.PDFPassword,
+                    FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
+                    NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
+                    CreatedBy = sessionService.UserId
+                };
+
+                CommandResult commandResult = baseService.ExecuteNonQuery(criteria);
+
+                return Json(commandResult);
             }
 
-            return Json(1);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
         }
 
         public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)

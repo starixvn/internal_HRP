@@ -215,7 +215,14 @@ var createEmployment = (function ($) {
     }
 
     return {
-        InitModule: initModule
+        InitModule: initModule,
+        onCreateSuccess: function (response) {
+            if (response.isSuccessful) {
+                
+            } else {
+                
+            }
+        }
     };
 }(jQuery));
 

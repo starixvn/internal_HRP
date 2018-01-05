@@ -7,7 +7,7 @@
     public class WorkPermit
     {
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyRequired")]
-        public int CompanyId { get; set; }
+        public int LocalCompanyId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "WorkPermitType1Required")]
         public int Type1 { get; set; }

@@ -5,7 +5,8 @@
 @model CreateEmploymentViewModel
 
 <form id="createEmploymentForm" class="form-information" asp-action="CreateEmployment" asp-controller="EmployeeManagement"
-      data-ajax-method="post" data-ajax="true" data-ajax-failure="commonFunctions.handleAjaxError">
+      data-ajax-method="post" data-ajax="true"
+      data-ajax-success="createEmployment.onCreateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
     <div class="employment">
         <div class="col">
             <input hidden asp-for="EmployeeId">
@@ -354,9 +355,9 @@
             </div>
 
             <div class="group-title"><span class="icon-group"></span>@ViewLang.WorkPermit</div>
-            <label class="text -has-required" asp-for="WorkPermit.CompanyId">@ViewLang.Company</label>
+            <label class="text -has-required" asp-for="WorkPermit.LocalCompanyId">@ViewLang.Company</label>
             <div class="group-control">
-                <select class="control width-206" asp-for="WorkPermit.CompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
+                <select class="control width-206" asp-for="WorkPermit.LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "CompanyId", "Code"))">
                     <option value="0" style="display: none;">--Please select--</option>
                 </select>
             </div>
