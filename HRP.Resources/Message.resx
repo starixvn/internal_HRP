@@ -312,4 +312,40 @@
   <data name="MaritalStatusRequired" xml:space="preserve">
     <value>Marital Status is required!</value>
   </data>
+  <data name="DateIssueRequired" xml:space="preserve">
+    <value>Date Issue is required!</value>
+  </data>
+  <data name="DateOfBirthRequired" xml:space="preserve">
+    <value>Date of Birth is required!</value>
+  </data>
+  <data name="ECAddressRequired" xml:space="preserve">
+    <value>Address of Emergency Contact is required!</value>
+  </data>
+  <data name="ECNameRequired" xml:space="preserve">
+    <value>Name of Emergency Contact is required!</value>
+  </data>
+  <data name="ECRelationshipRequired" xml:space="preserve">
+    <value>Relationship of Emergency Contact is required!</value>
+  </data>
+  <data name="ECTelephoneNoRequired" xml:space="preserve">
+    <value>Telephone No. of Emergency Contact is required!</value>
+  </data>
+  <data name="ExpiredDateRequired" xml:space="preserve">
+    <value>Expired Date is required!</value>
+  </data>
+  <data name="NRICNoRequired" xml:space="preserve">
+    <value>NRIC No. is required!</value>
+  </data>
+  <data name="OverseasPhoneNoRequired" xml:space="preserve">
+    <value>Overseas phone No. is required!</value>
+  </data>
+  <data name="PassportNoRequired" xml:space="preserve">
+    <value>Passport No. is required!</value>
+  </data>
+  <data name="PermanentAddressRequired" xml:space="preserve">
+    <value>Permanent Address is required!</value>
+  </data>
+  <data name="ResidenceAddressRequired" xml:space="preserve">
+    <value>Residence Address is required!</value>
+  </data>
 </root>

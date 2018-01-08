@@ -142,6 +142,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Issue is required!.
+        /// </summary>
+        public static string DateIssueRequired {
+            get {
+                return ResourceManager.GetString("DateIssueRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Birth is required!.
+        /// </summary>
+        public static string DateOfBirthRequired {
+            get {
+                return ResourceManager.GetString("DateOfBirthRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department is required!.
         /// </summary>
         public static string DepartmentRequired {
@@ -156,6 +174,42 @@ namespace HRP.Resources {
         public static string DivisionRequired {
             get {
                 return ResourceManager.GetString("DivisionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address of Emergency Contact is required!.
+        /// </summary>
+        public static string ECAddressRequired {
+            get {
+                return ResourceManager.GetString("ECAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of Emergency Contact is required!.
+        /// </summary>
+        public static string ECNameRequired {
+            get {
+                return ResourceManager.GetString("ECNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relationship of Emergency Contact is required!.
+        /// </summary>
+        public static string ECRelationshipRequired {
+            get {
+                return ResourceManager.GetString("ECRelationshipRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telephone No. of Emergency Contact is required!.
+        /// </summary>
+        public static string ECTelephoneNoRequired {
+            get {
+                return ResourceManager.GetString("ECTelephoneNoRequired", resourceCulture);
             }
         }
         
@@ -237,6 +291,15 @@ namespace HRP.Resources {
         public static string EndDateRequired {
             get {
                 return ResourceManager.GetString("EndDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expired Date is required!.
+        /// </summary>
+        public static string ExpiredDateRequired {
+            get {
+                return ResourceManager.GetString("ExpiredDateRequired", resourceCulture);
             }
         }
         
@@ -448,6 +511,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NRIC No. is required!.
+        /// </summary>
+        public static string NRICNoRequired {
+            get {
+                return ResourceManager.GetString("NRICNoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Office is required!.
         /// </summary>
         public static string OfficeRequired {
@@ -462,6 +534,24 @@ namespace HRP.Resources {
         public static string OldPasswordIncorrect {
             get {
                 return ResourceManager.GetString("OldPasswordIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overseas phone No. is required!.
+        /// </summary>
+        public static string OverseasPhoneNoRequired {
+            get {
+                return ResourceManager.GetString("OverseasPhoneNoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passport No. is required!.
+        /// </summary>
+        public static string PassportNoRequired {
+            get {
+                return ResourceManager.GetString("PassportNoRequired", resourceCulture);
             }
         }
         
@@ -520,6 +610,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permanent Address is required!.
+        /// </summary>
+        public static string PermanentAddressRequired {
+            get {
+                return ResourceManager.GetString("PermanentAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone No. must not over {1} characters long..
         /// </summary>
         public static string PhoneNumberMaxLength {
@@ -552,6 +651,15 @@ namespace HRP.Resources {
         public static string ResetPasswordEmailSubject {
             get {
                 return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Residence Address is required!.
+        /// </summary>
+        public static string ResidenceAddressRequired {
+            get {
+                return ResourceManager.GetString("ResidenceAddressRequired", resourceCulture);
             }
         }
         

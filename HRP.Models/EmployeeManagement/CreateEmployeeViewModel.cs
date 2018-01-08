@@ -23,6 +23,7 @@
 
         public SelectList GenderList { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateOfBirthRequired")]
         public DateTime DateOfBirth { get; set; }
 
         public string PlaceOfBirth { get; set; }
@@ -32,6 +33,7 @@
 
         public SelectList NationalityList { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoRequired")]
         public string NRICNo { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MaritalStatusRequired")]
@@ -44,16 +46,20 @@
 
         public SelectList NoOfChildrenList { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoRequired")]
         public string OverseasPhoneNo { get; set; }
 
         public string LocalPhoneNo { get; set; }
 
         public string OtherPhoneNo { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoRequired")]
         public string PassportNo { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateIssueRequired")]
         public DateTime DateIssue { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ExpiredDateRequired")]
         public DateTime ExpiredDate { get; set; }
 
         public string PlaceOfIssue { get; set; }
@@ -62,19 +68,27 @@
 
         public string PersonalEmail { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PermanentAddressRequired")]
         public string PermanentAddress { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ResidenceAddressRequired")]
         public string ResidenceAddress { get; set; }
 
         public string MailingAddress { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECNameRequired")]
         public string ECName { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECRelationshipRequired")]
         public string ECRelationship { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECAddressRequired")]
         public string ECAddress { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECTelephoneNoRequired")]
         public string ECTelephoneNo { get; set; }
+
+        public string ECTelephoneNo2 { get; set; }
 
         public IFormFile ProfilePicture { get; set; }
     }

@@ -41,11 +41,11 @@
             <div class="col has-space">
                 <label class="text -has-required">@ViewLang.FullNameSpacing</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="FullName" asp-for="FullName">
+                    <input type="text" class="control" asp-for="FullName">
                 </div>
-                <label class="text -has-required" for="NickName">@ViewLang.NickNameSpacing</label>
+                <label class="text -has-required">@ViewLang.NickNameSpacing</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="NickName" asp-for="NickName">
+                    <input type="text" class="control" asp-for="NickName">
                 </div>
                 <div class="group-complex -per-layout1">
                     <div class="component">
@@ -55,13 +55,13 @@
                         </select>
                     </div>
                     <div class="component calendar">
-                        <label class="text -has-required">@ViewLang.Date</label>
-                        <input type="text" class="control " id="Date">
-                        <span class="icon-calendar"></span>
+                        <label class="text -has-required">@ViewLang.DateOfBirth</label>
+                        <input type="text" class="control" asp-for="DateOfBirth">
+                        <span class="icon-calendar js-iconDateOfBirth"></span>
                     </div>
                     <div class="component">
                         <label class="text">@ViewLang.PlaceOfBirth</label>
-                        <input type="text" class="control" id="PlaceOfBirth">
+                        <input type="text" class="control" asp-for="PlaceOfBirth">
                     </div>
                 </div>
                 <div class="group-complex -per-layout2">
@@ -72,8 +72,8 @@
                         </select>
                     </div>
                     <div class="component">
-                        <label class="text -has-required" for="NRIC">NRIC No.</label>
-                        <input type="text" class="control " id="NRIC">
+                        <label class="text -has-required">@ViewLang.NRICNo</label>
+                        <input type="text" class="control" asp-for="NRICNo">
                     </div>
                 </div>
                 <div class="group-complex -per-layout3">
@@ -91,93 +91,118 @@
                     </div>
                 </div>
 
-                <div class="group-title"><span class="icon-group"></span>Telephone</div>
+                <div class="group-title"><span class="icon-group"></span>@ViewLang.Telephone</div>
                 <div class="group-complex -per-layout4">
                     <div class="component">
-                        <label class="text -has-required" for="OverseasNo">Overseas No.</label>
-                        <input type="text" class="control" id="OverseasNo">
+                        <label class="text -has-required">@ViewLang.OverseasNo</label>
+                        <input type="text" class="control" asp-for="OverseasPhoneNo">
                     </div>
                     <div class="component">
-                        <label class="text" for="LocalNo">Local No.</label>
-                        <input type="text" class="control" id="LocalNo">
+                        <label class="text">@ViewLang.LocalNo</label>
+                        <input type="text" class="control" asp-for="LocalPhoneNo">
                     </div>
                 </div>
-                <label class="text" for="Other">Other</label>
+                <label class="text">@ViewLang.Other</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="Other">
+                    <input type="text" class="control" asp-for="OtherPhoneNo">
                 </div>
 
-                <div class="group-title"><span class="icon-group"></span>Passport</div>
+                <div class="group-title"><span class="icon-group"></span>@ViewLang.Passport</div>
                 <div class="group-complex -per-layout5">
                     <div class="component">
-                        <label class="text -has-required" for="PassportNo">Passport No.</label>
-                        <input type="text" class="control" id="PassportNo">
+                        <label class="text -has-required">@ViewLang.PassportNo</label>
+                        <input type="text" class="control" asp-for="PassportNo">
                     </div>
                     <div class="component calendar">
-                        <label class="text -has-required" for="DateIssue">Date Issue</label>
-                        <input type="text" class="control" id="DateIssue">
-                        <span class="icon-calendar"></span>
+                        <label class="text -has-required">@ViewLang.DateIssue</label>
+                        <input type="text" class="control" asp-for="DateIssue">
+                        <span class="icon-calendar js-iconDateIssue"></span>
                     </div>
                     <div class="component calendar">
-                        <label class="text -has-required" for="DateIssue">Expired Issue</label>
-                        <input type="text" class="control" id="DateIssue">
-                        <span class="icon-calendar"></span>
+                        <label class="text -has-required">@ViewLang.ExpiredDate</label>
+                        <input type="text" class="control" asp-for="ExpiredDate">
+                        <span class="icon-calendar js-iconExpiredDate"></span>
                     </div>
                 </div>
-                <label class="text" for="PlaceIssue">Place of Issue</label>
+                <label class="text">@ViewLang.PlaceOfIssue</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="PlaceIssue">
+                    <input type="text" class="control" asp-for="PlaceOfIssue">
                 </div>
             </div>
             <div class="col">
-                <label class="text" for="SkypeAccount">Skype Account</label>
+                <label class="text">@ViewLang.SkypeAccount</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="SkypeAccount">
+                    <input type="text" class="control" asp-for="Skype">
                 </div>
-                <label class="text" for="Email">Personal Email Address</label>
+                <label class="text">@ViewLang.PersonalEmailAddress</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="Email">
+                    <input type="text" class="control" asp-for="PersonalEmail">
                 </div>
-                <label class="text -has-required" for="PermanentAddress">Permanent Address (Overseas)</label>
+                <label class="text -has-required">@ViewLang.PermanentAddress</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="PermanentAddress">
+                    <input type="text" class="control" asp-for="PermanentAddress">
                 </div>
-                <label class="text -has-required" for="ResidenceAddress">Residence Address (Local)</label>
+                <label class="text -has-required">@ViewLang.ResidenceAddress</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="ResidenceAddress">
+                    <input type="text" class="control" asp-for="ResidenceAddress">
                 </div>
-                <label class="text" for="MailingAddress">Mailing Address</label>
+                <label class="text">@ViewLang.MailingAddress</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="MailingAddress">
+                    <input type="text" class="control" asp-for="MailingAddress">
                 </div>
 
-                <div class="group-title"><span class="icon-group"></span>Emergency Contact</div>
-                <label class="text -has-required" for="EmergencyName">Name</label>
+                <div class="group-title"><span class="icon-group"></span>@ViewLang.EmergencyContact</div>
+                <label class="text -has-required">@ViewLang.Name</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="ContactName">
+                    <input type="text" class="control" asp-for="ECName">
                 </div>
-                <label class="text -has-required" for="Relationship">Relationship</label>
+                <label class="text -has-required">@ViewLang.Relationship</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="Relationship">
+                    <input type="text" class="control" asp-for="ECRelationship">
                 </div>
-                <label class="text -has-required" for="EmergencyAddress">Address</label>
+                <label class="text -has-required">@ViewLang.Address</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="">
+                    <input type="text" class="control" asp-for="ECAddress">
                 </div>
-                <label class="text -has-required" for="EmergencyTelephone">Telephone No.</label>
+                <label class="text -has-required">@ViewLang.TelephoneNo</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="EmergencyTelephone">
+                    <input type="text" class="control" asp-for="ECTelephoneNo">
                 </div>
-                <label class="text" for="EmergencyTelephone2">Telephone No.</label>
+                <label class="text">@ViewLang.TelephoneNo</label>
                 <div class="group-control">
-                    <input type="text" class="control" id="EmergencyTelephone2">
+                    <input type="text" class="control" asp-for="ECTelephoneNo2">
                 </div>
             </div>
             <div class="list-button">
-                <button class="button -second">Cancel</button>
-                <button class="button -primary" type="submit">Save</button>
+                <button class="button -second">@ViewLang.Cancel</button>
+                <button class="button -primary" type="submit">@ViewLang.Save</button>
             </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <span asp-validation-for="FullName" class="text-danger"></span>
+            <span asp-validation-for="NickName" class="text-danger"></span>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            <span asp-validation-for="PlaceOfBirth" class="text-danger"></span>
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+            <span asp-validation-for="NRICNo" class="text-danger"></span>
+            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+            <span asp-validation-for="NoOfChildren" class="text-danger"></span>
+            <span asp-validation-for="OverseasPhoneNo" class="text-danger"></span>
+            <span asp-validation-for="LocalPhoneNo" class="text-danger"></span>
+            <span asp-validation-for="OtherPhoneNo" class="text-danger"></span>
+            <span asp-validation-for="PassportNo" class="text-danger"></span>
+            <span asp-validation-for="DateIssue" class="text-danger"></span>
+            <span asp-validation-for="ExpiredDate" class="text-danger"></span>
+            <span asp-validation-for="PlaceOfIssue" class="text-danger"></span>
+            <span asp-validation-for="Skype" class="text-danger"></span>
+            <span asp-validation-for="PersonalEmail" class="text-danger"></span>
+            <span asp-validation-for="PermanentAddress" class="text-danger"></span>
+            <span asp-validation-for="ResidenceAddress" class="text-danger"></span>
+            <span asp-validation-for="MailingAddress" class="text-danger"></span>
+            <span asp-validation-for="ECName" class="text-danger"></span>
+            <span asp-validation-for="ECRelationship" class="text-danger"></span>
+            <span asp-validation-for="ECAddress" class="text-danger"></span>
+            <span asp-validation-for="ECTelephoneNo" class="text-danger"></span>
+            <span asp-validation-for="ECTelephoneNo2" class="text-danger"></span>
         </form>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-employment"></div>

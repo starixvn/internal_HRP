@@ -58,7 +58,37 @@
         });
     }
 
+    function initDatePicker() {
+        $('#DateOfBirth').datetimepicker({
+            format: 'll'
+        });
+
+        $('#DateIssue').datetimepicker({
+            format: 'll'
+        });
+
+        $('#ExpiredDate').datetimepicker({
+            format: 'll'
+        });
+    }
+
+    function registerEventOpenDatePicker() {
+        $('.js-iconDateOfBirth').on('click', function () {
+            $('#DateOfBirth').data("DateTimePicker").show();
+        });
+
+        $('.js-iconDateIssue').on('click', function () {
+            $('#DateIssue').data("DateTimePicker").show();
+        });
+        
+        $('.js-iconExpiredDate').on('click', function () {
+            $('#ExpiredDate').data("DateTimePicker").show();
+        });
+    }
+
     function initModule() {
+        initDatePicker();
+        registerEventOpenDatePicker();
         registerEventChangePicture();
     }
 
