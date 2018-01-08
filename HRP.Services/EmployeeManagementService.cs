@@ -33,11 +33,30 @@
 
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee)
         {
-            var pictureExtension = employee.ProfilePicture != null ? Path.GetExtension(employee.ProfilePicture.FileName) : string.Empty;
+            var pictureExtension = employee.ProfilePicture != null ? Path.GetExtension(employee.ProfilePicture.FileName) : null;
             var criteria = new CreateEmployeeCriteria
             {
                 FullName = employee.FullName,
                 NickName = employee.NickName,
+                Gender = employee.Gender,
+                DateOfBirth = employee.DateOfBirth,
+                PlaceOfBirth = employee.PlaceOfBirth,
+                Nationality = employee.Nationality,
+                NRICNo = employee.NRICNo,
+                MaritalStatus = employee.MaritalStatus,
+                NoOfChildren = employee.NoOfChildren,
+                OverseasPhoneNo = employee.OverseasPhoneNo,
+                LocalPhoneNo = employee.LocalPhoneNo,
+                OtherPhoneNo = employee.OtherPhoneNo,
+                PassportNo = employee.PassportNo,
+                DateIssue = employee.DateIssue,
+                ExpiredDate = employee.ExpiredDate,
+                PlaceOfIssue = employee.PlaceOfIssue,
+                Skype = employee.Skype,
+                PersonalEmail = employee.PersonalEmail,
+                PermanentAddress = employee.PermanentAddress,
+                ResidenceAddress = employee.ResidenceAddress,
+                MailingAddress = employee.MailingAddress,
                 PictureExtension = pictureExtension,
                 CreatedBy = sessionService.UserId
             };
@@ -80,11 +99,6 @@
             return result;
         }
 
-        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
-        {
-            return new SelectList(refResource, "ResourceId", "Value");
-        }
-
         public CommandResult CheckValidPicture(IFormFile file)
         {
             var result = new CommandResult();
@@ -114,6 +128,11 @@
             }
 
             return result;
+        }
+
+        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
+        {
+            return new SelectList(refResource, "ResourceId", "Value");
         }
 
         private async Task SaveProfilePictureAsync(IFormFile image, string fileName)

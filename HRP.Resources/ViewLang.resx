@@ -537,4 +537,7 @@
   <data name="TelephoneNo" xml:space="preserve">
     <value>Telephone No.</value>
   </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>--Please select--</value>
+  </data>
 </root>

@@ -60,10 +60,15 @@
             {
                 await employeeManagementService.CreateEmployeeAsync(employee);
 
-                return RedirectToAction("Index");
+                return Json(new { isSuccessful = true, message = "Successful!!!!!" });
             }
 
-            return View("PersonalDetail", employee);
+            var errorList = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+            );
+
+            return Json(new { isSuccessful = false, errors = errorList });
         }
 
         [HttpGet]

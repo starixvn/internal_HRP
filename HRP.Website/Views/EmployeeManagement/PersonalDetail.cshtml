@@ -52,7 +52,7 @@
                     <div class="component">
                         <label class="text -has-required">@ViewLang.Gender</label>
                         <select class="control" asp-for="Gender" asp-items="@Model.GenderList">
-                            <option value="">--Please select--</option>
+                            <option value="">@ViewLang.PleaseSelect</option>
                         </select>
                     </div>
                     <div class="component calendar">
@@ -69,7 +69,7 @@
                     <div class="component">
                         <label class="text -has-required">@ViewLang.Nationality</label>
                         <select class="control" asp-for="Nationality" asp-items="@Model.NationalityList">
-                            <option value="">--Please select--</option>
+                            <option value="">@ViewLang.PleaseSelect</option>
                         </select>
                     </div>
                     <div class="component">
@@ -81,13 +81,13 @@
                     <div class="component">
                         <label class="text -has-required">@ViewLang.MaritalStatus</label>
                         <select class="control" asp-for="MaritalStatus" asp-items="@Model.MaritalStatusList">
-                            <option value="">--Please select--</option>
+                            <option value="">@ViewLang.PleaseSelect</option>
                         </select>
                     </div>
                     <div class="component">
                         <label class="text -has-required">@ViewLang.NoOfChildren</label>
                         <select class="control" asp-for="NoOfChildren" asp-items="@Model.NoOfChildrenList">
-                            <option value="">--Please select--</option>
+                            <option value="">@ViewLang.PleaseSelect</option>
                         </select>
                     </div>
                 </div>
@@ -151,7 +151,6 @@
                 <div class="group-control">
                     <input type="text" class="control" asp-for="MailingAddress">
                 </div>
-
                 <div class="group-title"><span class="icon-group"></span>@ViewLang.EmergencyContact</div>
                 <label class="text -has-required">@ViewLang.Name</label>
                 <div class="group-control">
