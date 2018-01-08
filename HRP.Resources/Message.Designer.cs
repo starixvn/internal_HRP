@@ -331,6 +331,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Date Type1 is required!.
+        /// </summary>
+        public static string EndDateType1Required {
+            get {
+                return ResourceManager.GetString("EndDateType1Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired Date is required!.
         /// </summary>
         public static string ExpiredDateRequired {
@@ -399,6 +408,15 @@ namespace HRP.Resources {
         public static string GradeRequired {
             get {
                 return ResourceManager.GetString("GradeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Date Commencement is required!.
+        /// </summary>
+        public static string GroupDateCommencementRequired {
+            get {
+                return ResourceManager.GetString("GroupDateCommencementRequired", resourceCulture);
             }
         }
         
@@ -840,6 +858,15 @@ namespace HRP.Resources {
         public static string StartDateRequired {
             get {
                 return ResourceManager.GetString("StartDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date Type1 is required!.
+        /// </summary>
+        public static string StartDateType1Required {
+            get {
+                return ResourceManager.GetString("StartDateType1Required", resourceCulture);
             }
         }
         

@@ -399,4 +399,13 @@
   <data name="SkypeMaxLength" xml:space="preserve">
     <value>Skype Account must not over {1} characters long.</value>
   </data>
+  <data name="EndDateType1Required" xml:space="preserve">
+    <value>End Date Type1 is required!</value>
+  </data>
+  <data name="GroupDateCommencementRequired" xml:space="preserve">
+    <value>Group Date Commencement is required!</value>
+  </data>
+  <data name="StartDateType1Required" xml:space="preserve">
+    <value>Start Date Type1 is required!</value>
+  </data>
 </root>

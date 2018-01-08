@@ -23,10 +23,11 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
         public int LocalJobTitleId { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateCommencementRequired")]
         public DateTime GroupStartDate { get; set; } = DateTime.Now;
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime? CompanyStartDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
