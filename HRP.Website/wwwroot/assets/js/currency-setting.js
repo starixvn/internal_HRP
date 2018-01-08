@@ -121,7 +121,7 @@
             info: false,
             ordering: false,
             filter: false,
-            scrollY: 355,
+            scrollY: '355px',
             scrollX: true,
             scrollCollapse: true,
             paging: false,
