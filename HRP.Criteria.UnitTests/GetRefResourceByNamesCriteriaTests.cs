@@ -2,14 +2,14 @@
 {
     using Xunit;
 
-    public class GetRefResourceByNameCriteriaTests
+    public class GetRefResourceByNamesCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetRefResourceByNameCriteria();
-            var expected = "RefResource_GetByName";
+            var criteria = new GetRefResourceByNamesCriteria();
+            var expected = "RefResource_GetByNames";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -24,9 +24,9 @@
         public void IsValid_RefNameIsInvalid_ReturnFalse(string refName)
         {
             // Arrange
-            var criteria = new GetRefResourceByNameCriteria
+            var criteria = new GetRefResourceByNamesCriteria
             {
-                RefName = refName
+                RefNames = refName
             };
 
             // Act
@@ -40,7 +40,7 @@
         public void IsValid_RefNameIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetRefResourceByNameCriteria { RefName = "office" };
+            var criteria = new GetRefResourceByNamesCriteria { RefNames = "office" };
 
             // Act
             var actual = criteria.IsValid();

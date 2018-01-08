@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Functions>
   <Function Name="Reference Resource">
-    <Setting Key="RefResource_GetByName" SpName="RefResource_GetByName" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_GetByNames" SpName="RefResource_GetByNames" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Function">
     <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>

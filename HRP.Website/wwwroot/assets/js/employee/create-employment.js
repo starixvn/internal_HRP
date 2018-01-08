@@ -3,7 +3,7 @@
 var createEmployment = (function ($) {
     var $employmentHeaderTab, $employmentTab, $createEmploymentForm,
         $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
-        defaultOption = '<option value="0" style="display: none;">--Please select--</option>';
+        defaultOption = '<option value="" style="display: none;">--Please select--</option>';
 
     function registerEventChangeBVICompany() {
         $bviCompanyElement.on('change', function () {
@@ -143,7 +143,51 @@ var createEmployment = (function ($) {
     }
 
     function initSelect2() {
-        $employmentTab.find('select.search-suggestion').select2();
+        $employmentTab.find('select.search-suggestion').select2(
+            {
+                placeholder: '--Please select--',
+            });
+    }
+
+    function initSearchAutocomplete($selectorName, $selectorFullName, $selectorNickName) {
+        $selectorName.autocomplete({
+            source: function (request, response) {
+                var term = request.term;
+                var index = term.indexOf(' (');
+
+                if (index > 0) {
+                    term = term.substr(0, index);
+                }
+
+                $.ajax({
+                    url: commonFunctions.rootURL + 'EmployeeManagement/GetEmployeeSuggestion',
+                    dataType: 'json',
+                    data: {
+                        idNo: term
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.nickName + ' (' + item.fullName + ')',
+                                    fullname: item.fullName,
+                                    nickname: item.nickName,
+                                    value: item.employeeId
+                                };
+                            }));
+                        }
+                    }
+                });
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                event.preventDefault();
+                $selectorFullName.val(ui.item.fullname);
+                $selectorNickName.val(ui.item.nickname);
+
+                return false;
+            }
+        });
     }
 
     function initDatepicker() {
@@ -200,6 +244,18 @@ var createEmployment = (function ($) {
                         registerEventChangeDivision();
                         registerEventChangeDepartment();
                         registerEventChangeSection();
+                        initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
+                        initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
+                        initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));
+                        initSearchAutocomplete($('#NoneOrIDNoLocalSalary'), $('#Paymaster_FullNameLocalSalary'), $('#Paymaster_NickNameLocalSalary'));
+                        initSearchAutocomplete($('#NoneOrIDNoAdministrator'), $('#EPA_FullNameAdministrator'), $('#EPA_NickNameAdministrator'));
+                        initSearchAutocomplete($('#NoneOrIDNoEvaluator1'), $('#EPA_FullNameEvaluator1'), $('#EPA_NickNameEvaluator1'));
+                        initSearchAutocomplete($('#NoneOrIDNoEvaluator2'), $('#EPA_FullNameEvaluator2'), $('#EPA_NickNameEvaluator2'));
+                        initSearchAutocomplete($('#NoneOrIDNoReviewer'), $('#EPA_FullNameReviewer'), $('#EPA_NickNameReviewer'));
+                        initSearchAutocomplete($('#NoneOrIDNoManagement'), $('#EPA_FullNameManagement'), $('#EPA_NickNameManagement'));
+                        initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
+                        initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
+                        initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
                     },
                     error: commonFunctions.handleAjaxError
                 });

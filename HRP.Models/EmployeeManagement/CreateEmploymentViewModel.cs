@@ -10,6 +10,7 @@
     {
         public int EmployeeId { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
         public int BVICompanyId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyRequired")]

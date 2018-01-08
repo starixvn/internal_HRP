@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -69,37 +70,40 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(int employeeId)
         {
+            var refNames = string.Format(
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.JobCategory,
+                ReferenceResource.Grade,
+                ReferenceResource.GradeLevel,
+                ReferenceResource.Country,
+                ReferenceResource.City,
+                ReferenceResource.Office,
+                ReferenceResource.TaxDeclaration,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2);
             var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.PVI, IsActive = true });
             var localCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.Local, IsActive = true });
-            var localJobTitles = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.LocalJobTitle });
-            var employmentTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentType });
-            var employmentStatuses = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.EmploymentStatus });
-            var jobCategories = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.JobCategory });
-            var grades = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Grade });
-            var gradeLevels = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.GradeLevel });
-            var countries = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Country });
-            var cities = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.City });
-            var offices = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.Office });
-            var taxDeclarations = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.TaxDeclaration });
-            var workPermitType1s = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.WorkPermitType1 });
-            var workPermitType2s = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNameCriteria { RefName = ReferenceResource.WorkPermitType2 });
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
             var viewModel = new CreateEmploymentViewModel
             {
                 EmployeeId = employeeId,
                 BVICompanies = bviCompanies,
                 LocalCompanies = localCompanies,
-                LocalJobTitles = localJobTitles,
-                EmploymentTypes = employmentTypes,
-                EmploymentStatuses = employmentStatuses,
-                JobCategories = jobCategories,
-                Grades = grades,
-                GradeLevels = gradeLevels,
-                Countries = countries,
-                Cities = cities,
-                Offices = offices,
-                TaxDeclarations = taxDeclarations,
-                WorkPermitType1s = workPermitType1s,
-                WorkPermitType2s = workPermitType2s
+                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
+                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
+                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
+                JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory),
+                Grades = GetRefResourceByName(refResources, ReferenceResource.Grade),
+                GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel),
+                Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
+                Cities = GetRefResourceByName(refResources, ReferenceResource.City),
+                Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
+                TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration),
+                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
+                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2)
             };
 
             return PartialView("_CreateEmployment", viewModel);
@@ -207,6 +211,21 @@
             var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
 
             return Json(costCenters);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetEmployeeSuggestion(string idNo)
+        {
+            var criteria = new GetEmployeeSuggestionCriteria { IDNo = idNo };
+            var employees = await baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
+
+            return Json(employees);
+        }
+
+        private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
+        {
+            return refResources.Where(x => x.RefName == refName);
         }
     }
 }
