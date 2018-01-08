@@ -74,7 +74,7 @@
                             }
 
                             <td>
-                                <input class="input rate" @disabled type="text" maxlength="12" step="any" min="0.00001" value="@rate?.ExchangeRate.ToString("0.#####")"
+                                <input class="input rate" @disabled type="text" maxlength="12" step="any" min="0.00001" value="@rate?.ExchangeRate"
                                        data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
                                        name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-rule-number="true"
                                        data-msg-min="Please enter value greater than 0" />

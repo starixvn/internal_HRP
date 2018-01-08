@@ -1,6 +1,6 @@
 ﻿var currencySetting = (function ($, commonFunctions) {
     function round(value) {
-        return Number(Math.round(value + 'e5') + 'e-5');
+        return Number(Math.round(value + 'e5') + 'e-5').toFixed(5);
     }
 
     function init() {
@@ -12,7 +12,12 @@
         });
 
         if ($('#CanUpdate').val() === 'True') {
-            $('.rate:enabled').on('change', function () {
+            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]').on('keypress', function (e) {
+                if (e.which != 46 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                }
+            })
+            .on('change', function () {
                 if (!this.checkValidity())
                     return;
 
@@ -65,30 +70,17 @@
                         return round(fromCurrencyOnBaseCurrency / value);
                     });
 
-                    $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val(function () {
-                        var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
-                        if (fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === '0')
-                            return;
-
-                        return round(fromCurrencyOnBaseCurrency / toCurrencyOnBaseCurrency.val());
-                    });
-
-                    $('.rate:disabled[data-from-currency="' + toCurrency + '"]').not(toCurrencyOnBaseCurrency).val(function () {
-                        var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
-
-                        if (fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === '0')
-                            return;
-
-                        return round(toCurrencyOnBaseCurrency.val() / fromCurrencyOnBaseCurrency);
-                    });
+                    toCurrencyOnBaseCurrency.change();
                 }
 
                 target.val(value);
             });
 
             $('#btn-save').on('click', function () {
-                var data = [];
+                if (!$('#currency-form').valid())
+                    return;
 
+                var data = [];
                 $('.rate').each(function (index, e) {
                     var element = $(e);
                     data.push({
