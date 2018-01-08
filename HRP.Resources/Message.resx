@@ -348,4 +348,55 @@
   <data name="ResidenceAddressRequired" xml:space="preserve">
     <value>Residence Address is required!</value>
   </data>
+  <data name="ECAddressMaxLength" xml:space="preserve">
+    <value>Address of Emergency Contact must not over {1} characters long.</value>
+  </data>
+  <data name="ECNameMaxLength" xml:space="preserve">
+    <value>Name of Emergency Contact must not over {1} characters long.</value>
+  </data>
+  <data name="ECRelationshipMaxLength" xml:space="preserve">
+    <value>Relationship of Emergency Contact must not over {1} characters long.</value>
+  </data>
+  <data name="ECTelephoneNoMaxLength" xml:space="preserve">
+    <value>Telephone No. of Emergency Contact must not over {1} characters long.</value>
+  </data>
+  <data name="LocalPhoneNoMaxLength" xml:space="preserve">
+    <value>Local phone No. must not over {1} characters long.</value>
+  </data>
+  <data name="MailingAddressMaxLength" xml:space="preserve">
+    <value>Mailing Address must not over {1} characters long.</value>
+  </data>
+  <data name="NRICNoMaxLength" xml:space="preserve">
+    <value>NRIC No. must not over {1} characters long.</value>
+  </data>
+  <data name="OtherPhoneNoMaxLength" xml:space="preserve">
+    <value>Other phone No. must not over {1} characters long.</value>
+  </data>
+  <data name="OverseasPhoneNoMaxLength" xml:space="preserve">
+    <value>Overseas phone No. must not over {1} characters long.</value>
+  </data>
+  <data name="PassportNoMaxLength" xml:space="preserve">
+    <value>Passport No. must not over {1} characters long.</value>
+  </data>
+  <data name="PermanentAddressMaxLength" xml:space="preserve">
+    <value>Permanent Address must not over {1} characters long.</value>
+  </data>
+  <data name="PersonalEmailInvalid" xml:space="preserve">
+    <value>Personal Email Address is invalid.</value>
+  </data>
+  <data name="PersonalEmailMaxLength" xml:space="preserve">
+    <value>Personal Email Address must not over {1} characters long.</value>
+  </data>
+  <data name="PlaceOfBirthMaxLength" xml:space="preserve">
+    <value>Place of birth must not over {1} characters long.</value>
+  </data>
+  <data name="PlaceOfIssueMaxLength" xml:space="preserve">
+    <value>Place of Issue must not over {1} characters long.</value>
+  </data>
+  <data name="ResidenceAddressMaxLength" xml:space="preserve">
+    <value>Residence Address must not over {1} characters long.</value>
+  </data>
+  <data name="SkypeMaxLength" xml:space="preserve">
+    <value>Skype Account must not over {1} characters long.</value>
+  </data>
 </root>

@@ -178,11 +178,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address of Emergency Contact must not over {1} characters long..
+        /// </summary>
+        public static string ECAddressMaxLength {
+            get {
+                return ResourceManager.GetString("ECAddressMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address of Emergency Contact is required!.
         /// </summary>
         public static string ECAddressRequired {
             get {
                 return ResourceManager.GetString("ECAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of Emergency Contact must not over {1} characters long..
+        /// </summary>
+        public static string ECNameMaxLength {
+            get {
+                return ResourceManager.GetString("ECNameMaxLength", resourceCulture);
             }
         }
         
@@ -196,11 +214,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Relationship of Emergency Contact must not over {1} characters long..
+        /// </summary>
+        public static string ECRelationshipMaxLength {
+            get {
+                return ResourceManager.GetString("ECRelationshipMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Relationship of Emergency Contact is required!.
         /// </summary>
         public static string ECRelationshipRequired {
             get {
                 return ResourceManager.GetString("ECRelationshipRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telephone No. of Emergency Contact must not over {1} characters long..
+        /// </summary>
+        public static string ECTelephoneNoMaxLength {
+            get {
+                return ResourceManager.GetString("ECTelephoneNoMaxLength", resourceCulture);
             }
         }
         
@@ -457,11 +493,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local phone No. must not over {1} characters long..
+        /// </summary>
+        public static string LocalPhoneNoMaxLength {
+            get {
+                return ResourceManager.GetString("LocalPhoneNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Username or Password..
         /// </summary>
         public static string LoginInvalid {
             get {
                 return ResourceManager.GetString("LoginInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mailing Address must not over {1} characters long..
+        /// </summary>
+        public static string MailingAddressMaxLength {
+            get {
+                return ResourceManager.GetString("MailingAddressMaxLength", resourceCulture);
             }
         }
         
@@ -511,6 +565,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NRIC No. must not over {1} characters long..
+        /// </summary>
+        public static string NRICNoMaxLength {
+            get {
+                return ResourceManager.GetString("NRICNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NRIC No. is required!.
         /// </summary>
         public static string NRICNoRequired {
@@ -538,11 +601,38 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other phone No. must not over {1} characters long..
+        /// </summary>
+        public static string OtherPhoneNoMaxLength {
+            get {
+                return ResourceManager.GetString("OtherPhoneNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overseas phone No. must not over {1} characters long..
+        /// </summary>
+        public static string OverseasPhoneNoMaxLength {
+            get {
+                return ResourceManager.GetString("OverseasPhoneNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overseas phone No. is required!.
         /// </summary>
         public static string OverseasPhoneNoRequired {
             get {
                 return ResourceManager.GetString("OverseasPhoneNoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passport No. must not over {1} characters long..
+        /// </summary>
+        public static string PassportNoMaxLength {
+            get {
+                return ResourceManager.GetString("PassportNoMaxLength", resourceCulture);
             }
         }
         
@@ -610,6 +700,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permanent Address must not over {1} characters long..
+        /// </summary>
+        public static string PermanentAddressMaxLength {
+            get {
+                return ResourceManager.GetString("PermanentAddressMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permanent Address is required!.
         /// </summary>
         public static string PermanentAddressRequired {
@@ -619,11 +718,47 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personal Email Address is invalid..
+        /// </summary>
+        public static string PersonalEmailInvalid {
+            get {
+                return ResourceManager.GetString("PersonalEmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Email Address must not over {1} characters long..
+        /// </summary>
+        public static string PersonalEmailMaxLength {
+            get {
+                return ResourceManager.GetString("PersonalEmailMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone No. must not over {1} characters long..
         /// </summary>
         public static string PhoneNumberMaxLength {
             get {
                 return ResourceManager.GetString("PhoneNumberMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Place of birth must not over {1} characters long..
+        /// </summary>
+        public static string PlaceOfBirthMaxLength {
+            get {
+                return ResourceManager.GetString("PlaceOfBirthMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Place of Issue must not over {1} characters long..
+        /// </summary>
+        public static string PlaceOfIssueMaxLength {
+            get {
+                return ResourceManager.GetString("PlaceOfIssueMaxLength", resourceCulture);
             }
         }
         
@@ -655,6 +790,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Residence Address must not over {1} characters long..
+        /// </summary>
+        public static string ResidenceAddressMaxLength {
+            get {
+                return ResourceManager.GetString("ResidenceAddressMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Residence Address is required!.
         /// </summary>
         public static string ResidenceAddressRequired {
@@ -669,6 +813,15 @@ namespace HRP.Resources {
         public static string SectionRequired {
             get {
                 return ResourceManager.GetString("SectionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skype Account must not over {1} characters long..
+        /// </summary>
+        public static string SkypeMaxLength {
+            get {
+                return ResourceManager.GetString("SkypeMaxLength", resourceCulture);
             }
         }
         
