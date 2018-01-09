@@ -74,10 +74,10 @@
                             }
 
                             <td>
-                                <input class="input rate" @disabled type="text" maxlength="12" step="any" min="0.00001" value="@rate?.ExchangeRate"
+                                <input class="input rate" @disabled type="text" value="@rate?.ExchangeRate"
                                        data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
-                                       name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" data-rule-number="true"
-                                       data-msg-min="Please enter value greater than 0" />
+                                       name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
+                                       data-inputmask="'alias': 'numeric', 'groupSeparator': '', 'autoGroup': true, 'digits': 5, 'digitsOptional': false, 'placeholder': '', 'allowMinus': false">
                             </td>
 
                         }
@@ -95,12 +95,15 @@
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/assets/js/currency-setting.js"></script>
     </environment>
     <environment exclude="Development">

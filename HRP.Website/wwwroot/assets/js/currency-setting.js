@@ -6,44 +6,32 @@
     function init() {
         var baseCurrency = $('#base-currency').val();
 
-        $('#currency-form').validate({
-            errorClass: "text-danger",
-            errorElement: "span",
-        });
-
         if ($('#CanUpdate').val() === 'True') {
-            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]').on('keypress', function (e) {
-                if (e.which != 46 && (e.which < 48 || e.which > 57)) {
-                    return false;
-                }
-            })
+            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]').inputmask()
             .on('change', function () {
-                if (!this.checkValidity())
-                    return;
-
                 var target = $(this);
                 var fromCurrency = target.data('from-currency');
                 var toCurrency = target.data('to-currency');
-                var value = round(target.val());
+                var value = round(target.inputmask('unmaskedvalue'));
 
                 if (toCurrency === baseCurrency) {
-                    if (isNaN(value)) {
+                    if (value == 0) {
                         $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val('');
                         $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val('');
                         return;
                     }
 
                     $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val(function () {
-                        var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
-                        if (toCurrencyOnBaseCurrency === '' || toCurrencyOnBaseCurrency === '0')
+                        var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
+                        if (toCurrencyOnBaseCurrency === '' || toCurrencyOnBaseCurrency == 0)
                             return;
 
                         return round(value / toCurrencyOnBaseCurrency);
                     });
 
                     $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val(function () {
-                        var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
-                        if (fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === '0')
+                        var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
+                        if (fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency == 0)
                             return;
 
                         return round(fromCurrencyOnBaseCurrency / value);
@@ -51,16 +39,17 @@
 
                     $('.rate:enabled[data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
                         var $element = $(element);
-                        if ($element.val() === '' || $element.val() === '0')
+                        var elementValue = $element.inputmask('unmaskedvalue');
+                        if (elementValue === '' || elementValue == 0)
                             return;
 
-                        $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(round(value / $element.val()));
+                        $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(round(value / elementValue));
                     });
                 } else {
                     var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
-                    var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').val();
+                    var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
 
-                    if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === '0') {
+                    if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency == 0) {
                         $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val('');
                         $('.rate:disabled[data-from-currency="' + toCurrency + '"]').val('');
                         return;
@@ -77,9 +66,6 @@
             });
 
             $('#btn-save').on('click', function () {
-                if (!$('#currency-form').valid())
-                    return;
-
                 var data = [];
                 $('.rate').each(function (index, e) {
                     var element = $(e);

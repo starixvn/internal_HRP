@@ -11,6 +11,7 @@
     "datatables.net-fixedcolumns-bs": "3.2.3",
     "select2": "^4.0.5",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-    "moment": "^2.20.1"
+    "moment": "^2.20.1",
+    "inputmask": "^3.3.11"
   }
 }
