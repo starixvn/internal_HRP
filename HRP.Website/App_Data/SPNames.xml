@@ -61,4 +61,7 @@
     <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employment_Update" SpName="Employment_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="EmployeeBankDetails">
+    <Setting Key="BankAccount_CreateBankAccount" SpName="BankAccount_CreateBankAccount" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
 </Functions>
