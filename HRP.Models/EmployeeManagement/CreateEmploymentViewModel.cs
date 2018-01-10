@@ -100,11 +100,11 @@
 
         public WorkPermit WorkPermit { get; set; } = new WorkPermit();
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminRequired")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminMaxLength")]
         public string FullNamePFileAdmin { get; set; }
 
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNameMaxLength")]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNamePFileAdminMaxLength")]
         public string NickNamePFileAdmin { get; set; }
 
         public Paymaster Paymaster { get; set; } = new Paymaster();

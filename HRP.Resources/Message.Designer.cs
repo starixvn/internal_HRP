@@ -367,6 +367,123 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Name Administrator must not over {1} characters long..
+        /// </summary>
+        public static string FullNameAdministratorMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameAdministratorMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Administrator is required!.
+        /// </summary>
+        public static string FullNameAdministratorRequired {
+            get {
+                return ResourceManager.GetString("FullNameAdministratorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name BVI Allowance must not over {1} characters long..
+        /// </summary>
+        public static string FullNameBVIAllowanceMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameBVIAllowanceMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name BVI Allowance is required!.
+        /// </summary>
+        public static string FullNameBVIAllowanceRequired {
+            get {
+                return ResourceManager.GetString("FullNameBVIAllowanceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name BVI Bonus must not over {1} characters long..
+        /// </summary>
+        public static string FullNameBVIBonusMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameBVIBonusMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name BVI Salary must not over {1} characters long..
+        /// </summary>
+        public static string FullNameBVISalaryMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameBVISalaryMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name BVI Salary is required!.
+        /// </summary>
+        public static string FullNameBVISalaryRequired {
+            get {
+                return ResourceManager.GetString("FullNameBVISalaryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Evaluator #1 must not over {1} characters long..
+        /// </summary>
+        public static string FullNameEvaluator1MaxLength {
+            get {
+                return ResourceManager.GetString("FullNameEvaluator1MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Evaluator #2 must not over {1} characters long..
+        /// </summary>
+        public static string FullNameEvaluator2MaxLength {
+            get {
+                return ResourceManager.GetString("FullNameEvaluator2MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Increment must not over {1} characters long..
+        /// </summary>
+        public static string FullNameIncrementMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameIncrementMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Local Bonus must not over {1} characters long..
+        /// </summary>
+        public static string FullNameLocalBonusMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameLocalBonusMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Local Salary must not over {1} characters long..
+        /// </summary>
+        public static string FullNameLocalSalaryMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameLocalSalaryMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Management must not over {1} characters long..
+        /// </summary>
+        public static string FullNameManagementMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameManagementMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name must not over {1} characters long..
         /// </summary>
         public static string FullNameMaxLength {
@@ -376,11 +493,38 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Name P-File Admin must not over {1} characters long..
+        /// </summary>
+        public static string FullNamePFileAdminMaxLength {
+            get {
+                return ResourceManager.GetString("FullNamePFileAdminMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name P-File Admin is required!.
+        /// </summary>
+        public static string FullNamePFileAdminRequired {
+            get {
+                return ResourceManager.GetString("FullNamePFileAdminRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name is required!.
         /// </summary>
         public static string FullNameRequired {
             get {
                 return ResourceManager.GetString("FullNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name Reviewer must not over {1} characters long..
+        /// </summary>
+        public static string FullNameReviewerMaxLength {
+            get {
+                return ResourceManager.GetString("FullNameReviewerMaxLength", resourceCulture);
             }
         }
         
@@ -556,6 +700,96 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nick Name Administrator must not over {1} characters long..
+        /// </summary>
+        public static string NickNameAdministratorMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameAdministratorMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name BVI Allowance must not over {1} characters long..
+        /// </summary>
+        public static string NickNameBVIAllowanceMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameBVIAllowanceMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name BVI Bonus must not over {1} characters long..
+        /// </summary>
+        public static string NickNameBVIBonusMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameBVIBonusMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name BVI Salary must not over {1} characters long..
+        /// </summary>
+        public static string NickNameBVISalaryMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameBVISalaryMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Evaluator #1 must not over {1} characters long..
+        /// </summary>
+        public static string NickNameEvaluator1MaxLength {
+            get {
+                return ResourceManager.GetString("NickNameEvaluator1MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Evaluator #2 must not over {1} characters long..
+        /// </summary>
+        public static string NickNameEvaluator2MaxLength {
+            get {
+                return ResourceManager.GetString("NickNameEvaluator2MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Increment must not over {1} characters long..
+        /// </summary>
+        public static string NickNameIncrementMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameIncrementMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Local Bonus must not over {1} characters long..
+        /// </summary>
+        public static string NickNameLocalBonusMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameLocalBonusMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Local Salary must not over {1} characters long..
+        /// </summary>
+        public static string NickNameLocalSalaryMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameLocalSalaryMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Management must not over {1} characters long..
+        /// </summary>
+        public static string NickNameManagementMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameManagementMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nick Name must not over {1} characters long..
         /// </summary>
         public static string NickNameMaxLength {
@@ -565,11 +799,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nick Name P-File Admin must not over {1} characters long..
+        /// </summary>
+        public static string NickNamePFileAdminMaxLength {
+            get {
+                return ResourceManager.GetString("NickNamePFileAdminMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nick Name is required!.
         /// </summary>
         public static string NickNameRequired {
             get {
                 return ResourceManager.GetString("NickNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick Name Reviewer must not over {1} characters long..
+        /// </summary>
+        public static string NickNameReviewerMaxLength {
+            get {
+                return ResourceManager.GetString("NickNameReviewerMaxLength", resourceCulture);
             }
         }
         

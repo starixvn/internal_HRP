@@ -27,10 +27,14 @@
         public int? LocalJobTitleReasonId { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? GroupDateReasonId { get; set; }
+        public DateTime? GroupEndDate { get; set; }
+
+        public int? GroupDateReasonId { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? CompanyDateReason { get; set; }
+        public DateTime? CompanyEndDate { get; set; }
+
+        public int? CompanyDateReasonId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? IDNoChangeDate { get; set; }

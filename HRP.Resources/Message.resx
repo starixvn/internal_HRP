@@ -408,4 +408,88 @@
   <data name="StartDateType1Required" xml:space="preserve">
     <value>Start Date Type1 is required!</value>
   </data>
+  <data name="FullNameAdministratorMaxLength" xml:space="preserve">
+    <value>Full Name Administrator must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameAdministratorRequired" xml:space="preserve">
+    <value>Full Name Administrator is required!</value>
+  </data>
+  <data name="FullNameBVIAllowanceMaxLength" xml:space="preserve">
+    <value>Full Name BVI Allowance must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameBVIAllowanceRequired" xml:space="preserve">
+    <value>Full Name BVI Allowance is required!</value>
+  </data>
+  <data name="FullNameBVIBonusMaxLength" xml:space="preserve">
+    <value>Full Name BVI Bonus must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameBVISalaryMaxLength" xml:space="preserve">
+    <value>Full Name BVI Salary must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameBVISalaryRequired" xml:space="preserve">
+    <value>Full Name BVI Salary is required!</value>
+  </data>
+  <data name="FullNameEvaluator1MaxLength" xml:space="preserve">
+    <value>Full Name Evaluator #1 must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameEvaluator2MaxLength" xml:space="preserve">
+    <value>Full Name Evaluator #2 must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameIncrementMaxLength" xml:space="preserve">
+    <value>Full Name Increment must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameLocalBonusMaxLength" xml:space="preserve">
+    <value>Full Name Local Bonus must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameLocalSalaryMaxLength" xml:space="preserve">
+    <value>Full Name Local Salary must not over {1} characters long.</value>
+  </data>
+  <data name="FullNameManagementMaxLength" xml:space="preserve">
+    <value>Full Name Management must not over {1} characters long.</value>
+  </data>
+  <data name="FullNamePFileAdminMaxLength" xml:space="preserve">
+    <value>Full Name P-File Admin must not over {1} characters long.</value>
+  </data>
+  <data name="FullNamePFileAdminRequired" xml:space="preserve">
+    <value>Full Name P-File Admin is required!</value>
+  </data>
+  <data name="FullNameReviewerMaxLength" xml:space="preserve">
+    <value>Full Name Reviewer must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameAdministratorMaxLength" xml:space="preserve">
+    <value>Nick Name Administrator must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameBVIAllowanceMaxLength" xml:space="preserve">
+    <value>Nick Name BVI Allowance must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameBVIBonusMaxLength" xml:space="preserve">
+    <value>Nick Name BVI Bonus must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameBVISalaryMaxLength" xml:space="preserve">
+    <value>Nick Name BVI Salary must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameEvaluator1MaxLength" xml:space="preserve">
+    <value>Nick Name Evaluator #1 must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameEvaluator2MaxLength" xml:space="preserve">
+    <value>Nick Name Evaluator #2 must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameIncrementMaxLength" xml:space="preserve">
+    <value>Nick Name Increment must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameLocalBonusMaxLength" xml:space="preserve">
+    <value>Nick Name Local Bonus must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameLocalSalaryMaxLength" xml:space="preserve">
+    <value>Nick Name Local Salary must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameManagementMaxLength" xml:space="preserve">
+    <value>Nick Name Management must not over {1} characters long.</value>
+  </data>
+  <data name="NickNamePFileAdminMaxLength" xml:space="preserve">
+    <value>Nick Name P-File Admin must not over {1} characters long.</value>
+  </data>
+  <data name="NickNameReviewerMaxLength" xml:space="preserve">
+    <value>Nick Name Reviewer must not over {1} characters long.</value>
+  </data>
 </root>

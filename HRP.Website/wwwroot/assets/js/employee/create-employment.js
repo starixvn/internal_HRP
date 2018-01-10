@@ -158,7 +158,7 @@ var createEmployment = (function ($) {
             for (var i = 0; i < intervals.length; i++) {
                 var diff = starts.diff(ends, intervals[i]);
                 ends.add(diff, intervals[i]);
-                out.push(diff + ' ' + intervals[i]);
+                out.push(diff + ' ' + intervals[i].replace('s', '(s)'));
             }
 
             $('#ServiceGroup').val(out.join('/'));
@@ -173,7 +173,7 @@ var createEmployment = (function ($) {
             for (var i = 0; i < intervals.length; i++) {
                 var diff = starts.diff(ends, intervals[i]);
                 ends.add(diff, intervals[i]);
-                out.push(diff + ' ' + intervals[i]);
+                out.push(diff + ' ' + intervals[i].replace('s', '(s)'));
             }
 
             $('#ServiceCompany').val(out.join('/'));

@@ -198,6 +198,130 @@
             return Json(new { isSuccessful = false, errors });
         }
 
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateEmployment(int employeeId)
+        {
+            var refNames = string.Format(
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                ReferenceResource.LocalCompany,
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.JobCategory,
+                ReferenceResource.Grade,
+                ReferenceResource.GradeLevel,
+                ReferenceResource.Country,
+                ReferenceResource.City,
+                ReferenceResource.Office,
+                ReferenceResource.TaxDeclaration,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2);
+            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
+            var viewModel = new CreateEmploymentViewModel
+            {
+                EmployeeId = employeeId,
+                Companies = bviCompanies,
+                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
+                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
+                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
+                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
+                JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory),
+                Grades = GetRefResourceByName(refResources, ReferenceResource.Grade),
+                GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel),
+                Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
+                Cities = GetRefResourceByName(refResources, ReferenceResource.City),
+                Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
+                TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration),
+                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
+                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2)
+            };
+
+            return PartialView("_UpdateEmployment", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public IActionResult UpdateEmployment(UpdateEmploymentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var criteria = new UpdateEmploymentCriteria
+                {
+                    EmployeeId = viewModel.EmployeeId,
+                    CompanyId = viewModel.CompanyId,
+                    LocalCompanyId = viewModel.LocalCompanyId,
+                    JobTitle = viewModel.JobTitle,
+                    LocalJobTitleId = viewModel.LocalJobTitleId,
+                    CompanyCode = viewModel.CompanyCode,
+                    EmployeeCode = viewModel.EmployeeCode,
+                    EmploymentType = viewModel.EmploymentType,
+                    EmploymentStatus = viewModel.EmploymentStatus,
+                    JobCategoryId = viewModel.JobCategoryId,
+                    GradeId = viewModel.GradeId,
+                    GradeLevelId = viewModel.GradeLevelId,
+                    DivisionId = viewModel.DivisionId,
+                    DepartmentId = viewModel.DepartmentId,
+                    SectionId = viewModel.SectionId,
+                    CostCenterId = viewModel.CostCenterId,
+                    GroupStartDate = viewModel.GroupStartDate,
+                    CompanyStartDate = viewModel.CompanyStartDate,
+                    Email = viewModel.Email,
+                    CountryId = viewModel.CountryId,
+                    CityId = viewModel.CountryId,
+                    OfficeId = viewModel.OfficeId,
+                    DST = viewModel.DST,
+                    DBT = viewModel.DBT,
+                    TaxIDNo = viewModel.TaxIDNo,
+                    SSSNo = viewModel.SSSNo,
+                    HealthInsNo = viewModel.HealthInsNo,
+                    HDMFNo = viewModel.HDMFNo,
+                    WorkPermitCompanyId = viewModel.WorkPermit.LocalCompanyId,
+                    Type1 = viewModel.WorkPermit.Type1,
+                    StartDateType1 = viewModel.WorkPermit.StartDateType1,
+                    EndDateType1 = viewModel.WorkPermit.EndDateType1,
+                    Type2 = viewModel.WorkPermit.Type2,
+                    StartDateType2 = viewModel.WorkPermit.StartDateType2,
+                    EndDateType2 = viewModel.WorkPermit.EndDateType2,
+                    FullNameBVISalary = viewModel.Paymaster.FullNameBVISalary,
+                    NickNameBVISalary = viewModel.Paymaster.NickNameBVISalary,
+                    FullNameBVIAllowance = viewModel.Paymaster.FullNameBVIAllowance,
+                    NickNameBVIAllowance = viewModel.Paymaster.NickNameBVIAllowance,
+                    FullNameLocalSalary = viewModel.Paymaster.FullNameLocalSalary,
+                    NickNameLocalSalary = viewModel.Paymaster.NickNameLocalSalary,
+                    FullNameAdministrator = viewModel.EPA.FullNameAdministrator,
+                    NickNameAdministrator = viewModel.EPA.NickNameAdministrator,
+                    FullNameEvaluator1 = viewModel.EPA.FullNameEvaluator1,
+                    NickNameEvaluator1 = viewModel.EPA.NickNameEvaluator1,
+                    FullNameEvaluator2 = viewModel.EPA.FullNameEvaluator2,
+                    NickNameEvaluator2 = viewModel.EPA.NickNameEvaluator2,
+                    FullNameReviewer = viewModel.EPA.FullNameReviewer,
+                    NickNameReviewer = viewModel.EPA.NickNameReviewer,
+                    FullNameManagement = viewModel.EPA.FullNameManagement,
+                    NickNameManagement = viewModel.EPA.NickNameManagement,
+                    FullNameIncrement = viewModel.EPA.FullNameIncrement,
+                    NickNameIncrement = viewModel.EPA.NickNameIncrement,
+                    FullNameBVIBonus = viewModel.EPA.FullNameBVIBonus,
+                    NickNameBVIBonus = viewModel.EPA.NickNameBVIBonus,
+                    FullNameLocalBonus = viewModel.EPA.FullNameLocalBonus,
+                    NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
+                    FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
+                    NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
+                    CreatedBy = sessionService.UserId
+                };
+
+                criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
+
+                CommandResult commandResult = baseService.ExecuteNonQuery(criteria);
+
+                return Json(commandResult);
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
         public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)
         {
             var criteria = new CheckEmpCodeExistedCriteria
