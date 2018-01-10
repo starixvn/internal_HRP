@@ -9,6 +9,8 @@
     {
         Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee);
 
+        Task<CommandResult> EditEmployeeAsync(CreateEmployeeViewModel employee);
+
         CreateEmployeeViewModel GetEmployeeById(int employeeId);
 
         CommandResult CheckValidPicture(IFormFile file);

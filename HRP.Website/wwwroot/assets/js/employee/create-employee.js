@@ -58,17 +58,34 @@
     }
 
     function initDatePicker() {
-        $('#DateOfBirth').datetimepicker({
-            format: 'll'
+        // Init DOB
+        var dateOfBirth = $('#DateOfBirth');
+        var defaultDate = moment(dateOfBirth.val()).format("MMM DD, YYYY");
+        dateOfBirth.datetimepicker({
+            format: 'll',
+            minDate: '01/01/1900',
+            maxDate: 'now'
         });
+        dateOfBirth.data("DateTimePicker").date(defaultDate);
 
-        $('#DateIssue').datetimepicker({
-            format: 'll'
+        // Init DI
+        var dateIssue = $('#DateIssue');
+        defaultDate = moment(dateIssue.val()).format("MMM DD, YYYY");
+        dateIssue.datetimepicker({
+            format: 'll',
+            minDate: '01/01/1900',
+            maxDate: 'now'
         });
+        dateIssue.data("DateTimePicker").date(defaultDate);
 
-        $('#ExpiredDate').datetimepicker({
-            format: 'll'
+        // Init ED
+        var expiredDate = $('#ExpiredDate');
+        defaultDate = moment(expiredDate.val()).format("MMM DD, YYYY");
+        expiredDate.datetimepicker({
+            format: 'll',
+            minDate: '01/01/1900'
         });
+        expiredDate.data("DateTimePicker").date(defaultDate);
     }
 
     function registerEventOpenDatePicker() {
@@ -92,8 +109,9 @@
 
             if ($(this).valid()) {
                 var formData = new FormData(this);
+                var urlPost = formData.get('EmployeeId') === '0' ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee'
                 $.ajax({
-                    url: '/EmployeeManagement/CreateEmployee',
+                    url: urlPost,
                     type: "POST",
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
@@ -105,6 +123,9 @@
                             alert(result.message);
                         } else {
                             form.validate().showErrors(result.errors);
+                            if (result.message) {
+                               alert(result.message);
+                            }
                         }
                     },
                     error: function (result) {

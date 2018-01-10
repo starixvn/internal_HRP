@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -74,12 +75,59 @@
             return commandResult;
         }
 
+        public async Task<CommandResult> EditEmployeeAsync(CreateEmployeeViewModel employee)
+        {
+            var criteria = new EditEmployeeCriteria
+            {
+                EmployeeId = employee.EmployeeId,
+                FullName = employee.FullName,
+                NickName = employee.NickName,
+                Gender = employee.Gender,
+                DateOfBirth = employee.DateOfBirth,
+                PlaceOfBirth = employee.PlaceOfBirth,
+                Nationality = employee.Nationality,
+                NRICNo = employee.NRICNo,
+                MaritalStatus = employee.MaritalStatus,
+                NoOfChildren = employee.NoOfChildren,
+                OverseasPhoneNo = employee.OverseasPhoneNo,
+                LocalPhoneNo = employee.LocalPhoneNo,
+                OtherPhoneNo = employee.OtherPhoneNo,
+                PassportNo = employee.PassportNo,
+                DateIssue = employee.DateIssue,
+                ExpiredDate = employee.ExpiredDate,
+                PlaceOfIssue = employee.PlaceOfIssue,
+                Skype = employee.Skype,
+                PersonalEmail = employee.PersonalEmail,
+                PermanentAddress = employee.PermanentAddress,
+                ResidenceAddress = employee.ResidenceAddress,
+                MailingAddress = employee.MailingAddress,
+                UpdatedBy = sessionService.UserId
+            };
+
+            if (employee.ProfilePicture != null)
+            {
+                criteria.ProfilePic = employee.EmployeeId + Path.GetExtension(employee.ProfilePicture.FileName);
+                await SaveProfilePictureAsync(employee.ProfilePicture, employee.EmployeeId.ToString()).ConfigureAwait(false);
+            }
+
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
         public CreateEmployeeViewModel GetEmployeeById(int employeeId)
         {
-            var result = new CreateEmployeeViewModel();
+            var currentDate = DateTime.Now;
+            var result = new CreateEmployeeViewModel
+            {
+                DateOfBirth = currentDate,
+                DateIssue = currentDate,
+                ExpiredDate = currentDate
+            };
+
             var criteria = new GetEmployeeByIdCriteria
             {
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
             };
 
             if (criteria.IsValid())

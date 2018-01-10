@@ -89,24 +89,7 @@
         [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MailingAddressMaxLength")]
         public string MailingAddress { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECNameRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECNameMaxLength")]
-        public string ECName { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECRelationshipRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECRelationshipMaxLength")]
-        public string ECRelationship { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECAddressRequired")]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECAddressMaxLength")]
-        public string ECAddress { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECTelephoneNoRequired")]
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECTelephoneNoMaxLength")]
-        public string ECTelephoneNo { get; set; }
-
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ECTelephoneNoMaxLength")]
-        public string ECTelephoneNo2 { get; set; }
+        public EmergencyContact EmergencyContact { get; set; }
 
         public IFormFile ProfilePicture { get; set; }
     }

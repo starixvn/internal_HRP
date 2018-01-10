@@ -42,7 +42,7 @@
         {
             var viewModel = employeeManagementService.GetEmployeeById(0);
 
-            return View("PersonalDetail", viewModel);
+            return View("CreateEmployee", viewModel);
         }
 
         [HttpPost]
@@ -58,9 +58,48 @@
 
             if (ModelState.IsValid)
             {
-                await employeeManagementService.CreateEmployeeAsync(employee);
+                var commandResult = await employeeManagementService.CreateEmployeeAsync(employee);
 
-                return Json(new { isSuccessful = true, message = "Successful!!!!!" });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.IsSuccessful ? "create Success!" : commandResult.Message });
+            }
+
+            var errorList = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+            );
+
+            return Json(new { isSuccessful = false, errors = errorList });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public IActionResult EditEmployee(int id)
+        {
+            if (id <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var viewModel = employeeManagementService.GetEmployeeById(id);
+
+            return View("EditEmployee", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> EditEmployee(CreateEmployeeViewModel employee)
+        {
+            var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
+            if (!validatePicture.IsSuccessful)
+            {
+                ModelState.AddModelError(nameof(employee.ProfilePicture), validatePicture.Message);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await employeeManagementService.EditEmployeeAsync(employee);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.IsSuccessful ? "edit Success!" : commandResult.Message });
             }
 
             var errorList = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(
