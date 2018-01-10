@@ -12,6 +12,8 @@ namespace HRP.Core.Constants
 
         public const string EmployeeProfile = "EmployeeProfile";
 
+        public const string EmployeeBankDetails = "EmployeeBankDetails";
+
         public const string EmployeePayroll = "EmployeePayroll";
 
         public const string PaymentProcess = "PaymentProcess";

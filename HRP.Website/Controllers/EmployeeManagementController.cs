@@ -3,17 +3,17 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
-    using HRP.Core.Filters;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Criteria.Employee;
-    using HRP.Models;
-    using HRP.Models.EmployeeManagement;
-    using HRP.Services;
+    using Core.Constants;
+    using Core.Enumerations;
+    using Core.Filters;
+    using Core.Model;
+    using Core.Services;
+    using Criteria;
+    using Criteria.Employee;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Models.EmployeeManagement;
+    using Services;
 
     [HRPAuthorize]
     public class EmployeeManagementController : Controller
@@ -260,6 +260,13 @@
 
             return Json(employees);
         }
+
+        //[HttpGet]
+        //[HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
+        //public async Task<IActionResult> GetEmployeeBankDetails(int employeeId)
+        //{
+
+        //}
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {
