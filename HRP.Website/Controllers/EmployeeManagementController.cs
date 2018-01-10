@@ -148,26 +148,23 @@
                 ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
                 ReferenceResource.WorkPermitType2);
-            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
-            var viewModel = new CreateEmploymentViewModel
-            {
-                EmployeeId = employeeId,
-                Companies = bviCompanies,
-                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
-                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
-                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
-                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
-                JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory),
-                Grades = GetRefResourceByName(refResources, ReferenceResource.Grade),
-                GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel),
-                Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
-                Cities = GetRefResourceByName(refResources, ReferenceResource.City),
-                Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
-                TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration),
-                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
-                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2)
-            };
+
+            UpdateEmploymentViewModel viewModel = await employeeManagementService.GetEmploymentToUpdateAsync(employeeId);
+            viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
+            viewModel.LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany);
+            viewModel.LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle);
+            viewModel.EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType);
+            viewModel.EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus);
+            viewModel.JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory);
+            viewModel.Grades = GetRefResourceByName(refResources, ReferenceResource.Grade);
+            viewModel.GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel);
+            viewModel.Countries = GetRefResourceByName(refResources, ReferenceResource.Country);
+            viewModel.Cities = GetRefResourceByName(refResources, ReferenceResource.City);
+            viewModel.Offices = GetRefResourceByName(refResources, ReferenceResource.Office);
+            viewModel.TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration);
+            viewModel.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
+            viewModel.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
 
             return PartialView("_UpdateEmployment", viewModel);
         }

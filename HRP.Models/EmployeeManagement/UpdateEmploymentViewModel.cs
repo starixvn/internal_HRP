@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
 
     public class UpdateEmploymentViewModel : CreateEmploymentViewModel
-
     {
         [DataType(DataType.Date)]
         public DateTime? CompanyChangeDate { get; set; }

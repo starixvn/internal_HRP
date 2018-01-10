@@ -10,6 +10,7 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -21,17 +22,20 @@
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ISessionService sessionService;
         private readonly ICertificateService certificateService;
+        private readonly IEmployeeManagementRepository employeeRepository;
 
         public EmployeeManagementService(
             IHostingEnvironment hostingEnvironment,
             IBaseService baseService,
             ICertificateService certificateService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IEmployeeManagementRepository employeeRepository)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
             this.certificateService = certificateService;
             this.sessionService = sessionService;
+            this.employeeRepository = employeeRepository;
         }
 
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee)
@@ -131,6 +135,21 @@
             }
 
             return result;
+        }
+
+        public int MyProperty { get; set; }
+
+        public async Task<UpdateEmploymentViewModel> GetEmploymentToUpdateAsync(int employeeId)
+        {
+            var criteria = new GetEmploymentByEmployeeIdCriteria
+            {
+                EmployeeId = employeeId
+            };
+
+            UpdateEmploymentViewModel employment = await employeeRepository.GetEmploymentToUpdateAsync(criteria).ConfigureAwait(false);
+            employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
+
+            return employment;
         }
 
         public async Task<CommandResult> CreateEmploymentAsync(CreateEmploymentViewModel viewModel)

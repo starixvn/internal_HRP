@@ -13,6 +13,8 @@
 
         CommandResult CheckValidPicture(IFormFile file);
 
+        Task<UpdateEmploymentViewModel> GetEmploymentToUpdateAsync(int employeeId);
+
         Task<CommandResult> CreateEmploymentAsync(CreateEmploymentViewModel viewModel);
 
         Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);
