@@ -20,15 +20,18 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly ICertificateService certificateService;
         private readonly IEmployeeManagementService employeeManagementService;
 
         public EmployeeManagementController(
             ISessionService sessionService,
             IBaseService baseService,
+            ICertificateService certificateService,
             IEmployeeManagementService employeeManagementService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.certificateService = certificateService;
             this.employeeManagementService = employeeManagementService;
         }
 
@@ -76,7 +79,8 @@
         public async Task<IActionResult> CreateEmployment(int employeeId)
         {
             var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                ReferenceResource.LocalCompany,
                 ReferenceResource.LocalJobTitle,
                 ReferenceResource.EmploymentType,
                 ReferenceResource.EmploymentStatus,
@@ -89,14 +93,13 @@
                 ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
                 ReferenceResource.WorkPermitType2);
-            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.PVI, IsActive = true });
-            var localCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.Local, IsActive = true });
+            var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
             var viewModel = new CreateEmploymentViewModel
             {
                 EmployeeId = employeeId,
-                BVICompanies = bviCompanies,
-                LocalCompanies = localCompanies,
+                Companies = bviCompanies,
+                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
                 LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
                 EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
                 EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
@@ -123,9 +126,9 @@
                 var criteria = new CreateEmploymentCriteria
                 {
                     EmployeeId = viewModel.EmployeeId,
-                    BVICompanyId = viewModel.BVICompanyId,
+                    CompanyId = viewModel.CompanyId,
                     LocalCompanyId = viewModel.LocalCompanyId,
-                    BVIJobTitle = viewModel.BVIJobTitle,
+                    JobTitle = viewModel.JobTitle,
                     LocalJobTitleId = viewModel.LocalJobTitleId,
                     CompanyCode = viewModel.CompanyCode,
                     EmployeeCode = viewModel.EmployeeCode,
@@ -181,9 +184,10 @@
                     NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
                     FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
                     NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
-                    PDFPassword = viewModel.PDFPassword,
                     CreatedBy = sessionService.UserId
                 };
+
+                criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
 
                 CommandResult commandResult = baseService.ExecuteNonQuery(criteria);
 

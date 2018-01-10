@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var createEmployment = (function ($) {
-    var $employmentHeaderTab, $employmentTab, $createEmploymentForm,
+    var $employmentHeaderTab, $employmentTab, $createEmploymentForm, $currentDate,
         $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
         defaultOption = '<option value="" style="display: none;">--Please select--</option>';
 
@@ -146,6 +146,40 @@ var createEmployment = (function ($) {
         $createEmploymentForm.find('select.search-suggestion').select2();
     }
 
+    function calculateLengthOfService() {
+        $currentDate = $('#CurrentDate');
+
+        $('#GroupStartDate').on('dp.change', function (e) {
+            var starts = moment($currentDate.val()),
+                ends = e.date,
+                intervals = ['years', 'months', 'days'],
+                out = [];
+
+            for (var i = 0; i < intervals.length; i++) {
+                var diff = starts.diff(ends, intervals[i]);
+                ends.add(diff, intervals[i]);
+                out.push(diff + ' ' + intervals[i]);
+            }
+
+            $('#ServiceGroup').val(out.join('/'));
+        });
+
+        $('#CompanyStartDate').on('dp.change', function (e) {
+            var starts = moment($currentDate.val()),
+                ends = e.date,
+                intervals = ['years', 'months', 'days'],
+                out = [];
+
+            for (var i = 0; i < intervals.length; i++) {
+                var diff = starts.diff(ends, intervals[i]);
+                ends.add(diff, intervals[i]);
+                out.push(diff + ' ' + intervals[i]);
+            }
+
+            $('#ServiceCompany').val(out.join('/'));
+        });
+    }
+
     function initSearchAutocomplete($selectorName, $selectorFullName, $selectorNickName) {
         $selectorName.autocomplete({
             source: function (request, response) {
@@ -231,7 +265,7 @@ var createEmployment = (function ($) {
                         $employmentTab.html(data);
 
                         $createEmploymentForm = $('#createEmploymentForm');
-                        $bviCompanyElement = $('#BVICompanyId');
+                        $bviCompanyElement = $('#CompanyId');
                         $divisionElement = $('#DivisionId');
                         $departmentElement = $('#DepartmentId');
                         $sectionElement = $('#SectionId');
@@ -240,6 +274,7 @@ var createEmployment = (function ($) {
                         reparseform();
                         initDatepicker();
                         initSelect2();
+                        calculateLengthOfService();
 
                         registerEventChangeBVICompany();
                         registerEventChangeDivision();
@@ -283,9 +318,7 @@ var createEmployment = (function ($) {
                     response.errors.forEach(function (error) {
                         htmlErrors += '<li>' + error + '</li>';
                     });
-                }
-
-                if (response.message) {
+                } else {
                     htmlErrors += '<li>' + response.message + '</li>';
                 }
 

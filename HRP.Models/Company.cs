@@ -8,8 +8,6 @@ namespace HRP.Models
 
         public string Name { get; set; }
 
-        public int Type { get; set; }
-
         public bool IsActive { get; set; }
     }
 }

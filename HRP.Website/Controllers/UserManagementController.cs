@@ -59,7 +59,7 @@
         public async Task<IActionResult> AssignPermission(int id)
         {
             var functions = await functionService.GetTreeFunctions(isActive: true);
-            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { Type = CompanyType.PVI, IsActive = true });
+            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             var permissions = await baseService.GetDataAsync<UserPermissionModel>(new GetFunctionByUserIdCriteria { UserId = id });
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id });
             var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && user != null && !user.IsSystemAdmin;

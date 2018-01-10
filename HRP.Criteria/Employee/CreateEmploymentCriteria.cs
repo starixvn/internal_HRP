@@ -6,11 +6,11 @@
     {
         public int EmployeeId { get; set; }
 
-        public int BVICompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         public int LocalCompanyId { get; set; }
 
-        public string BVIJobTitle { get; set; }
+        public string JobTitle { get; set; }
 
         public int LocalJobTitleId { get; set; }
 
@@ -131,9 +131,9 @@
 #pragma warning restore S1541 // Methods and properties should not be too complex
 #pragma warning disable S1067 // Expressions should not be too complex
             EmployeeId > 0
-            && BVICompanyId > 0
+            && CompanyId > 0
             && LocalCompanyId > 0
-            && !string.IsNullOrWhiteSpace(BVIJobTitle)
+            && !string.IsNullOrWhiteSpace(JobTitle)
             && LocalJobTitleId > 0
             && !string.IsNullOrWhiteSpace(CompanyCode)
             && !string.IsNullOrWhiteSpace(EmployeeCode)

@@ -2,7 +2,7 @@
 {
     public static class ReferenceResource
     {
-        public const string CompanyType = "CompanyType";
+        public const string LocalCompany = "LocalCompany";
         public const string Gender = "Gender";
         public const string Nationality = "Nationality";
         public const string MaritalStatus = "MaritalStatus";

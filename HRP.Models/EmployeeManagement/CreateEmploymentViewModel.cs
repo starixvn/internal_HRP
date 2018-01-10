@@ -11,14 +11,14 @@
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
-        public int BVICompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyRequired")]
         public int LocalCompanyId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleRequired")]
         [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleMaxLength")]
-        public string BVIJobTitle { get; set; }
+        public string JobTitle { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
         public int LocalJobTitleId { get; set; }
@@ -115,9 +115,9 @@
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordMaxLength")]
         public string PDFPassword { get; set; }
 
-        public IEnumerable<Company> BVICompanies { get; set; } = new List<Company>();
+        public IEnumerable<Company> Companies { get; set; } = new List<Company>();
 
-        public IEnumerable<Company> LocalCompanies { get; set; } = new List<Company>();
+        public IEnumerable<ReferenceResourceModel> LocalCompanies { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> LocalJobTitles { get; set; } = new List<ReferenceResourceModel>();
 
