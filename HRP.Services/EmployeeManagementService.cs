@@ -20,14 +20,17 @@
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ISessionService sessionService;
+        private readonly ICertificateService certificateService;
 
         public EmployeeManagementService(
             IHostingEnvironment hostingEnvironment,
             IBaseService baseService,
+            ICertificateService certificateService,
             ISessionService sessionService)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
+            this.certificateService = certificateService;
             this.sessionService = sessionService;
         }
 
@@ -128,6 +131,152 @@
             }
 
             return result;
+        }
+
+        public async Task<CommandResult> CreateEmploymentAsync(CreateEmploymentViewModel viewModel)
+        {
+            var criteria = new CreateEmploymentCriteria
+            {
+                EmployeeId = viewModel.EmployeeId,
+                CompanyId = viewModel.CompanyId,
+                LocalCompanyId = viewModel.LocalCompanyId,
+                JobTitle = viewModel.JobTitle,
+                LocalJobTitleId = viewModel.LocalJobTitleId,
+                CompanyCode = viewModel.CompanyCode,
+                EmployeeCode = viewModel.EmployeeCode,
+                EmploymentType = viewModel.EmploymentType,
+                EmploymentStatus = viewModel.EmploymentStatus,
+                JobCategoryId = viewModel.JobCategoryId,
+                GradeId = viewModel.GradeId,
+                GradeLevelId = viewModel.GradeLevelId,
+                DivisionId = viewModel.DivisionId,
+                DepartmentId = viewModel.DepartmentId,
+                SectionId = viewModel.SectionId,
+                CostCenterId = viewModel.CostCenterId,
+                GroupStartDate = viewModel.GroupStartDate,
+                CompanyStartDate = viewModel.CompanyStartDate,
+                Email = viewModel.Email,
+                CountryId = viewModel.CountryId,
+                CityId = viewModel.CountryId,
+                OfficeId = viewModel.OfficeId,
+                DST = viewModel.DST,
+                DBT = viewModel.DBT,
+                TaxIDNo = viewModel.TaxIDNo,
+                SSSNo = viewModel.SSSNo,
+                HealthInsNo = viewModel.HealthInsNo,
+                HDMFNo = viewModel.HDMFNo,
+                WorkPermitCompanyId = viewModel.WorkPermit.LocalCompanyId,
+                Type1 = viewModel.WorkPermit.Type1,
+                StartDateType1 = viewModel.WorkPermit.StartDateType1,
+                EndDateType1 = viewModel.WorkPermit.EndDateType1,
+                Type2 = viewModel.WorkPermit.Type2,
+                StartDateType2 = viewModel.WorkPermit.StartDateType2,
+                EndDateType2 = viewModel.WorkPermit.EndDateType2,
+                FullNameBVISalary = viewModel.Paymaster.FullNameBVISalary,
+                NickNameBVISalary = viewModel.Paymaster.NickNameBVISalary,
+                FullNameBVIAllowance = viewModel.Paymaster.FullNameBVIAllowance,
+                NickNameBVIAllowance = viewModel.Paymaster.NickNameBVIAllowance,
+                FullNameLocalSalary = viewModel.Paymaster.FullNameLocalSalary,
+                NickNameLocalSalary = viewModel.Paymaster.NickNameLocalSalary,
+                FullNameAdministrator = viewModel.EPA.FullNameAdministrator,
+                NickNameAdministrator = viewModel.EPA.NickNameAdministrator,
+                FullNameEvaluator1 = viewModel.EPA.FullNameEvaluator1,
+                NickNameEvaluator1 = viewModel.EPA.NickNameEvaluator1,
+                FullNameEvaluator2 = viewModel.EPA.FullNameEvaluator2,
+                NickNameEvaluator2 = viewModel.EPA.NickNameEvaluator2,
+                FullNameReviewer = viewModel.EPA.FullNameReviewer,
+                NickNameReviewer = viewModel.EPA.NickNameReviewer,
+                FullNameManagement = viewModel.EPA.FullNameManagement,
+                NickNameManagement = viewModel.EPA.NickNameManagement,
+                FullNameIncrement = viewModel.EPA.FullNameIncrement,
+                NickNameIncrement = viewModel.EPA.NickNameIncrement,
+                FullNameBVIBonus = viewModel.EPA.FullNameBVIBonus,
+                NickNameBVIBonus = viewModel.EPA.NickNameBVIBonus,
+                FullNameLocalBonus = viewModel.EPA.FullNameLocalBonus,
+                NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
+                FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
+                NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
+                CreatedBy = sessionService.UserId
+            };
+
+            criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
+
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
+        public async Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel)
+        {
+            var criteria = new UpdateEmploymentCriteria
+            {
+                EmployeeId = viewModel.EmployeeId,
+                CompanyId = viewModel.CompanyId,
+                LocalCompanyId = viewModel.LocalCompanyId,
+                JobTitle = viewModel.JobTitle,
+                LocalJobTitleId = viewModel.LocalJobTitleId,
+                CompanyCode = viewModel.CompanyCode,
+                EmployeeCode = viewModel.EmployeeCode,
+                EmploymentType = viewModel.EmploymentType,
+                EmploymentStatus = viewModel.EmploymentStatus,
+                JobCategoryId = viewModel.JobCategoryId,
+                GradeId = viewModel.GradeId,
+                GradeLevelId = viewModel.GradeLevelId,
+                DivisionId = viewModel.DivisionId,
+                DepartmentId = viewModel.DepartmentId,
+                SectionId = viewModel.SectionId,
+                CostCenterId = viewModel.CostCenterId,
+                GroupStartDate = viewModel.GroupStartDate,
+                CompanyStartDate = viewModel.CompanyStartDate,
+                Email = viewModel.Email,
+                CountryId = viewModel.CountryId,
+                CityId = viewModel.CountryId,
+                OfficeId = viewModel.OfficeId,
+                DST = viewModel.DST,
+                DBT = viewModel.DBT,
+                TaxIDNo = viewModel.TaxIDNo,
+                SSSNo = viewModel.SSSNo,
+                HealthInsNo = viewModel.HealthInsNo,
+                HDMFNo = viewModel.HDMFNo,
+                WorkPermitCompanyId = viewModel.WorkPermit.LocalCompanyId,
+                Type1 = viewModel.WorkPermit.Type1,
+                StartDateType1 = viewModel.WorkPermit.StartDateType1,
+                EndDateType1 = viewModel.WorkPermit.EndDateType1,
+                Type2 = viewModel.WorkPermit.Type2,
+                StartDateType2 = viewModel.WorkPermit.StartDateType2,
+                EndDateType2 = viewModel.WorkPermit.EndDateType2,
+                FullNameBVISalary = viewModel.Paymaster.FullNameBVISalary,
+                NickNameBVISalary = viewModel.Paymaster.NickNameBVISalary,
+                FullNameBVIAllowance = viewModel.Paymaster.FullNameBVIAllowance,
+                NickNameBVIAllowance = viewModel.Paymaster.NickNameBVIAllowance,
+                FullNameLocalSalary = viewModel.Paymaster.FullNameLocalSalary,
+                NickNameLocalSalary = viewModel.Paymaster.NickNameLocalSalary,
+                FullNameAdministrator = viewModel.EPA.FullNameAdministrator,
+                NickNameAdministrator = viewModel.EPA.NickNameAdministrator,
+                FullNameEvaluator1 = viewModel.EPA.FullNameEvaluator1,
+                NickNameEvaluator1 = viewModel.EPA.NickNameEvaluator1,
+                FullNameEvaluator2 = viewModel.EPA.FullNameEvaluator2,
+                NickNameEvaluator2 = viewModel.EPA.NickNameEvaluator2,
+                FullNameReviewer = viewModel.EPA.FullNameReviewer,
+                NickNameReviewer = viewModel.EPA.NickNameReviewer,
+                FullNameManagement = viewModel.EPA.FullNameManagement,
+                NickNameManagement = viewModel.EPA.NickNameManagement,
+                FullNameIncrement = viewModel.EPA.FullNameIncrement,
+                NickNameIncrement = viewModel.EPA.NickNameIncrement,
+                FullNameBVIBonus = viewModel.EPA.FullNameBVIBonus,
+                NickNameBVIBonus = viewModel.EPA.NickNameBVIBonus,
+                FullNameLocalBonus = viewModel.EPA.FullNameLocalBonus,
+                NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
+                FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
+                NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
+                CreatedBy = sessionService.UserId
+            };
+
+            criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
+
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
         }
 
         private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)

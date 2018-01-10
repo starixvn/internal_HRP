@@ -1,7 +1,6 @@
 ﻿namespace HRP.Services
 {
     using System.Threading.Tasks;
-    using Fanex.Data.Repository;
     using HRP.Core.Model;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Http;
@@ -13,5 +12,9 @@
         CreateEmployeeViewModel GetEmployeeById(int employeeId);
 
         CommandResult CheckValidPicture(IFormFile file);
+
+        Task<CommandResult> CreateEmploymentAsync(CreateEmploymentViewModel viewModel);
+
+        Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);
     }
 }

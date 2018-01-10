@@ -20,18 +20,15 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
-        private readonly ICertificateService certificateService;
         private readonly IEmployeeManagementService employeeManagementService;
 
         public EmployeeManagementController(
             ISessionService sessionService,
             IBaseService baseService,
-            ICertificateService certificateService,
             IEmployeeManagementService employeeManagementService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
-            this.certificateService = certificateService;
             this.employeeManagementService = employeeManagementService;
         }
 
@@ -119,77 +116,11 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
+        public async Task<IActionResult> CreateEmployment(CreateEmploymentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var criteria = new CreateEmploymentCriteria
-                {
-                    EmployeeId = viewModel.EmployeeId,
-                    CompanyId = viewModel.CompanyId,
-                    LocalCompanyId = viewModel.LocalCompanyId,
-                    JobTitle = viewModel.JobTitle,
-                    LocalJobTitleId = viewModel.LocalJobTitleId,
-                    CompanyCode = viewModel.CompanyCode,
-                    EmployeeCode = viewModel.EmployeeCode,
-                    EmploymentType = viewModel.EmploymentType,
-                    EmploymentStatus = viewModel.EmploymentStatus,
-                    JobCategoryId = viewModel.JobCategoryId,
-                    GradeId = viewModel.GradeId,
-                    GradeLevelId = viewModel.GradeLevelId,
-                    DivisionId = viewModel.DivisionId,
-                    DepartmentId = viewModel.DepartmentId,
-                    SectionId = viewModel.SectionId,
-                    CostCenterId = viewModel.CostCenterId,
-                    GroupStartDate = viewModel.GroupStartDate,
-                    CompanyStartDate = viewModel.CompanyStartDate,
-                    Email = viewModel.Email,
-                    CountryId = viewModel.CountryId,
-                    CityId = viewModel.CountryId,
-                    OfficeId = viewModel.OfficeId,
-                    DST = viewModel.DST,
-                    DBT = viewModel.DBT,
-                    TaxIDNo = viewModel.TaxIDNo,
-                    SSSNo = viewModel.SSSNo,
-                    HealthInsNo = viewModel.HealthInsNo,
-                    HDMFNo = viewModel.HDMFNo,
-                    WorkPermitCompanyId = viewModel.WorkPermit.LocalCompanyId,
-                    Type1 = viewModel.WorkPermit.Type1,
-                    StartDateType1 = viewModel.WorkPermit.StartDateType1,
-                    EndDateType1 = viewModel.WorkPermit.EndDateType1,
-                    Type2 = viewModel.WorkPermit.Type2,
-                    StartDateType2 = viewModel.WorkPermit.StartDateType2,
-                    EndDateType2 = viewModel.WorkPermit.EndDateType2,
-                    FullNameBVISalary = viewModel.Paymaster.FullNameBVISalary,
-                    NickNameBVISalary = viewModel.Paymaster.NickNameBVISalary,
-                    FullNameBVIAllowance = viewModel.Paymaster.FullNameBVIAllowance,
-                    NickNameBVIAllowance = viewModel.Paymaster.NickNameBVIAllowance,
-                    FullNameLocalSalary = viewModel.Paymaster.FullNameLocalSalary,
-                    NickNameLocalSalary = viewModel.Paymaster.NickNameLocalSalary,
-                    FullNameAdministrator = viewModel.EPA.FullNameAdministrator,
-                    NickNameAdministrator = viewModel.EPA.NickNameAdministrator,
-                    FullNameEvaluator1 = viewModel.EPA.FullNameEvaluator1,
-                    NickNameEvaluator1 = viewModel.EPA.NickNameEvaluator1,
-                    FullNameEvaluator2 = viewModel.EPA.FullNameEvaluator2,
-                    NickNameEvaluator2 = viewModel.EPA.NickNameEvaluator2,
-                    FullNameReviewer = viewModel.EPA.FullNameReviewer,
-                    NickNameReviewer = viewModel.EPA.NickNameReviewer,
-                    FullNameManagement = viewModel.EPA.FullNameManagement,
-                    NickNameManagement = viewModel.EPA.NickNameManagement,
-                    FullNameIncrement = viewModel.EPA.FullNameIncrement,
-                    NickNameIncrement = viewModel.EPA.NickNameIncrement,
-                    FullNameBVIBonus = viewModel.EPA.FullNameBVIBonus,
-                    NickNameBVIBonus = viewModel.EPA.NickNameBVIBonus,
-                    FullNameLocalBonus = viewModel.EPA.FullNameLocalBonus,
-                    NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
-                    FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
-                    NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
-                    CreatedBy = sessionService.UserId
-                };
-
-                criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
-
-                CommandResult commandResult = baseService.ExecuteNonQuery(criteria);
+                CommandResult commandResult = await employeeManagementService.CreateEmploymentAsync(viewModel);
 
                 return Json(commandResult);
             }
@@ -243,77 +174,11 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult UpdateEmployment(UpdateEmploymentViewModel viewModel)
+        public async Task<IActionResult> UpdateEmployment(UpdateEmploymentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var criteria = new UpdateEmploymentCriteria
-                {
-                    EmployeeId = viewModel.EmployeeId,
-                    CompanyId = viewModel.CompanyId,
-                    LocalCompanyId = viewModel.LocalCompanyId,
-                    JobTitle = viewModel.JobTitle,
-                    LocalJobTitleId = viewModel.LocalJobTitleId,
-                    CompanyCode = viewModel.CompanyCode,
-                    EmployeeCode = viewModel.EmployeeCode,
-                    EmploymentType = viewModel.EmploymentType,
-                    EmploymentStatus = viewModel.EmploymentStatus,
-                    JobCategoryId = viewModel.JobCategoryId,
-                    GradeId = viewModel.GradeId,
-                    GradeLevelId = viewModel.GradeLevelId,
-                    DivisionId = viewModel.DivisionId,
-                    DepartmentId = viewModel.DepartmentId,
-                    SectionId = viewModel.SectionId,
-                    CostCenterId = viewModel.CostCenterId,
-                    GroupStartDate = viewModel.GroupStartDate,
-                    CompanyStartDate = viewModel.CompanyStartDate,
-                    Email = viewModel.Email,
-                    CountryId = viewModel.CountryId,
-                    CityId = viewModel.CountryId,
-                    OfficeId = viewModel.OfficeId,
-                    DST = viewModel.DST,
-                    DBT = viewModel.DBT,
-                    TaxIDNo = viewModel.TaxIDNo,
-                    SSSNo = viewModel.SSSNo,
-                    HealthInsNo = viewModel.HealthInsNo,
-                    HDMFNo = viewModel.HDMFNo,
-                    WorkPermitCompanyId = viewModel.WorkPermit.LocalCompanyId,
-                    Type1 = viewModel.WorkPermit.Type1,
-                    StartDateType1 = viewModel.WorkPermit.StartDateType1,
-                    EndDateType1 = viewModel.WorkPermit.EndDateType1,
-                    Type2 = viewModel.WorkPermit.Type2,
-                    StartDateType2 = viewModel.WorkPermit.StartDateType2,
-                    EndDateType2 = viewModel.WorkPermit.EndDateType2,
-                    FullNameBVISalary = viewModel.Paymaster.FullNameBVISalary,
-                    NickNameBVISalary = viewModel.Paymaster.NickNameBVISalary,
-                    FullNameBVIAllowance = viewModel.Paymaster.FullNameBVIAllowance,
-                    NickNameBVIAllowance = viewModel.Paymaster.NickNameBVIAllowance,
-                    FullNameLocalSalary = viewModel.Paymaster.FullNameLocalSalary,
-                    NickNameLocalSalary = viewModel.Paymaster.NickNameLocalSalary,
-                    FullNameAdministrator = viewModel.EPA.FullNameAdministrator,
-                    NickNameAdministrator = viewModel.EPA.NickNameAdministrator,
-                    FullNameEvaluator1 = viewModel.EPA.FullNameEvaluator1,
-                    NickNameEvaluator1 = viewModel.EPA.NickNameEvaluator1,
-                    FullNameEvaluator2 = viewModel.EPA.FullNameEvaluator2,
-                    NickNameEvaluator2 = viewModel.EPA.NickNameEvaluator2,
-                    FullNameReviewer = viewModel.EPA.FullNameReviewer,
-                    NickNameReviewer = viewModel.EPA.NickNameReviewer,
-                    FullNameManagement = viewModel.EPA.FullNameManagement,
-                    NickNameManagement = viewModel.EPA.NickNameManagement,
-                    FullNameIncrement = viewModel.EPA.FullNameIncrement,
-                    NickNameIncrement = viewModel.EPA.NickNameIncrement,
-                    FullNameBVIBonus = viewModel.EPA.FullNameBVIBonus,
-                    NickNameBVIBonus = viewModel.EPA.NickNameBVIBonus,
-                    FullNameLocalBonus = viewModel.EPA.FullNameLocalBonus,
-                    NickNameLocalBonus = viewModel.EPA.NickNameLocalBonus,
-                    FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
-                    NickNamePFileAdmin = viewModel.NickNamePFileAdmin,
-                    CreatedBy = sessionService.UserId
-                };
-
-                criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
-
-                CommandResult commandResult = baseService.ExecuteNonQuery(criteria);
+                CommandResult commandResult = await employeeManagementService.UpdateEmploymentAsync(viewModel);
 
                 return Json(commandResult);
             }
@@ -389,7 +254,6 @@
         //[HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         //public async Task<IActionResult> GetEmployeeBankDetails(int employeeId)
         //{
-
         //}
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
