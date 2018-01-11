@@ -3,7 +3,7 @@
 @model CreateEmployeeViewModel
 
 <form class="personal-detail" enctype="multipart/form-data" method="post" asp-action="CreateEmployee" asp-controller="EmployeeManagement" id="personalDetailForm">
-    <div class="list-message-error hidden">
+    <div class="personal-detail-error list-message-error hidden">
         <span asp-validation-for="FullName" class="message"></span>
         <span asp-validation-for="NickName" class="message"></span>
         <span asp-validation-for="Gender" class="message"></span>

@@ -42,7 +42,7 @@
             baseService.GetDataEntityAsync<bool>(Arg.Any<CheckEmpCodeExistedCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.CheckEmployeeCodeExisted("DAR", "1234");
+            var actual = await employeeManagementController.CheckEmployeeCodeExisted(1, "DAR", "DAR-1234");
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

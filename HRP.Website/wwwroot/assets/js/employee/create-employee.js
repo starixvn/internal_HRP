@@ -102,12 +102,14 @@
         });
     }
 
-    function registerEventSubmit() {
+    function registerEventFormSubmit() {
         var form = $('#personalDetailForm');
         form.submit(function (e) {
             e.preventDefault();
 
             if ($(this).valid()) {
+                hideListMessageError();
+
                 var formData = new FormData(this);
                 var urlPost = formData.get('EmployeeId') === '0' ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee';
                 $.ajax({
@@ -130,15 +132,38 @@
                     error: function (result) {
                     }
                 });
+            } else {
+                showListMessageError();
             }
         });
+    }
+
+    function registerEventFormChange() {
+        var form = $('#personalDetailForm');
+        form.on('change keyup', function () {
+            var errorTotal = $('.personal-detail-error').children(".field-validation-error").length;
+            if (errorTotal === 0) {
+                hideListMessageError();
+            } else {
+                showListMessageError();
+            }
+        });
+    }
+
+    function showListMessageError() {
+        $('.list-message-error').removeClass("hidden");
+    }
+
+    function hideListMessageError() {
+        $('.list-message-error').addClass("hidden");
     }
 
     function initModule() {
         initDatePicker();
         registerEventOpenDatePicker();
         registerEventChangePicture();
-        registerEventSubmit();
+        registerEventFormSubmit();
+        registerEventFormChange();
     }
 
     return {
