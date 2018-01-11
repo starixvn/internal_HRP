@@ -60,7 +60,7 @@
     function initDatePicker() {
         // Init DOB
         var dateOfBirth = $('#DateOfBirth');
-        var defaultDate = moment(dateOfBirth.val()).format("MMM DD, YYYY");
+        var defaultDate = moment(dateOfBirth.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
         dateOfBirth.datetimepicker({
             format: 'll',
             minDate: '01/01/1900',
@@ -70,7 +70,7 @@
 
         // Init DI
         var dateIssue = $('#DateIssue');
-        defaultDate = moment(dateIssue.val()).format("MMM DD, YYYY");
+        defaultDate = moment(dateIssue.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
         dateIssue.datetimepicker({
             format: 'll',
             minDate: '01/01/1900',
@@ -80,7 +80,7 @@
 
         // Init ED
         var expiredDate = $('#ExpiredDate');
-        defaultDate = moment(expiredDate.val()).format("MMM DD, YYYY");
+        defaultDate = moment(expiredDate.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
         expiredDate.datetimepicker({
             format: 'll',
             minDate: '01/01/1900'
