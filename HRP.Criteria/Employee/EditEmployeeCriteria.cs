@@ -51,6 +51,16 @@
 
         public string ProfilePic { get; set; }
 
+        public string ECName { get; set; }
+
+        public string ECRelationship { get; set; }
+
+        public string ECAddress { get; set; }
+
+        public string ECPhoneNo1 { get; set; }
+
+        public string ECPhoneNo2 { get; set; }
+
         public int UpdatedBy { get; set; }
 
         public override string GetSettingKey() => "Employee_EditEmployee";

@@ -109,14 +109,13 @@
 
             if ($(this).valid()) {
                 var formData = new FormData(this);
-                var urlPost = formData.get('EmployeeId') === '0' ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee'
+                var urlPost = formData.get('EmployeeId') === '0' ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee';
                 $.ajax({
                     url: urlPost,
                     type: "POST",
                     dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: formData,
                     contentType: false,
+                    data: formData,
                     processData: false,
                     success: function (result) {
                         if (result.isSuccessful) {
@@ -124,7 +123,7 @@
                         } else {
                             form.validate().showErrors(result.errors);
                             if (result.message) {
-                               alert(result.message);
+                                alert(result.message);
                             }
                         }
                     },

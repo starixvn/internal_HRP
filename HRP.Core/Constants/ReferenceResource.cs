@@ -18,5 +18,6 @@
         public const string JobCategory = "JobCategory";
         public const string WorkPermitType1 = "WorkPermitType1";
         public const string WorkPermitType2 = "WorkPermitType2";
+        public const string NoOfChildren = "NoOfChildren";
     }
 }

@@ -7,6 +7,8 @@
 
     public interface IEmployeeManagementService
     {
+        Task<CreateEmployeeViewModel> InitDataForNewEmployeeAsync();
+
         Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee);
 
         Task<CommandResult> EditEmployeeAsync(CreateEmployeeViewModel employee);

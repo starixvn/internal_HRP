@@ -91,6 +91,16 @@
 
         public EmergencyContact EmergencyContact { get; set; }
 
+        public string ProfilePic { get; set; }
+
+        public string ProfilePicLink
+        {
+            get
+            {
+                return string.IsNullOrEmpty(ProfilePic) ? "/assets/styles/images/profile.png" : "/ProfilePicture/" + ProfilePic;
+            }
+        }
+
         public IFormFile ProfilePicture { get; set; }
     }
 }

@@ -42,9 +42,9 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployee()
+        public async Task<IActionResult> CreateEmployee()
         {
-            var viewModel = employeeManagementService.GetEmployeeById(0);
+            var viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
 
             return View("CreateEmployee", viewModel);
         }
@@ -78,12 +78,12 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult EditEmployee(int id)
         {
-            if (id <= 0)
+            var viewModel = employeeManagementService.GetEmployeeById(id);
+
+            if (viewModel == null)
             {
                 return RedirectToAction("Index");
             }
-
-            var viewModel = employeeManagementService.GetEmployeeById(id);
 
             return View("EditEmployee", viewModel);
         }

@@ -6,8 +6,10 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Fanex.Data;
+    using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
@@ -66,6 +68,11 @@
                 ResidenceAddress = employee.ResidenceAddress,
                 MailingAddress = employee.MailingAddress,
                 PictureExtension = pictureExtension,
+                ECName = employee.EmergencyContact.Name,
+                ECAddress = employee.EmergencyContact.Address,
+                ECRelationship = employee.EmergencyContact.Relationship,
+                ECPhoneNo1 = employee.EmergencyContact.PhoneNo1,
+                ECPhoneNo2 = employee.EmergencyContact.PhoneNo2,
                 CreatedBy = sessionService.UserId
             };
 
@@ -101,6 +108,11 @@
                 PermanentAddress = employee.PermanentAddress,
                 ResidenceAddress = employee.ResidenceAddress,
                 MailingAddress = employee.MailingAddress,
+                ECName = employee.EmergencyContact.Name,
+                ECAddress = employee.EmergencyContact.Address,
+                ECRelationship = employee.EmergencyContact.Relationship,
+                ECPhoneNo1 = employee.EmergencyContact.PhoneNo1,
+                ECPhoneNo2 = employee.EmergencyContact.PhoneNo2,
                 UpdatedBy = sessionService.UserId
             };
 
@@ -117,14 +129,6 @@
 
         public CreateEmployeeViewModel GetEmployeeById(int employeeId)
         {
-            var currentDate = DateTime.Now;
-            var result = new CreateEmployeeViewModel
-            {
-                DateOfBirth = currentDate,
-                DateIssue = currentDate,
-                ExpiredDate = currentDate
-            };
-
             var criteria = new GetEmployeeByIdCriteria
             {
                 EmployeeId = employeeId,
@@ -137,21 +141,52 @@
                     using (var multi = db.QueryMultiple(criteria))
                     {
                         var employee = multi.Read<CreateEmployeeViewModel>().FirstOrDefault();
+                        var emergencyContact = multi.Read<EmergencyContact>().FirstOrDefault();
                         var genderList = multi.Read<ReferenceResourceModel>();
                         var nationalityList = multi.Read<ReferenceResourceModel>();
                         var maritalStatusList = multi.Read<ReferenceResourceModel>();
                         var noOfChildrenList = multi.Read<ReferenceResourceModel>();
 
-                        result = employee ?? result;
-                        result.GenderList = GetSelectList(genderList);
-                        result.NationalityList = GetSelectList(nationalityList);
-                        result.MaritalStatusList = GetSelectList(maritalStatusList);
-                        result.NoOfChildrenList = GetSelectList(noOfChildrenList);
+                        if (employee != null)
+                        {
+                            employee.EmergencyContact = emergencyContact;
+                            employee.GenderList = GetSelectList(genderList);
+                            employee.NationalityList = GetSelectList(nationalityList);
+                            employee.MaritalStatusList = GetSelectList(maritalStatusList);
+                            employee.NoOfChildrenList = GetSelectList(noOfChildrenList);
+                        }
+
+                        return employee;
                     }
                 }
             }
 
-            return result;
+            return null;
+        }
+
+        public async Task<CreateEmployeeViewModel> InitDataForNewEmployeeAsync()
+        {
+            var refNames = string.Format(
+                 "{0},{1},{2},{3}",
+                 ReferenceResource.Gender,
+                 ReferenceResource.Nationality,
+                 ReferenceResource.MaritalStatus,
+                 ReferenceResource.NoOfChildren);
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames }).ConfigureAwait(false);
+
+            var currentDate = DateTime.Now;
+            var viewModel = new CreateEmployeeViewModel
+            {
+                DateOfBirth = currentDate,
+                DateIssue = currentDate,
+                ExpiredDate = currentDate,
+                GenderList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender))),
+                NationalityList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality))),
+                MaritalStatusList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus))),
+                NoOfChildrenList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)))
+            };
+
+            return viewModel;
         }
 
         public CommandResult CheckValidPicture(IFormFile file)

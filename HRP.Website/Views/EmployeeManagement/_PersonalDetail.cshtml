@@ -6,7 +6,7 @@
     <input type="hidden" asp-for="EmployeeId" />
     <figure class="profile">
         <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
-        <img src="~/assets/styles/images/profile.png" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
+        <img src="@Model.ProfilePicLink" width="159" height="161" alt="Profile picture" class="js-displayProfilePicture">
         <figcaption class="change-picture">
             <a href="#" class="js-changePicture">@ViewLang.ChangePicture</a>
         </figcaption>
