@@ -66,6 +66,7 @@
     <span asp-validation-for="EPA.NickNameBVIBonus" class="text-danger"></span>
     <span asp-validation-for="EPA.FullNameLocalBonus" class="text-danger"></span>
     <span asp-validation-for="EPA.NickNameLocalBonus" class="text-danger"></span>
+    <span asp-validation-for="PDFPassword" class="text-danger"></span>
     <div class="employment">
         <div class="col">
             <input hidden asp-for="EmployeeId">
@@ -80,14 +81,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CompanyReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CompanyReasonId">
-                        <option></option>
+                    <select class="control" asp-for="CompanyReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -100,14 +100,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="LocalCompanyChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="LocalCompanyChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="LocalCompanyChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="LocalCompanyReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="LocalCompanyReasonId">
-                        <option></option>
+                    <select class="control" asp-for="LocalCompanyReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -120,14 +119,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobTitleChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="JobTitleChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="JobTitleChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobTitleReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobTitleReasonId">
-                        <option></option>
+                    <select class="control" asp-for="JobTitleReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -140,14 +138,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="LocalJobTitleChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="LocalJobTitleChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="LocalJobTitleChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" for="LocalJobTitleReasonId">@ViewLang.Reason</label>
-                    <select class="control" id="LocalJobTitleReason" disabled>
-                        <option></option>
+                    <select class="control" id="LocalJobTitleReason" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -162,14 +159,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="GroupEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="GroupDateReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="GroupDateReasonId">
-                        <option></option>
+                    <select class="control" asp-for="GroupDateReasonId" asp-items="@(new SelectList(Model.GroupDateReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -182,14 +178,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CompanyDateReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CompanyDateReasonId">
-                        <option></option>
+                    <select class="control" asp-for="CompanyDateReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -220,14 +215,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="IDNoChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="IDNoReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="IDNoReasonId">
-                        <option></option>
+                    <select class="control" asp-for="IDNoReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -277,8 +271,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobCategoryReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobCategoryReasonId">
-                        <option></option>
+                    <select class="control" asp-for="JobCategoryReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -299,14 +293,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobGradeChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" for="JobGradeChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" for="JobGradeChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobGradeReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobGradeReasonId">
-                        <option></option>
+                    <select class="control" asp-for="JobGradeReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -322,14 +315,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="DivisionChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="DivisionChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="DivisionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DivisionReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="DivisionReasonId">
-                        <option></option>
+                    <select class="control" asp-for="DivisionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -345,14 +337,13 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="DepartmentChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="DepartmentChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="DepartmentChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DepartmentReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="DepartmentReasonId">
-                        <option></option>
+                    <select class="control" asp-for="DepartmentReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -368,21 +359,19 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="SectionChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="SectionReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="SectionReasonId">
-                        <option></option>
+                    <select class="control" asp-for="SectionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
             <div class="group-complex -emp-layout4 space-between-parts">
                 <div class="component">
-                    <label class="text like-group-title -has-required" asp-for="CostCenterId"
-                           >
+                    <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
                     <select class="control search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId"
@@ -398,8 +387,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CostCenterReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CostCenterReasonId">
-                        <option></option>
+                    <select class="control" asp-for="CostCenterReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -450,13 +439,13 @@
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1"
-                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
+                           data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.EndDateType1">@ViewLang.EndDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1"
-                           data-mindate="@Constants.MinDate">
+                           data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>
             </div>
@@ -464,19 +453,19 @@
                 <div class="component">
                     <label class="text" asp-for="WorkPermit.Type2">@ViewLang.Type2</label>
                     <select class="control" asp-for="WorkPermit.Type2" asp-items="@(new SelectList(Model.WorkPermitType2s, "ResourceId", "Value"))">
-                        <option></option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.StartDateType2">@ViewLang.StartDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2"
-                           data-mindate="@Constants.MinDate" data-maxdate="@DateTime.Now.ToShortDateString()">
+                           data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.EndDateType2">@ViewLang.EndDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2"
-                           data-mindate="@Constants.MinDate">
+                           data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>
             </div>
@@ -486,13 +475,13 @@
                 <div class="component">
                     <label class="text" asp-for="DST">@ViewLang.DST</label>
                     <select class="control" asp-for="DST" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
-                        <option></option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DBT">@ViewLang.DBT</label>
                     <select class="control" asp-for="DBT" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
-                        <option></option>
+                        <option value=""></option>
                     </select>
                 </div>
             </div>

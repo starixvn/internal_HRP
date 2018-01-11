@@ -19,5 +19,7 @@
         public const string WorkPermitType1 = "WorkPermitType1";
         public const string WorkPermitType2 = "WorkPermitType2";
         public const string NoOfChildren = "NoOfChildren";
+        public const string CommonReasons = "CommonReasons";
+        public const string GroupDateReasons = "GroupDateReasons";
     }
 }

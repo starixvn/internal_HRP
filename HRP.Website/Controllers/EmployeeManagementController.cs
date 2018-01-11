@@ -170,7 +170,7 @@
                 return Json(commandResult);
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -179,7 +179,7 @@
         public async Task<IActionResult> UpdateEmployment(int employeeId)
         {
             var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}",
                 ReferenceResource.LocalCompany,
                 ReferenceResource.LocalJobTitle,
                 ReferenceResource.EmploymentType,
@@ -192,7 +192,9 @@
                 ReferenceResource.Office,
                 ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
-                ReferenceResource.WorkPermitType2);
+                ReferenceResource.WorkPermitType2,
+                ReferenceResource.CommonReasons,
+                ReferenceResource.GroupDateReasons);
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
 
             UpdateEmploymentViewModel viewModel = employeeManagementService.GetEmploymentToUpdate(employeeId);
@@ -210,6 +212,8 @@
             viewModel.TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration);
             viewModel.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
             viewModel.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
+            viewModel.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);
+            viewModel.GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons);
             viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
             viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
             viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
@@ -229,7 +233,7 @@
                 return Json(commandResult);
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 

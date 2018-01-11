@@ -74,6 +74,10 @@
 
         public int? CostCenterReasonId { get; set; }
 
+        public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> GroupDateReasons { get; set; } = new List<ReferenceResourceModel>();
+
         public IEnumerable<Division> Divisions { get; set; } = new List<Division>();
 
         public IEnumerable<Department> Departments { get; set; } = new List<Department>();
