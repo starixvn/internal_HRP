@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,6 +11,7 @@
     using Core.Services;
     using Criteria;
     using Criteria.Employee;
+    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.EmployeeManagement;
@@ -301,6 +303,20 @@
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(employeeId);
 
             return View(bankAccounts);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
+        public IActionResult Payroll(int id)
+        {
+            var viewModel = new EmployeePayrollViewModel
+            {
+                BasicSalary = new EmployeePayrollBasicSalaryModel(),
+                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year }),
+                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
+            };
+
+            return View(viewModel);
         }
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)

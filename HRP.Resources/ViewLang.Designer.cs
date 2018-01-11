@@ -394,6 +394,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Employee Payroll.
+        /// </summary>
+        public static string EditEmployeePayroll {
+            get {
+                return ResourceManager.GetString("EditEmployeePayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit User.
         /// </summary>
         public static string EditUserDetails {
