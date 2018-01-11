@@ -8,5 +8,8 @@
     {
         CommandResult CreateBankAccount(IBankAccount bankAccount);
         IEnumerable<BankAccount> GetBankAccountsByEmployeeId(int employeeId);
+
+        IEnumerable<BankAccount>
+            FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive);
     }
 }

@@ -1,13 +1,24 @@
-﻿@model IEnumerable<HRP.Models.Bank.BankAccount>
+﻿@model HRP.Models.Bank.EditEmployeeBankDetailsViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@*Employee Name*@
+@Model.EmployeeName
 
-@foreach (var bankAccount in Model)
+@*Filter form*@
+<form asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" method="get">
+    <input asp-for="EmployeeId" type="hidden"/>
+    @Html.DropDownListFor(x => x.SelectedBankType, Model.BankTypes)
+    @Html.DropDownListFor(x => x.IsActiveBankAccount, Model.BankAccountActive)
+    <button type="submit">Submit</button>
+</form>
+
+<a href="#">+ Create New Bank Account</a>
+
+@foreach (var bankAccount in Model.BankAccounts)
 {
     <div>@bankAccount.AccountNumber</div>
 }

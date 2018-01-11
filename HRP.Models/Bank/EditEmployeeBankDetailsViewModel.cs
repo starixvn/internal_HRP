@@ -1,0 +1,80 @@
+﻿namespace HRP.Models.Bank
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
+    public class EditEmployeeBankDetailsViewModel
+    {
+        public EditEmployeeBankDetailsViewModel(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes)
+        {
+            Initialize(employeeName, bankTypes);
+        }
+
+        public EditEmployeeBankDetailsViewModel()
+        {
+        }
+
+        public int EmployeeId { get; set; }
+
+        public string EmployeeName { get; set; }
+
+        public int SelectedBankType { get; set; }
+
+        public MultiSelectList BankTypes { get; set; }
+
+        public bool? IsActiveBankAccount { get; set; }
+
+        public List<SelectListItem> BankAccountActive { get; set; }
+
+        public IList<BankAccount> BankAccounts { get; set; }
+
+        public void Initialize(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes)
+        {
+            EmployeeName = employeeName;
+
+            PopulateBankTypes(bankTypes);
+            PopulateActiveOptions();
+        }
+
+        private void PopulateActiveOptions()
+        {
+            BankAccountActive = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Value = "",
+                    Text = "All",
+                    Selected = true
+                },
+                new SelectListItem
+                {
+                    Value = true.ToString(),
+                    Text = "Active"
+                },
+                new SelectListItem
+                {
+                    Value = false.ToString(),
+                    Text = "Inactive"
+                }
+            };
+        }
+
+        private void PopulateBankTypes(IEnumerable<ReferenceResourceModel> bankTypes)
+        {
+            var allOption = new ReferenceResourceModel
+            {
+                ResourceId = 0,
+                Value = "All"
+            };
+
+            var bankTypesWithAllOption = bankTypes.ToList();
+            bankTypesWithAllOption.Add(allOption);
+
+            BankTypes = new MultiSelectList(
+                bankTypesWithAllOption,
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
+        }
+    }
+}

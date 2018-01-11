@@ -14,6 +14,7 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
     using Models;
+    using Models.Bank;
     using Models.EmployeeManagement;
     using Services;
     using Services.Interfaces;
@@ -121,7 +122,7 @@
         public async Task<IActionResult> CreateEmployment(int employeeId)
         {
             var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}",
                 ReferenceResource.LocalCompany,
                 ReferenceResource.LocalJobTitle,
                 ReferenceResource.EmploymentType,
@@ -134,7 +135,9 @@
                 ReferenceResource.Office,
                 ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
-                ReferenceResource.WorkPermitType2);
+                ReferenceResource.WorkPermitType2,
+                ReferenceResource.BankType,
+                ReferenceResource.BankAccountType);
             var bviCompanies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
             var viewModel = new CreateEmploymentViewModel
@@ -300,13 +303,31 @@
             return Json(employees);
         }
 
-        [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
-        public IActionResult EditEmployeeBankDetails(int employeeId)
+        public async Task<IActionResult> EditEmployeeBankDetails(EditEmployeeBankDetailsViewModel viewModel)
         {
-            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(employeeId);
+            var employee = employeeManagementService.GetEmployeeById(viewModel.EmployeeId);
 
-            return View(bankAccounts);
+            var refNames = string.Format(
+                "{0},{1}",
+                ReferenceResource.BankType,
+                ReferenceResource.BankAccountType);
+
+            var refResources =
+                await baseService.GetDataAsync<ReferenceResourceModel>(
+                    new GetRefResourceByNamesCriteria { RefNames = refNames });
+
+            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
+            ////var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+
+            viewModel.Initialize(employee.FullName, bankTypes);
+
+            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
+            viewModel.BankAccounts = bankAccountService
+                .FilterBankAccounts(bankAccounts, viewModel.SelectedBankType, viewModel.IsActiveBankAccount)
+                .ToList();
+
+            return View(viewModel);
         }
 
         [HttpGet]

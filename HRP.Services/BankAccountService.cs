@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Core.Model;
     using Core.Services;
     using Criteria.Bank;
@@ -30,6 +31,22 @@
             };
 
             return baseService.GetData<BankAccount>(criteria);
+        }
+
+        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)
+        {
+            var filteredBankAccounts = bankAccounts;
+            if (isActive != null)
+            {
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive = isActive.Value);
+            }
+
+            if (bankType != 0)
+            {
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType);
+            }
+
+            return filteredBankAccounts;
         }
 
         public IEnumerable<BankType> GetBankTypes()

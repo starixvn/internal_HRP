@@ -20,6 +20,8 @@
         public const string WorkPermitType2 = "WorkPermitType2";
         public const string NoOfChildren = "NoOfChildren";
         public const string CommonReasons = "CommonReasons";
+        public const string BankType = "BankType";
+        public const string BankAccountType = "BankAccountType";
         public const string GroupDateReasons = "GroupDateReasons";
     }
 }
