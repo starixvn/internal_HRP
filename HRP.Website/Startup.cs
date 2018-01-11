@@ -16,6 +16,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
+    using Services.Interfaces;
 
     public class Startup
     {
@@ -86,6 +87,7 @@
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();
             services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
+            services.AddScoped<IBankAccountService, BankAccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

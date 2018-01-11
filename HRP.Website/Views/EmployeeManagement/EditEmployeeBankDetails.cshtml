@@ -1,0 +1,13 @@
+﻿@model IEnumerable<HRP.Models.Bank.BankAccount>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+@foreach (var bankAccount in Model)
+{
+    <div>@bankAccount.AccountNumber</div>
+}

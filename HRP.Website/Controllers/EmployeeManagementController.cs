@@ -14,6 +14,7 @@
     using Models;
     using Models.EmployeeManagement;
     using Services;
+    using Services.Interfaces;
 
     [HRPAuthorize]
     public class EmployeeManagementController : Controller
@@ -21,15 +22,18 @@
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
+        private readonly IBankAccountService bankAccountService;
 
         public EmployeeManagementController(
             ISessionService sessionService,
             IBaseService baseService,
-            IEmployeeManagementService employeeManagementService)
+            IEmployeeManagementService employeeManagementService,
+            IBankAccountService bankAccountService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
+            this.bankAccountService = bankAccountService;
         }
 
         public IActionResult Index()
@@ -286,11 +290,14 @@
             return Json(employees);
         }
 
-        //[HttpGet]
-        //[HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
-        //public async Task<IActionResult> GetEmployeeBankDetails(int employeeId)
-        //{
-        //}
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
+        public IActionResult EditEmployeeBankDetails(int employeeId)
+        {
+            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(employeeId);
+
+            return View(bankAccounts);
+        }
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {

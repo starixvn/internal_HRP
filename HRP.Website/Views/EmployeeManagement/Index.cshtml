@@ -93,7 +93,10 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdown-1">
                         <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
-                        <li><a href="#"><span class="icon-user"></span>Edit Bank Details</a></li>
+                        <li>
+                            <a asp-action="EditEmployeeBankDetails"
+                               asp-controller="EmployeeManagement"
+                               asp-route-employeeId="1"><span class="icon-user"></span>Edit Bank Details</a></li>
                         <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
                     </ul>
                 </div>

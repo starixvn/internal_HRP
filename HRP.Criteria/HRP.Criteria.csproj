@@ -20,4 +20,8 @@
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.3.0.2862" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
+  </ItemGroup>
+
 </Project>

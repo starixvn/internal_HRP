@@ -1,9 +1,12 @@
 ﻿namespace HRP.Criteria.Bank
 {
     using Fanex.Data.Repository;
+    using Models.Bank;
 
-    public class CreateBankAccountCriteria : CriteriaBase
+    public class CreateBankAccountCriteria : CriteriaBase, IBankAccount
     {
+        public int EmployeeId { get; set; }
+
         public int BankType { get; set; }
 
         public string BankName { get; set; }
