@@ -16,7 +16,7 @@
     <button type="submit">Submit</button>
 </form>
 
-<a href="#">+ Create New Bank Account</a>
+<a asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
 
 @foreach (var bankAccount in Model.BankAccounts)
 {

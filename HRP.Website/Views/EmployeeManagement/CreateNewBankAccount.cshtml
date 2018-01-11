@@ -1,0 +1,62 @@
+﻿@model HRP.Models.Bank.CreateNewBankAccountViewModel
+
+@{
+    ViewBag.Title = "Create Bank Account";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" method="post">
+    <div>
+        <div>
+            <label asp-for="BankAccount.BankType"></label>
+            <select asp-for="BankAccount.BankType" asp-items="Model.BankTypes" multiple="multiple"></select>
+        </div>
+        <div>
+            <label asp-for="BankAccount.AccountName"></label>
+            <input asp-for="BankAccount.AccountName" />
+        </div>
+    </div>
+    <div>
+        <label asp-for="BankAccount.AccountNumber"></label>
+        <input asp-for="BankAccount.AccountNumber" />
+    </div>
+    <div>
+        <label asp-for="BankAccount.BeneficiaryName"></label>
+        <input asp-for="BankAccount.BeneficiaryName" />
+    </div>
+    <div>
+        <div>
+            <label asp-for="BankAccount.BankName"></label>
+            <input asp-for="BankAccount.BankName" />
+        </div>
+        <div>
+            <label asp-for="BankAccount.BankBranch"></label>
+            <input asp-for="BankAccount.BankBranch" />
+        </div>
+    </div>
+    <div>
+        <label asp-for="BankAccount.BankAddress"></label>
+        <input asp-for="BankAccount.BankAddress" />
+    </div>
+    <div>
+        <div>
+            <label asp-for="BankAccount.AccountType"></label>
+            <select asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes"></select>
+        </div>
+        <div>
+            <label asp-for="BankAccount.BankSwiftCode"></label>
+            <input asp-for="BankAccount.BankSwiftCode" />
+        </div>
+    </div>
+    <div>
+        <label asp-for="BankAccount.IsActive"></label>
+        <input asp-for="BankAccount.IsActive" />
+    </div>
+    
+    <div>
+        <a asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
+        <button type="submit">Save</button>
+    </div>
+</form>

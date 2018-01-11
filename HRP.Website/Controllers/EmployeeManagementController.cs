@@ -330,6 +330,48 @@
             return View(viewModel);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateNewBankAccount(int employeeId)
+        {
+            var employee = employeeManagementService.GetEmployeeById(employeeId);
+
+            var refNames = string.Format(
+                "{0},{1}",
+                ReferenceResource.BankType,
+                ReferenceResource.BankAccountType);
+
+            var refResources =
+                await baseService.GetDataAsync<ReferenceResourceModel>(
+                    new GetRefResourceByNamesCriteria { RefNames = refNames });
+
+            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+
+            var viewModel = new CreateNewBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                EmployeeName = employee.FullName
+            };
+
+            viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult CreateNewBankAccount(CreateNewBankAccountViewModel viewModel)
+        {
+            var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+
+            if (result.IsSuccessful)
+            {
+                return RedirectToAction("CreateNewBankAccount", viewModel.EmployeeId);
+            }
+
+            return View(viewModel);
+        }
+
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
         public IActionResult Payroll(int id)
