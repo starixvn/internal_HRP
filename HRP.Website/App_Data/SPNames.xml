@@ -65,5 +65,7 @@
   <Function Name="EmployeeBankDetails">
     <Setting Key="BankAccount_CreateBankAccount" SpName="BankAccount_CreateBankAccount" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_GetBankAccountsByEmpId" SpName="BankAccount_GetBankAccountsByEmpId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_GetBankTypes" SpName="BankAccount_GetBankTypes" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_GetAccountTypes" SpName="BankAccount_GetAccountTypes" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

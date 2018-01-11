@@ -18,7 +18,7 @@
 
         public CommandResult CreateBankAccount(IBankAccount bankAccount)
         {
-            CreateBankAccountCriteria criteria = bankAccount as CreateBankAccountCriteria;
+            var criteria = bankAccount as CreateBankAccountCriteria;
             return baseService.ExecuteNonQuery(criteria);
         }
 
@@ -30,6 +30,16 @@
             };
 
             return baseService.GetData<BankAccount>(criteria);
+        }
+
+        public IEnumerable<BankType> GetBankTypes()
+        {
+            return baseService.GetData<BankType>(new GetBankTypesCriteria());
+        }
+
+        public IEnumerable<AccountType> GetAccountTypes()
+        {
+            return baseService.GetData<AccountType>(new GetAccountTypesCriteria());
         }
     }
 }
