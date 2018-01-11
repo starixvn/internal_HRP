@@ -3,7 +3,7 @@
 var createEmployment = (function ($) {
     var $employmentHeaderTab, $employmentTab, $createEmploymentForm, $currentDate,
         $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
-        defaultOption = '<option value="" style="display: none;">--Please select--</option>';
+        defaultOption = '<option value="">--Please select--</option>';
 
     function registerEventChangeBVICompany() {
         $bviCompanyElement.on('change', function () {
@@ -143,7 +143,9 @@ var createEmployment = (function ($) {
     }
 
     function initSelect2() {
-        $createEmploymentForm.find('select.search-suggestion').select2();
+        $createEmploymentForm.find('select.search-suggestion').select2().on('change', function () {
+            $(this).valid();
+        });;
     }
 
     function calculateLengthOfService() {
@@ -244,6 +246,24 @@ var createEmployment = (function ($) {
     function reparseform() {
         $createEmploymentForm.removeData('validator').removeData('unobtrusiveValidation');
         $.validator.unobtrusive.parse('#createEmploymentForm');
+
+        var $validator = $('#createEmploymentForm').validate();
+        $validator.settings.highlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.addClass(errorClass).removeClass(validClass);
+
+            if ($element.hasClass('search-suggestion')) {
+                $element.next().find('.select2-selection').addClass(errorClass).addClass('control').removeClass(validClass);
+            }
+        };
+        $validator.settings.unhighlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.removeClass(errorClass).addClass(validClass);
+
+            if ($element.hasClass('search-suggestion')) {
+                $element.next().find('.select2-selection').removeClass(errorClass).removeClass('control').addClass(validClass);
+            }
+        };
     }
 
     function loadEmploymentForm() {

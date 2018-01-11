@@ -222,14 +222,14 @@
 
         public int MyProperty { get; set; }
 
-        public async Task<UpdateEmploymentViewModel> GetEmploymentToUpdateAsync(int employeeId)
+        public UpdateEmploymentViewModel GetEmploymentToUpdate(int employeeId)
         {
             var criteria = new GetEmploymentByEmployeeIdCriteria
             {
                 EmployeeId = employeeId
             };
 
-            UpdateEmploymentViewModel employment = await employeeRepository.GetEmploymentToUpdateAsync(criteria).ConfigureAwait(false);
+            UpdateEmploymentViewModel employment = employeeRepository.GetEmploymentToUpdate(criteria);
             employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
 
             return employment;

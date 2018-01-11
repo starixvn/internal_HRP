@@ -220,7 +220,8 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="IDNoChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate">
+                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate"
+                           data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -314,7 +315,8 @@
                     <label class="text like-group-title -has-required" asp-for="DivisionId">
                         <span class="icon-group"></span>@ViewLang.Division
                     </label>
-                    <select class="control search-suggestion" asp-for="DivisionId">
+                    <select class="control search-suggestion" data-oldval="@Model.DivisionId" asp-for="DivisionId"
+                            asp-items="@(new SelectList(Model.Divisions, "DivisionId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -336,7 +338,8 @@
                     <label class="text like-group-title -has-required" asp-for="DepartmentId">
                         <span class="icon-group"></span>@ViewLang.Department
                     </label>
-                    <select class="control search-suggestion" asp-for="DepartmentId">
+                    <select class="control search-suggestion" data-oldval="@Model.DepartmentId" asp-for="DepartmentId"
+                            asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -358,7 +361,8 @@
                     <label class="text like-group-title -has-required" asp-for="SectionId">
                         <span class="icon-group"></span>@ViewLang.Section
                     </label>
-                    <select class="control search-suggestion" asp-for="SectionId">
+                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId"
+                            asp-items="@(new SelectList(Model.Sections, "SectionId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -377,10 +381,12 @@
             </div>
             <div class="group-complex -emp-layout4 space-between-parts">
                 <div class="component">
-                    <label class="text like-group-title -has-required" asp-for="CostCenterId">
+                    <label class="text like-group-title -has-required" asp-for="CostCenterId"
+                           >
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
-                    <select class="control search-suggestion" asp-for="CostCenterId">
+                    <select class="control search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId"
+                            asp-items="@(new SelectList(Model.CostCenters, "CostCenterId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>

@@ -224,6 +224,7 @@ var updateEmployment = (function ($) {
     function initDatepicker() {
         $updateEmploymentForm.find('input.datetimepicker').each(function () {
             var $this = $(this),
+                defaultDate = $this.val(),
                 mindate = $this.data('mindate'),
                 maxdate = $this.data('maxdate');
 
@@ -233,7 +234,12 @@ var updateEmployment = (function ($) {
                 maxDate: maxdate
             });
 
-            $this.val('');
+            if (defaultDate) {
+                defaultDate = moment(defaultDate).format('MMM DD, YYYY')
+                $this.data("DateTimePicker").date(defaultDate);
+            } else {
+                $this.val('');
+            }
         });
 
         $updateEmploymentForm.find('.icon-calendar').on('click', function () {
@@ -244,6 +250,24 @@ var updateEmployment = (function ($) {
     function reparseform() {
         $updateEmploymentForm.removeData('validator').removeData('unobtrusiveValidation');
         $.validator.unobtrusive.parse('#updateEmploymentForm');
+
+        var $validator = $('#createEmploymentForm').validate();
+        $validator.settings.highlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.addClass(errorClass).removeClass(validClass);
+
+            if ($element.hasClass('search-suggestion')) {
+                $element.next().find('.select2-selection').addClass(errorClass).addClass('control').removeClass(validClass);
+            }
+        };
+        $validator.settings.unhighlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.removeClass(errorClass).addClass(validClass);
+
+            if ($element.hasClass('search-suggestion')) {
+                $element.next().find('.select2-selection').removeClass(errorClass).removeClass('control').addClass(validClass);
+            }
+        };
     }
 
     function loadEmploymentForm() {
@@ -330,5 +354,5 @@ var updateEmployment = (function ($) {
 }(jQuery));
 
 $(document).ready(function () {
-    createEmployment.InitModule();
+    updateEmployment.InitModule();
 });

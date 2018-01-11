@@ -17,7 +17,7 @@
 
         CommandResult CheckValidPicture(IFormFile file);
 
-        Task<UpdateEmploymentViewModel> GetEmploymentToUpdateAsync(int employeeId);
+        UpdateEmploymentViewModel GetEmploymentToUpdate(int employeeId);
 
         Task<CommandResult> CreateEmploymentAsync(CreateEmploymentViewModel viewModel);
 

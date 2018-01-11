@@ -31,12 +31,12 @@
         public DateTime? CompanyStartDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeCode), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public string CompanyCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public string EmployeeCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentTypeRequired")]

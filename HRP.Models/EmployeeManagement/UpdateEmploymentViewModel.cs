@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class UpdateEmploymentViewModel : CreateEmploymentViewModel
@@ -72,5 +73,13 @@
         public DateTime? CostCenterChangeDate { get; set; }
 
         public int? CostCenterReasonId { get; set; }
+
+        public IEnumerable<Division> Divisions { get; set; } = new List<Division>();
+
+        public IEnumerable<Department> Departments { get; set; } = new List<Department>();
+
+        public IEnumerable<Section> Sections { get; set; } = new List<Section>();
+
+        public IEnumerable<CostCenter> CostCenters { get; set; } = new List<CostCenter>();
     }
 }

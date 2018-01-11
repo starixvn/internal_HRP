@@ -193,7 +193,7 @@
                 ReferenceResource.WorkPermitType2);
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
 
-            UpdateEmploymentViewModel viewModel = await employeeManagementService.GetEmploymentToUpdateAsync(employeeId);
+            UpdateEmploymentViewModel viewModel = employeeManagementService.GetEmploymentToUpdate(employeeId);
             viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             viewModel.LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany);
             viewModel.LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle);
@@ -208,6 +208,10 @@
             viewModel.TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration);
             viewModel.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
             viewModel.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
+            viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
+            viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
+            viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
+            viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
 
             return PartialView("_UpdateEmployment", viewModel);
         }
@@ -227,7 +231,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        public async Task<IActionResult> CheckEmployeeCodeExisted(string companyCode, string employeeCode)
+        public async Task<IActionResult> CheckEmployeeCodeExisted(int employeeId, string companyCode, string employeeCode)
         {
             var criteria = new CheckEmpCodeExistedCriteria
             {
