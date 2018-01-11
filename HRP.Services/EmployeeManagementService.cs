@@ -230,6 +230,7 @@
             };
 
             UpdateEmploymentViewModel employment = employeeRepository.GetEmploymentToUpdate(criteria);
+            employment.OldCompanyId = employment.CompanyId;
             employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
 
             return employment;

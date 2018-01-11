@@ -70,6 +70,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BVI Company Change Date is required!.
+        /// </summary>
+        public static string BVICompanyChangeDateRequired {
+            get {
+                return ResourceManager.GetString("BVICompanyChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BVI Company Reason is required!.
+        /// </summary>
+        public static string BVICompanyReasonRequired {
+            get {
+                return ResourceManager.GetString("BVICompanyReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BVI Company is required!.
         /// </summary>
         public static string BVICompanyRequired {
@@ -79,11 +97,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BVI Job Title Change Date is required!.
+        /// </summary>
+        public static string BVIJobTitleChangeDateRequired {
+            get {
+                return ResourceManager.GetString("BVIJobTitleChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BVI Job Title must not over {1} characters long..
         /// </summary>
         public static string BVIJobTitleMaxLength {
             get {
                 return ResourceManager.GetString("BVIJobTitleMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BVI Job Title Reason is required!.
+        /// </summary>
+        public static string BVIJobTitleReasonRequired {
+            get {
+                return ResourceManager.GetString("BVIJobTitleReasonRequired", resourceCulture);
             }
         }
         
@@ -115,11 +151,38 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company Date Reason is required!.
+        /// </summary>
+        public static string CompanyDateReasonRequired {
+            get {
+                return ResourceManager.GetString("CompanyDateReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company is required!.
         /// </summary>
         public static string CompanyRequired {
             get {
                 return ResourceManager.GetString("CompanyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cost Center Change Date is required!.
+        /// </summary>
+        public static string CostCenterChangeDateRequired {
+            get {
+                return ResourceManager.GetString("CostCenterChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cost Center Reason is required!.
+        /// </summary>
+        public static string CostCenterReasonRequired {
+            get {
+                return ResourceManager.GetString("CostCenterReasonRequired", resourceCulture);
             }
         }
         
@@ -160,11 +223,47 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department Change Date is required!.
+        /// </summary>
+        public static string DepartmentChangeDateRequired {
+            get {
+                return ResourceManager.GetString("DepartmentChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department Reason is required!.
+        /// </summary>
+        public static string DepartmentReasonRequired {
+            get {
+                return ResourceManager.GetString("DepartmentReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department is required!.
         /// </summary>
         public static string DepartmentRequired {
             get {
                 return ResourceManager.GetString("DepartmentRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Division Change Date is required!.
+        /// </summary>
+        public static string DivisionChangeDateRequired {
+            get {
+                return ResourceManager.GetString("DivisionChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Division Reason is required!.
+        /// </summary>
+        public static string DivisionReasonRequired {
+            get {
+                return ResourceManager.GetString("DivisionReasonRequired", resourceCulture);
             }
         }
         
@@ -300,6 +399,15 @@ namespace HRP.Resources {
         public static string EmployeeCodeUnique {
             get {
                 return ResourceManager.GetString("EmployeeCodeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employment Status Change Date is required!.
+        /// </summary>
+        public static string EmploymentStatusChangeDateRequired {
+            get {
+                return ResourceManager.GetString("EmploymentStatusChangeDateRequired", resourceCulture);
             }
         }
         
@@ -565,6 +673,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group Date Reason is required!.
+        /// </summary>
+        public static string GroupDateReasonRequired {
+            get {
+                return ResourceManager.GetString("GroupDateReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HDMF No. must not over {1} characters long..
         /// </summary>
         public static string HDMFNoMaxLength {
@@ -579,6 +696,24 @@ namespace HRP.Resources {
         public static string HealthInsNoMaxLength {
             get {
                 return ResourceManager.GetString("HealthInsNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID No. Change Date is required!.
+        /// </summary>
+        public static string IDNoChangeDateRequired {
+            get {
+                return ResourceManager.GetString("IDNoChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID No. Reason is required!.
+        /// </summary>
+        public static string IDNoReasonRequired {
+            get {
+                return ResourceManager.GetString("IDNoReasonRequired", resourceCulture);
             }
         }
         
@@ -628,6 +763,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Category Change Date is required!.
+        /// </summary>
+        public static string JobCategoryChangeDateRequired {
+            get {
+                return ResourceManager.GetString("JobCategoryChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Category Reason is required!.
+        /// </summary>
+        public static string JobCategoryReasonRequired {
+            get {
+                return ResourceManager.GetString("JobCategoryReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Category is required!.
         /// </summary>
         public static string JobCategoryRequired {
@@ -637,11 +790,65 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Grade Change Date is required!.
+        /// </summary>
+        public static string JobGradeChangeDateRequired {
+            get {
+                return ResourceManager.GetString("JobGradeChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Grade Reason is required!.
+        /// </summary>
+        public static string JobGradeReasonRequired {
+            get {
+                return ResourceManager.GetString("JobGradeReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Company Change Date is required!.
+        /// </summary>
+        public static string LocalCompanyChangeDateRequired {
+            get {
+                return ResourceManager.GetString("LocalCompanyChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Company Reason is required!.
+        /// </summary>
+        public static string LocalCompanyReasonRequired {
+            get {
+                return ResourceManager.GetString("LocalCompanyReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Local Company is required!.
         /// </summary>
         public static string LocalCompanyRequired {
             get {
                 return ResourceManager.GetString("LocalCompanyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Job Title Change Date is required!.
+        /// </summary>
+        public static string LocalJobTitleChangeDateRequired {
+            get {
+                return ResourceManager.GetString("LocalJobTitleChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Job Title Reason is required!.
+        /// </summary>
+        public static string LocalJobTitleReasonRequired {
+            get {
+                return ResourceManager.GetString("LocalJobTitleReasonRequired", resourceCulture);
             }
         }
         
@@ -1074,6 +1281,24 @@ namespace HRP.Resources {
         public static string ResidenceAddressRequired {
             get {
                 return ResourceManager.GetString("ResidenceAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section Change Date is required!.
+        /// </summary>
+        public static string SectionChangeDateRequired {
+            get {
+                return ResourceManager.GetString("SectionChangeDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section Reason is required!.
+        /// </summary>
+        public static string SectionReasonRequired {
+            get {
+                return ResourceManager.GetString("SectionReasonRequired", resourceCulture);
             }
         }
         

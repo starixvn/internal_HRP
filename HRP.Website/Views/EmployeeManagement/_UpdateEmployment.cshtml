@@ -11,65 +11,13 @@
 <form id="updateEmploymentForm" class="form-information" asp-action="UpdateEmployment" asp-controller="EmployeeManagement"
       data-ajax-method="post" data-ajax="true"
       data-ajax-success="updateEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    <div class="msg-error -has-icon validation-summary-errors hidden">
-        <ul></ul>
+    <div class="list-message-error hidden">
     </div>
-    <span asp-validation-for="CompanyId" class="text-danger"></span>
-    <span asp-validation-for="LocalCompanyId" class="text-danger"></span>
-    <span asp-validation-for="JobTitle" class="text-danger"></span>
-    <span asp-validation-for="LocalJobTitleId" class="text-danger"></span>
-    <span asp-validation-for="GroupStartDate" class="text-danger"></span>
-    <span asp-validation-for="CompanyCode" class="text-danger"></span>
-    <span asp-validation-for="EmployeeCode" class="text-danger"></span>
-    <span asp-validation-for="EmploymentType" class="text-danger"></span>
-    <span asp-validation-for="EmploymentStatus" class="text-danger"></span>
-    <span asp-validation-for="JobCategoryId" class="text-danger"></span>
-    <span asp-validation-for="GradeId" class="text-danger"></span>
-    <span asp-validation-for="GradeLevelId" class="text-danger"></span>
-    <span asp-validation-for="DivisionId" class="text-danger"></span>
-    <span asp-validation-for="DepartmentId" class="text-danger"></span>
-    <span asp-validation-for="SectionId" class="text-danger"></span>
-    <span asp-validation-for="CostCenterId" class="text-danger"></span>
-    <span asp-validation-for="Email" class="text-danger"></span>
-    <span asp-validation-for="CountryId" class="text-danger"></span>
-    <span asp-validation-for="CityId" class="text-danger"></span>
-    <span asp-validation-for="OfficeId" class="text-danger"></span>
-    <span asp-validation-for="WorkPermit.LocalCompanyId" class="text-danger"></span>
-    <span asp-validation-for="WorkPermit.Type1" class="text-danger"></span>
-    <span asp-validation-for="WorkPermit.StartDateType1" class="text-danger"></span>
-    <span asp-validation-for="WorkPermit.EndDateType1" class="text-danger"></span>
-    <span asp-validation-for="TaxIDNo" class="text-danger"></span>
-    <span asp-validation-for="SSSNo" class="text-danger"></span>
-    <span asp-validation-for="HealthInsNo" class="text-danger"></span>
-    <span asp-validation-for="HDMFNo" class="text-danger"></span>
-    <span asp-validation-for="FullNamePFileAdmin" class="text-danger"></span>
-    <span asp-validation-for="NickNamePFileAdmin" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.FullNameBVISalary" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.NickNameBVISalary" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.FullNameBVIAllowance" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.NickNameBVIAllowance" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.FullNameLocalSalary" class="text-danger"></span>
-    <span asp-validation-for="Paymaster.NickNameLocalSalary" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameAdministrator" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameAdministrator" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameEvaluator1" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameEvaluator1" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameEvaluator2" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameEvaluator2" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameReviewer" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameReviewer" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameManagement" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameManagement" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameIncrement" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameIncrement" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameBVIBonus" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameBVIBonus" class="text-danger"></span>
-    <span asp-validation-for="EPA.FullNameLocalBonus" class="text-danger"></span>
-    <span asp-validation-for="EPA.NickNameLocalBonus" class="text-danger"></span>
-    <span asp-validation-for="PDFPassword" class="text-danger"></span>
+
     <div class="employment">
         <div class="col">
             <input hidden asp-for="EmployeeId">
+            <input hidden asp-for="OldCompanyId">
             <input hidden id="CurrentDate" value="@DateTime.Now.Date.ToShortDateString()" />
             <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
             <div class="group-complex -emp-layout1">

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using HRP.Core.CustomValidations;
+    using HRP.Core.Enumerations;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
 
@@ -25,10 +27,26 @@
 
         [DataType(DataType.Date)]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateCommencementRequired")]
+        [GenericCompare(
+            CompareToPropertyName = nameof(GroupEndDate),
+            DisplayName = "Group Start Date",
+            OtherPropertyDisplayName = "Group End Date",
+            Operator = GenericCompareOperator.LessThanOrEqual)]
         public DateTime GroupStartDate { get; set; } = DateTime.Now;
 
         [DataType(DataType.Date)]
+        public DateTime? GroupEndDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [GenericCompare(
+            CompareToPropertyName = nameof(CompanyEndDate),
+            DisplayName = "Company Start Date",
+            OtherPropertyDisplayName = "Company End Date",
+            Operator = GenericCompareOperator.LessThanOrEqual)]
         public DateTime? CompanyStartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? CompanyEndDate { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
         public string CompanyCode { get; set; }

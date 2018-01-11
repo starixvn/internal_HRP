@@ -3,17 +3,31 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using HRP.Core.CustomValidations;
+    using HRP.Resources;
 
     public class UpdateEmploymentViewModel : CreateEmploymentViewModel
     {
+        public int OldCompanyId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyId), NewProperty = nameof(CompanyId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyChangeDateRequired")]
         public DateTime? CompanyChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyId), NewProperty = nameof(CompanyId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyReasonRequired")]
         public int? CompanyReasonId { get; set; }
 
+        public int OldLocalCompanyId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldLocalCompanyId), NewProperty = nameof(LocalCompanyId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyChangeDateRequired")]
         public DateTime? LocalCompanyChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldLocalCompanyId), NewProperty = nameof(LocalCompanyId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyChangeDateRequired")]
         public int? LocalCompanyReasonId { get; set; }
 
         [DataType(DataType.Date)]
@@ -26,13 +40,7 @@
 
         public int? LocalJobTitleReasonId { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? GroupEndDate { get; set; }
-
         public int? GroupDateReasonId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? CompanyEndDate { get; set; }
 
         public int? CompanyDateReasonId { get; set; }
 

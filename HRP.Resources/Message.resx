@@ -492,4 +492,79 @@
   <data name="NickNameReviewerMaxLength" xml:space="preserve">
     <value>Nick Name Reviewer must not over {1} characters long.</value>
   </data>
+  <data name="BVICompanyChangeDateRequired" xml:space="preserve">
+    <value>BVI Company Change Date is required!</value>
+  </data>
+  <data name="BVICompanyReasonRequired" xml:space="preserve">
+    <value>BVI Company Reason is required!</value>
+  </data>
+  <data name="BVIJobTitleChangeDateRequired" xml:space="preserve">
+    <value>BVI Job Title Change Date is required!</value>
+  </data>
+  <data name="BVIJobTitleReasonRequired" xml:space="preserve">
+    <value>BVI Job Title Reason is required!</value>
+  </data>
+  <data name="CompanyDateReasonRequired" xml:space="preserve">
+    <value>Company Date Reason is required!</value>
+  </data>
+  <data name="CostCenterChangeDateRequired" xml:space="preserve">
+    <value>Cost Center Change Date is required!</value>
+  </data>
+  <data name="CostCenterReasonRequired" xml:space="preserve">
+    <value>Cost Center Reason is required!</value>
+  </data>
+  <data name="DepartmentChangeDateRequired" xml:space="preserve">
+    <value>Department Change Date is required!</value>
+  </data>
+  <data name="DepartmentReasonRequired" xml:space="preserve">
+    <value>Department Reason is required!</value>
+  </data>
+  <data name="DivisionChangeDateRequired" xml:space="preserve">
+    <value>Division Change Date is required!</value>
+  </data>
+  <data name="DivisionReasonRequired" xml:space="preserve">
+    <value>Division Reason is required!</value>
+  </data>
+  <data name="EmploymentStatusChangeDateRequired" xml:space="preserve">
+    <value>Employment Status Change Date is required!</value>
+  </data>
+  <data name="GroupDateReasonRequired" xml:space="preserve">
+    <value>Group Date Reason is required!</value>
+  </data>
+  <data name="IDNoChangeDateRequired" xml:space="preserve">
+    <value>ID No. Change Date is required!</value>
+  </data>
+  <data name="IDNoReasonRequired" xml:space="preserve">
+    <value>ID No. Reason is required!</value>
+  </data>
+  <data name="JobCategoryChangeDateRequired" xml:space="preserve">
+    <value>Job Category Change Date is required!</value>
+  </data>
+  <data name="JobCategoryReasonRequired" xml:space="preserve">
+    <value>Job Category Reason is required!</value>
+  </data>
+  <data name="JobGradeChangeDateRequired" xml:space="preserve">
+    <value>Job Grade Change Date is required!</value>
+  </data>
+  <data name="JobGradeReasonRequired" xml:space="preserve">
+    <value>Job Grade Reason is required!</value>
+  </data>
+  <data name="LocalCompanyChangeDateRequired" xml:space="preserve">
+    <value>Local Company Change Date is required!</value>
+  </data>
+  <data name="LocalCompanyReasonRequired" xml:space="preserve">
+    <value>Local Company Reason is required!</value>
+  </data>
+  <data name="LocalJobTitleChangeDateRequired" xml:space="preserve">
+    <value>Local Job Title Change Date is required!</value>
+  </data>
+  <data name="LocalJobTitleReasonRequired" xml:space="preserve">
+    <value>Local Job Title Reason is required!</value>
+  </data>
+  <data name="SectionChangeDateRequired" xml:space="preserve">
+    <value>Section Change Date is required!</value>
+  </data>
+  <data name="SectionReasonRequired" xml:space="preserve">
+    <value>Section Reason is required!</value>
+  </data>
 </root>
