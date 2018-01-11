@@ -1,8 +1,11 @@
-﻿@using HRP.Models.EmployeeManagement
+﻿@using HRP.Resources
+@using HRP.Models.EmployeeManagement
+
 @model CreateEmployeeViewModel
 @{
     ViewData["Title"] = "Personal Detail";
 }
+
 @section Styles {
     <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
     <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
@@ -11,18 +14,18 @@
 }
 
 <ol class="breadcrumb">
-    <li class="like-link">Empoloyee Management</li>
-    <li><a href="/employeemanagement">Employee List</a></li>
-    <li class="active">Create New Employee</li>
+    <li class="like-link">@ViewLang.EmployeeManagement</li>
+    <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
+    <li class="active">@ViewLang.CreateNewEmployee</li>
 </ol>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active">
-        <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">Personal Detail</a>
+        <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
     </li>
     <li role="presentation">
         <a href="#tab-employment" aria-controls="profile" role="tab" data-toggle="tab"
-           id="tab-header-employment" data-isFirstLoad="true">Employment</a>
+           id="tab-header-employment" data-isFirstLoad="true">@ViewLang.Employment</a>
     </li>
 </ul>
 

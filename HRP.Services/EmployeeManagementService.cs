@@ -30,13 +30,13 @@
             IBaseService baseService,
             ICertificateService certificateService,
             ISessionService sessionService,
-            IEmployeeManagementRepository employeeRepository)
+            IEmployeeManagementRepository employeeRepository = null)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
             this.certificateService = certificateService;
             this.sessionService = sessionService;
-            this.employeeRepository = employeeRepository;
+            this.employeeRepository = employeeRepository ?? new EmployeeManagementRepository();
         }
 
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmployeeViewModel employee)

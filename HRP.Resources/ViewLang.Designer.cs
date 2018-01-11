@@ -475,6 +475,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employment.
+        /// </summary>
+        public static string Employment {
+            get {
+                return ResourceManager.GetString("Employment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment Status.
         /// </summary>
         public static string EmploymentStatus {
@@ -957,6 +966,15 @@ namespace HRP.Resources {
         public static string PermanentAddress {
             get {
                 return ResourceManager.GetString("PermanentAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Detail.
+        /// </summary>
+        public static string PersonalDetail {
+            get {
+                return ResourceManager.GetString("PersonalDetail", resourceCulture);
             }
         }
         

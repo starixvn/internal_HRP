@@ -540,4 +540,10 @@
   <data name="PleaseSelect" xml:space="preserve">
     <value>--Please select--</value>
   </data>
+  <data name="Employment" xml:space="preserve">
+    <value>Employment</value>
+  </data>
+  <data name="PersonalDetail" xml:space="preserve">
+    <value>Personal Detail</value>
+  </data>
 </root>
