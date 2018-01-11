@@ -165,6 +165,7 @@ select option {
   border-color: #888 transparent #888;
 }
 
+/* Customize dropdown */
 .dropdown-menu {
   padding: 0;
   margin-top: 13px;
@@ -205,6 +206,24 @@ select option {
 .dropdown-menu > li > a:hover [class^="icon"],
 .dropdown-menu > li > a:focus [class^="icon"] {
   color: #fff;
+}
+
+/* Customize select2 */
+.select2-container--default .select2-selection--single {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  outline: none;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 5px;
+  padding-right: 10px;
+  background-color: #fafafa;
+  border: 1px solid #d9d9d9;
+  color: #333;
 }
 
 ::-webkit-input-placeholder {

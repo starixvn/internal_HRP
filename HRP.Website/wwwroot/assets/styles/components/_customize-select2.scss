@@ -1,0 +1,27 @@
+/* Customize select2 */
+.select2-container--default {
+    .select2-selection--single {
+        @include border-radius(2px);
+        outline: none;
+        height: 32px;
+        line-height: 32px;    
+        padding-left: 5px;
+        padding-right: 10px;
+        background-color: #fafafa;
+        border: 1px solid $border-color;
+        color: $input-color;   
+
+        .select2-selection__arrow b {
+            border-top-color: rgb(0, 0, 0);
+            border-width: 6px 3px 0 3px;
+        }
+    }
+
+    .select2-search--dropdown .select2-search__field {
+        height: 28px;
+
+        &:focus {
+            border-color: #1a87d3;
+        }
+    }
+}

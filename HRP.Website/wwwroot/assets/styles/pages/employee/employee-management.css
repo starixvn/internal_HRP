@@ -363,6 +363,37 @@
   padding: 12px 0 0;
 }
 
+/* Customize select2 */
+.select2-container--default .select2-selection--single {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  outline: none;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 5px;
+  padding-right: 10px;
+  background-color: #fafafa;
+  border: 1px solid #d9d9d9;
+  color: #333;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-top-color: black;
+  border-width: 6px 3px 0 3px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  height: 28px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+  border-color: #1a87d3;
+}
+
 .search-form .company,
 .search-form .employee {
   width: 168px;
