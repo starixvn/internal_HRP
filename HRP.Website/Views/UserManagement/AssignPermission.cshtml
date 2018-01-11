@@ -47,12 +47,18 @@
                         <span class="func-name">@parent.Name</span>
                     </td>
                     <td class="text-center">
-                        <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
+                        <label>
+                            <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
                                @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                            <span class="null"></span>
+                        </label>                          
                     </td>
                     <td class="text-center">
-                        <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
-                               @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                        <label>
+                            <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="" data-fid="@parent.FunctionId"
+                                @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                            <span class="null"></span>
+                        </label>                         
                     </td>
                 </tr>
                 foreach (FunctionModel child in parent.Childs)
@@ -64,12 +70,18 @@
                             <span class="func-name">@child.Name</span>
                         </td>
                         <td class="text-center">
-                            <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                            <label>
+                                <input type="checkbox" name="criteria.funcRead" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
                                    @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                                <span class="null"></span>
+                            </label>                            
                         </td>
                         <td class="text-center">
-                            <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
+                            <label>
+                                <input type="checkbox" name="criteria.funcHost" data-cid="-1001" data-pid="@parent.FunctionId" data-fid="@child.FunctionId"
                                    @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                                <span class="null"></span>
+                            </label> 
                         </td>
                     </tr>
                 }
@@ -82,7 +94,13 @@
     <thead>
         <tr>
             <th rowspan="2">@ViewLang.Function</th>
-            <th rowspan="2" class="vertical-bottom"><input type="checkbox" id="checkAllFunc" @disabled /></th>
+            <th rowspan="2" class="vertical-bottom">
+                <label>
+                    <input type="checkbox" id="checkAllFunc" @disabled />
+                    <span class="null"></span>
+                </label> 
+                
+            </th>
             @foreach (Company company in Model.Companies)
             {
                 <th colspan="2">@company.Code</th>
@@ -93,11 +111,17 @@
             {
                 <th class="sub-header">
                     <div class="">@ViewLang.Read</div>
-                    <input type="checkbox" class="checkAllColFuncRead" name="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled />
+                    <label>
+                        <input type="checkbox" class="checkAllColFuncRead" name="checkAllColFuncRead" data-cid="@company.CompanyId" @disabled />
+                        <span class="null"></span>
+                    </label>                     
                 </th>
                 <th class="sub-header">
                     <div class="">@ViewLang.Host</div>
-                    <input type="checkbox" class="checkAllColFuncHost" name="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled />
+                    <label>
+                        <input type="checkbox" class="checkAllColFuncHost" name="checkAllColFuncHost" data-cid="@company.CompanyId" @disabled />
+                        <span class="null"></span>
+                    </label> 
                 </th>
             }
         </tr>

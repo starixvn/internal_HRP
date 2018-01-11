@@ -56,10 +56,10 @@
     {
         <div class="group-control -option-check">
             <label asp-for="IsActive" class="text pull-left"></label>
-            <div class="pull-left">
+            <label class="pull-left">
                 <input type="checkbox" asp-for="IsActive" id="IsStatus" />
-                <label class="label-text" for="IsStatus">@ViewLang.Active</label>
-            </div>
+                <span class="label-text">@ViewLang.Active</span>
+            </label>
         </div>
     }
 

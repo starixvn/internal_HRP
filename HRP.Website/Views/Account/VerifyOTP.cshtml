@@ -29,8 +29,10 @@
             <span asp-validation-for="OTPCode" class="msg-error"></span>
         </div>
         <div class="group">
-            <label>Skip OTP authenticator</label>
-            <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
+            <label>
+                <input asp-for="IsByPassTwoFactor" class="form-controll" checked />
+                <span>Skip OTP authenticator</span>   
+            </label>                     
         </div>
         <div class="group list-button">
             <a asp-action="Login" asp-controller="Auth" class="button -second">Cancel</a>

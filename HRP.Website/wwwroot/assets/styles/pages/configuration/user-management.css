@@ -217,11 +217,6 @@
   border-bottom-width: 1px;
 }
 
-.table input[type='checkbox'] {
-  display: inline-block;
-  margin: 0;
-}
-
 .table .has-icon {
   line-height: 1;
 }
