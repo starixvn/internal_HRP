@@ -100,10 +100,11 @@
             ordering: false,
             filter: false,
             scrollY: '355px',
-            scrollX: true,
             scrollCollapse: true,
             paging: false,
-            fixedColumns: true
+            scrollX: true,
+            fixedColumns: true,
+            responsive: true
         });
 
         var calendar = $('.calendar');

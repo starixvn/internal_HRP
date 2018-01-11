@@ -402,7 +402,15 @@
   text-align: right;
 }
 
-.table-responsive {
-  height: 355px;
+#currency-form {
+  margin-bottom: 10px;
+}
+
+table.dataTable {
+  margin-top: 0 !important;
+}
+
+.DTFC_RightBodyLiner {
+  overflow-y: initial !important;
 }
 /*# sourceMappingURL=currency-setting.css.map */
