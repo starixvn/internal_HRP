@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   padding: 0;
   margin: 0;
@@ -229,6 +230,27 @@ input[type="number"][disabled] {
 .msg-warning:before {
   content: "\e913";
   color: #ff7a04;
+}
+
+.list-message-error {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: 1px solid #ff0000;
+  padding: 8px 12px;
+  margin: 0 0 12px 0;
+  background-color: #ffebea;
+  color: #fe0000;
+}
+
+.list-message-error .message {
+  line-height: 20px;
+}
+
+.list-message-error .message:before {
+  text-indent: -.7em;
+  content: "• ";
+  color: #fe0000;
 }
 
 .note {

@@ -68,11 +68,18 @@
 }
 
 .personal-detail {
-    display: grid;
-    grid-template-columns: 160px 530px 638px;
-    grid-template-rows: 1fr;
+    display: flex;
+    flex-direction: column;
     justify-content: stretch;
-    align-items: flex-start;
+    align-items: stretch;
+
+    .form-content {
+        display: grid;
+        grid-template-columns: 160px 530px 630px;
+        grid-template-rows: 1fr;
+        justify-content: stretch;
+        align-items: flex-start;
+    }
 }
 
 .has-space {
