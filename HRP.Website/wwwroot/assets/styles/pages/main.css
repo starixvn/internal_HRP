@@ -473,7 +473,7 @@ input[type="checkbox"]:disabled + span {
   flex-direction: column;
   align-items: stretch;
   border: 1px solid #ff0000;
-  padding: 8px 12px;
+  padding: 8px 10px;
   margin: 0 0 12px 0;
   background-color: #ffebea;
   color: #fe0000;
@@ -484,9 +484,17 @@ input[type="checkbox"]:disabled + span {
 }
 
 .list-message-error .message:before {
+  position: relative;
+  top: 4px;
+  line-height: 0;
   text-indent: -.7em;
   content: "• ";
   color: #fe0000;
+  font-size: 24px;
+}
+
+.list-message-error .field-validation-valid {
+  display: none;
 }
 
 .note {

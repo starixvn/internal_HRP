@@ -68,7 +68,7 @@
     flex-direction: column;
     align-items: stretch;
     border: 1px solid $msg-error-border;
-    padding: 8px 12px;
+    padding: 8px 10px;
     margin: 0 0 12px 0;
     background-color: $msg-error-bg;
     color: $msg-error; 
@@ -76,12 +76,20 @@
     .message {
         line-height: 20px;
 
-        &:before { 
+        &:before {
+            position: relative;
+            top: 4px;
+            line-height: 0;
             text-indent: -.7em;
             content: "• ";
             color: $msg-error;
+            font-size: 24px;
         } 
     }
+
+    .field-validation-valid {
+        display: none;
+    } 
 }
 
 .note {
