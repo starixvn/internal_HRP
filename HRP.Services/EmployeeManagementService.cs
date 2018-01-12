@@ -234,6 +234,23 @@
 
             UpdateEmploymentViewModel employment = employeeRepository.GetEmploymentToUpdate(criteria);
             employment.OldCompanyId = employment.CompanyId;
+            employment.OldLocalCompanyId = employment.LocalCompanyId;
+            employment.OldJobTitle = employment.JobTitle;
+            employment.OldLocalJobTitleId = employment.LocalJobTitleId;
+            employment.OldGroupStartDate = employment.GroupStartDate;
+            employment.OldGroupEndDate = employment.GroupEndDate;
+            employment.OldCompanyStartDate = employment.CompanyStartDate;
+            employment.OldCompanyEndDate = employment.CompanyEndDate;
+            employment.OldCompanyCode = employment.CompanyCode;
+            employment.OldEmployeeCode = employment.EmployeeCode;
+            employment.OldEmploymentStatus = employment.EmploymentStatus;
+            employment.OldJobCategoryId = employment.JobCategoryId;
+            employment.OldGradeId = employment.GradeId;
+            employment.OldGradeLevelId = employment.GradeLevelId;
+            employment.OldDivisionId = employment.DivisionId;
+            employment.OldDepartmentId = employment.DepartmentId;
+            employment.OldSectionId = employment.SectionId;
+            employment.OldCostCenterId = employment.CostCenterId;
             employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
 
             return employment;

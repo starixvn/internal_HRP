@@ -7,10 +7,15 @@
 }
 
 @section Styles {
-    <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-    <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-    <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link href="~/assets/bundles/employee/css/employee-management.min.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/employee/css/create-employee.min.css" rel="stylesheet" />
+    </environment>
 }
 
 <ol class="breadcrumb">

@@ -18,6 +18,23 @@
         <div class="col">
             <input hidden asp-for="EmployeeId">
             <input hidden asp-for="OldCompanyId">
+            <input hidden asp-for="OldLocalCompanyId">
+            <input hidden asp-for="OldJobTitle">
+            <input hidden asp-for="OldLocalJobTitleId">
+            <input hidden asp-for="OldGroupStartDate">
+            <input hidden asp-for="OldGroupEndDate">
+            <input hidden asp-for="OldCompanyStartDate">
+            <input hidden asp-for="OldCompanyEndDate">
+            <input hidden asp-for="OldCompanyCode">
+            <input hidden asp-for="OldEmployeeCode">
+            <input hidden asp-for="OldEmploymentStatus">
+            <input hidden asp-for="OldJobCategoryId">
+            <input hidden asp-for="OldGradeId">
+            <input hidden asp-for="OldGradeLevelId">
+            <input hidden asp-for="OldDivisionId">
+            <input hidden asp-for="OldDepartmentId">
+            <input hidden asp-for="OldSectionId">
+            <input hidden asp-for="OldCostCenterId">
             <input hidden id="CurrentDate" value="@DateTime.Now.Date.ToShortDateString()" />
             <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
             <div class="group-complex -emp-layout1">

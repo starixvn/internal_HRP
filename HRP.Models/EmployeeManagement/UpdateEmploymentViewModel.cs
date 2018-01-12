@@ -30,56 +30,143 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyChangeDateRequired")]
         public int? LocalCompanyReasonId { get; set; }
 
+        public string OldJobTitle { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldJobTitle), NewProperty = nameof(JobTitle),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleChangeDateRequired")]
         public DateTime? JobTitleChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldJobTitle), NewProperty = nameof(JobTitle),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleReasonRequired")]
         public int? JobTitleReasonId { get; set; }
 
+        public int OldLocalJobTitleId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldLocalJobTitleId), NewProperty = nameof(LocalJobTitleId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleChangeDateRequired")]
         public DateTime? LocalJobTitleChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldLocalJobTitleId), NewProperty = nameof(LocalJobTitleId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleReasonRequired")]
         public int? LocalJobTitleReasonId { get; set; }
 
+        public DateTime OldGroupStartDate { get; set; }
+
+        public DateTime? OldGroupEndDate { get; set; }
+
+        [EmploymentChangeValue(OldProperty = nameof(OldGroupStartDate), NewProperty = nameof(GroupStartDate),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateReasonRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldGroupEndDate), NewProperty = nameof(GroupEndDate),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateReasonRequired")]
         public int? GroupDateReasonId { get; set; }
 
+        public DateTime? OldCompanyStartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? OldCompanyEndDate { get; set; }
+
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyStartDate), NewProperty = nameof(CompanyStartDate),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyDateReasonRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyEndDate), NewProperty = nameof(CompanyEndDate),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyDateReasonRequired")]
         public int? CompanyDateReasonId { get; set; }
 
+        public string OldCompanyCode { get; set; }
+
+        public string OldEmployeeCode { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyCode), NewProperty = nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoChangeDateRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldEmployeeCode), NewProperty = nameof(EmployeeCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoChangeDateRequired")]
         public DateTime? IDNoChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldCompanyCode), NewProperty = nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoReasonRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldEmployeeCode), NewProperty = nameof(EmployeeCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoReasonRequired")]
         public int? IDNoReasonId { get; set; }
 
+        public int OldEmploymentStatus { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldEmploymentStatus), NewProperty = nameof(EmploymentStatus),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentStatusChangeDateRequired")]
         public DateTime? EmploymentStatusChangeDate { get; set; }
 
+        public int OldJobCategoryId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldJobCategoryId), NewProperty = nameof(JobCategoryId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobCategoryChangeDateRequired")]
         public DateTime? JobCategoryChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldJobCategoryId), NewProperty = nameof(JobCategoryId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobCategoryReasonRequired")]
         public int? JobCategoryReasonId { get; set; }
 
+        public int OldGradeId { get; set; }
+
+        public int OldGradeLevelId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldGradeId), NewProperty = nameof(GradeId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeChangeDateRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldGradeLevelId), NewProperty = nameof(GradeLevelId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeChangeDateRequired")]
         public DateTime? JobGradeChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldGradeId), NewProperty = nameof(GradeId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeReasonRequired")]
+        [EmploymentChangeValue(OldProperty = nameof(OldGradeLevelId), NewProperty = nameof(GradeLevelId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeReasonRequired")]
         public int? JobGradeReasonId { get; set; }
 
+        public int OldDivisionId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldDivisionId), NewProperty = nameof(DivisionId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DivisionChangeDateRequired")]
         public DateTime? DivisionChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldDivisionId), NewProperty = nameof(DivisionId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DivisionReasonRequired")]
         public int? DivisionReasonId { get; set; }
 
+        public int OldDepartmentId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldDepartmentId), NewProperty = nameof(DepartmentId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DepartmentChangeDateRequired")]
         public DateTime? DepartmentChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldDepartmentId), NewProperty = nameof(DepartmentId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DepartmentReasonRequired")]
         public int? DepartmentReasonId { get; set; }
 
+        public int OldSectionId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldSectionId), NewProperty = nameof(SectionId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SectionChangeDateRequired")]
         public DateTime? SectionChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldSectionId), NewProperty = nameof(SectionId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SectionReasonRequired")]
         public int? SectionReasonId { get; set; }
 
+        public int OldCostCenterId { get; set; }
+
         [DataType(DataType.Date)]
+        [EmploymentChangeValue(OldProperty = nameof(OldCostCenterId), NewProperty = nameof(CostCenterId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CostCenterChangeDateRequired")]
         public DateTime? CostCenterChangeDate { get; set; }
 
+        [EmploymentChangeValue(OldProperty = nameof(OldCostCenterId), NewProperty = nameof(CostCenterId),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CostCenterReasonRequired")]
         public int? CostCenterReasonId { get; set; }
 
         public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
