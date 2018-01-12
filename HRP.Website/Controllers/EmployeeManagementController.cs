@@ -22,18 +22,15 @@
     [HRPAuthorize]
     public class EmployeeManagementController : Controller
     {
-        private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
         private readonly IBankAccountService bankAccountService;
 
         public EmployeeManagementController(
-            ISessionService sessionService,
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
             IBankAccountService bankAccountService)
         {
-            this.sessionService = sessionService;
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
             this.bankAccountService = bankAccountService;

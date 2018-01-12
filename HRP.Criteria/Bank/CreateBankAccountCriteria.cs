@@ -1,6 +1,5 @@
 ﻿namespace HRP.Criteria.Bank
 {
-    using AutoMapper;
     using Fanex.Data.Repository;
     using Models.Bank;
 
