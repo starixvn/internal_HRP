@@ -205,6 +205,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee has been created..
+        /// </summary>
+        public static string CreateEmployeeSuccessful {
+            get {
+                return ResourceManager.GetString("CreateEmployeeSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Issue is required!.
         /// </summary>
         public static string DateIssueRequired {
@@ -1371,6 +1380,15 @@ namespace HRP.Resources {
         public static string TaxIDNoMaxLength {
             get {
                 return ResourceManager.GetString("TaxIDNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee {0} has been updated..
+        /// </summary>
+        public static string UpdateEmployeeSuccessful {
+            get {
+                return ResourceManager.GetString("UpdateEmployeeSuccessful", resourceCulture);
             }
         }
         

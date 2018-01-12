@@ -31,16 +31,23 @@
         <span asp-validation-for="EmergencyContact.PhoneNo1" class="message"></span>
         <span asp-validation-for="EmergencyContact.PhoneNo2" class="message"></span>
     </div>
+
+    <div class="-has-icon msg-success hidden">
+    </div>
+    <div class="-has-icon msg-error hidden">
+    </div>
+
     <div class="form-content">
         <input type="hidden" asp-for="EmployeeId" />
         <input type="hidden" asp-for="IsHost" />
+        <input type="hidden" asp-for="ProfilePic"/>
         <figure class="profile">
-            <div class="js-changePicture change-picture">
+            <div class="change-picture">
                 <input type="file" accept="image/*" class="hidden" asp-for="ProfilePicture" />
                 <div class="img-container">
                     <img src="@Model.ProfilePicLink" alt="Profile picture" class="js-displayProfilePicture img-responsive">
                 </div>
-                <figcaption class="link">@ViewLang.ChangePicture</figcaption>
+                <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
             </div>
             <ul class="more-info">
                 <li>File type: .JPG, .JPEG, .PNG</li>
@@ -184,12 +191,12 @@
             </div>
         </div>
 
-        @if (Model.IsHost) {
+        @if (Model.IsHost)
+        {
             <div class="list-button">
                 <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
-                <button class="button -primary" type="submit">@ViewLang.Save</button>
+                <button class="button -primary js-btnSave" type="submit">@ViewLang.Save</button>
             </div>
         }
-
     </div>
 </form>

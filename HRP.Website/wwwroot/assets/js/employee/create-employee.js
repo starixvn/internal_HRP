@@ -68,7 +68,8 @@
         dateOfBirth.datetimepicker({
             format: 'll',
             minDate: '01/01/1900',
-            maxDate: 'now'
+            maxDate: 'now',
+            useCurrent: false
         });
         dateOfBirth.data("DateTimePicker").date(defaultDate);
 
@@ -78,7 +79,8 @@
         dateIssue.datetimepicker({
             format: 'll',
             minDate: '01/01/1900',
-            maxDate: 'now'
+            maxDate: 'now',
+            useCurrent: false
         });
         dateIssue.data("DateTimePicker").date(defaultDate);
 
@@ -87,7 +89,8 @@
         defaultDate = moment(expiredDate.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
         expiredDate.datetimepicker({
             format: 'll',
-            minDate: '01/01/1900'
+            minDate: '01/01/1900',
+            useCurrent: false
         });
         expiredDate.data("DateTimePicker").date(defaultDate);
     }
@@ -113,9 +116,10 @@
 
             if ($(this).valid()) {
                 hideListMessageError();
-
+                hideButtonSave();
+                
                 var formData = new FormData(this);
-                var urlPost = formData.get('EmployeeId') === '0' ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee';
+                var urlPost = isCreateNew() ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee';
                 $.ajax({
                     url: urlPost,
                     type: "POST",
@@ -123,16 +127,7 @@
                     contentType: false,
                     data: formData,
                     processData: false,
-                    success: function (result) {
-                        if (result.isSuccessful) {
-                            alert(result.message);
-                        } else {
-                            form.validate().showErrors(result.errors);
-                            if (result.message) {
-                                alert(result.message);
-                            }
-                        }
-                    },
+                    success: handleSuccessRequest,
                     error: function (result) {
                     }
                 });
@@ -165,12 +160,59 @@
         return isHost
     }
 
+    function isCreateNew() {
+        return ($('#EmployeeId').val() <= '0');
+    }
+
     function showListMessageError() {
         $('.list-message-error').removeClass("hidden");
     }
 
     function hideListMessageError() {
         $('.list-message-error').addClass("hidden");
+    }
+
+    function hideButtonSave() {
+        $('.js-btnSave').hide();
+    }
+
+    function showButtonSave() {
+        $('.js-btnSave').show();
+    }
+
+    function showSuccessAndRedirectMessage(message, redirectLink) {
+        var messageElement = $('.msg-success');
+        var redirectMessage = " You will be redirected in ";
+        var delay = 2;
+        messageElement.text(message + redirectMessage + delay + ' seconds.').removeClass('hidden');
+
+        window.setInterval(function () {
+            if (delay === 0) {
+                window.location.href = redirectLink;
+            } else {
+                delay--;
+                messageElement.text(message + redirectMessage + delay + ' seconds.');
+            }
+        }, 1000);
+    }
+
+    function handleSuccessRequest(result) {
+        if (result.isSuccessful) {
+            if (isCreateNew()) {
+                showSuccessAndRedirectMessage(result.message, result.redirectLink);
+            }
+            else {
+                commonFunctions.showSuccessMessage(result.message);
+                showButtonSave();
+            }            
+        } else {
+            showButtonSave();
+            var form = $('#personalDetailForm');
+            form.validate().showErrors(result.errors);
+            if (result.message) {
+                alert(result.message);
+            }
+        }
     }
 
     function initModule() {
@@ -186,7 +228,6 @@
             $('select').attr('disabled', 'disabled');
             $('form').submit(false);
         }
-
     }
 
     return {

@@ -10,6 +10,7 @@
     using Core.Services;
     using Criteria;
     using Criteria.Employee;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.EmployeeManagement;
@@ -61,7 +62,12 @@
             {
                 var commandResult = await employeeManagementService.CreateEmployeeAsync(employee);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.IsSuccessful ? "create Success!" : commandResult.Message });
+                return Json(new
+                {
+                    isSuccessful = commandResult.IsSuccessful,
+                    message = commandResult.IsSuccessful ? Message.CreateEmployeeSuccessful : commandResult.Message,
+                    redirectLink = Url.Action("EditEmployee", new { id = commandResult.Data })
+                });
             }
 
             var errorList = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(
@@ -99,8 +105,9 @@
             if (ModelState.IsValid)
             {
                 var commandResult = await employeeManagementService.EditEmployeeAsync(employee);
+                var returnMessage = commandResult.IsSuccessful ? string.Format(Message.UpdateEmployeeSuccessful, employee.NickName) : commandResult.Message;
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.IsSuccessful ? "edit Success!" : commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = returnMessage });
             }
 
             var errorList = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(

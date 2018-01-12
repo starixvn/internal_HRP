@@ -80,6 +80,7 @@
             if (commandResult.IsSuccessful)
             {
                 await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString()).ConfigureAwait(false);
+                commandResult.Data = criteria.EmployeeId;
             }
 
             return commandResult;
@@ -116,6 +117,7 @@
                 ECRelationship = employee.EmergencyContact.Relationship,
                 ECPhoneNo1 = employee.EmergencyContact.PhoneNo1,
                 ECPhoneNo2 = employee.EmergencyContact.PhoneNo2,
+                ProfilePic = employee.ProfilePic,
                 UpdatedBy = sessionService.UserId
             };
 
@@ -178,16 +180,13 @@
                  ReferenceResource.NoOfChildren);
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames }).ConfigureAwait(false);
 
-            var currentDate = DateTime.Now;
             var viewModel = new CreateEmployeeViewModel
             {
-                DateOfBirth = currentDate,
-                DateIssue = currentDate,
-                ExpiredDate = currentDate,
                 GenderList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender))),
                 NationalityList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality))),
                 MaritalStatusList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus))),
-                NoOfChildrenList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)))
+                NoOfChildrenList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren))),
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host)
             };
 
             return viewModel;

@@ -1,5 +1,7 @@
 namespace HRP.Core.Model
 {
+    using System.Collections.Generic;
+
     public class CommandResult
     {
         public CommandResult()
@@ -13,5 +15,7 @@ namespace HRP.Core.Model
         public string Message { get; set; }
 
         public bool IsSuccessful => Code == 0;
+
+        public object Data { get; set; }
     }
 }

@@ -573,4 +573,10 @@
   <data name="RequiredErrorMessage" xml:space="preserve">
     <value>{0} is required</value>
   </data>
+  <data name="CreateEmployeeSuccessful" xml:space="preserve">
+    <value>Employee has been created.</value>
+  </data>
+  <data name="UpdateEmployeeSuccessful" xml:space="preserve">
+    <value>Employee {0} has been updated.</value>
+  </data>
 </root>
