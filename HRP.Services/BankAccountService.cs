@@ -41,7 +41,7 @@
                 filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive = isActive.Value);
             }
 
-            if (!bankTypes.Contains(0))
+            if (bankTypes != null && !bankTypes.Contains(0))
             {
                 filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
             }
