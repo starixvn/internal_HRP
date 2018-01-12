@@ -1,22 +1,27 @@
 ﻿@model HRP.Models.Bank.EditEmployeeBankDetailsViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Edit Bank Details of Employee '" + @Model.EmployeeName + "'";
     Layout = "_Layout";
 }
 
-@*Employee Name*@
-@Model.EmployeeName
+<ol class="breadcrumb">
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee Management</a></li>
+    <li class="active">Edit Bank Details of Employee '@Model.EmployeeName'</li>
+</ol>
+
 
 @*Filter form*@
-<form asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" method="get">
+<form asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" method="get" class="form-inline">
     <input asp-for="EmployeeId" type="hidden" />
-    <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" multiple="multiple"></select>
-    <select asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
-    <button type="submit">Submit</button>
+    <div class="form-group">
+        <select class="form-control" asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" multiple="multiple"></select>
+        <select class="form-control"  asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
+        <button class="btn btn-success" type="submit">Submit</button>
+    </div>
 </form>
 
-<a asp-action="CreateNewBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
+<a class="btn btn-success" asp-action="CreateNewBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
 
 <table class="table table-bordered">
     <thead>
@@ -35,29 +40,29 @@
         </tr>
     </thead>
     <tbody>
-    @for (var index = 0; index < Model.BankAccounts.Count; index++)
-    {
-        <tr>
-            <td>@(index + 1)</td>
-            @{
-                var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
-                var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
-            }
-            <td>@bankType</td>
-            <td>@Model.BankAccounts[index].AccountName</td>
-            <td>@Model.BankAccounts[index].AccountNumber</td>
-            <td>@Model.BankAccounts[index].BeneficiaryName</td>
-            <td>@Model.BankAccounts[index].BankName</td>
-            <td>@Model.BankAccounts[index].BankBranch</td>
-            <td>@bankAccountType</td>
-            <td>@Model.BankAccounts[index].BankSwiftCode</td>
-            <td>
-                <input type="checkbox" value="@Model.BankAccounts[index].IsActive"/>
-            </td>
-            <td>
-                <a asp-action="EditEmployeeBankDetails" asp-controller="BankAccount">edit</a>
-            </td>
-        </tr>
-    }
+        @for (var index = 0; index < Model.BankAccounts.Count; index++)
+        {
+            <tr>
+                <td>@(index + 1)</td>
+                @{
+                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
+                    var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
+                }
+                <td>@bankType</td>
+                <td>@Model.BankAccounts[index].AccountName</td>
+                <td>@Model.BankAccounts[index].AccountNumber</td>
+                <td>@Model.BankAccounts[index].BeneficiaryName</td>
+                <td>@Model.BankAccounts[index].BankName</td>
+                <td>@Model.BankAccounts[index].BankBranch</td>
+                <td>@bankAccountType</td>
+                <td>@Model.BankAccounts[index].BankSwiftCode</td>
+                <td>
+                    <input type="checkbox" value="@Model.BankAccounts[index].IsActive" />
+                </td>
+                <td>
+                    <a asp-action="EditEmployeeBankDetails" asp-controller="BankAccount">edit</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
