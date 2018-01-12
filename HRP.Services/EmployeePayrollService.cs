@@ -1,10 +1,7 @@
 ﻿namespace HRP.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Fanex.Data.Repository;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -17,10 +14,10 @@
         private readonly IBaseService baseService;
         private readonly IDynamicRepository repository;
 
-        public EmployeePayrollService(IBaseService baseService, IDynamicRepository repository)
+        public EmployeePayrollService(IBaseService baseService)
         {
             this.baseService = baseService;
-            this.repository = repository;
+            this.repository = new DynamicRepository();
         }
 
         public EmployeePayrollViewModel GetEmployeePayroll(int employeeId)
