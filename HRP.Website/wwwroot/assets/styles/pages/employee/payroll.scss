@@ -1,0 +1,103 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/radio";
+
+.form-information {  
+    .calendar {
+        position: relative;
+
+        .icon-calendar {
+            position: absolute;
+            bottom: 5px;
+            right: 4px;
+            color: #f57d14;
+            font-size: 22px;           
+        }
+    }
+
+    .group-title, .like-group-title {
+        color: #1973b2;
+        font-weight: bold;
+    }
+
+    .control {
+        height: 28px;
+        line-height: 28px;
+        padding-right: 5px;
+    }
+
+    .group-title {
+        margin-top: 18px;
+        margin-bottom: 8px;
+
+        &.-first {
+            margin-top: 0;
+        }
+    }
+
+    .icon-group {
+        position: relative;
+        top: 2px;
+        margin-right: 2px;
+        font-size: 16px;
+        line-height: 0;
+    }
+
+    .text-group {
+        display: block;
+        color: #333;
+        font-weight: bold;
+        line-height: 28px;
+        text-align: left;
+        padding-left: 20px;       
+    }
+}
+
+.payroll {    
+    .calendar {
+        width: 110px;
+    }
+
+    .reason {
+        width: 135px;
+    }
+    
+    .padding-top-24 {
+        padding-top: 24px;
+    }
+
+    .days {
+        padding-left: 10px;
+    }
+
+    .payment-transaction {
+        padding-left: 649px;
+        font-weight: bold;
+        color: #333;
+    }
+}
+
+.group-complex { 
+    display: grid;      
+    grid-gap: 20px;
+    grid-template-rows: 1fr; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 12px;
+
+    /* Personal detail */
+
+    &.-payroll-layout1 {        
+        grid-template-columns: 134px 198px 258px 306px;        
+    }
+}
+
+.currency-amount {
+    display: grid;      
+    grid-gap: 5px;
+    grid-template-columns: 80px 110px; 
+    grid-template-rows: 1fr; 
+    justify-content: flex-start;
+    align-items: flex-start;
+}

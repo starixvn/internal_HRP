@@ -363,6 +363,92 @@
   padding: 12px 0 0;
 }
 
+.modal-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.modal-content .modal-header {
+  padding: 11px 0;
+}
+
+.modal-content .modal-header .close {
+  margin-top: 2px;
+  color: #858585;
+  font-size: 18px;
+  opacity: 1;
+}
+
+.modal-content .modal-header .close:hover {
+  color: #333;
+}
+
+.modal-content .modal-body {
+  padding: 25px 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.modal-content .modal-footer {
+  border-top: none;
+  padding: 20px 0 30px;
+}
+
+.modal-content .modal-footer .button:first-child {
+  margin-right: 16px;
+}
+
+.modal-content.-has-title .modal-header {
+  border-bottom-color: #dbdbdb;
+}
+
+.modal-content.-has-title .modal-title {
+  font-size: 16px;
+}
+
+.modal-content.-has-title .modal-footer {
+  text-align: right;
+}
+
+.modal-content.-has-icon .modal-header {
+  border-bottom: none;
+}
+
+.modal-content.-has-icon .circle {
+  -webkit-border-radius: 50%;
+  -khtml-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: -24px;
+  margin-left: -33px;
+  height: 70px;
+  width: 70px;
+  background-color: #f57d14;
+  font-size: 27px;
+  color: #fff;
+}
+
+.modal-content.-has-icon .modal-body {
+  padding-top: 70px;
+  text-align: center;
+}
+
+.modal-content.-has-icon .modal-footer {
+  padding-top: 0;
+  text-align: center;
+}
+
+.modal-dialog.-small {
+  width: 370px;
+}
+
 /* Customize select2 */
 .select2-container--default .select2-selection--single {
   -webkit-border-radius: 2px;
@@ -372,11 +458,11 @@
   -o-border-radius: 2px;
   border-radius: 2px;
   outline: none;
-  height: 32px;
-  line-height: 32px;
+  height: 28px;
+  line-height: 28px;
   padding-left: 5px;
   padding-right: 10px;
-  background-color: #fafafa;
+  background-color: #fff;
   border: 1px solid #d9d9d9;
   color: #333;
 }
@@ -504,12 +590,18 @@
   font-size: 22px;
 }
 
+.form-information .calendar .icon-calendar.disabled {
+  opacity: .5;
+}
+
 .form-information .group-title, .form-information .like-group-title {
   color: #1973b2;
   font-weight: bold;
 }
 
 .form-information .control {
+  height: 28px;
+  line-height: 28px;
   padding-right: 5px;
 }
 
@@ -658,5 +750,13 @@
 
 .space-between-parts {
   margin-top: 18px;
+}
+
+.payroll .form-content {
+  display: grid;
+  grid-template-columns: 160px 530px 630px;
+  grid-template-rows: 1fr;
+  justify-content: stretch;
+  align-items: flex-start;
 }
 /*# sourceMappingURL=employee-management.css.map */

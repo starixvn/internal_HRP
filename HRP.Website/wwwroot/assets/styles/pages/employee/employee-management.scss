@@ -3,6 +3,7 @@
 @import "../../components/forms";
 @import "../../components/tables";
 @import "../../components/tabs";
+@import "../../components/popups";
 @import "../../components/customize-select2";
 
 .search-form {
@@ -98,7 +99,6 @@
     }
 }
 
-
 .form-information {  
     .calendar {
         position: relative;
@@ -108,7 +108,11 @@
             bottom: 5px;
             right: 4px;
             color: #f57d14;
-            font-size: 22px;           
+            font-size: 22px;      
+            
+            &.disabled {
+                opacity: .5;
+            }
         }
     }
 
@@ -118,6 +122,8 @@
     }
 
     .control {
+        height: 28px;
+        line-height: 28px;
         padding-right: 5px;
     }
 
@@ -272,4 +278,14 @@
 
 .space-between-parts {
     margin-top: 18px;
+}
+
+.payroll {
+    .form-content {
+        display: grid;
+        grid-template-columns: 160px 530px 630px;
+        grid-template-rows: 1fr;
+        justify-content: stretch;
+        align-items: flex-start;
+    }
 }

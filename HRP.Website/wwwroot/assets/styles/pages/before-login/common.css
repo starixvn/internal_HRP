@@ -144,7 +144,7 @@ input[type="password"] {
   line-height: 32px;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: #fafafa;
+  background-color: #fff;
   border: 1px solid #d9d9d9;
   font-size: inherit;
   color: #333;
@@ -181,10 +181,6 @@ input[type="checkbox"] + span {
   padding-left: 22px;
 }
 
-input[type="checkbox"] + .null {
-  padding-left: 16px;
-}
-
 input[type="checkbox"] + span:before {
   border-radius: 2px;
   content: '';
@@ -195,6 +191,10 @@ input[type="checkbox"] + span:before {
   width: 16px;
   border: 1px solid #c8c8c8;
   background-color: #fff;
+}
+
+input[type="checkbox"] + .null {
+  padding-left: 16px;
 }
 
 input[type="checkbox"]:checked + span:after {
@@ -599,7 +599,7 @@ body {
 }
 
 .block.-otp-code-validation .form-control {
-  padding-left: 16px;
+  padding-left: 5px;
 }
 
 .block.-otp-code-validation .list-button {

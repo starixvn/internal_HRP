@@ -1,0 +1,261 @@
+.search-form .group {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.search-form .group .text {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.search-form .group .control {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.search-form .calendar {
+  position: relative;
+  width: 105px;
+}
+
+.search-form .calendar .control {
+  width: 100%;
+  padding-right: 26px;
+}
+
+.search-form .calendar:after {
+  position: absolute;
+  bottom: 5px;
+  right: 6px;
+  font-family: 'hrp';
+  content: "\e902";
+  color: #f57d14;
+  font-size: 22px;
+}
+
+.form-information .text {
+  position: relative;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: normal;
+  text-transform: capitalize;
+  font-weight: bold;
+  color: #666;
+}
+
+.form-information .text.-has-required {
+  display: inline-block;
+  clear: both;
+}
+
+.form-information .text.-has-required:after {
+  content: "*";
+  position: absolute;
+  right: -12px;
+  top: 2px;
+  color: #ff0000;
+}
+
+.form-information .text.without-control {
+  margin-bottom: 18px;
+}
+
+.form-information .control {
+  display: block;
+  width: 100%;
+  padding-right: 40px;
+}
+
+.form-information .control.input-validation-error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+}
+
+.form-information .control.without-label {
+  margin-top: 18px;
+}
+
+.form-information .list-button .button:first-child {
+  margin-right: 10px;
+}
+
+.form-information .group-control {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.form-information .group-control .icon-close, .form-information .group-control .icon-successful {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  font-size: 20px;
+}
+
+.form-information .group-control.-option-check {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.form-information .group-control.-option-check .text {
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+.form-information .group-control.-option-check .checkbox {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.form-information .required {
+  color: #ff0000;
+  margin-left: 4px;
+}
+
+.form-information .msg-error, .form-information .text-danger {
+  margin-top: 10px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + span {
+  position: relative;
+  cursor: pointer;
+  padding-left: 19px;
+}
+
+input[type="radio"] + span:before {
+  border-radius: 100%;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  height: 13px;
+  width: 13px;
+  border: 1px solid #c8c8c8;
+  background-color: #fff;
+}
+
+input[type="radio"] + span:after {
+  background-color: #1973b2;
+  border-radius: 100%;
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  height: 7px;
+  width: 7px;
+  transition: all ease-in-out .3s;
+  opacity: 0;
+}
+
+input[type="radio"]:checked + span:after {
+  opacity: 1;
+}
+
+input[type="radio"]:disabled + span {
+  opacity: 0.5;
+}
+
+.form-information .calendar {
+  position: relative;
+}
+
+.form-information .calendar .icon-calendar {
+  position: absolute;
+  bottom: 5px;
+  right: 4px;
+  color: #f57d14;
+  font-size: 22px;
+}
+
+.form-information .group-title, .form-information .like-group-title {
+  color: #1973b2;
+  font-weight: bold;
+}
+
+.form-information .control {
+  height: 28px;
+  line-height: 28px;
+  padding-right: 5px;
+}
+
+.form-information .group-title {
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+.form-information .group-title.-first {
+  margin-top: 0;
+}
+
+.form-information .icon-group {
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+  font-size: 16px;
+  line-height: 0;
+}
+
+.form-information .text-group {
+  display: block;
+  color: #333;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.payroll .calendar {
+  width: 110px;
+}
+
+.payroll .reason {
+  width: 135px;
+}
+
+.payroll .padding-top-24 {
+  padding-top: 24px;
+}
+
+.payroll .days {
+  padding-left: 10px;
+}
+
+.payroll .payment-transaction {
+  padding-left: 649px;
+  font-weight: bold;
+  color: #333;
+}
+
+.group-complex {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-rows: 1fr;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  /* Personal detail */
+}
+
+.group-complex.-payroll-layout1 {
+  grid-template-columns: 134px 198px 258px 306px;
+}
+
+.currency-amount {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 80px 110px;
+  grid-template-rows: 1fr;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+/*# sourceMappingURL=payroll.css.map */

@@ -3,20 +3,65 @@
 
 @section Styles {
     <environment include="Development">
-    </environment>
-    <environment exclude="Development">
+        <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
     </environment>
 }
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li class="like-link">@ViewLang.EmployeeList</li>
-    <li class="active">@ViewLang.EditEmployeePayroll</li>
+    <li class="active">@ViewLang.EditEmployeePayroll oW014512 - Jennie Thompson - Jennie</li>
 </ol>
 
 <div class="msg-error" id="validation-summary">
     <ul></ul>
 </div>
+
+<form class="payroll form-information">
+    <div class="list-message-error hidden">
+        <span class="message"></span>
+    </div>
+    <div class="form-content">
+        <div class="group-complex -payroll-layout1">
+            <div class="">
+                <div class="group-title -first"><span class="icon-group"></span>Basic Salary</div>
+                <label class="text-group">Actual</label>
+            </div>
+            <div class="currency-amount">
+                <select class="control without-label">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control without-label" placeholder="Total Amount" />
+            </div>
+            <div class="">
+                <div class="pull-left calendar">
+                    <label class="text" for="effectiveDate">Effective Date</label>
+                    <input type="text" class="control" id="effectiveDate" />
+                    <span class="icon-calendar disabled"></span>
+                </div>
+                <div class="pull-right reason">
+                    <label class="text" for="reason">Reason</label>
+                    <select class="control" id="reason">
+                        <option>Salary Adjustment</option>
+                    </select>
+                </div>
+            </div>
+            <div class="padding-top-24">
+                <span>Standard Working Days</span>
+                <label class="days">
+                    <input type="radio" name="workingDay" checked>
+                    <span>222</span>
+                </label>
+                <label class="days">
+                    <input type="radio" name="workingDay">
+                    <span>26</span>
+                </label>
+            </div>
+        </div>
+        <div class="payment-transaction">Payment Transaction</div>
+         
+    </div>
+</form>
 
 @section Scripts {
     <environment include="Development">

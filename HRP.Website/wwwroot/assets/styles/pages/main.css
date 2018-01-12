@@ -112,7 +112,7 @@ select {
   line-height: 32px;
   padding-left: 5px;
   padding-right: 10px;
-  background-color: #fafafa;
+  background-color: #fff;
   border: 1px solid #d9d9d9;
   font-size: inherit;
   color: #333;
@@ -130,6 +130,12 @@ select:focus {
 
 select option {
   padding: 2px 6px;
+}
+
+select[disabled] {
+  background-color: #ededed;
+  border-color: #d9d9d9;
+  color: #777;
 }
 
 .dropdown.open > .btn.dropdown-toggle,
@@ -208,24 +214,6 @@ select option {
   color: #fff;
 }
 
-/* Customize select2 */
-.select2-container--default .select2-selection--single {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  outline: none;
-  height: 32px;
-  line-height: 32px;
-  padding-left: 5px;
-  padding-right: 10px;
-  background-color: #fafafa;
-  border: 1px solid #d9d9d9;
-  color: #333;
-}
-
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #888;
@@ -270,7 +258,7 @@ input[type="password"] {
   line-height: 32px;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: #fafafa;
+  background-color: #fff;
   border: 1px solid #d9d9d9;
   font-size: inherit;
   color: #333;
@@ -307,10 +295,6 @@ input[type="checkbox"] + span {
   padding-left: 22px;
 }
 
-input[type="checkbox"] + .null {
-  padding-left: 16px;
-}
-
 input[type="checkbox"] + span:before {
   border-radius: 2px;
   content: '';
@@ -321,6 +305,10 @@ input[type="checkbox"] + span:before {
   width: 16px;
   border: 1px solid #c8c8c8;
   background-color: #fff;
+}
+
+input[type="checkbox"] + .null {
+  padding-left: 16px;
 }
 
 input[type="checkbox"]:checked + span:after {
