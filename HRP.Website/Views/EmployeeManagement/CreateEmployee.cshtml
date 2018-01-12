@@ -8,8 +8,6 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
     </environment>
@@ -29,8 +27,7 @@
         <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
     </li>
     <li role="presentation">
-        <a href="#tab-employment" aria-controls="profile" role="tab" data-toggle="tab"
-           id="tab-header-employment" data-isFirstLoad="true">@ViewLang.Employment</a>
+        <a href="#tab-employment" aria-controls="profile" role="tab" data-toggle="tab">@ViewLang.Employment</a>
     </li>
 </ul>
 
@@ -39,21 +36,21 @@
     <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
         @Html.Partial("_PersonalDetail", Model)
     </div>
-    <div role="tabpanel" class="tab-pane" id="tab-employment"></div>
+    <div role="tabpanel" class="tab-pane" id="tab-employment">
+        <div class="list-message-error">
+            You need to create employee's personal details before you can create the employment information.
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/assets/js/employee/employment-common-functions.js"></script>
         <script src="~/assets/js/employee/create-employee.js"></script>
-        <script src="~/assets/js/employee/create-employment.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/assets/bundles/employee/js/create-employee.min.js"></script>

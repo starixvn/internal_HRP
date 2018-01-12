@@ -14,13 +14,17 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
+    [HRPAuthorize]
     public class CurrencySettingController : Controller
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
-        public CurrencySettingController(ISessionService sessionService, IBaseService baseService, IOptionsSnapshot<AppSettingsOptions> configuration)
+        public CurrencySettingController(
+            ISessionService sessionService,
+            IBaseService baseService,
+            IOptionsSnapshot<AppSettingsOptions> configuration)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;

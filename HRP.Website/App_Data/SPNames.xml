@@ -58,7 +58,6 @@
     <Setting Key="Employee_EditEmployee" SpName="Employee_EditEmployee" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employment">
-    <Setting Key="Employment_Create" SpName="Employment_Create" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employment_Update" SpName="Employment_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>

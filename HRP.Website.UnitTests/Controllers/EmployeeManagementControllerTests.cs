@@ -46,7 +46,7 @@
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (bool)jsonResult.Value);
+            Assert.NotEqual(expected, (bool)jsonResult.Value);
         }
 
         [Fact]

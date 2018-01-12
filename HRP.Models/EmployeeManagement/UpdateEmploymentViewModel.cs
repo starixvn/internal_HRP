@@ -4,11 +4,18 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
+    using HRP.Core.Enumerations;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc;
 
-    public class UpdateEmploymentViewModel : CreateEmploymentViewModel
+    public class UpdateEmploymentViewModel
     {
-        public int OldCompanyId { get; set; }
+        public int EmployeeId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
+        public int CompanyId { get; set; }
+
+        public int? OldCompanyId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldCompanyId), NewProperty = nameof(CompanyId),
@@ -19,7 +26,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyReasonRequired")]
         public int? CompanyReasonId { get; set; }
 
-        public int OldLocalCompanyId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyRequired")]
+        public int LocalCompanyId { get; set; }
+
+        public int? OldLocalCompanyId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldLocalCompanyId), NewProperty = nameof(LocalCompanyId),
@@ -29,6 +39,10 @@
         [EmploymentChangeValue(OldProperty = nameof(OldLocalCompanyId), NewProperty = nameof(LocalCompanyId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyChangeDateRequired")]
         public int? LocalCompanyReasonId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleRequired")]
+        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleMaxLength")]
+        public string JobTitle { get; set; }
 
         public string OldJobTitle { get; set; }
 
@@ -41,7 +55,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleReasonRequired")]
         public int? JobTitleReasonId { get; set; }
 
-        public int OldLocalJobTitleId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
+        public int LocalJobTitleId { get; set; }
+
+        public int? OldLocalJobTitleId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldLocalJobTitleId), NewProperty = nameof(LocalJobTitleId),
@@ -52,7 +69,19 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleReasonRequired")]
         public int? LocalJobTitleReasonId { get; set; }
 
-        public DateTime OldGroupStartDate { get; set; }
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateCommencementRequired")]
+        [GenericCompare(
+            CompareToPropertyName = nameof(GroupEndDate),
+            DisplayName = "Group Start Date",
+            OtherPropertyDisplayName = "Group End Date",
+            Operator = GenericCompareOperator.LessThanOrEqual)]
+        public DateTime GroupStartDate { get; set; } = DateTime.Now;
+
+        [DataType(DataType.Date)]
+        public DateTime? GroupEndDate { get; set; }
+
+        public DateTime? OldGroupStartDate { get; set; }
 
         public DateTime? OldGroupEndDate { get; set; }
 
@@ -61,6 +90,17 @@
         [EmploymentChangeValue(OldProperty = nameof(OldGroupEndDate), NewProperty = nameof(GroupEndDate),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateReasonRequired")]
         public int? GroupDateReasonId { get; set; }
+
+        [DataType(DataType.Date)]
+        [GenericCompare(
+            CompareToPropertyName = nameof(CompanyEndDate),
+            DisplayName = "Company Start Date",
+            OtherPropertyDisplayName = "Company End Date",
+            Operator = GenericCompareOperator.LessThanOrEqual)]
+        public DateTime? CompanyStartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? CompanyEndDate { get; set; }
 
         public DateTime? OldCompanyStartDate { get; set; }
 
@@ -72,6 +112,15 @@
         [EmploymentChangeValue(OldProperty = nameof(OldCompanyEndDate), NewProperty = nameof(CompanyEndDate),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyDateReasonRequired")]
         public int? CompanyDateReasonId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
+        public string CompanyCode { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
+        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
+        public string EmployeeCode { get; set; }
 
         public string OldCompanyCode { get; set; }
 
@@ -90,14 +139,23 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoReasonRequired")]
         public int? IDNoReasonId { get; set; }
 
-        public int OldEmploymentStatus { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentTypeRequired")]
+        public int EmploymentType { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentStatusRequired")]
+        public int EmploymentStatus { get; set; }
+
+        public int? OldEmploymentStatus { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldEmploymentStatus), NewProperty = nameof(EmploymentStatus),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentStatusChangeDateRequired")]
         public DateTime? EmploymentStatusChangeDate { get; set; }
 
-        public int OldJobCategoryId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobCategoryRequired")]
+        public int JobCategoryId { get; set; }
+
+        public int? OldJobCategoryId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldJobCategoryId), NewProperty = nameof(JobCategoryId),
@@ -108,9 +166,15 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobCategoryReasonRequired")]
         public int? JobCategoryReasonId { get; set; }
 
-        public int OldGradeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeRequired")]
+        public int GradeId { get; set; }
 
-        public int OldGradeLevelId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeLevelRequired")]
+        public int GradeLevelId { get; set; }
+
+        public int? OldGradeId { get; set; }
+
+        public int? OldGradeLevelId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldGradeId), NewProperty = nameof(GradeId),
@@ -125,7 +189,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeReasonRequired")]
         public int? JobGradeReasonId { get; set; }
 
-        public int OldDivisionId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DivisionRequired")]
+        public int DivisionId { get; set; }
+
+        public int? OldDivisionId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldDivisionId), NewProperty = nameof(DivisionId),
@@ -136,7 +203,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DivisionReasonRequired")]
         public int? DivisionReasonId { get; set; }
 
-        public int OldDepartmentId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DepartmentRequired")]
+        public int DepartmentId { get; set; }
+
+        public int? OldDepartmentId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldDepartmentId), NewProperty = nameof(DepartmentId),
@@ -147,7 +217,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DepartmentReasonRequired")]
         public int? DepartmentReasonId { get; set; }
 
-        public int OldSectionId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SectionRequired")]
+        public int SectionId { get; set; }
+
+        public int? OldSectionId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldSectionId), NewProperty = nameof(SectionId),
@@ -158,7 +231,10 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SectionReasonRequired")]
         public int? SectionReasonId { get; set; }
 
-        public int OldCostCenterId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CostCenterRequired")]
+        public int CostCenterId { get; set; }
+
+        public int? OldCostCenterId { get; set; }
 
         [DataType(DataType.Date)]
         [EmploymentChangeValue(OldProperty = nameof(OldCostCenterId), NewProperty = nameof(CostCenterId),
@@ -168,6 +244,83 @@
         [EmploymentChangeValue(OldProperty = nameof(OldCostCenterId), NewProperty = nameof(CostCenterId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CostCenterReasonRequired")]
         public int? CostCenterReasonId { get; set; }
+
+        [Display(ResourceType = typeof(ViewLang), Name = "EmailAddress")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailRequired")]
+        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailMaxLength")]
+        [DataType(DataType.EmailAddress, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CountryRequired")]
+        public int CountryId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CityRequired")]
+        public int CityId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OfficeRequired")]
+        public int OfficeId { get; set; }
+
+        public int? DST { get; set; }
+
+        public int? DBT { get; set; }
+
+        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "TaxIDNoMaxLength")]
+        public string TaxIDNo { get; set; }
+
+        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "TaxIDNoMaxLength")]
+        public string SSSNo { get; set; }
+
+        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "HealthInsNoMaxLength")]
+        public string HealthInsNo { get; set; }
+
+        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "HDMFNoMaxLength")]
+        public string HDMFNo { get; set; }
+
+        public WorkPermit WorkPermit { get; set; } = new WorkPermit();
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminRequired")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminMaxLength")]
+        public string FullNamePFileAdmin { get; set; }
+
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NickNamePFileAdminMaxLength")]
+        public string NickNamePFileAdmin { get; set; }
+
+        public Paymaster Paymaster { get; set; } = new Paymaster();
+
+        public EPA EPA { get; set; } = new EPA();
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordRequired")]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordMaxLength")]
+        public string PDFPassword { get; set; }
+
+        public IEnumerable<Company> Companies { get; set; } = new List<Company>();
+
+        public IEnumerable<ReferenceResourceModel> LocalCompanies { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> LocalJobTitles { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> EmploymentTypes { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> EmploymentStatuses { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> Grades { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> GradeLevels { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> JobCategories { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> Countries { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> Cities { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> Offices { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> TaxDeclarations { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> WorkPermitType2s { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
 

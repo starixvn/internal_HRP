@@ -3,7 +3,7 @@
 @using HRP.Models.EmployeeManagement
 
 @model UpdateEmploymentViewModel
-@{ 
+@{
     var minDate = Constants.MinDate;
     var maxDate = DateTime.Now.Date.ToShortDateString();
 }
@@ -80,7 +80,7 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="JobTitle">@ViewLang.BVI</label>
-                    <input type="text" class="control" asp-for="JobTitle" maxlength="50">
+                    <input type="text" class="control" asp-for="JobTitle">
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobTitleChangeDate">@ViewLang.ChangeDate</label>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="EmployeeCode">@ViewLang.EmpCode</label>
-                    <input type="text" class="control" asp-for="EmployeeCode" maxlength="15">
+                    <input type="text" class="control" asp-for="EmployeeCode">
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="IDNoChangeDate">@ViewLang.ChangeDate</label>
@@ -360,7 +360,7 @@
             <div class="group-complex space-between-parts">
                 <div class="component">
                     <label class="text like-group-title -has-required" asp-for="Email"><span class="icon-group"></span>@ViewLang.EmailAddress</label>
-                    <input type="text" class="control width-424" asp-for="Email" maxlength="254">
+                    <input type="text" class="control width-424" asp-for="Email">
                 </div>
             </div>
         </div>
@@ -455,21 +455,21 @@
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="TaxIDNo">@ViewLang.TaxIDNo</label>
-                    <input type="text" class="control" asp-for="TaxIDNo" maxlength="50">
+                    <input type="text" class="control" asp-for="TaxIDNo">
                 </div>
                 <div class="component">
                     <label class="text" asp-for="SSSNo">@ViewLang.SSSNo</label>
-                    <input type="text" class="control" asp-for="SSSNo" maxlength="50">
+                    <input type="text" class="control" asp-for="SSSNo">
                 </div>
             </div>
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="HealthInsNo">@ViewLang.HealthInsNo</label>
-                    <input type="text" class="control" asp-for="HealthInsNo" maxlength="50">
+                    <input type="text" class="control" asp-for="HealthInsNo">
                 </div>
                 <div class="component">
                     <label class="text" asp-for="HDMFNo">@ViewLang.HDMFNo</label>
-                    <input type="text" class="control" asp-for="HDMFNo" maxlength="50">
+                    <input type="text" class="control" asp-for="HDMFNo">
                 </div>
             </div>
 
@@ -484,12 +484,12 @@
                 <div class="component">
                     <label class="text" asp-for="FullNamePFileAdmin">@ViewLang.FullName</label>
                     <div class="element-required">
-                        <input type="text" class="control" asp-for="FullNamePFileAdmin" maxlength="70">
+                        <input type="text" class="control" asp-for="FullNamePFileAdmin">
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="NickNamePFileAdmin">@ViewLang.Nickname</label>
-                    <input type="text" class="control" asp-for="NickNamePFileAdmin" maxlength="30">
+                    <input type="text" class="control" asp-for="NickNamePFileAdmin">
                 </div>
             </div>
 
@@ -505,29 +505,29 @@
                 <div class="component">
                     <label class="text" asp-for="Paymaster.FullNameBVISalary">@ViewLang.FullName</label>
                     <div class="element-required">
-                        <input type="text" class="control" asp-for="Paymaster.FullNameBVISalary" maxlength="70">
+                        <input type="text" class="control" asp-for="Paymaster.FullNameBVISalary">
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="Paymaster.NickNameBVISalary">@ViewLang.Nickname</label>
-                    <input type="text" class="control" asp-for="Paymaster.NickNameBVISalary" maxlength="30">
+                    <input type="text" class="control" asp-for="Paymaster.NickNameBVISalary">
                 </div>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.BVIAllowance</label>
                 <input type="text" class="control" id="NoneOrIDNoBVIAllowance">
                 <div class="element-required">
-                    <input type="text" class="control" asp-for="Paymaster.FullNameBVIAllowance" maxlength="70">
+                    <input type="text" class="control" asp-for="Paymaster.FullNameBVIAllowance">
                 </div>
-                <input type="text" class="control" asp-for="Paymaster.NickNameBVIAllowance" maxlength="30">
+                <input type="text" class="control" asp-for="Paymaster.NickNameBVIAllowance">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.LocalSalary</label>
                 <input type="text" class="control" id="NoneOrIDNoLocalSalary">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary" maxlength="70">
+                    <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary">
                 </div>
-                <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary" maxlength="30">
+                <input type="text" class="control" asp-for="Paymaster.FullNameLocalSalary">
             </div>
 
             <div class="group-complex -emp-layout9 space-between-parts">
@@ -542,74 +542,74 @@
                 <div class="component">
                     <label class="text" asp-for="EPA.FullNameAdministrator">@ViewLang.FullName</label>
                     <div class="element-required">
-                        <input type="text" class="control" asp-for="EPA.FullNameAdministrator" maxlength="70">
+                        <input type="text" class="control" asp-for="EPA.FullNameAdministrator">
                     </div>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="EPA.NickNameAdministrator">@ViewLang.Nickname</label>
-                    <input type="text" class="control" asp-for="EPA.NickNameAdministrator" maxlength="30">
+                    <input type="text" class="control" asp-for="EPA.NickNameAdministrator">
                 </div>
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Evaluator #1</label>
                 <input type="text" class="control" id="NoneOrIDNoEvaluator1">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameEvaluator1" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameEvaluator1">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameEvaluator1" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameEvaluator1">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Evaluator #2</label>
                 <input type="text" class="control" id="NoneOrIDNoEvaluator2">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameEvaluator2" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameEvaluator2">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameEvaluator2" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameEvaluator2">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Reviewer</label>
                 <input type="text" class="control" id="NoneOrIDNoReviewer">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameReviewer" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameReviewer">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameReviewer" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameReviewer">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Management</label>
                 <input type="text" class="control" id="NoneOrIDNoManagement">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameManagement" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameManagement">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameManagement" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameManagement">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.Increment</label>
                 <input type="text" class="control" id="NoneOrIDNoIncrement">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameIncrement" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameIncrement">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameIncrement" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameIncrement">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.BVIBonus</label>
                 <input type="text" class="control" id="NoneOrIDNoBVIBonus">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameBVIBonus" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameBVIBonus">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameBVIBonus" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameBVIBonus">
             </div>
             <div class="group-complex -emp-layout9">
                 <label class="text-group">@ViewLang.LocalBonus</label>
                 <input type="text" class="control" id="NoneOrIDNoLocalBonus">
                 <div class="padding-right-10">
-                    <input type="text" class="control" asp-for="EPA.FullNameLocalBonus" maxlength="70">
+                    <input type="text" class="control" asp-for="EPA.FullNameLocalBonus">
                 </div>
-                <input type="text" class="control" asp-for="EPA.NickNameLocalBonus" maxlength="30">
+                <input type="text" class="control" asp-for="EPA.NickNameLocalBonus">
             </div>
             <div class="group-complex space-between-parts">
                 <div class="component">
                     <label class="text like-group-title -has-required" asp-for="PDFPassword"><span class="icon-group"></span>@ViewLang.PDFPassword</label>
-                    <input type="text" class="control width-240" asp-for="PDFPassword" maxlength="30">
+                    <input type="text" class="control width-240" asp-for="PDFPassword">
                 </div>
             </div>
         </div>
