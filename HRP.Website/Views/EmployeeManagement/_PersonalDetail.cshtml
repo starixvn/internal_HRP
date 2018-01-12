@@ -35,18 +35,19 @@
         <input type="hidden" asp-for="EmployeeId" />
         <input type="hidden" asp-for="IsHost" />
         <figure class="profile">
-            <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
-            <div style="width: 159px;   height: 161px;    background-color: #999999;  overflow: hidden;">
-                <img src="@Model.ProfilePicLink" style="width: 100%" alt="Profile picture" class="js-displayProfilePicture">
+            <div class="js-changePicture change-picture">
+                <input type="file" accept="image/*" class="hidden" asp-for="ProfilePicture" />
+                <div class="img-container">
+                    <img src="@Model.ProfilePicLink" alt="Profile picture" class="js-displayProfilePicture img-responsive">
+                </div>
+                <figcaption class="link">@ViewLang.ChangePicture</figcaption>
             </div>
-
-            @if (Model.IsHost)
-            {
-                    <figcaption class="change-picture">
-                        <a href="#" class="js-changePicture">@ViewLang.ChangePicture</a>
-                    </figcaption>
-                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-             }
+            <ul class="more-info">
+                <li>File type: .JPG, .JPEG, .PNG</li>
+                <li>Maximum capacity: 2MB</li>
+                <li>Dimension :160X160 px</li>
+            </ul>
+            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
         </figure>
         <div class="col has-space">
             <label class="text -has-required">@ViewLang.FullNameSpacing</label>

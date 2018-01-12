@@ -22,6 +22,7 @@
         <span class="message"></span>
     </div>
     <div class="form-content">
+        <!-- Basic Salary -->
         <div class="group-complex -payroll-layout1">
             <div class="">
                 <div class="group-title -first"><span class="icon-group"></span>Basic Salary</div>
@@ -31,7 +32,7 @@
                 <select class="control without-label">
                     <option>USD</option>
                 </select>
-                <input type="text" class="control without-label" placeholder="Total Amount" />
+                <input type="text" class="control without-label total-amount" placeholder="Total Amount" />
             </div>
             <div class="">
                 <div class="pull-left calendar">
@@ -58,8 +59,315 @@
                 </label>
             </div>
         </div>
-        <div class="payment-transaction">Payment Transaction</div>
-         
+        <div class="transaction-title">Payment Transaction</div>
+        <div class="transaction-title">
+            <label class="text">Bank Type</label>
+            <label class="text">Account Name</label>
+        </div>
+        <div class="group-complex -payroll-layout1">
+            <label class="bank-type">
+                <input type="radio" name="bankType" />
+                <span>e-Banking</span>
+            </label>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div></div>
+            <div class="payment-transaction">
+                <label class="bank-type">e-Banking</label>
+                <select class="control">
+                    <option></option>
+                </select>
+                <span class="add-account"></span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout1">
+            <label class="bank-type">
+                <input type="radio" name="bankType" />
+                <span>Direct Banking 1</span>
+            </label>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control" />
+            </div>
+            <div></div>
+            <div class="payment-transaction">                
+                <select class="control">
+                    <option>Direct Banking</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+                <span class="add-account"></span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout1">
+            <label class="bank-type">
+                <input type="radio" name="bankType" />
+                <span>Direct Banking 2</span>
+            </label>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control" />
+            </div>
+            <div></div>
+            <div class="payment-transaction">                
+                <select class="control">
+                    <option>Cibtra Co. Account</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+                <span class="add-account"></span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout1">
+            <label class="bank-type">
+                <input type="radio" name="bankType" checked />
+                <span>Cash</span>
+            </label>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control" disabled />
+            </div>
+            <div></div>
+            <div class="payment-transaction">                
+                <label class="bank-type">Cash</label>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <!-- Allowances -->
+        <div class="group-complex -payroll-layout3">
+            <div class="group-title -first"><span class="icon-group"></span>Allowances</div>
+            <div></div>
+            <div class="conversion">Conversion</div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="text-group">Actual</div>
+            <div></div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control total-amount" />
+            </div>
+            <div class="transaction-title-allowances">
+                <span>Bank Type</span>
+                <span>Account Name</span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="bank-type">
+                <input type="radio" name="bankTypeAllowance"/>
+                <span>Direct Banking 1</span>
+            </div>
+            <div></div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="payment-transaction">
+                <select class="control">
+                    <option>Direct Banking</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+                <span class="add-account"></span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="bank-type">
+                <input type="radio" name="bankTypeAllowance"/>
+                <span>Direct Banking 2</span>
+            </div>
+            <div></div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="payment-transaction">
+                <select class="control">
+                    <option>Contra Co. Account</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+                <span class="add-account"></span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="bank-type">
+                <input type="radio" name="bankTypeAllowance" checked/>
+                <span>Cash</span>
+            </div>
+            <div></div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" disabled />
+            </div>
+            <div class="payment-transaction">
+                <label class="bank-type">Cash</label>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Subsistence</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control number" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Home Passage</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Housing</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Mobile Phone</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">HPI</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+            <div class="transaction-title-allowances">
+                <span class="bank-name">Working Days</span>
+                <span class="bank-name">Rate</span>
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Duty Meal</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" disabled />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control" disabled />
+            </div>
+            <div class="payment-transaction">
+                <input type="text" class="control number" disabled />
+                <input type="text" class="control number" />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Secondment</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Others</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" />
+            </div>
+            <div class="currency-amount">
+                <input type="text" class="control" disabled />
+                <input type="text" class="control number" disabled />
+            </div>
+        </div>
+        <hr />
+        <!-- Deductions -->
+        <div class="deductions-title"><span class="icon-group"></span>Deductions</div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Romming Charges</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" placeholder="Amount" />
+            </div>
+        </div>
+        <div class="group-complex -payroll-layout3">
+            <div class="align-text">Fitness First</div>
+            <div class="currency-amount">
+                <select class="control">
+                    <option>Currency</option>
+                </select>
+                <input type="text" class="control number" placeholder="Amount" />
+            </div>
+        </div>
+        <div class="list-button">
+            <button class="button -second">@ViewLang.Cancel</button>
+            <button class="button -primary">@ViewLang.Save</button>
+        </div>
     </div>
 </form>
 

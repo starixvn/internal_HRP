@@ -9,7 +9,7 @@
 
         .icon-calendar {
             position: absolute;
-            bottom: 5px;
+            bottom: 2px;
             right: 4px;
             color: #f57d14;
             font-size: 22px;           
@@ -46,15 +46,28 @@
 
     .text-group {
         display: block;
+        padding-left: 18px; 
         color: #333;
         font-weight: bold;
-        line-height: 28px;
-        text-align: left;
-        padding-left: 20px;       
+    }
+
+    .deductions-title {
+        padding-bottom: 10px;
+        color: #ff0000;
+        font-weight: bold;
     }
 }
 
 .payroll {    
+    .total-amount {
+        background-color: #ffe69a;
+        text-align: right;
+    }
+
+    .number {
+        text-align: right;
+    }
+
     .calendar {
         width: 110px;
     }
@@ -67,14 +80,67 @@
         padding-top: 24px;
     }
 
+    .padding-left-280 {
+        padding-left: 280px;
+    }
+
+    .align-text {
+        padding-left: 18px;
+    }
+
     .days {
         padding-left: 10px;
     }
 
-    .payment-transaction {
-        padding-left: 649px;
+    .transaction-title, .transaction-title-allowances {
+        display: grid;      
+        grid-gap: 5px;
+        grid-template-columns: 146px 135px; 
+        grid-template-rows: 1fr; 
+        justify-content: flex-start;
+        align-items: center;
+        padding: 2px 0;
         font-weight: bold;
         color: #333;
+    }    
+
+    .transaction-title {
+        padding-left: 649px;
+    }
+
+    .transaction-title-allowances {
+        padding-top: 14px;
+        font-weight: bold;
+        color: #666;
+    }
+
+    .bank-type {
+        line-height: 28px;
+        color: #1973b2;
+        font-weight: bold;
+    }
+
+    .add-account {
+        @include border-radius(50%);
+        @include box-shadow-multiple("0 2px 2px 0px rgba(0,0,0,0.3)");
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #1ca041;
+        height: 18px;
+        width: 18px;
+
+        &:before {
+            font-family: "hrp";
+            content: "\e900";
+            color: #fff;
+            font-size: 9px;
+        }
+    }   
+    
+    .conversion {
+        font-weight: bold;
+        color: #666;
     }
 }
 
@@ -83,21 +149,48 @@
     grid-gap: 20px;
     grid-template-rows: 1fr; 
     justify-content: flex-start;
-    align-items: flex-start;
-    margin-bottom: 12px;
+    align-items: center;
+    margin-bottom: 6px;
 
     /* Personal detail */
 
     &.-payroll-layout1 {        
-        grid-template-columns: 134px 198px 258px 306px;        
+        grid-template-columns: 134px 200px 258px 306px;        
+    }
+
+    &.-payroll-layout2 {        
+        grid-template-columns: 134px 200px 584px;        
+    }
+    
+    &.-payroll-layout3 {
+        grid-template-columns: 134px 200px 200px 368px; 
     }
 }
 
 .currency-amount {
     display: grid;      
     grid-gap: 5px;
-    grid-template-columns: 80px 110px; 
+    grid-template-columns: 86px 110px; 
     grid-template-rows: 1fr; 
     justify-content: flex-start;
     align-items: flex-start;
+}
+
+.payment-transaction {
+    display: grid;      
+    grid-gap: 5px;
+    grid-template-columns: 146px 135px 20px; 
+    grid-template-rows: 1fr; 
+    justify-content: flex-start;
+    align-items: center;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top-color:#dfdfdf;
+}
+
+.list-button {
+    margin-top: 8px;
 }
