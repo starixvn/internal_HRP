@@ -14,6 +14,7 @@
 <h2>@ViewBag.Title</h2>
 
 <form asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" method="post">
+    <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId"/>
     <div>
         <div>
             <requiredlabel asp-for="BankAccount.BankType" highlight-class="red bold"></requiredlabel>
@@ -22,35 +23,35 @@
         </div>
         <div>
             <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
-            <input asp-for="BankAccount.AccountName" />
+            <input asp-for="BankAccount.AccountName"/>
             <span asp-validation-for="BankAccount.AccountName"></span>
         </div>
     </div>
     <div>
         <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
-        <input asp-for="BankAccount.AccountNumber" />
+        <input asp-for="BankAccount.AccountNumber"/>
         <span asp-validation-for="BankAccount.AccountNumber"></span>
     </div>
     <div>
         <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
-        <input asp-for="BankAccount.BeneficiaryName" />
+        <input asp-for="BankAccount.BeneficiaryName"/>
         <span asp-validation-for="BankAccount.BeneficiaryName"></span>
     </div>
     <div>
         <div>
             <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
-            <input asp-for="BankAccount.BankName" />
+            <input asp-for="BankAccount.BankName"/>
             <span asp-validation-for="BankAccount.BankName"></span>
         </div>
         <div>
             <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
-            <input asp-for="BankAccount.BankBranch" />
+            <input asp-for="BankAccount.BankBranch"/>
             <span asp-validation-for="BankAccount.BankBranch"></span>
         </div>
     </div>
     <div>
         <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
-        <input asp-for="BankAccount.BankAddress" />
+        <input asp-for="BankAccount.BankAddress"/>
         <span asp-validation-for="BankAccount.BankAddress"></span>
     </div>
     <div>
@@ -60,13 +61,13 @@
         </div>
         <div>
             <requiredlabel asp-for="BankAccount.BankSwiftCode"></requiredlabel>
-            <input asp-for="BankAccount.BankSwiftCode" />
+            <input asp-for="BankAccount.BankSwiftCode"/>
             <span asp-validation-for="BankAccount.BankSwiftCode"></span>
         </div>
     </div>
     <div>
         <label asp-for="BankAccount.IsActive"></label>
-        <input asp-for="BankAccount.IsActive" />
+        <input asp-for="BankAccount.IsActive"/>
     </div>
 
     <div>

@@ -10,15 +10,54 @@
 
 @*Filter form*@
 <form asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" method="get">
-    <input asp-for="EmployeeId" type="hidden"/>
-    <select asp-for="SelectedBankType" asp-items="@Model.BankTypes"></select>
+    <input asp-for="EmployeeId" type="hidden" />
+    <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" multiple="multiple"></select>
     <select asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     <button type="submit">Submit</button>
 </form>
 
 <a asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
 
-@foreach (var bankAccount in Model.BankAccounts)
-{
-    <div>@bankAccount.AccountNumber</div>
-}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Bank Type</th>
+            <th>Account Name</th>
+            <th>Account No.</th>
+            <th>Beneficiary Name</th>
+            <th>Bank Name</th>
+            <th>Branch</th>
+            <th>Type of Account</th>
+            <th>SWIFT Code</th>
+            <th>Active</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+    @for (var index = 0; index < Model.BankAccounts.Count; index++)
+    {
+        <tr>
+            <td>@(index + 1)</td>
+            @{
+                var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
+                var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
+            }
+            <td>@bankType</td>
+            <td>@Model.BankAccounts[index].AccountName</td>
+            <td>@Model.BankAccounts[index].AccountNumber</td>
+            <td>@Model.BankAccounts[index].BeneficiaryName</td>
+            <td>@Model.BankAccounts[index].BankName</td>
+            <td>@Model.BankAccounts[index].BankBranch</td>
+            <td>@bankAccountType</td>
+            <td>@Model.BankAccounts[index].BankSwiftCode</td>
+            <td>
+                <input type="checkbox" value="@Model.BankAccounts[index].IsActive"/>
+            </td>
+            <td>
+                <a asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement">edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

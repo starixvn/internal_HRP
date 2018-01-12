@@ -10,6 +10,6 @@
         IEnumerable<BankAccount> GetBankAccountsByEmployeeId(int employeeId);
 
         IEnumerable<BankAccount>
-            FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive);
+            FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive);
     }
 }

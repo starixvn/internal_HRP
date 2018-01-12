@@ -11,10 +11,10 @@
     using Core.Services;
     using Criteria;
     using Criteria.Employee;
-    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Bank;
+    using Models.Currency;
     using Models.EmployeeManagement;
     using Services;
     using Services.Interfaces;
@@ -259,13 +259,13 @@
                     new GetRefResourceByNamesCriteria { RefNames = refNames });
 
             var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
-            ////var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
 
-            viewModel.Initialize(employee.FullName, bankTypes);
+            viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
             viewModel.BankAccounts = bankAccountService
-                .FilterBankAccounts(bankAccounts, viewModel.SelectedBankType, viewModel.IsActiveBankAccount)
+                .FilterBankAccounts(bankAccounts, viewModel.SelectedBankTypes, viewModel.IsActiveBankAccount)
                 .ToList();
 
             return View(viewModel);
@@ -307,7 +307,8 @@
 
             if (result.IsSuccessful)
             {
-                return RedirectToAction("CreateNewBankAccount", viewModel.EmployeeId);
+                var redirectViewModel = new EditEmployeeBankDetailsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+                return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
             }
 
             return View(viewModel);

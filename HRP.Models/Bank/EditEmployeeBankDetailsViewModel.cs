@@ -6,9 +6,9 @@
 
     public class EditEmployeeBankDetailsViewModel
     {
-        public EditEmployeeBankDetailsViewModel(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes)
+        public EditEmployeeBankDetailsViewModel(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
-            Initialize(employeeName, bankTypes);
+            Initialize(employeeName, bankTypes, bankAccountTypes);
         }
 
         public EditEmployeeBankDetailsViewModel()
@@ -19,7 +19,7 @@
 
         public string EmployeeName { get; set; }
 
-        public int SelectedBankType { get; set; }
+        public int[] SelectedBankTypes { get; set; }
 
         public MultiSelectList BankTypes { get; set; }
 
@@ -27,11 +27,15 @@
 
         public List<SelectListItem> BankAccountActive { get; set; }
 
+        public IEnumerable<ReferenceResourceModel> BankAccountTypes { get; set; }
+
         public IList<BankAccount> BankAccounts { get; set; }
 
-        public void Initialize(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes)
+        public void Initialize(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
             EmployeeName = employeeName;
+
+            BankAccountTypes = bankAccountTypes;
 
             PopulateBankTypes(bankTypes);
             PopulateActiveOptions();

@@ -19,7 +19,7 @@
 
         public CommandResult CreateBankAccount(IBankAccount bankAccount)
         {
-            var criteria = bankAccount as CreateBankAccountCriteria;
+            var criteria = new CreateBankAccountCriteria(bankAccount);
             return baseService.ExecuteNonQuery(criteria);
         }
 
@@ -33,7 +33,7 @@
             return baseService.GetData<BankAccount>(criteria);
         }
 
-        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)
+        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
         {
             var filteredBankAccounts = bankAccounts;
             if (isActive != null)
@@ -41,9 +41,9 @@
                 filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive = isActive.Value);
             }
 
-            if (bankType != 0)
+            if (!bankTypes.Contains(0))
             {
-                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType);
+                filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
             }
 
             return filteredBankAccounts;

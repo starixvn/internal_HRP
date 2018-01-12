@@ -1,10 +1,26 @@
 ﻿namespace HRP.Criteria.Bank
 {
+    using AutoMapper;
     using Fanex.Data.Repository;
     using Models.Bank;
 
     public class CreateBankAccountCriteria : CriteriaBase, IBankAccount
     {
+        public CreateBankAccountCriteria(IBankAccount bankAccount)
+        {
+            EmployeeId = bankAccount.EmployeeId;
+            BankType = bankAccount.BankType;
+            BankName = bankAccount.BankName;
+            BankBranch = bankAccount.BankBranch;
+            BankAddress = bankAccount.BankAddress;
+            BankSwiftCode = bankAccount.BankSwiftCode;
+            AccountName = bankAccount.AccountName;
+            AccountNumber = bankAccount.AccountNumber;
+            AccountType = bankAccount.AccountType;
+            BeneficiaryName = bankAccount.BeneficiaryName;
+            IsActive = bankAccount.IsActive;
+        }
+
         public int EmployeeId { get; set; }
 
         public int BankType { get; set; }
