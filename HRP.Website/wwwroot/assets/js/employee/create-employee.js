@@ -49,6 +49,10 @@
             $('#ProfilePicture').trigger('click');
         });
 
+        $('.js-displayProfilePicture').on('click', function () {
+            $('#ProfilePicture').trigger('click');
+        });
+
         $('#ProfilePicture').on('change', function () {
             var isValid = validatePicture(this.files[0]);
             if (!isValid) {
@@ -140,13 +144,19 @@
 
     function registerEventFormChange() {
         var form = $('#personalDetailForm');
-        form.on('change keyup', function () {
+        form.on('change keyup click', function () {
             var errorTotal = $('.personal-detail-error').children(".field-validation-error").length;
             if (errorTotal === 0) {
                 hideListMessageError();
             } else {
                 showListMessageError();
             }
+        });
+    }
+
+    function registerEventCancel() {
+        $('.js-btnCancel').on('click', function () {
+            window.location.href = "/employeemanagement";            
         });
     }
 
@@ -164,6 +174,7 @@
         registerEventChangePicture();
         registerEventFormSubmit();
         registerEventFormChange();
+        registerEventCancel();
     }
 
     return {
