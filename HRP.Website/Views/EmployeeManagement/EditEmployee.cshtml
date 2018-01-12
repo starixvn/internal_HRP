@@ -20,7 +20,7 @@
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
-    <li class="active">Edit Employee '@Model.NickName'</li>
+    <li class="active">@(Model.IsHost ? "Edit" : "View") Employee '@Model.NickName'</li>
 </ol>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">

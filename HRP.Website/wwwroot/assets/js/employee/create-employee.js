@@ -1,4 +1,4 @@
-﻿var createEmployee = (function ($) {
+﻿var createEmployee = (function ($) {    
     function showPreviewPicture(image) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -160,6 +160,11 @@
         });
     }
 
+    function isHostFunction() {
+        var isHost = ($('#IsHost').val() === "True");
+        return isHost
+    }
+
     function showListMessageError() {
         $('.list-message-error').removeClass("hidden");
     }
@@ -170,11 +175,18 @@
 
     function initModule() {
         initDatePicker();
-        registerEventOpenDatePicker();
-        registerEventChangePicture();
-        registerEventFormSubmit();
-        registerEventFormChange();
-        registerEventCancel();
+        if (isHostFunction()) {
+            registerEventOpenDatePicker();
+            registerEventChangePicture();
+            registerEventFormSubmit();
+            registerEventFormChange();
+            registerEventCancel();
+        } else {
+            $('input[type="text"]').attr('readonly', 'readonly');
+            $('select').attr('disabled', 'disabled');
+            $('form').submit(false);
+        }
+
     }
 
     return {

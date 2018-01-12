@@ -157,6 +157,7 @@
                             employee.NationalityList = GetSelectList(nationalityList);
                             employee.MaritalStatusList = GetSelectList(maritalStatusList);
                             employee.NoOfChildrenList = GetSelectList(noOfChildrenList);
+                            employee.IsHost = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
                         }
 
                         return employee;

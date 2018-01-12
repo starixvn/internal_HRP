@@ -33,16 +33,20 @@
     </div>
     <div class="form-content">
         <input type="hidden" asp-for="EmployeeId" />
+        <input type="hidden" asp-for="IsHost" />
         <figure class="profile">
             <input type="file" accept="image/*" style="display:none" asp-for="ProfilePicture" />
             <div style="width: 159px;   height: 161px;    background-color: #999999;  overflow: hidden;">
-                <img src="@Model.ProfilePicLink"  style="width: 100%" alt="Profile picture" class="js-displayProfilePicture">
+                <img src="@Model.ProfilePicLink" style="width: 100%" alt="Profile picture" class="js-displayProfilePicture">
             </div>
-            
-            <figcaption class="change-picture">
-                <a href="#" class="js-changePicture">@ViewLang.ChangePicture</a>
-            </figcaption>
-            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+
+            @if (Model.IsHost)
+            {
+                    <figcaption class="change-picture">
+                        <a href="#" class="js-changePicture">@ViewLang.ChangePicture</a>
+                    </figcaption>
+                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+             }
         </figure>
         <div class="col has-space">
             <label class="text -has-required">@ViewLang.FullNameSpacing</label>
@@ -178,10 +182,13 @@
                 <input type="text" class="control" asp-for="EmergencyContact.PhoneNo2">
             </div>
         </div>
-        <div class="list-button">
-            <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
-            <button class="button -primary" type="submit">@ViewLang.Save</button>
-        </div>
+
+        @if (Model.IsHost) {
+            <div class="list-button">
+                <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
+                <button class="button -primary" type="submit">@ViewLang.Save</button>
+            </div>
+        }
+
     </div>
-    
 </form>

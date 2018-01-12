@@ -78,7 +78,7 @@
             return Json(new { isSuccessful = false, errors = errorList });
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public IActionResult EditEmployee(int id)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);

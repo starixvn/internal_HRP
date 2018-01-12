@@ -102,5 +102,7 @@
         }
 
         public IFormFile ProfilePicture { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }
