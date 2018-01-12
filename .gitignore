@@ -251,6 +251,3 @@ _Pvt_Extensions
 /HRP.Website/wwwroot/gulpfile.js
 /OpenCover
 /HRP.Website/wwwroot/ProfilePicture
-
-# Minified scripts and styles
-**/wwwroot/assets/bundles/**/*.min.*
