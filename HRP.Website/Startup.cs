@@ -88,6 +88,7 @@
             services.AddScoped<IFunctionService, FunctionService>();
             services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
             services.AddScoped<IBankAccountService, BankAccountService>();
+            services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

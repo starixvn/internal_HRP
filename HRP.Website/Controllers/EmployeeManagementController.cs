@@ -25,15 +25,18 @@
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
         private readonly IBankAccountService bankAccountService;
+        private readonly IEmployeePayrollService payrollService;
 
         public EmployeeManagementController(
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
-            IBankAccountService bankAccountService)
+            IBankAccountService bankAccountService,
+            IEmployeePayrollService payrollService)
         {
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
             this.bankAccountService = bankAccountService;
+            this.payrollService = payrollService;
         }
 
         public IActionResult Index()
@@ -315,13 +318,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
         public IActionResult Payroll(int id)
         {
-            var viewModel = new EmployeePayrollViewModel
-            {
-                BasicSalary = new EmployeePayrollBasicSalaryModel(),
-                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year }),
-                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-            };
-
+            var viewModel = payrollService.GetEmployeePayroll(id);
             return View(viewModel);
         }
 
