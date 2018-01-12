@@ -61,6 +61,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Name.
+        /// </summary>
+        public static string AccountName {
+            get {
+                return ResourceManager.GetString("AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Number.
+        /// </summary>
+        public static string AccountNumber {
+            get {
+                return ResourceManager.GetString("AccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         public static string Action {
@@ -120,6 +138,60 @@ namespace HRP.Resources {
         public static string BackToLogin {
             get {
                 return ResourceManager.GetString("BackToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string BankAccount_IsActive {
+            get {
+                return ResourceManager.GetString("BankAccount_IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string BankAddress {
+            get {
+                return ResourceManager.GetString("BankAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        public static string BankBranch {
+            get {
+                return ResourceManager.GetString("BankBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Name.
+        /// </summary>
+        public static string BankName {
+            get {
+                return ResourceManager.GetString("BankName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Type.
+        /// </summary>
+        public static string BankType {
+            get {
+                return ResourceManager.GetString("BankType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beneficiary Name.
+        /// </summary>
+        public static string BeneficiaryName {
+            get {
+                return ResourceManager.GetString("BeneficiaryName", resourceCulture);
             }
         }
         
@@ -1231,6 +1303,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SWIFT Code.
+        /// </summary>
+        public static string SwiftCode {
+            get {
+                return ResourceManager.GetString("SwiftCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #.
         /// </summary>
         public static string SymbolCount {
@@ -1290,6 +1371,15 @@ namespace HRP.Resources {
         public static string Type2 {
             get {
                 return ResourceManager.GetString("Type2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of Account.
+        /// </summary>
+        public static string TypeOfAccount {
+            get {
+                return ResourceManager.GetString("TypeOfAccount", resourceCulture);
             }
         }
         

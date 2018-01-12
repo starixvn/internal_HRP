@@ -11,8 +11,8 @@
 @*Filter form*@
 <form asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" method="get">
     <input asp-for="EmployeeId" type="hidden"/>
-    @Html.DropDownListFor(x => x.SelectedBankType, Model.BankTypes)
-    @Html.DropDownListFor(x => x.IsActiveBankAccount, Model.BankAccountActive)
+    <select asp-for="SelectedBankType" asp-items="@Model.BankTypes"></select>
+    <select asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     <button type="submit">Submit</button>
 </form>
 

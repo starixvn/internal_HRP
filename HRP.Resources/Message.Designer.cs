@@ -1258,6 +1258,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is required.
+        /// </summary>
+        public static string RequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("RequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request reset password on HRP System.
         /// </summary>
         public static string ResetPasswordEmailSubject {
@@ -1344,6 +1353,15 @@ namespace HRP.Resources {
         public static string StartDateType1Required {
             get {
                 return ResourceManager.GetString("StartDateType1Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must not over {1} character long.
+        /// </summary>
+        public static string StringLengthMaxErrorMessage {
+            get {
+                return ResourceManager.GetString("StringLengthMaxErrorMessage", resourceCulture);
             }
         }
         

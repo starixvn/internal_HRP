@@ -549,4 +549,34 @@
   <data name="EditEmployeePayroll" xml:space="preserve">
     <value>Edit Employee Payroll</value>
   </data>
+  <data name="BankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="TypeOfAccount" xml:space="preserve">
+    <value>Type of Account</value>
+  </data>
+  <data name="BankAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="BankBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="SwiftCode" xml:space="preserve">
+    <value>SWIFT Code</value>
+  </data>
+  <data name="BankType" xml:space="preserve">
+    <value>Bank Type</value>
+  </data>
+  <data name="BeneficiaryName" xml:space="preserve">
+    <value>Beneficiary Name</value>
+  </data>
+  <data name="BankAccount_IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>

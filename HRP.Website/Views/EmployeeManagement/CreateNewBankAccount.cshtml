@@ -5,6 +5,12 @@
     Layout = "_Layout";
 }
 
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
 <h2>@ViewBag.Title</h2>
 
 <form asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" method="post">
@@ -16,29 +22,35 @@
         <div>
             <label asp-for="BankAccount.AccountName"></label>
             <input asp-for="BankAccount.AccountName" />
+            <span asp-validation-for="BankAccount.AccountName"></span>
         </div>
     </div>
     <div>
         <label asp-for="BankAccount.AccountNumber"></label>
         <input asp-for="BankAccount.AccountNumber" />
+        <span asp-validation-for="BankAccount.AccountNumber"></span>
     </div>
     <div>
         <label asp-for="BankAccount.BeneficiaryName"></label>
         <input asp-for="BankAccount.BeneficiaryName" />
+        <span asp-validation-for="BankAccount.BeneficiaryName"></span>
     </div>
     <div>
         <div>
             <label asp-for="BankAccount.BankName"></label>
             <input asp-for="BankAccount.BankName" />
+            <span asp-validation-for="BankAccount.BankName"></span>
         </div>
         <div>
             <label asp-for="BankAccount.BankBranch"></label>
             <input asp-for="BankAccount.BankBranch" />
+            <span asp-validation-for="BankAccount.BankBranch"></span>
         </div>
     </div>
     <div>
         <label asp-for="BankAccount.BankAddress"></label>
         <input asp-for="BankAccount.BankAddress" />
+        <span asp-validation-for="BankAccount.BankAddress"></span>
     </div>
     <div>
         <div>
@@ -48,13 +60,14 @@
         <div>
             <label asp-for="BankAccount.BankSwiftCode"></label>
             <input asp-for="BankAccount.BankSwiftCode" />
+            <span asp-validation-for="BankAccount.BankSwiftCode"></span>
         </div>
     </div>
     <div>
         <label asp-for="BankAccount.IsActive"></label>
         <input asp-for="BankAccount.IsActive" />
     </div>
-    
+
     <div>
         <a asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
         <button type="submit">Save</button>
