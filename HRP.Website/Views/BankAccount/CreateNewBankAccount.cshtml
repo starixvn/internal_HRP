@@ -13,7 +13,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" method="post">
+<form asp-action="CreateNewBankAccount" asp-controller="BankAccount" method="post">
     <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
     <div class="row">
         <div class="form-group col-lg-6">
@@ -71,7 +71,7 @@
     </div>
 
     <div>
-        <a class="btn btn-default" asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
+        <a class="btn btn-default" asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
         <button class="btn btn-success" type="submit">Save</button>
     </div>
 </form>

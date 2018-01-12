@@ -9,14 +9,14 @@
 @Model.EmployeeName
 
 @*Filter form*@
-<form asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement" method="get">
+<form asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" method="get">
     <input asp-for="EmployeeId" type="hidden" />
     <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" multiple="multiple"></select>
     <select asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     <button type="submit">Submit</button>
 </form>
 
-<a asp-action="CreateNewBankAccount" asp-controller="EmployeeManagement" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
+<a asp-action="CreateNewBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">+ Create New Bank Account</a>
 
 <table class="table table-bordered">
     <thead>
@@ -55,7 +55,7 @@
                 <input type="checkbox" value="@Model.BankAccounts[index].IsActive"/>
             </td>
             <td>
-                <a asp-action="EditEmployeeBankDetails" asp-controller="EmployeeManagement">edit</a>
+                <a asp-action="EditEmployeeBankDetails" asp-controller="BankAccount">edit</a>
             </td>
         </tr>
     }
