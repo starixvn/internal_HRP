@@ -43,9 +43,9 @@
         <input type="hidden" asp-for="ProfilePic" />
         <figure class="profile">
             <div class="change-picture">
-                <input type="file" accept="image/*" class="hidden" asp-for="ProfilePicture" />
+                <input type="file" accept="image/x-png,image/jpeg" class="hidden" asp-for="ProfilePicture" />
                 <div class="img-container">
-                    <img src="@Model.ProfilePicLink" alt="Profile picture" class="js-displayProfilePicture img-responsive">
+                    <img src="@Model.ProfilePicLink" alt="Profile picture" class="img-responsive js-displayProfilePicture">
                 </div>
             </div>
             @if (Model.IsHost)

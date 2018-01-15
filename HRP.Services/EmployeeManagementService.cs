@@ -88,7 +88,7 @@
 
         public async Task<CommandResult> EditEmployeeAsync(CreateEmployeeViewModel employee)
         {
-            var criteria = new EditEmployeeCriteria
+            var criteria = new UpdateEmployeeCriteria
             {
                 EmployeeId = employee.EmployeeId,
                 FullName = employee.FullName,

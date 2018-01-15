@@ -24,7 +24,7 @@
             if (image.size / (1024 * 1024) > 5) {
                 errorMessage = 'The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!';
             } else {
-                var pass = /\.(gif|jpe?g|png)$/i.test(image.name);
+                var pass = /\.(jpe?g|png)$/i.test(image.name);
                 if (!pass) {
                     errorMessage = 'The file type is not supported. Please try again.';
                 } else {
@@ -49,7 +49,7 @@
             $('#ProfilePicture').trigger('click');
         });
 
-        $('.js-displayProfilePicture').on('click', function () {
+        $('.img-container').on('click', function () {
             $('#ProfilePicture').trigger('click');
         });
 
@@ -200,8 +200,7 @@
         if (result.isSuccessful) {
             if (isCreateNew()) {
                 showSuccessAndRedirectMessage(result.message, result.redirectLink);
-            }
-            else {
+            } else {
                 commonFunctions.showSuccessMessage(result.message);
                 showButtonSave();
             }
@@ -210,7 +209,7 @@
             var form = $('#personalDetailForm');
             form.validate().showErrors(result.errors);
             if (result.message) {
-                alert(result.message);
+                commonFunctions.showErrorMessage(result.message);
             }
         }
     }
@@ -227,6 +226,7 @@
             $('input[type="text"]').attr('readonly', 'readonly');
             $('select').attr('disabled', 'disabled');
             $('form').submit(false);
+            $('.change-picture').css('cursor', 'default');
         }
     }
 

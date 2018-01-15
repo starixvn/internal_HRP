@@ -3,7 +3,7 @@
     using System;
     using Fanex.Data.Repository;
 
-    public class EditEmployeeCriteria : CriteriaBase
+    public class UpdateEmployeeCriteria : CriteriaBase
     {
         public int EmployeeId { get; set; }
 
@@ -63,7 +63,7 @@
 
         public int UpdatedBy { get; set; }
 
-        public override string GetSettingKey() => "Employee_EditEmployee";
+        public override string GetSettingKey() => "Employee_UpdateEmployee";
 
         public override bool IsValid()
         {
