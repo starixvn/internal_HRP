@@ -82,6 +82,32 @@ namespace HRP.Core.Services
             return result;
         }
 
+        public bool HasPermissionOnCompany(int companyId, string functionKey, Policy policy)
+        {
+            var functions = Functions?.Where(x => x.CompanyId == companyId && x.FunctionKey == functionKey);
+            var result = false;
+
+            if (functions != null)
+            {
+                switch (policy)
+                {
+                    case Policy.Read:
+                        result = functions.Max(x => x.IsRead) || functions.Max(x => x.IsHost);
+                        break;
+
+                    case Policy.Host:
+                        result = functions.Max(x => x.IsHost);
+                        break;
+
+                    default:
+                        result = false;
+                        break;
+                }
+            }
+
+            return result;
+        }
+
         public void ClearAll()
         {
             _session.Clear();

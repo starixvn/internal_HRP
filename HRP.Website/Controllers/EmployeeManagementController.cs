@@ -138,7 +138,7 @@
         }
 
         [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public async Task<IActionResult> UpdateEmployment(int employeeId)
         {
             var refNames = string.Format(

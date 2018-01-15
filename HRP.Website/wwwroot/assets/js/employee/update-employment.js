@@ -1,8 +1,9 @@
 ﻿'use strict';
 
 var updateEmployment = (function ($) {
-    var $employmentTab, $updateEmploymentForm,
+    var $employmentTab, $updateEmploymentForm, currentDate,
         $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
+        $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
         defaultOption = '<option value="" style="display: none;">--Please select--</option>';
 
     function registerEventChangeBVICompany() {
@@ -147,13 +148,15 @@ var updateEmployment = (function ($) {
     }
 
     function calculateLengthOfService() {
-        var $currentDate = $('#CurrentDate');
+        var intervals = ['years', 'months', 'days'],
+            starts,
+            ends,
+            out = [];
 
-        $('#GroupStartDate').on('dp.change', function (e) {
-            var starts = moment($currentDate.val()),
-                ends = e.date,
-                intervals = ['years', 'months', 'days'],
-                out = [];
+        if ($groupStartDateElement.val()) {
+            starts = $groupEndDateElement.val() ? moment($groupEndDateElement.val()) : moment(currentDate);
+            ends = moment($groupStartDateElement.val());
+            out = [];
 
             for (var i = 0; i < intervals.length; i++) {
                 var diff = starts.diff(ends, intervals[i]);
@@ -162,13 +165,12 @@ var updateEmployment = (function ($) {
             }
 
             $('#ServiceGroup').val(out.join('/'));
-        });
+        }
 
-        $('#CompanyStartDate').on('dp.change', function (e) {
-            var starts = moment($currentDate.val()),
-                ends = e.date,
-                intervals = ['years', 'months', 'days'],
-                out = [];
+        if ($companyStartDateElement.val()) {
+            starts = $companyEndDateElement.val() ? moment($companyEndDateElement.val()) : moment(currentDate);
+            ends = moment($companyStartDateElement.val());
+            out = [];
 
             for (var i = 0; i < intervals.length; i++) {
                 var diff = starts.diff(ends, intervals[i]);
@@ -177,6 +179,24 @@ var updateEmployment = (function ($) {
             }
 
             $('#ServiceCompany').val(out.join('/'));
+        }
+    }
+
+    function registerEventChangeDateCommencement() {
+        $groupStartDateElement.on('dp.change', function (e) {
+            calculateLengthOfService();
+        });
+
+        $groupEndDateElement.on('dp.change', function (e) {
+            calculateLengthOfService();
+        });
+
+        $companyStartDateElement.on('dp.change', function (e) {
+            calculateLengthOfService();
+        });
+
+        $companyEndDateElement.on('dp.change', function (e) {
+            calculateLengthOfService();
         });
     }
 
@@ -290,33 +310,46 @@ var updateEmployment = (function ($) {
                 $employmentTab.html(data);
 
                 $updateEmploymentForm = $('#updateEmploymentForm');
-                $bviCompanyElement = $('#CompanyId');
-                $divisionElement = $('#DivisionId');
-                $departmentElement = $('#DepartmentId');
-                $sectionElement = $('#SectionId');
-                $costCenterElement = $('#CostCenterId');
+                currentDate = $updateEmploymentForm.find('#CurrentDate').val();
+                $groupStartDateElement = $updateEmploymentForm.find('#GroupStartDate');
+                $groupEndDateElement = $updateEmploymentForm.find('#GroupEndDate');
+                $companyStartDateElement = $updateEmploymentForm.find('#CompanyStartDate');
+                $companyEndDateElement = $updateEmploymentForm.find('#CompanyEndDate');
 
-                reparseform($updateEmploymentForm);
                 initDatepicker($updateEmploymentForm);
-                initSelect2($updateEmploymentForm);
                 calculateLengthOfService();
 
-                registerEventChangeBVICompany();
-                registerEventChangeDivision();
-                registerEventChangeDepartment();
-                registerEventChangeSection();
-                initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
-                initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
-                initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));
-                initSearchAutocomplete($('#NoneOrIDNoLocalSalary'), $('#Paymaster_FullNameLocalSalary'), $('#Paymaster_NickNameLocalSalary'));
-                initSearchAutocomplete($('#NoneOrIDNoAdministrator'), $('#EPA_FullNameAdministrator'), $('#EPA_NickNameAdministrator'));
-                initSearchAutocomplete($('#NoneOrIDNoEvaluator1'), $('#EPA_FullNameEvaluator1'), $('#EPA_NickNameEvaluator1'));
-                initSearchAutocomplete($('#NoneOrIDNoEvaluator2'), $('#EPA_FullNameEvaluator2'), $('#EPA_NickNameEvaluator2'));
-                initSearchAutocomplete($('#NoneOrIDNoReviewer'), $('#EPA_FullNameReviewer'), $('#EPA_NickNameReviewer'));
-                initSearchAutocomplete($('#NoneOrIDNoManagement'), $('#EPA_FullNameManagement'), $('#EPA_NickNameManagement'));
-                initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
-                initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
-                initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
+                if ($updateEmploymentForm.find('#IsHost').prop('checked')) {
+                    $bviCompanyElement = $updateEmploymentForm.find('#CompanyId');
+                    $divisionElement = $updateEmploymentForm.find('#DivisionId');
+                    $departmentElement = $updateEmploymentForm.find('#DepartmentId');
+                    $sectionElement = $updateEmploymentForm.find('#SectionId');
+                    $costCenterElement = $updateEmploymentForm.find('#CostCenterId');
+
+                    reparseform($updateEmploymentForm);
+                    initSelect2($updateEmploymentForm);
+                    registerEventChangeDateCommencement();
+                    registerEventChangeBVICompany();
+                    registerEventChangeDivision();
+                    registerEventChangeDepartment();
+                    registerEventChangeSection();
+                    initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
+                    initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
+                    initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));
+                    initSearchAutocomplete($('#NoneOrIDNoLocalSalary'), $('#Paymaster_FullNameLocalSalary'), $('#Paymaster_NickNameLocalSalary'));
+                    initSearchAutocomplete($('#NoneOrIDNoAdministrator'), $('#EPA_FullNameAdministrator'), $('#EPA_NickNameAdministrator'));
+                    initSearchAutocomplete($('#NoneOrIDNoEvaluator1'), $('#EPA_FullNameEvaluator1'), $('#EPA_NickNameEvaluator1'));
+                    initSearchAutocomplete($('#NoneOrIDNoEvaluator2'), $('#EPA_FullNameEvaluator2'), $('#EPA_NickNameEvaluator2'));
+                    initSearchAutocomplete($('#NoneOrIDNoReviewer'), $('#EPA_FullNameReviewer'), $('#EPA_NickNameReviewer'));
+                    initSearchAutocomplete($('#NoneOrIDNoManagement'), $('#EPA_FullNameManagement'), $('#EPA_NickNameManagement'));
+                    initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
+                    initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
+                    initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
+                } else {
+                    $updateEmploymentForm.find('input[type="text"]').attr('readonly', 'readonly');
+                    $updateEmploymentForm.find('select').attr('disabled', 'disabled');
+                    $updateEmploymentForm.submit(false);
+                }
             },
             error: commonFunctions.handleAjaxError
         });

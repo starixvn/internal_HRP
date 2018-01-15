@@ -6,6 +6,7 @@
     using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
+    using HRP.Models.EmployeeManagement;
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,47 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.Null(viewResult.ViewName);
         }
+
+        #region UpdateEmployment
+
+        [Fact]
+        public async Task UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
+        {
+            //Arrange
+            var expected = "_UpdateEmployment";
+            employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.GetEmploymentToUpdate(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
+
+            //Act
+            var actual = await employeeManagementController.UpdateEmployment(1);
+
+            //Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal(expected, viewResult.ViewName);
+        }
+
+        [Fact]
+        public async Task UpdateEmploymentGet_CheckViewModel_ReturnExpectedViewModel()
+        {
+            //Arrange
+            var employeeId = 1;
+            var expected = new UpdateEmploymentViewModel
+            {
+                EmployeeId = employeeId
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.GetEmploymentToUpdate(Arg.Any<int>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.UpdateEmployment(employeeId);
+
+            //Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<UpdateEmploymentViewModel>(viewResult.Model);
+            Assert.Equal(expected.EmployeeId, viewModel.EmployeeId);
+        }
+
+        #endregion UpdateEmployment
 
         [Fact]
         public async Task CheckEmployeeCodeExisted_WhenCalled_ReturnAsExpected()

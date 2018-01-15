@@ -252,6 +252,7 @@
             employment.OldSectionId = employment.SectionId;
             employment.OldCostCenterId = employment.CostCenterId;
             employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
+            employment.IsHost = sessionService.HasPermissionOnCompany(employment.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
 
             return employment;
         }

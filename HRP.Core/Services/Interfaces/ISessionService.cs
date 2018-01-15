@@ -14,6 +14,8 @@ namespace HRP.Core.Services
 
         bool HasPermissionOnFunction(string functionKey, Policy policy);
 
+        bool HasPermissionOnCompany(int companyId, string functionKey, Policy policy);
+
         void ClearAll();
     }
 }

@@ -35,6 +35,7 @@
             <input hidden asp-for="OldDepartmentId">
             <input hidden asp-for="OldSectionId">
             <input hidden asp-for="OldCostCenterId">
+            <input type="checkbox" hidden asp-for="IsHost" />
             <input hidden id="CurrentDate" value="@DateTime.Now.Date.ToShortDateString()" />
             <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
             <div class="group-complex -emp-layout1">
@@ -615,7 +616,10 @@
         </div>
     </div>
     <div class="list-button">
-        <button class="button -second">@ViewLang.Cancel</button>
-        <button class="button -primary">@ViewLang.Save</button>
+        @if (Model.IsHost)
+        {
+            <button class="button -second">@ViewLang.Cancel</button>
+            <button class="button -primary">@ViewLang.Save</button>
+        }
     </div>
 </form>
