@@ -1,6 +1,5 @@
 ﻿namespace HRP.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -141,7 +140,7 @@
 
             if (criteria.IsValid())
             {
-                using (var db = new ObjectDb(criteria.GetSettingKey()))
+                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
                 {
                     using (var multi = db.QueryMultiple(criteria))
                     {

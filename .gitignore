@@ -251,3 +251,5 @@ _Pvt_Extensions
 /HRP.Website/wwwroot/gulpfile.js
 /OpenCover
 /HRP.Website/wwwroot/ProfilePicture
+*.ncrunchproject
+*.ncrunchsolution

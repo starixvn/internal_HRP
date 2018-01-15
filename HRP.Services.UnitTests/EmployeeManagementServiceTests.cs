@@ -1,21 +1,43 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using AutoFixture;
+    using Fanex.Data;
+    using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Employee;
+    using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
 
     public class EmployeeManagementServiceTests
     {
+        private IObjectDb mockObjectDb;
+        private Fixture fixture;
+
+        public EmployeeManagementServiceTests()
+        {
+            DbSettingProviderManager
+            .StartTestingSession()
+            .Run();
+
+            mockObjectDb = Substitute.For<IObjectDb>();
+            ObjectDbFactory.Mock((key, time) => mockObjectDb);
+
+            fixture = InitFixture();
+        }
+
         [Fact]
-        public async Task CreateEmployeeAsync_WithValidCreateEmployeeViewModel_ReturnCommandResultSuccessful()
+        public async Task CreateEmployeeAsync_WithValidCreateEmployeeViewModel_ReturnCommandResult()
         {
             // Arrange
             var expected = new CommandResult
@@ -27,7 +49,7 @@
             var baseService = FakeBaseService();
             baseService.ExecuteNonQueryAsync(Arg.Do<CreateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
-            var viewModel = StubValidCreateEmployeeViewModel();
+            var viewModel = FakeCreateEmployeeViewModel();
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
@@ -74,7 +96,7 @@
             };
             var baseService = FakeBaseService();
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
-            var viewModel = StubValidCreateEmployeeViewModel();
+            var viewModel = FakeCreateEmployeeViewModel();
             viewModel.ProfilePicture = StubPictureProfile();
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
@@ -83,6 +105,101 @@
 
             // Assert
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task EditEmployeeAsync_WithValidUpdateEmployeeCriteria_ReturnCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult
+            {
+                Code = 0,
+                Message = "Successful!"
+            };
+            var criteria = new UpdateEmployeeCriteria();
+            var baseService = FakeBaseService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
+
+            var viewModel = FakeCreateEmployeeViewModel();
+            var employeeManagementService = InitEmployeeManagementService(baseService);
+
+            // Act
+            var actual = await employeeManagementService.EditEmployeeAsync(viewModel);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task EditEmployeeAsync_CreateEmployeeViewModelHasValueProfilePicture_SavePictureAsync()
+        {
+            // Arrange
+            var expected = new CommandResult
+            {
+                Code = 0,
+                Message = "Successful!"
+            };
+            var baseService = FakeBaseService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
+            var viewModel = FakeCreateEmployeeViewModel();
+            viewModel.ProfilePicture = StubPictureProfile();
+            var employeeManagementService = InitEmployeeManagementService(baseService);
+
+            // Act
+            var actual = await employeeManagementService.EditEmployeeAsync(viewModel);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetEmployeeById_WithInvalidEmployeeId_ReturnNull(int employeeId)
+        {
+            // Arrange
+            var employeeManagementService = InitEmployeeManagementService(null);
+
+            // Act
+            var actual = employeeManagementService.GetEmployeeById(employeeId);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(99)]
+        public void GetEmployeeById_WithValidEmployeeId_ReturnViewModel(int employeeId)
+        {
+            // Arrange
+            var expected = FakeCreateEmployeeViewModel();
+            var employeeManagementService = InitEmployeeManagementService(null);
+            var reader = Substitute.For<IMultiResultReader>();
+            reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel>() { expected });
+            mockObjectDb.QueryMultiple(Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId)).Returns(reader);
+
+            // Act
+            var actual = employeeManagementService.GetEmployeeById(employeeId);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task InitDataForNewEmployeeAsync_WhenCall_ReturnCreateEmployeeViewModelAsync()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<ReferenceResourceModel>>();
+            var baseService = FakeBaseService();
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
+            var employeeManagementService = InitEmployeeManagementService(baseService);
+
+            // Act
+            var actual = await employeeManagementService.InitDataForNewEmployeeAsync();
+
+            // Assert
+            Assert.IsType<CreateEmployeeViewModel>(actual);
         }
 
         private IBaseService FakeBaseService()
@@ -153,7 +270,7 @@
         {
             var file = Substitute.For<IFormFile>();
             var content = "Hello World from a Fake File";
-            var fileName = "test.pdf";
+            var fileName = "test.txt";
             var ms = new MemoryStream();
             var writer = new StreamWriter(ms);
             writer.Write(content);
@@ -164,6 +281,44 @@
             file.Length.Returns(ms.Length);
 
             return file;
+        }
+
+        private CreateEmployeeViewModel FakeCreateEmployeeViewModel()
+        {
+            return fixture.Create<CreateEmployeeViewModel>();
+        }
+
+        private IEnumerable<ReferenceResourceModel> FakeListReferenceResourceModel()
+        {
+            var result = new List<ReferenceResourceModel>();
+            var gender = fixture.Build<ReferenceResourceModel>()
+                    .With(x => x.RefName, ReferenceResource.Gender)
+                    .Create();
+            var nationality = fixture.Build<ReferenceResourceModel>()
+                    .With(x => x.RefName, ReferenceResource.Nationality)
+                    .Create();
+            var maritalStatus = fixture.Build<ReferenceResourceModel>()
+                    .With(x => x.RefName, ReferenceResource.MaritalStatus)
+                    .Create();
+            var noOfChildren = fixture.Build<ReferenceResourceModel>()
+                    .With(x => x.RefName, ReferenceResource.NoOfChildren)
+                    .Create();
+            result.Add(gender);
+            result.Add(nationality);
+            result.Add(maritalStatus);
+            result.Add(noOfChildren);
+
+            return result;
+        }
+
+        private Fixture InitFixture()
+        {
+            var fixture = new Fixture();
+            fixture.Register<IFormFile>(() => null);
+            fixture.Register(() => FakeListReferenceResourceModel());
+            fixture.Register<SelectList>(() => null);
+
+            return fixture;
         }
     }
 }
