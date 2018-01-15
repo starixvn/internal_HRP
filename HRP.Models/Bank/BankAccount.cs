@@ -2,6 +2,13 @@
 {
     public class BankAccount : IBankAccount
     {
+        public BankAccount()
+        {
+            BankType = 1;
+            AccountType = 1;
+            IsActive = true;
+        }
+
         public int EmployeeId { get; set; }
         
         public int BankType { get; set; }

@@ -21,7 +21,7 @@
 
         public string EmployeeName { get; set; }
 
-        public MultiSelectList BankTypes { get; set; }
+        public SelectList BankTypes { get; set; }
 
         public SelectList BankAccountTypes { get; set; }
 
@@ -34,17 +34,15 @@
         {
             EmployeeName = employeeName;
 
-            BankTypes = new MultiSelectList(
+            BankTypes = new SelectList(
                 bankTypes,
                 nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value),
-                bankTypes.Where(x => x.ResourceId == 1));
+                nameof(ReferenceResourceModel.Value));
 
             BankAccountTypes = new SelectList(
                 bankAccountTypes,
                 nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value),
-                bankAccountTypes.Where(x => x.ResourceId == 1));
+                nameof(ReferenceResourceModel.Value));
         }
     }
 }

@@ -6,7 +6,7 @@
     <div class="row">
         <div class="form-group col-lg-6">
             <requiredlabel asp-for="BankAccount.BankType" highlight-class="red bold"></requiredlabel>
-            <select class="form-control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" multiple="multiple"></select>
+            <select class="form-control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
             <span class="text-danger" asp-validation-for="BankAccount.BankType"></span>
         </div>
         <div class="form-group col-lg-6">
