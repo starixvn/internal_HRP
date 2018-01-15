@@ -81,6 +81,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shBrushGroovy.js" />
+    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shCore.js" />
+    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shLegacy.js" />
+    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\XRegExp.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

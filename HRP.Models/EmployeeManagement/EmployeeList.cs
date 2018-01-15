@@ -2,6 +2,8 @@
 {
     public class EmployeeList
     {
+        public int EmployeeId { get; set; }
+
         public string IDNo => string.Format("{0}{1}", CompanyCode, EmployeeCode);
 
         public string CompanyCode { get; set; }
@@ -19,5 +21,9 @@
         public string Department { get; set; }
 
         public string JobTitle { get; set; }
+
+        public bool InService { get; set; }
+
+        public bool InProbation { get; set; }
     }
 }

@@ -1,0 +1,71 @@
+﻿@using HRP.Resources
+@using HRP.Models.EmployeeManagement
+@model IList<EmployeeList>
+
+<table id="user-table" class="table table-bordered table-hover table-striped dataTable">
+    <thead>
+        <tr>
+            <th>@ViewLang.SymbolCount</th>
+            <th>@ViewLang.IDNo</th>
+            <th>@ViewLang.Nickname</th>
+            <th>@ViewLang.FullName</th>
+            <th>@ViewLang.Company</th>
+            <th>@ViewLang.Division</th>
+            <th>@ViewLang.Department</th>
+            <th>@ViewLang.JobTitle</th>
+            <th>@ViewLang.InService</th>
+            <th>@ViewLang.Probation</th>
+            <th>@ViewLang.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var index = 0;
+            foreach (EmployeeList employee in Model)
+            {
+                index++;
+                <tr>
+                    <td>@index</td>
+                    <td>@employee.IDNo</td>
+                    <td>@employee.NickName</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.CompanyCode</td>
+                    <td>@employee.Division</td>
+                    <td>@employee.Department</td>
+                    <td>@employee.JobTitle</td>
+                    <td class="text-center has-icon">
+                        @if (employee.InService)
+                        {
+                            <span class="icon-active"></span>
+                        }
+                    </td>
+                    <td class="text-center has-icon">
+                        @if (employee.InProbation)
+                        {
+                            <span class="icon-active"></span>
+                        }
+                        
+                    </td>
+                    <td class="text-center has-icon">
+                        <div class="dropdown config-action">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="icon-configuration"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown-1">
+                                <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
+                                <li>
+                                    <a asp-action="EditEmployeeBankDetails"
+                                       asp-controller="EmployeeManagement"
+                                       asp-route-EmployeeId="@employee.EmployeeCode"><span class="icon-user"></span>Edit Bank Details</a>
+                                </li>
+                                <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

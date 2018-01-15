@@ -1,4 +1,7 @@
 ﻿@using HRP.Resources;
+@using HRP.Models.EmployeeManagement
+@using HRP.Core.Enumerations
+@model EmployeeManagementViewModel
 
 @{
     ViewData["Title"] = "Employee List";
@@ -7,6 +10,7 @@
 <environment include="Development">
     @section Styles {
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
     }
 </environment>
@@ -23,21 +27,18 @@
 <form class="search-form">
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control company" name="status">
-            <option>@ViewLang.All</option>
-        </select>
+        <select class="control company" id="companyMultiSelect"></select>
+        @*<select class="control company" asp-for="CompanyId" asp-items="@Model.Companies">
+                <option value="0">@ViewLang.All</option>
+            </select>*@
     </div>
     <div class="group">
         <label class="text">@ViewLang.InService</label>
-        <select class="control service" name="status">
-            <option>@ViewLang.All</option>
-        </select>
+        <select class="control service" asp-for="InService" asp-items="Html.GetEnumSelectList<Selection>()"></select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.InProbation</label>
-        <select class="control probation" name="status">
-            <option>@ViewLang.All</option>
-        </select>
+        <select class="control probation" asp-for="InProbation" asp-items="Html.GetEnumSelectList<Selection>()"></select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
@@ -74,82 +75,6 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>OW23455</td>
-            <td>Brian</td>
-            <td>Brian Lagree</td>
-            <td>OW</td>
-            <td>IT</td>
-            <td>SD</td>
-            <td>Senior Network Engineer</td>
-            <td class="text-center has-icon"><span class="icon-active"></span></td>
-            <td class="text-center has-icon"><span class="icon-active"></span></td>
-            <td class="text-center has-icon">
-                <div class="dropdown config-action">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="icon-configuration"></span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
-                        <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
-                        <li>
-                            <a asp-action="EditEmployeeBankDetails"
-                               asp-controller="BankAccount"
-                               asp-route-EmployeeId="41"><span class="icon-user"></span>Edit Bank Details</a></li>
-                        <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>OW23456</td>
-            <td>Hunter</td>
-            <td>Hunter Tran</td>
-            <td>OW</td>
-            <td>IT</td>
-            <td>SD</td>
-            <td>Rick & Pricing Analyst</td>
-            <td class="text-center has-icon"><span class="icon-active"></span></td>
-            <td class="text-center has-icon"><span class="icon-active"></span></td>
-            <td class="text-center has-icon">
-                <div class="dropdown config-action">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="icon-configuration"></span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
-                        <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
-                        <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>OW23460</td>
-            <td>Alice</td>
-            <td>Alice Le</td>
-            <td>OW</td>
-            <td>IT</td>
-            <td>SD</td>
-            <td>IT Network Engineer</td>
-            <td class="text-center has-icon"><span class="icon-active"></span></td>
-            <td class="text-center has-icon"></td>
-            <td class="text-center has-icon">
-                <div class="dropdown config-action">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="icon-configuration"></span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown-1">
-                        <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
-                        <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
     </tbody>
 </table>
 
@@ -158,7 +83,10 @@
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+        <script src="~/assets/js/employee/list-employee.js"></script>
     }
 </environment>
 <environment exclude="Development">
+    <script src="~/assets/bundles/employee/js/list-employee.min.js"></script>
 </environment>

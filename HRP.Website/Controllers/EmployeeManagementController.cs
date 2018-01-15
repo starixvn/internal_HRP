@@ -36,7 +36,25 @@
 
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new EmployeeManagementViewModel
+            {
+                InService = Selection.Yes,
+                InProbation = Selection.All,
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> ListEmployee(EmployeeManagementViewModel model)
+        {
+            var criteria = new GetAllEmployeeCriteria
+            {
+                InService = model.InService,
+                InProbation = model.InProbation,
+                EmployeeId = model.EmployeeId
+            };
+            var employees = await baseService.GetDataAsync<EmployeeList>(criteria);
+
+            return PartialView("_ListEmployee", employees);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
