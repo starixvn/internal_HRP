@@ -9,6 +9,8 @@
             IsActive = true;
         }
 
+        public int Id { get; set; }
+
         public int EmployeeId { get; set; }
         
         public int BankType { get; set; }

@@ -33,6 +33,12 @@
             return baseService.GetData<BankAccount>(criteria);
         }
 
+        public BankAccount GetBankAccountById(int bankAccountId)
+        {
+            var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
+            return baseService.GetDataEntity<BankAccount>(criteria);
+        }
+        
         public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
         {
             var filteredBankAccounts = bankAccounts;
@@ -47,16 +53,6 @@
             }
 
             return filteredBankAccounts;
-        }
-
-        public IEnumerable<BankType> GetBankTypes()
-        {
-            return baseService.GetData<BankType>(new GetBankTypesCriteria());
-        }
-
-        public IEnumerable<AccountType> GetAccountTypes()
-        {
-            return baseService.GetData<AccountType>(new GetAccountTypesCriteria());
         }
     }
 }

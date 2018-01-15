@@ -9,7 +9,11 @@
         CommandResult CreateBankAccount(IBankAccount bankAccount);
         IEnumerable<BankAccount> GetBankAccountsByEmployeeId(int employeeId);
 
-        IEnumerable<BankAccount>
-            FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive);
+        BankAccount GetBankAccountById(int bankAccountId);
+
+        IEnumerable<BankAccount> FilterBankAccounts(
+            IEnumerable<BankAccount> bankAccounts,
+            int[] bankTypes,
+            bool? isActive);
     }
 }

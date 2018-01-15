@@ -60,7 +60,7 @@
                     <input type="checkbox" value="@Model.BankAccounts[index].IsActive" />
                 </td>
                 <td>
-                    <a asp-action="EditEmployeeBankDetails" asp-controller="BankAccount">edit</a>
+                    <a asp-action="EditBankAccount" asp-controller="BankAccount" asp-route-bankAccountId="@Model.BankAccounts[index].Id">edit</a>
                 </td>
             </tr>
         }

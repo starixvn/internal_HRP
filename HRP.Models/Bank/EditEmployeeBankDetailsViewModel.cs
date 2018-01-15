@@ -6,7 +6,10 @@
 
     public class EditEmployeeBankDetailsViewModel
     {
-        public EditEmployeeBankDetailsViewModel(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
+        public EditEmployeeBankDetailsViewModel(
+            string employeeName,
+            IEnumerable<ReferenceResourceModel> bankTypes,
+            IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
             Initialize(employeeName, bankTypes, bankAccountTypes);
         }

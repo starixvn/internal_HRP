@@ -5,7 +5,10 @@
 
     public class CreateNewBankAccountViewModel
     {
-        public CreateNewBankAccountViewModel(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
+        public CreateNewBankAccountViewModel(
+            string employeeName,
+            IEnumerable<ReferenceResourceModel> bankTypes,
+            IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
             BankAccount = new BankAccount();
             Initialize(employeeName, bankTypes, bankAccountTypes);

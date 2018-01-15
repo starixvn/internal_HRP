@@ -20,6 +20,8 @@
             IsActive = bankAccount.IsActive;
         }
 
+        public int Id { get; set; }
+
         public int EmployeeId { get; set; }
 
         public int BankType { get; set; }
@@ -31,7 +33,7 @@
         public string BankAddress { get; set; }
 
         public string BankSwiftCode { get; set; }
-
+        
         public string AccountName { get; set; }
 
         public string AccountNumber { get; set; }

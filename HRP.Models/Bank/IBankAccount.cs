@@ -9,6 +9,8 @@
 
     public interface IBankAccount
     {
+        int Id { get; set; }
+
         [Display(ResourceType = typeof(ViewLang), Name = "AccountName")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]

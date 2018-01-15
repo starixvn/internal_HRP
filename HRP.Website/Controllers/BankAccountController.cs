@@ -51,8 +51,10 @@
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
-            viewModel.BankAccounts = bankAccountService
-                .FilterBankAccounts(bankAccounts, viewModel.SelectedBankTypes, viewModel.IsActiveBankAccount)
+            viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
+                    bankAccounts,
+                    viewModel.SelectedBankTypes,
+                    viewModel.IsActiveBankAccount)
                 .ToList();
 
             return View(viewModel);
@@ -89,6 +91,51 @@
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateNewBankAccount(CreateNewBankAccountViewModel viewModel)
+        {
+            var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+
+            if (result.IsSuccessful)
+            {
+                var redirectViewModel = new EditEmployeeBankDetailsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+                return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
+            }
+
+            return View(viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> EditBankAccount(int bankAccountId)
+        {
+            var bankAccount = bankAccountService.GetBankAccountById(bankAccountId);
+
+            var employee = employeeManagementService.GetEmployeeById(bankAccount.EmployeeId);
+
+            var refNames = string.Format(
+                "{0},{1}",
+                ReferenceResource.BankType,
+                ReferenceResource.BankAccountType);
+
+            var refResources =
+                await baseService.GetDataAsync<ReferenceResourceModel>(
+                    new GetRefResourceByNamesCriteria { RefNames = refNames });
+
+            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+
+            var viewModel = new EditBankAccountViewModel
+            {
+                EmployeeId = bankAccount.EmployeeId,
+                EmployeeName = employee.FullName
+            };
+
+            viewModel.Initialize(employee.FullName, bankAccount, bankTypes, bankAccountTypes);
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult EditBankAccount(EditBankAccountViewModel viewModel)
         {
             var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
 
