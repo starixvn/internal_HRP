@@ -412,6 +412,60 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The setting does not match with Total Amount!.
+        /// </summary>
+        public static string EmployeePayroll_InvalidSetting {
+            get {
+                return ResourceManager.GetString("EmployeePayroll_InvalidSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Name is requried!.
+        /// </summary>
+        public static string EmployeePayrollAccountRequried {
+            get {
+                return ResourceManager.GetString("EmployeePayrollAccountRequried", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Type is required!.
+        /// </summary>
+        public static string EmployeePayrollBankTypeRequried {
+            get {
+                return ResourceManager.GetString("EmployeePayrollBankTypeRequried", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency is requried!.
+        /// </summary>
+        public static string EmployeePayrollCurrencyRequried {
+            get {
+                return ResourceManager.GetString("EmployeePayrollCurrencyRequried", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting Amount is required!.
+        /// </summary>
+        public static string EmployeePayrollSettingAmountRequried {
+            get {
+                return ResourceManager.GetString("EmployeePayrollSettingAmountRequried", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total amount is required!.
+        /// </summary>
+        public static string EmployeePayrollTotalAmountRequired {
+            get {
+                return ResourceManager.GetString("EmployeePayrollTotalAmountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment Status Change Date is required!.
         /// </summary>
         public static string EmploymentStatusChangeDateRequired {
