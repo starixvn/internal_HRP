@@ -79,7 +79,8 @@
     "outputFileName": "wwwroot/assets/bundles/employee/css/create-employee.min.css",
     "inputFiles": [
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
-      "wwwroot/assets/styles/pages/employee/employee-management.css"
+      "wwwroot/assets/styles/pages/employee/common.css",
+      "wwwroot/assets/styles/pages/employee/employee.css"
     ]
   },
   {

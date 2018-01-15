@@ -31,8 +31,7 @@ input[type="password"] {
     background-color: #fff;
     border: 1px solid $border-color;    
     font-size: inherit;
-    color: $input-color;
-    
+    color: $input-color;    
 
     &:focus {
         @include box-shadow-multiple(0 0 2px 2px rgba(25,115,178, .2));
@@ -41,7 +40,8 @@ input[type="password"] {
 }
 
 input[type="text"][disabled],
-input[type="number"][disabled] {
+input[type="number"][disabled],
+input[type="text"][readonly] {
   background-color: #ededed;
   border-color: #d9d9d9;
   color: #777;

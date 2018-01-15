@@ -1,0 +1,276 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/tables";
+
+.search-form {
+    .company,
+    .employee {
+        width: 168px;
+    }
+
+    .service,
+    .probation {
+        width: 130px;
+    }
+}
+
+.table {
+    .config-action {
+        display: inline-block;
+    }
+
+    .icon-configuration {
+        padding-right: 5px;
+        color: #9e9e9e;
+        font-size: 16px;
+    }
+
+    .dropdown.open .icon-configuration {
+        color: #1973b2;
+    }
+
+    .icon-active {
+        position: relative;
+        color: #1973b2;
+        font-size: 17px;
+    }
+
+    .dropdown-menu {
+        @include border-radius(2px);
+        right: 0;
+        left: auto;  
+        min-width: auto;      
+        border: 1px solid #1973b2;       
+        
+        [class^="icon"] {
+            position: relative;            
+            line-height: 0;
+        }
+
+        .icon-user {
+            top: 1px;
+            font-size: 14px;
+        }
+        
+        .icon-edit_payroll {
+            top: 3px;
+            margin-right: 6px;
+            font-size: 18px;
+        }
+        
+        > li >a {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+    }
+}
+
+.personal-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    .form-content {
+        display: grid;
+        grid-template-columns: 160px 530px 630px;
+        grid-template-rows: 1fr;
+        justify-content: stretch;
+        align-items: flex-start;
+    }
+}
+
+.has-space {
+    margin-left: 10px;
+    margin-right: 50px;
+}
+
+.profile {
+    text-align: center;
+
+    .img-container {
+        width: 160px;
+        height: 160px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .link {
+        margin-top: 10px;
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+    .more-info {
+        padding-top: 8px;
+        line-height: 16px;
+        color: #666;
+        font-size: 12px;
+        font-style: italic;
+    }
+}
+
+.form-information {  
+    .group-title, .like-group-title {
+        color: #1973b2;
+        font-weight: bold;
+    }
+
+    .control {
+        height: 28px;
+        line-height: 28px;
+        padding-right: 5px;
+    }
+
+    .group-title {
+        margin-top: 18px;
+        margin-bottom: 8px;
+
+        &.-first {
+            margin-top: 0;
+        }
+    }
+
+    .icon-group {
+        position: relative;
+        top: 2px;
+        margin-right: 2px;
+        font-size: 16px;
+        line-height: 0;
+    }
+
+    .text-group {
+        display: block;
+        color: #333;
+        font-weight: bold;
+        line-height: 28px;
+        text-align: right;        
+    }
+
+    /* Employment */
+
+    .width-206 {
+        width: 206px;
+    }
+
+    .width-240 {
+        width: 240px;
+    }
+
+    .width-424 {
+        width: 424px;
+    } 
+}
+
+.employment {
+    display: flex;
+    justify-content: space-between;
+
+    .col:first-child {
+        margin-right: 111px;
+    }
+}
+
+.group-complex { 
+    display: grid;      
+    grid-gap: 10px;
+    grid-template-rows: 1fr; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 12px;
+
+    /* Personal detail */
+
+    &.-per-layout1 {        
+        grid-template-columns: 140px 110px 200px;        
+    }
+
+    &.-per-layout2 {        
+        grid-template-columns: 140px 318px;        
+    }
+
+    &.-per-layout3 {        
+        grid-template-columns: 140px 140px;        
+    }
+
+    &.-per-layout4 {        
+        grid-template-columns: 200px 262px;        
+    }
+
+    &.-per-layout5 {        
+        grid-template-columns: 228px 110px 110px;        
+    }
+
+    /* Employment */
+
+    &.-emp-layout1 {        
+        grid-template-columns: 210px repeat(2, 110px);        
+    }
+
+    &.-emp-layout2 {        
+        grid-template-columns: repeat(3, 110px);        
+    }
+
+    &.-emp-layout3 {        
+        grid-template-columns: 210px 210px;        
+    }
+
+    &.-emp-layout4 {        
+        grid-template-columns: 210px repeat(3, 110px);        
+    }
+
+    &.-emp-layout5 {        
+        grid-template-columns: 210px 110px;        
+    }
+
+    &.-emp-layout6 {        
+        grid-template-columns: repeat(3, 206px);        
+    }
+
+    &.-emp-layout7 {        
+        grid-template-columns: 206px repeat(2, 110px);        
+    }
+
+    &.-emp-layout8 {        
+        grid-template-columns: repeat(2, 206px);        
+    }
+
+    &.-emp-layout9 {        
+        grid-template-columns: 100px 129px 215px 165px;        
+    }
+
+    &.-emp-without-label * {
+        margin-right: 10px;
+    }
+
+    .padding-right-10 {
+        padding-right: 10px;
+    }
+
+    .element-required {
+        position: relative;
+        padding-right: 10px;
+
+        &:after {
+            content: "*";
+            position: absolute;
+            right: 0;
+            top: 10px;
+            color: #ff0000;
+            font-weight: bold;;
+        }
+    }
+}
+
+.list-button {
+    margin-top: 8px;
+}
+
+.space-between-parts {
+    margin-top: 18px;
+}
