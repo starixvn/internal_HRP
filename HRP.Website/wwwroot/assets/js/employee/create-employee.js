@@ -1,4 +1,4 @@
-﻿var createEmployee = (function ($) {    
+﻿var createEmployee = (function ($) {
     function showPreviewPicture(image) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -22,11 +22,11 @@
             errorMessage = '';
         } else {
             if (image.size / (1024 * 1024) > 5) {
-                errorMessage = 'This file is too large. Maximum file size is 5Mb.';
+                errorMessage = 'The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!';
             } else {
                 var pass = /\.(gif|jpe?g|png)$/i.test(image.name);
                 if (!pass) {
-                    errorMessage = 'Invalid file type. Please choose an image file.';
+                    errorMessage = 'The file type is not supported. Please try again.';
                 } else {
                     isValid = true;
                 }
@@ -117,7 +117,7 @@
             if ($(this).valid()) {
                 hideListMessageError();
                 hideButtonSave();
-                
+
                 var formData = new FormData(this);
                 var urlPost = isCreateNew() ? '/EmployeeManagement/CreateEmployee' : '/EmployeeManagement/EditEmployee';
                 $.ajax({
@@ -151,7 +151,7 @@
 
     function registerEventCancel() {
         $('.js-btnCancel').on('click', function () {
-            window.location.href = "/employeemanagement";            
+            window.location.href = "/employeemanagement";
         });
     }
 
@@ -204,7 +204,7 @@
             else {
                 commonFunctions.showSuccessMessage(result.message);
                 showButtonSave();
-            }            
+            }
         } else {
             showButtonSave();
             var form = $('#personalDetailForm');

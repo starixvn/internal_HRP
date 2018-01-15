@@ -283,13 +283,13 @@
     <value>Work Permit - Type1 is required!</value>
   </data>
   <data name="FileTooLarge" xml:space="preserve">
-    <value>This file is too large. Maximum file size is 5Mb.</value>
+    <value>The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!</value>
   </data>
   <data name="InvalidData" xml:space="preserve">
     <value>Invalid data.</value>
   </data>
   <data name="InvalidImageType" xml:space="preserve">
-    <value>Invalid file type. Please choose an image file.</value>
+    <value>The file type is not supported. Please try again.</value>
   </data>
   <data name="NickNameRequired" xml:space="preserve">
     <value>Nick Name is required!</value>

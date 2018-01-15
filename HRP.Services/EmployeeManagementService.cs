@@ -198,7 +198,7 @@
 
             if (file != null)
             {
-                if (file.Length / (1024 * 1024) > 5)
+                if (file.Length / (1024 * 1024) > 2)
                 {
                     result.Code = 1;
                     result.Message = Message.FileTooLarge;

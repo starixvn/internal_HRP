@@ -466,7 +466,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This file is too large. Maximum file size is 5Mb..
+        ///   Looks up a localized string similar to The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!.
         /// </summary>
         public static string FileTooLarge {
             get {
@@ -745,7 +745,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid file type. Please choose an image file..
+        ///   Looks up a localized string similar to The file type is not supported. Please try again..
         /// </summary>
         public static string InvalidImageType {
             get {
