@@ -4,6 +4,7 @@
 @import "../../components/checkbox";
 @import "../../components/tables";
 
+/* Bank details */
 .icon-active {
     position: relative;
     color: #1973b2;
@@ -18,4 +19,14 @@
         color: #1973b2;
         text-decoration: none;
     }
+}
+
+/* Create New Bank Account */
+.layout-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    justify-content: space-between;
+    align-items: flex-start;
+    grid-gap: 10px;
 }

@@ -5,6 +5,10 @@
     Layout = "_Layout";
 }
 
+@section Styles {
+    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
+}
+
 @section Scripts {
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
@@ -13,6 +17,9 @@
 
 <ol class="breadcrumb">
     <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee Management</a></li>
+    <li>
+        <a href="#">Employee List</a>
+    </li>
     <li>
         <a asp-action="EditEmployeeBankDetails"
            asp-controller="BankAccount"
