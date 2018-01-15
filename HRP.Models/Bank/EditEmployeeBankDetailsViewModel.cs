@@ -26,7 +26,7 @@
 
         public MultiSelectList BankTypes { get; set; }
 
-        public bool? IsActiveBankAccount { get; set; }
+        public bool[] IsActiveBankAccount { get; set; }
 
         public List<SelectListItem> BankAccountActive { get; set; }
 

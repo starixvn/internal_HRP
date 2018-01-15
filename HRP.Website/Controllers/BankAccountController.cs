@@ -51,6 +51,12 @@
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
+
+            if(viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
+            {
+                viewModel.SelectedBankTypes = bankTypes.Select(x => x.ResourceId).ToArray();
+            }
+
             viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
                     bankAccounts,
                     viewModel.SelectedBankTypes,

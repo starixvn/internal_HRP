@@ -6,12 +6,14 @@
 }
 
 @section Styles {
-    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+    @*<link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />*@
+    <link href="~/lib/ultraselect/jquery.ultraselect.css" />
     <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
 }
 
 @section Scripts {
-    <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+    @*<script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>*@
+    <script src="~/lib/ultraselect/jquery.ultraselect.js"></script>
     <script src="~/assets/js/bank/employee-bank.js"></script>
 }
 
@@ -26,11 +28,11 @@
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
-        <select class="control" asp-for="SelectedBankTypes" asp-items="@Model.BankTypes"></select>
+        <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes"></select>
     </div>
     <div class="group">
         <label class="text">Active</label>
-        <select class="control" asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
+        <select asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     </div>
     <button type="submit" class="button -primary">Submit</button>
 </form>
