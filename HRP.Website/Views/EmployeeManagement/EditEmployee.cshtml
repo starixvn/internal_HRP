@@ -1,10 +1,13 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
 @using HRP.Models.EmployeeManagement
 
 @model CreateEmployeeViewModel
 @{
     ViewData["Title"] = "Personal Detail";
+    var activePanel = ViewBag.ActivePanel ?? EmployeeTab.PersonalDetail.ToString();
 }
+
 @section Styles {
     <environment include="Development">
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
@@ -23,22 +26,21 @@
     <li class="active">@(Model.IsHost ? "Edit" : "View") Employee '@Model.NickName'</li>
 </ol>
 <!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active">
-        <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
+<ul class="nav nav-tabs" role="tablist" data-active="@activePanel">
+    <li role="presentation">
+        <a href="#@EmployeeTab.PersonalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
     </li>
     <li role="presentation">
-        <a href="#tab-employment" aria-controls="profile" role="tab" data-toggle="tab"
-           id="tab-header-employment" data-isFirstLoad="true">@ViewLang.Employment</a>
+        <a href="#@EmployeeTab.Employment" aria-controls="profile" role="tab" data-toggle="tab">@ViewLang.Employment</a>
     </li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane form-information active" id="personalDetail">
+    <div role="tabpanel" class="tab-pane form-information" id="@EmployeeTab.PersonalDetail">
         @Html.Partial("_PersonalDetail", Model)
     </div>
-    <div role="tabpanel" class="tab-pane" id="tab-employment"></div>
+    <div role="tabpanel" class="tab-pane" id="@EmployeeTab.Employment"></div>
 </div>
 
 @section Scripts {

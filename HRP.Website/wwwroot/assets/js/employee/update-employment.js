@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var updateEmployment = (function ($) {
-    var $employmentHeaderTab, $employmentTab, $updateEmploymentForm,
+    var $employmentTab, $updateEmploymentForm,
         $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
         defaultOption = '<option value="" style="display: none;">--Please select--</option>';
 
@@ -231,11 +231,12 @@ var updateEmployment = (function ($) {
             $this.datetimepicker({
                 format: 'MMM DD, YYYY',
                 minDate: mindate,
-                maxDate: maxdate
+                maxDate: maxdate,
+                useCurrent: false
             });
 
             if (defaultDate) {
-                defaultDate = moment(defaultDate).format('MMM DD, YYYY')
+                defaultDate = moment(defaultDate, 'MM/DD/YYYY').format('MMM DD, YYYY');
                 $this.data("DateTimePicker").date(defaultDate);
             } else {
                 $this.val('');
@@ -277,61 +278,54 @@ var updateEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
-        $employmentHeaderTab.on('click', function () {
-            var $this = $(this);
-            var isFirstLoad = $this.data('isfirstload');
+        var employeeId = $('#personalDetailForm #EmployeeId').val();
+        $.ajax({
+            type: 'GET',
+            url: commonFunctions.rootURL + 'EmployeeManagement/UpdateEmployment',
+            dataType: 'html',
+            data: {
+                employeeId: employeeId
+            },
+            success: function (data) {
+                $employmentTab.html(data);
 
-            if (isFirstLoad) {
-                $this.data('isfirstload', false);
+                $updateEmploymentForm = $('#updateEmploymentForm');
+                $bviCompanyElement = $('#CompanyId');
+                $divisionElement = $('#DivisionId');
+                $departmentElement = $('#DepartmentId');
+                $sectionElement = $('#SectionId');
+                $costCenterElement = $('#CostCenterId');
 
-                $.ajax({
-                    type: 'GET',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/UpdateEmployment',
-                    dataType: 'html',
-                    data: {
-                        employeeId: 1
-                    },
-                    success: function (data) {
-                        $employmentTab.html(data);
+                reparseform($updateEmploymentForm);
+                initDatepicker($updateEmploymentForm);
+                initSelect2($updateEmploymentForm);
+                calculateLengthOfService();
 
-                        $updateEmploymentForm = $('#updateEmploymentForm');
-                        $bviCompanyElement = $('#CompanyId');
-                        $divisionElement = $('#DivisionId');
-                        $departmentElement = $('#DepartmentId');
-                        $sectionElement = $('#SectionId');
-                        $costCenterElement = $('#CostCenterId');
-
-                        reparseform($updateEmploymentForm);
-                        initDatepicker($updateEmploymentForm);
-                        initSelect2($updateEmploymentForm);
-                        calculateLengthOfService();
-
-                        registerEventChangeBVICompany();
-                        registerEventChangeDivision();
-                        registerEventChangeDepartment();
-                        registerEventChangeSection();
-                        initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
-                        initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
-                        initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));
-                        initSearchAutocomplete($('#NoneOrIDNoLocalSalary'), $('#Paymaster_FullNameLocalSalary'), $('#Paymaster_NickNameLocalSalary'));
-                        initSearchAutocomplete($('#NoneOrIDNoAdministrator'), $('#EPA_FullNameAdministrator'), $('#EPA_NickNameAdministrator'));
-                        initSearchAutocomplete($('#NoneOrIDNoEvaluator1'), $('#EPA_FullNameEvaluator1'), $('#EPA_NickNameEvaluator1'));
-                        initSearchAutocomplete($('#NoneOrIDNoEvaluator2'), $('#EPA_FullNameEvaluator2'), $('#EPA_NickNameEvaluator2'));
-                        initSearchAutocomplete($('#NoneOrIDNoReviewer'), $('#EPA_FullNameReviewer'), $('#EPA_NickNameReviewer'));
-                        initSearchAutocomplete($('#NoneOrIDNoManagement'), $('#EPA_FullNameManagement'), $('#EPA_NickNameManagement'));
-                        initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
-                        initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
-                        initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
-            }
+                registerEventChangeBVICompany();
+                registerEventChangeDivision();
+                registerEventChangeDepartment();
+                registerEventChangeSection();
+                initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
+                initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
+                initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));
+                initSearchAutocomplete($('#NoneOrIDNoLocalSalary'), $('#Paymaster_FullNameLocalSalary'), $('#Paymaster_NickNameLocalSalary'));
+                initSearchAutocomplete($('#NoneOrIDNoAdministrator'), $('#EPA_FullNameAdministrator'), $('#EPA_NickNameAdministrator'));
+                initSearchAutocomplete($('#NoneOrIDNoEvaluator1'), $('#EPA_FullNameEvaluator1'), $('#EPA_NickNameEvaluator1'));
+                initSearchAutocomplete($('#NoneOrIDNoEvaluator2'), $('#EPA_FullNameEvaluator2'), $('#EPA_NickNameEvaluator2'));
+                initSearchAutocomplete($('#NoneOrIDNoReviewer'), $('#EPA_FullNameReviewer'), $('#EPA_NickNameReviewer'));
+                initSearchAutocomplete($('#NoneOrIDNoManagement'), $('#EPA_FullNameManagement'), $('#EPA_NickNameManagement'));
+                initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
+                initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
+                initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
+            },
+            error: commonFunctions.handleAjaxError
         });
     }
 
     function initModule() {
-        $employmentTab = $('#tab-employment');
-        $employmentHeaderTab = $('#tab-header-employment');
+        $employmentTab = $('#Employment');
+        var activeTab = '#' + $('.nav-tabs').data('active');
+        $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
 
         loadEmploymentForm();
     }

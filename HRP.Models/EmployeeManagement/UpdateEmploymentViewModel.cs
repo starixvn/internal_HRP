@@ -76,7 +76,7 @@
             DisplayName = "Group Start Date",
             OtherPropertyDisplayName = "Group End Date",
             Operator = GenericCompareOperator.LessThanOrEqual)]
-        public DateTime GroupStartDate { get; set; } = DateTime.Now;
+        public DateTime GroupStartDate { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? GroupEndDate { get; set; }

@@ -66,7 +66,7 @@
                 {
                     isSuccessful = commandResult.IsSuccessful,
                     message = commandResult.IsSuccessful ? Message.CreateEmployeeSuccessful : commandResult.Message,
-                    redirectLink = Url.Action("EditEmployee", new { id = commandResult.Data })
+                    redirectLink = Url.Action("EditEmployee", new { id = commandResult.Data, tab = EmployeeTab.Employment.ToString() })
                 });
             }
 
@@ -79,9 +79,10 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult EditEmployee(int id)
+        public IActionResult EditEmployee(int id, EmployeeTab tab = EmployeeTab.PersonalDetail)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);
+            ViewBag.ActivePanel = tab.ToString();
 
             if (viewModel == null)
             {

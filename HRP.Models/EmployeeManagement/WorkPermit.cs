@@ -21,11 +21,11 @@
             DisplayName = "Start Date Type1",
             OtherPropertyDisplayName = "End Date Type1",
             Operator = GenericCompareOperator.LessThanOrEqual)]
-        public DateTime StartDateType1 { get; set; } = DateTime.Now;
+        public DateTime StartDateType1 { get; set; }
 
         [DataType(DataType.Date)]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EndDateType1Required")]
-        public DateTime EndDateType1 { get; set; } = DateTime.Now;
+        public DateTime EndDateType1 { get; set; }
 
         public int? Type2 { get; set; }
 
