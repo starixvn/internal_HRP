@@ -1,0 +1,67 @@
+﻿@using HRP.Resources
+@model HRP.Models.Bank.CreateNewBankAccountViewModel
+
+<form asp-action="CreateNewBankAccount" asp-controller="BankAccount" method="post">
+    <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.BankType" highlight-class="red bold"></requiredlabel>
+            <select class="form-control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" multiple="multiple"></select>
+            <span class="text-danger" asp-validation-for="BankAccount.BankType"></span>
+        </div>
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
+            <input class="form-control" asp-for="BankAccount.AccountName" />
+            <span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
+        <input class="form-control" asp-for="BankAccount.AccountNumber" />
+        <span class="text-danger" asp-validation-for="BankAccount.AccountNumber"></span>
+    </div>
+    <div class="form-group">
+        <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
+        <input class="form-control" asp-for="BankAccount.BeneficiaryName" />
+        <span class="text-danger" asp-validation-for="BankAccount.BeneficiaryName"></span>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
+            <input class="form-control" asp-for="BankAccount.BankName" />
+            <span class="text-danger" asp-validation-for="BankAccount.BankName"></span>
+        </div>
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
+            <input class="form-control" asp-for="BankAccount.BankBranch" />
+            <span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
+        <input class="form-control" asp-for="BankAccount.BankAddress" />
+        <span class="text-danger" asp-validation-for="BankAccount.BankAddress"></span>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
+            <select class="form-control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes"></select>
+        </div>
+        <div class="form-group col-lg-6">
+            <requiredlabel asp-for="BankAccount.BankSwiftCode"></requiredlabel>
+            <input class="form-control" asp-for="BankAccount.BankSwiftCode" />
+            <span class="text-danger" asp-validation-for="BankAccount.BankSwiftCode"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            <input asp-for="BankAccount.IsActive" />
+            <span>@ViewLang.Active</span>
+        </label>
+    </div>
+
+    <div>
+        <a class="btn btn-default" asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
+        <button class="btn btn-success" type="submit">Save</button>
+    </div>
+</form>

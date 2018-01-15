@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateNewBankAccountViewModel
@@ -36,12 +37,14 @@
             BankTypes = new MultiSelectList(
                 bankTypes,
                 nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value));
+                nameof(ReferenceResourceModel.Value),
+                bankTypes.Where(x => x.ResourceId == 1));
 
             BankAccountTypes = new SelectList(
                 bankAccountTypes,
                 nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value));
+                nameof(ReferenceResourceModel.Value),
+                bankAccountTypes.Where(x => x.ResourceId == 1));
         }
     }
 }
