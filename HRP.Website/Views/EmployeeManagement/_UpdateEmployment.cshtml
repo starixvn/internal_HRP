@@ -191,12 +191,12 @@
                 </div>
             </div>
 
-            <div class="group-complex space-between-parts">
+            <div class="group-complex -emp-layout4 space-between-parts">
                 <div class="component">
                     <label class="text like-group-title -has-required " asp-for="EmploymentType">
                         <span class="icon-group"></span>@ViewLang.EmploymentType
                     </label>
-                    <select class="control width-185" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
+                    <select class="control" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>

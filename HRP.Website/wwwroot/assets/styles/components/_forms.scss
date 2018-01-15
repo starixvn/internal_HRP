@@ -119,4 +119,20 @@
     .msg-error, .text-danger {
         margin-top: 10px;
     }
+
+    .calendar {
+        position: relative;
+
+        .icon-calendar {
+            position: absolute;
+            bottom: 3px;
+            right: 4px;
+            color: #f57d14;
+            font-size: 22px;      
+            
+            &.disabled {
+                opacity: .5;
+            }
+        }
+    }
 }

@@ -118,22 +118,6 @@
 }
 
 .form-information {  
-    .calendar {
-        position: relative;
-
-        .icon-calendar {
-            position: absolute;
-            bottom: 2px;
-            right: 4px;
-            color: #f57d14;
-            font-size: 22px;      
-            
-            &.disabled {
-                opacity: .5;
-            }
-        }
-    }
-
     .group-title, .like-group-title {
         color: #1973b2;
         font-weight: bold;
@@ -172,10 +156,6 @@
 
     /* Employment */
 
-    .width-185 {
-        width: 185px;
-    }
-
     .width-206 {
         width: 206px;
     }
@@ -186,8 +166,7 @@
 
     .width-424 {
         width: 424px;
-    }  
-
+    } 
 }
 
 .employment {
@@ -195,7 +174,7 @@
     justify-content: space-between;
 
     .col:first-child {
-        margin-right: 135px;
+        margin-right: 111px;
     }
 }
 
@@ -232,7 +211,7 @@
     /* Employment */
 
     &.-emp-layout1 {        
-        grid-template-columns: 185px repeat(2, 110px);        
+        grid-template-columns: 210px repeat(2, 110px);        
     }
 
     &.-emp-layout2 {        
@@ -240,15 +219,15 @@
     }
 
     &.-emp-layout3 {        
-        grid-template-columns: 185px 185px;        
+        grid-template-columns: 210px 210px;        
     }
 
     &.-emp-layout4 {        
-        grid-template-columns: 185px repeat(3, 110px);        
+        grid-template-columns: 210px repeat(3, 110px);        
     }
 
     &.-emp-layout5 {        
-        grid-template-columns: 185px 110px;        
+        grid-template-columns: 210px 110px;        
     }
 
     &.-emp-layout6 {        

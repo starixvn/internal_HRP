@@ -122,6 +122,22 @@
   margin-top: 10px;
 }
 
+.form-information .calendar {
+  position: relative;
+}
+
+.form-information .calendar .icon-calendar {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  color: #f57d14;
+  font-size: 22px;
+}
+
+.form-information .calendar .icon-calendar.disabled {
+  opacity: .5;
+}
+
 .top-header {
   -webkit-border-radius: 2px 2px 0 0;
   -khtml-border-radius: 2px 2px 0 0;

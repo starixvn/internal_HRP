@@ -3,19 +3,7 @@
 @import "../../components/forms";
 @import "../../components/radio";
 
-.form-information {  
-    .calendar {
-        position: relative;
-
-        .icon-calendar {
-            position: absolute;
-            bottom: 2px;
-            right: 4px;
-            color: #f57d14;
-            font-size: 22px;           
-        }
-    }
-
+.form-information {
     .group-title, .like-group-title {
         color: #1973b2;
         font-weight: bold;
