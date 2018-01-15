@@ -1,8 +1,6 @@
 ﻿namespace HRP.Core.Extensions.TagHelpers
 {
     using System;
-    using System.IO;
-    using System.Text.Encodings.Web;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.TagHelpers;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -15,8 +13,6 @@
     public class RequiredLabelTagHelper : TagHelper
     {
         private const string ForAttributeName = "asp-for";
-
-        public string HighlightClass { get; set; }
 
         /// <summary>
         /// Creates a new <see cref="LabelTagHelper"/>.
@@ -56,10 +52,6 @@
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var requiredMarkTagBuilder = new TagBuilder("span");
-            requiredMarkTagBuilder.AddCssClass(HighlightClass);
-            requiredMarkTagBuilder.InnerHtml.Append(" *");
-
             var tagBuilder = Generator.GenerateLabel(
                 ViewContext,
                 For.ModelExplorer,
@@ -69,11 +61,8 @@
 
             if (For.ModelExplorer.Metadata.IsRequired)
             {
-                using (var writer = new StringWriter())
-                {
-                    requiredMarkTagBuilder.WriteTo(writer, HtmlEncoder.Default);
-                    tagBuilder.InnerHtml.AppendHtml(writer.ToString());
-                }
+                // Specific for HRP Project
+                tagBuilder.AddCssClass("text -has-required");
             }
 
             output.TagName = tagBuilder.TagName;
