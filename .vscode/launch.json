@@ -9,7 +9,7 @@
             "type": "clr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/HRP.Website/bin/Debug/net461/win10-x64/HRP.Website.exe",
+            "program": "${workspaceFolder}/HRP.Website/bin/Debug/net461/HRP.Website.exe",
             "args": [],
             "cwd": "${workspaceFolder}/HRP.Website",
             "stopAtEntry": false,

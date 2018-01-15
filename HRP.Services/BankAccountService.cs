@@ -38,6 +38,11 @@
             var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
             return baseService.GetDataEntity<BankAccount>(criteria);
         }
+
+        ////public CommandResult EditBankAccount(BankAccount bankAccount)
+        ////{
+
+        ////}
         
         public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
         {

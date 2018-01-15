@@ -12,6 +12,14 @@
 }
 
 
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+    <script src="~/assets/js/bank/employee-bank.js"></script>
+}
+
 <ol class="breadcrumb">
     <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee Management</a></li>
     <li class="active">Edit Bank Details of Employee '@Model.EmployeeName'</li>
