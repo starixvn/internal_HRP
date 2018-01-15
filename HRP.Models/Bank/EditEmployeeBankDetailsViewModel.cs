@@ -69,14 +69,14 @@
 
         private void PopulateBankTypes(IEnumerable<ReferenceResourceModel> bankTypes)
         {
-            var allOption = new ReferenceResourceModel
-            {
-                ResourceId = 0,
-                Value = "All"
-            };
+            ////var allOption = new ReferenceResourceModel
+            ////{
+            ////    ResourceId = 0,
+            ////    Value = "All"
+            ////};
 
             var bankTypesWithAllOption = bankTypes.ToList();
-            bankTypesWithAllOption.Add(allOption);
+            ////bankTypesWithAllOption.Add(allOption);
 
             BankTypes = new MultiSelectList(
                 bankTypesWithAllOption,

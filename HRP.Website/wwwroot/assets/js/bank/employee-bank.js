@@ -7,32 +7,26 @@
                 listData: options
             });
         });
-
-        // $("select").fanexMultiSelect({
-        //     listData: [
-        //         {
-        //             id: "Food",
-        //             value: "Food",
-        //             text: "Food",
-        //             checked: true,
-        //             enable: true,
-        //             cssClass: "demo-class"
-        //         }, {
-        //             id: "Food",
-        //             value: "Food",
-        //             text: "Food",
-        //             checked: true,
-        //             enable: true,
-        //             cssClass: "demo-class"
-        //         }]
-        // });
     },
 
     getItemsList: function (selectElement) {
         if ($(selectElement).is("select")) {
             if ($(selectElement).prop('multiple')) {
                 // select element with multiple prop
-                
+                var values = [];
+                $.each($(selectElement).prop("options"), function(){
+                    var item = {
+                        id: this.value,
+                        value: this.value,
+                        text: this.text,
+                        checked: this.selected,
+                        enable: true,
+                        cssClass: "-option-check"
+                    }
+                    values.push(item);
+                });
+
+                return values;
             }
         }
     }
