@@ -6,13 +6,8 @@
 }
 
 @section Styles {
-    <environment include="Development">
-        <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
-    </environment>
-}
-
-
     <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
 }
 
 @section Scripts {
@@ -33,17 +28,17 @@
         <label class="text">Bank Type</label>
         <select class="control" asp-for="SelectedBankTypes" asp-items="@Model.BankTypes"></select>
     </div>
-     <div class="group">
+    <div class="group">
         <label class="text">Active</label>
-        <select class="control"  asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
+        <select class="control" asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     </div>
     <button type="submit" class="button -primary">Submit</button>
 </form>
 
 <div class="top-header">
     <div class="pull-left">
-        <a class="button -add create-user" asp-action="CreateNewBankAccount" asp-controller="BankAccount" 
-            asp-route-employeeId="@Model.EmployeeId">
+        <a class="button -add create-user" asp-action="CreateNewBankAccount" asp-controller="BankAccount"
+           asp-route-employeeId="@Model.EmployeeId">
             <span class="icon-add"></span>
             Create New Bank Account
         </a>
@@ -89,12 +84,16 @@
                 <td>@bankAccountType</td>
                 <td>@Model.BankAccounts[index].BankSwiftCode</td>
                 <td class="text-center has-icon">
-                    <!-- <input type="checkbox" value="@Model.BankAccounts[index].IsActive" /> -->
-                    <span class="icon-active"></span>
+                    @if (Model.BankAccounts[index].IsActive)
+                    {
+                        <span class="icon-active"></span>
+                    }
                 </td>
                 <td class="text-center has-icon">
-                    <a class="icon-edit" asp-action="EditBankAccount" asp-controller="BankAccount"
-                     asp-route-bankAccountId="@Model.BankAccounts[index].Id"></a>
+                    <a class="icon-edit"
+                       asp-action="EditBankAccount"
+                       asp-controller="BankAccount"
+                       asp-route-bankAccountId="@Model.BankAccounts[index].Id"></a>
                 </td>
             </tr>
         }
