@@ -22,13 +22,14 @@
     <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
     <li class="active">@ViewLang.CreateNewEmployee</li>
 </ol>
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active">
-        <a href="#personalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
+
+<!-- Steps -->
+<ul class="steps clearfix">
+    <li class="step active">
+        <label class="step-title">Personal Detail</label>
     </li>
-    <li role="presentation">
-        <a href="#tab-employment" aria-controls="profile" role="tab" data-toggle="tab">@ViewLang.Employment</a>
+    <li class="step">
+        <label class="step-title">Employment</label>
     </li>
 </ul>
 

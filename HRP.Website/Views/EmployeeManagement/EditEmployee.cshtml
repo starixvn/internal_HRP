@@ -13,6 +13,7 @@
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/employee.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
@@ -27,7 +28,7 @@
 </ol>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist" data-active="@activePanel">
-    <li role="presentation">
+    <li role="presentation" class="active">
         <a href="#@EmployeeTab.PersonalDetail" aria-controls="home" role="tab" data-toggle="tab">@ViewLang.PersonalDetail</a>
     </li>
     <li role="presentation">
@@ -37,7 +38,7 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane form-information" id="@EmployeeTab.PersonalDetail">
+    <div role="tabpanel" class="tab-pane form-information active" id="@EmployeeTab.PersonalDetail">
         @Html.Partial("_PersonalDetail", Model)
     </div>
     <div role="tabpanel" class="tab-pane" id="@EmployeeTab.Employment"></div>

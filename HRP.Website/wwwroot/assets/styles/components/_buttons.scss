@@ -42,6 +42,16 @@
             background-color: $btn-add-bg-hover;
         }
     }
+
+    &.-back {
+        background-color: $btn-back-bg;
+        border: 1px solid $btn-back-border;
+        color: $btn-back-color;
+
+        &:hover {
+            background-color: $btn-back-bg-hover;
+        }
+    }
 }
 
 a.button, a.button:hover {

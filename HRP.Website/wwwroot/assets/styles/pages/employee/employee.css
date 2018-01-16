@@ -314,68 +314,62 @@
   border-bottom-right-radius: 2px;
 }
 
-.search-form .company,
-.search-form .employee {
-  width: 168px;
+.steps {
+  counter-reset: section;
+  list-style: none;
 }
 
-.search-form .service,
-.search-form .probation {
-  width: 130px;
+.steps .step {
+  float: left;
+  font-size: 13px;
 }
 
-.table .config-action {
+.steps .step:not(:last-child):after {
   display: inline-block;
+  content: "";
+  height: 6px;
+  width: 70px;
+  margin-left: -3px;
+  background-color: #f3f3f3;
 }
 
-.table .icon-configuration {
-  padding-right: 5px;
-  color: #9e9e9e;
-  font-size: 16px;
+.steps .finished .step-title {
+  background-color: #f57d14;
+  color: #fff;
 }
 
-.table .dropdown.open .icon-configuration {
+.steps .finished:not(:last-child):after {
+  margin-left: -4px;
+  background-color: #f57d14;
+}
+
+.steps .step.active .step-title {
+  background-color: #fafafa;
+  border-color: #1a87d3;
+}
+
+.steps .step-title {
+  border: 1px solid #f3f3f3;
+  padding: 8px 20px 8px 8px;
+  border-radius: 20px;
+  background-color: #f3f3f3;
+  font-weight: bold;
+  color: #333;
+}
+
+.steps .step-title:before {
+  display: inline-block;
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  border: 1px solid #c0c0c0;
+  background-color: #fafafa;
+  margin-right: 8px;
+  padding: 3px 6px;
+  counter-increment: section;
+  content: counter(section);
   color: #1973b2;
-}
-
-.table .icon-active {
-  position: relative;
-  color: #1973b2;
-  font-size: 17px;
-}
-
-.table .dropdown-menu {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  right: 0;
-  left: auto;
-  min-width: auto;
-  border: 1px solid #1973b2;
-}
-
-.table .dropdown-menu [class^="icon"] {
-  position: relative;
-  line-height: 0;
-}
-
-.table .dropdown-menu .icon-user {
-  top: 1px;
-  font-size: 14px;
-}
-
-.table .dropdown-menu .icon-edit_payroll {
-  top: 3px;
-  margin-right: 6px;
-  font-size: 18px;
-}
-
-.table .dropdown-menu > li > a {
-  padding-top: 6px;
-  padding-bottom: 6px;
+  font-size: 13px;
 }
 
 .personal-detail {
@@ -429,42 +423,6 @@
 
 .form-information {
   /* Employment */
-}
-
-.form-information .group-title, .form-information .like-group-title {
-  color: #1973b2;
-  font-weight: bold;
-}
-
-.form-information .control {
-  height: 28px;
-  line-height: 28px;
-  padding-right: 5px;
-}
-
-.form-information .group-title {
-  margin-top: 18px;
-  margin-bottom: 8px;
-}
-
-.form-information .group-title.-first {
-  margin-top: 0;
-}
-
-.form-information .icon-group {
-  position: relative;
-  top: 2px;
-  margin-right: 2px;
-  font-size: 16px;
-  line-height: 0;
-}
-
-.form-information .text-group {
-  display: block;
-  color: #333;
-  font-weight: bold;
-  line-height: 28px;
-  text-align: right;
 }
 
 .form-information .width-206 {
@@ -575,10 +533,6 @@
   top: 10px;
   color: #ff0000;
   font-weight: bold;
-}
-
-.list-button {
-  margin-top: 8px;
 }
 
 .space-between-parts {

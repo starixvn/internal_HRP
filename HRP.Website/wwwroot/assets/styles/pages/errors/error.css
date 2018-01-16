@@ -95,6 +95,16 @@ input, button {
   background-color: #188a38;
 }
 
+.button.-back {
+  background-color: #dfdfdf;
+  border: 1px solid #9d9d9d;
+  color: #333;
+}
+
+.button.-back:hover {
+  background-color: #188a38;
+}
+
 a.button, a.button:hover {
   text-decoration: none;
 }
