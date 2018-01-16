@@ -79,7 +79,7 @@
             <tr>
                 <td class="text-center">@(index + 1)</td>
                 @{
-                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Value;
+                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
                     var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
                 }
                 <td>@bankType</td>
