@@ -65,7 +65,8 @@
     <Setting Key="Employee_GetByEmployeeId" SpName="Employee_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestion" SpName="Employee_GetSuggestion" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Employee_GetAllEmployee" SpName="Employee_GetAllEmployee" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employment">
     <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>

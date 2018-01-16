@@ -6,19 +6,23 @@
 
         public string IDNo => string.Format("{0}{1}", CompanyCode, EmployeeCode);
 
-        public string CompanyCode { get; set; }
-
         public string EmployeeCode { get; set; }
 
         public string NickName { get; set; }
 
         public string FullName { get; set; }
 
-        public string Company { get; set; }
+        public string CompanyCode { get; set; }
 
-        public string Division { get; set; }
+        public string CompanyName { get; set; }
 
-        public string Department { get; set; }
+        public string DivisionCode { get; set; }
+
+        public string DivisionName { get; set; }
+
+        public string DepartmentCode { get; set; }
+
+        public string DepartmentName { get; set; }
 
         public string JobTitle { get; set; }
 

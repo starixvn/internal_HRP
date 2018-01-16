@@ -35,27 +35,42 @@
             this.payrollService = payrollService;
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
         public IActionResult Index()
         {
             var viewModel = new EmployeeManagementViewModel
             {
+                DepartmentIds = "1,2,3,4",
                 InService = Selection.Yes,
                 InProbation = Selection.All,
             };
             return View(viewModel);
         }
 
-        public async Task<IActionResult> ListEmployee(EmployeeManagementViewModel model)
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
+        public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {
             var criteria = new GetAllEmployeeCriteria
             {
+                DepartmentIds = string.IsNullOrEmpty(model.DepartmentIds) ? string.Empty : model.DepartmentIds,
                 InService = model.InService,
                 InProbation = model.InProbation,
                 EmployeeId = model.EmployeeId
             };
-            var employees = await baseService.GetDataAsync<EmployeeList>(criteria);
+            var employees = baseService.GetData<EmployeeList>(criteria);
 
             return PartialView("_ListEmployee", employees);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
+        public async Task<IActionResult> GetEmployeeSuggestionByName(string name)
+        {
+            var criteria = new GetEmployeeSuggestionByNameCriteria { Name = name };
+            var employees = await baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
+
+            return Json(employees);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]

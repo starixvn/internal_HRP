@@ -25,6 +25,15 @@
   <Function Name="Cost Center">
     <Setting Key="CostCenter_GetBySectionId" SpName="CostCenter_GetBySectionId" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="Job Category">
+    <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Grade Level">
+    <Setting Key="GradeLevel_GetByJobCategoryId" SpName="GradeLevel_GetByJobCategoryId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Job Grade">
+    <Setting Key="JobGrade_GetByGradeLevelId" SpName="JobGrade_GetByGradeLevelId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
   <Function Name="User">
     <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
@@ -56,11 +65,13 @@
     <Setting Key="Employee_GetByEmployeeId" SpName="Employee_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestion" SpName="Employee_GetSuggestion" DbName="bodb_HRP" Plain="0"></Setting>
 <<<<<<< HEAD
-    <Setting Key="Employee_EditEmployee" SpName="Employee_EditEmployee" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetAllEmployee" SpName="Employee_GetAllEmployee" DbName="bodb_HRP" Plain="0"></Setting>
 =======
-    <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
->>>>>>> #0000 - Refactor code
+    <Setting Key="Employee_EditEmployee" SpName="Employee_EditEmployee" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
+>>>>>>> 89413 - get employee and show on data table
   </Function>
   <Function Name="Employment">
     <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -70,5 +81,8 @@
     <Setting Key="BankAccount_CreateBankAccount" SpName="BankAccount_CreateBankAccount" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_GetBankAccountsByEmpId" SpName="BankAccount_GetBankAccountsByEmpId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="EmployeePayroll">
+    <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>   
   </Function>
 </Functions>
