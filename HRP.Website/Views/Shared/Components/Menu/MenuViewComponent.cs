@@ -1,7 +1,7 @@
-﻿namespace HRP.Website.ViewComponents
+﻿namespace HRP.Website.Views.Shared.Components.Menu
 {
     using System.Threading.Tasks;
-    using HRP.Core.Services;
+    using Core.Services;
     using Microsoft.AspNetCore.Mvc;
 
     public class MenuViewComponent : ViewComponent

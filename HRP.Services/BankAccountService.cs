@@ -44,12 +44,12 @@
 
         ////}
         
-        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool[] isActive)
+        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
         {
             var filteredBankAccounts = bankAccounts;
-            if (isActive != null && isActive.Any())
+            if (isActive != null)
             {
-                filteredBankAccounts = filteredBankAccounts.Where(x => isActive.Contains(x.IsActive));
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive = isActive.Value);
             }
 
             if (bankTypes != null && !bankTypes.Contains(0))

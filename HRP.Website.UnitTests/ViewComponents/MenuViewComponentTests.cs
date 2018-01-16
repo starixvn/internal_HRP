@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Website.ViewComponents;
+    using Core.Model;
+    using Core.Services;
     using Microsoft.AspNetCore.Mvc.ViewComponents;
     using NSubstitute;
+    using Views.Shared.Components.Menu;
     using Xunit;
 
     public class MenuViewComponentTests
