@@ -226,7 +226,7 @@
             $('input[type="text"]').attr('readonly', 'readonly');
             $('select').attr('disabled', 'disabled');
             $('form').submit(false);
-            $('.change-picture').css('cursor', 'default');
+            $('.img-container').css('cursor', 'default');
         }
     }
 

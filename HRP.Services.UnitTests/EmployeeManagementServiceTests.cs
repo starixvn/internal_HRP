@@ -13,6 +13,7 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -97,7 +98,7 @@
             var baseService = FakeBaseService();
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
             var viewModel = FakeCreateEmployeeViewModel();
-            viewModel.ProfilePicture = StubPictureProfile();
+            viewModel.ProfilePicture = FakePictureProfile();
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
@@ -142,7 +143,7 @@
             var baseService = FakeBaseService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
             var viewModel = FakeCreateEmployeeViewModel();
-            viewModel.ProfilePicture = StubPictureProfile();
+            viewModel.ProfilePicture = FakePictureProfile();
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
@@ -200,6 +201,67 @@
 
             // Assert
             Assert.IsType<CreateEmployeeViewModel>(actual);
+        }
+
+        [Fact]
+        public void CheckValidPicture_NullParam_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var employeeManagementService = InitEmployeeManagementService(null);
+
+            // Act
+            var actual = employeeManagementService.CheckValidPicture(null);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(0, actual.Code);
+            Assert.Equal(string.Empty, actual.Message);
+        }
+
+        [Fact]
+        public void CheckValidPicture_LargeFileSize_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fileSize = (1024 * 1024) * 5;
+            var employeeManagementService = InitEmployeeManagementService(null);
+
+            // Act
+            var actual = employeeManagementService.CheckValidPicture(FakePictureProfile(fileSize));
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(1, actual.Code);
+            Assert.Equal(Message.FileTooLarge, actual.Message);
+        }
+
+        [Fact]
+        public void CheckValidPicture_InvalidImageType_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var employeeManagementService = InitEmployeeManagementService(null);
+
+            // Act
+            var actual = employeeManagementService.CheckValidPicture(FakeTxtFile());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(1, actual.Code);
+            Assert.Equal(Message.InvalidImageType, actual.Message);
+        }
+
+        [Fact]
+        public void CheckValidPicture_WithValidImage_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var employeeManagementService = InitEmployeeManagementService(null);
+
+            // Act
+            var actual = employeeManagementService.CheckValidPicture(FakePictureProfile());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(0, actual.Code);
+            Assert.Equal(string.Empty, actual.Message);
         }
 
         private IBaseService FakeBaseService()
@@ -266,19 +328,30 @@
             };
         }
 
-        private IFormFile StubPictureProfile()
+        private IFormFile FakePictureProfile(long fileSize = (1024 * 1024), string contentType = "image/png")
         {
             var file = Substitute.For<IFormFile>();
-            var content = "Hello World from a Fake File";
-            var fileName = "test.txt";
+            string sourceImg = Path.GetFullPath(@"profile.png");
+            var fileName = "profile.png";
             var ms = new MemoryStream();
             var writer = new StreamWriter(ms);
-            writer.Write(content);
+            writer.Write(sourceImg);
             writer.Flush();
             ms.Position = 0;
             file.OpenReadStream().Returns(ms);
             file.FileName.Returns(fileName);
-            file.Length.Returns(ms.Length);
+            file.Length.Returns(fileSize);
+            file.ContentType.Returns(contentType);
+
+            return file;
+        }
+
+        private IFormFile FakeTxtFile()
+        {
+            var file = Substitute.For<IFormFile>();
+            var fileName = "test.txt";
+            file.FileName.Returns(fileName);
+            file.Length.Returns(1024);
 
             return file;
         }
