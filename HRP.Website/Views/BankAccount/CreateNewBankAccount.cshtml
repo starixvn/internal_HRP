@@ -29,4 +29,6 @@
     <li class="active">Create New Bank Account</li>
 </ol>
 
-@Html.Partial("_EditBankAccount", Model)
+<form class="form-information block" asp-action="CreateNewBankAccount" asp-controller="BankAccount" method="post">
+    @Html.Partial("_EditBankAccount", Model)
+</form>

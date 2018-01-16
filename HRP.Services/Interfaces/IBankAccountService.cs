@@ -7,7 +7,10 @@
     public interface IBankAccountService
     {
         CommandResult CreateBankAccount(IBankAccount bankAccount);
+
         IEnumerable<BankAccount> GetBankAccountsByEmployeeId(int employeeId);
+
+        CommandResult UpdateBankAccount(IBankAccount bankAccount);
 
         BankAccount GetBankAccountById(int bankAccountId);
 

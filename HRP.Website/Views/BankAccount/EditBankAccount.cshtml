@@ -13,6 +13,7 @@
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="~/assets/js/bank/create-bank-account.js"></script>
 }
 
 <ol class="breadcrumb">
@@ -28,4 +29,7 @@
     <li class="active">Edit Bank Account</li>
 </ol>
 
-@Html.Partial("_EditBankAccount", Model)
+<form class="form-information block" asp-action="EditBankAccount" asp-controller="BankAccount" method="post">
+    <input type="hidden" asp-for="BankAccount.Id" />
+    @Html.Partial("_EditBankAccount", Model)
+</form>

@@ -143,7 +143,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult EditBankAccount(EditBankAccountViewModel viewModel)
         {
-            var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+            var result = bankAccountService.UpdateBankAccount(viewModel.BankAccount);
 
             if (result.IsSuccessful)
             {

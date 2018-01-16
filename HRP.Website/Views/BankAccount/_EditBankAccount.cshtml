@@ -1,97 +1,98 @@
 ﻿@using HRP.Resources
 @model HRP.Models.Bank.CreateNewBankAccountViewModel
 
-<form class="form-information block" asp-action="CreateNewBankAccount" asp-controller="BankAccount" method="post">
-    <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
+<input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
 
-    @*TODO: can be replace with asp.net core asp-validation-summary*@
-    @*<div asp-validation-summary="All"></div>*@
+@*TODO: can be replace with asp.net core asp-validation-summary*@
+@*<div asp-validation-summary="All"></div>*@
 
-    <div class="list-message-error hidden">
-        <span asp-validation-for="BankAccount.BankType" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountName" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
-        <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
-        <span asp-validation-for="BankAccount.BankName" class="message"></span>
-        <span asp-validation-for="BankAccount.BankBranch" class="message"></span>
-        <span asp-validation-for="BankAccount.BankAddress" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountType" class="message"></span>
-        <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
-    </div>
+<div class="list-message-error hidden">
+    <span asp-validation-for="BankAccount.BankType" class="message"></span>
+    <span asp-validation-for="BankAccount.AccountName" class="message"></span>
+    <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
+    <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
+    <span asp-validation-for="BankAccount.BankName" class="message"></span>
+    <span asp-validation-for="BankAccount.BankBranch" class="message"></span>
+    <span asp-validation-for="BankAccount.BankAddress" class="message"></span>
+    <span asp-validation-for="BankAccount.AccountType" class="message"></span>
+    <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
+</div>
 
-    <div class="layout-two-col">
-        <div>
-            <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
-            <div class="group-control">
-                <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
-                @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
-            </div>
-        </div>
-        <div>
-            <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
-            <div class="group-control">
-                <input class="control" asp-for="BankAccount.AccountName" />
-                @*<span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>*@
-            </div>
+<div class="layout-two-col">
+    <div>
+        <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
+        <div class="group-control">
+            <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
+            @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
         </div>
     </div>
-
-    <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.AccountNumber" />
-        @*<span class="text-danger" asp-validation-for="BankAccount.AccountNumber"></span>*@
-    </div>
-
-
-    <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BeneficiaryName" />
-        @*<span class="text-danger" asp-validation-for="BankAccount.BeneficiaryName"></span>*@
-    </div>
-
-    <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankName" />
-        @*<span class="text-danger" asp-validation-for="BankAccount.BankName"></span>*@
-    </div>
-    <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankBranch" />
-        @*<span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>*@
-    </div>
-
-    <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankAddress" />
-        @*<span class="text-danger" asp-validation-for="BankAccount.BankAddress"></span>*@
-    </div>
-
-    <div class="layout-two-col">
-        <div>
-            <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
-            <div class="group-control">
-                <select class="control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes">
-                    @*<option>--Please select--</option>*@
-                </select>
-            </div>
-        </div>
-        <div>
-            <label class="text" asp-for="BankAccount.BankSwiftCode"></label>
-            <div class="group-control">
-                <input class="control" asp-for="BankAccount.BankSwiftCode" />
-                @*<span class="text-danger" asp-validation-for="BankAccount.BankSwiftCode"></span>*@
-            </div>
+    <div>
+        <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
+        <div class="group-control">
+            <input class="control" asp-for="BankAccount.AccountName" />
+            @*<span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>*@
         </div>
     </div>
-    <div class="group-control">
-        <label>
-            <input asp-for="BankAccount.IsActive" />
-            <span>@ViewLang.Active</span>
-        </label>
-    </div>
+</div>
 
-    <div class="list-button">
-        <a class="button -second" asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
-        <button class="button -primary" type="submit">Save</button>
+<requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
+<div class="group-control">
+    <input class="control" asp-for="BankAccount.AccountNumber" />
+    @*<span class="text-danger" asp-validation-for="BankAccount.AccountNumber"></span>*@
+</div>
+
+
+<requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
+<div class="group-control">
+    <input class="control" asp-for="BankAccount.BeneficiaryName" />
+    @*<span class="text-danger" asp-validation-for="BankAccount.BeneficiaryName"></span>*@
+</div>
+
+<requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
+<div class="group-control">
+    <input class="control" asp-for="BankAccount.BankName" />
+    @*<span class="text-danger" asp-validation-for="BankAccount.BankName"></span>*@
+</div>
+<requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
+<div class="group-control">
+    <input class="control" asp-for="BankAccount.BankBranch" />
+    @*<span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>*@
+</div>
+
+<requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
+<div class="group-control">
+    <input class="control" asp-for="BankAccount.BankAddress" />
+    @*<span class="text-danger" asp-validation-for="BankAccount.BankAddress"></span>*@
+</div>
+
+<div class="layout-two-col">
+    <div>
+        <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
+        <div class="group-control">
+            <select class="control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes">
+                @*<option>--Please select--</option>*@
+            </select>
+        </div>
     </div>
-</form>
+    <div>
+        <label class="text" asp-for="BankAccount.BankSwiftCode"></label>
+        <div class="group-control">
+            <input class="control" asp-for="BankAccount.BankSwiftCode" />
+            @*<span class="text-danger" asp-validation-for="BankAccount.BankSwiftCode"></span>*@
+        </div>
+    </div>
+</div>
+<div class="group-control">
+    <label>
+        <input asp-for="BankAccount.IsActive" />
+        <span>@ViewLang.Active</span>
+    </label>
+</div>
+
+<div class="list-button">
+    <a class="button -second"
+       asp-action="EditEmployeeBankDetails"
+       asp-controller="BankAccount"
+       asp-route-EmployeeId="@Model.EmployeeId">Cancel</a>
+    <button class="button -primary" type="submit">Save</button>
+</div>

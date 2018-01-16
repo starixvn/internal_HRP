@@ -8,9 +8,6 @@
 
         public override string GetSettingKey() => "BankAccount_GetBankAccountById";
 
-        public override bool IsValid()
-        {
-            return Id > 0;
-        }
+        public override bool IsValid() => Id > 0;
     }
 }

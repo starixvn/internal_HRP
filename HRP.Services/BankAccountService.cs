@@ -39,11 +39,12 @@
             return baseService.GetDataEntity<BankAccount>(criteria);
         }
 
-        ////public CommandResult EditBankAccount(BankAccount bankAccount)
-        ////{
+        public CommandResult UpdateBankAccount(IBankAccount bankAccount)
+        {
+            var criteria = new UpdateBankAccountCriteria(bankAccount);
+            return baseService.ExecuteNonQuery(criteria);
+        }
 
-        ////}
-        
         public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
         {
             var filteredBankAccounts = bankAccounts;
