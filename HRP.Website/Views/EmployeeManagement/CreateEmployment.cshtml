@@ -14,7 +14,8 @@
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/employee.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link href="~/assets/bundles/employee/css/create-employee.min.css" rel="stylesheet" />
@@ -57,6 +58,7 @@
             <input hidden asp-for="Employee.LocalPhoneNo" />
             <input hidden asp-for="Employee.OtherPhoneNo" />
             <input hidden asp-for="Employee.PassportNo" />
+            <input hidden asp-for="IsBack" />
             <input hidden id="CurrentDate" value="@DateTime.Now.Date.ToShortDateString()" />
             <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
             <div class="group-complex -emp-layout1">
@@ -635,9 +637,9 @@
         </div>
     </div>
     <div class="list-button">
-        <button class="button -back">Back</button>
-        <button class="button -second">@ViewLang.Cancel</button>
-        <button class="button -primary">@ViewLang.Back</button>
+        <button type="button" class="button -back js-btnBack">@ViewLang.Back</button>
+        <button type="button" class="button -second">@ViewLang.Cancel</button>
+        <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>
 @section Scripts {

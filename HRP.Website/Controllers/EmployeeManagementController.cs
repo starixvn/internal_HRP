@@ -189,8 +189,6 @@
             viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
             viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
 
-            TempData.Put(TempDataKey.CreateEmployment, viewModel);
-
             return View("CreateEmployment", viewModel);
         }
 
@@ -199,6 +197,13 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
         {
+            if (viewModel.IsBack)
+            {
+                TempData.Put(TempDataKey.CreateEmployment, viewModel);
+
+                return RedirectToAction("CreateEmployee");
+            }
+
             if (ModelState.IsValid)
             {
                 var commandResult = new CommandResult();

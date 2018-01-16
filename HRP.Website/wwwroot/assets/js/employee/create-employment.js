@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var createEmployment = (function ($) {
-    var $createEmploymentForm, $companyCodeElement, $employeeCodeElement, $pdfPasswordElement;
+    var $createEmploymentForm, $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack;
 
     function initEventChangeCompanyCode() {
         $companyCodeElement.on('change', function () {
@@ -15,16 +15,25 @@ var createEmployment = (function ($) {
         });
     }
 
+    function initEventBackToPreviousAction() {
+        $btnBack.on('click', function () {
+            $createEmploymentForm.find('#IsBack').prop('checked', true);
+            $('#createEmploymentForm')[0].submit();
+        });
+    }
+
     function initModule() {
         $createEmploymentForm = $('#createEmploymentForm');
         $companyCodeElement = $createEmploymentForm.find('#CompanyCode');
         $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
         $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
+        $btnBack = $createEmploymentForm.find('.js-btnBack');
 
         employmentCommonFuncs.initForm($createEmploymentForm);
 
         initEventChangeCompanyCode();
         initEventChangeEmployeeCode();
+        initEventBackToPreviousAction();
     }
 
     return {

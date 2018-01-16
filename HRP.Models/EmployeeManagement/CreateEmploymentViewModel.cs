@@ -196,7 +196,7 @@
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordMaxLength")]
         public string PDFPassword { get; set; }
 
-        public bool IsHost { get; set; }
+        public bool IsBack { get; set; }
 
         public IEnumerable<Company> Companies { get; set; } = new List<Company>();
 
