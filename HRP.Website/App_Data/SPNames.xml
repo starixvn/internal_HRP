@@ -25,6 +25,15 @@
   <Function Name="Cost Center">
     <Setting Key="CostCenter_GetBySectionId" SpName="CostCenter_GetBySectionId" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="Job Category">
+    <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Grade Level">
+    <Setting Key="GradeLevel_GetByJobCategoryId" SpName="GradeLevel_GetByJobCategoryId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Job Grade">
+    <Setting Key="JobGrade_GetByGradeLevelId" SpName="JobGrade_GetByGradeLevelId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
   <Function Name="User">
     <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>

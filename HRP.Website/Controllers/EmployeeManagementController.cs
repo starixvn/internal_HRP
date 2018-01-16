@@ -143,18 +143,14 @@
         public async Task<IActionResult> CreateEmployment()
         {
             var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}",
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
                 ReferenceResource.LocalCompany,
                 ReferenceResource.LocalJobTitle,
                 ReferenceResource.EmploymentType,
                 ReferenceResource.EmploymentStatus,
-                ReferenceResource.JobCategory,
-                ReferenceResource.Grade,
-                ReferenceResource.GradeLevel,
                 ReferenceResource.Country,
                 ReferenceResource.City,
                 ReferenceResource.Office,
-                ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
                 ReferenceResource.WorkPermitType2,
                 ReferenceResource.CommonReasons,
@@ -167,18 +163,25 @@
                 LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
                 EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
                 EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
-                JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory),
-                Grades = GetRefResourceByName(refResources, ReferenceResource.Grade),
-                GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel),
                 Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
                 Cities = GetRefResourceByName(refResources, ReferenceResource.City),
                 Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
-                TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration),
                 WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
                 WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
                 CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons),
                 GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons)
             };
+            viewModel.JobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria { IsActive = true });
+            viewModel.GradeLevels = await baseService.GetDataAsync<GradeLevel>(new GetGradeLevelByJobCategoryIdCriteria
+            {
+                JobCategoryId = viewModel.JobCategoryId,
+                IsActive = true
+            });
+            viewModel.JobGrades = await baseService.GetDataAsync<JobGrade>(new GetJobGradeByGradeLevelIdCriteria
+            {
+                GradeLevelId = viewModel.GradeLevelId,
+                IsActive = true
+            });
             viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
             viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
             viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
@@ -209,18 +212,14 @@
         public async Task<IActionResult> UpdateEmployment(int employeeId)
         {
             var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}",
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
                 ReferenceResource.LocalCompany,
                 ReferenceResource.LocalJobTitle,
                 ReferenceResource.EmploymentType,
                 ReferenceResource.EmploymentStatus,
-                ReferenceResource.JobCategory,
-                ReferenceResource.Grade,
-                ReferenceResource.GradeLevel,
                 ReferenceResource.Country,
                 ReferenceResource.City,
                 ReferenceResource.Office,
-                ReferenceResource.TaxDeclaration,
                 ReferenceResource.WorkPermitType1,
                 ReferenceResource.WorkPermitType2,
                 ReferenceResource.CommonReasons,
@@ -233,17 +232,24 @@
             viewModel.LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle);
             viewModel.EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType);
             viewModel.EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus);
-            viewModel.JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory);
-            viewModel.Grades = GetRefResourceByName(refResources, ReferenceResource.Grade);
-            viewModel.GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel);
             viewModel.Countries = GetRefResourceByName(refResources, ReferenceResource.Country);
             viewModel.Cities = GetRefResourceByName(refResources, ReferenceResource.City);
             viewModel.Offices = GetRefResourceByName(refResources, ReferenceResource.Office);
-            viewModel.TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration);
             viewModel.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
             viewModel.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
             viewModel.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);
             viewModel.GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons);
+            viewModel.JobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria { IsActive = true });
+            viewModel.GradeLevels = await baseService.GetDataAsync<GradeLevel>(new GetGradeLevelByJobCategoryIdCriteria
+            {
+                JobCategoryId = viewModel.JobCategoryId,
+                IsActive = true
+            });
+            viewModel.JobGrades = await baseService.GetDataAsync<JobGrade>(new GetJobGradeByGradeLevelIdCriteria
+            {
+                GradeLevelId = viewModel.GradeLevelId,
+                IsActive = true
+            });
             viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
             viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
             viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
@@ -329,6 +335,26 @@
             var employees = await baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
 
             return Json(employees);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetGradeLevelByJobCategoryId(int jobCategoryId)
+        {
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId };
+            var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria);
+
+            return Json(gradeLevels);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetJobGradeByGradeLevelId(int gradeLevelId)
+        {
+            var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId };
+            var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria);
+
+            return Json(jobGrades);
         }
 
         [HttpGet]

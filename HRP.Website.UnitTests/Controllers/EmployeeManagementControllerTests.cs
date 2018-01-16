@@ -167,6 +167,63 @@
             Assert.Equal(expected, (IEnumerable<CostCenter>)jsonResult.Value);
         }
 
+        [Fact]
+        public async Task GetEmployeeSuggestion_WhenCalled_ReturnExpectedEmployees()
+        {
+            //Arrange
+            var expected = new List<EmployeeSuggestionViewModel>
+            {
+                new EmployeeSuggestionViewModel { EmployeeId = 1, FullName = "Tim", NickName = "tim.trinh" }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetEmployeeSuggestion("dar");
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<EmployeeSuggestionViewModel>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetGradeLevelByJobCategoryId_WhenCalled_ReturnExpectedGradeLevels()
+        {
+            //Arrange
+            var expected = new List<GradeLevel>
+            {
+                new GradeLevel { GradeLevelId = 1, Name = "Senior Management", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<GradeLevel>(Arg.Any<GetGradeLevelByJobCategoryIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetGradeLevelByJobCategoryId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<GradeLevel>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetJobGradeByGradeLevelId_WhenCalled_ReturnExpectedJobGrades()
+        {
+            //Arrange
+            var expected = new List<JobGrade>
+            {
+                new JobGrade { JobGradeId = 1, Name = "A1", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<JobGrade>(Arg.Any<GetJobGradeByGradeLevelIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetJobGradeByGradeLevelId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<JobGrade>)jsonResult.Value);
+        }
+
         #region Helpers
 
         private ISessionService FakeSessionService()

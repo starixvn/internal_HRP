@@ -8,6 +8,7 @@
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
 
+    [Serializable]
     public class CreateEmploymentViewModel
     {
         public CreateEmployeeViewModel Employee { get; set; } = new CreateEmployeeViewModel();
@@ -207,19 +208,17 @@
 
         public IEnumerable<ReferenceResourceModel> EmploymentStatuses { get; set; } = new List<ReferenceResourceModel>();
 
-        public IEnumerable<ReferenceResourceModel> Grades { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<JobGrade> JobGrades { get; set; } = new List<JobGrade>();
 
-        public IEnumerable<ReferenceResourceModel> GradeLevels { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<GradeLevel> GradeLevels { get; set; } = new List<GradeLevel>();
 
-        public IEnumerable<ReferenceResourceModel> JobCategories { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<JobCategory> JobCategories { get; set; } = new List<JobCategory>();
 
         public IEnumerable<ReferenceResourceModel> Countries { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> Cities { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> Offices { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> TaxDeclarations { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
 

@@ -1,7 +1,5 @@
 namespace HRP.Core.Model
 {
-    using System.Collections.Generic;
-
     public class CommandResult
     {
         public CommandResult()

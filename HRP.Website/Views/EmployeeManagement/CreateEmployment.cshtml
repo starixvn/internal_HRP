@@ -236,7 +236,7 @@
                     <label class="text like-group-title -has-required" asp-for="JobCategoryId">
                         <span class="icon-group"></span>@ViewLang.JobCategory
                     </label>
-                    <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "ResourceId", "Value"))">
+                    <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "JobCategoryId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -258,13 +258,13 @@
                     <label class="text like-group-title -has-required" asp-for="GradeId">
                         <span class="icon-group"></span>@ViewLang.JobGrade
                     </label>
-                    <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.Grades, "ResourceId", "Value"))">
+                    <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="GradeLevelId">@ViewLang.GradeLevel</label>
-                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "ResourceId", "Value"))">
+                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -451,13 +451,13 @@
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="DST">@ViewLang.DST</label>
-                    <select class="control" asp-for="DST" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
+                    <select class="control" asp-for="DST" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DBT">@ViewLang.DBT</label>
-                    <select class="control" asp-for="DBT" asp-items="@(new SelectList(Model.TaxDeclarations, "ResourceId", "Value"))">
+                    <select class="control" asp-for="DBT" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
