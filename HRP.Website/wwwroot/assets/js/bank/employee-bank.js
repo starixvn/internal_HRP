@@ -17,12 +17,12 @@
         // });
     },
 
-    replaceNameAttrOfItem: function(selectElement){
+    replaceNameAttrOfItem: function (selectElement) {
         var modelName = $(selectElement).prop("name");
-            var inputs = $("input[data-item-id='" + modelName + "'");
-            inputs.each(function () {
-                $(this).attr("name", modelName);
-            });
+        var inputs = $("input[data-item-id='" + modelName + "'");
+        inputs.each(function () {
+            $(this).attr("name", modelName);
+        });
     },
 
     getItemsList: function (selectElement) {

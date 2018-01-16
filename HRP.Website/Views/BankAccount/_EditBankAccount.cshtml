@@ -46,24 +46,24 @@
     <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.BeneficiaryName" />
-        <span class="text-danger" asp-validation-for="BankAccount.BeneficiaryName"></span>
+        @*<span class="text-danger" asp-validation-for="BankAccount.BeneficiaryName"></span>*@
     </div>
 
     <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.BankName" />
-        <span class="text-danger" asp-validation-for="BankAccount.BankName"></span>
+        @*<span class="text-danger" asp-validation-for="BankAccount.BankName"></span>*@
     </div>
     <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.BankBranch" />
-        <span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>
+        @*<span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>*@
     </div>
 
     <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.BankAddress" />
-        <span class="text-danger" asp-validation-for="BankAccount.BankAddress"></span>
+        @*<span class="text-danger" asp-validation-for="BankAccount.BankAddress"></span>*@
     </div>
 
     <div class="layout-two-col">
@@ -71,7 +71,7 @@
             <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
             <div class="group-control">
                 <select class="control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes">
-                    <option>--Please select--</option>
+                    @*<option>--Please select--</option>*@
                 </select>
             </div>
         </div>
@@ -79,7 +79,7 @@
             <label class="text" asp-for="BankAccount.BankSwiftCode"></label>
             <div class="group-control">
                 <input class="control" asp-for="BankAccount.BankSwiftCode" />
-                <span class="text-danger" asp-validation-for="BankAccount.BankSwiftCode"></span>
+                @*<span class="text-danger" asp-validation-for="BankAccount.BankSwiftCode"></span>*@
             </div>
         </div>
     </div>
