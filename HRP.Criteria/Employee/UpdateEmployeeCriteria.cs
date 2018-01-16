@@ -67,7 +67,18 @@
 
         public override bool IsValid()
         {
-            return (EmployeeId > 0) && !string.IsNullOrEmpty(FullName) && !string.IsNullOrEmpty(NickName);
+            return (EmployeeId > 0)
+                && !string.IsNullOrEmpty(FullName)
+                && !string.IsNullOrEmpty(NickName)
+                && Gender > 0
+                && Nationality > 0
+                && !string.IsNullOrEmpty(NRICNo)
+                && MaritalStatus > 0
+                && NoOfChildren > 0
+                && !string.IsNullOrEmpty(OverseasPhoneNo)
+                && !string.IsNullOrEmpty(PassportNo)
+                && !string.IsNullOrEmpty(PermanentAddress)
+                && !string.IsNullOrEmpty(ResidenceAddress);
         }
     }
 }

@@ -50,13 +50,13 @@
             </div>
             @if (Model.IsHost)
             {
-                <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
-                <ul class="more-info">
-                    <li>File type: .JPG, .JPEG, .PNG</li>
-                    <li>Maximum capacity: 2MB</li>
-                    <li>Dimension :160X160 px</li>
-                </ul>
-                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+            <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
+            <ul class="more-info">
+                <li>File type: .JPG, .JPEG, .PNG</li>
+                <li>Maximum capacity: 2MB</li>
+                <li>Dimension :160X160 px</li>
+            </ul>
+            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             }
         </figure>
         <div class="col has-space">
@@ -196,10 +196,10 @@
 
         @if (Model.IsHost)
         {
-            <div class="list-button">
-                <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
-                <button class="button -primary js-btnSave" type="submit">Next</button>
-            </div>
+        <div class="list-button">
+            <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
+            <button class="button -primary js-btnSave" type="submit">@(Model.IsEditForm ? ViewLang.Save : ViewLang.Next)</button>
+        </div>
         }
     </div>
 </form>

@@ -104,5 +104,7 @@
         public IFormFile ProfilePicture { get; set; }
 
         public bool IsHost { get; set; }
+
+        public bool IsEditForm { get; set; }
     }
 }

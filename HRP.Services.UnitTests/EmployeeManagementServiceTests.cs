@@ -117,7 +117,7 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var criteria = new UpdateEmployeeCriteria();
+            var criteria = fixture.Create<UpdateEmployeeCriteria>();
             var baseService = FakeBaseService();
             baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
@@ -129,6 +129,32 @@
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(criteria.FullName, viewModel.FullName);
+            Assert.Equal(criteria.NickName, viewModel.NickName);
+            Assert.Equal(criteria.Gender, viewModel.Gender);
+            Assert.Equal(criteria.DateOfBirth, viewModel.DateOfBirth);
+            Assert.Equal(criteria.PlaceOfBirth, viewModel.PlaceOfBirth);
+            Assert.Equal(criteria.Nationality, viewModel.Nationality);
+            Assert.Equal(criteria.NRICNo, viewModel.NRICNo);
+            Assert.Equal(criteria.MaritalStatus, viewModel.MaritalStatus);
+            Assert.Equal(criteria.NoOfChildren, viewModel.NoOfChildren);
+            Assert.Equal(criteria.OverseasPhoneNo, viewModel.OverseasPhoneNo);
+            Assert.Equal(criteria.LocalPhoneNo, viewModel.LocalPhoneNo);
+            Assert.Equal(criteria.OtherPhoneNo, viewModel.OtherPhoneNo);
+            Assert.Equal(criteria.PassportNo, viewModel.PassportNo);
+            Assert.Equal(criteria.DateIssue, viewModel.DateIssue);
+            Assert.Equal(criteria.ExpiredDate, viewModel.ExpiredDate);
+            Assert.Equal(criteria.PlaceOfIssue, viewModel.PlaceOfIssue);
+            Assert.Equal(criteria.Skype, viewModel.Skype);
+            Assert.Equal(criteria.PersonalEmail, viewModel.PersonalEmail);
+            Assert.Equal(criteria.PermanentAddress, viewModel.PermanentAddress);
+            Assert.Equal(criteria.ResidenceAddress, viewModel.ResidenceAddress);
+            Assert.Equal(criteria.MailingAddress, viewModel.MailingAddress);
+            Assert.Equal(criteria.ECName, viewModel.EmergencyContact.Name);
+            Assert.Equal(criteria.ECRelationship, viewModel.EmergencyContact.Relationship);
+            Assert.Equal(criteria.ECAddress, viewModel.EmergencyContact.Address);
+            Assert.Equal(criteria.ECPhoneNo1, viewModel.EmergencyContact.PhoneNo1);
+            Assert.Equal(criteria.ECPhoneNo2, viewModel.EmergencyContact.PhoneNo2);
         }
 
         [Fact]
@@ -185,6 +211,7 @@
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(expected.ProfilePicLink, actual.ProfilePicLink);
         }
 
         [Fact]
