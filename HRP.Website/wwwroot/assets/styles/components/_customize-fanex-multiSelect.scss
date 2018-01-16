@@ -1,0 +1,59 @@
+/* Customize fanex-multiSelect */
+.fanex-multiselect-widget {
+   font-size: $font-size;
+   font-family: $font-family;
+
+    input[type="text"][readonly] {
+        background-color: transparent;
+        color: #333;
+    }
+
+     input[type='text'] {
+         height: 30px !important;
+         width: 100% !important;
+     }     
+}
+
+.fanex-multiselect {
+    position: relative;
+    border-color: $border-color;
+
+    span {
+        margin-top: initial;
+        position: absolute;
+        right: 2px;
+        top: 6px;
+    }
+}
+
+.fanex-multiselect-helper-reset {
+    margin-bottom: 6px;
+}
+
+.fanex-multiselect-treeview {
+    border: 1px solid #1973b2;
+    padding: 10px;
+
+    input[type="checkbox"] {
+        display: inline-block;
+        position: relative;
+        top: 2px;
+        margin-right: 6px;
+    }
+
+    .show-item {
+        padding: 4px 0;
+    }
+
+    .custom-ui-widget-header {
+        border-color: #d9d9d9 !important;
+    }
+}
+
+.fanex-multiselect-shadow {
+    @include box-shadow-multiple(0 2px 3px 1px rgba(0,0,0,.2));
+}
+
+.fanex-multiselect-div label:hover {
+    font-weight: normal !important;
+}

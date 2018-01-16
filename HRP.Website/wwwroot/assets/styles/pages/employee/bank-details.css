@@ -181,6 +181,7 @@ input[type="checkbox"]:disabled + span {
   opacity: 0.5;
 }
 
+/* Search Table */
 .top-header {
   -webkit-border-radius: 2px 2px 0 0;
   -khtml-border-radius: 2px 2px 0 0;
@@ -280,6 +281,38 @@ input[type="checkbox"]:disabled + span {
   line-height: 1;
 }
 
+/* Sorting */
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > td.sorting_asc,
+table.dataTable thead > tr > td.sorting_desc,
+table.dataTable thead > tr > td.sorting {
+  position: relative;
+  padding: 0 18px;
+}
+
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after {
+  font-family: "hrp";
+  font-size: 8px;
+  opacity: 1;
+  right: 5px;
+}
+
+table.dataTable thead .sorting:after {
+  content: "\e921";
+}
+
+table.dataTable thead .sorting_asc:after {
+  content: "\e923";
+  color: #fcd601;
+}
+
+table.dataTable thead .sorting_desc:after {
+  content: "\e922";
+  color: #fcd601;
+}
+
 .dataTables_wrapper .dataTables_length .form-control {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -357,7 +390,76 @@ input[type="checkbox"]:disabled + span {
   border-bottom-right-radius: 2px;
 }
 
+/* Customize fanex-multiSelect */
+.fanex-multiselect-widget {
+  font-size: 13px;
+  font-family: Roboto, Arial, Tahoma, sans-serif;
+}
+
+.fanex-multiselect-widget input[type="text"][readonly] {
+  background-color: transparent;
+  color: #333;
+}
+
+.fanex-multiselect-widget input[type='text'] {
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.fanex-multiselect {
+  position: relative;
+  border-color: #d9d9d9;
+}
+
+.fanex-multiselect span {
+  margin-top: initial;
+  position: absolute;
+  right: 2px;
+  top: 6px;
+}
+
+.fanex-multiselect-helper-reset {
+  margin-bottom: 6px;
+}
+
+.fanex-multiselect-treeview {
+  border: 1px solid #1973b2;
+  padding: 10px;
+}
+
+.fanex-multiselect-treeview input[type="checkbox"] {
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 6px;
+}
+
+.fanex-multiselect-treeview .show-item {
+  padding: 4px 0;
+}
+
+.fanex-multiselect-treeview .custom-ui-widget-header {
+  border-color: #d9d9d9 !important;
+}
+
+.fanex-multiselect-shadow {
+  -webkit-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -khtml-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+}
+
+.fanex-multiselect-div label:hover {
+  font-weight: normal !important;
+}
+
 /* Bank details */
+.fanex-multiselect-div {
+  margin-left: 0 !important;
+}
+
 .icon-active {
   position: relative;
   color: #1973b2;

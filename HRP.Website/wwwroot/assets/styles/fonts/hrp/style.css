@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'hrp';
-  src:  url('fonts/hrp.eot?d906iq');
-  src:  url('fonts/hrp.eot?d906iq#iefix') format('embedded-opentype'),
-    url('fonts/hrp.ttf?d906iq') format('truetype'),
-    url('fonts/hrp.woff?d906iq') format('woff'),
-    url('fonts/hrp.svg?d906iq#hrp') format('svg');
+  src:  url('fonts/hrp.eot?3rrpov');
+  src:  url('fonts/hrp.eot?3rrpov#iefix') format('embedded-opentype'),
+    url('fonts/hrp.ttf?3rrpov') format('truetype'),
+    url('fonts/hrp.woff?3rrpov') format('woff'),
+    url('fonts/hrp.svg?3rrpov#hrp') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-sort:before {
+  content: "\e921";
+}
+.icon-sort_down:before {
+  content: "\e922";
+}
+.icon-sort_up:before {
+  content: "\e923";
+}
 .icon-group:before {
   content: "\e920";
 }

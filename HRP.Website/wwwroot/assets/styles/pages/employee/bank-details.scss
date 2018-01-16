@@ -3,8 +3,14 @@
 @import "../../components/forms";
 @import "../../components/checkbox";
 @import "../../components/tables";
+@import "../../components/customize-fanex-multiSelect";
 
 /* Bank details */
+
+.fanex-multiselect-div  {
+    margin-left: 0 !important;
+}
+
 .icon-active {
     position: relative;
     color: #1973b2;
