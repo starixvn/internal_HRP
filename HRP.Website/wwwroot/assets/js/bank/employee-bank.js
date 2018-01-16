@@ -38,6 +38,31 @@
     // }
 };
 
+var userManagement = (function ($) {
+    var init = function () {
+        $('.data-table').dataTable({
+            "paging": false,
+            "columnDefs": [{
+                "orderable": false,
+                "targets": 0
+            }]
+        });
+    };
+
+    $('#quick-search').off('keyup').on('keyup', function () {
+        $('.data-table').DataTable().search($(this).val()).draw();
+    });
+
+    return {
+        onSearchSuccess: function (response, status) {
+            init();
+        },
+        init: init
+    };
+}(jQuery));
+
+userManagement.init();
+
 $(document).ready(function () {
     multiselect.init();
 });

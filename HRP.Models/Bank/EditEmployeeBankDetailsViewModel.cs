@@ -57,12 +57,12 @@
                 new SelectListItem
                 {
                     Value = true.ToString(),
-                    Text = "Active"
+                    Text = "True"
                 },
                 new SelectListItem
                 {
                     Value = false.ToString(),
-                    Text = "Inactive"
+                    Text = "False"
                 }
             };
         }
