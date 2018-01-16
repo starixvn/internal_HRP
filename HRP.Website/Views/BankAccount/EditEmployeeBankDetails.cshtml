@@ -7,7 +7,7 @@
 
 @section Styles {
     @*<link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />*@
-    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/datatables.net/css/jquery.dataTables.css" rel="stylesheet" />
     <link href="~/lib/ultraselect/jquery.ultraselect.css" rel="stylesheet" />
     <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
 }
@@ -15,7 +15,7 @@
 @section Scripts {
     @*<script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>*@
     <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    @*<script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>*@
     <script src="~/lib/ultraselect/jquery.ultraselect.js"></script>
     <script src="~/assets/js/bank/employee-bank.js"></script>
 }
@@ -32,6 +32,18 @@
     <div class="group">
         <label class="text">Bank Type</label>
         <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes"></select>
+
+        @*<ul>
+            @foreach (var bankType in Model.BankTypes)
+            {
+                <li>
+                    <label>
+                        <input name="SelectedBankTypes" type="checkbox" checked="@(Model.SelectedBankTypes != null && Model.SelectedBankTypes.Contains(bankType.ResourceId))" />
+                        <span>@bankType.Value</span>
+                    </label>
+                </li>
+            }
+        </ul>*@
     </div>
     <div class="group">
         <label class="text">Active</label>
@@ -79,7 +91,7 @@
             <tr>
                 <td class="text-center">@(index + 1)</td>
                 @{
-                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
+                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Value;
                     var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
                 }
                 <td>@bankType</td>

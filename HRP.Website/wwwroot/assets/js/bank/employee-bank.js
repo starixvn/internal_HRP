@@ -38,31 +38,29 @@
     // }
 };
 
-var userManagement = (function ($) {
-    var init = function () {
+var dataTable = {
+    init: function(){
         $('.data-table').dataTable({
             "paging": false,
             "columnDefs": [{
                 "orderable": false,
                 "targets": 0
-            }]
+            }],
+            'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
+            'info': false,
         });
-    };
 
-    $('#quick-search').off('keyup').on('keyup', function () {
-        $('.data-table').DataTable().search($(this).val()).draw();
-    });
+        dataTable.assignSearchButton();
+    },
 
-    return {
-        onSearchSuccess: function (response, status) {
-            init();
-        },
-        init: init
-    };
-}(jQuery));
-
-userManagement.init();
+    assignSearchButton: function(){
+        $('#quick-search').off('keyup').on('keyup', function () {
+            $('.data-table').DataTable().search($(this).val()).draw();
+        });
+    }
+}
 
 $(document).ready(function () {
     multiselect.init();
+    dataTable.init();
 });
