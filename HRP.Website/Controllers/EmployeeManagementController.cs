@@ -84,7 +84,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployee(CreateEmployeeViewModel employee)
+        public IActionResult CreateEmployee(CreateEmployeeViewModel employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
@@ -94,13 +94,11 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = await employeeManagementService.CreateEmployeeAsync(employee);
-
                 return Json(new
                 {
-                    isSuccessful = commandResult.IsSuccessful,
-                    message = commandResult.IsSuccessful ? Message.CreateEmployeeSuccessful : commandResult.Message,
-                    redirectLink = Url.Action("EditEmployee", new { id = commandResult.Data, tab = EmployeeTab.Employment.ToString() })
+                    isSuccessful = true,
+                    message = "Validate successful.",
+                    redirectLink = Url.Action("CreateEmployment")
                 });
             }
 

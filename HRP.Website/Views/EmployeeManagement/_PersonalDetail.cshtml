@@ -2,7 +2,7 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail" enctype="multipart/form-data" method="post" asp-action="CreateEmployee" asp-controller="EmployeeManagement" id="personalDetailForm">
+<form class="personal-detail" enctype="multipart/form-data" method="post" id="personalDetailForm">
     <div class="personal-detail-error list-message-error hidden">
         <span asp-validation-for="FullName" class="message"></span>
         <span asp-validation-for="NickName" class="message"></span>

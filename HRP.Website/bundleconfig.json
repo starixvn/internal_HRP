@@ -238,6 +238,7 @@
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
       "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/assets/js/employee/employee-common-funcs.js",
       "wwwroot/assets/js/employee/create-employee.js"
     ],
     "minify": {
@@ -255,7 +256,8 @@
       "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
       "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/assets/js/employee/create-employee.js",
+      "wwwroot/assets/js/employee/employee-common-funcs.js",
+      "wwwroot/assets/js/employee/edit-employee.js",
       "wwwroot/assets/js/employee/update-employment.js"
     ],
     "minify": {
