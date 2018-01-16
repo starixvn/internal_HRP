@@ -13,6 +13,23 @@
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script>
+        function CheckFormError() {
+            if ($("form").find(".field-validation-error").length === 0) {
+                // Valid
+                $(".list-message-error").addClass("hidden");
+            } else {
+                $(".list-message-error").removeClass("hidden");
+            }
+        }
+
+        $(document).ready(function() {
+            $("form").on("submit",
+                function() {
+                    CheckFormError();
+                });
+        })
+    </script>
 }
 
 <ol class="breadcrumb">

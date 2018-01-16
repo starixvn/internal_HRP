@@ -3,19 +3,35 @@
 
 <form class="form-information block" asp-action="CreateNewBankAccount" asp-controller="BankAccount" method="post">
     <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
+
+    @*TODO: can be replace with asp.net core asp-validation-summary*@
+    @*<div asp-validation-summary="All"></div>*@
+
+    <div class="list-message-error hidden">
+        <span asp-validation-for="BankAccount.BankType" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountName" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
+        <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
+        <span asp-validation-for="BankAccount.BankName" class="message"></span>
+        <span asp-validation-for="BankAccount.BankBranch" class="message"></span>
+        <span asp-validation-for="BankAccount.BankAddress" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountType" class="message"></span>
+        <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
+    </div>
+
     <div class="layout-two-col">
         <div>
             <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
             <div class="group-control">
                 <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
-                <span class="text-danger" asp-validation-for="BankAccount.BankType"></span>
+                @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
             </div>
         </div>
         <div>
             <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
             <div class="group-control">
                 <input class="control" asp-for="BankAccount.AccountName" />
-                <span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>
+                @*<span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>*@
             </div>
         </div>
     </div>
@@ -23,7 +39,7 @@
     <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.AccountNumber" />
-        <span class="text-danger" asp-validation-for="BankAccount.AccountNumber"></span>
+        @*<span class="text-danger" asp-validation-for="BankAccount.AccountNumber"></span>*@
     </div>
 
 
@@ -43,7 +59,7 @@
         <input class="control" asp-for="BankAccount.BankBranch" />
         <span class="text-danger" asp-validation-for="BankAccount.BankBranch"></span>
     </div>
-    
+
     <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAccount.BankAddress" />
