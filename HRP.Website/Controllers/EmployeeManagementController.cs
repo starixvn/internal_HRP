@@ -137,6 +137,73 @@
             return Json(new { isSuccessful = false, errors = errorList });
         }
 
+        [Route("employeemanagement/create/employment")]
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateEmployment()
+        {
+            var refNames = string.Format(
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}",
+                ReferenceResource.LocalCompany,
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.JobCategory,
+                ReferenceResource.Grade,
+                ReferenceResource.GradeLevel,
+                ReferenceResource.Country,
+                ReferenceResource.City,
+                ReferenceResource.Office,
+                ReferenceResource.TaxDeclaration,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2,
+                ReferenceResource.CommonReasons,
+                ReferenceResource.GroupDateReasons);
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
+
+            var viewModel = new CreateEmploymentViewModel
+            {
+                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
+                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
+                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
+                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
+                JobCategories = GetRefResourceByName(refResources, ReferenceResource.JobCategory),
+                Grades = GetRefResourceByName(refResources, ReferenceResource.Grade),
+                GradeLevels = GetRefResourceByName(refResources, ReferenceResource.GradeLevel),
+                Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
+                Cities = GetRefResourceByName(refResources, ReferenceResource.City),
+                Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
+                TaxDeclarations = GetRefResourceByName(refResources, ReferenceResource.TaxDeclaration),
+                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
+                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
+                CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons),
+                GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons)
+            };
+            viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
+            viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
+            viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
+            viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
+            viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
+
+            return View("CreateEmployment", viewModel);
+        }
+
+        [Route("employeemanagement/create/employment")]
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var commandResult = new CommandResult();
+
+                return Json(commandResult);
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public async Task<IActionResult> UpdateEmployment(int employeeId)
