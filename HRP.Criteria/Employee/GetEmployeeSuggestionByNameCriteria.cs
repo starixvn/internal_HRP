@@ -6,8 +6,10 @@ namespace HRP.Criteria.Employee
     {
         public string Name { get; set; }
 
+        public int UserId { get; set; }
+
         public override string GetSettingKey() => "Employee_GetSuggestionByName";
 
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(Name) && Name.Length > 1;
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(Name) && Name.Length > 1 && UserId > 0;
     }
 }

@@ -24,23 +24,27 @@
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
         private readonly IEmployeePayrollService payrollService;
+        private readonly ISessionService sessionService;
 
         public EmployeeManagementController(
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
-            IEmployeePayrollService payrollService)
+            IEmployeePayrollService payrollService,
+            ISessionService sessionService)
         {
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
             this.payrollService = payrollService;
+            this.sessionService = sessionService;
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult Index()
         {
+            var departmentIds = string.Empty;
             var viewModel = new EmployeeManagementViewModel
             {
-                DepartmentIds = "1,2,3,4",
+                DepartmentIds = departmentIds,
                 InService = Selection.Yes,
                 InProbation = Selection.All,
             };
@@ -48,7 +52,7 @@
         }
 
         [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {
             var criteria = new GetAllEmployeeCriteria
@@ -64,10 +68,14 @@
         }
 
         [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public async Task<IActionResult> GetEmployeeSuggestionByName(string name)
         {
-            var criteria = new GetEmployeeSuggestionByNameCriteria { Name = name };
+            var criteria = new GetEmployeeSuggestionByNameCriteria
+            {
+                Name = name,
+                UserId = sessionService.UserId
+            };
             var employees = await baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
 
             return Json(employees);
