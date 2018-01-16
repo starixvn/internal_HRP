@@ -6,17 +6,17 @@
 }
 
 @section Styles {
-    @*<link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />*@
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
     <link href="~/lib/datatables.net/css/jquery.dataTables.css" rel="stylesheet" />
-    <link href="~/lib/ultraselect/jquery.ultraselect.css" rel="stylesheet" />
+    @*<link href="~/lib/ultraselect/jquery.ultraselect.css" rel="stylesheet" />*@
     <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
 }
 
 @section Scripts {
-    @*<script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>*@
+    <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
     <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
     @*<script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>*@
-    <script src="~/lib/ultraselect/jquery.ultraselect.js"></script>
+    @*<script src="~/lib/ultraselect/jquery.ultraselect.js"></script>*@
     <script src="~/assets/js/bank/employee-bank.js"></script>
 }
 
@@ -31,7 +31,7 @@
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
-        <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes"></select>
+        <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" class="fanex-select"></select>
 
         @*<ul>
             @foreach (var bankType in Model.BankTypes)
