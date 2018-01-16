@@ -579,4 +579,7 @@
   <data name="BankAccount_IsActive" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

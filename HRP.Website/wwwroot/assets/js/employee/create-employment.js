@@ -1,11 +1,30 @@
 ﻿'use strict';
 
 var createEmployment = (function ($) {
-    var $createEmploymentForm;
+    var $createEmploymentForm, $companyCodeElement, $employeeCodeElement, $pdfPasswordElement;
+
+    function initEventChangeCompanyCode() {
+        $companyCodeElement.on('change', function () {
+            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim());
+        });
+    }
+
+    function initEventChangeEmployeeCode() {
+        $employeeCodeElement.on('change', function () {
+            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim());
+        });
+    }
 
     function initModule() {
         $createEmploymentForm = $('#createEmploymentForm');
+        $companyCodeElement = $createEmploymentForm.find('#CompanyCode');
+        $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
+        $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
+
         employmentCommonFuncs.initForm($createEmploymentForm);
+
+        initEventChangeCompanyCode();
+        initEventChangeEmployeeCode();
     }
 
     return {

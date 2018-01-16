@@ -3,14 +3,18 @@
 var employmentCommonFuncs = (function ($) {
     var $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
-        $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
+        $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
         defaultOption = '<option value="" style="display: none;">--Please select--</option>',
         currentDate;
 
     function registerEventChangeBVICompany() {
         $bviCompanyElement.on('change', function () {
             var companyId = $(this).val(),
+                companyCode = $(this).find('option:selected').text(),
                 htmlOptions = '';
+
+            $companyCodeElement.val(companyCode);
+            $companyCodeElement.trigger('change');
 
             $.ajax({
                 type: 'GET',
@@ -370,6 +374,7 @@ var employmentCommonFuncs = (function ($) {
         $departmentElement = $form.find('#DepartmentId');
         $sectionElement = $form.find('#SectionId');
         $costCenterElement = $form.find('#CostCenterId');
+        $companyCodeElement = $form.find('#CompanyCode');
         $jobCategoryElement = $form.find('#JobCategoryId');
         $gradeLevelElement = $form.find('#GradeLevelId');
         $jobGradeElement = $form.find('#JobGradeId');

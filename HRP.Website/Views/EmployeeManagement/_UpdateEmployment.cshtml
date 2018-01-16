@@ -171,9 +171,7 @@
             <div class="group-complex -emp-layout4">
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
-                    <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.Companies, "Code", "Code"))" disabled>
-                        <option value="" style="display: none;"></option>
-                    </select>
+                    <input type="text" class="control" asp-for="CompanyCode" readonly />
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="EmployeeCode">@ViewLang.EmpCode</label>

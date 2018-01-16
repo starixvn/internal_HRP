@@ -2,7 +2,7 @@
 @using HRP.Resources
 @using HRP.Models.EmployeeManagement
 
-@model HRP.Models.EmployeeManagement.CreateEmploymentViewModel
+@model CreateEmploymentViewModel
 @{
     ViewData["Title"] = "Employment";
     var minDate = Constants.MinDate;
@@ -24,7 +24,17 @@
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
+    <li class="active">@ViewLang.CreateNewEmployee</li>
 </ol>
+
+<ul class="steps clearfix">
+    <li class="step finished">
+        <label class="step-title">@ViewLang.PersonalDetail</label>
+    </li>
+    <li class="step active">
+        <label class="step-title">@ViewLang.Employment</label>
+    </li>
+</ul>
 
 <form id="createEmploymentForm" class="form-information" asp-action="CreateEmployment" asp-controller="EmployeeManagement"
       data-ajax-method="post" data-ajax="true"
@@ -182,9 +192,7 @@
             <div class="group-complex -emp-layout4">
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
-                    <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.Companies, "Code", "Code"))" disabled>
-                        <option value="" style="display: none;"></option>
-                    </select>
+                    <input type="text" class="control" asp-for="CompanyCode" readonly />
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="EmployeeCode">@ViewLang.EmpCode</label>
@@ -629,7 +637,7 @@
     <div class="list-button">
         <button class="button -back">Back</button>
         <button class="button -second">@ViewLang.Cancel</button>
-        <button class="button -primary">@ViewLang.Save</button>
+        <button class="button -primary">@ViewLang.Back</button>
     </div>
 </form>
 @section Scripts {
