@@ -182,8 +182,8 @@
             <div class="group-complex -emp-layout4">
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
-                    <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.Companies, "Code", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control" asp-for="CompanyCode" asp-items="@(new SelectList(Model.Companies, "Code", "Code"))" disabled>
+                        <option value="" style="display: none;"></option>
                     </select>
                 </div>
                 <div class="component">
@@ -255,16 +255,16 @@
             </div>
             <div class="group-complex -emp-layout4 space-between-parts">
                 <div class="component">
-                    <label class="text like-group-title -has-required" asp-for="GradeId">
-                        <span class="icon-group"></span>@ViewLang.JobGrade
+                    <label class="text like-group-title -has-required" asp-for="GradeLevelId">
+                        <span class="icon-group"></span>@ViewLang.GradeLevel
                     </label>
-                    <select class="control" asp-for="GradeId" asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
+                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
                 <div class="component">
-                    <label class="text -has-required" asp-for="GradeLevelId">@ViewLang.GradeLevel</label>
-                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
+                    <label class="text -has-required" asp-for="JobGradeId">@ViewLang.JobGrade</label>
+                    <select class="control" asp-for="JobGradeId" asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -640,6 +640,7 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/employee/employment-common-funcs.js"></script>
         <script src="~/assets/js/employee/create-employment.js"></script>
     </environment>
     <environment exclude="Development">

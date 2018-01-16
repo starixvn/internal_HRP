@@ -167,23 +167,23 @@
         public int? JobCategoryReasonId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeRequired")]
-        public int GradeId { get; set; }
+        public int JobGradeId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeLevelRequired")]
         public int GradeLevelId { get; set; }
 
-        public int? OldGradeId { get; set; }
+        public int? OldJobGradeId { get; set; }
 
         public int? OldGradeLevelId { get; set; }
 
         [DataType(DataType.Date)]
-        [EmploymentChangeValue(OldProperty = nameof(OldGradeId), NewProperty = nameof(GradeId),
+        [EmploymentChangeValue(OldProperty = nameof(OldJobGradeId), NewProperty = nameof(JobGradeId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeChangeDateRequired")]
         [EmploymentChangeValue(OldProperty = nameof(OldGradeLevelId), NewProperty = nameof(GradeLevelId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeChangeDateRequired")]
         public DateTime? JobGradeChangeDate { get; set; }
 
-        [EmploymentChangeValue(OldProperty = nameof(OldGradeId), NewProperty = nameof(GradeId),
+        [EmploymentChangeValue(OldProperty = nameof(OldJobGradeId), NewProperty = nameof(JobGradeId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeReasonRequired")]
         [EmploymentChangeValue(OldProperty = nameof(OldGradeLevelId), NewProperty = nameof(GradeLevelId),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobGradeReasonRequired")]

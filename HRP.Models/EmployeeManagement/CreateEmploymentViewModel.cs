@@ -105,7 +105,7 @@
         public int? JobCategoryReasonId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeRequired")]
-        public int GradeId { get; set; }
+        public int JobGradeId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeLevelRequired")]
         public int GradeLevelId { get; set; }

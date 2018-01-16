@@ -244,7 +244,7 @@
             employment.OldEmployeeCode = employment.EmployeeCode;
             employment.OldEmploymentStatus = employment.EmploymentStatus;
             employment.OldJobCategoryId = employment.JobCategoryId;
-            employment.OldGradeId = employment.GradeId;
+            employment.OldJobGradeId = employment.JobGradeId;
             employment.OldGradeLevelId = employment.GradeLevelId;
             employment.OldDivisionId = employment.DivisionId;
             employment.OldDepartmentId = employment.DepartmentId;
@@ -283,7 +283,7 @@
                 JobCategoryId = viewModel.JobCategoryId,
                 JobCategoryChangeDate = viewModel.JobCategoryChangeDate,
                 JobCategoryReasonId = viewModel.JobCategoryReasonId,
-                GradeId = viewModel.GradeId,
+                GradeId = viewModel.JobGradeId,
                 GradeLevelId = viewModel.GradeLevelId,
                 JobGradeChangeDate = viewModel.JobGradeChangeDate,
                 JobGradeReasonId = viewModel.JobGradeReasonId,

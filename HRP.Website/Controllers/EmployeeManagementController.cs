@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
@@ -188,6 +189,8 @@
             viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
             viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
 
+            TempData.Put(TempDataKey.CreateEmployment, viewModel);
+
             return View("CreateEmployment", viewModel);
         }
 
@@ -199,6 +202,7 @@
             if (ModelState.IsValid)
             {
                 var commandResult = new CommandResult();
+                TempData.Remove(TempDataKey.CreateEmployment);
 
                 return Json(commandResult);
             }
