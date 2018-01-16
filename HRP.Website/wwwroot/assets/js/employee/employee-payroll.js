@@ -61,6 +61,21 @@
             allowInputToggle : true
         });
 
+        $('.select2').select2({
+            ajax: {
+                url: $('#get-bank-acount-url').val(),
+                data: function (params) {
+                    var query = {
+                        key: params.term,
+                        employeeId: $('#EmployeeId').val(),
+                        bankTypeId: $(this).siblings('.bank-type-select').val()
+                    }
+
+                    return query;
+                }
+            },
+        });
+
         $.validator.addMethod('greaterThanZero', function (value, element, param) {
             return value !== '' && Number(value) > 0;
         });
@@ -74,7 +89,12 @@
             errorContainer: '#validation-summary',
             errorLabelContainer: '#validation-summary ul',
             highlight: function (element, errorClass) {
-                $(element).addClass('input-validation-error');
+                var $element = $(element);
+                $element.addClass('input-validation-error');
+
+                if ($element.hasClass('select2'))
+                    $element.next().find('.select2-selection').addClass('input-validation-error').addClass('control').removeClass(validClass);
+
             },
             unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('input-validation-error').addClass(validClass);

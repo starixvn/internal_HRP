@@ -7,6 +7,7 @@
     using Core.Model;
     using Core.Services;
     using Fanex.Data;
+    using Fanex.Data.Repository;
     using HRP.Core;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
@@ -89,6 +90,7 @@
             services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
             services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
+            services.AddScoped<IDynamicRepository, DynamicRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

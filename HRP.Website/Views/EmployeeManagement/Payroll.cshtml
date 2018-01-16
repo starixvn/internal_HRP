@@ -4,8 +4,9 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
     </environment>
 }
@@ -30,7 +31,13 @@
     <input type="hidden" data-from-currency="@currency.FromCurrency" data-to-currency="@currency.ToCurrency" value="@currency.ExchangeRate" />
 }
 
+<input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetBankAccounts")" />
+
 <form class="payroll form-information">
+    <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="BasicSalary.EmployeeId" />
+    <input type="hidden" asp-for="Allowance.EmployeeId" />
+
     <div class="list-message-error hidden">
         <span class="message"></span>
     </div>
@@ -56,7 +63,9 @@
                 </div>
                 <div class="pull-right reason">
                     <label class="text" for="reason">Reason</label>
-                    <select class="control" asp-for="BasicSalary.ReasonId"></select>
+                    <select class="control" asp-for="BasicSalary.ReasonId" asp-items="@(new SelectList(Model.ChangeReasons, "ResourceId", "Value"))">
+                        <option></option>
+                    </select>
                 </div>
             </div>
             <div class="padding-top-24">
@@ -107,10 +116,10 @@
             </div>
             <div></div>
             <div class="payment-transaction">
-                <select class="control basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
+                <select class="control bank-type-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
                     <option></option>
                 </select>
-                <select class="control basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                <select class="control select2 bank-account-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
                 <span class="add-account"></span>
@@ -386,6 +395,7 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
     </environment>
     <environment exclude="Development">

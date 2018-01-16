@@ -3,8 +3,10 @@
     using System;
     using System.Linq;
     using Fanex.Data.Repository;
+    using HRP.Core.Constants;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
     using HRP.Services.Interfaces;
@@ -14,18 +16,20 @@
         private readonly IBaseService baseService;
         private readonly IDynamicRepository repository;
 
-        public EmployeePayrollService(IBaseService baseService)
+        public EmployeePayrollService(IBaseService baseService, IDynamicRepository repository)
         {
             this.baseService = baseService;
-            this.repository = new DynamicRepository();
+            this.repository = repository;
         }
 
         public EmployeePayrollViewModel GetEmployeePayroll(int employeeId)
         {
             var viewModel = new EmployeePayrollViewModel
             {
+                EmployeeId = employeeId,
                 CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year }),
                 Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
+                ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason })
             };
 
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId };
