@@ -6,7 +6,7 @@
             $(this).fanexMultiSelect({
                 listData: options,
                 useCustomCheckAllText: true,
-                customCheckAllText: 'All'
+                customCheckAllText: "All"
             });
 
             multiselect.replaceNameAttrOfItem($(this));
@@ -27,7 +27,7 @@
 
     getItemsList: function (selectElement) {
         if ($(selectElement).is("select")) {
-            if ($(selectElement).prop('multiple')) {
+            if ($(selectElement).prop("multiple")) {
                 // select element with multiple prop
                 var values = [];
                 $.each($(selectElement).prop("options"), function () {
@@ -45,12 +45,14 @@
                 return values;
             }
         }
+
+        return null;
     }
 };
 
 var dataTable = {
     init: function () {
-        $('.data-table').dataTable({
+        $(".data-table").dataTable({
             "paging": false,
             "columnDefs": [{
                 "orderable": false,
@@ -58,15 +60,15 @@ var dataTable = {
                 "targets": [0, -1]
             }],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
-            'info': false,
+            'info': false
         });
 
         dataTable.assignSearchButton();
     },
 
     assignSearchButton: function () {
-        $('#quick-search').off('keyup').on('keyup', function () {
-            $('.data-table').DataTable().search($(this).val()).draw();
+        $("#quick-search").off("keyup").on("keyup", function () {
+            $(".data-table").DataTable().search($(this).val()).draw();
         });
     }
 }
