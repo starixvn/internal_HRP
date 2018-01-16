@@ -32,18 +32,6 @@
     <div class="group">
         <label class="text">Bank Type</label>
         <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" class="fanex-select"></select>
-
-        @*<ul>
-            @foreach (var bankType in Model.BankTypes)
-            {
-                <li>
-                    <label>
-                        <input name="SelectedBankTypes" type="checkbox" checked="@(Model.SelectedBankTypes != null && Model.SelectedBankTypes.Contains(bankType.ResourceId))" />
-                        <span>@bankType.Value</span>
-                    </label>
-                </li>
-            }
-        </ul>*@
     </div>
     <div class="group">
         <label class="text">Active</label>

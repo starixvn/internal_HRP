@@ -8,11 +8,21 @@
                 useCustomCheckAllText: true,
                 customCheckAllText: 'All'
             });
+
+            multiselect.replaceNameAttrOfItem($(this));
         });
 
         // $("select").ultraselect({
         //     selectAllText: "All"
         // });
+    },
+
+    replaceNameAttrOfItem: function(selectElement){
+        var modelName = $(selectElement).prop("name");
+            var inputs = $("input[data-item-id='" + modelName + "'");
+            inputs.each(function () {
+                $(this).attr("name", modelName);
+            });
     },
 
     getItemsList: function (selectElement) {
