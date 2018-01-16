@@ -6,7 +6,7 @@
     "configurations": [        
         {
             "name": ".NET Core Launch (web)",
-            "type": "clr",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/HRP.Website/bin/Debug/net461/HRP.Website.exe",
