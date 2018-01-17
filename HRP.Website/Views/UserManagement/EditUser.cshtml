@@ -6,7 +6,7 @@
     <link href="~/assets/bundles/user/css/user-management.min.css" rel="stylesheet" />
 }
 
-@{ 
+@{
     var title = Model.CanEdit ? ViewLang.EditUserDetails : ViewLang.ViewUserDetails;
 }
 
@@ -42,7 +42,7 @@
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 
-    <label asp-for="Email" class="text"></label>
+    <label asp-for="Email" class="text -has-required"></label>
     <div class="group-control">
         <input type="text" class="control" asp-for="Email" />
         <span asp-validation-for="Email" class="text-danger"></span>
