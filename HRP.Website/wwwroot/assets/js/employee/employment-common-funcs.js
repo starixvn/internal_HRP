@@ -336,10 +336,10 @@ var employmentCommonFuncs = (function ($) {
         $.validator.unobtrusive.parse($form);
 
         var $validator = $form.validate();
+        $validator.settings.wrapper = 'li';
         $validator.settings.errorPlacement = function (error, element) {
             if (error.text().trim().length > 0) {
-                error.addClass('message');
-                $form.find('.list-message-error').removeClass('hidden').append(error);
+                $form.find('#validation-summary ul').append(error);
             }
         };
         $validator.settings.highlight = function (element, errorClass, validClass) {

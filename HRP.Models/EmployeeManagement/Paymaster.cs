@@ -1,8 +1,10 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
 
+    [Serializable]
     public class Paymaster
     {
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameBVISalaryRequired")]

@@ -1,8 +1,10 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
 
+    [Serializable]
     public class EmergencyContact
     {
         public int EmployeeId { get; set; }

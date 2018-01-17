@@ -1,5 +1,8 @@
 ﻿namespace HRP.Models
 {
+    using System;
+
+    [Serializable]
     public class Division
     {
         public int DivisionId { get; set; }

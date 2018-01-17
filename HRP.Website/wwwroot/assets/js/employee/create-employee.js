@@ -1,52 +1,31 @@
 ﻿var createEmployee = (function ($) {
-    function registerEventFormSubmit() {
-        var form = $('#personalDetailForm');
-        form.submit(function (e) {
-            e.preventDefault();
+    var $form, $personalDetailsStep, $employmentStep;
 
-            if ($(this).valid()) {
-                employeeCommonFuncs.hideListMessageError();
-                employeeCommonFuncs.hideButtonSave();
-
-                var formData = new FormData(this);
-                var urlPost = '/EmployeeManagement/CreateEmployee';
-                $.ajax({
-                    url: urlPost,
-                    type: "POST",
-                    dataType: "json",
-                    contentType: false,
-                    data: formData,
-                    processData: false,
-                    success: function (result) {
-                        if (result.isSuccessful) {
-                            employeeCommonFuncs.showSuccessAndRedirectMessage(result.message, result.redirectLink);
-                        } else {
-                            employeeCommonFuncs.showButtonSave();
-                            var form = $('#personalDetailForm');
-                            form.validate().showErrors(result.errors);
-                        }
-                    },
-                    error: function (result) {
-                        commonFunctions.showErrorMessage("Internal Error!");
-                    }
-                });
-            } else {
-                employeeCommonFuncs.showListMessageError();
-            }
-        });
+    function onSubmitSuccess(response) {
+        if (response.isSuccessful) {
+            $personalDetailsStep.removeClass('active').addClass('finished');
+            $employmentStep.addClass('active');
+            $('#EmploymentHeaderTab').trigger('click');
+        } else {
+            $form.validate().showErrors(result.errors);
+        }
     }
 
     function initModule() {
+        $form = $('.createPersonalDetailsForm');
+        $personalDetailsStep = $('#PersonalDetailsStep');
+        $employmentStep = $('#EmploymentStep');
+
         employeeCommonFuncs.initDatePicker();
-        employeeCommonFuncs.initForm();
-        registerEventFormSubmit();
+        employeeCommonFuncs.initForm($form);
     }
 
     return {
-        InitModule: initModule
+        InitModule: initModule,
+        onSubmitSuccess: onSubmitSuccess
     };
 }(jQuery));
 
-$(function () {
+$(document).ready(function () {
     createEmployee.InitModule();
 });

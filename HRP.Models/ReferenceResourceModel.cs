@@ -1,5 +1,8 @@
 ﻿namespace HRP.Models
 {
+    using System;
+
+    [Serializable]
     public class ReferenceResourceModel
     {
         public int ResourceId { get; set; }

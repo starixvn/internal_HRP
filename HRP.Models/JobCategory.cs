@@ -1,5 +1,8 @@
 ﻿namespace HRP.Models
 {
+    using System;
+
+    [Serializable]
     public class JobCategory
     {
         public int JobCategoryId { get; set; }

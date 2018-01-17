@@ -2,34 +2,9 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail" enctype="multipart/form-data" method="post" id="personalDetailForm">
-    <div class="personal-detail-error list-message-error hidden">
-        <span asp-validation-for="FullName" class="message"></span>
-        <span asp-validation-for="NickName" class="message"></span>
-        <span asp-validation-for="Gender" class="message"></span>
-        <span asp-validation-for="DateOfBirth" class="message"></span>
-        <span asp-validation-for="PlaceOfBirth" class="message"></span>
-        <span asp-validation-for="Nationality" class="message"></span>
-        <span asp-validation-for="NRICNo" class="message"></span>
-        <span asp-validation-for="MaritalStatus" class="message"></span>
-        <span asp-validation-for="NoOfChildren" class="message"></span>
-        <span asp-validation-for="OverseasPhoneNo" class="message"></span>
-        <span asp-validation-for="LocalPhoneNo" class="message"></span>
-        <span asp-validation-for="OtherPhoneNo" class="message"></span>
-        <span asp-validation-for="PassportNo" class="message"></span>
-        <span asp-validation-for="DateIssue" class="message"></span>
-        <span asp-validation-for="ExpiredDate" class="message"></span>
-        <span asp-validation-for="PlaceOfIssue" class="message"></span>
-        <span asp-validation-for="Skype" class="message"></span>
-        <span asp-validation-for="PersonalEmail" class="message"></span>
-        <span asp-validation-for="PermanentAddress" class="message"></span>
-        <span asp-validation-for="ResidenceAddress" class="message"></span>
-        <span asp-validation-for="MailingAddress" class="message"></span>
-        <span asp-validation-for="EmergencyContact.Name" class="message"></span>
-        <span asp-validation-for="EmergencyContact.Relationship" class="message"></span>
-        <span asp-validation-for="EmergencyContact.Address" class="message"></span>
-        <span asp-validation-for="EmergencyContact.PhoneNo1" class="message"></span>
-        <span asp-validation-for="EmergencyContact.PhoneNo2" class="message"></span>
+<form class="personal-detail form-information" enctype="multipart/form-data" method="post" id="personalDetailForm">
+    <div class="msg-error" id="validation-summary">
+        <ul></ul>
     </div>
 
     <div class="-has-icon msg-success hidden">
@@ -50,13 +25,13 @@
             </div>
             @if (Model.IsHost)
             {
-            <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
-            <ul class="more-info">
-                <li>File type: .JPG, .JPEG, .PNG</li>
-                <li>Maximum capacity: 2MB</li>
-                <li>Dimension :160X160 px</li>
-            </ul>
-            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
+                <ul class="more-info">
+                    <li>File type: .JPG, .JPEG, .PNG</li>
+                    <li>Maximum capacity: 2MB</li>
+                    <li>Dimension :160X160 px</li>
+                </ul>
+                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             }
         </figure>
         <div class="col has-space">
@@ -196,10 +171,10 @@
 
         @if (Model.IsHost)
         {
-        <div class="list-button">
-            <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
-            <button class="button -primary js-btnSave" type="submit">@(Model.IsEditForm ? ViewLang.Save : ViewLang.Next)</button>
-        </div>
+            <div class="list-button">
+                <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
+                <button class="button -primary js-btnSave" type="submit">@ViewLang.Save</button>
+            </div>
         }
     </div>
 </form>

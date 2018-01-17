@@ -4,61 +4,19 @@
 
 @model CreateEmploymentViewModel
 @{
-    ViewData["Title"] = "Employment";
     var minDate = Constants.MinDate;
     var maxDate = DateTime.Now.Date.ToShortDateString();
 }
 
-@section Styles {
-    <environment include="Development">
-        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/employee.css" rel="stylesheet" />
-    </environment>
-    <environment exclude="Development">
-        <link href="~/assets/bundles/employee/css/create-employee.min.css" rel="stylesheet" />
-    </environment>
-}
-
-<ol class="breadcrumb">
-    <li class="like-link">@ViewLang.EmployeeManagement</li>
-    <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
-    <li class="active">@ViewLang.CreateNewEmployee</li>
-</ol>
-
-<ul class="steps clearfix">
-    <li class="step finished">
-        <label class="step-title">@ViewLang.PersonalDetail</label>
-    </li>
-    <li class="step active">
-        <label class="step-title">@ViewLang.Employment</label>
-    </li>
-</ul>
-
 <form id="createEmploymentForm" class="form-information" asp-action="CreateEmployment" asp-controller="EmployeeManagement"
       data-ajax-method="post" data-ajax="true"
       data-ajax-success="createEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    <div class="list-message-error hidden">
+    <div class="msg-error" id="validation-summary">
+        <ul></ul>
     </div>
 
     <div class="employment">
         <div class="col">
-            <input hidden asp-for="Employee.FullName" />
-            <input hidden asp-for="Employee.NickName" />
-            <input hidden asp-for="Employee.Gender" />
-            <input hidden asp-for="Employee.DateOfBirth" />
-            <input hidden asp-for="Employee.PlaceOfBirth" />
-            <input hidden asp-for="Employee.Nationality" />
-            <input hidden asp-for="Employee.NRICNo" />
-            <input hidden asp-for="Employee.MaritalStatus" />
-            <input hidden asp-for="Employee.NoOfChildren" />
-            <input hidden asp-for="Employee.OverseasPhoneNo" />
-            <input hidden asp-for="Employee.LocalPhoneNo" />
-            <input hidden asp-for="Employee.OtherPhoneNo" />
-            <input hidden asp-for="Employee.PassportNo" />
-            <input hidden asp-for="IsBack" />
             <input hidden id="CurrentDate" value="@DateTime.Now.Date.ToShortDateString()" />
             <div class="group-title -first"><span class="icon-group"></span>@ViewLang.Company</div>
             <div class="group-complex -emp-layout1">
@@ -642,19 +600,3 @@
         <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/assets/js/employee/employment-common-funcs.js"></script>
-        <script src="~/assets/js/employee/create-employment.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/employee/js/create-employment.min.js"></script>
-    </environment>
-}

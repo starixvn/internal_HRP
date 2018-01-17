@@ -1,5 +1,8 @@
 namespace HRP.Models
 {
+    using System;
+
+    [Serializable]
     public class Company
     {
         public int CompanyId { get; set; }

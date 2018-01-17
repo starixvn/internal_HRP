@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
+    [Serializable]
     public class CreateEmployeeViewModel
     {
         public int EmployeeId { get; set; }

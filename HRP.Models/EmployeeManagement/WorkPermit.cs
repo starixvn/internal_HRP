@@ -6,6 +6,7 @@
     using HRP.Core.Enumerations;
     using HRP.Resources;
 
+    [Serializable]
     public class WorkPermit
     {
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyRequired")]

@@ -1,7 +1,9 @@
 ﻿'use strict';
 
 var createEmployment = (function ($) {
-    var $createEmploymentForm, $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack;
+    var $personalDetailsStep, $employmentStep,
+        $personalDetailHeaderTab, $employmentHeaderTab, $employmentContentTab, $createEmploymentForm,
+        $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack;
 
     function initEventChangeCompanyCode() {
         $companyCodeElement.on('change', function () {
@@ -17,23 +19,55 @@ var createEmployment = (function ($) {
 
     function initEventBackToPreviousAction() {
         $btnBack.on('click', function () {
-            $createEmploymentForm.find('#IsBack').prop('checked', true);
-            $('#createEmploymentForm')[0].submit();
+            $personalDetailsStep.removeClass('finished').addClass('active');
+            $employmentStep.removeClass('active');
+            $personalDetailHeaderTab.trigger('click');
+        });
+    }
+
+    function loadEmploymentForm() {
+        $.ajax({
+            type: 'GET',
+            url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
+            dataType: 'html',
+            success: function (data) {
+                $employmentContentTab.html(data);
+
+                $createEmploymentForm = $('#createEmploymentForm');
+                $companyCodeElement = $createEmploymentForm.find('#CompanyCode');
+                $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
+                $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
+                $btnBack = $createEmploymentForm.find('.js-btnBack');
+
+                employmentCommonFuncs.initForm($createEmploymentForm);
+
+                initEventChangeCompanyCode();
+                initEventChangeEmployeeCode();
+                initEventBackToPreviousAction();
+            },
+            error: commonFunctions.handleAjaxError
+        });
+    }
+
+    function initEventClickEmploymentTab() {
+        $employmentHeaderTab.on('click', function () {
+            var isFirstLoad = $(this).data('isfirstload');
+
+            if (isFirstLoad) {
+                $(this).data('isfirstload', false)
+                loadEmploymentForm();
+            }
         });
     }
 
     function initModule() {
-        $createEmploymentForm = $('#createEmploymentForm');
-        $companyCodeElement = $createEmploymentForm.find('#CompanyCode');
-        $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
-        $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
-        $btnBack = $createEmploymentForm.find('.js-btnBack');
+        $personalDetailsStep = $('#PersonalDetailsStep');
+        $employmentStep = $('#EmploymentStep');
+        $personalDetailHeaderTab = $('#PersonalDetailHeaderTab');
+        $employmentHeaderTab = $('#EmploymentHeaderTab');
+        $employmentContentTab = $('#EmploymentContentTab');
 
-        employmentCommonFuncs.initForm($createEmploymentForm);
-
-        initEventChangeCompanyCode();
-        initEventChangeEmployeeCode();
-        initEventBackToPreviousAction();
+        initEventClickEmploymentTab();
     }
 
     return {

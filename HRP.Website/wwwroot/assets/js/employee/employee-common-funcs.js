@@ -7,14 +7,13 @@
         reader.readAsDataURL(image);
     }
 
-    function showErrorsValidationPicture(message) {
-        var form = $('#personalDetailForm');
+    function showErrorsValidationPicture($form, message) {
         var errorArray = {};
         errorArray["ProfilePicture"] = message;
-        form.validate().showErrors(errorArray);
+        $form.validate().showErrors(errorArray);
     }
 
-    function validatePicture(image) {
+    function validatePicture($form, image) {
         var errorMessage;
         var isValid = false;
 
@@ -35,16 +34,16 @@
 
         if (isValid) {
             showPreviewPicture(image);
-            showErrorsValidationPicture('');
+            showErrorsValidationPicture($form, '');
         } else {
             $('.js-displayProfilePicture').attr('src', '/assets/styles/images/profile.png');
-            showErrorsValidationPicture(errorMessage);
+            showErrorsValidationPicture($form, errorMessage);
         }
 
         return isValid;
     }
 
-    function registerEventChangePicture() {
+    function registerEventChangePicture($form) {
         $('.js-changePicture').on('click', function () {
             $('#ProfilePicture').trigger('click');
         });
@@ -54,7 +53,7 @@
         });
 
         $('#ProfilePicture').on('change', function () {
-            var isValid = validatePicture(this.files[0]);
+            var isValid = validatePicture($form, this.files[0]);
             if (!isValid) {
                 $('#ProfilePicture').val('');
             }
@@ -109,75 +108,45 @@
         });
     }
 
-    function registerEventFormChange() {
-        var form = $('#personalDetailForm');
-        form.on('change keyup click', function () {
-            var errorTotal = $('.personal-detail-error').children(".field-validation-error").length;
+    function registerEventFormChange($form) {
+        $('#personalDetailForm').on('change keyup click', function () {
+            var errorTotal = $form.find('.personal-detail-error').children(".field-validation-error").length;
             if (errorTotal === 0) {
-                hideListMessageError();
+                hideListMessageError($form);
             } else {
-                showListMessageError();
+                showListMessageError($form);
             }
         });
     }
 
-    function registerEventCancel() {
-        $('.js-btnCancel').on('click', function () {
-            window.location.href = "/employeemanagement";
-        });
+    function showListMessageError($form) {
+        $form.find('.list-message-error').removeClass("hidden");
     }
 
-    function isCreateNew() {
-        return $('#EmployeeId').val() <= '0';
+    function hideListMessageError($form) {
+        $form.find('.list-message-error').addClass("hidden");
     }
 
-    function showListMessageError() {
-        $('.list-message-error').removeClass("hidden");
-    }
-
-    function hideListMessageError() {
-        $('.list-message-error').addClass("hidden");
-    }
-
-    function hideButtonSave() {
-        $('.js-btnSave').hide();
-    }
-
-    function showButtonSave() {
-        $('.js-btnSave').show();
-    }
-
-    function showSuccessAndRedirectMessage(message, redirectLink) {
-        var messageElement = $('.msg-success');
-        var redirectMessage = " You will be redirected in ";
-        var delay = 2;
-        messageElement.text(message + redirectMessage + delay + ' seconds.').removeClass('hidden');
-
-        window.setInterval(function () {
-            if (delay === 0) {
-                window.location.href = redirectLink;
-            } else {
-                delay--;
-                messageElement.text(message + redirectMessage + delay + ' seconds.');
+    function reparseform($form) {
+        var $validator = $form.validate();
+        $validator.settings.wrapper = 'li';
+        $validator.settings.errorPlacement = function (error, element) {
+            if (error.text().trim().length > 0) {
+                $form.find('#validation-summary ul').append(error);
             }
-        }, 1000);
+        };
     }
 
-
-    function initForm() {
-        registerEventOpenDatePicker();
-        registerEventChangePicture();
-        registerEventFormChange();
-        registerEventCancel();
+    function initForm($form) {
+        registerEventOpenDatePicker($form);
+        registerEventChangePicture($form);
+        reparseform($form);
     }
 
     return {
         initForm: initForm,
         initDatePicker: initDatePicker,
-        hideListMessageError: hideListMessageError, 
-        showListMessageError: showListMessageError,
-        hideButtonSave: hideButtonSave,
-        showButtonSave: showButtonSave,
-        showSuccessAndRedirectMessage: showSuccessAndRedirectMessage
+        hideListMessageError: hideListMessageError,
+        showListMessageError: showListMessageError
     };
 }(jQuery));

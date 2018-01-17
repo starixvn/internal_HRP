@@ -253,7 +253,7 @@
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
             employeeManagementService = FakeEmployeeManagementService();
-            var controller = new EmployeeManagementController(baseService, employeeManagementService, null);
+            var controller = new EmployeeManagementController(baseService, employeeManagementService, null, sessionService);
 
             return controller;
         }
