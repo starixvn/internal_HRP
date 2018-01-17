@@ -131,6 +131,33 @@
             return commandResult;
         }
 
+        public ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment()
+        {
+            var criteria = new GetAllCompanyDivsionDepartmentCriteria { UserId = sessionService.UserId };
+
+            if (criteria.IsValid())
+            {
+                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+                {
+                    using (var multi = db.QueryMultiple(criteria))
+                    {
+                        var companies = multi.Read<Company>();
+                        var divisions = multi.Read<Division>();
+                        var departments = multi.Read<Department>();
+                        var listDepartment = new ListCompanyDivisionDepartment();
+                        if (companies != null && divisions != null && departments != null)
+                        {
+                            listDepartment.Companies = companies;
+                            listDepartment.Divisions = divisions;
+                            listDepartment.Departments = departments;
+                        }
+                        return listDepartment;
+                    }
+                }
+            }
+            return null;
+        }
+
         public CreateEmployeeViewModel GetEmployeeById(int employeeId)
         {
             var criteria = new GetEmployeeByIdCriteria

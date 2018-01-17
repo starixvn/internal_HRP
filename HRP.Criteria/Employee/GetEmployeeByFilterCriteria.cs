@@ -5,6 +5,8 @@
 
     public class GetAllEmployeeCriteria : CriteriaBase
     {
+        public int UserId { get; set; }
+
         public string DepartmentIds { get; set; }
 
         public Selection InService { get; set; }
@@ -15,6 +17,6 @@
 
         public override string GetSettingKey() => "Employee_GetAllEmployees";
 
-        public override bool IsValid() => true;
+        public override bool IsValid() => UserId > 0;
     }
 }

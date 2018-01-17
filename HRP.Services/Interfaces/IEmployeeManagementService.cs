@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using HRP.Core.Model;
+    using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Http;
 
@@ -20,5 +21,7 @@
         UpdateEmploymentViewModel GetEmploymentToUpdate(int employeeId);
 
         Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);
+
+        ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment();
     }
 }

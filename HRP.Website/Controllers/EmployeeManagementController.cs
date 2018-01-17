@@ -41,14 +41,22 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult Index()
         {
-            var departmentIds = string.Empty;
+            var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var viewModel = new EmployeeManagementViewModel
             {
-                DepartmentIds = departmentIds,
+                AllDepartments = string.Empty,
+                DepartmentIds = GetDepartmentIds(listDepartment.Departments),
                 InService = Selection.Yes,
                 InProbation = Selection.All,
             };
             return View(viewModel);
+        }
+
+        private static string GetDepartmentIds(IEnumerable<Department> departments)
+        {
+            var departmentIds = string.Empty;
+            departmentIds = string.Join(",", departments.Select(x => x.DepartmentId).ToList());
+            return departmentIds;
         }
 
         [HttpPost]
@@ -60,7 +68,8 @@
                 DepartmentIds = string.IsNullOrEmpty(model.DepartmentIds) ? string.Empty : model.DepartmentIds,
                 InService = model.InService,
                 InProbation = model.InProbation,
-                EmployeeId = model.EmployeeId
+                EmployeeId = model.EmployeeId,
+                UserId = sessionService.UserId
             };
             var employees = baseService.GetData<EmployeeList>(criteria);
 

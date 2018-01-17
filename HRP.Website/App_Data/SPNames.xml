@@ -67,6 +67,7 @@
     <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetAllCompanyDivisionDepartment" SpName="Employee_GetAllCompanyDivisionDepartment" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employment">
     <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -79,6 +80,6 @@
     <Setting Key="BankAccount_Update" SpName="BankAccount_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="EmployeePayroll">
-    <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>   
+    <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>
