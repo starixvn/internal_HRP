@@ -36,13 +36,20 @@
         {
             //Arrange
             employeeManagementController = GetEmployeeManagementController();
+            var listCompany = new ListCompanyDivisionDepartment
+            {
+                Companies = new List<Company>(),
+                Divisions = new List<Division>(),
+                Departments = new List<Department>()
+            };
 
             //Act
+            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
             var actual = employeeManagementController.Index();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
+            Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
         }
 
         #region EditEmployee

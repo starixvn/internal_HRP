@@ -78,6 +78,8 @@
     <Compile Include="Department\GetDepartmentByDivisionIdCriteriaTests.cs" />
     <Compile Include="Division\GetDivisionByCompanyIdCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
+    <Compile Include="Employee\GetAllCompanyDivsionDepartmentCriteriaTests.cs" />
+    <Compile Include="Employee\GetEmployeeByFilterCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeByIdCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeSuggestionByNameCriteriaTests.cs" />
     <Compile Include="Employee\GetEmploymentByEmployeeIdCriteriaTests.cs" />
