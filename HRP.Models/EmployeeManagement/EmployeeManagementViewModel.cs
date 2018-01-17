@@ -4,8 +4,6 @@
 
     public class EmployeeManagementViewModel
     {
-        public string AllDepartments { get; set; }
-
         public string DepartmentIds { get; set; }
 
         public Selection InService { get; set; }

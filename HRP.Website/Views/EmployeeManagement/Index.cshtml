@@ -29,7 +29,8 @@
 <form class="search-form form-filter">
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        @*<select class="control company" id="companyMultiSelect"></select>*@
+        <select class="control company" id="CompanySelect"></select>
+        <input asp-for="DepartmentIds" hidden />
         @*<select class="control company" asp-for="CompanyId" asp-items="@Model.Companies">
                 <option value="0">@ViewLang.All</option>
             </select>*@

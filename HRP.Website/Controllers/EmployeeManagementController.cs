@@ -44,12 +44,19 @@
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var viewModel = new EmployeeManagementViewModel
             {
-                AllDepartments = string.Empty,
                 DepartmentIds = GetDepartmentIds(listDepartment.Departments),
                 InService = Selection.Yes,
                 InProbation = Selection.All,
             };
             return View(viewModel);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
+        public IActionResult GetCompanyTree()
+        {
+            var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
+            return Json(listDepartment);
         }
 
         private static string GetDepartmentIds(IEnumerable<Department> departments)
