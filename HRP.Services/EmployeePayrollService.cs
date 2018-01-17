@@ -33,14 +33,13 @@
             };
 
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId };
-            var mappingTypes = new[] { typeof(EmployeePayrollBasicSalaryModel), typeof(EmployeePayrollAllowanceModel), typeof(EmployeePayrollAllowanceDetailModel), typeof(EmployeePayrollDeduction) };
+            var mappingTypes = new[] { typeof(EmployeePayrollBasicSalaryModel), typeof(EmployeePayrollAllowanceModel), typeof(EmployeePayrollDeduction) };
             var result = repository.FetchMultiple(criteria, mappingTypes);
 
             viewModel.BasicSalary = result[0].Cast<EmployeePayrollBasicSalaryModel>().FirstOrDefault() 
                 ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash" };
-            viewModel.Allowance = result[1].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId };
-            viewModel.AllowanceDetails = result[2].Cast<EmployeePayrollAllowanceDetailModel>();
-            viewModel.Deduction = result[3].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+            viewModel.Allowance = result[1].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
+            viewModel.Deduction = result[2].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
 
             return viewModel;
         }

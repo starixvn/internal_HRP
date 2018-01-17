@@ -11,8 +11,6 @@
 
         public EmployeePayrollAllowanceModel Allowance { get; set; }
 
-        public IEnumerable<EmployeePayrollAllowanceDetailModel> AllowanceDetails { get; set; }
-
         public EmployeePayrollDeduction Deduction { get; set; }
 
         public IEnumerable<CurrencyCodeModel> Currencies { get; set; }

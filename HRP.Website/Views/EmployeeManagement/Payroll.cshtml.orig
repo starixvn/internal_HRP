@@ -4,15 +4,16 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
     </environment>
 }
 
 @{
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyCode), "CurrencyCode", "CurrencyCode");
-    var bankTypes = Html.GetEnumSelectList<BankType>();
+    var bankTypes = Html.GetEnumSelectList<BankType>().Where(x => int.Parse(x.Value) != (int) BankType.Ebanking);
 }
 
 <ol class="breadcrumb">
@@ -21,25 +22,25 @@
     <li class="active">@ViewLang.EditEmployeePayroll oW014512 - Jennie Thompson - Jennie</li>
 </ol>
 
-<div class="msg-error" id="validation-summary">
-    <ul></ul>
-</div>
-
 @foreach (var currency in Model.CurrencyExchangeRates)
 {
     <input type="hidden" data-from-currency="@currency.FromCurrency" data-to-currency="@currency.ToCurrency" value="@currency.ExchangeRate" />
 }
 
+<input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
+
 <form class="payroll form-information">
-    <div class="list-message-error hidden">
-        <span class="message"></span>
+    <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="BasicSalary.EmployeeId" />
+    <input type="hidden" asp-for="Allowance.EmployeeId" />
+    <div class="list-message-error hidden" id="validation-summary">
     </div>
     <div class="form-content">
         <!-- Basic Salary -->
         <div class="group-complex -payroll-layout1">
             <div class="">
                 <div class="group-title -first"><span class="icon-group"></span>Basic Salary</div>
-                <label class="text-group">Actual</label>
+                <label class="actual">Actual</label>
             </div>
             <div class="currency-amount">
                 <select class="control without-label basic-salary-calculate" asp-for="BasicSalary.CurrencyCode" asp-items="currencySelectList">
@@ -56,7 +57,9 @@
                 </div>
                 <div class="pull-right reason">
                     <label class="text" for="reason">Reason</label>
-                    <select class="control" asp-for="BasicSalary.ReasonId"></select>
+                    <select class="control" asp-for="BasicSalary.ReasonId" asp-items="@(new SelectList(Model.ChangeReasons, "ResourceId", "Value"))">
+                        <option></option>
+                    </select>
                 </div>
             </div>
             <div class="padding-top-24">
@@ -71,11 +74,16 @@
                 </label>
             </div>
         </div>
-        <div class="transaction-title">Payment Transaction</div>
-        <div class="transaction-title">
-            <label class="text">Bank Type</label>
-            <label class="text">Account Name</label>
+        <div class="group-complex -payroll-layout1">
+            <div class="start-4">
+                <div class="transaction-title">Payment Transaction</div>
+                <div class="transaction-item">
+                    <span>Bank Type</span>
+                    <span>Account Name</span>
+                </div>
+            </div>
         </div>
+        
         <div class="group-complex -payroll-layout1">
             <label class="bank-type">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Ebanking" />
@@ -90,7 +98,12 @@
             <div></div>
             <div class="payment-transaction">
                 <label class="bank-type">e-Banking</label>
-                <select class="control basic-salary-ebanking" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried"></select>
+                <select class="control bank-type-select hidden">
+                    <option value="@((int)BankType.Ebanking)" selected></option>
+                </select>
+                <select class="control select2 basic-salary-ebanking" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                    <option value="@Model.BasicSalary.EbankingAccountId">@Model.BasicSalary.EbankingAccountName</option>
+                </select>
                 <span class="add-account"></span>
             </div>
         </div>
@@ -107,11 +120,11 @@
             </div>
             <div></div>
             <div class="payment-transaction">
-                <select class="control basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
+                <select class="control bank-type-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
                     <option></option>
                 </select>
-                <select class="control basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
-                    <option></option>
+                <select class="control select2 bank-account-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                    <option value="@Model.BasicSalary.DirectBanking1AccountId">@Model.BasicSalary.DirectBanking1AccountName</option>
                 </select>
                 <span class="add-account"></span>
             </div>
@@ -129,11 +142,11 @@
             </div>
             <div></div>
             <div class="payment-transaction">
-                <select class="control basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
+                <select class="control bank-type-select basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
                     <option></option>
                 </select>
-                <select class="control basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
-                    <option></option>
+                <select class="control select2 bank-account-select basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                    <option value="@Model.BasicSalary.DirectBanking2AccountId">@Model.BasicSalary.DirectBanking2AccountName</option>
                 </select>
                 <span class="add-account"></span>
             </div>
@@ -161,196 +174,239 @@
         <!-- Allowances -->
         <div class="group-complex -payroll-layout3">
             <div class="group-title -first"><span class="icon-group"></span>Allowances</div>
-            <div></div>
-            <div class="conversion">Conversion</div>
+            <div class="conversion start-3">Conversion</div>
         </div>
         <div class="group-complex -payroll-layout3">
+<<<<<<< HEAD
+            <div class="actual">Actual</div>
+            <div class="currency-amount start-3">
+                <select class="control">
+                    <option>USD</option>
+=======
             <div class="text-group">Actual</div>
             <div></div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>USD</option>
+                <select class="control" asp-items="currencySelectList" asp-for="Allowance.CurrencyCode">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <input type="text" class="control total-amount" />
+                <input type="text" class="control total-amount" readonly name="AllowanceTotal" id="allowance-total-amount" />
             </div>
-            <div class="transaction-title-allowances">
+            <div class="transaction-item -allowances">
                 <span>Bank Type</span>
                 <span>Account Name</span>
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <div class="bank-type">
-                <input type="radio" name="bankTypeAllowance" />
+            <label class="bank-type">
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking1" />
                 <span>Direct Banking 1</span>
-            </div>
+            </label>
             <div></div>
-            <div class="currency-amount">
+<<<<<<< HEAD
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
+=======
+            <div class="currency-amount">
+                <select class="control allowance-calculate allowance-directbanking1" asp-items="currencySelectList" asp-for="Allowance.DirectBanking1CurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-calculate allowance-directbanking1" asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
-            <div class="payment-transaction">
+<<<<<<< HEAD
+            <div class="payment-transaction -allowances">
                 <select class="control">
                     <option>Direct Banking</option>
+=======
+            <div class="payment-transaction">
+                <select class="control bank-type-select allowance-directbanking1" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <select class="control">
+                <select class="control select2 bank-account-select allowance-directbanking1" asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
                 <span class="add-account"></span>
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <div class="bank-type">
-                <input type="radio" name="bankTypeAllowance" />
+            <label class="bank-type">
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking2"/>
                 <span>Direct Banking 2</span>
-            </div>
+            </label>
             <div></div>
-            <div class="currency-amount">
+<<<<<<< HEAD
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
+=======
+            <div class="currency-amount">
+                <select class="control allowance-calculate allowance-directbanking2" asp-items="currencySelectList" asp-for="Allowance.DirectBanking2CurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-calculate allowance-directbanking2" asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
-            <div class="payment-transaction">
+<<<<<<< HEAD
+            <div class="payment-transaction -allowances">
                 <select class="control">
                     <option>Contra Co. Account</option>
+=======
+            <div class="payment-transaction">
+                <select class="control bank-type-select allowance-directbanking2" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <select class="control">
+                <select class="control select2 bank-account-select allowance-directbanking2" asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
                 <span class="add-account"></span>
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <div class="bank-type">
-                <input type="radio" name="bankTypeAllowance" checked />
+            <label class="bank-type">
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="Cash"/>
                 <span>Cash</span>
-            </div>
+            </label>
             <div></div>
-            <div class="currency-amount">
+<<<<<<< HEAD
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
+=======
+            <div class="currency-amount">
+                <select class="control allowance-calculate allowance-cash" asp-items="currencySelectList" asp-for="Allowance.CashCurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                    <option></option>
+>>>>>>> #89346 - payroll - calculate allowances
                 </select>
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control number allowance-calculate allowance-cash" asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
-            <div class="payment-transaction">
+            <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>
-                <select class="control">
+                <select class="control allowance-cash" asp-for="Allowance.CashAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Subsistence</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.SubsistenceCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.SubsistenceAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control number" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Home Passage</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.HomePassageCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HomePassageAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Housing</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.HousingCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HousingAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Mobile Phone</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.MobilePhoneCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.MobilePhoneAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">HPI</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.HPICurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HPIAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
-            <div class="transaction-title-allowances">
+            <div class="transaction-item -allowances">
                 <span class="bank-name">Working Days</span>
                 <span class="bank-name">Rate</span>
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Duty Meal</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.DutyMealCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control number allowance-detail-calculate" readonly asp-for="Allowance.DutyMealAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
-            <div class="payment-transaction">
+<<<<<<< HEAD
+            <div class="payment-transaction -allowances">
                 <input type="text" class="control number" disabled />
                 <input type="text" class="control number" />
+=======
+            <div class="payment-transaction">
+                <input type="text" class="control number" disabled  id="working-days" value="@Model.BasicSalary.WorkingDays"/>
+                <input type="text" class="control number" id="duty-meal-per-day" value="@(string.IsNullOrEmpty(Model.Allowance.DutyMealAmount) ? "" : (decimal.Parse(Model.Allowance.DutyMealAmount) / Model.BasicSalary.WorkingDays ).ToString())" />
+>>>>>>> #89346 - payroll - calculate allowances
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Secondment</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.SecondmentCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.SecondmentAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Others</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" />
+                <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.OthersAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control" disabled />
-                <input type="text" class="control number" disabled />
+                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
         <hr />
@@ -386,6 +442,11 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
+        <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
     </environment>
     <environment exclude="Development">

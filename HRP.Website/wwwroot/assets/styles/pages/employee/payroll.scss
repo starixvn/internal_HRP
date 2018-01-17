@@ -162,3 +162,7 @@ hr {
     margin-bottom: 10px;
     border-top-color:#dfdfdf;
 }
+
+.select2-container .select2-selection:focus, .select2-dropdown {
+    border-color: #1a87d3;
+}

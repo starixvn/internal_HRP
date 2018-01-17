@@ -8,6 +8,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria;
+    using HRP.Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Bank;
@@ -152,6 +153,13 @@
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
+        {
+            var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
+            return Json(result.Select(x => new { id = x.Id, text = x.AccountName }));
         }
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
