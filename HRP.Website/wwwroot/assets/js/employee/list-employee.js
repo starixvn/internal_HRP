@@ -89,9 +89,8 @@ var listDepartment = {
                         var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',')
                         var departmentIds = listDepartment.SetDepartmentIdsValue(selectedValue);
                         $("#DepartmentIds").val(departmentIds);
-                        console.log($("#DepartmentIds").val());
                     }
-        });
+                });
             },
             error: function () {
                 alert("Error");
@@ -105,7 +104,7 @@ var listDepartment = {
             if (divisions[i].companyId == companyId) {
                 var division = {
                     value: divisions[i].divisionId,
-                    //text: divisions[i].code,
+                    text: divisions[i].code,
                     checked: true,
                     enable: true,
                     cssClass: "-option-check",
@@ -141,12 +140,10 @@ var listDepartment = {
                     cssClass: "-option-check",
                 };
                 value.push(department);
-
             }
         }
         return value;
     },
-
 
     buildCompanyTree: function (companies, divisions, departments) {
         var value = [];
