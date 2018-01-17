@@ -37,6 +37,8 @@
             fixture = InitFixture();
         }
 
+        #region CreateEmployeeAsync
+
         [Fact]
         public async Task CreateEmployeeAsync_WithValidCreateEmployeeViewModel_ReturnCommandResult()
         {
@@ -107,6 +109,10 @@
             // Assert
             Assert.Equal(expected, actual);
         }
+
+        #endregion CreateEmployeeAsync
+
+        #region EditEmployeeAsync
 
         [Fact]
         public async Task EditEmployeeAsync_WithValidUpdateEmployeeCriteria_ReturnCommandResult()
@@ -179,6 +185,10 @@
             Assert.Equal(expected, actual);
         }
 
+        #endregion EditEmployeeAsync
+
+        #region GetEmployeeById
+
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
@@ -214,6 +224,10 @@
             Assert.Equal(expected.ProfilePicLink, actual.ProfilePicLink);
         }
 
+        #endregion GetEmployeeById
+
+        #region InitDataForNewEmployeeAsync
+
         [Fact]
         public async Task InitDataForNewEmployeeAsync_WhenCall_ReturnCreateEmployeeViewModelAsync()
         {
@@ -229,6 +243,10 @@
             // Assert
             Assert.IsType<CreateEmployeeViewModel>(actual);
         }
+
+        #endregion InitDataForNewEmployeeAsync
+
+        #region CheckValidPicture
 
         [Fact]
         public void CheckValidPicture_NullParam_ReturnExpectedCommandResult()
@@ -290,6 +308,10 @@
             Assert.Equal(0, actual.Code);
             Assert.Equal(string.Empty, actual.Message);
         }
+
+        #endregion CheckValidPicture
+
+        #region Helper
 
         private IBaseService FakeBaseService()
         {
@@ -420,5 +442,7 @@
 
             return fixture;
         }
+
+        #endregion Helper
     }
 }

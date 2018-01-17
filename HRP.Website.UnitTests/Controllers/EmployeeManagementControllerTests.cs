@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AutoFixture;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Employee;
@@ -9,7 +11,10 @@
     using HRP.Models.EmployeeManagement;
     using HRP.Services;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
 
@@ -19,6 +24,12 @@
         private ISessionService sessionService;
         private IEmployeeManagementService employeeManagementService;
         private EmployeeManagementController employeeManagementController;
+        private Fixture fixture;
+
+        public EmployeeManagementControllerTests()
+        {
+            fixture = InitFixture();
+        }
 
         [Fact]
         public void Index_WhenCalled_ReturnsViewResult()
@@ -33,6 +44,87 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.Null(viewResult.ViewName);
         }
+
+        #region EditEmployee
+
+        [Fact]
+        public void EditEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
+        {
+            // Arrange
+            var employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(x => null);
+
+            // Act
+            var result = employeeManagementController.EditEmployee(0);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Null(viewResult.ControllerName);
+            Assert.Equal("Index", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void EditEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
+        {
+            // Arrange
+            var expected = fixture.Create<CreateEmployeeViewModel>();
+            var employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(expected);
+
+            // Act
+            var result = employeeManagementController.EditEmployee(99);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(expected, viewResult.ViewData.Model);
+        }
+
+        [Fact]
+        public async Task EditEmployee_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        {
+            // Arrange
+            var model = fixture.Create<CreateEmployeeViewModel>();
+            var employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
+
+            // Act
+            var result = await employeeManagementController.EditEmployee(model);
+
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+
+            Assert.False((bool)wrapper["isSuccessful"]);
+            Assert.IsType<Dictionary<string, string>>(wrapper["errors"]);
+        }
+
+        [Fact]
+        public async Task EditEmployee_ModelStateIsValid_ReturnJsonResultWithMessage()
+        {
+            // Arrange
+            var expected = new CommandResult()
+            {
+                Code = 0,
+                Message = "Successful."
+            };
+
+            var model = fixture.Create<CreateEmployeeViewModel>();
+            var employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
+            employeeManagementService.EditEmployeeAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
+
+            // Act
+            var result = await employeeManagementController.EditEmployee(model);
+
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+
+            Assert.True((bool)wrapper["isSuccessful"]);
+            Assert.IsType<string>(wrapper["message"]);
+        }
+
+        #endregion EditEmployee
 
         #region UpdateEmployment
 
@@ -256,6 +348,15 @@
             var controller = new EmployeeManagementController(baseService, employeeManagementService, null, sessionService);
 
             return controller;
+        }
+
+        private Fixture InitFixture()
+        {
+            var fixture = new Fixture();
+            fixture.Register<IFormFile>(() => null);
+            fixture.Register<SelectList>(() => null);
+
+            return fixture;
         }
 
         #endregion Helpers
