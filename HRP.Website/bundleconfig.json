@@ -71,7 +71,9 @@
   {
     "outputFileName": "wwwroot/assets/bundles/employee/css/employee-management.min.css",
     "inputFiles": [
+      "wwwroot/lib/jquery-ui/jquery-ui.css",
       "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
       "wwwroot/assets/styles/pages/employee/employee-management.css"
     ]
   },
@@ -266,6 +268,20 @@
       "wwwroot/assets/js/employee/employee-common-funcs.js",
       "wwwroot/assets/js/employee/edit-employee.js",
       "wwwroot/assets/js/employee/update-employment.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/employee/js/list-employee.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/assets/js/employee/list-employee.js"
     ],
     "minify": {
       "enabled": true,

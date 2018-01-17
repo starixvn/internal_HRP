@@ -10,7 +10,6 @@
 <environment include="Development">
     @section Styles {
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
@@ -31,9 +30,6 @@
         <label class="text">@ViewLang.Company</label>
         <select class="control company" id="CompanySelect"></select>
         <input asp-for="DepartmentIds" hidden />
-        @*<select class="control company" asp-for="CompanyId" asp-items="@Model.Companies">
-                <option value="0">@ViewLang.All</option>
-            </select>*@
     </div>
     <div class="group">
         <label class="text">@ViewLang.InService</label>
