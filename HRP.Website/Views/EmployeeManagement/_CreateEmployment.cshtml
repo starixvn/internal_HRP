@@ -8,12 +8,8 @@
     var maxDate = DateTime.Now.Date.ToShortDateString();
 }
 
-<form id="createEmploymentForm" class="form-information" asp-action="CreateEmployment" asp-controller="EmployeeManagement"
-      data-ajax-method="post" data-ajax="true"
-      data-ajax-success="createEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    <div class="msg-error" id="validation-summary">
-        <ul></ul>
-    </div>
+<form id="createEmploymentForm" class="form-information">
+    @Html.Partial("_ValidationEmployment", Model)
 
     <div class="employment">
         <div class="col">

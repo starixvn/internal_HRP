@@ -336,12 +336,6 @@ var employmentCommonFuncs = (function ($) {
         $.validator.unobtrusive.parse($form);
 
         var $validator = $form.validate();
-        $validator.settings.wrapper = 'li';
-        $validator.settings.errorPlacement = function (error, element) {
-            if (error.text().trim().length > 0) {
-                $form.find('#validation-summary ul').append(error);
-            }
-        };
         $validator.settings.highlight = function (element, errorClass, validClass) {
             var $element = $(element);
             $element.addClass(errorClass).removeClass(validClass);

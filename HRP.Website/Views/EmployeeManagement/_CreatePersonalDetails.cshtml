@@ -2,16 +2,10 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail form-information createPersonalDetailsForm" enctype="multipart/form-data" id="personalDetailForm"
-      asp-action="CreatePersonalDetails" asp-controller="EmployeeManagement" data-ajax-method="post" data-ajax="true"
-      data-ajax-success="createEmployee.onSubmitSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    <div class="msg-error" id="validation-summary">
-        <ul></ul>
-    </div>
+<form class="personal-detail form-information createPersonalDetailsForm" id="personalDetailForm">
+    @Html.Partial("_ValidationPersonalDetails", Model)
 
     <div class="form-content">
-        <input type="hidden" asp-for="EmployeeId" />
-        <input type="hidden" asp-for="IsHost" />
         <input type="hidden" asp-for="ProfilePic" />
         <figure class="profile">
             <div class="change-picture">
@@ -22,13 +16,13 @@
             </div>
             @if (Model.IsHost)
             {
-            <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
-            <ul class="more-info">
-                <li>File type: .JPG, .JPEG, .PNG</li>
-                <li>Maximum capacity: 2MB</li>
-                <li>Dimension :160X160 px</li>
-            </ul>
-            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
+                <ul class="more-info">
+                    <li>File type: .JPG, .JPEG, .PNG</li>
+                    <li>Maximum capacity: 2MB</li>
+                    <li>Dimension :160X160 px</li>
+                </ul>
+                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             }
         </figure>
         <div class="col has-space">

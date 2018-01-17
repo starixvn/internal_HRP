@@ -11,8 +11,7 @@
 <form id="updateEmploymentForm" class="form-information" asp-action="UpdateEmployment" asp-controller="EmployeeManagement"
       data-ajax-method="post" data-ajax="true"
       data-ajax-success="updateEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    <div class="list-message-error hidden">
-    </div>
+    @Html.Partial("_ValidationEmployment", Model)
 
     <div class="employment">
         <div class="col">

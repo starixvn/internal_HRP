@@ -3,9 +3,7 @@
 @model CreateEmployeeViewModel
 
 <form class="personal-detail form-information" enctype="multipart/form-data" method="post" id="personalDetailForm">
-    <div class="msg-error" id="validation-summary">
-        <ul></ul>
-    </div>
+    @Html.Partial("_ValidationPersonalDetails", Model)
 
     <div class="-has-icon msg-success hidden">
     </div>

@@ -114,12 +114,12 @@
             if (errorTotal === 0) {
                 hideListMessageError($form);
             } else {
-                showListMessageError($form);
+                showValidationSummary($form);
             }
         });
     }
 
-    function showListMessageError($form) {
+    function showValidationSummary($form) {
         $form.find('.list-message-error').removeClass("hidden");
     }
 
@@ -127,26 +127,15 @@
         $form.find('.list-message-error').addClass("hidden");
     }
 
-    function reparseform($form) {
-        var $validator = $form.validate();
-        $validator.settings.wrapper = 'li';
-        $validator.settings.errorPlacement = function (error, element) {
-            if (error.text().trim().length > 0) {
-                $form.find('#validation-summary ul').append(error);
-            }
-        };
-    }
-
     function initForm($form) {
         registerEventOpenDatePicker($form);
         registerEventChangePicture($form);
-        reparseform($form);
     }
 
     return {
         initForm: initForm,
         initDatePicker: initDatePicker,
         hideListMessageError: hideListMessageError,
-        showListMessageError: showListMessageError
+        showValidationSummary: showValidationSummary
     };
 }(jQuery));

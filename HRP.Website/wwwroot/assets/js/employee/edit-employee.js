@@ -32,7 +32,7 @@
                     error: commonFunctions.handleAjaxError
                 });
             } else {
-                employeeCommonFuncs.showListMessageError();
+                employeeCommonFuncs.showValidationSummary();
             }
         });
     }

@@ -17,6 +17,14 @@
         }, 5000);
     }
 
+    function showValidationSummary($form) {
+        $form.find('.list-message-error').removeClass('hidden');
+    }
+
+    function hideValidationSummary($form) {
+        $form.find('.list-message-error').addClass('hidden');
+    }
+
     function handleAjaxError(xhr, textStatus, errorThrown) {
         var url;
 
@@ -46,7 +54,9 @@
         rootURL: $('#RootURL').val(),
         handleAjaxError: handleAjaxError,
         showErrorMessage: showErrorMessage,
-        showSuccessMessage: showSuccessMessage
+        showSuccessMessage: showSuccessMessage,
+        showValidationSummary: showValidationSummary,
+        hideValidationSummary: hideValidationSummary
     }
 }(jQuery));
 

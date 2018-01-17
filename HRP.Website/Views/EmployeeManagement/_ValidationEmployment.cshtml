@@ -1,0 +1,59 @@
+﻿@using HRP.Models.EmployeeManagement
+
+@model CreateEmploymentViewModel
+
+<div class="list-message-error hidden">
+    <span asp-validation-for="CompanyId" class="message"></span>
+    <span asp-validation-for="LocalCompanyId" class="message"></span>
+    <span asp-validation-for="JobTitle" class="message"></span>
+    <span asp-validation-for="LocalJobTitleId" class="message"></span>
+    <span asp-validation-for="GroupStartDate" class="message"></span>
+    <span asp-validation-for="CompanyCode" class="message"></span>
+    <span asp-validation-for="EmployeeCode" class="message"></span>
+    <span asp-validation-for="EmploymentType" class="message"></span>
+    <span asp-validation-for="EmploymentStatus" class="message"></span>
+    <span asp-validation-for="JobCategoryId" class="message"></span>
+    <span asp-validation-for="JobGradeId" class="message"></span>
+    <span asp-validation-for="GradeLevelId" class="message"></span>
+    <span asp-validation-for="DivisionId" class="message"></span>
+    <span asp-validation-for="DepartmentId" class="message"></span>
+    <span asp-validation-for="SectionId" class="message"></span>
+    <span asp-validation-for="CostCenterId" class="message"></span>
+    <span asp-validation-for="Email" class="message"></span>
+    <span asp-validation-for="CountryId" class="message"></span>
+    <span asp-validation-for="CityId" class="message"></span>
+    <span asp-validation-for="OfficeId" class="message"></span>
+    <span asp-validation-for="WorkPermit.LocalCompanyId" class="message"></span>
+    <span asp-validation-for="WorkPermit.Type1" class="message"></span>
+    <span asp-validation-for="WorkPermit.StartDateType1" class="message"></span>
+    <span asp-validation-for="WorkPermit.EndDateType1" class="message"></span>
+    <span asp-validation-for="TaxIDNo" class="message"></span>
+    <span asp-validation-for="SSSNo" class="message"></span>
+    <span asp-validation-for="HealthInsNo" class="message"></span>
+    <span asp-validation-for="HDMFNo" class="message"></span>
+    <span asp-validation-for="FullNamePFileAdmin" class="message"></span>
+    <span asp-validation-for="NickNamePFileAdmin" class="message"></span>
+    <span asp-validation-for="Paymaster.FullNameBVISalary" class="message"></span>
+    <span asp-validation-for="Paymaster.NickNameBVISalary" class="message"></span>
+    <span asp-validation-for="Paymaster.FullNameBVIAllowance" class="message"></span>
+    <span asp-validation-for="Paymaster.NickNameBVIAllowance" class="message"></span>
+    <span asp-validation-for="Paymaster.FullNameLocalSalary" class="message"></span>
+    <span asp-validation-for="Paymaster.NickNameLocalSalary" class="message"></span>
+    <span asp-validation-for="EPA.FullNameAdministrator" class="message"></span>
+    <span asp-validation-for="EPA.NickNameAdministrator" class="message"></span>
+    <span asp-validation-for="EPA.FullNameEvaluator1" class="message"></span>
+    <span asp-validation-for="EPA.NickNameEvaluator1" class="message"></span>
+    <span asp-validation-for="EPA.FullNameEvaluator2" class="message"></span>
+    <span asp-validation-for="EPA.NickNameEvaluator2" class="message"></span>
+    <span asp-validation-for="EPA.FullNameReviewer" class="message"></span>
+    <span asp-validation-for="EPA.NickNameReviewer" class="message"></span>
+    <span asp-validation-for="EPA.FullNameManagement" class="message"></span>
+    <span asp-validation-for="EPA.NickNameManagement" class="message"></span>
+    <span asp-validation-for="EPA.FullNameIncrement" class="message"></span>
+    <span asp-validation-for="EPA.NickNameIncrement" class="message"></span>
+    <span asp-validation-for="EPA.FullNameBVIBonus" class="message"></span>
+    <span asp-validation-for="EPA.NickNameBVIBonus" class="message"></span>
+    <span asp-validation-for="EPA.FullNameLocalBonus" class="message"></span>
+    <span asp-validation-for="EPA.NickNameLocalBonus" class="message"></span>
+    <span asp-validation-for="PDFPassword" class="text-danger"></span>
+</div>

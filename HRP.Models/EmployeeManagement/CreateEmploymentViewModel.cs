@@ -9,10 +9,8 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Serializable]
-    public class CreateEmploymentViewModel
+    public class CreateEmploymentViewModel : CreateEmployeeViewModel
     {
-        public CreateEmployeeViewModel Employee { get; set; } = new CreateEmployeeViewModel();
-
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
         public int CompanyId { get; set; }
 

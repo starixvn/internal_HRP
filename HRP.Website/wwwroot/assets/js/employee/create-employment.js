@@ -7,13 +7,13 @@ var createEmployment = (function ($) {
 
     function initEventChangeCompanyCode() {
         $companyCodeElement.on('change', function () {
-            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim());
+            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim()).valid();
         });
     }
 
     function initEventChangeEmployeeCode() {
         $employeeCodeElement.on('change', function () {
-            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim());
+            $pdfPasswordElement.val($companyCodeElement.val().trim() + $employeeCodeElement.val().trim()).valid();
         });
     }
 
@@ -22,6 +22,41 @@ var createEmployment = (function ($) {
             $personalDetailsStep.removeClass('finished').addClass('active');
             $employmentStep.removeClass('active');
             $personalDetailHeaderTab.trigger('click');
+        });
+    }
+
+    function registerEventSubmitForm() {
+        $createEmploymentForm.submit(function (e) {
+            e.preventDefault();
+            $createEmploymentForm.find('select.search-suggestion').select2();
+
+            if ($(this).valid()) {
+                commonFunctions.hideValidationSummary($createEmploymentForm);
+                var formData = $createEmploymentForm.serialize() + '&' + $('.createPersonalDetailsForm').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        if (response.isSuccessful) {
+                        } else {
+                            if (response.errors) {
+                                $createEmploymentForm.validate().showErrors(response.errors);
+                            } else {
+                                $createEmploymentForm.find('.list-message-error').removeClass('hidden')
+                                    .append('<span class="message">' + response.message + '</span>');
+                            }
+
+                            commonFunctions.showValidationSummary($createEmploymentForm);
+                        }
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            } else {
+                commonFunctions.showValidationSummary($createEmploymentForm);
+            }
         });
     }
 
@@ -44,6 +79,7 @@ var createEmployment = (function ($) {
                 initEventChangeCompanyCode();
                 initEventChangeEmployeeCode();
                 initEventBackToPreviousAction();
+                registerEventSubmitForm();
             },
             error: commonFunctions.handleAjaxError
         });
@@ -71,19 +107,7 @@ var createEmployment = (function ($) {
     }
 
     return {
-        initModule: initModule,
-        onUpdateSuccess: function (response) {
-            if (response.isSuccessful) {
-                $createEmploymentForm.find('.list-message-error').addClass('hidden');
-            } else {
-                if (response.errors) {
-                    $createEmploymentForm.validate().showErrors(response.errors);
-                } else {
-                    $createEmploymentForm.find('.list-message-error').removeClass('hidden')
-                        .append('<span class="message">' + response.message + '</span>');
-                }
-            }
-        }
+        initModule: initModule
     };
 }(jQuery));
 
