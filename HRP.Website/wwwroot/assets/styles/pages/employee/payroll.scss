@@ -98,12 +98,17 @@
         background-color: #1ca041;
         height: 18px;
         width: 18px;
+        cursor: pointer;
 
         &:before {
             font-family: "hrp";
             content: "\e900";
             color: #fff;
             font-size: 9px;
+        }
+
+        &:hover {
+            background-color: darken(#1ca041, 5%);
         }
     }   
     

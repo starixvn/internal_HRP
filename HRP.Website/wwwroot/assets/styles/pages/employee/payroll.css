@@ -280,6 +280,7 @@ input[type="radio"]:disabled + span {
   background-color: #1ca041;
   height: 18px;
   width: 18px;
+  cursor: pointer;
 }
 
 .payroll .add-account:before {
@@ -287,6 +288,10 @@ input[type="radio"]:disabled + span {
   content: "\e900";
   color: #fff;
   font-size: 9px;
+}
+
+.payroll .add-account:hover {
+  background-color: #188a38;
 }
 
 .payroll .conversion {
