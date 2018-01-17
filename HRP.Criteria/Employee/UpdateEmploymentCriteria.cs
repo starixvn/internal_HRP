@@ -50,7 +50,7 @@
 
         public int? JobCategoryReasonId { get; set; }
 
-        public int GradeId { get; set; }
+        public int JobGradeId { get; set; }
 
         public int GradeLevelId { get; set; }
 
@@ -194,7 +194,7 @@
             && EmploymentType > 0
             && EmploymentStatus > 0
             && JobCategoryId > 0
-            && GradeId > 0
+            && JobGradeId > 0
             && GradeLevelId > 0
             && DivisionId > 0
             && DepartmentId > 0

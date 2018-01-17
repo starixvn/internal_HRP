@@ -283,7 +283,7 @@
                 JobCategoryId = viewModel.JobCategoryId,
                 JobCategoryChangeDate = viewModel.JobCategoryChangeDate,
                 JobCategoryReasonId = viewModel.JobCategoryReasonId,
-                GradeId = viewModel.JobGradeId,
+                JobGradeId = viewModel.JobGradeId,
                 GradeLevelId = viewModel.GradeLevelId,
                 JobGradeChangeDate = viewModel.JobGradeChangeDate,
                 JobGradeReasonId = viewModel.JobGradeReasonId,
