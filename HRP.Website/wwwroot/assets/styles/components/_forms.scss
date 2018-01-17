@@ -66,8 +66,7 @@
 
     .control {
         display: block;
-        width: 100%;        
-        padding-right: 40px;
+        width: 100%;
 
         &.input-validation-error {
             border-color: #ff4545;
@@ -90,7 +89,7 @@
         .icon-close, .icon-successful {
             position: absolute;
             right: 10px;
-            top: 8px;
+            top: 6px;
             font-size: 20px;
         }
     }

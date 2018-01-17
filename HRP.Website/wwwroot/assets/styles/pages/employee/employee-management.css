@@ -64,7 +64,6 @@
 .form-information .control {
   display: block;
   width: 100%;
-  padding-right: 40px;
 }
 
 .form-information .control.input-validation-error {
@@ -93,7 +92,7 @@
 .form-information .group-control .icon-close, .form-information .group-control .icon-successful {
   position: absolute;
   right: 10px;
-  top: 8px;
+  top: 6px;
   font-size: 20px;
 }
 
