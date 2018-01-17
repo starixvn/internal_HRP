@@ -446,7 +446,7 @@ Rad tree view css
 }
 
 .fanex-multiselect-options input {
-    vertical-align: -moz-calc();
+    /*vertical-align: -moz-calc();*/
     margin: 3px;
 }
 

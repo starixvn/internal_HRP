@@ -2,6 +2,7 @@
 @import "../../abstracts/mixins";
 @import "../../components/forms";
 @import "../../components/tables";
+@import "../../components/customize-fanex-multiSelect";
 
 .search-form {
     .company,
@@ -39,12 +40,12 @@
     .dropdown-menu {
         @include border-radius(2px);
         right: 0;
-        left: auto;  
-        min-width: auto;      
-        border: 1px solid #1973b2;       
-        
+        left: auto;
+        min-width: auto;
+        border: 1px solid #1973b2;
+
         [class^="icon"] {
-            position: relative;            
+            position: relative;
             line-height: 0;
         }
 
@@ -52,14 +53,14 @@
             top: 1px;
             font-size: 14px;
         }
-        
+
         .icon-edit_payroll {
             top: 3px;
             margin-right: 6px;
             font-size: 18px;
         }
-        
-        > li >a {
+
+        > li > a {
             padding-top: 6px;
             padding-bottom: 6px;
         }
