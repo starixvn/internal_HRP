@@ -405,9 +405,9 @@
             return file;
         }
 
-        private CreateEmployeeViewModel FakeCreateEmployeeViewModel()
+        private CreateEmploymentViewModel FakeCreateEmployeeViewModel()
         {
-            return fixture.Create<CreateEmployeeViewModel>();
+            return fixture.Create<CreateEmploymentViewModel>();
         }
 
         private IEnumerable<ReferenceResourceModel> FakeListReferenceResourceModel()

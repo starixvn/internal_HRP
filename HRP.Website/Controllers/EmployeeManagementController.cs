@@ -96,7 +96,6 @@
             return Json(employees);
         }
 
-        [Route("employeemanagement/create/employee")]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployee()
         {
@@ -105,11 +104,9 @@
             return View("CreateEmployee", viewModel);
         }
 
-        [Route("employeemanagement/create/employee")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreatePersonalDetails(CreateEmployeeViewModel employee)
+        public IActionResult CreateEmployee(CreateEmployeeViewModel employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
@@ -123,7 +120,30 @@
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
 
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateEmployment()
+        {
+            var viewModel = await InitDataForCreateEmployment();
+
+            return PartialView("_CreateEmployment", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var commandResult = employeeManagementService.CreateEmployeeAsync(viewModel);
+
+                return Json(commandResult);
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -164,32 +184,6 @@
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
 
-            return Json(new { isSuccessful = false, errors });
-        }
-
-        [Route("employeemanagement/create/employment")]
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployment()
-        {
-            var viewModel = await InitDataForCreateEmployment();
-
-            return PartialView("_CreateEmployment", viewModel);
-        }
-
-        [Route("employeemanagement/create/employment")]
-        [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var commandResult = new CommandResult();
-
-                return Json(commandResult);
-            }
-
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 

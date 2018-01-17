@@ -1,44 +1,44 @@
 ﻿var createEmployee = (function ($) {
-    var $form, $personalDetailsStep, $employmentStep;
+    var $createPersonalDetalsForm, $personalDetailsStep, $employmentStep;
 
     function registerEventSubmitForm() {
-        $form.submit(function (e) {
+        $createPersonalDetalsForm.submit(function (e) {
             e.preventDefault();
 
             if ($(this).valid()) {
-                commonFunctions.hideValidationSummary($form);
-                var formData = $form.serialize();
+                commonFunctions.hideValidationSummary($createPersonalDetalsForm);
+                var formData = $createPersonalDetalsForm.serialize();
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employee',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/CreateEmployee',
                     dataType: 'json',
                     data: formData,
                     success: function (response) {
-                        //if (response.isSuccessful) {
-                        //    $personalDetailsStep.removeClass('active').addClass('finished');
-                        //    $employmentStep.addClass('active');
-                        //    $('#EmploymentHeaderTab').trigger('click');
-                        //} else {
-                        //    $form.validate().showErrors(response.errors);
-                        //    commonFunctions.showValidationSummary($form);
-                        //}
+                        if (response.isSuccessful) {
+                            $personalDetailsStep.removeClass('active').addClass('finished');
+                            $employmentStep.addClass('active');
+                            $('#EmploymentHeaderTab').trigger('click');
+                        } else {
+                            $createPersonalDetalsForm.validate().showErrors(response.errors);
+                            commonFunctions.showValidationSummary($createPersonalDetalsForm);
+                        }
                     },
                     error: commonFunctions.handleAjaxError
                 });
             } else {
-                commonFunctions.showValidationSummary($form);
+                commonFunctions.showValidationSummary($createPersonalDetalsForm);
             }
         });
     }
 
     function initModule() {
-        $form = $('.createPersonalDetailsForm');
+        $createPersonalDetalsForm = $('.createPersonalDetailsForm');
         $personalDetailsStep = $('#PersonalDetailsStep');
         $employmentStep = $('#EmploymentStep');
 
         employeeCommonFuncs.initDatePicker();
-        employeeCommonFuncs.initForm($form);
+        employeeCommonFuncs.initForm($createPersonalDetalsForm);
         registerEventSubmitForm();
     }
 

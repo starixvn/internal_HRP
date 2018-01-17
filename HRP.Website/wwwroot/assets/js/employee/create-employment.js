@@ -36,7 +36,7 @@ var createEmployment = (function ($) {
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/CreateEmployment',
                     dataType: 'json',
                     data: formData,
                     success: function (response) {
