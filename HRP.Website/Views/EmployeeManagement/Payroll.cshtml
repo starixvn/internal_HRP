@@ -46,7 +46,7 @@
         <div class="group-complex -payroll-layout1">
             <div class="">
                 <div class="group-title -first"><span class="icon-group"></span>Basic Salary</div>
-                <label class="text-group">Actual</label>
+                <label class="actual">Actual</label>
             </div>
             <div class="currency-amount">
                 <select class="control without-label basic-salary-calculate" asp-for="BasicSalary.CurrencyCode" asp-items="currencySelectList">
@@ -80,11 +80,16 @@
                 </label>
             </div>
         </div>
-        <div class="transaction-title">Payment Transaction</div>
-        <div class="transaction-title">
-            <label class="text">Bank Type</label>
-            <label class="text">Account Name</label>
+        <div class="group-complex -payroll-layout1">
+            <div class="start-4">
+                <div class="transaction-title">Payment Transaction</div>
+                <div class="transaction-item">
+                    <span>Bank Type</span>
+                    <span>Account Name</span>
+                </div>
+            </div>
         </div>
+        
         <div class="group-complex -payroll-layout1">
             <label class="bank-type">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Ebanking" />
@@ -170,19 +175,17 @@
         <!-- Allowances -->
         <div class="group-complex -payroll-layout3">
             <div class="group-title -first"><span class="icon-group"></span>Allowances</div>
-            <div></div>
-            <div class="conversion">Conversion</div>
+            <div class="conversion start-3">Conversion</div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <div class="text-group">Actual</div>
-            <div></div>
-            <div class="currency-amount">
+            <div class="actual">Actual</div>
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>USD</option>
                 </select>
                 <input type="text" class="control total-amount" />
             </div>
-            <div class="transaction-title-allowances">
+            <div class="transaction-item -allowances">
                 <span>Bank Type</span>
                 <span>Account Name</span>
             </div>
@@ -193,13 +196,13 @@
                 <span>Direct Banking 1</span>
             </div>
             <div></div>
-            <div class="currency-amount">
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
                 </select>
                 <input type="text" class="control number" />
             </div>
-            <div class="payment-transaction">
+            <div class="payment-transaction -allowances">
                 <select class="control">
                     <option>Direct Banking</option>
                 </select>
@@ -215,13 +218,13 @@
                 <span>Direct Banking 2</span>
             </div>
             <div></div>
-            <div class="currency-amount">
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
                 </select>
                 <input type="text" class="control number" />
             </div>
-            <div class="payment-transaction">
+            <div class="payment-transaction -allowances">
                 <select class="control">
                     <option>Contra Co. Account</option>
                 </select>
@@ -237,13 +240,13 @@
                 <span>Cash</span>
             </div>
             <div></div>
-            <div class="currency-amount">
+            <div class="currency-amount start-3">
                 <select class="control">
                     <option>Currency</option>
                 </select>
                 <input type="text" class="control number" disabled />
             </div>
-            <div class="payment-transaction">
+            <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>
                 <select class="control">
                     <option></option>
@@ -314,7 +317,7 @@
                 <input type="text" class="control" disabled />
                 <input type="text" class="control number" disabled />
             </div>
-            <div class="transaction-title-allowances">
+            <div class="transaction-item -allowances">
                 <span class="bank-name">Working Days</span>
                 <span class="bank-name">Rate</span>
             </div>
@@ -331,7 +334,7 @@
                 <input type="text" class="control" disabled />
                 <input type="text" class="control" disabled />
             </div>
-            <div class="payment-transaction">
+            <div class="payment-transaction -allowances">
                 <input type="text" class="control number" disabled />
                 <input type="text" class="control number" />
             </div>

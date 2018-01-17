@@ -180,10 +180,10 @@ input[type="radio"]:disabled + span {
   opacity: 0.5;
 }
 
-.form-information .deductions-title {
-  padding-bottom: 10px;
-  color: #ff0000;
+.payroll .actual {
+  color: #333;
   font-weight: bold;
+  padding-left: 18px;
 }
 
 .payroll .total-amount {
@@ -219,26 +219,40 @@ input[type="radio"]:disabled + span {
   padding-left: 10px;
 }
 
-.payroll .transaction-title, .payroll .transaction-title-allowances {
+.payroll .transaction-title {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+}
+
+.payroll .transaction-item {
   display: grid;
   grid-gap: 5px;
   grid-template-columns: 146px 135px;
   grid-template-rows: 1fr;
   justify-content: flex-start;
   align-items: center;
-  padding: 2px 0;
-  font-weight: bold;
-  color: #333;
-}
-
-.payroll .transaction-title {
-  padding-left: 649px;
-}
-
-.payroll .transaction-title-allowances {
-  padding-top: 14px;
   font-weight: bold;
   color: #666;
+}
+
+.payroll .transaction-item.-allowances {
+  padding-top: 14px;
+  padding-left: 60px;
+}
+
+.payroll .payment-transaction {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 146px 135px 20px;
+  grid-template-rows: 1fr;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.payroll .payment-transaction.-allowances {
+  padding-left: 60px;
 }
 
 .payroll .bank-type {
@@ -280,6 +294,21 @@ input[type="radio"]:disabled + span {
   color: #666;
 }
 
+.payroll .deductions-title {
+  padding-bottom: 10px;
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.payroll .currency-amount {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 86px 110px;
+  grid-template-rows: 1fr;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .group-complex {
   display: grid;
   grid-gap: 20px;
@@ -294,6 +323,10 @@ input[type="radio"]:disabled + span {
   grid-template-columns: 134px 200px 258px 306px;
 }
 
+.group-complex.-payroll-layout1 .start-4 {
+  grid-column-start: 4;
+}
+
 .group-complex.-payroll-layout2 {
   grid-template-columns: 134px 200px 584px;
 }
@@ -302,31 +335,13 @@ input[type="radio"]:disabled + span {
   grid-template-columns: 134px 200px 200px 368px;
 }
 
-.currency-amount {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: 86px 110px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.payment-transaction {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: 146px 135px 20px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: center;
+.group-complex.-payroll-layout3 .start-3 {
+  grid-column-start: 3;
 }
 
 hr {
   margin-top: 10px;
   margin-bottom: 10px;
   border-top-color: #dfdfdf;
-}
-
-.list-button {
-  margin-top: 8px;
 }
 /*# sourceMappingURL=payroll.css.map */

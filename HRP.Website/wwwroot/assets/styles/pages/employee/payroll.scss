@@ -4,14 +4,16 @@
 @import "../../components/radio";
 
 .form-information {
-    .deductions-title {
-        padding-bottom: 10px;
-        color: #ff0000;
-        font-weight: bold;
-    }
+    
 }
 
-.payroll {    
+.payroll {  
+    .actual {
+        color: #333;
+        font-weight: bold;
+        padding-left: 18px;
+    }
+      
     .total-amount {
         background-color: #ffe69a;
         text-align: right;
@@ -45,26 +47,40 @@
         padding-left: 10px;
     }
 
-    .transaction-title, .transaction-title-allowances {
+    .transaction-title {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .transaction-item {  
         display: grid;      
         grid-gap: 5px;
         grid-template-columns: 146px 135px; 
         grid-template-rows: 1fr; 
         justify-content: flex-start;
-        align-items: center;
-        padding: 2px 0;
-        font-weight: bold;
-        color: #333;
-    }    
-
-    .transaction-title {
-        padding-left: 649px;
-    }
-
-    .transaction-title-allowances {
-        padding-top: 14px;
+        align-items: center;            
         font-weight: bold;
         color: #666;
+
+        &.-allowances {
+            padding-top: 14px;
+            padding-left: 60px;
+        }
+    }
+
+    .payment-transaction {
+        display: grid;      
+        grid-gap: 5px;
+        grid-template-columns: 146px 135px 20px; 
+        grid-template-rows: 1fr; 
+        justify-content: flex-start;
+        align-items: center;
+
+        &.-allowances {
+            padding-left: 60px;
+        }
     }
 
     .bank-type {
@@ -95,6 +111,21 @@
         font-weight: bold;
         color: #666;
     }
+
+    .deductions-title {
+        padding-bottom: 10px;
+        color: #ff0000;
+        font-weight: bold;
+    }    
+
+    .currency-amount {
+        display: grid;      
+        grid-gap: 5px;
+        grid-template-columns: 86px 110px; 
+        grid-template-rows: 1fr; 
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
 }
 
 .group-complex { 
@@ -108,7 +139,10 @@
     /* Personal detail */
 
     &.-payroll-layout1 {        
-        grid-template-columns: 134px 200px 258px 306px;        
+        grid-template-columns: 134px 200px 258px 306px; 
+        .start-4 {
+            grid-column-start: 4;
+        }
     }
 
     &.-payroll-layout2 {        
@@ -116,34 +150,15 @@
     }
     
     &.-payroll-layout3 {
-        grid-template-columns: 134px 200px 200px 368px; 
+        grid-template-columns: 134px 200px 200px 368px;
+        .start-3 {
+            grid-column-start: 3;
+        }
     }
-}
-
-.currency-amount {
-    display: grid;      
-    grid-gap: 5px;
-    grid-template-columns: 86px 110px; 
-    grid-template-rows: 1fr; 
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.payment-transaction {
-    display: grid;      
-    grid-gap: 5px;
-    grid-template-columns: 146px 135px 20px; 
-    grid-template-rows: 1fr; 
-    justify-content: flex-start;
-    align-items: center;
 }
 
 hr {
     margin-top: 10px;
     margin-bottom: 10px;
     border-top-color:#dfdfdf;
-}
-
-.list-button {
-    margin-top: 8px;
 }
