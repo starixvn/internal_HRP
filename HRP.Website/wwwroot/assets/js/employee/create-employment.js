@@ -32,8 +32,9 @@ var createEmployment = (function ($) {
         $element.removeClass('hidden');
         $element.html(textAlert + delay + ' seconds.');
 
-        window.setInterval(function () {
+        var intervalCountDown = setInterval(function () {
             if (delay === 0) {
+                clearInterval(intervalCountDown);
                 $btnCancel.trigger('click');
             } else {
                 delay--;
@@ -45,6 +46,7 @@ var createEmployment = (function ($) {
     function registerEventSubmitForm() {
         $createEmploymentForm.submit(function (e) {
             e.preventDefault();
+
             employmentCommonFuncs.initSelect2($createEmploymentForm);
 
             if ($(this).valid()) {
@@ -82,6 +84,8 @@ var createEmployment = (function ($) {
             } else {
                 commonFunctions.showValidationSummary($createEmploymentForm);
             }
+
+            $('.content-container').scrollTop(0);
         });
     }
 

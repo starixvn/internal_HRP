@@ -23,7 +23,6 @@
         [InlineData(1, "dar", "")]
         [InlineData(1, "", "1")]
         [InlineData(1, "", "")]
-        [InlineData(0, "dar", "1")]
         [InlineData(0, "dar", "")]
         [InlineData(0, "", "1")]
         [InlineData(0, "", "")]
@@ -39,11 +38,13 @@
             Assert.False(actual);
         }
 
-        [Fact]
-        public void IsValid_ParamsAreValid_ReturnTrue()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void IsValid_ParamsAreValid_ReturnTrue(int employeeId)
         {
             // Arrange
-            var criteria = new CheckEmpCodeExistedCriteria { EmployeeId = 1, CompanyCode = "DAR", EmployeeCode = "123456" };
+            var criteria = new CheckEmpCodeExistedCriteria { EmployeeId = employeeId, CompanyCode = "DAR", EmployeeCode = "123456" };
 
             // Act
             var actual = criteria.IsValid();

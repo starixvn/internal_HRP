@@ -15,7 +15,7 @@
     <div class="list-button">
         @if (Model.IsHost)
         {
-            <button type="button" class="button -second" asp-action="index">@ViewLang.Cancel</button>
+            <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
             <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>
         }
     </div>

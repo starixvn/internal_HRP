@@ -10,7 +10,7 @@
 
         public string EmployeeCode { get; set; }
 
-        public override bool IsValid() => EmployeeId > 0 && !string.IsNullOrEmpty(CompanyCode) && !string.IsNullOrEmpty(EmployeeCode);
+        public override bool IsValid() => EmployeeId >= 0 && !string.IsNullOrEmpty(CompanyCode) && !string.IsNullOrEmpty(EmployeeCode);
 
         public override string GetSettingKey() => "Employee_CheckEmpCodeExisted";
     }

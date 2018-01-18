@@ -143,7 +143,6 @@
 
         [Route("EmployeeManagement/Create/Employment")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(CreateEmploymentViewModel viewModel)
         {

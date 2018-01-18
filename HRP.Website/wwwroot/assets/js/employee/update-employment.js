@@ -12,6 +12,8 @@ var updateEmployment = (function ($) {
             } else {
                 commonFunctions.showValidationSummary($updateEmploymentForm);
             }
+
+            $('.content-container').scrollTop(0);
         });
     }
 
