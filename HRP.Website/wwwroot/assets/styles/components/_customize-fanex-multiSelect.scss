@@ -24,6 +24,10 @@
         right: 2px;
         top: 6px;
     }
+
+    input[type='text']:focus {
+        border: 1px solid #1a87d3 !important;
+    }
 }
 
 .fanex-multiselect-helper-reset {
@@ -56,4 +60,23 @@
 
 .fanex-multiselect-div label:hover {
     font-weight: normal !important;
+}
+
+
+.fanex-multiselect-icon-dropdown {
+    background: none;
+    font-family: "hrp";
+    color: #666;
+
+    &:before {
+        display: inline-block;
+    }
+
+    &.fanex-multiselect-icon-collapse:before {
+        content: "\e917";        
+    }
+
+    &.fanex-multiselect-icon-expand:before {
+        content: "\e924";
+    }
 }

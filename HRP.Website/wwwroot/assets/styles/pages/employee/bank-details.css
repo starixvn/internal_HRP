@@ -80,8 +80,17 @@
   margin-top: 18px;
 }
 
-.form-information .list-button .button:first-child {
+.form-information .list-button {
+  overflow: hidden;
+}
+
+.form-information .list-button .button {
+  float: left;
   margin-right: 10px;
+}
+
+.form-information .list-button .button:last-child {
+  margin-right: 0;
 }
 
 .form-information .group-control {
@@ -417,6 +426,10 @@ table.dataTable thead .sorting_desc:after {
   top: 6px;
 }
 
+.fanex-multiselect input[type='text']:focus {
+  border: 1px solid #1a87d3 !important;
+}
+
 .fanex-multiselect-helper-reset {
   margin-bottom: 6px;
 }
@@ -452,6 +465,24 @@ table.dataTable thead .sorting_desc:after {
 
 .fanex-multiselect-div label:hover {
   font-weight: normal !important;
+}
+
+.fanex-multiselect-icon-dropdown {
+  background: none;
+  font-family: "hrp";
+  color: #666;
+}
+
+.fanex-multiselect-icon-dropdown:before {
+  display: inline-block;
+}
+
+.fanex-multiselect-icon-dropdown.fanex-multiselect-icon-collapse:before {
+  content: "\e917";
+}
+
+.fanex-multiselect-icon-dropdown.fanex-multiselect-icon-expand:before {
+  content: "\e924";
 }
 
 /* Bank details */

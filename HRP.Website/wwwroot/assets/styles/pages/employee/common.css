@@ -80,8 +80,17 @@
   margin-top: 18px;
 }
 
-.form-information .list-button .button:first-child {
+.form-information .list-button {
+  overflow: hidden;
+}
+
+.form-information .list-button .button {
+  float: left;
   margin-right: 10px;
+}
+
+.form-information .list-button .button:last-child {
+  margin-right: 0;
 }
 
 .form-information .group-control {
@@ -169,7 +178,7 @@
 }
 
 .form-information .group-title, .form-information .like-group-title {
-  color: #1973b2;
+  color: #1973b2 !important;
   font-weight: bold;
 }
 
