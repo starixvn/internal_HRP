@@ -8,10 +8,11 @@
     var maxDate = DateTime.Now.Date.ToShortDateString();
 }
 
-<form id="updateEmploymentForm" class="form-information" asp-action="UpdateEmployment" asp-controller="EmployeeManagement"
-      data-ajax-method="post" data-ajax="true"
+<form id="updateEmploymentForm" class="form-information" name="updateEmploymentForm"
+      asp-action="UpdateEmployment" asp-controller="EmployeeManagement" data-ajax-method="post" data-ajax="true"
       data-ajax-success="updateEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-    @Html.Partial("_ValidationEmployment", Model)
+    @Html.Partial("_ValidationUpdateEmployment", Model)
+    <div class="-has-icon msg-success hidden"></div>
 
     <div class="employment">
         <div class="col">
@@ -615,8 +616,8 @@
     <div class="list-button">
         @if (Model.IsHost)
         {
-            <button class="button -second">@ViewLang.Cancel</button>
-            <button class="button -primary">@ViewLang.Save</button>
+            <button type="button" class="button -second" asp-action="index">@ViewLang.Cancel</button>
+            <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>
         }
     </div>
 </form>

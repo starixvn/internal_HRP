@@ -7,13 +7,12 @@
     }
 
     function registerEventFormSubmit() {
-        var form = $('#personalDetailForm');
-        form.submit(function (e) {
+        $form.submit(function (e) {
             e.preventDefault();
 
             if ($(this).valid()) {
                 var formData = new FormData(this);
-                var urlPost = commonFunctions.rootURL + 'EmployeeManagement/EditEmployee';
+                var urlPost = commonFunctions.rootURL + 'EmployeeManagement/Update/PersonalDetails';
                 $.ajax({
                     url: urlPost,
                     type: "POST",
@@ -25,8 +24,7 @@
                         if (result.isSuccessful) {
                             commonFunctions.showSuccessMessage(result.message);
                         } else {
-                            var form = $('#personalDetailForm');
-                            form.validate().showErrors(result.errors);
+                            $form.validate().showErrors(result.errors);
                         }
                     },
                     error: commonFunctions.handleAjaxError
@@ -38,8 +36,8 @@
     }
 
     function initModule() {
-        $form = $('#personalDetailForm');
-        employeeCommonFuncs.initDatePicker();
+        $form = $('#personalDetailsForm');
+        commonFunctions.initDatetimepicker($form);
 
         if (isHostFunction()) {
             employeeCommonFuncs.initForm($form);
@@ -53,10 +51,10 @@
     }
 
     return {
-        InitModule: initModule
+        initModule: initModule
     };
 }(jQuery));
 
 $(function () {
-    editEmployee.InitModule();
+    editEmployee.initModule();
 });

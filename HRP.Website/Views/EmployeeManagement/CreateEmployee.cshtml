@@ -30,8 +30,8 @@
     <li class="step active" id="PersonalDetailsStep">
         <label class="step-title">@ViewLang.PersonalDetail</label>
     </li>
-    <li class="step">
-        <label class="step-title" id="EmploymentStep">@ViewLang.Employment</label>
+    <li class="step" id="EmploymentStep">
+        <label class="step-title">@ViewLang.Employment</label>
     </li>
 </ul>
 
@@ -49,7 +49,7 @@
 
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="PersonalDetailContentTab">
-        @Html.Partial("_CreatePersonalDetails", Model)
+        @Html.Partial("_PersonalDetailsForm", Model)
     </div>
     <div role="tabpanel" class="tab-pane" id="EmploymentContentTab">
     </div>
@@ -57,13 +57,13 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/assets/js/employee/employee-common-funcs.js"></script>
         <script src="~/assets/js/employee/create-employee.js"></script>
         <script src="~/assets/js/employee/employment-common-funcs.js"></script>

@@ -101,17 +101,17 @@
             Assert.IsAssignableFrom<IEnumerable<EmployeeList>>(viewResult.ViewData.Model);
         }
 
-        #region EditEmployee
+        #region UpdateEmployee
 
         [Fact]
-        public void EditEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
+        public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
         {
             // Arrange
             var employeeManagementController = GetEmployeeManagementController();
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(x => null);
 
             // Act
-            var result = employeeManagementController.EditEmployee(0);
+            var result = employeeManagementController.UpdateEmployee(0);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -120,7 +120,7 @@
         }
 
         [Fact]
-        public void EditEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
+        public void UpdateEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
         {
             // Arrange
             var expected = fixture.Create<CreateEmployeeViewModel>();
@@ -128,7 +128,7 @@
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var result = employeeManagementController.EditEmployee(99);
+            var result = employeeManagementController.UpdateEmployee(99);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -136,7 +136,7 @@
         }
 
         [Fact]
-        public async Task EditEmployee_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        public async Task UpdatePersonalDetails_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
         {
             // Arrange
             var model = fixture.Create<CreateEmployeeViewModel>();
@@ -144,7 +144,7 @@
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
 
             // Act
-            var result = await employeeManagementController.EditEmployee(model);
+            var result = await employeeManagementController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -155,7 +155,7 @@
         }
 
         [Fact]
-        public async Task EditEmployee_ModelStateIsValid_ReturnJsonResultWithMessage()
+        public async Task UpdatePersonalDetails_ModelStateIsValid_ReturnJsonResultWithMessage()
         {
             // Arrange
             var expected = new CommandResult()
@@ -167,10 +167,10 @@
             var model = fixture.Create<CreateEmployeeViewModel>();
             var employeeManagementController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
-            employeeManagementService.EditEmployeeAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
+            employeeManagementService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
 
             // Act
-            var result = await employeeManagementController.EditEmployee(model);
+            var result = await employeeManagementController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -180,7 +180,7 @@
             Assert.IsType<string>(wrapper["message"]);
         }
 
-        #endregion EditEmployee
+        #endregion UpdateEmployee
 
         #region UpdateEmployment
 

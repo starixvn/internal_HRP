@@ -1,0 +1,65 @@
+﻿@using HRP.Resources
+@using HRP.Models.EmployeeManagement
+
+@model CreateEmployeeViewModel
+@{
+    ViewData["Title"] = "Personal Detail";
+}
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/employee.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/employee/css/create-employee.min.css" rel="stylesheet" />
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.EmployeeManagement</li>
+    <li><a asp-controller="employeemanagement" asp-action="index">@ViewLang.EmployeeList</a></li>
+    <li class="active">@(Model.IsHost ? "Edit" : "View") Employee '@Model.NickName'</li>
+</ol>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#PersonalDetailsContentTab" aria-controls="home" role="tab" data-toggle="tab"
+           id="PersonalDetailHeaderTab">@ViewLang.PersonalDetail</a>
+    </li>
+    <li role="presentation">
+        <a href="#EmploymentContentTab" aria-controls="profile" role="tab" data-toggle="tab"
+           id="EmploymentHeaderTab" data-isFirstLoad="true">@ViewLang.Employment</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="PersonalDetailsContentTab">
+        @Html.Partial("_PersonalDetailsForm", Model)
+    </div>
+    <div role="tabpanel" class="tab-pane" id="EmploymentContentTab"></div>
+</div>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/assets/js/employee/employee-common-funcs.js"></script>
+        <script src="~/assets/js/employee/update-employee.js"></script>
+        <script src="~/assets/js/employee/employment-common-funcs.js"></script>
+        <script src="~/assets/js/employee/update-employment.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/employee/js/update-employee.min.js"></script>
+    </environment>
+}

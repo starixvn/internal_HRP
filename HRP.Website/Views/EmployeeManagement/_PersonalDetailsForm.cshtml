@@ -1,14 +1,17 @@
-﻿@using HRP.Models.EmployeeManagement
+﻿@using HRP.Core.Constants
+@using HRP.Models.EmployeeManagement
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail form-information" enctype="multipart/form-data" method="post" id="personalDetailForm">
-    @Html.Partial("_ValidationPersonalDetails", Model)
+@{
+    var minDate = Constants.MinDate;
+    var maxDate = DateTime.Now.Date.ToShortDateString();
+}
 
-    <div class="-has-icon msg-success hidden">
-    </div>
-    <div class="-has-icon msg-error hidden">
-    </div>
+<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data" id="personalDetailsForm">
+    @Html.Partial("_ValidationPersonalDetails", Model)
+    <div class="-has-icon msg-success hidden"></div>
+    <div class="-has-icon msg-error hidden"></div>
 
     <div class="form-content">
         <input type="hidden" asp-for="EmployeeId" />
@@ -23,13 +26,13 @@
             </div>
             @if (Model.IsHost)
             {
-                <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
-                <ul class="more-info">
-                    <li>File type: .JPG, .JPEG, .PNG</li>
-                    <li>Maximum capacity: 2MB</li>
-                    <li>Dimension :160X160 px</li>
-                </ul>
-                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+            <figcaption class="link js-changePicture">@ViewLang.ChangePicture</figcaption>
+            <ul class="more-info">
+                <li>File type: .JPG, .JPEG, .PNG</li>
+                <li>Maximum capacity: 2MB</li>
+                <li>Dimension :160X160 px</li>
+            </ul>
+            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
             }
         </figure>
         <div class="col has-space">
@@ -50,8 +53,9 @@
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required">@ViewLang.DateOfBirth</label>
-                    <input type="text" class="control" asp-for="DateOfBirth">
-                    <span class="icon-calendar js-iconDateOfBirth"></span>
+                    <input type="text" class="control datetimepicker" asp-for="DateOfBirth"
+                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text">@ViewLang.PlaceOfBirth</label>
@@ -109,13 +113,15 @@
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required">@ViewLang.DateIssue</label>
-                    <input type="text" class="control" asp-for="DateIssue">
-                    <span class="icon-calendar js-iconDateIssue"></span>
+                    <input type="text" class="control datetimepicker" asp-for="DateIssue"
+                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required">@ViewLang.ExpiredDate</label>
-                    <input type="text" class="control" asp-for="ExpiredDate">
-                    <span class="icon-calendar js-iconExpiredDate"></span>
+                    <input type="text" class="control datetimepicker" asp-for="ExpiredDate"
+                           data-mindate="@minDate">
+                    <span class="icon-calendar"></span>
                 </div>
             </div>
             <label class="text">@ViewLang.PlaceOfIssue</label>
@@ -167,12 +173,9 @@
             </div>
         </div>
 
-        @if (Model.IsHost)
-        {
-            <div class="list-button">
-                <a class="button -second js-btnCancel">@ViewLang.Cancel</a>
-                <button class="button -primary js-btnSave" type="submit">@ViewLang.Save</button>
-            </div>
-        }
+        <div class="list-button">
+            <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
+            <button class="button -primary" type="submit">@ViewLang.Next</button>
+        </div>
     </div>
 </form>

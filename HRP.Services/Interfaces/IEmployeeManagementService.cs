@@ -10,9 +10,9 @@
     {
         Task<CreateEmployeeViewModel> InitDataForNewEmployeeAsync();
 
-        Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employment);
+        Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee);
 
-        Task<CommandResult> EditEmployeeAsync(CreateEmployeeViewModel employee);
+        Task<CommandResult> UpdatePersonalDetailsAsync(CreateEmployeeViewModel employee);
 
         CreateEmployeeViewModel GetEmployeeById(int employeeId);
 

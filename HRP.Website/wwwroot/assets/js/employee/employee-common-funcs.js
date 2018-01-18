@@ -60,82 +60,23 @@
         });
     }
 
-    function initDatePicker() {
-        // Init DOB
-        var dateOfBirth = $('#DateOfBirth');
-        var defaultDate = moment(dateOfBirth.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
-        dateOfBirth.datetimepicker({
-            format: 'll',
-            minDate: '01/01/1900',
-            maxDate: 'now',
-            useCurrent: false
-        });
-        dateOfBirth.data("DateTimePicker").date(defaultDate);
-
-        // Init DI
-        var dateIssue = $('#DateIssue');
-        defaultDate = moment(dateIssue.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
-        dateIssue.datetimepicker({
-            format: 'll',
-            minDate: '01/01/1900',
-            maxDate: 'now',
-            useCurrent: false
-        });
-        dateIssue.data("DateTimePicker").date(defaultDate);
-
-        // Init ED
-        var expiredDate = $('#ExpiredDate');
-        defaultDate = moment(expiredDate.val(), 'MM/DD/YYYY hh:mm:ss a').format("MMM DD, YYYY");
-        expiredDate.datetimepicker({
-            format: 'll',
-            minDate: '01/01/1900',
-            useCurrent: false
-        });
-        expiredDate.data("DateTimePicker").date(defaultDate);
-    }
-
-    function registerEventOpenDatePicker() {
-        $('.js-iconDateOfBirth').on('click', function () {
-            $('#DateOfBirth').data("DateTimePicker").show();
-        });
-
-        $('.js-iconDateIssue').on('click', function () {
-            $('#DateIssue').data("DateTimePicker").show();
-        });
-
-        $('.js-iconExpiredDate').on('click', function () {
-            $('#ExpiredDate').data("DateTimePicker").show();
-        });
-    }
-
     function registerEventFormChange($form) {
-        $('#personalDetailForm').on('change keyup click', function () {
-            var errorTotal = $form.find('.personal-detail-error').children(".field-validation-error").length;
+        $form.on('change keyup click', function () {
+            var errorTotal = $form.find('.list-message-error .field-validation-error').length;
             if (errorTotal === 0) {
-                hideListMessageError($form);
+                commonFunctions.hideValidationSummary($form);
             } else {
-                showValidationSummary($form);
+                commonFunctions.showValidationSummary($form);
             }
         });
     }
 
-    function showValidationSummary($form) {
-        $form.find('.list-message-error').removeClass("hidden");
-    }
-
-    function hideListMessageError($form) {
-        $form.find('.list-message-error').addClass("hidden");
-    }
-
     function initForm($form) {
-        registerEventOpenDatePicker($form);
         registerEventChangePicture($form);
+        registerEventFormChange($form);
     }
 
     return {
-        initForm: initForm,
-        initDatePicker: initDatePicker,
-        hideListMessageError: hideListMessageError,
-        showValidationSummary: showValidationSummary
+        initForm: initForm
     };
 }(jQuery));

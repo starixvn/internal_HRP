@@ -178,7 +178,7 @@
 
         public string PDFPassword { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public override bool IsValid() =>
@@ -211,7 +211,7 @@
             && !string.IsNullOrWhiteSpace(FullNameAdministrator)
             && !string.IsNullOrWhiteSpace(PDFPassword)
             && !string.IsNullOrWhiteSpace(FullNamePFileAdmin)
-            && CreatedBy > 0;
+            && UpdatedBy > 0;
 #pragma warning restore S1067 // Expressions should not be too complex
 
         public override string GetSettingKey() => "Employment_Update";

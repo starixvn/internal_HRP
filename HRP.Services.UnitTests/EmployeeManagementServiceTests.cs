@@ -112,10 +112,10 @@
 
         #endregion CreateEmployeeAsync
 
-        #region EditEmployeeAsync
+        #region UpdatePersonalDetailsAsync
 
         [Fact]
-        public async Task EditEmployeeAsync_WithValidUpdateEmployeeCriteria_ReturnCommandResult()
+        public async Task UpdatePersonalDetailsAsync_WithValidUpdateEmployeeCriteria_ReturnCommandResult()
         {
             // Arrange
             var expected = new CommandResult
@@ -131,7 +131,7 @@
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
-            var actual = await employeeManagementService.EditEmployeeAsync(viewModel);
+            var actual = await employeeManagementService.UpdatePersonalDetailsAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -164,7 +164,7 @@
         }
 
         [Fact]
-        public async Task EditEmployeeAsync_CreateEmployeeViewModelHasValueProfilePicture_SavePictureAsync()
+        public async Task UpdatePersonalDetailsAsync_CreateEmployeeViewModelHasValueProfilePicture_SavePictureAsync()
         {
             // Arrange
             var expected = new CommandResult
@@ -179,13 +179,13 @@
             var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
-            var actual = await employeeManagementService.EditEmployeeAsync(viewModel);
+            var actual = await employeeManagementService.UpdatePersonalDetailsAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
-        #endregion EditEmployeeAsync
+        #endregion UpdatePersonalDetailsAsync
 
         #region GetAllCompanyDivisonDepartment
 

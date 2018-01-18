@@ -80,6 +80,8 @@
   {
     "outputFileName": "wwwroot/assets/bundles/employee/css/create-employee.min.css",
     "inputFiles": [
+      "wwwroot/lib/jquery-ui/jquery-ui.css",
+      "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/assets/styles/pages/employee/common.css",
       "wwwroot/assets/styles/pages/employee/employee.css"
@@ -242,13 +244,17 @@
   {
     "outputFileName": "wwwroot/assets/bundles/employee/js/create-employee.min.js",
     "inputFiles": [
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
       "wwwroot/assets/js/employee/employee-common-funcs.js",
-      "wwwroot/assets/js/employee/create-employee.js"
+      "wwwroot/assets/js/employee/create-employee.js",
+      "wwwroot/assets/js/employee/employment-common-funcs.js",
+      "wwwroot/assets/js/employee/create-employment.js"
     ],
     "minify": {
       "enabled": true,
@@ -256,17 +262,18 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/employee/js/edit-employee.min.js",
+    "outputFileName": "wwwroot/assets/bundles/employee/js/update-employee.min.js",
     "inputFiles": [
+      "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
       "wwwroot/assets/js/employee/employee-common-funcs.js",
-      "wwwroot/assets/js/employee/edit-employee.js",
+      "wwwroot/assets/js/employee/update-employee.js",
+      "wwwroot/assets/js/employee/employment-common-funcs.js",
       "wwwroot/assets/js/employee/update-employment.js"
     ],
     "minify": {

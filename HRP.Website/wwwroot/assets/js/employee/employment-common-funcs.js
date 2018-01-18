@@ -212,17 +212,16 @@ var employmentCommonFuncs = (function ($) {
 
     function calculateLengthOfService() {
         var intervals = ['years', 'months', 'days'],
-            starts,
-            ends,
-            out = [];
+            starts, ends,
+            i, diff, out = [];
 
         if ($groupStartDateElement.val()) {
             starts = $groupEndDateElement.val() ? moment($groupEndDateElement.val()) : moment(currentDate);
             ends = moment($groupStartDateElement.val());
             out = [];
 
-            for (var i = 0; i < intervals.length; i++) {
-                var diff = starts.diff(ends, intervals[i]);
+            for (i = 0; i < intervals.length; i++) {
+                diff = starts.diff(ends, intervals[i]);
                 ends.add(diff, intervals[i]);
                 out.push(diff + ' ' + intervals[i].replace('s', '(s)'));
             }
@@ -235,8 +234,8 @@ var employmentCommonFuncs = (function ($) {
             ends = moment($companyStartDateElement.val());
             out = [];
 
-            for (var i = 0; i < intervals.length; i++) {
-                var diff = starts.diff(ends, intervals[i]);
+            for (i = 0; i < intervals.length; i++) {
+                diff = starts.diff(ends, intervals[i]);
                 ends.add(diff, intervals[i]);
                 out.push(diff + ' ' + intervals[i].replace('s', '(s)'));
             }
@@ -304,33 +303,6 @@ var employmentCommonFuncs = (function ($) {
         });
     }
 
-    function initDatepicker($form) {
-        $form.find('input.datetimepicker').each(function () {
-            var $this = $(this),
-                defaultDate = $this.val(),
-                mindate = $this.data('mindate'),
-                maxdate = $this.data('maxdate');
-
-            $this.datetimepicker({
-                format: 'MMM DD, YYYY',
-                minDate: mindate,
-                maxDate: maxdate,
-                useCurrent: false
-            });
-
-            if (defaultDate) {
-                defaultDate = moment(defaultDate, 'MM/DD/YYYY').format('MMM DD, YYYY');
-                $this.data("DateTimePicker").date(defaultDate);
-            } else {
-                $this.val('');
-            }
-        });
-
-        $form.find('.icon-calendar:not(.disabled)').on('click', function () {
-            $(this).siblings('.datetimepicker').data('DateTimePicker').show();
-        });
-    }
-
     function reparseform($form) {
         $form.removeData('validator').removeData('unobtrusiveValidation');
         $.validator.unobtrusive.parse($form);
@@ -341,7 +313,9 @@ var employmentCommonFuncs = (function ($) {
             $element.addClass(errorClass).removeClass(validClass);
 
             if ($element.hasClass('search-suggestion')) {
-                $element.next().find('.select2-selection').addClass(errorClass).addClass('control').removeClass(validClass);
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(errorClass).addClass('control');
             }
         };
         $validator.settings.unhighlight = function (element, errorClass, validClass) {
@@ -349,9 +323,28 @@ var employmentCommonFuncs = (function ($) {
             $element.removeClass(errorClass).addClass(validClass);
 
             if ($element.hasClass('search-suggestion')) {
-                $element.next().find('.select2-selection').removeClass(errorClass).removeClass('control').addClass(validClass);
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(validClass);
             }
         };
+
+        //$(document).on('change', 'select.search-suggestion', function () {
+        //    if (!$.isEmptyObject($validator.submitted)) {
+        //        $validator.form();
+        //    }
+        //});
+    }
+
+    function registerEventFormChange($form) {
+        $form.on('change keyup click', function () {
+            var errorTotal = $form.find('.list-message-error .field-validation-error').length;
+            if (errorTotal === 0) {
+                commonFunctions.hideValidationSummary($form);
+            } else {
+                commonFunctions.showValidationSummary($form);
+            }
+        });
     }
 
     function initForm($form) {
@@ -361,7 +354,7 @@ var employmentCommonFuncs = (function ($) {
         $companyStartDateElement = $form.find('#CompanyStartDate');
         $companyEndDateElement = $form.find('#CompanyEndDate');
 
-        initDatepicker($form);
+        commonFunctions.initDatetimepicker($form);
         calculateLengthOfService();
         $bviCompanyElement = $form.find('#CompanyId');
         $divisionElement = $form.find('#DivisionId');
@@ -394,10 +387,12 @@ var employmentCommonFuncs = (function ($) {
         initSearchAutocomplete($('#NoneOrIDNoIncrement'), $('#EPA_FullNameIncrement'), $('#EPA_NickNameIncrement'));
         initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NickNameBVIBonus'));
         initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NickNameLocalBonus'));
+
+        registerEventFormChange($form);
     }
 
     return {
         initForm: initForm,
-        initDatepicker: initDatepicker
+        initSelect2: initSelect2
     };
 }(jQuery));

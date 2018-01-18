@@ -143,6 +143,7 @@
 
         [Route("EmployeeManagement/Create/Employment")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(CreateEmploymentViewModel viewModel)
         {
@@ -158,10 +159,9 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult EditEmployee(int id, EmployeeTab tab = EmployeeTab.PersonalDetail)
+        public IActionResult UpdateEmployee(int id)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);
-            ViewBag.ActivePanel = tab.ToString();
 
             if (viewModel == null)
             {
@@ -170,13 +170,14 @@
 
             viewModel.IsEditForm = true;
 
-            return View("EditEmployee", viewModel);
+            return View("UpdateEmployee", viewModel);
         }
 
+        [Route("EmployeeManagement/Update/PersonalDetails")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> EditEmployee(CreateEmployeeViewModel employee)
+        public async Task<IActionResult> UpdatePersonalDetails(CreateEmployeeViewModel employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
@@ -186,7 +187,7 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = await employeeManagementService.EditEmployeeAsync(employee);
+                var commandResult = await employeeManagementService.UpdatePersonalDetailsAsync(employee);
                 var returnMessage = commandResult.IsSuccessful ? string.Format(Message.UpdateEmployeeSuccessful, employee.NickName) : commandResult.Message;
 
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = returnMessage });
@@ -197,6 +198,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
+        [Route("EmployeeManagement/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public async Task<IActionResult> UpdateEmployment(int employeeId)
@@ -248,7 +250,9 @@
             return PartialView("_UpdateEmployment", viewModel);
         }
 
+        [Route("EmployeeManagement/Update/Employment")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateEmployment(UpdateEmploymentViewModel viewModel)
         {

@@ -6,7 +6,6 @@
             e.preventDefault();
 
             if ($(this).valid()) {
-                commonFunctions.hideValidationSummary($createPersonalDetalsForm);
                 var formData = new FormData(this);
 
                 $.ajax({
@@ -35,11 +34,11 @@
     }
 
     function initModule() {
-        $createPersonalDetalsForm = $('.createPersonalDetailsForm');
+        $createPersonalDetalsForm = $('#personalDetailsForm');
         $personalDetailsStep = $('#PersonalDetailsStep');
         $employmentStep = $('#EmploymentStep');
 
-        employeeCommonFuncs.initDatePicker();
+        commonFunctions.initDatetimepicker($createPersonalDetalsForm);
         employeeCommonFuncs.initForm($createPersonalDetalsForm);
         registerEventSubmitForm();
     }

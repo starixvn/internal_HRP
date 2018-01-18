@@ -1,24 +1,38 @@
 ﻿'use strict';
 
 var updateEmployment = (function ($) {
-    var $updateEmploymentForm;
+    var $updateEmploymentForm, $employmentHeaderTab, $employmentContentTab, $btnSubmit;
+
+    function registerEventSubmitForm() {
+        $btnSubmit.on('click', function () {
+            employmentCommonFuncs.initSelect2($updateEmploymentForm);
+
+            if ($(this).valid()) {
+                $updateEmploymentForm.submit();
+            } else {
+                commonFunctions.showValidationSummary($updateEmploymentForm);
+            }
+        });
+    }
 
     function loadEmploymentForm() {
-        var employeeId = $('#personalDetailForm #EmployeeId').val();
+        var employeeId = $('#personalDetailsForm #EmployeeId').val();
         $.ajax({
             type: 'GET',
-            url: commonFunctions.rootURL + 'EmployeeManagement/UpdateEmployment',
+            url: commonFunctions.rootURL + 'EmployeeManagement/Update/Employment',
             dataType: 'html',
             data: {
                 employeeId: employeeId
             },
             success: function (data) {
-                $employmentTab.html(data);
+                $employmentContentTab.html(data);
 
                 $updateEmploymentForm = $('#updateEmploymentForm');
+                $btnSubmit = $updateEmploymentForm.find('.js-btnSubmit');
 
                 if ($updateEmploymentForm.find('#IsHost').prop('checked')) {
                     employmentCommonFuncs.initForm($updateEmploymentForm);
+                    registerEventSubmitForm();
                 } else {
                     $updateEmploymentForm.find('input[type="text"]').attr('readonly', 'readonly');
                     $updateEmploymentForm.find('select').attr('disabled', 'disabled');
@@ -29,22 +43,38 @@ var updateEmployment = (function ($) {
         });
     }
 
+    function initEventClickEmploymentTab() {
+        $employmentHeaderTab.on('click', function () {
+            var isFirstLoad = $(this).data('isfirstload');
+
+            if (isFirstLoad) {
+                $(this).data('isfirstload', false)
+                loadEmploymentForm();
+            }
+        });
+    }
+
     function initModule() {
-        loadEmploymentForm();
+        $employmentHeaderTab = $('#EmploymentHeaderTab');
+        $employmentContentTab = $('#EmploymentContentTab');
+
+        initEventClickEmploymentTab();
     }
 
     return {
         initModule: initModule,
         onUpdateSuccess: function (response) {
             if (response.isSuccessful) {
-                $updateEmploymentForm.find('.list-message-error').addClass('hidden');
+                commonFunctions.showSuccessMessage('Updated sucessfully!');
             } else {
                 if (response.errors) {
                     $updateEmploymentForm.validate().showErrors(response.errors);
                 } else {
-                    $updateEmploymentForm.find('.list-message-error').removeClass('hidden')
+                    $updateEmploymentForm.find('.list-message-error')
                         .append('<span class="message">' + response.message + '</span>');
                 }
+
+                commonFunctions.showValidationSummary($updateEmploymentForm);
             }
         }
     };

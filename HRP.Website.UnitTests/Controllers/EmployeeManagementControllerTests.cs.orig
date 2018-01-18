@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -52,17 +53,69 @@
             Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
         }
 
-        #region EditEmployee
+<<<<<<< HEAD
+        [Fact]
+        public void GetCompanyTree_WhenCalled_ReturnJsonResult()
+        {
+            employeeManagementController = GetEmployeeManagementController();
+            var listCompany = new ListCompanyDivisionDepartment
+            {
+                Companies = new List<Company>(),
+                Divisions = new List<Division>(),
+                Departments = new List<Department>()
+            };
+
+            //Act
+            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            var actual = employeeManagementController.GetCompanyTree();
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
+        }
 
         [Fact]
-        public void EditEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
+        public void EmployeeList_WhenCall_ReturnPartialViewAndEmployeeList()
+        {
+            employeeManagementController = GetEmployeeManagementController();
+            var listCompany = new ListCompanyDivisionDepartment
+            {
+                Companies = new List<Company>(),
+                Divisions = new List<Division>(),
+                Departments = new List<Department>()
+            };
+            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            sessionService.UserId = 1;
+            var viewModel = new EmployeeManagementViewModel
+            {
+                DepartmentIds = string.Empty,
+                InService = Selection.All,
+                InProbation = Selection.All,
+                EmployeeId = 41
+            };
+
+            //Act
+            var actual = employeeManagementController.EmployeeList(viewModel);
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+
+            //Assert
+            Assert.Equal("_ListEmployee", viewResult.ViewName);
+            Assert.IsAssignableFrom<IEnumerable<EmployeeList>>(viewResult.ViewData.Model);
+        }
+
+        #region EditEmployee
+=======
+        #region UpdateEmployee
+>>>>>>> 88830 - change behavior create employment
+
+        [Fact]
+        public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
         {
             // Arrange
             var employeeManagementController = GetEmployeeManagementController();
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(x => null);
 
             // Act
-            var result = employeeManagementController.EditEmployee(0);
+            var result = employeeManagementController.UpdateEmployee(0);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -71,7 +124,7 @@
         }
 
         [Fact]
-        public void EditEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
+        public void UpdateEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
         {
             // Arrange
             var expected = fixture.Create<CreateEmployeeViewModel>();
@@ -79,7 +132,7 @@
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var result = employeeManagementController.EditEmployee(99);
+            var result = employeeManagementController.UpdateEmployee(99);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -87,7 +140,7 @@
         }
 
         [Fact]
-        public async Task EditEmployee_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        public async Task UpdatePersonalDetails_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
         {
             // Arrange
             var model = fixture.Create<CreateEmployeeViewModel>();
@@ -95,7 +148,7 @@
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
 
             // Act
-            var result = await employeeManagementController.EditEmployee(model);
+            var result = await employeeManagementController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -106,7 +159,7 @@
         }
 
         [Fact]
-        public async Task EditEmployee_ModelStateIsValid_ReturnJsonResultWithMessage()
+        public async Task UpdatePersonalDetails_ModelStateIsValid_ReturnJsonResultWithMessage()
         {
             // Arrange
             var expected = new CommandResult()
@@ -118,10 +171,10 @@
             var model = fixture.Create<CreateEmployeeViewModel>();
             var employeeManagementController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
-            employeeManagementService.EditEmployeeAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
+            employeeManagementService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
 
             // Act
-            var result = await employeeManagementController.EditEmployee(model);
+            var result = await employeeManagementController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -131,7 +184,7 @@
             Assert.IsType<string>(wrapper["message"]);
         }
 
-        #endregion EditEmployee
+        #endregion UpdateEmployee
 
         #region UpdateEmployment
 
@@ -352,11 +405,7 @@
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
             employeeManagementService = FakeEmployeeManagementService();
-<<<<<<< HEAD
             var controller = new EmployeeManagementController(baseService, employeeManagementService, null, sessionService);
-=======
-            var controller = new EmployeeManagementController(baseService, employeeManagementService, null, null);
->>>>>>> #89346 - payroll - calculate allowances
 
             return controller;
         }

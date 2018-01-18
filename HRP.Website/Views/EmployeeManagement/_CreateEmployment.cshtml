@@ -9,7 +9,8 @@
 }
 
 <form id="createEmploymentForm" class="form-information" name="createEmploymentForm" enctype="multipart/form-data">
-    @Html.Partial("_ValidationEmployment", Model)
+    <div class="-has-icon msg-success hidden"></div>
+    @Html.Partial("_ValidationCreateEmployment", Model)
 
     <div class="employment">
         <div class="col">
@@ -592,7 +593,7 @@
     </div>
     <div class="list-button">
         <button type="button" class="button -back js-btnBack">@ViewLang.Back</button>
-        <button type="button" class="button -second">@ViewLang.Cancel</button>
+        <button type="button" class="button -second js-btnCancel" asp-action="index">@ViewLang.Cancel</button>
         <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>

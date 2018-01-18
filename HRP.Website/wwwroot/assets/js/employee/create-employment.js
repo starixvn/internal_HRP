@@ -3,7 +3,7 @@
 var createEmployment = (function ($) {
     var $personalDetailsStep, $employmentStep,
         $personalDetailHeaderTab, $employmentHeaderTab, $employmentContentTab, $createEmploymentForm,
-        $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack;
+        $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack, $btnCancel;
 
     function initEventChangeCompanyCode() {
         $companyCodeElement.on('change', function () {
@@ -25,15 +25,32 @@ var createEmployment = (function ($) {
         });
     }
 
+    function displaySuccessMessage() {
+        var $element = $createEmploymentForm.find('.msg-success');
+        var delay = 5;
+        var textAlert = 'Created successfully. You will be redirected in ';
+        $element.removeClass('hidden');
+        $element.html(textAlert + delay + ' seconds.');
+
+        window.setInterval(function () {
+            if (delay === 0) {
+                $btnCancel.trigger('click');
+            } else {
+                delay--;
+                $element.html(textAlert + delay + ' seconds.');
+            }
+        }, 1000);
+    };
+
     function registerEventSubmitForm() {
         $createEmploymentForm.submit(function (e) {
             e.preventDefault();
-            $createEmploymentForm.find('select.search-suggestion').select2();
+            employmentCommonFuncs.initSelect2($createEmploymentForm);
 
             if ($(this).valid()) {
                 commonFunctions.hideValidationSummary($createEmploymentForm);
 
-                var formData = new FormData(document.forms['createPersonalDetailsForm']);
+                var formData = new FormData(document.forms['personalDetailsForm']);
                 var poData = jQuery(document.forms['createEmploymentForm']).serializeArray();
                 for (var i = 0; i < poData.length; i++) {
                     formData.append(poData[i].name, poData[i].value);
@@ -48,6 +65,7 @@ var createEmployment = (function ($) {
                     processData: false,
                     success: function (response) {
                         if (response.isSuccessful) {
+                            displaySuccessMessage();
                         } else {
                             if (response.errors) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
@@ -80,6 +98,7 @@ var createEmployment = (function ($) {
                 $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
                 $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
                 $btnBack = $createEmploymentForm.find('.js-btnBack');
+                $btnCancel = $createEmploymentForm.find('.js-btnCancel');
 
                 employmentCommonFuncs.initForm($createEmploymentForm);
 

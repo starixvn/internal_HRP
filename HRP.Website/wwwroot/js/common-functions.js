@@ -25,6 +25,33 @@
         $form.find('.list-message-error').addClass('hidden');
     }
 
+    function initDatetimepicker($form) {
+        $form.find('input.datetimepicker').each(function () {
+            var $this = $(this),
+                defaultDate = $this.val(),
+                mindate = $this.data('mindate'),
+                maxdate = $this.data('maxdate');
+
+            $this.datetimepicker({
+                format: 'MMM DD, YYYY',
+                minDate: mindate,
+                maxDate: maxdate,
+                useCurrent: false
+            });
+
+            if (defaultDate) {
+                defaultDate = moment(defaultDate, 'MM/DD/YYYY').format('MMM DD, YYYY');
+                $this.data('DateTimePicker').date(defaultDate);
+            } else {
+                $this.val('');
+            }
+        });
+
+        $form.find('.icon-calendar:not(.disabled)').on('click', function () {
+            $(this).siblings('.datetimepicker').data('DateTimePicker').show();
+        });
+    }
+
     function handleAjaxError(xhr, textStatus, errorThrown) {
         var url;
 
@@ -56,7 +83,8 @@
         showErrorMessage: showErrorMessage,
         showSuccessMessage: showSuccessMessage,
         showValidationSummary: showValidationSummary,
-        hideValidationSummary: hideValidationSummary
+        hideValidationSummary: hideValidationSummary,
+        initDatetimepicker: initDatetimepicker
     }
 }(jQuery));
 
