@@ -9,17 +9,20 @@
         <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
     </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/employee/css/payroll.min.css" rel="stylesheet" />
+    </environment>
 }
 
 @{
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyCode), "CurrencyCode", "CurrencyCode");
-    var bankTypes = Html.GetEnumSelectList<BankType>().Where(x => int.Parse(x.Value) != (int) BankType.Ebanking);
+    var bankTypes = Html.GetEnumSelectList<BankType>().Where(x => int.Parse(x.Value) != (int)BankType.Ebanking);
 }
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li class="like-link">@ViewLang.EmployeeList</li>
-    <li class="active">@ViewLang.EditEmployeePayroll oW014512 - Jennie Thompson - Jennie</li>
+    <li class="active">@ViewLang.EditEmployeePayroll @Model.Code - @Model.FullName - @Model.NickName</li>
 </ol>
 
 @foreach (var currency in Model.CurrencyExchangeRates)
@@ -29,7 +32,7 @@
 
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
-<form class="payroll form-information">
+<form class="payroll form-information" method="post" asp-action="SavePayroll">
     <input type="hidden" asp-for="EmployeeId" />
     <input type="hidden" asp-for="BasicSalary.EmployeeId" />
     <input type="hidden" asp-for="Allowance.EmployeeId" />
@@ -46,8 +49,7 @@
                 <select class="control without-label basic-salary-calculate" asp-for="BasicSalary.CurrencyCode" asp-items="currencySelectList">
                     <option></option>
                 </select>
-                <input type="text" class="control without-label number total-amount basic-salary-calculate" placeholder="Total Amount" asp-for="BasicSalary.Salary" data-old-value="@Model.BasicSalary.Salary"
-                       data-rule-required="true" data-msg-required="@Message.EmployeePayrollTotalAmountRequired" />
+                <input type="text" class="control without-label number total-amount basic-salary-calculate" placeholder="Total Amount" asp-for="BasicSalary.Salary" data-old-value="@Model.BasicSalary.Salary" />
             </div>
             <div class="">
                 <div class="pull-left calendar">
@@ -83,7 +85,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="group-complex -payroll-layout1">
             <label class="bank-type">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Ebanking" />
@@ -93,7 +95,8 @@
                 <select class="control basic-salary-calculate basic-salary-ebanking" asp-for="BasicSalary.EbankingCurrencyCode" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number basic-salary-calculate basic-salary-ebanking" asp-for="BasicSalary.EbankingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number basic-salary-calculate basic-salary-ebanking" asp-for="BasicSalary.EbankingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -116,7 +119,8 @@
                 <select class="control basic-salary-calculate basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1CurrencyCode" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number basic-salary-calculate basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number basic-salary-calculate basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -138,7 +142,8 @@
                 <select class="control basic-salary-calculate basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2CurrencyCode" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number basic-salary-calculate" asp-for="BasicSalary.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number basic-salary-calculate" asp-for="BasicSalary.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -160,7 +165,8 @@
                 <select class="control basic-salary-calculate basic-salary-cash" asp-for="BasicSalary.CashCurrencyCode" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number basic-salary-calculate basic-salary-cash" asp-for="BasicSalary.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number basic-salary-calculate basic-salary-cash" asp-for="BasicSalary.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -199,7 +205,8 @@
                 <select class="control allowance-calculate allowance-directbanking1" asp-items="currencySelectList" asp-for="Allowance.DirectBanking1CurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number allowance-calculate allowance-directbanking1" asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number allowance-calculate allowance-directbanking1" asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <select class="control bank-type-select allowance-directbanking1" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
@@ -213,7 +220,7 @@
         </div>
         <div class="group-complex -payroll-layout3">
             <label class="bank-type">
-                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking2"/>
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking2" />
                 <span>Direct Banking 2</span>
             </label>
             <div></div>
@@ -221,7 +228,8 @@
                 <select class="control allowance-calculate allowance-directbanking2" asp-items="currencySelectList" asp-for="Allowance.DirectBanking2CurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number allowance-calculate allowance-directbanking2" asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number allowance-calculate allowance-directbanking2" asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <select class="control bank-type-select allowance-directbanking2" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
@@ -235,7 +243,7 @@
         </div>
         <div class="group-complex -payroll-layout3">
             <label class="bank-type">
-                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="Cash"/>
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="Cash" />
                 <span>Cash</span>
             </label>
             <div></div>
@@ -243,7 +251,8 @@
                 <select class="control allowance-calculate allowance-cash" asp-items="currencySelectList" asp-for="Allowance.CashCurrencyCode" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number allowance-calculate allowance-cash" asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number allowance-calculate allowance-cash" asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>
@@ -335,8 +344,8 @@
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
             <div class="payment-transaction -allowances">
-                <input type="text" class="control number" disabled  id="working-days" value="@Model.BasicSalary.WorkingDays"/>
-                <input type="text" class="control number" id="duty-meal-per-day" value="@(string.IsNullOrEmpty(Model.Allowance.DutyMealAmount) ? "" : (decimal.Parse(Model.Allowance.DutyMealAmount) / Model.BasicSalary.WorkingDays ).ToString())" />
+                <input type="text" class="control number" disabled id="working-days" value="@Model.BasicSalary.WorkingDays" />
+                <input type="text" class="control number" name="duty-meal-per-day" id="duty-meal-per-day" value="@(string.IsNullOrEmpty(Model.Allowance.DutyMealAmount) ? "" : (decimal.Parse(Model.Allowance.DutyMealAmount) / Model.BasicSalary.WorkingDays ).ToString())" />
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
@@ -371,19 +380,19 @@
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Romming Charges</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control" asp-items="currencySelectList" asp-for="Deduction.RoomingChargesCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" placeholder="Amount" />
+                <input type="text" class="control number" asp-for="Deduction.RoomingChargesAmount" />
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Fitness First</div>
             <div class="currency-amount">
-                <select class="control">
-                    <option>Currency</option>
+                <select class="control" asp-items="currencySelectList" asp-for="Deduction.FitnessFirstCurrencyCode">
+                    <option></option>
                 </select>
-                <input type="text" class="control number" placeholder="Amount" />
+                <input type="text" class="control number" asp-for="Deduction.FitnessFirstAmount" />
             </div>
         </div>
         <div class="list-button">
@@ -399,12 +408,9 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/assets/bundles/employee/js/employee-payroll.min.js"></script>
     </environment>
 }

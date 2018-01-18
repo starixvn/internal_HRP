@@ -356,6 +356,12 @@
         public IActionResult Payroll(int id)
         {
             var viewModel = payrollService.GetEmployeePayroll(id);
+
+            if(viewModel == null)
+            {
+                return RedirectToAction("PageNotFound", "Error");
+            }
+
             return View(viewModel);
         }
 

@@ -24,24 +24,29 @@
 
         public EmployeePayrollViewModel GetEmployeePayroll(int employeeId)
         {
-            var viewModel = new EmployeePayrollViewModel
-            {
-                EmployeeId = employeeId,
-                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year }),
-                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason })
-            };
-
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId };
-            var mappingTypes = new[] { typeof(EmployeePayrollBasicSalaryModel), typeof(EmployeePayrollAllowanceModel), typeof(EmployeePayrollDeduction) };
+            var mappingTypes = new[] { typeof(EmployeePayrollViewModel), typeof(EmployeePayrollBasicSalaryModel), typeof(EmployeePayrollAllowanceModel), typeof(EmployeePayrollDeduction) };
             var result = repository.FetchMultiple(criteria, mappingTypes);
 
-            viewModel.BasicSalary = result[0].Cast<EmployeePayrollBasicSalaryModel>().FirstOrDefault() 
-                ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash" };
-            viewModel.Allowance = result[1].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
-            viewModel.Deduction = result[2].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+            var viewModel = result[0].Cast<EmployeePayrollViewModel>().FirstOrDefault();
+
+            if(viewModel != null)
+            {
+                viewModel.BasicSalary = result[1].Cast<EmployeePayrollBasicSalaryModel>().FirstOrDefault() 
+                    ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash" };
+                viewModel.Allowance = result[2].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
+                viewModel.Deduction = result[3].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+                viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year });
+                viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+                viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason });
+            }
 
             return viewModel;
+        }
+
+        public void UpdatePayroll(EmployeePayrollViewModel viewModel)
+        {
+
         }
     }
 }

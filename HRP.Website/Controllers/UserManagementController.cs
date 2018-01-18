@@ -153,6 +153,11 @@
             }
 
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
+            if(viewModel == null)
+            {
+                return RedirectToAction("PageNotFound", "Error");
+            }
+
             viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host)
                 && (!viewModel.IsSystemAdmin || Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value));
 
