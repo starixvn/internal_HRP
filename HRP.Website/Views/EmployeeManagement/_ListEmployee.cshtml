@@ -53,13 +53,50 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdown-1">
-                                <li><a href="#"><span class="icon-user"></span>Edit Profile</a></li>
+                                <li>
+                                    <a href="#">
+                                        @if (employee.IsHostProfile)
+                                        {
+                                            <span class="icon-user"></span>
+                                            <span>Edit Profile</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="icon-user"></span>
+                                            <span>View Profile</span>
+                                        }
+                                    </a>
+                                </li>
+
                                 <li>
                                     <a asp-action="EditEmployeeBankDetails"
                                        asp-controller="BankAccount"
-                                       asp-route-EmployeeId="@employee.EmployeeId"><span class="icon-user"></span>Edit Bank Details</a>
+                                       asp-route-EmployeeId="@employee.EmployeeId">
+                                        @if (employee.IsHostBankDetails)
+                                        {
+                                            <span class="icon-user"></span><span>Edit Bank Details</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="icon-user"></span><span>View Bank Details</span>
+                                        }
+                                    </a>
                                 </li>
-                                <li><a href="#"><span class="icon-edit_payroll"></span>Edit Payroll</a></li>
+
+                                <li>
+                                    <a href="#">
+                                        @if (employee.IsHostPayroll)
+                                        {
+                                            <span class="icon-edit_payroll"></span>
+                                            <span>Edit Payroll</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="icon-edit_payroll"></span>
+                                            <span>View Payroll</span>
+                                        }
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </td>

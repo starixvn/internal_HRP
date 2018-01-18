@@ -29,5 +29,11 @@
         public bool InService { get; set; }
 
         public bool InProbation { get; set; }
+
+        public bool IsHostProfile { get; set; }
+
+        public bool IsHostPayroll { get; set; }
+
+        public bool IsHostBankDetails { get; set; }
     }
 }

@@ -48,11 +48,17 @@
 </form>
 <div class="top-header">
     <div class="pull-left">
-        <a asp-action="CreateEmployee" class="button -add create-user">
-            <span class="icon-add"></span>
-            @ViewLang.CreateNewEmployee
-        </a>
+
+        @if (Model.IsHostCreateEmployee)
+        {
+            <a asp-action="CreateEmployee" class="button -add create-user">
+                <span class="icon-add"></span>
+                @ViewLang.CreateNewEmployee
+            </a>
+        }
     </div>
+
+
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="Search" />
         <span class="icon-search"></span>

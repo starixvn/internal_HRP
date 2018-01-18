@@ -4,6 +4,8 @@
 
     public class EmployeeManagementViewModel
     {
+        public bool IsHostCreateEmployee { get; set; }
+
         public string DepartmentIds { get; set; }
 
         public Selection InService { get; set; }

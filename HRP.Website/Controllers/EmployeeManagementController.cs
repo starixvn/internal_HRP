@@ -43,6 +43,7 @@
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var viewModel = new EmployeeManagementViewModel
             {
+                IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
                 DepartmentIds = GetDepartmentIds(listDepartment.Departments),
                 InService = Selection.Yes,
                 InProbation = Selection.All,
@@ -78,6 +79,12 @@
                 UserId = sessionService.UserId
             };
             var employees = baseService.GetData<EmployeeList>(criteria);
+            foreach (var employee in employees)
+            {
+                employee.IsHostPayroll = sessionService.HasPermissionOnFunction(FunctionKey.EmployeePayroll, Policy.Host);
+                employee.IsHostProfile = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Policy.Host);
+                employee.IsHostBankDetails = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host);
+            }
 
             return PartialView("_ListEmployee", employees);
         }

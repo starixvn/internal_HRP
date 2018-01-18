@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -50,6 +51,54 @@
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
+        }
+
+        [Fact]
+        public void GetCompanyTree_WhenCalled_ReturnJsonResult()
+        {
+            employeeManagementController = GetEmployeeManagementController();
+            var listCompany = new ListCompanyDivisionDepartment
+            {
+                Companies = new List<Company>(),
+                Divisions = new List<Division>(),
+                Departments = new List<Department>()
+            };
+
+            //Act
+            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            var actual = employeeManagementController.GetCompanyTree();
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
+        }
+
+        [Fact]
+        public void EmployeeList_WhenCall_ReturnPartialViewAndEmployeeList()
+        {
+            employeeManagementController = GetEmployeeManagementController();
+            var listCompany = new ListCompanyDivisionDepartment
+            {
+                Companies = new List<Company>(),
+                Divisions = new List<Division>(),
+                Departments = new List<Department>()
+            };
+            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            sessionService.UserId = 1;
+            var viewModel = new EmployeeManagementViewModel
+            {
+                DepartmentIds = string.Empty,
+                InService = Selection.All,
+                InProbation = Selection.All,
+                EmployeeId = 41
+            };
+
+            //Act
+            var actual = employeeManagementController.EmployeeList(viewModel);
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+
+            //Assert
+            Assert.Equal("_ListEmployee", viewResult.ViewName);
+            Assert.IsAssignableFrom<IEnumerable<EmployeeList>>(viewResult.ViewData.Model);
         }
 
         #region EditEmployee
