@@ -8,7 +8,7 @@
     var maxDate = DateTime.Now.Date.ToShortDateString();
 }
 
-<form id="createEmploymentForm" class="form-information">
+<form id="createEmploymentForm" class="form-information" name="createEmploymentForm" enctype="multipart/form-data">
     @Html.Partial("_ValidationEmployment", Model)
 
     <div class="employment">

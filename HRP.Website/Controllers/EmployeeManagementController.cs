@@ -104,9 +104,10 @@
             return View("CreateEmployee", viewModel);
         }
 
+        [Route("EmployeeManagement/Create/PersonalDetails")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployee(CreateEmployeeViewModel employee)
+        public IActionResult CreatePersonalDetails(CreateEmployeeViewModel employee)
         {
             var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
@@ -123,6 +124,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
+        [Route("EmployeeManagement/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment()
@@ -132,13 +134,14 @@
             return PartialView("_CreateEmployment", viewModel);
         }
 
+        [Route("EmployeeManagement/Create/Employment")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment(CreateEmploymentViewModel viewModel)
+        public async Task<IActionResult> CreateEmployment(CreateEmploymentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var commandResult = employeeManagementService.CreateEmployeeAsync(viewModel);
+                var commandResult = await employeeManagementService.CreateEmployeeAsync(viewModel);
 
                 return Json(commandResult);
             }

@@ -2,7 +2,8 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail form-information createPersonalDetailsForm" id="personalDetailForm">
+<form class="personal-detail form-information createPersonalDetailsForm" name="createPersonalDetailsForm"
+      enctype="multipart/form-data" id="personalDetailForm">
     @Html.Partial("_ValidationPersonalDetails", Model)
 
     <div class="form-content">

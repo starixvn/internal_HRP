@@ -7,13 +7,15 @@
 
             if ($(this).valid()) {
                 commonFunctions.hideValidationSummary($createPersonalDetalsForm);
-                var formData = $createPersonalDetalsForm.serialize();
+                var formData = new FormData(this);
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/CreateEmployee',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/PersonalDetails',
                     dataType: 'json',
+                    contentType: false,
                     data: formData,
+                    processData: false,
                     success: function (response) {
                         if (response.isSuccessful) {
                             $personalDetailsStep.removeClass('active').addClass('finished');

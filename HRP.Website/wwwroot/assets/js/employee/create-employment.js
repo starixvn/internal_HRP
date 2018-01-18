@@ -32,20 +32,27 @@ var createEmployment = (function ($) {
 
             if ($(this).valid()) {
                 commonFunctions.hideValidationSummary($createEmploymentForm);
-                var formData = $createEmploymentForm.serialize() + '&' + $('.createPersonalDetailsForm').serialize();
+
+                var formData = new FormData(document.forms['createPersonalDetailsForm']);
+                var poData = jQuery(document.forms['createEmploymentForm']).serializeArray();
+                for (var i = 0; i < poData.length; i++) {
+                    formData.append(poData[i].name, poData[i].value);
+                }
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/CreateEmployment',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
                     dataType: 'json',
+                    contentType: false,
                     data: formData,
+                    processData: false,
                     success: function (response) {
                         if (response.isSuccessful) {
                         } else {
                             if (response.errors) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
                             } else {
-                                $createEmploymentForm.find('.list-message-error').removeClass('hidden')
+                                $createEmploymentForm.find('.list-message-error')
                                     .append('<span class="message">' + response.message + '</span>');
                             }
 
