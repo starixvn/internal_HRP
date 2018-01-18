@@ -253,3 +253,14 @@ _Pvt_Extensions
 /HRP.Website/wwwroot/ProfilePicture
 *.ncrunchproject
 *.ncrunchsolution
+/HRP.Website/wwwroot/assets/bundles/account/css/setupotp-standalone.min.css
+/HRP.Website/wwwroot/assets/bundles/account/js/account.min.js
+/HRP.Website/wwwroot/assets/bundles/auth/css/login.min.css
+/HRP.Website/wwwroot/assets/bundles/auth/js/login.min.js
+/HRP.Website/wwwroot/assets/bundles/currency/css/currency-setting.min.css
+/HRP.Website/wwwroot/assets/bundles/currency/js/currency-setting.min.js
+/HRP.Website/wwwroot/assets/bundles/employee/css/create-employee.min.css
+/HRP.Website/wwwroot/assets/bundles/employee/js/create-employee.min.js
+/HRP.Website/wwwroot/assets/bundles/employee/js/edit-employee.min.js
+/HRP.Website/wwwroot/assets/bundles/main.min.css
+/HRP.Website/wwwroot/assets/bundles/user/js/create-user.min.js
