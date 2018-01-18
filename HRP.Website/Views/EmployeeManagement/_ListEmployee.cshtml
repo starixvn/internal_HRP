@@ -54,7 +54,9 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdown-1">
                                 <li>
-                                    <a href="#">
+                                    <a asp-action="UpdateEmployee"
+                                       asp-controller="EmployeeManagement"
+                                       asp-route-EmployeeId="@employee.EmployeeId">
                                         @if (employee.IsHostProfile)
                                         {
                                             <span class="icon-user"></span>
@@ -84,7 +86,9 @@
                                 </li>
 
                                 <li>
-                                    <a href="#">
+                                    <a asp-action="Payroll"
+                                       asp-controller="EmployeeManagement"
+                                       asp-route-EmployeeId="@employee.EmployeeId">
                                         @if (employee.IsHostPayroll)
                                         {
                                             <span class="icon-edit_payroll"></span>
