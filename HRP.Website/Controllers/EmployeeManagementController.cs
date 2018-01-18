@@ -79,12 +79,6 @@
                 UserId = sessionService.UserId
             };
             var employees = baseService.GetData<EmployeeList>(criteria);
-            foreach (var employee in employees)
-            {
-                employee.IsHostPayroll = sessionService.HasPermissionOnFunction(FunctionKey.EmployeePayroll, Policy.Host);
-                employee.IsHostProfile = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Policy.Host);
-                employee.IsHostBankDetails = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host);
-            }
             var employeesSorted = employees.OrderBy(e => e.CompanyCode).ThenBy(e => e.IDNo).ToList();
             return PartialView("_ListEmployee", employeesSorted);
         }
