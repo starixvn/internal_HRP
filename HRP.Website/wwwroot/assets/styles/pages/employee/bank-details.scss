@@ -13,7 +13,7 @@
 
 .icon-active {
     position: relative;
-    color: #1973b2;
+    color: $primary-color;
     font-size: 17px;
 }
 
@@ -22,7 +22,7 @@
     font-size: 17px;
 
     &:hover {
-        color: #1973b2;
+        color: $primary-color;
         text-decoration: none;
     }
 }

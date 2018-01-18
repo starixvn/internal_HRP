@@ -171,7 +171,7 @@ table.dataTable thead .sorting_desc:after {
       color: #666;
 
       &:hover {
-          color: #1973b2;
+          color: $primary-color;
       }
   }
 
@@ -184,7 +184,7 @@ table.dataTable thead .sorting_desc:after {
   > li > a:hover,
   > li > span:focus,
   > li > span:hover {
-    background-color: lighten(#1973b2, 56%);
+    background-color: lighten($primary-color, 56%);
   }
 
   > li:first-child > a,

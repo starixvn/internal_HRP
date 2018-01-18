@@ -28,12 +28,12 @@
     }
 
     .dropdown.open .icon-configuration {
-        color: #1973b2;
+        color: $primary-color;
     }
 
     .icon-active {
         position: relative;
-        color: #1973b2;
+        color: $primary-color;
         font-size: 17px;
     }
 
@@ -42,7 +42,7 @@
         right: 0;
         left: auto;
         min-width: auto;
-        border: 1px solid #1973b2;
+        border: 1px solid $primary-color;
 
         [class^="icon"] {
             position: relative;
@@ -51,13 +51,19 @@
 
         .icon-user {
             top: 1px;
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        .icon-bank-details {
+            top: 2px;
+            margin-right: 8px;            
+            font-size: 16px;
         }
 
         .icon-edit_payroll {
-            top: 3px;
-            margin-right: 6px;
-            font-size: 18px;
+            top: 4px;
+            
+            font-size: 16px;
         }
 
         > li > a {

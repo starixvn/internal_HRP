@@ -3,6 +3,8 @@ $font-size: 13px;
 $page-bg: #f2f4f6;
 $text-color: #333;
 
+$primary-color: #1973b2;
+
 $link-color: #1973b2;
 $link-hover-color: darken($link-color, 10%);
 
@@ -60,3 +62,7 @@ $table-color: #666;
 $table-td-bg-hover: #ffe3cb;
 $table-col-odd-bg: #fffdcb;
 $table-row-level-parent: #eee;
+
+$loader-color: #1973b2;
+$loader-size: 32px;
+$loader-animation-duration: 1.15s;

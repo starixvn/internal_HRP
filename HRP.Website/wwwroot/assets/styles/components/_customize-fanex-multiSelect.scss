@@ -5,7 +5,7 @@
 
     input[type="text"][readonly] {
         background-color: transparent;
-        color: #333;
+        color: $text-color;
     }
 
      input[type='text'] {
@@ -35,7 +35,7 @@
 }
 
 .fanex-multiselect-treeview {
-    border: 1px solid #1973b2;
+    border: 1px solid $primary-color;
     padding: 10px;
 
     input[type="checkbox"] {
@@ -61,7 +61,6 @@
 .fanex-multiselect-div label:hover {
     font-weight: normal !important;
 }
-
 
 .fanex-multiselect-icon-dropdown {
     background: none;

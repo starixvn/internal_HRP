@@ -102,7 +102,7 @@
     padding: 10px;
     border: 1px solid #3475c7;
     background-color: #e3f5fa;
-    color: #1973b2;
+    color: $primary-color;
     @include border-radius(4px);
 
     &:before {

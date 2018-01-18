@@ -492,13 +492,18 @@ table.dataTable thead .sorting_desc:after {
 
 .table .dropdown-menu .icon-user {
   top: 1px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.table .dropdown-menu .icon-bank-details {
+  top: 2px;
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 .table .dropdown-menu .icon-edit_payroll {
-  top: 3px;
-  margin-right: 6px;
-  font-size: 18px;
+  top: 4px;
+  font-size: 16px;
 }
 
 .table .dropdown-menu > li > a {

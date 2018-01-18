@@ -20,7 +20,7 @@ input[type="radio"] + span {
   }
 
   &:after {
-    background-color: #1973b2;
+    background-color: $primary-color;
     border-radius: 100%;
     content: "";
     position: absolute;

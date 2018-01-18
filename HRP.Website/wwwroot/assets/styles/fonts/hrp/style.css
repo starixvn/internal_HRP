@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'hrp';
-  src:  url('fonts/hrp.eot?cihwub');
-  src:  url('fonts/hrp.eot?cihwub#iefix') format('embedded-opentype'),
-    url('fonts/hrp.ttf?cihwub') format('truetype'),
-    url('fonts/hrp.woff?cihwub') format('woff'),
-    url('fonts/hrp.svg?cihwub#hrp') format('svg');
+  src:  url('fonts/hrp.eot?dqam9p');
+  src:  url('fonts/hrp.eot?dqam9p#iefix') format('embedded-opentype'),
+    url('fonts/hrp.ttf?dqam9p') format('truetype'),
+    url('fonts/hrp.woff?dqam9p') format('woff'),
+    url('fonts/hrp.svg?dqam9p#hrp') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bank-details:before {
+  content: "\e925";
+}
 .icon-collapse:before {
   content: "\e917";
 }
