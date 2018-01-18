@@ -1,47 +1,24 @@
-﻿var editEmployee = (function ($) {
-    var $form;
+﻿var updateEmployee = (function ($) {
+    var $form, $btnSubmit;
 
-    function isHostFunction() {
-        var isHost = $('#IsHost').val() === "True";
-        return isHost;
-    }
-
-    function registerEventFormSubmit() {
-        $form.submit(function (e) {
-            e.preventDefault();
-
-            if ($(this).valid()) {
-                var formData = new FormData(this);
-                var urlPost = commonFunctions.rootURL + 'EmployeeManagement/Update/PersonalDetails';
-                $.ajax({
-                    url: urlPost,
-                    type: "POST",
-                    dataType: "json",
-                    contentType: false,
-                    data: formData,
-                    processData: false,
-                    success: function (result) {
-                        if (result.isSuccessful) {
-                            commonFunctions.showSuccessMessage(result.message);
-                        } else {
-                            $form.validate().showErrors(result.errors);
-                        }
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
+    function registerEventSubmitForm() {
+        $btnSubmit.on('click', function () {
+            if ($form.valid()) {
+                $form.submit();
             } else {
-                employeeCommonFuncs.showValidationSummary();
+                commonFunctions.showValidationSummary($form);
             }
         });
     }
 
     function initModule() {
         $form = $('#personalDetailsForm');
+        $btnSubmit = $form.find('.js-btnSubmit');
         commonFunctions.initDatetimepicker($form);
 
-        if (isHostFunction()) {
+        if ($form.find('#IsHost').prop('checked')) {
             employeeCommonFuncs.initForm($form);
-            registerEventFormSubmit();
+            registerEventSubmitForm();
         } else {
             $form.find('input[type="text"]').attr('readonly', 'readonly');
             $form.find('select').attr('disabled', 'disabled');
@@ -51,10 +28,24 @@
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        onUpdateSuccess: function (response) {
+            if (response.isSuccessful) {
+                commonFunctions.showSuccessMessage('Updated sucessfully!');
+            } else {
+                if (response.errors) {
+                    $form.validate().showErrors(response.errors);
+                } else {
+                    $form.find('.list-message-error')
+                        .append('<span class="message">' + response.message + '</span>');
+                }
+
+                commonFunctions.showValidationSummary($form);
+            }
+        }
     };
 }(jQuery));
 
 $(function () {
-    editEmployee.initModule();
+    updateEmployee.initModule();
 });

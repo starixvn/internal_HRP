@@ -7,7 +7,7 @@ var updateEmployment = (function ($) {
         $btnSubmit.on('click', function () {
             employmentCommonFuncs.initSelect2($updateEmploymentForm);
 
-            if ($(this).valid()) {
+            if ($updateEmploymentForm.valid()) {
                 $updateEmploymentForm.submit();
             } else {
                 commonFunctions.showValidationSummary($updateEmploymentForm);

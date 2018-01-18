@@ -1,0 +1,12 @@
+﻿@using HRP.Models.EmployeeManagement
+@using HRP.Resources
+@model CreateEmployeeViewModel
+
+<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data" id="personalDetailsForm">
+    @Html.Partial("_PersonalDetailsForm", Model)
+
+    <div class="list-button">
+        <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
+        <button class="button -primary" type="submit">@ViewLang.Next</button>
+    </div>
+</form>
