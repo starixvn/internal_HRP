@@ -85,8 +85,8 @@
                 employee.IsHostProfile = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Policy.Host);
                 employee.IsHostBankDetails = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host);
             }
-
-            return PartialView("_ListEmployee", employees);
+            var employeesSorted = employees.OrderBy(e => e.CompanyCode).ThenBy(e => e.IDNo).ToList();
+            return PartialView("_ListEmployee", employeesSorted);
         }
 
         [HttpGet]

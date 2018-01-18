@@ -187,6 +187,42 @@
 
         #endregion EditEmployeeAsync
 
+        #region GetAllCompanyDivisonDepartment
+
+        [Fact]
+        public void GetAllCompanyDivisionDepartment_ValidCriteria_ReturnList()
+        {
+            // Arrange
+            var employeeManagementService = InitEmployeeManagementService(null);
+            var sessionService = FakeSessionService();
+
+            // Act
+            var actual = employeeManagementService.GetAllCompanyDivisonDepartment();
+
+            //Assert
+            Assert.NotNull(actual);
+            Assert.IsType<ListCompanyDivisionDepartment>(actual);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetAllCompanyDivisionDepartment_InvalidCriteria_ReturnNull(int userId)
+        {
+            //Arrange
+            var sessionService = Substitute.For<ISessionService>();
+            sessionService.UserId = userId;
+            var employeeManagementService = new EmployeeManagementService(FakeHostingEnvironment(), null, null, sessionService, null);
+
+            //Act
+            var actual = employeeManagementService.GetAllCompanyDivisonDepartment();
+
+            //Assert
+            Assert.Null(actual);
+        }
+
+        #endregion GetAllCompanyDivisonDepartment
+
         #region GetEmployeeById
 
         [Theory]
