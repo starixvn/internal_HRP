@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
-    public class EmployeeList
+    public class EmployeeBasicInfo
     {
         public int EmployeeId { get; set; }
 

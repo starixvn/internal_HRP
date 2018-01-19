@@ -98,7 +98,7 @@
 
             //Assert
             Assert.Equal("_ListEmployee", viewResult.ViewName);
-            Assert.IsAssignableFrom<IEnumerable<EmployeeList>>(viewResult.ViewData.Model);
+            Assert.IsAssignableFrom<IEnumerable<EmployeeBasicInfo>>(viewResult.ViewData.Model);
         }
 
         #region UpdateEmployee

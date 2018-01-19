@@ -1,6 +1,6 @@
 ﻿@using HRP.Resources
 @using HRP.Models.EmployeeManagement
-@model IList<EmployeeList>
+@model IList<EmployeeBasicInfo>
 
 <table id="employee-table" class="table table-bordered table-hover table-striped dataTable">
     <thead>
@@ -22,7 +22,7 @@
         @if (Model != null && Model.Any())
         {
             var index = 0;
-            foreach (EmployeeList employee in Model)
+            foreach (EmployeeBasicInfo employee in Model)
             {
                 index++;
                 <tr>
@@ -56,7 +56,7 @@
                                 <li>
                                     <a asp-action="UpdateEmployee"
                                        asp-controller="EmployeeManagement"
-                                       asp-route-EmployeeId="@employee.EmployeeId">
+                                       asp-route-Id="@employee.EmployeeId">
                                         @if (employee.IsHostProfile)
                                         {
                                             <span class="icon-user"></span>

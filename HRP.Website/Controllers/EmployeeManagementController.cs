@@ -78,7 +78,7 @@
                 EmployeeId = model.EmployeeId,
                 UserId = sessionService.UserId
             };
-            var employees = baseService.GetData<EmployeeList>(criteria);
+            var employees = baseService.GetData<EmployeeBasicInfo>(criteria);
             var employeesSorted = employees.OrderBy(e => e.CompanyCode).ThenBy(e => e.IDNo).ToList();
             return PartialView("_ListEmployee", employeesSorted);
         }
@@ -350,7 +350,7 @@
         {
             var viewModel = payrollService.GetEmployeePayroll(id);
 
-            if(viewModel == null)
+            if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
