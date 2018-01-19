@@ -148,7 +148,7 @@
             <div class="group-title"><span class="icon-group"></span>@ViewLang.IDNo</div>
             <div class="group-complex -emp-layout4">
                 <div class="component">
-                    <label class="text -has-required" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
+                    <label class="text" asp-for="CompanyCode">@ViewLang.CompanyCode</label>
                     <input type="text" class="control" asp-for="CompanyCode" readonly />
                 </div>
                 <div class="component">
@@ -223,13 +223,13 @@
                     <label class="text like-group-title -has-required" asp-for="GradeLevelId">
                         <span class="icon-group"></span>@ViewLang.GradeLevel
                     </label>
-                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
+                    <select class="control search-suggestion" asp-for="GradeLevelId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="JobGradeId">@ViewLang.JobGrade</label>
-                    <select class="control" asp-for="JobGradeId" asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
+                    <select class="control" asp-for="JobGradeId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -250,8 +250,7 @@
                     <label class="text like-group-title -has-required" asp-for="DivisionId">
                         <span class="icon-group"></span>@ViewLang.Division
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.DivisionId" asp-for="DivisionId"
-                            asp-items="@(new SelectList(Model.Divisions, "DivisionId", "Code"))">
+                    <select class="control search-suggestion" data-oldval="@Model.DivisionId" asp-for="DivisionId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -272,8 +271,7 @@
                     <label class="text like-group-title -has-required" asp-for="DepartmentId">
                         <span class="icon-group"></span>@ViewLang.Department
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.DepartmentId" asp-for="DepartmentId"
-                            asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Code"))">
+                    <select class="control search-suggestion" data-oldval="@Model.DepartmentId" asp-for="DepartmentId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -294,8 +292,7 @@
                     <label class="text like-group-title -has-required" asp-for="SectionId">
                         <span class="icon-group"></span>@ViewLang.Section
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId"
-                            asp-items="@(new SelectList(Model.Sections, "SectionId", "Code"))">
+                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -316,8 +313,7 @@
                     <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId"
-                            asp-items="@(new SelectList(Model.CostCenters, "CostCenterId", "Code"))">
+                    <select class="control search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>

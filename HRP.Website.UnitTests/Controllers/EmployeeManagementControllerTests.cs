@@ -185,15 +185,15 @@
         #region UpdateEmployment
 
         [Fact]
-        public async Task UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
+        public void UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
         {
             //Arrange
             var expected = "_UpdateEmployment";
             employeeManagementController = GetEmployeeManagementController();
-            employeeManagementService.GetEmploymentToUpdate(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
+            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
             //Act
-            var actual = await employeeManagementController.UpdateEmployment(1);
+            var actual = employeeManagementController.UpdateEmployment(1);
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -201,7 +201,7 @@
         }
 
         [Fact]
-        public async Task UpdateEmploymentGet_CheckViewModel_ReturnExpectedViewModel()
+        public void UpdateEmploymentGet_CheckViewModel_ReturnExpectedViewModel()
         {
             //Arrange
             var employeeId = 1;
@@ -210,10 +210,10 @@
                 EmployeeId = employeeId
             };
             employeeManagementController = GetEmployeeManagementController();
-            employeeManagementService.GetEmploymentToUpdate(Arg.Any<int>()).Returns(expected);
+            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.UpdateEmployment(employeeId);
+            var actual = employeeManagementController.UpdateEmployment(employeeId);
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);

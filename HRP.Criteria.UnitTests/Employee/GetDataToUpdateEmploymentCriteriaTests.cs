@@ -3,14 +3,14 @@
     using HRP.Criteria.Employee;
     using Xunit;
 
-    public class GetEmploymentByEmployeeIdCriteriaTests
+    public class GetDataToUpdateEmploymentCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetEmploymentByEmployeeIdCriteria();
-            var expected = "Employment_GetByEmployeeId";
+            var criteria = new GetDataToUpdateEmploymentCriteria();
+            var expected = "Employment_GetDataToUpdate";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -20,12 +20,13 @@
         }
 
         [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void IsValid_EmployeeIdIsInvalid_ReturnFalse(int employeeId)
+        [InlineData(1, 0)]
+        [InlineData(0, 1)]
+        [InlineData(0, 0)]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, int employeeId)
         {
             // Arrange
-            var criteria = new GetEmploymentByEmployeeIdCriteria { EmployeeId = employeeId };
+            var criteria = new GetDataToUpdateEmploymentCriteria { UserId = userId, EmployeeId = employeeId };
 
             // Act
             var actual = criteria.IsValid();
@@ -35,10 +36,10 @@
         }
 
         [Fact]
-        public void IsValid_EmployeeIdIsValid_ReturnTrue()
+        public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetEmploymentByEmployeeIdCriteria { EmployeeId = 1 };
+            var criteria = new GetDataToUpdateEmploymentCriteria { UserId = 1, EmployeeId = 1 };
 
             // Act
             var actual = criteria.IsValid();

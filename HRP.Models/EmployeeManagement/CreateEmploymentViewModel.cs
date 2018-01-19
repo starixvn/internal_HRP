@@ -71,7 +71,6 @@
 
         public int? CompanyDateReasonId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
         public string CompanyCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
@@ -206,10 +205,6 @@
 
         public IEnumerable<ReferenceResourceModel> EmploymentStatuses { get; set; } = new List<ReferenceResourceModel>();
 
-        public IEnumerable<JobGrade> JobGrades { get; set; } = new List<JobGrade>();
-
-        public IEnumerable<GradeLevel> GradeLevels { get; set; } = new List<GradeLevel>();
-
         public IEnumerable<JobCategory> JobCategories { get; set; } = new List<JobCategory>();
 
         public IEnumerable<ReferenceResourceModel> Countries { get; set; } = new List<ReferenceResourceModel>();
@@ -225,13 +220,5 @@
         public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> GroupDateReasons { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<Division> Divisions { get; set; } = new List<Division>();
-
-        public IEnumerable<Department> Departments { get; set; } = new List<Department>();
-
-        public IEnumerable<Section> Sections { get; set; } = new List<Section>();
-
-        public IEnumerable<CostCenter> CostCenters { get; set; } = new List<CostCenter>();
     }
 }

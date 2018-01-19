@@ -113,7 +113,6 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyDateReasonRequired")]
         public int? CompanyDateReasonId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyCodeRequired")]
         public string CompanyCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
@@ -122,19 +121,13 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public string EmployeeCode { get; set; }
 
-        public string OldCompanyCode { get; set; }
-
         public string OldEmployeeCode { get; set; }
 
         [DataType(DataType.Date)]
-        [EmploymentChangeValue(OldProperty = nameof(OldCompanyCode), NewProperty = nameof(CompanyCode),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoChangeDateRequired")]
         [EmploymentChangeValue(OldProperty = nameof(OldEmployeeCode), NewProperty = nameof(EmployeeCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoChangeDateRequired")]
         public DateTime? IDNoChangeDate { get; set; }
 
-        [EmploymentChangeValue(OldProperty = nameof(OldCompanyCode), NewProperty = nameof(CompanyCode),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoReasonRequired")]
         [EmploymentChangeValue(OldProperty = nameof(OldEmployeeCode), NewProperty = nameof(EmployeeCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "IDNoReasonRequired")]
         public int? IDNoReasonId { get; set; }

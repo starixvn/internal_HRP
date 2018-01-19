@@ -128,9 +128,9 @@
         [Route("EmployeeManagement/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployment()
+        public IActionResult CreateEmployment()
         {
-            var viewModel = await InitDataForCreateEmployment();
+            var viewModel = employeeManagementService.GetDataToCreateEmployment();
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -160,8 +160,6 @@
             {
                 return RedirectToAction("Index");
             }
-
-            viewModel.IsEditForm = true;
 
             return View("UpdateEmployee", viewModel);
         }
@@ -194,51 +192,14 @@
         [Route("EmployeeManagement/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public async Task<IActionResult> UpdateEmployment(int employeeId)
+        public IActionResult UpdateEmployment(int employeeId)
         {
-            var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
-                ReferenceResource.LocalCompany,
-                ReferenceResource.LocalJobTitle,
-                ReferenceResource.EmploymentType,
-                ReferenceResource.EmploymentStatus,
-                ReferenceResource.Country,
-                ReferenceResource.City,
-                ReferenceResource.Office,
-                ReferenceResource.WorkPermitType1,
-                ReferenceResource.WorkPermitType2,
-                ReferenceResource.CommonReasons,
-                ReferenceResource.GroupDateReasons);
-            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
+            UpdateEmploymentViewModel viewModel = employeeManagementService.GetDataToUpdateEmployment(employeeId);
 
-            UpdateEmploymentViewModel viewModel = employeeManagementService.GetEmploymentToUpdate(employeeId);
-            viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
-            viewModel.LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany);
-            viewModel.LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle);
-            viewModel.EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType);
-            viewModel.EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus);
-            viewModel.Countries = GetRefResourceByName(refResources, ReferenceResource.Country);
-            viewModel.Cities = GetRefResourceByName(refResources, ReferenceResource.City);
-            viewModel.Offices = GetRefResourceByName(refResources, ReferenceResource.Office);
-            viewModel.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
-            viewModel.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
-            viewModel.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);
-            viewModel.GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons);
-            viewModel.JobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria { IsActive = true });
-            viewModel.GradeLevels = await baseService.GetDataAsync<GradeLevel>(new GetGradeLevelByJobCategoryIdCriteria
+            if (viewModel == null)
             {
-                JobCategoryId = viewModel.JobCategoryId,
-                IsActive = true
-            });
-            viewModel.JobGrades = await baseService.GetDataAsync<JobGrade>(new GetJobGradeByGradeLevelIdCriteria
-            {
-                GradeLevelId = viewModel.GradeLevelId,
-                IsActive = true
-            });
-            viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
-            viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
-            viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
-            viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
+                return RedirectToAction("PageNotFound", "Error");
+            }
 
             return PartialView("_UpdateEmployment", viewModel);
         }
@@ -356,62 +317,6 @@
             }
 
             return View(viewModel);
-        }
-
-        private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
-        {
-            return refResources.Where(x => x.RefName == refName);
-        }
-
-        private async Task<CreateEmploymentViewModel> InitDataForCreateEmployment()
-        {
-            var refNames = string.Format(
-                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
-                ReferenceResource.LocalCompany,
-                ReferenceResource.LocalJobTitle,
-                ReferenceResource.EmploymentType,
-                ReferenceResource.EmploymentStatus,
-                ReferenceResource.Country,
-                ReferenceResource.City,
-                ReferenceResource.Office,
-                ReferenceResource.WorkPermitType1,
-                ReferenceResource.WorkPermitType2,
-                ReferenceResource.CommonReasons,
-                ReferenceResource.GroupDateReasons);
-            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames });
-
-            var viewModel = new CreateEmploymentViewModel
-            {
-                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
-                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
-                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
-                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
-                Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
-                Cities = GetRefResourceByName(refResources, ReferenceResource.City),
-                Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
-                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
-                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
-                CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons),
-                GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons)
-            };
-            viewModel.JobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria { IsActive = true });
-            viewModel.GradeLevels = await baseService.GetDataAsync<GradeLevel>(new GetGradeLevelByJobCategoryIdCriteria
-            {
-                JobCategoryId = viewModel.JobCategoryId,
-                IsActive = true
-            });
-            viewModel.JobGrades = await baseService.GetDataAsync<JobGrade>(new GetJobGradeByGradeLevelIdCriteria
-            {
-                GradeLevelId = viewModel.GradeLevelId,
-                IsActive = true
-            });
-            viewModel.Companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria { IsActive = true });
-            viewModel.Divisions = await baseService.GetDataAsync<Division>(new GetDivisionByCompanyIdCriteria { CompanyId = viewModel.CompanyId });
-            viewModel.Departments = await baseService.GetDataAsync<Department>(new GetDepartmentByDivisionIdCriteria { DivisionId = viewModel.DivisionId });
-            viewModel.Sections = await baseService.GetDataAsync<Section>(new GetSectionByDepartmentIdCriteria { DepartmentId = viewModel.DepartmentId });
-            viewModel.CostCenters = await baseService.GetDataAsync<CostCenter>(new GetCostCenterBySectionIdCriteria { SectionId = viewModel.SectionId });
-
-            return viewModel;
         }
     }
 }

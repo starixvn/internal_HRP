@@ -5,6 +5,8 @@ namespace HRP.Repositories.Interfaces
 
     public interface IEmployeeManagementRepository
     {
-        UpdateEmploymentViewModel GetEmploymentToUpdate(ICriteria criteria);
+        CreateEmploymentViewModel GetDataToCreateEmployment(ICriteria criteria);
+
+        UpdateEmploymentViewModel GetDataToUpdateEmployment(ICriteria criteria);
     }
 }

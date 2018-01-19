@@ -18,10 +18,12 @@
 
         CommandResult CheckValidPicture(IFormFile file);
 
-        UpdateEmploymentViewModel GetEmploymentToUpdate(int employeeId);
+        ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment();
+
+        CreateEmploymentViewModel GetDataToCreateEmployment();
+
+        UpdateEmploymentViewModel GetDataToUpdateEmployment(int employeeId);
 
         Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);
-
-        ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment();
     }
 }

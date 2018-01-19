@@ -70,7 +70,8 @@
     <Setting Key="Employee_GetAllCompanyDivisionDepartment" SpName="Employee_GetAllCompanyDivisionDepartment" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employment">
-    <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employment_GetDataToCreate" SpName="Employment_GetDataToCreate" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employment_GetDataToUpdate" SpName="Employment_GetDataToUpdate" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employment_Update" SpName="Employment_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="EmployeeBankDetails">
