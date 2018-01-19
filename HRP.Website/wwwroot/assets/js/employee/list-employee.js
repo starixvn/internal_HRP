@@ -18,14 +18,14 @@ var listEmployee = {
         }
         $.ajax({
             url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-            type: 'GET',
+            type: 'POST',
             dataType: 'html',
             data: $('form.form-filter').serialize(),
             success: function (response) {
                 $('#employee-list').html(response);
                 listEmployee.initDataTable();
             },
-            error: console.log("ĐMM")
+            error: commonFunctions.handleAjaxError
         });
     },
 

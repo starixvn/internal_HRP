@@ -66,7 +66,7 @@
             return departmentIds;
         }
 
-        //[HttpPost]
+        [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {
@@ -153,9 +153,9 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployee(int id)
+        public IActionResult UpdateEmployee(int employeeId)
         {
-            var viewModel = employeeManagementService.GetEmployeeById(id);
+            var viewModel = employeeManagementService.GetEmployeeById(employeeId);
 
             if (viewModel == null)
             {
