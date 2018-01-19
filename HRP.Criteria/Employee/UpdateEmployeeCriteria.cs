@@ -63,6 +63,8 @@
 
         public int UpdatedBy { get; set; }
 
+        public string FunctionKey { get; set; }
+
         public override string GetSettingKey() => "Employee_UpdateEmployee";
 
         public override bool IsValid()

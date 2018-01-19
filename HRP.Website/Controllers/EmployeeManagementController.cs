@@ -159,7 +159,7 @@
 
             if (viewModel == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("PageNotFound", "Error");
             }
 
             return View("UpdateEmployee", viewModel);

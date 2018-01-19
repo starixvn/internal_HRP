@@ -20,7 +20,7 @@
         if (image === undefined) {
             errorMessage = '';
         } else {
-            if (image.size / (1024 * 1024) > 5) {
+            if (image.size / (1024 * 1024) > 2) {
                 errorMessage = 'The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!';
             } else {
                 var pass = /\.(jpe?g|png)$/i.test(image.name);

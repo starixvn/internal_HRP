@@ -6,11 +6,15 @@
     {
         public int EmployeeId { get; set; }
 
+        public int UserId { get; set; }
+
+        public string FunctionKey { get; set; }
+
         public override string GetSettingKey() => "Employee_GetByEmployeeId";
 
         public override bool IsValid()
         {
-            return EmployeeId > 0;
+            return EmployeeId > 0 && UserId > 0 && !string.IsNullOrEmpty(FunctionKey);
         }
     }
 }

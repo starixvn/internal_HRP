@@ -202,17 +202,16 @@
                 ECRelationship = employee.EmergencyContact.Relationship,
                 ECPhoneNo1 = employee.EmergencyContact.PhoneNo1,
                 ECPhoneNo2 = employee.EmergencyContact.PhoneNo2,
-                ProfilePic = employee.ProfilePic,
-                UpdatedBy = sessionService.UserId
+                ProfilePic = (employee.ProfilePicture != null) ? employee.EmployeeId + Path.GetExtension(employee.ProfilePicture.FileName) : employee.ProfilePic,
+                UpdatedBy = sessionService.UserId,
+                FunctionKey = FunctionKey.EmployeeProfile
             };
 
-            if (employee.ProfilePicture != null)
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful && employee.ProfilePicture != null)
             {
-                criteria.ProfilePic = employee.EmployeeId + Path.GetExtension(employee.ProfilePicture.FileName);
                 await SaveProfilePictureAsync(employee.ProfilePicture, employee.EmployeeId.ToString()).ConfigureAwait(false);
             }
-
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
         }
@@ -249,6 +248,8 @@
             var criteria = new GetEmployeeByIdCriteria
             {
                 EmployeeId = employeeId,
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.EmployeeProfile
             };
 
             if (criteria.IsValid())
@@ -271,7 +272,6 @@
                             employee.NationalityList = GetSelectList(nationalityList);
                             employee.MaritalStatusList = GetSelectList(maritalStatusList);
                             employee.NoOfChildrenList = GetSelectList(noOfChildrenList);
-                            employee.IsHost = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
                         }
 
                         return employee;
