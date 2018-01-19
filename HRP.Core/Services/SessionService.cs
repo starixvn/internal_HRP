@@ -87,7 +87,7 @@ namespace HRP.Core.Services
             var functions = Functions?.Where(x => x.CompanyId == companyId && x.FunctionKey == functionKey);
             var result = false;
 
-            if (functions != null)
+            if (functions.Any())
             {
                 switch (policy)
                 {

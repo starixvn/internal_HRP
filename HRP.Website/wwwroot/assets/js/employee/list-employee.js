@@ -25,9 +25,7 @@ var listEmployee = {
                 $('#employee-list').html(response);
                 listEmployee.initDataTable();
             },
-            error: function () {
-                console.log("Error");
-            }
+            error: commonFunctions.handleAjaxError
         });
     },
 
@@ -101,9 +99,7 @@ var listDepartment = {
                     }
                 });
             },
-            error: function () {
-                alert("Error");
-            }
+            error: commonFunctions.handleAjaxError
         });
     },
 

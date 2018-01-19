@@ -102,7 +102,7 @@
             var isRead = sessionService.HasPermissionOnCompany(companyId, functionKey, Policy.Read);
             if (isHost)
             {
-                policy = Policy.Host;
+                return Policy.Host;
             }
 
             if (isRead)
