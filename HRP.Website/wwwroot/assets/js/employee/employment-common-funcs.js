@@ -331,6 +331,7 @@ var employmentCommonFuncs = (function ($) {
 
         //$(document).on('change', 'select.search-suggestion', function () {
         //    if (!$.isEmptyObject($validator.submitted)) {
+        //        initSelect2($form);
         //        $validator.form();
         //    }
         //});

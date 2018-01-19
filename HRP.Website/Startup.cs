@@ -82,7 +82,7 @@
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IBaseMailService, BaseMailService>();
-            services.AddScoped<ICertificateService, CertificateService>();
+            services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();

@@ -1,6 +1,6 @@
 namespace HRP.Core.Services
 {
-    public interface ICertificateService
+    public interface ICryptoService
     {
         string Encrypt(string plainText);
 

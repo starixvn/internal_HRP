@@ -7,19 +7,19 @@ namespace HRP.Core.Services
     using Microsoft.Extensions.Options;
     using Model;
 
-    public class CertificateService : ICertificateService
+    public class CryptoService : ICryptoService
     {
         private const bool OptimalAsymmetricEncryptionPadding = false;
         private X509Certificate2 cert2;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
-        public CertificateService(IOptionsSnapshot<AppSettingsOptions> configuration)
+        public CryptoService(IOptionsSnapshot<AppSettingsOptions> configuration)
         {
             this.configuration = configuration;
             InitCertificate();
         }
 
-        public CertificateService(X509Certificate2 cert)
+        public CryptoService(X509Certificate2 cert)
         {
             cert2 = cert;
         }

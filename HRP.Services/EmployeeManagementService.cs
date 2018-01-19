@@ -23,19 +23,19 @@
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ISessionService sessionService;
-        private readonly ICertificateService certificateService;
+        private readonly ICryptoService cryptoService;
         private readonly IEmployeeManagementRepository employeeRepository;
 
         public EmployeeManagementService(
             IHostingEnvironment hostingEnvironment,
             IBaseService baseService,
-            ICertificateService certificateService,
+            ICryptoService cryptoService,
             ISessionService sessionService,
             IEmployeeManagementRepository employeeRepository = null)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
-            this.certificateService = certificateService;
+            this.cryptoService = cryptoService;
             this.sessionService = sessionService;
             this.employeeRepository = employeeRepository ?? new EmployeeManagementRepository();
         }
@@ -159,7 +159,7 @@
                 NickNamePFileAdmin = employee.NickNamePFileAdmin,
                 CreatedBy = sessionService.UserId
             };
-            criteria.PDFPassword = certificateService.Encrypt(employee.PDFPassword);
+            criteria.PDFPassword = cryptoService.Encrypt(employee.PDFPassword);
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
             if (commandResult.IsSuccessful)
@@ -374,7 +374,7 @@
                 employment.OldDepartmentId = employment.DepartmentId;
                 employment.OldSectionId = employment.SectionId;
                 employment.OldCostCenterId = employment.CostCenterId;
-                employment.PDFPassword = certificateService.Decrypt(employment.PDFPassword);
+                employment.PDFPassword = cryptoService.Decrypt(employment.PDFPassword);
                 employment.IsHost = sessionService.HasPermissionOnCompany(employment.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
             }
 
@@ -474,7 +474,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            criteria.PDFPassword = certificateService.Encrypt(viewModel.PDFPassword);
+            criteria.PDFPassword = cryptoService.Encrypt(viewModel.PDFPassword);
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
