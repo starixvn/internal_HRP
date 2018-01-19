@@ -448,6 +448,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Effective Date is requried!.
+        /// </summary>
+        public static string EmployeePayrollEffectiveDateRequired {
+            get {
+                return ResourceManager.GetString("EmployeePayrollEffectiveDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason is required!.
+        /// </summary>
+        public static string EmployeePayrollReasonRequired {
+            get {
+                return ResourceManager.GetString("EmployeePayrollReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting Amount is required!.
         /// </summary>
         public static string EmployeePayrollSettingAmountRequried {

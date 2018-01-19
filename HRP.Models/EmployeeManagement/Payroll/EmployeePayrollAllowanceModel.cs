@@ -14,7 +14,7 @@
 
         public int? DirectBanking1BankTypeId { get; set; }
 
-        public int? DirectBanking1AccountName { get; set; }
+        public string DirectBanking1AccountName { get; set; }
 
         public string DirectBanking2CurrencyCode { get; set; }
 
@@ -24,7 +24,7 @@
 
         public int? DirectBanking2BankTypeId { get; set; }
 
-        public int? DirectBanking2AccountName { get; set; }
+        public string DirectBanking2AccountName { get; set; }
 
         public string CashCurrencyCode { get; set; }
 

@@ -13,6 +13,8 @@
 
         public string Code { get; set; }
 
+        public int CompanyId { get; set; }
+
         public EmployeePayrollBasicSalaryModel BasicSalary { get; set; }
 
         public EmployeePayrollAllowanceModel Allowance { get; set; }
@@ -24,5 +26,9 @@
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; }
 
         public IEnumerable<ReferenceResourceModel> ChangeReasons { get; set; }
+
+        public bool CanRead { get; set; }
+
+        public bool CanUpdate { get; set; }
     }
 }

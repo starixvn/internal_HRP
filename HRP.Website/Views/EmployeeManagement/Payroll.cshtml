@@ -32,10 +32,12 @@
 
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
-<form class="payroll form-information" method="post" asp-action="SavePayroll">
+<form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll">
     <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="CompanyId" />
     <input type="hidden" asp-for="BasicSalary.EmployeeId" />
     <input type="hidden" asp-for="Allowance.EmployeeId" />
+    <input type="hidden" asp-for="CanUpdate" />
     <div class="list-message-error hidden" id="validation-summary">
     </div>
     <div class="form-content">
@@ -54,12 +56,12 @@
             <div class="">
                 <div class="pull-left calendar">
                     <label class="text" for="effectiveDate">Effective Date</label>
-                    <input type="text" class="control" asp-for="BasicSalary.EffectiveDate" />
+                    <input type="text" class="control" asp-for="BasicSalary.EffectiveDate" data-msg-required="@Message.EmployeePayrollEffectiveDateRequired"/>
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="pull-right reason">
                     <label class="text" for="reason">Reason</label>
-                    <select class="control" asp-for="BasicSalary.ReasonId" asp-items="@(new SelectList(Model.ChangeReasons, "ResourceId", "Value"))">
+                    <select class="control" asp-for="BasicSalary.ReasonId" asp-items="@(new SelectList(Model.ChangeReasons, "ResourceId", "Value"))" data-msg-required="@Message.EmployeePayrollReasonRequired">
                         <option></option>
                     </select>
                 </div>
@@ -213,7 +215,7 @@
                     <option></option>
                 </select>
                 <select class="control select2 bank-account-select allowance-directbanking1" asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
-                    <option></option>
+                    <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                 </select>
                 <span class="add-account"></span>
             </div>
@@ -236,7 +238,7 @@
                     <option></option>
                 </select>
                 <select class="control select2 bank-account-select allowance-directbanking2" asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
-                    <option></option>
+                    <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>
                 </select>
                 <span class="add-account"></span>
             </div>
@@ -380,24 +382,32 @@
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Romming Charges</div>
             <div class="currency-amount">
-                <select class="control" asp-items="currencySelectList" asp-for="Deduction.RoomingChargesCurrencyCode">
+                <select class="control deduction-calculate" asp-items="currencySelectList" asp-for="Deduction.RoomingChargesCurrencyCode">
                     <option></option>
                 </select>
-                <input type="text" class="control number" asp-for="Deduction.RoomingChargesAmount" />
+                <input type="text" class="control number deduction-calculate" asp-for="Deduction.RoomingChargesAmount" />
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
             <div class="align-text">Fitness First</div>
             <div class="currency-amount">
-                <select class="control" asp-items="currencySelectList" asp-for="Deduction.FitnessFirstCurrencyCode">
+                <select class="control deduction-calculate" asp-items="currencySelectList" asp-for="Deduction.FitnessFirstCurrencyCode">
                     <option></option>
                 </select>
-                <input type="text" class="control number" asp-for="Deduction.FitnessFirstAmount" />
+                <input type="text" class="control number deduction-calculate" asp-for="Deduction.FitnessFirstAmount" />
             </div>
         </div>
         <div class="list-button">
-            <button class="button -second">@ViewLang.Cancel</button>
-            <button class="button -primary">@ViewLang.Save</button>
+            @if (Model.CanUpdate)
+            {
+                 <a asp-action="Index" class="button -second">@ViewLang.Cancel</a>
+                <button class="button -primary">@ViewLang.Save</button>
+            }
+            else
+            {
+                <a asp-action="Index" class="button -second">@ViewLang.Back</a>
+            }
+
         </div>
     </div>
 </form>

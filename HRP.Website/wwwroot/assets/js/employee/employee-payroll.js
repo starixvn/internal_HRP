@@ -44,7 +44,7 @@
         });
 
         totalAmount = round(totalAmount, autoCalculateCurrency);
-        $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount).valid();
+        $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount);
     };
 
     function calculateAmountForBanks() {
@@ -131,6 +131,27 @@
         calculateBasicSalary();
         calculateAllowances();
 
+        $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
+            if (this.checked) {
+                var parent = $(this).closest('.group-complex');
+                $('input.basic-salary-calculate[readonly]').removeAttr('readonly');
+                $('input.basic-salary-calculate', parent).attr('readonly', 'readonly');
+            }          
+        }).change();
+
+        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
+            if (this.checked) {
+                var parent = $(this).closest('.group-complex');
+                $('input.allowance-calculate[readonly]').removeAttr('readonly');
+                $('input.allowance-calculate', parent).attr('readonly', 'readonly');
+            }
+        }).change();
+
+        if ($('#CanUpdate').val() !== 'True') {
+            $('select, input', '#payroll-form').attr('disabled', 'disabled');
+            return;
+        }
+
         $('.basic-salary-calculate').on('change', function (e) {
             roundingAmount(e.target);
             calculateBasicSalary();
@@ -153,6 +174,10 @@
             calculateTotalAllowance(allowanceCurrency);
         });
 
+        $('.deduction-calculate').on('change', function (e) {
+            roundingAmount(e.target);
+        });
+
         $('#Allowance_CurrencyCode').on('change', function () {
             $('.allowance-total-currency:disabled').val(this.value);
             calculateAllowances();
@@ -164,20 +189,8 @@
             $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
         });
 
-        $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
-            var parent = $(this).closest('.group-complex');
-            $('input.basic-salary-calculate[readonly]').removeAttr('readonly');
-            $('input.basic-salary-calculate', parent).attr('readonly', 'readonly');
-        }).change();
-
-        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
-            var parent = $(this).closest('.group-complex');
-            $('input.allowance-calculate[readonly]').removeAttr('readonly');
-            $('input.allowance-calculate', parent).attr('readonly', 'readonly');
-        }).change();
-
-        $('.calendar').datetimepicker({
-            format: 'DD/MM/YYYY',
+        $('.calendar input').datetimepicker({
+            format: 'MM/DD/YYYY',
             useCurrent: false,
             allowInputToggle : true
         });
@@ -211,7 +224,7 @@
                 }
             },
             allowClear: true,
-            placeholder: 'Select a bank account',
+            placeholder: '',
             minimumResultsForSearch: Infinity,
         });
 
@@ -219,11 +232,12 @@
             return value === '' || Number(value) > 0;
         });
 
-        var validator = $('form').validate({
+        var validator = $('#payroll-form').validate({
             debug: true,
             submitHandler: function (form) {
                 form.submit();
             },
+            focusInvalid: false,
             errorClass: 'message',
             wrapper: 'span',
             errorLabelContainer: '#validation-summary',

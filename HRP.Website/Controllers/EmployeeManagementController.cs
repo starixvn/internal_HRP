@@ -310,7 +310,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
         public IActionResult Payroll(int id)
         {
-            var viewModel = payrollService.GetEmployeePayroll(id);
+            var viewModel = payrollService.GetEmployeePayroll(id, sessionService.UserId);
 
             if (viewModel == null)
             {
@@ -318,6 +318,14 @@
             }
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
+        public IActionResult SavePayroll(EmployeePayrollViewModel model)
+        {
+            payrollService.UpdatePayroll(model, sessionService.UserId);
+            return RedirectToAction("Index");
         }
     }
 }

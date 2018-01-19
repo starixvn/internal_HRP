@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class EmployeePayrollBasicSalaryModel
     {
@@ -48,6 +49,7 @@
 
         public string AutoCalculateOn { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? EffectiveDate { get; set; }
 
         public int? ReasonId { get; set; }

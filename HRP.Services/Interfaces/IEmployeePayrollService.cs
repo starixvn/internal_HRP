@@ -4,6 +4,7 @@
 
     public interface IEmployeePayrollService
     {
-        EmployeePayrollViewModel GetEmployeePayroll(int employeeId);
+        EmployeePayrollViewModel GetEmployeePayroll(int employeeId, int userId);
+        void UpdatePayroll(EmployeePayrollViewModel model, int userId);
     }
 }

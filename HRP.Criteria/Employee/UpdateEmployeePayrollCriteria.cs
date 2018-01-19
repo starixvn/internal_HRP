@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Employee
+﻿namespace HRP.Criteria
 {
     using System;
     using Fanex.Data.Repository;
@@ -19,8 +19,6 @@
 
         public int? EbankingAccountId { get; set; }
 
-        public string EbankingAccountName { get; set; }
-
         public string DirectBanking1CurrencyCode { get; set; }
 
         public string DirectBanking1Amount { get; set; }
@@ -29,8 +27,6 @@
 
         public int? DirectBanking1BankTypeId { get; set; }
 
-        public string DirectBanking1AccountName { get; set; }
-
         public string DirectBanking2CurrencyCode { get; set; }
 
         public string DirectBanking2Amount { get; set; }
@@ -38,8 +34,6 @@
         public int? DirectBanking2AccountId { get; set; }
 
         public int? DirectBanking2BankTypeId { get; set; }
-
-        public string DirectBanking2AccountName { get; set; }
 
         public string CashCurrencyCode { get; set; }
 
@@ -123,11 +117,10 @@
 
         public string FitnessFirstAmount { get; set; }
 
+        public int UpdatedBy { get; set; }
+
         public override string GetSettingKey() => "Employee_UpdatePayroll";
 
-        public override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+        public override bool IsValid() => EmployeeId > 0 && UpdatedBy > 0;
     }
 }
