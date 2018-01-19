@@ -35,7 +35,7 @@ var createEmployment = (function ($) {
         var intervalCountDown = setInterval(function () {
             if (delay === 0) {
                 clearInterval(intervalCountDown);
-                $btnCancel.trigger('click');
+                $btnCancel.click();
             } else {
                 delay--;
                 $element.html(textAlert + delay + ' seconds.');
