@@ -1384,6 +1384,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select at least one option!.
+        /// </summary>
+        public static string SelectAtLeastOneOption {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skype Account must not over {1} characters long..
         /// </summary>
         public static string SkypeMaxLength {

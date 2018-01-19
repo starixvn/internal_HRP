@@ -597,4 +597,7 @@
   <data name="EmployeePayrollSettingAmountRequried" xml:space="preserve">
     <value>Setting Amount is required!</value>
   </data>
+  <data name="SelectAtLeastOneOption" xml:space="preserve">
+    <value>Please select at least one option!</value>
+  </data>
 </root>

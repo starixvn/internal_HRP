@@ -466,6 +466,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Bank Details.
+        /// </summary>
+        public static string EditbankDetails {
+            get {
+                return ResourceManager.GetString("EditbankDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Details.
         /// </summary>
         public static string EditDetails {
@@ -480,6 +489,24 @@ namespace HRP.Resources {
         public static string EditEmployeePayroll {
             get {
                 return ResourceManager.GetString("EditEmployeePayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Payroll.
+        /// </summary>
+        public static string EditPayroll {
+            get {
+                return ResourceManager.GetString("EditPayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Profile.
+        /// </summary>
+        public static string EditProfile {
+            get {
+                return ResourceManager.GetString("EditProfile", resourceCulture);
             }
         }
         
@@ -1425,6 +1452,33 @@ namespace HRP.Resources {
         public static string UserPermission {
             get {
                 return ResourceManager.GetString("UserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Bank Details.
+        /// </summary>
+        public static string ViewBankDetails {
+            get {
+                return ResourceManager.GetString("ViewBankDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Payroll.
+        /// </summary>
+        public static string ViewPayroll {
+            get {
+                return ResourceManager.GetString("ViewPayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Profile.
+        /// </summary>
+        public static string ViewProfile {
+            get {
+                return ResourceManager.GetString("ViewProfile", resourceCulture);
             }
         }
         

@@ -28,6 +28,7 @@
 <form class="search-form form-filter">
     <div class="group">
         <label class="text">@ViewLang.Company</label>
+        <span class="msg-error hidden" id="departmentIds-validation">@Message.SelectAtLeastOneOption</span>
         <select class="control company" id="CompanySelect"></select>
         <input asp-for="DepartmentIds" hidden />
     </div>
@@ -57,7 +58,6 @@
             </a>
         }
     </div>
-
 
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="Search" />

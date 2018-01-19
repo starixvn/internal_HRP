@@ -585,4 +585,22 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="EditbankDetails" xml:space="preserve">
+    <value>Edit Bank Details</value>
+  </data>
+  <data name="EditPayroll" xml:space="preserve">
+    <value>Edit Payroll</value>
+  </data>
+  <data name="EditProfile" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="ViewBankDetails" xml:space="preserve">
+    <value>View Bank Details</value>
+  </data>
+  <data name="ViewPayroll" xml:space="preserve">
+    <value>View Payroll</value>
+  </data>
+  <data name="ViewProfile" xml:space="preserve">
+    <value>View Profile</value>
+  </data>
 </root>

@@ -1,4 +1,6 @@
-﻿namespace HRP.Models.EmployeeManagement
+﻿using HRP.Core.Enumerations;
+
+namespace HRP.Models.EmployeeManagement
 {
     public class EmployeeBasicInfo
     {
@@ -11,6 +13,8 @@
         public string NickName { get; set; }
 
         public string FullName { get; set; }
+
+        public int CompanyId { get; set; }
 
         public string CompanyCode { get; set; }
 
@@ -30,10 +34,10 @@
 
         public bool InProbation { get; set; }
 
-        public bool IsHostProfile { get; set; }
+        public Policy PolycyOfEmployeeProfile { get; set; }
 
-        public bool IsHostPayroll { get; set; }
+        public Policy PolycyOfEmployeeBankDetails { get; set; }
 
-        public bool IsHostBankDetails { get; set; }
+        public Policy PolycyOfEmployeePayroll { get; set; }
     }
 }

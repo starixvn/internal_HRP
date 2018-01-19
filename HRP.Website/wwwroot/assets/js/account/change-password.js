@@ -15,7 +15,7 @@
                     $('.icon-close').addClass('hidden');
                     $('#old-password-incorrect').addClass('hidden');
                     $('#change-password-form input').val('');
-                    $('#OldPassword').removeClass('error input-validation-error');
+                    $('#OldPassword').removeClass('input-validation-error');
                     setInterval(function () { alert.addClass('hidden'); }, 3000);
                 }
 
@@ -31,7 +31,7 @@
                     $('.icon-close').removeClass('hidden');
                     $('#old-password-incorrect').removeClass('hidden');
                     $('#old-password-incorrect').text(msg);
-                    $('#OldPassword').addClass('error input-validation-error');
+                    $('#OldPassword').addClass('input-validation-error');
                 }
             }
         };

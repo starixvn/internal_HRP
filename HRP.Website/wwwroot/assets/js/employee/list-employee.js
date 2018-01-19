@@ -7,6 +7,15 @@ var listEmployee = {
     },
 
     query: function () {
+        var departmentIds = $("#DepartmentIds").val();
+        if (!departmentIds) {
+            $("#departmentIds-validation").removeClass("hidden");
+            $("#CompanySelect").addClass("input-validation-error");
+            return false;
+        } else {
+            $("#departmentIds-validation").addClass("hidden");
+            $("#CompanySelect").remove("input-validation-error");
+        }
         $.ajax({
             url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
             type: 'POST',
@@ -17,7 +26,7 @@ var listEmployee = {
                 listEmployee.initDataTable();
             },
             error: function () {
-                alert(_messages.errorTryAgain);
+                console.log("Error");
             }
         });
     },
@@ -25,7 +34,7 @@ var listEmployee = {
     initDataTable: function () {
         $('#employee-table').dataTable({
             'ordering': false,
-            'lengthMenu': [[20, 50, 100], [20, 50, 100]],
+            'lengthMenu': [[50, 100, 500], [50, 100, 500]],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             'info': false,
             'language': {
