@@ -32,12 +32,12 @@
 }
 
 .select2-container {
-    padding-top: 4px;
+    padding-top: 2px;
 }
 
 .select2-container--open .select2-dropdown--below {
     @include box-shadow-multiple(0 2px 3px 1px rgba(0,0,0,.2));
-    border: 1px solid #1973b2;
+    border: 1px solid #2a9ded;
 }
 
 .select2-results__option {

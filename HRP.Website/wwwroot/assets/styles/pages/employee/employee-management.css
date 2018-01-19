@@ -392,8 +392,13 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .fanex-multiselect-treeview {
-  border: 1px solid #1973b2;
+  border: 1px solid #2a9ded;
   padding: 10px;
+  color: #333;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-check-all {
+  color: #333;
 }
 
 .fanex-multiselect-treeview input[type="checkbox"] {
@@ -411,6 +416,49 @@ table.dataTable thead .sorting_desc:after {
   border-color: #d9d9d9 !important;
 }
 
+.fanex-multiselect-treeview .rtMinus, .fanex-multiselect-treeview .rtPlus, .fanex-multiselect-treeview .fanex-multiselect-icon-dropdown {
+  background: none;
+  font-family: "hrp";
+}
+
+.fanex-multiselect-treeview .rtMinus:before, .fanex-multiselect-treeview .rtPlus:before, .fanex-multiselect-treeview .fanex-multiselect-icon-dropdown:before {
+  position: relative;
+  display: inline-block;
+}
+
+.fanex-multiselect-treeview .rtMinus, .fanex-multiselect-treeview .rtPlus {
+  margin-right: 4px;
+  font-size: 11px;
+  color: #838383;
+}
+
+.fanex-multiselect-treeview .rtPlus:before {
+  content: "\e926";
+  top: -5px;
+}
+
+.fanex-multiselect-treeview .rtMinus:before {
+  content: "\e922";
+  top: -7px;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown {
+  color: #666;
+  font-size: 12px;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown.fanex-multiselect-icon-collapse:before {
+  content: "\e917";
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown.fanex-multiselect-icon-expand:before {
+  content: "\e924";
+}
+
+.fanex-multiselect-treeview label.fanex-multiselect-group-mark:hover {
+  font-weight: bold !important;
+}
+
 .fanex-multiselect-shadow {
   -webkit-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
   -khtml-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
@@ -424,22 +472,20 @@ table.dataTable thead .sorting_desc:after {
   font-weight: normal !important;
 }
 
-.fanex-multiselect-icon-dropdown {
+.ui-widget.ui-widget-content {
+  padding: 10px 6px;
+  border-color: #2a9ded;
+}
+
+.ui-menu .ui-menu-item {
+  padding: 6px 0;
+}
+
+.ui-menu .ui-menu-item .ui-state-active, .ui-menu .ui-menu-item .ui-state-active:hover {
+  margin: 0;
   background: none;
-  font-family: "hrp";
-  color: #666;
-}
-
-.fanex-multiselect-icon-dropdown:before {
-  display: inline-block;
-}
-
-.fanex-multiselect-icon-dropdown.fanex-multiselect-icon-collapse:before {
-  content: "\e917";
-}
-
-.fanex-multiselect-icon-dropdown.fanex-multiselect-icon-expand:before {
-  content: "\e924";
+  border: none;
+  color: #1973b2;
 }
 
 .search-form .company,
