@@ -1,7 +1,7 @@
-﻿using HRP.Core.Enumerations;
-
-namespace HRP.Models.EmployeeManagement
+﻿namespace HRP.Models.EmployeeManagement
 {
+    using HRP.Core.Enumerations;
+
     public class EmployeeBasicInfo
     {
         public int EmployeeId { get; set; }
@@ -34,10 +34,10 @@ namespace HRP.Models.EmployeeManagement
 
         public bool InProbation { get; set; }
 
-        public Policy PolycyOfEmployeeProfile { get; set; }
+        public Policy EditProfilePolicy { get; set; }
 
-        public Policy PolycyOfEmployeeBankDetails { get; set; }
+        public Policy EditPayRollPolicy { get; set; }
 
-        public Policy PolycyOfEmployeePayroll { get; set; }
+        public Policy EditBankPolicy { get; set; }
     }
 }

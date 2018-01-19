@@ -22,6 +22,8 @@ var listEmployee = {
             dataType: 'html',
             data: $('form.form-filter').serialize(),
             success: function (response) {
+                console.log(response);
+                debugger
                 $('#employee-list').html(response);
                 listEmployee.initDataTable();
             },

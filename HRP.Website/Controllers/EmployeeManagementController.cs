@@ -80,36 +80,8 @@
             };
             var employees = baseService.GetData<EmployeeBasicInfo>(criteria);
             var employeesSorted = employees.OrderBy(e => e.CompanyCode).ThenBy(e => e.IDNo).ToList();
-            SetPolicyToEmployee(employeesSorted);
 
             return PartialView("_ListEmployee", employeesSorted);
-        }
-
-        private void SetPolicyToEmployee(IEnumerable<EmployeeBasicInfo> employees)
-        {
-            foreach (var employee in employees)
-            {
-                employee.PolycyOfEmployeeProfile = GetPolicyByCompanyAndFunctionKey(employee.CompanyId, FunctionKey.EmployeeProfile);
-                employee.PolycyOfEmployeeBankDetails = GetPolicyByCompanyAndFunctionKey(employee.CompanyId, FunctionKey.EmployeeBankDetails);
-                employee.PolycyOfEmployeePayroll = GetPolicyByCompanyAndFunctionKey(employee.CompanyId, FunctionKey.EmployeePayroll);
-            }
-        }
-
-        private Policy GetPolicyByCompanyAndFunctionKey(int companyId, string functionKey)
-        {
-            var policy = Policy.None;
-            var isHost = sessionService.HasPermissionOnCompany(companyId, functionKey, Policy.Host);
-            var isRead = sessionService.HasPermissionOnCompany(companyId, functionKey, Policy.Read);
-            if (isHost)
-            {
-                return Policy.Host;
-            }
-
-            if (isRead)
-            {
-                policy = Policy.Read;
-            }
-            return policy;
         }
 
         [HttpGet]

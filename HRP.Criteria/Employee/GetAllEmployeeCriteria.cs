@@ -13,7 +13,7 @@
 
         public Selection InProbation { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
 
         public override string GetSettingKey() => "Employee_GetAllEmployees";
 
