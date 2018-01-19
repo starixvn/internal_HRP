@@ -66,7 +66,7 @@
             return departmentIds;
         }
 
-        [HttpPost]
+        //[HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {

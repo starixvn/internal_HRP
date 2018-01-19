@@ -54,7 +54,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdown-1">
-                                @if (employee.PolycyOfEmployeeProfile != Policy.None)
+                                @if (employee.EditProfilePolicy != Policy.None)
                                 {
                                     <li>
                                         <a asp-action="UpdateEmployee"
@@ -62,7 +62,7 @@
                                            asp-route-Id="@employee.EmployeeId">
                                             <span class="icon-user"></span>
 
-                                            @if (employee.PolycyOfEmployeeProfile == Policy.Host)
+                                            @if (employee.EditProfilePolicy == Policy.Host)
                                             {
                                                 <span>@ViewLang.EditProfile</span>
                                             }
@@ -75,14 +75,14 @@
 
                                 }
 
-                                @if (employee.PolycyOfEmployeeBankDetails != Policy.None)
+                                @if (employee.EditBankPolicy != Policy.None)
                                 {
                                     <li>
                                         <a asp-action="EditEmployeeBankDetails"
                                            asp-controller="BankAccount"
                                            asp-route-EmployeeId="@employee.EmployeeId">
                                             <span class="icon-bank-details"></span>
-                                            @if (employee.PolycyOfEmployeeBankDetails == Policy.Host)
+                                            @if (employee.EditBankPolicy == Policy.Host)
                                             {
                                                 <span>@ViewLang.EditbankDetails</span>
                                             }
@@ -95,7 +95,7 @@
 
                                 }
 
-                                @if (employee.PolycyOfEmployeePayroll != Policy.None)
+                                @if (employee.EditPayRollPolicy != Policy.None)
                                 {
                                     <li>
                                         <a asp-action="Payroll"
@@ -103,7 +103,7 @@
                                            asp-route-EmployeeId="@employee.EmployeeId">
                                             <span class="icon-edit_payroll"></span>
 
-                                            @if (employee.PolycyOfEmployeePayroll == Policy.Host)
+                                            @if (employee.EditPayRollPolicy == Policy.Host)
                                             {
                                                 <span>@ViewLang.EditPayroll</span>
                                             }

@@ -2,8 +2,8 @@
 {
     public enum Selection
     {
-        All = 2,
+        All = 0,
         Yes = 1,
-        No = 0
+        No = 2
     }
 }
