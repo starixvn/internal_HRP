@@ -63,7 +63,7 @@
     <Setting Key="Employee_CreateEmployee" SpName="Employee_CreateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_CheckEmpCodeExisted" SpName="Employee_CheckEmpCodeExisted" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetByEmployeeId" SpName="Employee_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Employee_GetSuggestion" SpName="Employee_GetSuggestion" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetSuggestionByIDNo" SpName="Employee_GetSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>

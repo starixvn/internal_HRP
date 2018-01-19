@@ -308,7 +308,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetEmployeeSuggestion(string idNo)
         {
-            var criteria = new GetEmployeeSuggestionCriteria { IDNo = idNo };
+            var criteria = new GetEmployeeSuggestionByIDNoCriteria { IDNo = idNo };
             var employees = await baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
 
             return Json(employees);

@@ -201,7 +201,23 @@
         }
 
         [Fact]
-        public void UpdateEmploymentGet_CheckViewModel_ReturnExpectedViewModel()
+        public void UpdateEmployment_ViewModelIsNull_ReturnRedirectToPageNotFound()
+        {
+            // Arrange
+            var employeeManagementController = GetEmployeeManagementController();
+            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(x => null);
+
+            // Act
+            var result = employeeManagementController.UpdateEmployment(1);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Null(viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void UpdateEmploymentGet_ViewModelHasValue_ReturnExpectedViewModel()
         {
             //Arrange
             var employeeId = 1;
@@ -324,7 +340,7 @@
                 new EmployeeSuggestionViewModel { EmployeeId = 1, FullName = "Tim", NickName = "tim.trinh" }
             };
             employeeManagementController = GetEmployeeManagementController();
-            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionCriteria>()).Returns(expected);
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
 
             //Act
             var actual = await employeeManagementController.GetEmployeeSuggestion("dar");

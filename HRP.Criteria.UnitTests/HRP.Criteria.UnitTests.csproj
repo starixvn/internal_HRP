@@ -79,11 +79,14 @@
     <Compile Include="Division\GetDivisionByCompanyIdCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
     <Compile Include="Employee\GetAllCompanyDivsionDepartmentCriteriaTests.cs" />
+    <Compile Include="Employee\GetDataToCreateEmploymentCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeByFilterCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeByIdCriteriaTests.cs" />
+    <Compile Include="Employee\GetEmployeeSuggestionByIDNoCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeSuggestionByNameCriteriaTests.cs" />
     <Compile Include="Employee\GetDataToUpdateEmploymentCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmployeeCriteriaTests.cs" />
+    <Compile Include="Employee\UpdateEmploymentCriteriaTests.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
     <Compile Include="GetRefResourceByNamesCriteriaTests.cs" />
