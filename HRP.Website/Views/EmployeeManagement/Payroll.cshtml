@@ -5,6 +5,8 @@
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
+        <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
@@ -24,6 +26,15 @@
     <li class="like-link">@ViewLang.EmployeeList</li>
     <li class="active">@ViewLang.EditEmployeePayroll @Model.Code - @Model.FullName - @Model.NickName</li>
 </ol>
+
+<div class="tooltip-templates hidden">
+    <div id="tooltip-content">
+        <div>Select auto-calculated amount</div>
+        <label>
+            <input type="checkbox"><span class="label-text">Don't show again</span>
+        </label>
+    </div>
+</div>
 
 @foreach (var currency in Model.CurrencyExchangeRates)
 {
@@ -90,7 +101,7 @@
         </div>
 
         <div class="group-complex -payroll-layout1">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Ebanking" />
                 <span>e-Banking</span>
             </label>
@@ -114,7 +125,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout1">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="DirectBanking1" />
                 <span>Direct Banking 1</span>
             </label>
@@ -137,7 +148,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout1">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="DirectBanking2" />
                 <span>Direct Banking 2</span>
             </label>
@@ -160,7 +171,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout1">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Cash" />
                 <span>Cash</span>
             </label>
@@ -199,7 +210,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking1" />
                 <span>Direct Banking 1</span>
             </label>
@@ -222,7 +233,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking2" />
                 <span>Direct Banking 2</span>
             </label>
@@ -245,7 +256,7 @@
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
-            <label class="bank-type">
+            <label class="bank-type tooltipster">
                 <input type="radio" asp-for="Allowance.AutoCalculateOn" value="Cash" />
                 <span>Cash</span>
             </label>
@@ -419,6 +430,7 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/tooltipster/dist/js/tooltipster.bundle.js"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
     </environment>
     <environment exclude="Development">

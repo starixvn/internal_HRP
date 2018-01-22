@@ -131,6 +131,31 @@
         calculateBasicSalary();
         calculateAllowances();
 
+        $('.tooltipster').tooltipster({
+            content: $('#tooltip-content'),
+            contentCloning: true,
+            theme: 'tooltipster-light',
+            interactive: true,
+            trigger: 'custom',
+            triggerOpen: {
+                mouseenter: true,
+            },
+            triggerClose: {
+                click: true,
+                //mouseleave: true,
+                scroll: true
+            },
+            functionReady: function (instance, helper) {
+                $('input[type="checkbox"]', helper.tooltip).on('change', function (e) {
+                    if (e.target.checked) {
+                        setTimeout(function () {
+                            $('.tooltipster').tooltipster('destroy')
+                        }, 500);
+                    }
+                });
+            }
+        });
+
         $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
             if (this.checked) {
                 var parent = $(this).closest('.group-complex');
