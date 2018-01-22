@@ -367,19 +367,19 @@
             <div class="group-complex -emp-layout6">
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
-                    <select class="control search-suggestion" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "ResourceId", "Value"))">
+                    <select class="control search-suggestion" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
-                    <select class="control search-suggestion" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "ResourceId", "Value"))">
+                    <select class="control search-suggestion" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "CityId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
-                    <select class="control search-suggestion" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "ResourceId", "Value"))">
+                    <select class="control search-suggestion" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "OfficeId", "Code"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>

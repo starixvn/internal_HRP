@@ -434,7 +434,7 @@
                 CompanyDateReasonId = viewModel.CompanyDateReasonId,
                 Email = viewModel.Email,
                 CountryId = viewModel.CountryId,
-                CityId = viewModel.CountryId,
+                CityId = viewModel.CityId,
                 OfficeId = viewModel.OfficeId,
                 DST = viewModel.DST,
                 DBT = viewModel.DBT,

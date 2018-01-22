@@ -207,11 +207,7 @@
 
         public IEnumerable<JobCategory> JobCategories { get; set; } = new List<JobCategory>();
 
-        public IEnumerable<ReferenceResourceModel> Countries { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> Cities { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> Offices { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<Country> Countries { get; set; } = new List<Country>();
 
         public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
 

@@ -18,6 +18,7 @@ namespace HRP.Repositories.Interfaces
                 {
                     var companies = multi.Read<Company>();
                     var jobCategories = multi.Read<JobCategory>();
+                    var coutries = multi.Read<Country>();
                     var refResources = multi.Read<ReferenceResourceModel>();
                     var model = new CreateEmploymentViewModel
                     {
@@ -27,9 +28,7 @@ namespace HRP.Repositories.Interfaces
                         EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
                         EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
                         JobCategories = jobCategories,
-                        Countries = GetRefResourceByName(refResources, ReferenceResource.Country),
-                        Cities = GetRefResourceByName(refResources, ReferenceResource.City),
-                        Offices = GetRefResourceByName(refResources, ReferenceResource.Office),
+                        Countries = coutries,
                         WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
                         WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
                         CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons),
@@ -58,20 +57,20 @@ namespace HRP.Repositories.Interfaces
                         employment.Companies = multi.Read<Company>();
                         employment.Divisions = multi.Read<Division>();
                         employment.Departments = multi.Read<Department>();
-                        employment.Sections = multi.Read<Section>();
                         employment.CostCenters = multi.Read<CostCenter>();
+                        employment.Sections = multi.Read<Section>();
                         employment.JobCategories = multi.Read<JobCategory>();
                         employment.GradeLevels = multi.Read<GradeLevel>();
                         employment.JobGrades = multi.Read<JobGrade>();
+                        employment.Countries = multi.Read<Country>();
+                        employment.Cities = multi.Read<City>();
+                        employment.Offices = multi.Read<Office>();
 
                         var refResources = multi.Read<ReferenceResourceModel>();
                         employment.LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany);
                         employment.LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle);
                         employment.EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType);
                         employment.EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus);
-                        employment.Countries = GetRefResourceByName(refResources, ReferenceResource.Country);
-                        employment.Cities = GetRefResourceByName(refResources, ReferenceResource.City);
-                        employment.Offices = GetRefResourceByName(refResources, ReferenceResource.Office);
                         employment.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
                         employment.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
                         employment.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);

@@ -2,6 +2,7 @@
 
 var employmentCommonFuncs = (function ($) {
     var $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
+        $countryElement, $cityElement, $officeElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
         $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
         defaultOption = '<option value="" style="display: none;">--Please select--</option>',
@@ -87,43 +88,10 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetSectionByDepartmentId',
+                url: commonFunctions.rootURL + 'EmployeeManagement/GetCostCenterDepartmentId',
                 dataType: 'json',
                 data: {
                     departmentId: departmentId
-                },
-                success: function (data) {
-                    htmlOptions = defaultOption;
-
-                    if (data && data.length > 0) {
-                        var totalItems = data.length;
-
-                        for (var i = 0; i < totalItems; i++) {
-                            htmlOptions += '<option value="' + data[i].sectionId + '">' + data[i].code + '</option>';
-                        }
-                    }
-
-                    $sectionElement.html(htmlOptions);
-                    $sectionElement.select2('destroy').select2();
-                    // reset
-                    $costCenterElement.html(defaultOption);
-                },
-                error: commonFunctions.handleAjaxError
-            });
-        });
-    }
-
-    function registerEventChangeSection() {
-        $sectionElement.on('change', function () {
-            var sectionId = $(this).val(),
-                htmlOptions = '';
-
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetCostCenterBySectionId',
-                dataType: 'json',
-                data: {
-                    sectionId: sectionId
                 },
                 success: function (data) {
                     htmlOptions = defaultOption;
@@ -138,6 +106,39 @@ var employmentCommonFuncs = (function ($) {
 
                     $costCenterElement.html(htmlOptions);
                     $costCenterElement.select2('destroy').select2();
+                    // reset
+                    $sectionElement.html(defaultOption);
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
+    function registerEventChangeCostCenter() {
+        $costCenterElement.on('change', function () {
+            var sectionId = $(this).val(),
+                htmlOptions = '';
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'EmployeeManagement/GetSectionByCostCenterId',
+                dataType: 'json',
+                data: {
+                    sectionId: sectionId
+                },
+                success: function (data) {
+                    htmlOptions = defaultOption;
+
+                    if (data && data.length > 0) {
+                        var totalItems = data.length;
+
+                        for (var i = 0; i < totalItems; i++) {
+                            htmlOptions += '<option value="' + data[i].sectionId + '">' + data[i].code + '</option>';
+                        }
+                    }
+
+                    $sectionElement.html(htmlOptions);
+                    $sectionElement.select2('destroy').select2();
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -200,6 +201,70 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $jobGradeElement.html(htmlOptions);
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
+    function registerEventChangeCountry() {
+        $countryElement.on('change', function () {
+            var countryId = $(this).val(),
+                htmlOptions = '';
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'EmployeeManagement/GetCityByCountryId',
+                dataType: 'json',
+                data: {
+                    countryId: countryId
+                },
+                success: function (data) {
+                    htmlOptions = defaultOption;
+
+                    if (data && data.length > 0) {
+                        var totalItems = data.length;
+
+                        for (var i = 0; i < totalItems; i++) {
+                            htmlOptions += '<option value="' + data[i].cityId + '">' + data[i].code + '</option>';
+                        }
+                    }
+
+                    $cityElement.html(htmlOptions);
+                    $cityElement.select2('destroy').select2();
+                    // reset
+                    $officeElement.html(defaultOption);
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
+    function registerEventChangeCity() {
+        $cityElement.on('change', function () {
+            var cityId = $(this).val(),
+                htmlOptions = '';
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'EmployeeManagement/GetOfficeByCityId',
+                dataType: 'json',
+                data: {
+                    cityId: cityId
+                },
+                success: function (data) {
+                    htmlOptions = defaultOption;
+
+                    if (data && data.length > 0) {
+                        var totalItems = data.length;
+
+                        for (var i = 0; i < totalItems; i++) {
+                            htmlOptions += '<option value="' + data[i].officeId + '">' + data[i].code + '</option>';
+                        }
+                    }
+
+                    $officeElement.html(htmlOptions);
+                    $officeElement.select2('destroy').select2();
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -424,6 +489,9 @@ var employmentCommonFuncs = (function ($) {
         $jobCategoryElement = $form.find('#JobCategoryId');
         $gradeLevelElement = $form.find('#GradeLevelId');
         $jobGradeElement = $form.find('#JobGradeId');
+        $countryElement = $form.find('#CountryId');
+        $cityElement = $form.find('#CityId');
+        $officeElement = $form.find('#OfficeId');
 
         reparseform($form);
         initSelect2($form);
@@ -431,9 +499,11 @@ var employmentCommonFuncs = (function ($) {
         registerEventChangeBVICompany();
         registerEventChangeDivision();
         registerEventChangeDepartment();
-        registerEventChangeSection();
+        registerEventChangeCostCenter();
         registerEventChangeJobCategory();
         registerEventChangeGradeLevel();
+        registerEventChangeCountry();
+        registerEventChangeCity();
         initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NickNamePFileAdmin'));
         initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NickNameBVISalary'));
         initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NickNameBVIAllowance'));

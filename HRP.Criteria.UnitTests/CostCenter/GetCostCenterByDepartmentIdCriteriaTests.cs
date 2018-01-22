@@ -2,14 +2,14 @@
 {
     using Xunit;
 
-    public class GetSectionByDepartmentIdCriteriaTests
+    public class GetCostCenterByDepartmentIdCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetSectionByDepartmentIdCriteria();
-            var expected = "Section_GetByDepartmentId";
+            var criteria = new GetCostCenterDepartmentIdCriteria();
+            var expected = "CostCenter_GetByDepartmentId";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -24,7 +24,7 @@
         public void IsValid_DepartmentIdIsInvalid_ReturnFalse(int departmentId)
         {
             // Arrange
-            var criteria = new GetSectionByDepartmentIdCriteria
+            var criteria = new GetCostCenterDepartmentIdCriteria
             {
                 DepartmentId = departmentId
             };
@@ -40,7 +40,7 @@
         public void IsValid_DepartmentIdIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetSectionByDepartmentIdCriteria
+            var criteria = new GetCostCenterDepartmentIdCriteria
             {
                 DepartmentId = 1
             };

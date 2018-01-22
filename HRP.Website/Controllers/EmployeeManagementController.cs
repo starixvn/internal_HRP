@@ -240,7 +240,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetDivisionByCompanyId(int companyId)
         {
-            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId };
+            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId, IsActive = true };
             var divisions = await baseService.GetDataAsync<Division>(criteria);
 
             return Json(divisions);
@@ -250,7 +250,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetDepartmentByDivisionId(int divisionId)
         {
-            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId };
+            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId, IsActive = true };
             var departments = await baseService.GetDataAsync<Department>(criteria);
 
             return Json(departments);
@@ -258,22 +258,22 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> GetSectionByDepartmentId(int departmentId)
+        public async Task<IActionResult> GetCostCenterDepartmentId(int departmentId)
         {
-            var criteria = new GetSectionByDepartmentIdCriteria { DepartmentId = departmentId };
-            var sections = await baseService.GetDataAsync<Section>(criteria);
+            var criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = departmentId, IsActive = true };
+            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
 
-            return Json(sections);
+            return Json(costCenters);
         }
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> GetCostCenterBySectionId(int sectionId)
+        public async Task<IActionResult> GetSectionByCostCenterId(int costCenterId)
         {
-            var criteria = new GetCostCenterBySectionIdCriteria { SectionId = sectionId };
-            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
+            var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId, IsActive = true };
+            var sections = await baseService.GetDataAsync<Section>(criteria);
 
-            return Json(costCenters);
+            return Json(sections);
         }
 
         [HttpGet]
@@ -304,6 +304,26 @@
             var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria);
 
             return Json(jobGrades);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetCityByCountryId(int countryId)
+        {
+            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId, IsActive = true };
+            var sections = await baseService.GetDataAsync<City>(criteria);
+
+            return Json(sections);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
+        public async Task<IActionResult> GetOfficeByCityId(int cityId)
+        {
+            var criteria = new GetOfficeByCityIdCriteria { CityId = cityId, IsActive = true };
+            var sections = await baseService.GetDataAsync<Office>(criteria);
+
+            return Json(sections);
         }
 
         [HttpGet]

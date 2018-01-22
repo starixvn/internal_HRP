@@ -2,14 +2,14 @@
 {
     using Xunit;
 
-    public class GetCostCenterBySectionIdCriteriaTests
+    public class GetSectionByCostCenterIdCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetCostCenterBySectionIdCriteria();
-            var expected = "CostCenter_GetBySectionId";
+            var criteria = new GetSectionByCostCenterIdCriteria();
+            var expected = "Section_GetByCostCenterId";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -21,12 +21,12 @@
         [Theory]
         [InlineData(-1)]
         [InlineData(0)]
-        public void IsValid_SectionIdIdIsInvalid_ReturnFalse(int sectionId)
+        public void IsValid_CostCenterIdIsInvalid_ReturnFalse(int costCenterId)
         {
             // Arrange
-            var criteria = new GetCostCenterBySectionIdCriteria
+            var criteria = new GetSectionByCostCenterIdCriteria
             {
-                SectionId = sectionId
+                CostCenterId = costCenterId
             };
 
             // Act
@@ -37,12 +37,12 @@
         }
 
         [Fact]
-        public void IsValid_SectionIdIsValid_ReturnTrue()
+        public void IsValid_CostCenterIdIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetCostCenterBySectionIdCriteria
+            var criteria = new GetSectionByCostCenterIdCriteria
             {
-                SectionId = 1
+                CostCenterId = 1
             };
 
             // Act

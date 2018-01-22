@@ -294,7 +294,7 @@
         }
 
         [Fact]
-        public async Task GetSectionByDepartmentId_WhenCalled_ReturnExpectedSections()
+        public async Task GetSectionByCostCenterId_WhenCalled_ReturnExpectedSections()
         {
             //Arrange
             var expected = new List<Section>
@@ -302,10 +302,10 @@
                 new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             employeeManagementController = GetEmployeeManagementController();
-            baseService.GetDataAsync<Section>(Arg.Any<GetSectionByDepartmentIdCriteria>()).Returns(expected);
+            baseService.GetDataAsync<Section>(Arg.Any<GetSectionByCostCenterIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetSectionByDepartmentId(1);
+            var actual = await employeeManagementController.GetSectionByCostCenterId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -313,7 +313,7 @@
         }
 
         [Fact]
-        public async Task GetCostCenterBySectionId_WhenCalled_ReturnExpectedDivisions()
+        public async Task GetCostCenterDepartmentId_WhenCalled_ReturnExpectedDivisions()
         {
             //Arrange
             var expected = new List<CostCenter>
@@ -321,10 +321,10 @@
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             employeeManagementController = GetEmployeeManagementController();
-            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterBySectionIdCriteria>()).Returns(expected);
+            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterDepartmentIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetCostCenterBySectionId(1);
+            var actual = await employeeManagementController.GetCostCenterDepartmentId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -386,6 +386,44 @@
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<JobGrade>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetCityByCountryId_WhenCalled_ReturnExpectedCities()
+        {
+            //Arrange
+            var expected = new List<City>
+            {
+                new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<City>(Arg.Any<GetCityByCountryIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetCityByCountryId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<City>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetOfficeByCityId_WhenCalled_ReturnExpectedCities()
+        {
+            //Arrange
+            var expected = new List<Office>
+            {
+                new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
+            };
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<Office>(Arg.Any<GetOfficeByCityIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await employeeManagementController.GetOfficeByCityId(1);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, (IEnumerable<Office>)jsonResult.Value);
         }
 
         #region Helpers
