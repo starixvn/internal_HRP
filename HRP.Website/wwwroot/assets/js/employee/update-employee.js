@@ -1,19 +1,46 @@
 ﻿var updateEmployee = (function ($) {
-    var $form, $btnSubmit;
+    var $form;
 
     function registerEventSubmitForm() {
-        $btnSubmit.on('click', function () {
-            if ($form.valid()) {
-                $form.submit();
+        $form.submit(function (e) {
+            e.preventDefault();
+
+            if ($(this).valid()) {
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: commonFunctions.rootURL + 'EmployeeManagement/Update/PersonalDetails',
+                    dataType: 'json',
+                    contentType: false,
+                    data: formData,
+                    processData: false,
+                    success: onUpdateSuccess,
+                    error: commonFunctions.handleAjaxError
+                });
             } else {
                 commonFunctions.showValidationSummary($form);
             }
         });
     }
 
+    function onUpdateSuccess(response) {
+            if (response.isSuccessful) {
+                commonFunctions.showSuccessMessage('Updated sucessfully!');
+            } else {
+                if (response.errors) {
+                    $form.validate().showErrors(response.errors);
+                } else {
+                    $form.find('.list-message-error')
+                        .append('<span class="message">' + response.message + '</span>');
+                }
+
+                commonFunctions.showValidationSummary($form);
+            }
+    }
+
     function initModule() {
         $form = $('#personalDetailsForm');
-        $btnSubmit = $form.find('.js-btnSubmit');
         commonFunctions.initDatetimepicker($form);
 
         if ($form.find('#IsHost').prop('checked')) {
@@ -28,21 +55,7 @@
     }
 
     return {
-        initModule: initModule,
-        onUpdateSuccess: function (response) {
-            if (response.isSuccessful) {
-                commonFunctions.showSuccessMessage('Updated sucessfully!');
-            } else {
-                if (response.errors) {
-                    $form.validate().showErrors(response.errors);
-                } else {
-                    $form.find('.list-message-error')
-                        .append('<span class="message">' + response.message + '</span>');
-                }
-
-                commonFunctions.showValidationSummary($form);
-            }
-        }
+        initModule: initModule
     };
 }(jQuery));
 

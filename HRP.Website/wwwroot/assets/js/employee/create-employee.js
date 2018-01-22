@@ -15,22 +15,24 @@
                     contentType: false,
                     data: formData,
                     processData: false,
-                    success: function (response) {
-                        if (response.isSuccessful) {
-                            $personalDetailsStep.removeClass('active').addClass('finished');
-                            $employmentStep.addClass('active');
-                            $('#EmploymentHeaderTab').trigger('click');
-                        } else {
-                            $createPersonalDetalsForm.validate().showErrors(response.errors);
-                            commonFunctions.showValidationSummary($createPersonalDetalsForm);
-                        }
-                    },
+                    success: onUpdateSuccess,
                     error: commonFunctions.handleAjaxError
                 });
             } else {
                 commonFunctions.showValidationSummary($createPersonalDetalsForm);
             }
         });
+    }
+
+    function onUpdateSuccess(response) {
+        if (response.isSuccessful) {
+            $personalDetailsStep.removeClass('active').addClass('finished');
+            $employmentStep.addClass('active');
+            $('#EmploymentHeaderTab').trigger('click');
+        } else {
+            $createPersonalDetalsForm.validate().showErrors(response.errors);
+            commonFunctions.showValidationSummary($createPersonalDetalsForm);
+        }
     }
 
     function initModule() {

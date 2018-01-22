@@ -2,9 +2,7 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data" id="personalDetailsForm"
-      asp-action="UpdatePersonalDetails" asp-controller="EmployeeManagement" data-ajax-method="post" data-ajax="true"
-      data-ajax-success="updateEmployee.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
+<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data" id="personalDetailsForm" method="post">
     <div class="-has-icon msg-success hidden"></div>
 
     <input type="hidden" asp-for="EmployeeId" />
@@ -16,7 +14,7 @@
         @if (Model.IsHost)
         {
             <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
-            <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>
+            <button type="submit" class="button -primary js-btnSubmit">@ViewLang.Save</button>
         }
     </div>
 </form>
