@@ -77,6 +77,10 @@ var listEmployee = {
                 $("#SearchEmployee").val(ui.item.label);
                 $("#EmployeeId").val(ui.item.value);
                 return false;
+            },
+            change: function (event, ui) {
+                var employeeName = $(this).val();
+                if (!employeeName) $("#EmployeeId").val(""); 
             }
         });
     }
