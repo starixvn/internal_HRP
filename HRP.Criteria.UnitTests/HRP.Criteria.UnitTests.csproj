@@ -114,6 +114,10 @@
     <Compile Include="User\UpdateUserProfileCriteriaTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj">
+      <Project>{4215E3C1-C316-400C-95A6-AE408B1D0016}</Project>
+      <Name>HRP.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj">
       <Project>{99978ef4-12e0-4bd4-a16e-dc4fab059411}</Project>
       <Name>HRP.Criteria</Name>

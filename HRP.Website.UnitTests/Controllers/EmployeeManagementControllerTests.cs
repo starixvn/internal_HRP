@@ -104,7 +104,7 @@
         #region UpdateEmployee
 
         [Fact]
-        public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToActionIndex()
+        public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
             var employeeManagementController = GetEmployeeManagementController();
@@ -115,8 +115,8 @@
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Null(viewResult.ControllerName);
-            Assert.Equal("Index", viewResult.ActionName);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
         }
 
         [Fact]
@@ -212,7 +212,7 @@
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Null(viewResult.ControllerName);
+            Assert.Equal("Error", viewResult.ControllerName);
             Assert.Equal("PageNotFound", viewResult.ActionName);
         }
 

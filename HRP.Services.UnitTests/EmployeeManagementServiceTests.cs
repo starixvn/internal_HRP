@@ -26,6 +26,7 @@
         private Fixture fixture;
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICryptoService cryptoService;
         private EmployeeManagementService employeeService;
 
         public EmployeeManagementServiceTests()
@@ -357,6 +358,11 @@
             return sessionService;
         }
 
+        private ICryptoService FakeCryptoService()
+        {
+            return Substitute.For<ICryptoService>();
+        }
+
         private IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
@@ -367,45 +373,10 @@
             var hostingEnviroment = FakeHostingEnvironment();
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
-            var service = new EmployeeManagementService(hostingEnviroment, baseService, null, sessionService, null);
+            cryptoService = FakeCryptoService();
+            var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService);
 
             return service;
-        }
-
-        private CreateEmployeeViewModel StubValidCreateEmployeeViewModel()
-        {
-            return new CreateEmployeeViewModel
-            {
-                FullName = "Im God",
-                NickName = "Zeus",
-                Gender = 1,
-                DateOfBirth = DateTime.Now,
-                PlaceOfBirth = "mexico",
-                Nationality = 2,
-                NRICNo = "asdasd",
-                MaritalStatus = 3,
-                NoOfChildren = 4,
-                OverseasPhoneNo = "09123456",
-                LocalPhoneNo = "091111",
-                OtherPhoneNo = "113",
-                PassportNo = "12321",
-                DateIssue = DateTime.Now,
-                ExpiredDate = DateTime.Now.AddYears(20),
-                PlaceOfIssue = "Heaven",
-                Skype = "mark.zuckerbug",
-                PersonalEmail = "ahihi@yahoo.com",
-                PermanentAddress = "ahihi",
-                ResidenceAddress = "earth",
-                MailingAddress = "galaxy",
-                EmergencyContact = new EmergencyContact
-                {
-                    Name = "Donald Trump",
-                    Address = "LA",
-                    Relationship = "Neighborhood",
-                    PhoneNo1 = "114",
-                    PhoneNo2 = "115"
-                }
-            };
         }
 
         private IFormFile FakePictureProfile(long fileSize = (1024 * 1024), string contentType = "image/png")

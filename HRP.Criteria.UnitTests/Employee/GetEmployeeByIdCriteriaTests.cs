@@ -1,5 +1,6 @@
 ﻿namespace HRP.Criteria.UnitTests.Employee
 {
+    using HRP.Core.Constants;
     using HRP.Criteria.Employee;
     using Xunit;
 
@@ -25,7 +26,9 @@
             // Arrange
             var criteria = new GetEmployeeByIdCriteria
             {
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
+                FunctionKey = FunctionKey.EmployeeProfile,
+                UserId = 1
             };
 
             // Act
