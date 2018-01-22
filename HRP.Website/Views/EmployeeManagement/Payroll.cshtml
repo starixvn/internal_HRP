@@ -36,6 +36,7 @@
     <input type="hidden" asp-for="EmployeeId" />
     <input type="hidden" asp-for="CompanyId" />
     <input type="hidden" asp-for="BasicSalary.EmployeeId" />
+    <input type="hidden" asp-for="BasicSalary.OldSalary" />
     <input type="hidden" asp-for="Allowance.EmployeeId" />
     <input type="hidden" asp-for="CanUpdate" />
     <div class="list-message-error hidden" id="validation-summary">
@@ -56,7 +57,7 @@
             <div class="">
                 <div class="pull-left calendar">
                     <label class="text" for="effectiveDate">Effective Date</label>
-                    <input type="text" class="control" asp-for="BasicSalary.EffectiveDate" data-msg-required="@Message.EmployeePayrollEffectiveDateRequired"/>
+                    <input type="text" class="control" asp-for="BasicSalary.EffectiveDate" data-msg-required="@Message.EmployeePayrollEffectiveDateRequired" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="pull-right reason">
@@ -173,7 +174,7 @@
             <div></div>
             <div class="payment-transaction">
                 <label class="bank-type">Cash</label>
-                <select class="control basic-salary-cash" asp-for="BasicSalary.CashAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                <select class="control basic-salary-cash" asp-for="BasicSalary.CashAccountId" asp-items="@(new SelectList(Model.CashAccounts, "ResourceId", "Value"))" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
             </div>
@@ -258,7 +259,7 @@
             </div>
             <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>
-                <select class="control allowance-cash" asp-for="Allowance.CashAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                <select class="control allowance-cash" asp-for="Allowance.CashAccountId" asp-items="@(new SelectList(Model.CashAccounts, "ResourceId", "Value"))" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option></option>
                 </select>
             </div>
@@ -400,7 +401,7 @@
         <div class="list-button">
             @if (Model.CanUpdate)
             {
-                 <a asp-action="Index" class="button -second">@ViewLang.Cancel</a>
+                <a asp-action="Index" class="button -second">@ViewLang.Cancel</a>
                 <button class="button -primary">@ViewLang.Save</button>
             }
             else

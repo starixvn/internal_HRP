@@ -324,8 +324,13 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
         public IActionResult SavePayroll(EmployeePayrollViewModel model)
         {
-            payrollService.UpdatePayroll(model, sessionService.UserId);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                payrollService.UpdatePayroll(model, sessionService.UserId);
+                return RedirectToAction("Index");
+            }
+
+            return View("Payroll", model);
         }
     }
 }

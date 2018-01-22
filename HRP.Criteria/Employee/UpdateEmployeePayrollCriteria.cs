@@ -9,6 +9,8 @@
 
         public string Salary { get; set; }
 
+        public bool IsSalaryChanged { get; set; }
+
         public string CurrencyCode { get; set; }
 
         public int WorkingDays { get; set; }

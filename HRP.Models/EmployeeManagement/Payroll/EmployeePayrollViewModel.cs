@@ -27,6 +27,8 @@
 
         public IEnumerable<ReferenceResourceModel> ChangeReasons { get; set; }
 
+        public IEnumerable<ReferenceResourceModel> CashAccounts { get; set; }
+
         public bool CanRead { get; set; }
 
         public bool CanUpdate { get; set; }

@@ -44,6 +44,7 @@
                 viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = DateTime.Today.Month, Year = DateTime.Today.Year });
                 viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
                 viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason });
+                viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.CashAccount });
 
                 DecryptData(viewModel);
             }
@@ -53,7 +54,7 @@
 
         private void DecryptData(EmployeePayrollViewModel viewModel)
         {
-            viewModel.BasicSalary.Salary = cryptoService.Decrypt(viewModel.BasicSalary.Salary);
+            viewModel.BasicSalary.Salary = viewModel.BasicSalary.OldSalary = cryptoService.Decrypt(viewModel.BasicSalary.Salary);
             viewModel.BasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.BasicSalary.EbankingAmount);
             viewModel.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking1Amount);
             viewModel.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking2Amount);
@@ -77,10 +78,13 @@
 
         public void UpdatePayroll(EmployeePayrollViewModel model, int userId)
         {
+            var isSalaryChanged = !string.IsNullOrEmpty(model.BasicSalary.OldSalary) && model.BasicSalary.OldSalary != model.BasicSalary.Salary;
+
             var criteria = new UpdateEmployeePayrollCriteria
             {
                 EmployeeId = model.EmployeeId,
                 Salary = cryptoService.Encrypt(model.BasicSalary.Salary),
+                IsSalaryChanged = isSalaryChanged,
                 CurrencyCode = model.BasicSalary.CurrencyCode,
                 WorkingDays = model.BasicSalary.WorkingDays,
                 EbankingCurrencyCode = model.BasicSalary.EbankingCurrencyCode,

@@ -158,8 +158,16 @@
         [HttpGet]
         public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
-            var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
-            return Json(result.Select(x => new { id = x.Id, text = x.AccountName }));
+            if (bankTypeId == (int) Core.Enumerations.BankType.ContraCoAccount)
+            {
+                var result = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.ContraCoAccount });
+                return Json(result.Select(x => new { id = x.ResourceId, text = x.Value }));
+            }
+            else
+            {
+                var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
+                return Json(result.Select(x => new { id = x.Id, text = x.AccountName }));
+            }
         }
 
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
