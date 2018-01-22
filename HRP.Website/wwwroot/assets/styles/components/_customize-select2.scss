@@ -31,13 +31,17 @@
     }
 }
 
-.select2-container {
+.select2-container--open {
     padding-top: 2px;
+
+    &.select2-container--below {
+        padding-top: 0;
+    }
 }
 
 .select2-container--open .select2-dropdown--below {
     @include box-shadow-multiple(0 2px 3px 1px rgba(0,0,0,.2));
-    border: 1px solid #2a9ded;
+    border: 1px solid #2a9ded;    
 }
 
 .select2-results__option {

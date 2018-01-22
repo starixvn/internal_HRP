@@ -187,8 +187,12 @@
   border-color: #1a87d3;
 }
 
-.select2-container {
+.select2-container--open {
   padding-top: 2px;
+}
+
+.select2-container--open.select2-container--below {
+  padding-top: 0;
 }
 
 .select2-container--open .select2-dropdown--below {
