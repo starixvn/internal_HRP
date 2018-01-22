@@ -31,7 +31,7 @@ var listEmployee = {
 
     initDataTable: function () {
         $('#employee-table').dataTable({
-            'ordering': false,
+            'ordering': true,
             'lengthMenu': [[50, 100, 500], [50, 100, 500]],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             'info': false,
