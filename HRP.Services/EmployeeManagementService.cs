@@ -236,10 +236,12 @@
                             listDepartment.Divisions = divisions;
                             listDepartment.Departments = departments;
                         }
+
                         return listDepartment;
                     }
                 }
             }
+
             return null;
         }
 

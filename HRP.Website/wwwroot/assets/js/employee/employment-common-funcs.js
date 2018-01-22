@@ -329,12 +329,12 @@ var employmentCommonFuncs = (function ($) {
             }
         };
 
-        //$(document).on('change', 'select.search-suggestion', function () {
-        //    if (!$.isEmptyObject($validator.submitted)) {
-        //        initSelect2($form);
-        //        $validator.form();
-        //    }
-        //});
+        $(document).on('change', 'select.search-suggestion', function () {
+            if (!$.isEmptyObject($validator.submitted)) {
+                $form.find('.select2-selection').removeClass('input-validation-error').removeClass('control');
+                $validator.form();
+            }
+        });
     }
 
     function registerEventFormChange($form) {

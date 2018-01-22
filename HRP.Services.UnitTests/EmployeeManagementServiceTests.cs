@@ -24,6 +24,9 @@
     {
         private IObjectDb mockObjectDb;
         private Fixture fixture;
+        private IBaseService baseService;
+        private ISessionService sessionService;
+        private EmployeeManagementService employeeService;
 
         public EmployeeManagementServiceTests()
         {
@@ -49,14 +52,13 @@
                 Message = "Successful!"
             };
             var criteria = new CreateEmployeeCriteria();
-            var baseService = FakeBaseService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
             var viewModel = FakeCreateEmployeeViewModel();
-            var employeeManagementService = InitEmployeeManagementService(baseService);
+            employeeService = GetEmployeeManagementService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await employeeManagementService.CreateEmployeeAsync(viewModel);
+            var actual = await employeeService.CreateEmployeeAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -97,14 +99,13 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var baseService = FakeBaseService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
             var viewModel = FakeCreateEmployeeViewModel();
             viewModel.ProfilePicture = FakePictureProfile();
-            var employeeManagementService = InitEmployeeManagementService(baseService);
+            employeeService = GetEmployeeManagementService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
             // Act
-            var actual = await employeeManagementService.CreateEmployeeAsync(viewModel);
+            var actual = await employeeService.CreateEmployeeAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -124,14 +125,12 @@
                 Message = "Successful!"
             };
             var criteria = fixture.Create<UpdateEmployeeCriteria>();
-            var baseService = FakeBaseService();
+            var viewModel = FakeCreateEmployeeViewModel();
+            employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
-            var viewModel = FakeCreateEmployeeViewModel();
-            var employeeManagementService = InitEmployeeManagementService(baseService);
-
             // Act
-            var actual = await employeeManagementService.UpdatePersonalDetailsAsync(viewModel);
+            var actual = await employeeService.UpdatePersonalDetailsAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -172,14 +171,13 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var baseService = FakeBaseService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
             var viewModel = FakeCreateEmployeeViewModel();
             viewModel.ProfilePicture = FakePictureProfile();
-            var employeeManagementService = InitEmployeeManagementService(baseService);
+            employeeService = GetEmployeeManagementService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
             // Act
-            var actual = await employeeManagementService.UpdatePersonalDetailsAsync(viewModel);
+            var actual = await employeeService.UpdatePersonalDetailsAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -193,11 +191,10 @@
         public void GetAllCompanyDivisionDepartment_ValidCriteria_ReturnList()
         {
             // Arrange
-            var employeeManagementService = InitEmployeeManagementService(null);
-            var sessionService = FakeSessionService();
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.GetAllCompanyDivisonDepartment();
+            var actual = employeeService.GetAllCompanyDivisonDepartment();
 
             //Assert
             Assert.NotNull(actual);
@@ -210,12 +207,11 @@
         public void GetAllCompanyDivisionDepartment_InvalidCriteria_ReturnNull(int userId)
         {
             //Arrange
-            var sessionService = Substitute.For<ISessionService>();
+            employeeService = GetEmployeeManagementService();
             sessionService.UserId = userId;
-            var employeeManagementService = new EmployeeManagementService(FakeHostingEnvironment(), null, null, sessionService, null);
 
             //Act
-            var actual = employeeManagementService.GetAllCompanyDivisonDepartment();
+            var actual = employeeService.GetAllCompanyDivisonDepartment();
 
             //Assert
             Assert.Null(actual);
@@ -231,10 +227,10 @@
         public void GetEmployeeById_WithInvalidEmployeeId_ReturnNull(int employeeId)
         {
             // Arrange
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.GetEmployeeById(employeeId);
+            var actual = employeeService.GetEmployeeById(employeeId);
 
             // Assert
             Assert.Null(actual);
@@ -247,13 +243,13 @@
         {
             // Arrange
             var expected = FakeCreateEmployeeViewModel();
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
             var reader = Substitute.For<IMultiResultReader>();
             reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel>() { expected });
             mockObjectDb.QueryMultiple(Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId)).Returns(reader);
 
             // Act
-            var actual = employeeManagementService.GetEmployeeById(employeeId);
+            var actual = employeeService.GetEmployeeById(employeeId);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -269,12 +265,11 @@
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<ReferenceResourceModel>>();
-            var baseService = FakeBaseService();
+            employeeService = GetEmployeeManagementService();
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
-            var employeeManagementService = InitEmployeeManagementService(baseService);
 
             // Act
-            var actual = await employeeManagementService.InitDataForNewEmployeeAsync();
+            var actual = await employeeService.InitDataForNewEmployeeAsync();
 
             // Assert
             Assert.IsType<CreateEmployeeViewModel>(actual);
@@ -288,10 +283,10 @@
         public void CheckValidPicture_NullParam_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.CheckValidPicture(null);
+            var actual = employeeService.CheckValidPicture(null);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
@@ -304,10 +299,10 @@
         {
             // Arrange
             var fileSize = (1024 * 1024) * 5;
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.CheckValidPicture(FakePictureProfile(fileSize));
+            var actual = employeeService.CheckValidPicture(FakePictureProfile(fileSize));
 
             // Assert
             Assert.IsType<CommandResult>(actual);
@@ -319,10 +314,10 @@
         public void CheckValidPicture_InvalidImageType_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.CheckValidPicture(FakeTxtFile());
+            var actual = employeeService.CheckValidPicture(FakeTxtFile());
 
             // Assert
             Assert.IsType<CommandResult>(actual);
@@ -334,10 +329,10 @@
         public void CheckValidPicture_WithValidImage_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeManagementService = InitEmployeeManagementService(null);
+            employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeManagementService.CheckValidPicture(FakePictureProfile());
+            var actual = employeeService.CheckValidPicture(FakePictureProfile());
 
             // Assert
             Assert.IsType<CommandResult>(actual);
@@ -367,14 +362,14 @@
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private EmployeeManagementService InitEmployeeManagementService(
-            IBaseService baseService)
+        private EmployeeManagementService GetEmployeeManagementService()
         {
             var hostingEnviroment = FakeHostingEnvironment();
-            var sessionService = FakeSessionService();
-            var employeeManagementService = new EmployeeManagementService(hostingEnviroment, baseService, null, sessionService, null);
+            sessionService = FakeSessionService();
+            baseService = FakeBaseService();
+            var service = new EmployeeManagementService(hostingEnviroment, baseService, null, sessionService, null);
 
-            return employeeManagementService;
+            return service;
         }
 
         private CreateEmployeeViewModel StubValidCreateEmployeeViewModel()
