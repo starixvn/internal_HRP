@@ -61,9 +61,6 @@ var listEmployee = {
                     "sortable": true
                 },
                 {
-                    "sortable": true
-                },
-                {
                     "sortable": false
                 }
             ],
@@ -120,7 +117,7 @@ var listEmployee = {
             },
             change: function (event, ui) {
                 var employeeName = $(this).val();
-                if (!employeeName) $("#EmployeeId").val(""); 
+                if (!employeeName) $("#EmployeeId").val("");
             }
         });
     }
@@ -211,6 +208,31 @@ var listDepartment = {
     },
 };
 
+var listEmployeeStatus = {
+    getItemsList: function (selectElement) {
+        if ($(selectElement).is("select")) {
+            if ($(selectElement).prop("multiple")) {
+                // select element with multiple prop
+                var values = [];
+                $.each($(selectElement).prop("options"), function () {
+                    var item = {
+                        id: $(selectElement).prop("name"),
+                        value: this.value,
+                        text: this.text,
+                        checked: this.selected,
+                        enable: true,
+                        cssClass: "-option-check"
+                    }
+                    values.push(item);
+                });
+
+                return values;
+            }
+        }
+
+        return null;
+    }
+};
 $(document).ready(function () {
     listEmployee.init();
     listDepartment.init();
