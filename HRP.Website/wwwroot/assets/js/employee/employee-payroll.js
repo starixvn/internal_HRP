@@ -237,17 +237,18 @@
             submitHandler: function (form) {
                 form.submit();
             },
+            onkeyup: false,
             focusInvalid: false,
             errorClass: 'message',
-            wrapper: 'span',
+            wrapper: 'div',
             errorLabelContainer: '#validation-summary',
             showErrors: function (errorMap, errorList) {
-                if (errorList.length > 0) {
+                this.defaultShowErrors();
+                if ($('#validation-summary div').length > 0) {
                     $('#validation-summary').removeClass('hidden');
                 } else {
                     $('#validation-summary').addClass('hidden');
                 }
-                this.defaultShowErrors();
             },
             highlight: function (element, errorClass) {
                 var $element = $(element);
