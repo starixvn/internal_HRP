@@ -67,6 +67,7 @@
     <Setting Key="Currency_GetExchangeRates" SpName="Currency_GetExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_GetActiveCurrencyCodes" SpName="Currency_GetActiveCurrencyCodes" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_UpdateExchangeRates" SpName="Currency_UpdateExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetLatestExchangeRates" SpName="Currency_GetLatestExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employee">
     <Setting Key="Employee_CreateEmployee" SpName="Employee_CreateEmployee" DbName="bodb_HRP" Plain="0"></Setting>

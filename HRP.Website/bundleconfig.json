@@ -98,6 +98,8 @@
     "outputFileName": "wwwroot/assets/bundles/employee/css/payroll.min.css",
     "inputFiles": [
       "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/lib/tooltipster/dist/css/tooltipster.bundle.min.css",
+      "wwwroot/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/assets/styles/pages/employee/common.css",
       "wwwroot/assets/styles/pages/employee/payroll.css"
@@ -322,6 +324,7 @@
       "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
       "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.min.js",
       "wwwroot/assets/js/employee/employee-payroll.js"
     ],
     "minify": {

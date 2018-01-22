@@ -43,7 +43,7 @@
             }
         });
 
-        totalAmount = round(totalAmount, autoCalculateCurrency);
+        totalAmount = round(totalAmount * Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()), autoCalculateCurrency);
         $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount);
     };
 
@@ -73,7 +73,7 @@
             }
         });
 
-        totalAmount = round(totalAmount, autoCalculateCurrency);
+        totalAmount = round(totalAmount * Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()), autoCalculateCurrency);
         $('input.allowance-calculate[type="text"]', parent).val(totalAmount);
     };
 
@@ -97,9 +97,11 @@
         var currency = $('select.allowance-detail-calculate', parent).val();
         if (currency != '') {
             var amount = Number($('input.allowance-detail-calculate', parent).val());
-            var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
-            var value = round(amount * exchangeRates, allowanceCurrency);
-            $('.allowance-convert-amount', parent).val(value);
+            if (amount !== 0) {
+                var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
+                var value = round(amount * exchangeRates, allowanceCurrency);
+                $('.allowance-convert-amount', parent).val(value);
+            }
         }
         else {
             $('.allowance-convert-amount', parent).val('');
@@ -225,7 +227,7 @@
         });
 
         $('.number:enabled').on('keypress', function (e) {
-            if ((e.target.value.indexOf('.') >= 0 && e.which == 46) || (e.which != 46 && (e.which < 48 || e.which > 57))) {
+            if ((e.target.value.indexOf('.') >= 0 && e.which === 46) || (e.which !== 46 && (e.which < 48 || e.which > 57))) {
                 return false;
             }
         });

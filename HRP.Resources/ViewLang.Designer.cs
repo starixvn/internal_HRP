@@ -457,6 +457,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t show again.
+        /// </summary>
+        public static string DontShowAgain {
+            get {
+                return ResourceManager.GetString("DontShowAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DST.
         /// </summary>
         public static string DST {
@@ -1272,6 +1281,15 @@ namespace HRP.Resources {
         public static string Section {
             get {
                 return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select auto-calculated amount.
+        /// </summary>
+        public static string SelectAutoCalculatedAmount {
+            get {
+                return ResourceManager.GetString("SelectAutoCalculatedAmount", resourceCulture);
             }
         }
         

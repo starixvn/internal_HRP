@@ -29,9 +29,9 @@
 
 <div class="tooltip-templates hidden">
     <div id="tooltip-content">
-        <div>Select auto-calculated amount</div>
+        <div>@ViewLang.SelectAutoCalculatedAmount</div>
         <label>
-            <input type="checkbox"><span class="label-text">Don't show again</span>
+            <input type="checkbox"><span class="label-text">@ViewLang.DontShowAgain</span>
         </label>
     </div>
 </div>
@@ -285,7 +285,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.SubsistenceAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
@@ -298,7 +298,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HomePassageAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
@@ -311,7 +311,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HousingAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
@@ -324,7 +324,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.MobilePhoneAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
@@ -337,7 +337,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.HPIAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
             <div class="transaction-item -allowances">
@@ -354,7 +354,7 @@
                 <input type="text" class="control number allowance-detail-calculate" readonly asp-for="Allowance.DutyMealAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
             <div class="payment-transaction -allowances">
@@ -371,7 +371,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.SecondmentAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
@@ -384,7 +384,7 @@
                 <input type="text" class="control number allowance-detail-calculate" asp-for="Allowance.OthersAmount" />
             </div>
             <div class="currency-amount">
-                <input type="text" class="control allowance-total-currency" disabled />
+                <input type="text" class="control allowance-total-currency" disabled value="@Model.Allowance.CurrencyCode" />
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
