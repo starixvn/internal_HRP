@@ -599,6 +599,7 @@
   </data>
   <data name="SelectAtLeastOneOption" xml:space="preserve">
     <value>Please select at least one option!</value>
+  </data>
   <data name="EmployeePayrollEffectiveDateRequired" xml:space="preserve">
     <value>Effective Date is requried!</value>
   </data>

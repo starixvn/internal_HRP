@@ -15,13 +15,13 @@
     {
         private readonly IBaseService baseService;
         private readonly IDynamicRepository repository;
-        private readonly ICertificateService certificateService;
+        private readonly ICryptoService cryptoService;
 
-        public EmployeePayrollService(IBaseService baseService, IDynamicRepository repository, ICertificateService certificateService)
+        public EmployeePayrollService(IBaseService baseService, IDynamicRepository repository, ICryptoService cryptoService)
         {
             this.baseService = baseService;
             this.repository = repository;
-            this.certificateService = certificateService;
+            this.cryptoService = cryptoService;
         }
 
         public EmployeePayrollViewModel GetEmployeePayroll(int employeeId, int userId)
@@ -53,26 +53,26 @@
 
         private void DecryptData(EmployeePayrollViewModel viewModel)
         {
-            viewModel.BasicSalary.Salary = certificateService.Decrypt(viewModel.BasicSalary.Salary);
-            viewModel.BasicSalary.EbankingAmount = certificateService.Decrypt(viewModel.BasicSalary.EbankingAmount);
-            viewModel.BasicSalary.DirectBanking1Amount = certificateService.Decrypt(viewModel.BasicSalary.DirectBanking1Amount);
-            viewModel.BasicSalary.DirectBanking2Amount = certificateService.Decrypt(viewModel.BasicSalary.DirectBanking2Amount);
-            viewModel.BasicSalary.CashAmount = certificateService.Decrypt(viewModel.BasicSalary.CashAmount);
+            viewModel.BasicSalary.Salary = cryptoService.Decrypt(viewModel.BasicSalary.Salary);
+            viewModel.BasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.BasicSalary.EbankingAmount);
+            viewModel.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking1Amount);
+            viewModel.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking2Amount);
+            viewModel.BasicSalary.CashAmount = cryptoService.Decrypt(viewModel.BasicSalary.CashAmount);
 
-            viewModel.Allowance.DirectBanking1Amount = certificateService.Decrypt(viewModel.Allowance.DirectBanking1Amount);
-            viewModel.Allowance.DirectBanking2Amount = certificateService.Decrypt(viewModel.Allowance.DirectBanking2Amount);
-            viewModel.Allowance.CashAmount = certificateService.Decrypt(viewModel.Allowance.CashAmount);
-            viewModel.Allowance.SubsistenceAmount = certificateService.Decrypt(viewModel.Allowance.SubsistenceAmount);
-            viewModel.Allowance.HomePassageAmount = certificateService.Decrypt(viewModel.Allowance.HomePassageAmount);
-            viewModel.Allowance.HousingAmount = certificateService.Decrypt(viewModel.Allowance.HousingAmount);
-            viewModel.Allowance.MobilePhoneAmount = certificateService.Decrypt(viewModel.Allowance.MobilePhoneAmount);
-            viewModel.Allowance.HPIAmount = certificateService.Decrypt(viewModel.Allowance.HPIAmount);
-            viewModel.Allowance.DutyMealAmount = certificateService.Decrypt(viewModel.Allowance.DutyMealAmount);
-            viewModel.Allowance.SecondmentAmount = certificateService.Decrypt(viewModel.Allowance.SecondmentAmount);
-            viewModel.Allowance.OthersAmount = certificateService.Decrypt(viewModel.Allowance.OthersAmount);
+            viewModel.Allowance.DirectBanking1Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking1Amount);
+            viewModel.Allowance.DirectBanking2Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking2Amount);
+            viewModel.Allowance.CashAmount = cryptoService.Decrypt(viewModel.Allowance.CashAmount);
+            viewModel.Allowance.SubsistenceAmount = cryptoService.Decrypt(viewModel.Allowance.SubsistenceAmount);
+            viewModel.Allowance.HomePassageAmount = cryptoService.Decrypt(viewModel.Allowance.HomePassageAmount);
+            viewModel.Allowance.HousingAmount = cryptoService.Decrypt(viewModel.Allowance.HousingAmount);
+            viewModel.Allowance.MobilePhoneAmount = cryptoService.Decrypt(viewModel.Allowance.MobilePhoneAmount);
+            viewModel.Allowance.HPIAmount = cryptoService.Decrypt(viewModel.Allowance.HPIAmount);
+            viewModel.Allowance.DutyMealAmount = cryptoService.Decrypt(viewModel.Allowance.DutyMealAmount);
+            viewModel.Allowance.SecondmentAmount = cryptoService.Decrypt(viewModel.Allowance.SecondmentAmount);
+            viewModel.Allowance.OthersAmount = cryptoService.Decrypt(viewModel.Allowance.OthersAmount);
 
-            viewModel.Deduction.RoomingChargesAmount = certificateService.Decrypt(viewModel.Deduction.RoomingChargesAmount);
-            viewModel.Deduction.FitnessFirstAmount = certificateService.Decrypt(viewModel.Deduction.FitnessFirstAmount);
+            viewModel.Deduction.RoomingChargesAmount = cryptoService.Decrypt(viewModel.Deduction.RoomingChargesAmount);
+            viewModel.Deduction.FitnessFirstAmount = cryptoService.Decrypt(viewModel.Deduction.FitnessFirstAmount);
         }
 
         public void UpdatePayroll(EmployeePayrollViewModel model, int userId)
@@ -80,59 +80,59 @@
             var criteria = new UpdateEmployeePayrollCriteria
             {
                 EmployeeId = model.EmployeeId,
-                Salary = certificateService.Encrypt(model.BasicSalary.Salary),
+                Salary = cryptoService.Encrypt(model.BasicSalary.Salary),
                 CurrencyCode = model.BasicSalary.CurrencyCode,
                 WorkingDays = model.BasicSalary.WorkingDays,
                 EbankingCurrencyCode = model.BasicSalary.EbankingCurrencyCode,
-                EbankingAmount = certificateService.Encrypt(model.BasicSalary.EbankingAmount),
+                EbankingAmount = cryptoService.Encrypt(model.BasicSalary.EbankingAmount),
                 EbankingAccountId = model.BasicSalary.EbankingAccountId,
                 DirectBanking1CurrencyCode = model.BasicSalary.DirectBanking1CurrencyCode,
-                DirectBanking1Amount = certificateService.Encrypt(model.BasicSalary.DirectBanking1Amount),
+                DirectBanking1Amount = cryptoService.Encrypt(model.BasicSalary.DirectBanking1Amount),
                 DirectBanking1AccountId = model.BasicSalary.DirectBanking1AccountId,
                 DirectBanking1BankTypeId = model.BasicSalary.DirectBanking1BankTypeId,
                 DirectBanking2CurrencyCode = model.BasicSalary.DirectBanking2CurrencyCode,
-                DirectBanking2Amount = certificateService.Encrypt(model.BasicSalary.DirectBanking2Amount),
+                DirectBanking2Amount = cryptoService.Encrypt(model.BasicSalary.DirectBanking2Amount),
                 DirectBanking2AccountId = model.BasicSalary.DirectBanking2AccountId,
                 DirectBanking2BankTypeId = model.BasicSalary.DirectBanking2BankTypeId,
                 CashCurrencyCode = model.BasicSalary.CashCurrencyCode,
-                CashAmount = certificateService.Encrypt(model.BasicSalary.CashAmount),
+                CashAmount = cryptoService.Encrypt(model.BasicSalary.CashAmount),
                 CashAccountId = model.BasicSalary.CashAccountId,
                 AutoCalculateOn = model.BasicSalary.AutoCalculateOn,
                 EffectiveDate = model.BasicSalary.EffectiveDate,
                 ReasonId = model.BasicSalary.ReasonId,
                 AllowanceCurrencyCode = model.Allowance.CurrencyCode,
                 AllowanceDirectBanking1CurrencyCode = model.Allowance.DirectBanking1CurrencyCode,
-                AllowanceDirectBanking1Amount = certificateService.Encrypt(model.Allowance.DirectBanking1Amount),
+                AllowanceDirectBanking1Amount = cryptoService.Encrypt(model.Allowance.DirectBanking1Amount),
                 AllowanceDirectBanking1AccountId = model.Allowance.DirectBanking1AccountId,
                 AllowanceDirectBanking1BankTypeId = model.Allowance.DirectBanking1BankTypeId,
                 AllowanceDirectBanking2CurrencyCode = model.Allowance.DirectBanking2CurrencyCode,
-                AllowanceDirectBanking2Amount = certificateService.Encrypt(model.Allowance.DirectBanking2Amount),
+                AllowanceDirectBanking2Amount = cryptoService.Encrypt(model.Allowance.DirectBanking2Amount),
                 AllowanceDirectBanking2AccountId = model.Allowance.DirectBanking2AccountId,
                 AllowanceDirectBanking2BankTypeId = model.Allowance.DirectBanking2BankTypeId,
                 AllowanceCashCurrencyCode = model.Allowance.CashCurrencyCode,
-                AllowanceCashAmount = certificateService.Encrypt(model.Allowance.CashAmount),
+                AllowanceCashAmount = cryptoService.Encrypt(model.Allowance.CashAmount),
                 AllowanceCashAccountId = model.Allowance.CashAccountId,
                 AllowanceAutoCalculateOn = model.Allowance.AutoCalculateOn,
                 SubsistenceCurrencyCode = model.Allowance.SubsistenceCurrencyCode,
-                SubsistenceAmount = certificateService.Encrypt(model.Allowance.SubsistenceAmount),
+                SubsistenceAmount = cryptoService.Encrypt(model.Allowance.SubsistenceAmount),
                 HomePassageCurrencyCode = model.Allowance.HomePassageCurrencyCode,
-                HomePassageAmount = certificateService.Encrypt(model.Allowance.HomePassageAmount),
+                HomePassageAmount = cryptoService.Encrypt(model.Allowance.HomePassageAmount),
                 HousingCurrencyCode = model.Allowance.HousingCurrencyCode,
-                HousingAmount = certificateService.Encrypt(model.Allowance.HousingAmount),
+                HousingAmount = cryptoService.Encrypt(model.Allowance.HousingAmount),
                 MobilePhoneCurrencyCode = model.Allowance.MobilePhoneCurrencyCode,
-                MobilePhoneAmount = certificateService.Encrypt(model.Allowance.MobilePhoneAmount),
+                MobilePhoneAmount = cryptoService.Encrypt(model.Allowance.MobilePhoneAmount),
                 HPICurrencyCode = model.Allowance.HPICurrencyCode,
-                HPIAmount = certificateService.Encrypt(model.Allowance.HPIAmount),
+                HPIAmount = cryptoService.Encrypt(model.Allowance.HPIAmount),
                 DutyMealCurrencyCode = model.Allowance.DutyMealCurrencyCode,
-                DutyMealAmount = certificateService.Encrypt(model.Allowance.DutyMealAmount),
+                DutyMealAmount = cryptoService.Encrypt(model.Allowance.DutyMealAmount),
                 SecondmentCurrencyCode = model.Allowance.SecondmentCurrencyCode,
-                SecondmentAmount = certificateService.Encrypt(model.Allowance.SecondmentAmount),
+                SecondmentAmount = cryptoService.Encrypt(model.Allowance.SecondmentAmount),
                 OthersCurrencyCode = model.Allowance.OthersCurrencyCode,
-                OthersAmount = certificateService.Encrypt(model.Allowance.OthersAmount),
+                OthersAmount = cryptoService.Encrypt(model.Allowance.OthersAmount),
                 RoomingChargesCurrencyCode = model.Deduction.RoomingChargesCurrencyCode,
-                RoomingChargesAmount = certificateService.Encrypt(model.Deduction.RoomingChargesAmount),
+                RoomingChargesAmount = cryptoService.Encrypt(model.Deduction.RoomingChargesAmount),
                 FitnessFirstCurrencyCode = model.Deduction.FitnessFirstCurrencyCode,
-                FitnessFirstAmount = certificateService.Encrypt(model.Deduction.FitnessFirstAmount),
+                FitnessFirstAmount = cryptoService.Encrypt(model.Deduction.FitnessFirstAmount),
                 UpdatedBy = userId
             };
 
