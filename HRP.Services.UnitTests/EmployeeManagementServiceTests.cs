@@ -1,6 +1,5 @@
 ﻿namespace HRP.Services.UnitTests
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
@@ -22,12 +21,10 @@
 
     public class EmployeeManagementServiceTests
     {
-        private IObjectDb mockObjectDb;
-        private Fixture fixture;
+        private readonly IObjectDb mockObjectDb;
+        private readonly Fixture fixture;
         private IBaseService baseService;
         private ISessionService sessionService;
-        private ICryptoService cryptoService;
-        private EmployeeManagementService employeeService;
 
         public EmployeeManagementServiceTests()
         {
@@ -55,7 +52,7 @@
             var criteria = new CreateEmployeeCriteria();
 
             var viewModel = FakeCreateEmployeeViewModel();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Do<CreateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
@@ -102,7 +99,7 @@
             };
             var viewModel = FakeCreateEmployeeViewModel();
             viewModel.ProfilePicture = FakePictureProfile();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
             // Act
@@ -127,7 +124,7 @@
             };
             var criteria = fixture.Create<UpdateEmployeeCriteria>();
             var viewModel = FakeCreateEmployeeViewModel();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
@@ -174,7 +171,7 @@
             };
             var viewModel = FakeCreateEmployeeViewModel();
             viewModel.ProfilePicture = FakePictureProfile();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
             // Act
@@ -192,7 +189,7 @@
         public void GetAllCompanyDivisionDepartment_ValidCriteria_ReturnList()
         {
             // Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.GetAllCompanyDivisonDepartment();
@@ -208,7 +205,7 @@
         public void GetAllCompanyDivisionDepartment_InvalidCriteria_ReturnNull(int userId)
         {
             //Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             sessionService.UserId = userId;
 
             //Act
@@ -228,7 +225,7 @@
         public void GetEmployeeById_WithInvalidEmployeeId_ReturnNull(int employeeId)
         {
             // Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.GetEmployeeById(employeeId);
@@ -244,7 +241,7 @@
         {
             // Arrange
             var expected = FakeCreateEmployeeViewModel();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             var reader = Substitute.For<IMultiResultReader>();
             reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel>() { expected });
             mockObjectDb.QueryMultiple(Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId)).Returns(reader);
@@ -266,7 +263,7 @@
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<ReferenceResourceModel>>();
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
             // Act
@@ -284,7 +281,7 @@
         public void CheckValidPicture_NullParam_ReturnExpectedCommandResult()
         {
             // Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.CheckValidPicture(null);
@@ -300,7 +297,7 @@
         {
             // Arrange
             var fileSize = (1024 * 1024) * 5;
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakePictureProfile(fileSize));
@@ -315,7 +312,7 @@
         public void CheckValidPicture_InvalidImageType_ReturnExpectedCommandResult()
         {
             // Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakeTxtFile());
@@ -330,7 +327,7 @@
         public void CheckValidPicture_WithValidImage_ReturnExpectedCommandResult()
         {
             // Arrange
-            employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeManagementService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakePictureProfile());
@@ -345,25 +342,25 @@
 
         #region Helper
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
-            var sessionService = Substitute.For<ISessionService>();
-            sessionService.UserId = 99;
+            var sessionServiceInstance = Substitute.For<ISessionService>();
+            sessionServiceInstance.UserId = 99;
 
-            return sessionService;
+            return sessionServiceInstance;
         }
 
-        private ICryptoService FakeCryptoService()
+        private static ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
         }
 
-        private IHostingEnvironment FakeHostingEnvironment()
+        private static IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
         }
@@ -373,13 +370,13 @@
             var hostingEnviroment = FakeHostingEnvironment();
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
-            cryptoService = FakeCryptoService();
+            var cryptoService = FakeCryptoService();
             var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService);
 
             return service;
         }
 
-        private IFormFile FakePictureProfile(long fileSize = (1024 * 1024), string contentType = "image/png")
+        private static IFormFile FakePictureProfile(long fileSize = (1024 * 1024), string contentType = "image/png")
         {
             var file = Substitute.For<IFormFile>();
             string sourceImg = Path.GetFullPath(@"profile.png");
@@ -397,7 +394,7 @@
             return file;
         }
 
-        private IFormFile FakeTxtFile()
+        private static IFormFile FakeTxtFile()
         {
             var file = Substitute.For<IFormFile>();
             var fileName = "test.txt";
@@ -437,12 +434,12 @@
 
         private Fixture InitFixture()
         {
-            var fixture = new Fixture();
-            fixture.Register<IFormFile>(() => null);
-            fixture.Register(() => FakeListReferenceResourceModel());
-            fixture.Register<SelectList>(() => null);
+            var fixtureInstance = new Fixture();
+            fixtureInstance.Register<IFormFile>(() => null);
+            fixtureInstance.Register(() => FakeListReferenceResourceModel());
+            fixtureInstance.Register<SelectList>(() => null);
 
-            return fixture;
+            return fixtureInstance;
         }
 
         #endregion Helper

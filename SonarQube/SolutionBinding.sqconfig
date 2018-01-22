@@ -1,5 +1,5 @@
 {
-  "ServerUri": "http://sonarqube.nexdev.net/dashboard?id=HRP/",
+  "ServerUri": "http://sonarqube.nexdev.net/",
   "Organization": null,
   "ProjectKey": "HRP",
   "Profiles": {
