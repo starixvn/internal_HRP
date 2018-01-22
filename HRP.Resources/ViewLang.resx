@@ -388,7 +388,7 @@
     <value>Work Permit</value>
   </data>
   <data name="Nickname" xml:space="preserve">
-    <value>Nickname</value>
+    <value>Nick Name</value>
   </data>
   <data name="WorkLocation" xml:space="preserve">
     <value>Work Location</value>
@@ -409,7 +409,7 @@
     <value>In Probation</value>
   </data>
   <data name="InService" xml:space="preserve">
-    <value>InService</value>
+    <value>In Service</value>
   </data>
   <data name="Probation" xml:space="preserve">
     <value>Probation</value>
