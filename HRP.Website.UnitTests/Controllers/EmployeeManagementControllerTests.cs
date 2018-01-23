@@ -24,7 +24,6 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IEmployeeManagementService employeeManagementService;
-        private EmployeeManagementController employeeManagementController;
         private Fixture fixture;
 
         public EmployeeManagementControllerTests()
@@ -36,7 +35,7 @@
         public void Index_WhenCalled_ReturnsViewResult()
         {
             //Arrange
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             var listCompany = new ListCompanyDivisionDepartment
             {
                 Companies = new List<Company>(),
@@ -46,7 +45,7 @@
 
             //Act
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
-            var actual = employeeManagementController.Index();
+            var actual = employeeController.Index();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -56,7 +55,7 @@
         [Fact]
         public void GetCompanyTree_WhenCalled_ReturnJsonResult()
         {
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             var listCompany = new ListCompanyDivisionDepartment
             {
                 Companies = new List<Company>(),
@@ -66,7 +65,7 @@
 
             //Act
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
-            var actual = employeeManagementController.GetCompanyTree();
+            var actual = employeeController.GetCompanyTree();
 
             //Assert
             Assert.IsType<JsonResult>(actual);
@@ -75,7 +74,7 @@
         [Fact]
         public void EmployeeList_WhenCall_ReturnPartialViewAndEmployeeList()
         {
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             var listCompany = new ListCompanyDivisionDepartment
             {
                 Companies = new List<Company>(),
@@ -94,7 +93,7 @@
             };
 
             //Act
-            var actual = employeeManagementController.EmployeeList(viewModel);
+            var actual = employeeController.EmployeeList(viewModel);
             var viewResult = Assert.IsType<PartialViewResult>(actual);
 
             //Assert
@@ -108,11 +107,11 @@
         public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(x => null);
 
             // Act
-            var result = employeeManagementController.UpdateEmployee(0);
+            var result = employeeController.UpdateEmployee(0);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -125,11 +124,11 @@
         {
             // Arrange
             var expected = fixture.Create<CreateEmployeeViewModel>();
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var result = employeeManagementController.UpdateEmployee(99);
+            var result = employeeController.UpdateEmployee(99);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -141,11 +140,11 @@
         {
             // Arrange
             var model = fixture.Create<CreateEmployeeViewModel>();
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
 
             // Act
-            var result = await employeeManagementController.UpdatePersonalDetails(model);
+            var result = await employeeController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -159,19 +158,19 @@
         public async Task UpdatePersonalDetails_ModelStateIsValid_ReturnJsonResultWithMessage()
         {
             // Arrange
-            var expected = new CommandResult()
+            var expected = new CommandResult
             {
                 Code = 0,
                 Message = "Successful."
             };
 
             var model = fixture.Create<CreateEmployeeViewModel>();
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
             employeeManagementService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
 
             // Act
-            var result = await employeeManagementController.UpdatePersonalDetails(model);
+            var result = await employeeController.UpdatePersonalDetails(model);
 
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
@@ -190,11 +189,11 @@
         {
             //Arrange
             var expected = "_UpdateEmployment";
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
             //Act
-            var actual = employeeManagementController.UpdateEmployment(1);
+            var actual = employeeController.UpdateEmployment(1);
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -205,11 +204,11 @@
         public void UpdateEmployment_ViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(x => null);
 
             // Act
-            var result = employeeManagementController.UpdateEmployment(1);
+            var result = employeeController.UpdateEmployment(1);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -226,11 +225,11 @@
             {
                 EmployeeId = employeeId
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
 
             //Act
-            var actual = employeeManagementController.UpdateEmployment(employeeId);
+            var actual = employeeController.UpdateEmployment(employeeId);
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -245,11 +244,11 @@
         {
             //Arrange
             var expected = true;
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataEntityAsync<bool>(Arg.Any<CheckEmpCodeExistedCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.CheckEmployeeCodeExisted(1, "DAR", "DAR-1234");
+            var actual = await employeeController.CheckEmployeeCodeExisted(1, "DAR", "DAR-1234");
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -264,11 +263,11 @@
             {
                 new Division { DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetDivisionByCompanyId(1);
+            var actual = await employeeController.GetDivisionByCompanyId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -283,11 +282,11 @@
             {
                 new Department { DepartmentId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Department>(Arg.Any<GetDepartmentByDivisionIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetDepartmentByDivisionId(1);
+            var actual = await employeeController.GetDepartmentByDivisionId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -302,11 +301,11 @@
             {
                 new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Section>(Arg.Any<GetSectionByCostCenterIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetSectionByCostCenterId(1);
+            var actual = await employeeController.GetSectionByCostCenterId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -321,11 +320,11 @@
             {
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterDepartmentIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetCostCenterDepartmentId(1);
+            var actual = await employeeController.GetCostCenterDepartmentId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -340,11 +339,11 @@
             {
                 new EmployeeSuggestionViewModel { EmployeeId = 1, FullName = "Tim", NickName = "tim.trinh" }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetEmployeeSuggestion("dar");
+            var actual = await employeeController.GetEmployeeSuggestion("dar");
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -359,11 +358,11 @@
             {
                 new GradeLevel { GradeLevelId = 1, Name = "Senior Management", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<GradeLevel>(Arg.Any<GetGradeLevelByJobCategoryIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetGradeLevelByJobCategoryId(1);
+            var actual = await employeeController.GetGradeLevelByJobCategoryId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -374,11 +373,11 @@
         public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnJsonResult()
         {
             //Arrange
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(new List<EmployeeSuggestionViewModel>());
 
             //Actual
-            var actual = await employeeManagementController.GetEmployeeSuggestionByName("oliver");
+            var actual = await employeeController.GetEmployeeSuggestionByName("oliver");
 
             //Assert
             Assert.IsType<JsonResult>(actual);
@@ -392,11 +391,11 @@
             {
                 new JobGrade { JobGradeId = 1, Name = "A1", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<JobGrade>(Arg.Any<GetJobGradeByGradeLevelIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetJobGradeByGradeLevelId(1);
+            var actual = await employeeController.GetJobGradeByGradeLevelId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -411,11 +410,11 @@
             {
                 new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<City>(Arg.Any<GetCityByCountryIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetCityByCountryId(1);
+            var actual = await employeeController.GetCityByCountryId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -430,11 +429,11 @@
             {
                 new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
             };
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Office>(Arg.Any<GetOfficeByCityIdCriteria>()).Returns(expected);
 
             //Act
-            var actual = await employeeManagementController.GetOfficeByCityId(1);
+            var actual = await employeeController.GetOfficeByCityId(1);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -443,7 +442,7 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -451,14 +450,14 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private IEmployeeManagementService FakeEmployeeManagementService()
+        private static IEmployeeManagementService FakeEmployeeManagementService()
         {
             var service = Substitute.For<IEmployeeManagementService>();
 
@@ -475,7 +474,7 @@
             return controller;
         }
 
-        private Fixture InitFixture()
+        private static Fixture InitFixture()
         {
             var fixture = new Fixture();
             fixture.Register<IFormFile>(() => null);

@@ -50,6 +50,7 @@
                 EmployeeStatusIds = string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
                 EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value")
             };
+
             return View(viewModel);
         }
 

@@ -613,9 +613,9 @@
         </div>
     </div>
     <div class="list-button">
+        <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
-            <a class="button -second" asp-action="index">@ViewLang.Cancel</a>
             <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>
         }
     </div>

@@ -19,11 +19,9 @@
     public class AuthControllerTests
     {
         private IBaseService baseService;
-        private ISessionService sessionService;
         private IUserService userService;
-        private AuthController authController;
 
-        private User user = new User
+        private readonly User user = new User
         {
             UserId = 16,
             Username = "oliver",
@@ -44,7 +42,7 @@
         public void LoginGet_ValidModel_ReturnExpectedViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
 
             //Act
             var actual = authController.Login();
@@ -58,7 +56,7 @@
         public void LoginPost_ValidModel_ReturnSuccessfully()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             var model = new LoginViewModel
             {
                 Username = "admin",
@@ -77,7 +75,7 @@
         public void Login_CorrectUserAndNotRegisterOTP_RedirectNotificationView()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             var model = new LoginViewModel
             {
                 Username = "admin",
@@ -99,7 +97,7 @@
         public void Login_CorrectUserAndRegisteredOTP_RedirectToVerifyOTPView()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             var model = new LoginViewModel
             {
                 Username = "admin",
@@ -122,7 +120,7 @@
         public void Login_IncorrectUser_ReturnViewResultWithModel()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             var model = new LoginViewModel
             {
                 Username = "admin",
@@ -144,7 +142,7 @@
         public void ForgotPassword_NoModel_ReturnExpectedViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
 
             //Act
             var actual = authController.ForgotPassword();
@@ -157,7 +155,7 @@
         public void ForgotPassword_CorrectUser_RedirectSuccessful()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
 
             //Act
@@ -172,7 +170,7 @@
         public void ForgotPassword_IncorrectUsername_ReturnViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
 
             //Act
             var actual = authController.ForgotPassword("test");
@@ -186,7 +184,7 @@
         public void ConfirmationEmailSent_ReturnExpectedViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
 
             //Act
             var actual = authController.ConfirmationEmailSent();
@@ -199,7 +197,7 @@
         public void ResetPassword_ValidModelAndUpdateSuccessful_RedirectToAction()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
             var model = new ResetPasswordViewModel { Password = "1234aa" };
             baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
@@ -216,7 +214,7 @@
         public void ResetPassword_ValidModelAndUpdateFail_ReturnViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
             var model = new ResetPasswordViewModel { Password = "1234aa" };
             baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = -1, Message = string.Empty });
@@ -233,7 +231,7 @@
         public void ResetPassword_IncorrectUser_RedirectToPageNotFound()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
 
             //Act
@@ -249,7 +247,7 @@
         public void ResetPassword_CorrectUser_ReturnViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
 
             //Act
@@ -264,7 +262,7 @@
         public void ResetPassword_InvalidModel_ReturnViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
             var model = new ResetPasswordViewModel();
             authController.ModelState.AddModelError("", "Error");
 
@@ -280,7 +278,7 @@
         public void ResetPasswordSuccessfully_NoModel_ReturnExpectedViewResult()
         {
             //Arrange
-            authController = GetAuthController();
+            var authController = GetAuthController();
 
             //Act
             var actual = authController.ResetPasswordSuccessfully();
@@ -294,7 +292,7 @@
         public async Task Logout_Successful_RedirectToLogin()
         {
             //Arrange
-            authController = ArrangeForSignOutTestFunction();
+            var authController = ArrangeForSignOutTestFunction();
 
             //Act
             var actual = await authController.Logout();
@@ -306,20 +304,20 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private IUserService FakeUserService()
+        private static IUserService FakeUserService()
         {
             var service = Substitute.For<IUserService>();
 
@@ -329,7 +327,7 @@
         private AuthController GetAuthController()
         {
             baseService = FakeBaseService();
-            sessionService = FakeSessionService();
+            var sessionService = FakeSessionService();
             userService = FakeUserService();
             var controller = new AuthController(userService, sessionService, baseService);
 
@@ -349,7 +347,7 @@
                 }
             };
 
-            authController = GetAuthController();
+            var authController = GetAuthController();
             authController.ControllerContext = controllerContext;
             authController.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Any;
             authController.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "12345";

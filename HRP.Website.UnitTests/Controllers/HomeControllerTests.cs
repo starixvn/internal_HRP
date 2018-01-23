@@ -6,13 +6,11 @@
 
     public class HomeControllerTests
     {
-        private HomeController homeController;
-
         [Fact]
         public void Index_WhenCalled_ReturnsViewResult()
         {
             //Arrange
-            homeController = GetHomeController();
+            var homeController = GetHomeController();
 
             //Act
             var actual = homeController.Index();
@@ -24,7 +22,7 @@
 
         #region Helpers
 
-        private HomeController GetHomeController()
+        private static HomeController GetHomeController()
         {
             var controller = new HomeController();
 

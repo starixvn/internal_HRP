@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Services;
@@ -32,7 +33,7 @@
         }
 
         [Fact]
-        public async void InvokeAsync_AllStatuses_ReturnAllUsers()
+        public async Task InvokeAsync_AllStatuses_ReturnAllUsers()
         {
             var viewComponent = GetMenuViewComponent();
             baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users);
@@ -47,7 +48,7 @@
         }
 
         [Fact]
-        public async void InvokeAsync_ActiveStatus_ReturnActiveUsers()
+        public async Task InvokeAsync_ActiveStatus_ReturnActiveUsers()
         {
             var viewComponent = GetMenuViewComponent();
             baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users.Where(x => x.IsActive));
@@ -62,7 +63,7 @@
         }
 
         [Fact]
-        public async void InvokeAsync_InactiveStatus_ReturnInactiveUsers()
+        public async Task InvokeAsync_InactiveStatus_ReturnInactiveUsers()
         {
             var viewComponent = GetMenuViewComponent();
             baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users.Where(x => !x.IsActive));

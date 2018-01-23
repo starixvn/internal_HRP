@@ -67,20 +67,21 @@
 
         public override string GetSettingKey() => "Employee_UpdateEmployee";
 
-        public override bool IsValid()
-        {
-            return (EmployeeId > 0)
-                && !string.IsNullOrEmpty(FullName)
-                && !string.IsNullOrEmpty(NickName)
+#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S1067 // Expressions should not be too complex
+        public override bool IsValid() => EmployeeId > 0
+#pragma warning restore S1541 // Methods and properties should not be too complex
                 && Gender > 0
                 && Nationality > 0
-                && !string.IsNullOrEmpty(NRICNo)
                 && MaritalStatus > 0
                 && NoOfChildren > 0
-                && !string.IsNullOrEmpty(OverseasPhoneNo)
-                && !string.IsNullOrEmpty(PassportNo)
-                && !string.IsNullOrEmpty(PermanentAddress)
-                && !string.IsNullOrEmpty(ResidenceAddress);
-        }
+                && !string.IsNullOrWhiteSpace(FullName)
+                && !string.IsNullOrWhiteSpace(NickName)
+                && !string.IsNullOrWhiteSpace(OverseasPhoneNo)
+                && !string.IsNullOrWhiteSpace(NRICNo)
+                && !string.IsNullOrWhiteSpace(PassportNo)
+                && !string.IsNullOrWhiteSpace(PermanentAddress)
+                && !string.IsNullOrWhiteSpace(ResidenceAddress);
+#pragma warning restore S1067 // Expressions should not be too complex
     }
 }

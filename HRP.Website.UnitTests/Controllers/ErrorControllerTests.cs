@@ -6,13 +6,11 @@
 
     public class ErrorControllerTests
     {
-        private ErrorController errorController;
-
         [Fact]
         public void PageNotFound_WhenCalled_ReturnsViewResult()
         {
             //Arrange
-            errorController = GetErrorController();
+            var errorController = GetErrorController();
 
             //Act
             var actual = errorController.PageNotFound();
@@ -26,7 +24,7 @@
         public void AccessDenied_WhenCalled_ReturnsViewResult()
         {
             //Arrange
-            errorController = GetErrorController();
+            var errorController = GetErrorController();
 
             //Act
             var actual = errorController.AccessDenied();
@@ -40,7 +38,7 @@
         public void InternalError_WhenCalled_ReturnsViewResult()
         {
             //Arrange
-            errorController = GetErrorController();
+            var errorController = GetErrorController();
 
             //Act
             var actual = errorController.InternalError();
@@ -52,7 +50,7 @@
 
         #region Helpers
 
-        private ErrorController GetErrorController()
+        private static ErrorController GetErrorController()
         {
             var controller = new ErrorController();
 

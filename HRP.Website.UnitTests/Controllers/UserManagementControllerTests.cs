@@ -22,7 +22,6 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IFunctionService functionService;
-        private UserManagementController userManagementController;
 
         #region AssignPermission
 
@@ -34,7 +33,7 @@
             IEnumerable<Models.UserPermisson.FunctionModel> functions = new List<Models.UserPermisson.FunctionModel>();
             IEnumerable<UserPermissionModel> permissions = new List<UserPermissionModel>();
             var user = new UserModel { Username = "tim", IsSystemAdmin = false };
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             functionService.GetTreeFunctions(Arg.Any<bool?>()).Returns(functions);
             baseService.GetDataAsync<Company>(Arg.Any<GetAllCompanyCriteria>()).Returns(companies);
             baseService.GetDataAsync<UserPermissionModel>(Arg.Any<GetFunctionByUserIdCriteria>()).Returns(permissions);
@@ -42,7 +41,7 @@
             sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
 
             // Act
-            var actual = await userManagementController.AssignPermission(1);
+            var actual = await userController.AssignPermission(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -67,11 +66,11 @@
             {
                 new UserPermissionModel { UserId = 1, FunctionId = 1, CompanyId = 1, IsHost = true, IsRead = true }
             };
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             baseService.ExecuteNonQueryAsync(Arg.Any<AssignFunctionToUserCriteria>()).Returns(Task.FromResult(expected));
 
             // Act
-            var actual = await userManagementController.AssignPermission(permissions);
+            var actual = await userController.AssignPermission(permissions);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -87,10 +86,10 @@
         public void CreateUser_WhenCalled_ReturnExpectedView()
         {
             // Arrange
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
 
             // Act
-            var actual = userManagementController.CreateUser();
+            var actual = userController.CreateUser();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -103,11 +102,11 @@
         {
             // Arrange
             var model = new CreateUserViewModel();
-            userManagementController = GetUserManagementController();
-            userManagementController.ModelState.AddModelError("", "Error");
+            var userController = GetUserManagementController();
+            userController.ModelState.AddModelError("", "Error");
 
             // Act
-            var actual = userManagementController.CreateUser(model);
+            var actual = userController.CreateUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -119,13 +118,13 @@
         {
             // Arrange
             var model = new CreateUserViewModel { Password = "Admin1234" };
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
-            userManagementController.Url = Substitute.For<IUrlHelper>();
-            userManagementController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
+            userController.Url = Substitute.For<IUrlHelper>();
+            userController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
 
             // Act
-            var actual = userManagementController.CreateUser(model);
+            var actual = userController.CreateUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -137,11 +136,11 @@
         {
             // Arrange
             var model = new EditUserViewModel();
-            userManagementController = GetUserManagementController();
-            userManagementController.ModelState.AddModelError("", "Error");
+            var userController = GetUserManagementController();
+            userController.ModelState.AddModelError("", "Error");
 
             // Act
-            var actual = userManagementController.EditUser(model);
+            var actual = userController.EditUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -153,11 +152,11 @@
         {
             // Arrange
             var model = new EditUserViewModel();
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             // Act
-            var actual = userManagementController.EditUser(model);
+            var actual = userController.EditUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -168,10 +167,10 @@
         public void EditUser_InvalidId_RetdirectToIndexPage()
         {
             // Arrange
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
 
             // Act
-            var actual = userManagementController.EditUser(0);
+            var actual = userController.EditUser(0);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -183,12 +182,12 @@
         {
             // Arrange
             var id = 1;
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userManagementController.EditUser(id);
+            var actual = userController.EditUser(id);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -199,11 +198,11 @@
         public void Index_WhenCalled_ReturnExpectedView()
         {
             // Arrange
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userManagementController.Index();
+            var actual = userController.Index();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -214,11 +213,11 @@
         public void GetUsers_WhenCalled_ReturnExpectedView()
         {
             // Arrange
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userManagementController.GetUsers(true);
+            var actual = userController.GetUsers(true);
 
             // Assert
             Assert.IsType<ViewComponentResult>(actual);
@@ -229,11 +228,11 @@
         {
             // Arrange
             var username = "admin";
-            userManagementController = GetUserManagementController();
+            var userController = GetUserManagementController();
             baseService.GetData<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
 
             // Act
-            var actual = userManagementController.CheckUsernameExisted(username);
+            var actual = userController.CheckUsernameExisted(username);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -242,7 +241,7 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -250,14 +249,14 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private IFunctionService FakeFunctionService()
+        private static IFunctionService FakeFunctionService()
         {
             var service = Substitute.For<IFunctionService>();
 

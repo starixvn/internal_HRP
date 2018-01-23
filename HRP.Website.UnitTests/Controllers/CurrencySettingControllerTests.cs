@@ -18,7 +18,6 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
-        private IOptionsSnapshot<AppSettingsOptions> configuration;
 
         [Fact]
         public void Index_WhenCalled_ReturnCurrentData()
@@ -71,7 +70,7 @@
             Assert.True(commandResult.IsSuccessful);
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -79,7 +78,7 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
@@ -98,7 +97,7 @@
                 LaunchMonth = DateTime.Today
             };
 
-            configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
+            var configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
             configuration.Value.Returns(appSettingsOptions);
 
             return configuration;
@@ -108,7 +107,7 @@
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            configuration = FakeConfiguration();
+            var configuration = FakeConfiguration();
             var controller = new CurrencySettingController(sessionService, baseService, configuration);
 
             return controller;

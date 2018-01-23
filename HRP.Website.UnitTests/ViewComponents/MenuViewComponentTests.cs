@@ -12,14 +12,13 @@
     public class MenuViewComponentTests
     {
         private ISessionService sessionService;
-        private MenuViewComponent menuViewComponent;
 
         [Fact]
         public async Task InvokeAsync_CheckViewName_ReturnAsExpected()
         {
             // Arrange
             var expected = "Menu";
-            menuViewComponent = GetMenuViewComponent();
+            var menuViewComponent = GetMenuViewComponent();
 
             // Act
             var actual = await menuViewComponent.InvokeAsync();
@@ -34,11 +33,11 @@
         {
             // Arrange
             var username = "tim.trinh";
-            var menus = new List<MenuItem>()
+            var menus = new List<MenuItem>
             {
                 new MenuItem { MenuId = 1, Name = "Configuration" }
             };
-            menuViewComponent = GetMenuViewComponent();
+            var menuViewComponent = GetMenuViewComponent();
             sessionService.Username.Returns(username);
             sessionService.MenuItems.Returns(menus);
 
@@ -54,7 +53,7 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
 

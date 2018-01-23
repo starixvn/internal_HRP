@@ -12,7 +12,6 @@
     public class FunctionServiceTests
     {
         private IBaseService baseService;
-        private FunctionService functionService;
 
         #region GetFunctions
 
@@ -25,7 +24,7 @@
                 new FunctionModel { FunctionId = 1 },
                 new FunctionModel { FunctionId = 2, ParentId = 1 }
             };
-            functionService = GetFunctionService();
+            var functionService = GetFunctionService();
             baseService.GetDataAsync<FunctionModel>(Arg.Any<GetAllFunctionCriteria>()).Returns(expected);
 
             // Act
@@ -42,7 +41,7 @@
 
         #region Helpers
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
