@@ -345,6 +345,52 @@
         #region GetDataToCreateEmployment
 
         [Fact]
+        public void GetDataToCreateEmployment_UserIdIsInvalid_ReturnDefaultModel()
+        {
+            // Arrange
+            var expected = new CreateEmploymentViewModel();
+            var employeeService = GetEmployeeManagementService();
+            sessionService.UserId = -1;
+
+            // Act
+            var actual = employeeService.GetDataToCreateEmployment();
+
+            // Assert
+            Assert.Equal(expected.CompanyId, actual.CompanyId);
+            Assert.Equal(expected.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(expected.JobTitle, actual.JobTitle);
+            Assert.Equal(expected.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(expected.GroupStartDate, actual.GroupStartDate);
+            Assert.Equal(expected.GroupEndDate, actual.GroupEndDate);
+            Assert.Equal(expected.CompanyStartDate, actual.CompanyStartDate);
+            Assert.Equal(expected.CompanyEndDate, actual.CompanyEndDate);
+            Assert.Equal(expected.CompanyCode, actual.CompanyCode);
+            Assert.Equal(expected.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(expected.EmploymentType, actual.EmploymentType);
+            Assert.Equal(expected.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(expected.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(expected.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(expected.JobGradeId, actual.JobGradeId);
+            Assert.Equal(expected.DivisionId, actual.DivisionId);
+            Assert.Equal(expected.DepartmentId, actual.DepartmentId);
+            Assert.Equal(expected.CostCenterId, actual.CostCenterId);
+            Assert.Equal(expected.SectionId, actual.SectionId);
+            Assert.Equal(expected.Email, actual.Email);
+            Assert.Equal(expected.CountryId, actual.CountryId);
+            Assert.Equal(expected.CityId, actual.CityId);
+            Assert.Equal(expected.OfficeId, actual.OfficeId);
+            Assert.Equal(expected.WorkPermit.LocalCompanyId, actual.WorkPermit.LocalCompanyId);
+            Assert.Equal(expected.WorkPermit.Type1, actual.WorkPermit.Type1);
+            Assert.Equal(expected.WorkPermit.StartDateType1, actual.WorkPermit.StartDateType1);
+            Assert.Equal(expected.WorkPermit.EndDateType1, actual.WorkPermit.EndDateType1);
+            Assert.Equal(expected.WorkPermit.StartDateType2, actual.WorkPermit.StartDateType2);
+            Assert.Equal(expected.WorkPermit.EndDateType2, actual.WorkPermit.EndDateType2);
+            Assert.Equal(expected.DST, actual.DST);
+            Assert.Equal(expected.DBT, actual.DBT);
+            Assert.Equal(expected.Companies, actual.Companies);
+        }
+
+        [Fact]
         public void GetDataToCreateEmployment_UserIdIsValid_ReturnExpectedModel()
         {
             // Arrange
@@ -359,7 +405,37 @@
             var actual = employeeService.GetDataToCreateEmployment();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.CompanyId, actual.CompanyId);
+            Assert.Equal(expected.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(expected.JobTitle, actual.JobTitle);
+            Assert.Equal(expected.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(expected.GroupStartDate, actual.GroupStartDate);
+            Assert.Equal(expected.GroupEndDate, actual.GroupEndDate);
+            Assert.Equal(expected.CompanyStartDate, actual.CompanyStartDate);
+            Assert.Equal(expected.CompanyEndDate, actual.CompanyEndDate);
+            Assert.Equal(expected.CompanyCode, actual.CompanyCode);
+            Assert.Equal(expected.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(expected.EmploymentType, actual.EmploymentType);
+            Assert.Equal(expected.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(expected.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(expected.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(expected.JobGradeId, actual.JobGradeId);
+            Assert.Equal(expected.DivisionId, actual.DivisionId);
+            Assert.Equal(expected.DepartmentId, actual.DepartmentId);
+            Assert.Equal(expected.CostCenterId, actual.CostCenterId);
+            Assert.Equal(expected.SectionId, actual.SectionId);
+            Assert.Equal(expected.Email, actual.Email);
+            Assert.Equal(expected.CountryId, actual.CountryId);
+            Assert.Equal(expected.CityId, actual.CityId);
+            Assert.Equal(expected.OfficeId, actual.OfficeId);
+            Assert.Equal(expected.WorkPermit.LocalCompanyId, actual.WorkPermit.LocalCompanyId);
+            Assert.Equal(expected.WorkPermit.Type1, actual.WorkPermit.Type1);
+            Assert.Equal(expected.WorkPermit.StartDateType1, actual.WorkPermit.StartDateType1);
+            Assert.Equal(expected.WorkPermit.EndDateType1, actual.WorkPermit.EndDateType1);
+            Assert.Equal(expected.WorkPermit.StartDateType2, actual.WorkPermit.StartDateType2);
+            Assert.Equal(expected.WorkPermit.EndDateType2, actual.WorkPermit.EndDateType2);
+            Assert.Equal(expected.DST, actual.DST);
+            Assert.Equal(expected.DBT, actual.DBT);
             Assert.Equal(expected.Companies, actual.Companies);
         }
 
