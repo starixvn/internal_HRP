@@ -7,31 +7,32 @@ var listEmployee = {
     },
 
     query: function () {
-        var departmentIds = $("#DepartmentIds").val();
-        if (!departmentIds) {
-            $("#departmentIds-validation").removeClass("hidden");
-            $("#CompanySelect").addClass("input-validation-error");
-            return false;
-        } else {
-            $("#departmentIds-validation").addClass("hidden");
-            $("#CompanySelect").remove("input-validation-error");
+        if (listEmployee.checkSelectionValue()) {
+            $.ajax({
+                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
+                type: 'POST',
+                dataType: 'html',
+                data: $('form.form-filter').serialize(),
+                success: function (response) {
+                    $('#employee-list').html(response);
+                    listEmployee.initDataTable();
+                },
+                error: commonFunctions.handleAjaxError
+            });
         }
-        $.ajax({
-            url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-            type: 'POST',
-            dataType: 'html',
-            data: $('form.form-filter').serialize(),
-            success: function (response) {
-                $('#employee-list').html(response);
-                listEmployee.initDataTable();
-            },
-            error: commonFunctions.handleAjaxError
-        });
+    },
+
+    checkSelectionValue: function () {
+        var departmentIds = $("#DepartmentIds").val();
+        var employeeStatusIds = $("#EmployeeStatusIds").val();
+        if (departmentIds && employeeStatusIds) return true;
+        return false;
     },
 
     initDataTable: function () {
         $('#employee-table').dataTable({
             'ordering': true,
+            'order': [[1, "asc"]],
             "columns": [
                 {
                     "sortable": false
@@ -139,6 +140,11 @@ var listDepartment = {
                         var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',')
                         var departmentIds = listDepartment.SetDepartmentIdsValue(selectedValue);
                         $("#DepartmentIds").val(departmentIds);
+                        if (!departmentIds) {
+                            $("#departmentIds-validation").removeClass("hidden");
+                        } else {
+                            $("#departmentIds-validation").addClass("hidden");
+                        }
                     }
                 });
             },
@@ -235,6 +241,11 @@ var listEmployeeStatus = {
             onCheck: function () {
                 var selectedValue = $("#EmployeeStatus").fanexMultiSelect('getItems', true).join(',')
                 $("#EmployeeStatusIds").val(selectedValue);
+                if (!selectedValue) {
+                    $("#employeeStatusIds-validation").removeClass("hidden");
+                } else {
+                    $("#employeeStatusIds-validation").addClass("hidden");
+                }
             }
         });
     }
