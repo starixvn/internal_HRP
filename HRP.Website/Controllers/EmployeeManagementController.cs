@@ -38,15 +38,18 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public IActionResult Index()
+        public IActionResult Index(
+            string departmentIds = null,
+            string employeeStatusIds = null,
+            int employeeId = 0)
         {
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
             var viewModel = new EmployeeManagementViewModel
             {
                 IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
-                DepartmentIds = GetDepartmentIds(listDepartment.Departments),
-                EmployeeStatusIds = string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
+                DepartmentIds = departmentIds ?? GetDepartmentIds(listDepartment.Departments),
+                EmployeeStatusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
                 EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value")
             };
 
@@ -68,13 +71,12 @@
             return departmentIds;
         }
 
-        [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
         public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {
             var criteria = new GetAllEmployeeCriteria
             {
-                DepartmentIds = string.IsNullOrEmpty(model.DepartmentIds) ? string.Empty : model.DepartmentIds,
+                DepartmentIds = model.DepartmentIds,
                 EmployeeStatusIds = model.EmployeeStatusIds,
                 EmployeeId = model.EmployeeId,
                 UserId = sessionService.UserId

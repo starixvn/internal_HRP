@@ -597,14 +597,17 @@
   <data name="EmployeePayrollSettingAmountRequried" xml:space="preserve">
     <value>Setting Amount is required!</value>
   </data>
-  <data name="SelectAtLeastOneOption" xml:space="preserve">
-    <value>Please select at least one option!</value>
+  <data name="SelectAtLeastOneCompany" xml:space="preserve">
+    <value>Please select at least one Company</value>
   </data>
   <data name="EmployeePayrollEffectiveDateRequired" xml:space="preserve">
     <value>Effective Date is requried!</value>
   </data>
   <data name="EmployeePayrollReasonRequired" xml:space="preserve">
     <value>Reason is required!</value>
+  </data>
+  <data name="SelectAtLeastOneEmploymentStatus" xml:space="preserve">
+    <value>Please select at least one Employment Status</value>
   </data>
   <data name="GreaterThanZero" xml:space="preserve">
     <value>Please enter number greater than 0</value>

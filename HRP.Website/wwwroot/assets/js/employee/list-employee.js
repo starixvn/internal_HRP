@@ -6,16 +6,47 @@ var listEmployee = {
         listEmployee.searchEmployeeSuggestion();
     },
 
+    getValueIsSelected: function (inputIds, selectId) {
+        var idsValue = inputIds.split(",");
+        for (var i = 0; i < idsValue.length; i++) {
+            if (idsValue[i] == selectId) return true;
+        }
+        return false;
+    },
+
+    showErrorMessage: function (message, input) {
+        $("#error-alert").removeClass("hidden");
+        $(message).show();
+        $(input).addClass("validation-error");
+    },
+
+    hideErrorMessage: function (message, input) {
+        if (listEmployee.checkSelectionValue()) {
+            $("#error-alert").addClass("hidden");
+        }
+        $(message).hide();
+        $(input).removeClass("validation-error");
+    },
+
+    setReturnUrl: function (returnParams) {
+        var allLink = $("#employee-table").find("a");
+        $.each(allLink, function (i, e) {
+            var href = $(this).attr("href");
+            $(e).attr("href", href + "?" + returnParams);
+        });
+    },
+
     query: function () {
         if (listEmployee.checkSelectionValue()) {
+            var queryString = $('form.form-filter').serialize();
             $.ajax({
-                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-                type: 'POST',
+                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList?' + queryString,
+                type: 'GET',
                 dataType: 'html',
-                data: $('form.form-filter').serialize(),
                 success: function (response) {
                     $('#employee-list').html(response);
                     listEmployee.initDataTable();
+                    //listEmployee.setReturnUrl(queryString);
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -137,13 +168,12 @@ var listDepartment = {
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
                     onCheck: function () {
-                        var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',')
-                        var departmentIds = listDepartment.SetDepartmentIdsValue(selectedValue);
-                        $("#DepartmentIds").val(departmentIds);
-                        if (!departmentIds) {
-                            $("#departmentIds-validation").removeClass("hidden");
+                        var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#DepartmentIds").val(selectedValue);
+                        if (!selectedValue) {
+                            listEmployee.showErrorMessage("#company-validation","#CompanySelect");
                         } else {
-                            $("#departmentIds-validation").addClass("hidden");
+                            listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
                         }
                     }
                 });
@@ -170,26 +200,14 @@ var listDepartment = {
         return value;
     },
 
-    SetDepartmentIdsValue: function (selectedIds) {
-        var selectedArr = selectedIds.split(",");
-        var departmentArr = [];
-        for (var i = 0; i < selectedArr.length; i++) {
-            if (selectedArr[i].includes("d")) {
-                var id = selectedArr[i].slice(1);
-                departmentArr.push(id);
-            }
-        }
-        return departmentArr.join();
-    },
-
     GetDepartmentIds: function (departments, divisionId) {
         var value = [];
         for (var i = 0; i < departments.length; i++) {
             if (departments[i].divisionId == divisionId) {
                 var department = {
-                    value: 'd' + departments[i].departmentId,
+                    value: departments[i].departmentId,
                     text: departments[i].code,
-                    checked: true,
+                    checked: listEmployee.getValueIsSelected($("#DepartmentIds").val(), departments[i].departmentId),
                     enable: true,
                     cssClass: "-option-check",
                 };
@@ -224,7 +242,7 @@ var listEmployeeStatus = {
                 id: $(selectElement).prop("name"),
                 value: this.value,
                 text: this.text,
-                checked: true,
+                checked: listEmployee.getValueIsSelected($("#EmployeeStatusIds").val(), this.value),
                 enable: true,
                 cssClass: "-option-check"
             }
@@ -242,9 +260,9 @@ var listEmployeeStatus = {
                 var selectedValue = $("#EmployeeStatus").fanexMultiSelect('getItems', true).join(',')
                 $("#EmployeeStatusIds").val(selectedValue);
                 if (!selectedValue) {
-                    $("#employeeStatusIds-validation").removeClass("hidden");
+                    listEmployee.showErrorMessage("#employment-status-validation", "#EmployeeStatus");
                 } else {
-                    $("#employeeStatusIds-validation").addClass("hidden");
+                    listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
                 }
             }
         });

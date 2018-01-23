@@ -1411,11 +1411,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select at least one option!.
+        ///   Looks up a localized string similar to Please select at least one Company.
         /// </summary>
-        public static string SelectAtLeastOneOption {
+        public static string SelectAtLeastOneCompany {
             get {
-                return ResourceManager.GetString("SelectAtLeastOneOption", resourceCulture);
+                return ResourceManager.GetString("SelectAtLeastOneCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select at least one Employment Status.
+        /// </summary>
+        public static string SelectAtLeastOneEmploymentStatus {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneEmploymentStatus", resourceCulture);
             }
         }
         

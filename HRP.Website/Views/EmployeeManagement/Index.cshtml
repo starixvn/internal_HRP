@@ -25,16 +25,18 @@
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li class="active">@ViewLang.EmployeeList</li>
 </ol>
-<form class="search-form form-filter">
-    <div class="group">
-        <label class="text">@ViewLang.Company</label>
-        <span class="msg-error hidden" id="departmentIds-validation">@Message.SelectAtLeastOneOption</span>
-        <select class="control company" id="CompanySelect"></select>
-        <input asp-for="DepartmentIds" hidden />
+<form class="search-form form-filter" method="get">
+    <div class="msg-error -has-icon hidden" id="error-alert">
+        <p id="company-validation" hidden>@Message.SelectAtLeastOneCompany</p>
+        <p id="employment-status-validation" hidden>@Message.SelectAtLeastOneEmploymentStatus</p>
     </div>
     <div class="group">
-        <label class="text">@ViewLang.Status</label>
-        <span class="msg-error hidden" id="employeeStatusIds-validation">@Message.SelectAtLeastOneOption</span>
+        <label class="text">@ViewLang.Company</label>
+        <select class="control company" id="CompanySelect"></select>
+        <input asp-for="DepartmentIds" class="hidden" />
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.EmploymentStatus</label>
         <select class="control service" asp-for="EmployeeStatus" asp-items="Model.EmployeeStatus"></select>
         <input asp-for="EmployeeStatusIds" hidden />
     </div>
