@@ -326,5 +326,7 @@
         public IEnumerable<Section> Sections { get; set; } = new List<Section>();
 
         public IEnumerable<CostCenter> CostCenters { get; set; } = new List<CostCenter>();
+
+        public EmployeeManagementViewModel Filter { get; set; } = new EmployeeManagementViewModel();
     }
 }

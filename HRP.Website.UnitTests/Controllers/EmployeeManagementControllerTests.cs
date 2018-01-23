@@ -183,20 +183,100 @@
 
         #endregion UpdateEmployee
 
+        #region CreateEmployment
+
+        [Fact]
+        public void CreateEmploymentGet_CheckViewName_ReturnExpectedViewName()
+        {
+            // Arrange
+            var expected = "_CreateEmployment";
+            var employeeController = GetEmployeeManagementController();
+            employeeManagementService.GetDataToCreateEmployment().Returns(new CreateEmploymentViewModel());
+
+            // Act
+            var actual = employeeController.CreateEmployment();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal(expected, viewResult.ViewName);
+        }
+
+        [Fact]
+        public void CreateEmploymentGet_CheckViewModel_ReturnExpectedViewModel()
+        {
+            //Arrange
+            var departmentIds = "1,2";
+            var employeeStatusIds = "1,2";
+            var employeeFilterId = 1;
+            var expected = new CreateEmploymentViewModel();
+            var employeeController = GetEmployeeManagementController();
+            employeeManagementService.GetDataToCreateEmployment().Returns(expected);
+
+            //Act
+            var actual = employeeController.CreateEmployment(departmentIds, employeeStatusIds, employeeFilterId);
+
+            //Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateEmploymentViewModel>(viewResult.Model);
+            Assert.Equal(departmentIds, viewModel.Filter.DepartmentIds);
+            Assert.Equal(employeeStatusIds, viewModel.Filter.EmployeeStatusIds);
+            Assert.Equal(employeeFilterId, viewModel.Filter.EmployeeId);
+        }
+
+        [Fact]
+        public async Task CreateEmploymentPost_ModelStateIsInvalid_ReturnExpectedErrors()
+        {
+            // Arrange
+            var model = new CreateEmploymentViewModel();
+            var employeeController = GetEmployeeManagementController();
+            employeeController.ModelState.AddModelError("company", "required");
+
+            // Act
+            var actual = await employeeController.CreateEmployment(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Contains(errors.Keys, x => x == "company");
+        }
+
+        [Fact]
+        public async Task CreateEmploymentPost_ModelStateIsValid_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var model = new CreateEmploymentViewModel();
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
+            var employeeController = GetEmployeeManagementController();
+            employeeManagementService.CreateEmployeeAsync(Arg.Any<CreateEmploymentViewModel>()).Returns(expected);
+
+            // Act
+            var actual = await employeeController.CreateEmployment(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
+        }
+
+        #endregion CreateEmployment
+
         #region UpdateEmployment
 
         [Fact]
         public void UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
         {
-            //Arrange
+            // Arrange
             var expected = "_UpdateEmployment";
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
-            //Act
+            // Act
             var actual = employeeController.UpdateEmployment(1);
 
-            //Assert
+            // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             Assert.Equal(expected, viewResult.ViewName);
         }
@@ -220,8 +300,11 @@
         [Fact]
         public void UpdateEmploymentGet_ViewModelHasValue_ReturnExpectedViewModel()
         {
-            //Arrange
+            // Arrange
             var employeeId = 1;
+            var departmentIds = "1,2";
+            var employeeStatusIds = "1,2";
+            var employeeFilterId = 1;
             var expected = new UpdateEmploymentViewModel
             {
                 EmployeeId = employeeId
@@ -229,13 +312,54 @@
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
 
-            //Act
-            var actual = employeeController.UpdateEmployment(employeeId);
+            // Act
+            var actual = employeeController.UpdateEmployment(employeeId, departmentIds, employeeStatusIds, employeeFilterId);
 
-            //Assert
+            // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<UpdateEmploymentViewModel>(viewResult.Model);
             Assert.Equal(expected.EmployeeId, viewModel.EmployeeId);
+            Assert.Equal(departmentIds, viewModel.Filter.DepartmentIds);
+            Assert.Equal(employeeStatusIds, viewModel.Filter.EmployeeStatusIds);
+            Assert.Equal(employeeFilterId, viewModel.Filter.EmployeeId);
+        }
+
+        [Fact]
+        public async Task UpdateEmploymentPost_ModelStateIsInvalid_ReturnExpectedErrors()
+        {
+            // Arrange
+            var model = new UpdateEmploymentViewModel();
+            var employeeController = GetEmployeeManagementController();
+            employeeController.ModelState.AddModelError("company", "required");
+
+            // Act
+            var actual = await employeeController.UpdateEmployment(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Contains(errors.Keys, x => x == "company");
+        }
+
+        [Fact]
+        public async Task UpdateEmploymentPost_ModelStateIsValid_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var model = new UpdateEmploymentViewModel();
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
+            var employeeController = GetEmployeeManagementController();
+            employeeManagementService.UpdateEmploymentAsync(Arg.Any<UpdateEmploymentViewModel>()).Returns(expected);
+
+            // Act
+            var actual = await employeeController.UpdateEmployment(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
         }
 
         #endregion UpdateEmployment
@@ -243,15 +367,15 @@
         [Fact]
         public async Task CheckEmployeeCodeExisted_WhenCalled_ReturnAsExpected()
         {
-            //Arrange
+            // Arrange
             var expected = true;
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataEntityAsync<bool>(Arg.Any<CheckEmpCodeExistedCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.CheckEmployeeCodeExisted(1, "DAR", "DAR-1234");
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.NotEqual(expected, (bool)jsonResult.Value);
         }
@@ -259,7 +383,7 @@
         [Fact]
         public async Task GetDivisionByCompanyId_WhenCalled_ReturnExpectedDivisions()
         {
-            //Arrange
+            // Arrange
             var expected = new List<Division>
             {
                 new Division { DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
@@ -267,10 +391,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetDivisionByCompanyId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<Division>)jsonResult.Value);
         }
@@ -278,7 +402,7 @@
         [Fact]
         public async Task GetDepartmentByDivisionId_WhenCalled_ReturnExpectedDepartments()
         {
-            //Arrange
+            // Arrange
             var expected = new List<Department>
             {
                 new Department { DepartmentId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
@@ -286,10 +410,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Department>(Arg.Any<GetDepartmentByDivisionIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetDepartmentByDivisionId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<Department>)jsonResult.Value);
         }
@@ -297,7 +421,7 @@
         [Fact]
         public async Task GetSectionByCostCenterId_WhenCalled_ReturnExpectedSections()
         {
-            //Arrange
+            // Arrange
             var expected = new List<Section>
             {
                 new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
@@ -305,10 +429,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Section>(Arg.Any<GetSectionByCostCenterIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetSectionByCostCenterId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<Section>)jsonResult.Value);
         }
@@ -316,7 +440,7 @@
         [Fact]
         public async Task GetCostCenterDepartmentId_WhenCalled_ReturnExpectedDivisions()
         {
-            //Arrange
+            // Arrange
             var expected = new List<CostCenter>
             {
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
@@ -324,10 +448,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterDepartmentIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetCostCenterDepartmentId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<CostCenter>)jsonResult.Value);
         }
@@ -335,7 +459,7 @@
         [Fact]
         public async Task GetEmployeeSuggestion_WhenCalled_ReturnExpectedEmployees()
         {
-            //Arrange
+            // Arrange
             var expected = new List<EmployeeSuggestionViewModel>
             {
                 new EmployeeSuggestionViewModel { EmployeeId = 1, FullName = "Tim", NickName = "tim.trinh" }
@@ -343,10 +467,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetEmployeeSuggestion("dar");
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<EmployeeSuggestionViewModel>)jsonResult.Value);
         }
@@ -354,7 +478,7 @@
         [Fact]
         public async Task GetGradeLevelByJobCategoryId_WhenCalled_ReturnExpectedGradeLevels()
         {
-            //Arrange
+            // Arrange
             var expected = new List<GradeLevel>
             {
                 new GradeLevel { GradeLevelId = 1, Name = "Senior Management", IsActive = true }
@@ -362,10 +486,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<GradeLevel>(Arg.Any<GetGradeLevelByJobCategoryIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetGradeLevelByJobCategoryId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<GradeLevel>)jsonResult.Value);
         }
@@ -373,21 +497,21 @@
         [Fact]
         public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnJsonResult()
         {
-            //Arrange
+            // Arrange
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(new List<EmployeeSuggestionViewModel>());
 
-            //Actual
+            // Actual
             var actual = await employeeController.GetEmployeeSuggestionByName("oliver");
 
-            //Assert
+            // Assert
             Assert.IsType<JsonResult>(actual);
         }
 
         [Fact]
         public async Task GetJobGradeByGradeLevelId_WhenCalled_ReturnExpectedJobGrades()
         {
-            //Arrange
+            // Arrange
             var expected = new List<JobGrade>
             {
                 new JobGrade { JobGradeId = 1, Name = "A1", IsActive = true }
@@ -395,10 +519,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<JobGrade>(Arg.Any<GetJobGradeByGradeLevelIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetJobGradeByGradeLevelId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<JobGrade>)jsonResult.Value);
         }
@@ -406,7 +530,7 @@
         [Fact]
         public async Task GetCityByCountryId_WhenCalled_ReturnExpectedCities()
         {
-            //Arrange
+            // Arrange
             var expected = new List<City>
             {
                 new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
@@ -414,10 +538,10 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<City>(Arg.Any<GetCityByCountryIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetCityByCountryId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<City>)jsonResult.Value);
         }
@@ -425,7 +549,7 @@
         [Fact]
         public async Task GetOfficeByCityId_WhenCalled_ReturnExpectedCities()
         {
-            //Arrange
+            // Arrange
             var expected = new List<Office>
             {
                 new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
@@ -433,7 +557,7 @@
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<Office>(Arg.Any<GetOfficeByCityIdCriteria>()).Returns(expected);
 
-            //Act
+            // Act
             var actual = await employeeController.GetOfficeByCityId(1);
 
             //Assert

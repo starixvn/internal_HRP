@@ -24,6 +24,7 @@
             var index = 0;
             foreach (EmployeeBasicInfo employee in Model)
             {
+                var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
                 index++;
                 <tr>
                     <td>@index</td>
@@ -37,17 +38,16 @@
                     <td>@employee.EmployeeStatus</td>
                     <td class="text-center has-icon">
                         <div class="dropdown config-action">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <span class="icon-configuration"></span>
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-1">
+                            <ul class="dropdown-menu" aria-labelledby="@dropdownId">
                                 @if (employee.EditProfilePolicy != Policy.None)
                                 {
                                     <li>
-                                        <a asp-action="UpdateEmployee"
-                                           asp-controller="EmployeeManagement"
-                                           asp-route-employeeId="@employee.EmployeeId">
+                                        <a asp-action="UpdateEmployee" asp-route-id="@employee.EmployeeId">
                                             <span class="icon-user"></span>
 
                                             @if (employee.EditProfilePolicy == Policy.Host)

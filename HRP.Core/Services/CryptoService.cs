@@ -7,7 +7,7 @@ namespace HRP.Core.Services
     using Microsoft.Extensions.Options;
     using Model;
 
-    public class CryptoService : ICryptoService
+    public class CryptoService : ICryptoService, IDisposable
     {
         private const bool OptimalAsymmetricEncryptionPadding = false;
         private X509Certificate2 cert2;
@@ -77,6 +77,11 @@ namespace HRP.Core.Services
                 X509KeyStorageFlags flags = X509KeyStorageFlags.MachineKeySet;
                 cert2 = new X509Certificate2(configuration.Value.CertificateFilePath, configuration.Value.PasswordToSignTheCertificateFile, flags);
             }
+        }
+
+        public void Dispose()
+        {
+            cert2.Dispose();
         }
     }
 }

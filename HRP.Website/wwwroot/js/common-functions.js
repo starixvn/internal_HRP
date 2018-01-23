@@ -72,6 +72,16 @@
         window.location = rootURL + url;
     }
 
+    function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.href);
+        var results = new RegExp('[\?&]' + sParam + '=([^]*)').exec(sPageURL);
+        if (results === null) {
+            return null;
+        } else {
+            return results[1] || 0;
+        }
+    }
+
     function initModule() {
         rootURL = $('#RootURL').val();
     }
@@ -84,7 +94,8 @@
         showSuccessMessage: showSuccessMessage,
         showValidationSummary: showValidationSummary,
         hideValidationSummary: hideValidationSummary,
-        initDatetimepicker: initDatetimepicker
+        initDatetimepicker: initDatetimepicker,
+        getUrlParameter: getUrlParameter
     }
 }(jQuery));
 

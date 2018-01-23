@@ -131,9 +131,15 @@
         [Route("EmployeeManagement/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment()
+        public IActionResult CreateEmployment(
+            string departmentIds = null,
+            string employeeStatusIds = null,
+            int? employeeFilterId = null)
         {
-            var viewModel = employeeManagementService.GetDataToCreateEmployment();
+            CreateEmploymentViewModel viewModel = employeeManagementService.GetDataToCreateEmployment();
+            viewModel.Filter.DepartmentIds = departmentIds;
+            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
+            viewModel.Filter.EmployeeId = employeeFilterId;
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -155,9 +161,13 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployee(int employeeId)
+        public IActionResult UpdateEmployee(
+            int id,
+            string departmentIds = null,
+            string employeeStatusIds = null,
+            int? employeeFilterId = null)
         {
-            var viewModel = employeeManagementService.GetEmployeeById(employeeId);
+            var viewModel = employeeManagementService.GetEmployeeById(id);
 
             if (viewModel == null)
             {
@@ -195,7 +205,11 @@
         [Route("EmployeeManagement/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployment(int employeeId)
+        public IActionResult UpdateEmployment(
+            int employeeId,
+            string departmentIds = null,
+            string employeeStatusIds = null,
+            int? employeeFilterId = null)
         {
             UpdateEmploymentViewModel viewModel = employeeManagementService.GetDataToUpdateEmployment(employeeId);
 
@@ -203,6 +217,10 @@
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
+
+            viewModel.Filter.DepartmentIds = departmentIds;
+            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
+            viewModel.Filter.EmployeeId = employeeFilterId;
 
             return PartialView("_UpdateEmployment", viewModel);
         }

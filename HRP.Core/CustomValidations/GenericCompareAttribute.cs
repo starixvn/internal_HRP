@@ -74,10 +74,12 @@
 
         private string GetErrorMessage()
         {
+#pragma warning disable S1067 // Expressions should not be too complex
             string operstring = Operator == GenericCompareOperator.GreaterThan ? "must be greater than " :
                 (Operator == GenericCompareOperator.GreaterThanOrEqual ? "must be greater than or equal to " :
                 (Operator == GenericCompareOperator.LessThan ? "must be less than " :
                 (Operator == GenericCompareOperator.LessThanOrEqual ? "must be less than or equal to " : string.Empty)));
+#pragma warning restore S1067 // Expressions should not be too complex
 
             return string.Format("{0} {1} {2}", DisplayName, operstring, OtherPropertyDisplayName);
         }
