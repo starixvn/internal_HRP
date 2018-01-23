@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
-    using HRP.Core.Enumerations;
+    using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -83,12 +83,13 @@
                 Departments = new List<Department>()
             };
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            var employeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
             sessionService.UserId = 1;
             var viewModel = new EmployeeManagementViewModel
             {
                 DepartmentIds = string.Empty,
-                InService = Selection.All,
-                InProbation = Selection.All,
+                EmployeeStatusIds = "1,2,3,4,5",
+                EmployeeStatus = new SelectList(employeeStatus, "ResourceId", "Value"),
                 EmployeeId = 41
             };
 
@@ -367,6 +368,20 @@
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, (IEnumerable<GradeLevel>)jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnJsonResult()
+        {
+            //Arrange
+            employeeManagementController = GetEmployeeManagementController();
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(new List<EmployeeSuggestionViewModel>());
+
+            //Actual
+            var actual = await employeeManagementController.GetEmployeeSuggestionByName("oliver");
+
+            //Assert
+            Assert.IsType<JsonResult>(actual);
         }
 
         [Fact]
