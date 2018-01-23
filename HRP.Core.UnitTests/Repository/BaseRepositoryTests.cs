@@ -12,16 +12,14 @@
 
     public class BaseRepositoryTests
     {
-        private BaseRepositoryTestable baseRepository;
-        private IObjectDb objectDb;
-        private const int InvalidCriteriaCode = -1;
-        private const string TerminatedMessage = "Error Message";
+        private readonly BaseRepositoryTestable baseRepository;
+        private readonly IObjectDb objectDb;
         private const string ExceptionMessage = "Object reference not set to an instance of an object.";
 
         public BaseRepositoryTests()
         {
             objectDb = Substitute.For<IObjectDb>();
-            
+
             baseRepository = Substitute.ForPartsOf<BaseRepositoryTestable>();
             baseRepository.When(r => r.Public_GetObjectDb(Arg.Any<string>())).DoNotCallBase();
             baseRepository.Public_GetObjectDb(Arg.Any<string>()).Returns(objectDb);
@@ -167,7 +165,7 @@
             objectDb.Received().Dispose();
         }
 
-        private ICriteria FakeCriteria()
+        private static ICriteria FakeCriteria()
         {
             var criteria = Substitute.For<ICriteria>();
 
@@ -178,7 +176,7 @@
             return criteria;
         }
 
-        private Hashtable FakeOutputParamsSuccess()
+        private static Hashtable FakeOutputParamsSuccess()
         {
             return new Hashtable
             {
