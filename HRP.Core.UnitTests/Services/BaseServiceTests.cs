@@ -13,7 +13,6 @@
     {
         private IDynamicRepository dynamicRepository;
         private IBaseRepository baseRepository;
-        private BaseService baseService;
 
         #region GetData
 
@@ -21,7 +20,7 @@
         public void GetData_CriteriaIsNull_ReturnEmptyList()
         {
             // Arrange
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.GetData<int>(null);
@@ -36,7 +35,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.GetData<MenuItem>(criteria);
@@ -55,7 +54,7 @@
             };
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
             dynamicRepository.Fetch<MenuItem>(criteria).Returns(expected);
 
             // Act
@@ -74,7 +73,7 @@
         public async Task GetDataAsync_CriteriaIsNull_ReturnEmptyList()
         {
             // Arrange
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.GetDataAsync<int>(null);
@@ -89,7 +88,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.GetDataAsync<FunctionModel>(criteria);
@@ -107,7 +106,7 @@
             };
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
             dynamicRepository.FetchAsync<FunctionModel>(criteria).Returns(expected);
 
             // Act
@@ -126,7 +125,7 @@
         public void GetDataEntity_CriteriaIsNull_ReturnDefaultValue()
         {
             // Arrange
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.GetDataEntity<int>(null);
@@ -141,7 +140,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.GetDataEntity<int>(criteria);
@@ -157,7 +156,7 @@
             var expected = 1;
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
             dynamicRepository.Get<int>(criteria).Returns(expected);
 
             // Act
@@ -175,7 +174,7 @@
         public async Task GetDataEntityAsync_CriteriaIsNull_ReturnDefaultValue()
         {
             // Arrange
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.GetDataEntityAsync<int>(null);
@@ -190,7 +189,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.GetDataEntityAsync<int>(criteria);
@@ -206,7 +205,7 @@
             var expected = 1;
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
             dynamicRepository.GetAsync<int>(criteria).Returns(expected);
 
             // Act
@@ -225,7 +224,7 @@
         {
             // Arrange
             var expected = new CommandResult();
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.ExecuteNonQuery(null);
@@ -243,7 +242,7 @@
             var expected = new CommandResult();
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = baseService.ExecuteNonQuery(criteria);
@@ -260,7 +259,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             baseService.ExecuteNonQuery(criteria);
@@ -278,7 +277,7 @@
         {
             // Arrange
             var expected = new CommandResult();
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.ExecuteNonQueryAsync(null);
@@ -296,7 +295,7 @@
             var expected = new CommandResult();
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(false);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             var actual = await baseService.ExecuteNonQueryAsync(criteria);
@@ -313,7 +312,7 @@
             // Arrange
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
-            baseService = GetBaseService();
+            var baseService = GetBaseService();
 
             // Act
             await baseService.ExecuteNonQueryAsync(criteria);
@@ -326,14 +325,14 @@
 
         #region Helpers
 
-        private IDynamicRepository FakeDynamicRepository()
+        private static IDynamicRepository FakeDynamicRepository()
         {
             var repository = Substitute.For<IDynamicRepository>();
 
             return repository;
         }
 
-        private IBaseRepository FakeBaseRepository()
+        private static IBaseRepository FakeBaseRepository()
         {
             var repository = Substitute.For<IBaseRepository>();
 

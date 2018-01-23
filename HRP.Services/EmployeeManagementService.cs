@@ -339,12 +339,18 @@
 
         public CreateEmploymentViewModel GetDataToCreateEmployment()
         {
+            var viewModel = new CreateEmploymentViewModel();
             var criteria = new GetDataToCreateEmploymentCriteria
             {
                 UserId = sessionService.UserId
             };
 
-            return employeeRepository.GetDataToCreateEmployment(criteria);
+            if (criteria.IsValid())
+            {
+                viewModel = employeeRepository.GetDataToCreateEmployment(criteria);
+            }
+
+            return viewModel;
         }
 
         public UpdateEmploymentViewModel GetDataToUpdateEmployment(int employeeId)

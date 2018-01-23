@@ -12,6 +12,7 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@
         private readonly Fixture fixture;
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IEmployeeManagementRepository employeeRepository;
 
         public EmployeeManagementServiceTests()
         {
@@ -243,7 +245,7 @@
             var expected = FakeCreateEmployeeViewModel();
             var employeeService = GetEmployeeManagementService();
             var reader = Substitute.For<IMultiResultReader>();
-            reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel>() { expected });
+            reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel> { expected });
             mockObjectDb.QueryMultiple(Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId)).Returns(reader);
 
             // Act
@@ -340,6 +342,29 @@
 
         #endregion CheckValidPicture
 
+        #region GetDataToCreateEmployment
+
+        [Fact]
+        public void GetDataToCreateEmployment_UserIdIsValid_ReturnExpectedModel()
+        {
+            // Arrange
+            var expected = new CreateEmploymentViewModel
+            {
+                Companies = new List<Company> { new Company { CompanyId = 1, Code = "SMS" } }
+            };
+            var employeeService = GetEmployeeManagementService();
+            employeeRepository.GetDataToCreateEmployment(Arg.Any<GetDataToCreateEmploymentCriteria>()).Returns(expected);
+
+            // Act
+            var actual = employeeService.GetDataToCreateEmployment();
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Companies, actual.Companies);
+        }
+
+        #endregion GetDataToCreateEmployment
+
         #region Helper
 
         private static IBaseService FakeBaseService()
@@ -365,13 +390,19 @@
             return Substitute.For<IHostingEnvironment>();
         }
 
+        private static IEmployeeManagementRepository FakeEmployeeRepository()
+        {
+            return Substitute.For<IEmployeeManagementRepository>();
+        }
+
         private EmployeeManagementService GetEmployeeManagementService()
         {
             var hostingEnviroment = FakeHostingEnvironment();
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
+            employeeRepository = FakeEmployeeRepository();
             var cryptoService = FakeCryptoService();
-            var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService);
+            var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService, employeeRepository);
 
             return service;
         }

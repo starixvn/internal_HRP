@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <SonarQubeExclude>True</SonarQubeExclude>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CodeAnalysisRuleSet>Fanex.MailDeliver.MailClient.ruleset</CodeAnalysisRuleSet>

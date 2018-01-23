@@ -294,27 +294,6 @@
             </div>
             <div class="group-complex -emp-layout4 space-between-parts">
                 <div class="component">
-                    <label class="text like-group-title -has-required" asp-for="SectionId">
-                        <span class="icon-group"></span>@ViewLang.Section
-                    </label>
-                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
-                    </select>
-                </div>
-                <div class="component calendar">
-                    <label class="text" asp-for="SectionChangeDate">@ViewLang.ChangeDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate" readonly>
-                    <span class="icon-calendar"></span>
-                </div>
-                <div class="component">
-                    <label class="text" asp-for="SectionReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="SectionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))" disabled>
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
-            <div class="group-complex -emp-layout4 space-between-parts">
-                <div class="component">
                     <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
@@ -331,6 +310,27 @@
                 <div class="component">
                     <label class="text" asp-for="CostCenterReasonId">@ViewLang.Reason</label>
                     <select class="control" asp-for="CostCenterReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))" disabled>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="group-complex -emp-layout4 space-between-parts">
+                <div class="component">
+                    <label class="text like-group-title -has-required" asp-for="SectionId">
+                        <span class="icon-group"></span>@ViewLang.Section
+                    </label>
+                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId">
+                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    </select>
+                </div>
+                <div class="component calendar">
+                    <label class="text" asp-for="SectionChangeDate">@ViewLang.ChangeDate</label>
+                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate" readonly>
+                    <span class="icon-calendar"></span>
+                </div>
+                <div class="component">
+                    <label class="text" asp-for="SectionReasonId">@ViewLang.Reason</label>
+                    <select class="control" asp-for="SectionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))" disabled>
                         <option value=""></option>
                     </select>
                 </div>

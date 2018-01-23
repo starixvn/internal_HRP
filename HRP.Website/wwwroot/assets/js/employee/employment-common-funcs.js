@@ -116,7 +116,7 @@ var employmentCommonFuncs = (function ($) {
 
     function registerEventChangeCostCenter() {
         $costCenterElement.on('change', function () {
-            var sectionId = $(this).val(),
+            var costCenterId = $(this).val(),
                 htmlOptions = '';
 
             $.ajax({
@@ -124,7 +124,7 @@ var employmentCommonFuncs = (function ($) {
                 url: commonFunctions.rootURL + 'EmployeeManagement/GetSectionByCostCenterId',
                 dataType: 'json',
                 data: {
-                    sectionId: sectionId
+                    costCenterId: costCenterId
                 },
                 success: function (data) {
                     htmlOptions = defaultOption;
@@ -452,10 +452,11 @@ var employmentCommonFuncs = (function ($) {
             }
         };
 
-        $(document).on('change', 'select.search-suggestion', function () {
-            if (!$.isEmptyObject($validator.submitted)) {
-                $form.find('.select2-selection').removeClass('input-validation-error').removeClass('control');
-                $validator.form();
+        $form.find('select.search-suggestion').on('change', function () {
+            var $this = $(this);
+            if (!$.isEmptyObject($validator.submitted) && $this.val()) {
+                $this.next().find('.select2-selection').removeClass('input-validation-error').removeClass('control');
+                $this.valid();
             }
         });
     }

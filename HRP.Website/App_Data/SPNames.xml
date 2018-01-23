@@ -19,11 +19,11 @@
   <Function Name="Department">
     <Setting Key="Department_GetByDivisionId" SpName="Department_GetByDivisionId" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
-  <Function Name="Section">
-    <Setting Key="Section_GetByCostCenterId" SpName="Section_GetByCostCenterId" DbName="bodb_HRP" Plain="0"></Setting>
-  </Function>
   <Function Name="Cost Center">
     <Setting Key="CostCenter_GetByDepartmentId" SpName="CostCenter_GetByDepartmentId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Section">
+    <Setting Key="Section_GetByCostCenterId" SpName="Section_GetByCostCenterId" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Job Category">
     <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
