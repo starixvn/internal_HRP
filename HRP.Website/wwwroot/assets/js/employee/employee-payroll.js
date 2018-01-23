@@ -160,6 +160,19 @@
             }
         });
 
+        if ($('#CanUpdate').val() !== 'True') {
+            $('select, input', '#payroll-form').attr('disabled', 'disabled');
+            $('.add-account').addClass('disabled');
+            return;
+        }
+
+        $('.add-account').each(function (index, element) {
+            var $element = $(element)
+            if ($element.siblings('.bank-type-select').val() == 3) {
+                $element.addClass('disabled');
+            }
+        });
+
         $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
             if (this.checked) {
                 var parent = $(this).closest('.group-complex');
@@ -175,11 +188,6 @@
                 $('input.allowance-calculate', parent).attr('readonly', 'readonly');
             }
         }).change();
-
-        if ($('#CanUpdate').val() !== 'True') {
-            $('select, input', '#payroll-form').attr('disabled', 'disabled');
-            return;
-        }
 
         $('.basic-salary-calculate').on('change', function (e) {
             roundingAmount(e.target);
@@ -226,6 +234,11 @@
 
         $('.bank-type-select').on('change', function () {
             $(this).siblings('.select2.bank-account-select').val('').trigger('change')
+            if (this.value == 3) {
+                $(this).siblings('.add-account').addClass('disabled');
+            } else {
+                $(this).siblings('.add-account').removeClass('disabled');
+            }
         });
 
         $('.number:enabled').on('keypress', function (e) {
