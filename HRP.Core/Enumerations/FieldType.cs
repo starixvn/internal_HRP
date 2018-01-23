@@ -1,0 +1,25 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HRP.Core.Enumerations
+{
+    public enum FieldType
+    {
+        [Display(Name = "Company Local")]
+        CompanyLocal = 1,
+
+        [Display(Name = "Company BVI")]
+        CompanyBVI = 2,
+
+        [Display(Name = "Currency")]
+        Currency = 3,
+
+        [Display(Name = "Basic Salary Change Reason")]
+        BasicSalaryChangeReason = 4,
+
+        [Display(Name = "Nationality")]
+        Nationality = 5,
+
+        [Display(Name = "No of Children")]
+        NoOfChildren = 6,
+    }
+}

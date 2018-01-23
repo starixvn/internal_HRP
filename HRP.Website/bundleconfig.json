@@ -310,7 +310,8 @@
     "outputFileName": "wwwroot/assets/bundles/configuration/js/data-configuration.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-ui/jquery-ui.js",
-      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js"
+      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
+      "wwwroot/assets/js/configuration/data-configuration.js"
     ],
     "minify": {
       "enabled": true,

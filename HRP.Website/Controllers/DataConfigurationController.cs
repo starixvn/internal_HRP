@@ -23,9 +23,23 @@
             return View();
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public IActionResult GetAllCompanyBVI()
+        {
+            return PartialView("_ListSimpleItem");
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public IActionResult CreateCompanyBVI()
+        {
+            var model = new SimpleItem();
+
+            return View(model);
+        }
+
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateCompanyBVIAsync(SimpleItem item)
+        public async Task<IActionResult> CreateCompanyBVI(SimpleItem item)
         {
             var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(item);
 

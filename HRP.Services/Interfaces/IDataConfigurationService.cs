@@ -7,5 +7,7 @@
     public interface IDataConfigurationService
     {
         Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item);
+
+        DataConfigurationIndexViewModel GetActionLinkForManageItem();
     }
 }

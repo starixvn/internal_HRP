@@ -1,4 +1,7 @@
-﻿@{
+﻿@using HRP.Resources
+@using HRP.Core.Enumerations
+@using HRP.Core.Constants
+@{
     ViewData["Title"] = "Data Configuration";
 }
 
@@ -14,14 +17,31 @@
     }
 </environment>
 
-<div>
-    Data configuration page
+<!--temp code-->
+<form id="filterFieldForm" class="search-form">
+    <div class="group">
+        <label class="text">@ViewLang.Status</label>
+        <select class="control" id="fieldId">
+            <option value="@((int)FieldType.CompanyLocal)">@ViewLang.CompanyLocal</option>
+            <option value="@((int)FieldType.CompanyBVI)">@ViewLang.CompanyBVI</option>
+            <option value="@((int)FieldType.Currency)">@ViewLang.Currency</option>
+        </select>
+    </div>
+    <button type="submit" class="button -primary">@ViewLang.Submit</button>
+</form>
+
+<div id="tableFieldItem">
 </div>
+
+<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-create-url="@DataConfigurationActionLink.CreateCompanyLocal" data-update-url="@DataConfigurationActionLink.UpdateCompanyLocal" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyLocal" />
+<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyBVI" />
+<!--temp code-->
 
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/assets/js/configuration/data-configuration.js"></script>
     }
 </environment>
 <environment exclude="Development">

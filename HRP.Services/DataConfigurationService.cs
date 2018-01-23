@@ -1,6 +1,8 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Threading.Tasks;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.Company;
@@ -28,6 +30,11 @@
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        public DataConfigurationIndexViewModel GetActionLinkForManageItem()
+        {
+            throw new NotImplementedException();
         }
     }
 }

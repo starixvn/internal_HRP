@@ -609,4 +609,13 @@
   <data name="SelectAutoCalculatedAmount" xml:space="preserve">
     <value>Select auto-calculated amount</value>
   </data>
+  <data name="BasicSalaryChangeReason" xml:space="preserve">
+    <value>Basic Salary Change Reason</value>
+  </data>
+  <data name="CompanyBVI" xml:space="preserve">
+    <value>Company BVI</value>
+  </data>
+  <data name="CompanyLocal" xml:space="preserve">
+    <value>Company Local</value>
+  </data>
 </root>

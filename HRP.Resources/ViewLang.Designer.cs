@@ -196,6 +196,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basic Salary Change Reason.
+        /// </summary>
+        public static string BasicSalaryChangeReason {
+            get {
+                return ResourceManager.GetString("BasicSalaryChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beneficiary Name.
         /// </summary>
         public static string BeneficiaryName {
@@ -286,11 +295,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company BVI.
+        /// </summary>
+        public static string CompanyBVI {
+            get {
+                return ResourceManager.GetString("CompanyBVI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Code.
         /// </summary>
         public static string CompanyCode {
             get {
                 return ResourceManager.GetString("CompanyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Local.
+        /// </summary>
+        public static string CompanyLocal {
+            get {
+                return ResourceManager.GetString("CompanyLocal", resourceCulture);
             }
         }
         
