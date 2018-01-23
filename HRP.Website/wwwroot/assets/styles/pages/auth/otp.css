@@ -9,6 +9,16 @@
   color: #666;
 }
 
+.search-form .group .text.-has-required {
+  position: relative;
+}
+
+.search-form .group .text.-has-required:after {
+  content: "*";
+  margin-left: 4px;
+  color: #ff0000;
+}
+
 .search-form .group .control {
   display: block;
   margin-bottom: 10px;

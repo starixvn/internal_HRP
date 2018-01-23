@@ -9,6 +9,16 @@
   color: #666;
 }
 
+.search-form .group .text.-has-required {
+  position: relative;
+}
+
+.search-form .group .text.-has-required:after {
+  content: "*";
+  margin-left: 4px;
+  color: #ff0000;
+}
+
 .search-form .group .control {
   display: block;
   margin-bottom: 10px;
@@ -374,6 +384,16 @@ table.dataTable thead .sorting_desc:after {
 .fanex-multiselect {
   position: relative;
   border-color: #d9d9d9;
+}
+
+.fanex-multiselect.validation-error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
 }
 
 .fanex-multiselect span {

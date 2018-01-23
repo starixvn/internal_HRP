@@ -18,6 +18,11 @@
     position: relative;
     border-color: $border-color;
 
+    &.validation-error {
+        border-color: #ff4545;
+        @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
+    }
+
     span {
         margin-top: initial;
         position: absolute;
