@@ -1,13 +1,14 @@
 ﻿namespace HRP.Services.Interfaces
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Models.DataConfiguration;
 
     public interface IDataConfigurationService
     {
-        Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item);
+        Task<IEnumerable<SimpleItem>> GetAllCompanyBVIAsync();
 
-        DataConfigurationIndexViewModel GetActionLinkForManageItem();
+        Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item);
     }
 }

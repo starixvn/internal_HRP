@@ -3,6 +3,10 @@
 
     function initModule() {
         $filterFieldForm = $('#filterFieldForm');
+        registerEventShowListItem();
+    }
+
+    function registerEventShowListItem() {
         $filterFieldForm.on('submit', function (e) {
             e.preventDefault();
 
