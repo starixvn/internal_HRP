@@ -446,7 +446,7 @@
         public void Payroll_InvalidEmployeeId_RedirectToErrorPage()
         {
             var employeeId = 0;
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeManagementController = GetEmployeeManagementController();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(x => null);
 
             //Act
@@ -462,7 +462,7 @@
         public void Payroll_ValidEmployeeId_ReturnView()
         {
             var employeeId = 1;
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeManagementController = GetEmployeeManagementController();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(new EmployeePayrollViewModel { EmployeeId = employeeId });
 
             var actual = employeeManagementController.Payroll(employeeId);
@@ -484,7 +484,7 @@
                 Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
             };
 
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeManagementController = GetEmployeeManagementController();
             payrollService.When(x => x.UpdatePayroll(model, sessionService.UserId));
 
             var actual = employeeManagementController.SavePayroll(model);
@@ -506,7 +506,7 @@
                 Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
             };
 
-            employeeManagementController = GetEmployeeManagementController();
+            var employeeManagementController = GetEmployeeManagementController();
             employeeManagementController.ModelState.AddModelError("", "Error");
 
             var actual = employeeManagementController.SavePayroll(model);
