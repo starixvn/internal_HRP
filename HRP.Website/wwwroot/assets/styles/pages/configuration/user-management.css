@@ -292,7 +292,7 @@ table.dataTable thead .sorting_desc:after {
   -o-box-shadow: none;
   box-shadow: none;
   outline: none;
-  width: 50px;
+  width: 60px;
   height: 28px;
   line-height: 28px;
   padding-left: 5px;
@@ -356,8 +356,8 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .modal-content {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .modal-content .modal-header {
@@ -376,7 +376,7 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .modal-content .modal-body {
-  padding: 25px 0;
+  padding: 15px 0;
   font-size: 13px;
   line-height: 20px;
 }

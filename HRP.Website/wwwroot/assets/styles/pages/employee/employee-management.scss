@@ -6,14 +6,8 @@
 @import "../../components/customize-autocomplete";
 
 .search-form {
-    .company,
-    .employee {
-        width: 168px;
-    }
-
-    .service,
-    .probation {
-        width: 130px;
+    .fanex-multiselect-options {
+        width: 200px !important;
     }
 }
 

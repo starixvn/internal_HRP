@@ -54,7 +54,7 @@
             padding: 3px 6px;
             counter-increment: section;
             content: counter(section);
-            color: #1973b2;    
+            color: $primary-color;    
             font-size: 13px;    
         }
     }      

@@ -91,7 +91,8 @@
     "outputFileName": "wwwroot/assets/bundles/configuration/css/data-configuration.min.css",
     "inputFiles": [
       "wwwroot/lib/jquery-ui/jquery-ui.css",
-      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css"
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
+      "wwwroot/assets/styles/pages/configuration/data-configuration.css"
     ]
   },
   {

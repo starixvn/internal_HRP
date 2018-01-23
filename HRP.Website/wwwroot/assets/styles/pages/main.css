@@ -340,8 +340,8 @@ input[type="checkbox"]:disabled + span {
 }
 
 .modal-content {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .modal-content .modal-header {
@@ -360,7 +360,7 @@ input[type="checkbox"]:disabled + span {
 }
 
 .modal-content .modal-body {
-  padding: 25px 0;
+  padding: 15px 0;
   font-size: 13px;
   line-height: 20px;
 }

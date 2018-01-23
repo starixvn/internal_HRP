@@ -3,13 +3,102 @@
 <table class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
+            <th>#</th>
             <th>@ViewLang.Company</th>
             <th>Description</th>
-            <th>@ViewLang.Active</th>
-            <th>Edit</th>
+            <th class="col-active">@ViewLang.Active</th>
+            <th class="col-edit">Edit</th>
         </tr>
     </thead>
     <tbody>
-        NOTHING BUT TROUBLE
+        <tr>
+            <td>1</td>
+            <td>Nexcel</td>
+            <td>Nexcel Solutions</td>
+            <td class="text-center has-icon">
+                <span class="icon-active"></span>
+            </td>
+            <td class="text-center has-icon">
+                <span class="icon-edit" data-toggle="modal" data-target="#newChildItem"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>SMS</td>
+            <td>Sport Marketing System</td>
+            <td class="text-center has-icon">
+                <span class="icon-active"></span>
+            </td>
+            <td class="text-center has-icon">
+                <span class="icon-edit"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Hong Ma</td>
+            <td>Hong Ma</td>
+            <td class="text-center has-icon">
+                <span class="icon-active"></span>
+            </td>
+            <td class="text-center has-icon">
+                <span class="icon-edit"></span>
+            </td>
+        </tr>
     </tbody>
 </table>
+
+<!-- Section Create New Item -->
+<div class="modal fade" id="newChildItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content -has-title">
+      <div class="modal-header">
+        <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+        <h4 class="modal-title" id="myModalLabel">New Item of 'Section'</h4>
+      </div>
+      <div class="modal-body form-information">
+        <label class="text -has-required">Company</label>
+        <div class="group-control">
+            <select class="control">
+                <option></option>
+            </select>
+        </div>
+        <label class="text -has-required">Division</label>
+        <div class="group-control">
+            <select class="control">
+                <option></option>
+            </select>
+        </div>
+        <label class="text -has-required">Department</label>
+        <div class="group-control">
+            <select class="control">
+                <option></option>
+            </select>
+        </div>
+        <label class="text -has-required">Cost Center</label>
+        <div class="group-control">
+            <select class="control">
+                <option></option>
+            </select>
+        </div>   
+        <label class="text -has-required">Section</label>
+        <div class="group-control">
+            <input class="control" type="text" />     
+        </div> 
+        <label class="text">Description</label>
+        <div class="group-control">
+            <input class="control" type="text" />     
+        </div>               
+        <div class="group-control">
+            <label>
+                <input type="checkbox" id="showPassword" />
+                <span>Active</span>
+            </label>
+        </div>
+        <div class="list-button">
+            <button class="button -primary">Save</button>
+            <button class="button -second" type="button">Cancel</button>            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
