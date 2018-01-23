@@ -12,6 +12,7 @@
     using Criteria.Employee;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.EmployeeManagement;
     using Services;
@@ -41,12 +42,13 @@
         public IActionResult Index()
         {
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
+            var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
             var viewModel = new EmployeeManagementViewModel
             {
                 IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
                 DepartmentIds = GetDepartmentIds(listDepartment.Departments),
-                InService = Selection.Yes,
-                InProbation = Selection.All,
+                EmployeeStatusIds = string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
+                EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value")
             };
             return View(viewModel);
         }
@@ -73,8 +75,7 @@
             var criteria = new GetAllEmployeeCriteria
             {
                 DepartmentIds = string.IsNullOrEmpty(model.DepartmentIds) ? string.Empty : model.DepartmentIds,
-                InService = model.InService,
-                InProbation = model.InProbation,
+                EmployeeStatusIds = model.EmployeeStatusIds,
                 EmployeeId = model.EmployeeId,
                 UserId = sessionService.UserId
             };

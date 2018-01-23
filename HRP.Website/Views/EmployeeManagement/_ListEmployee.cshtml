@@ -14,8 +14,7 @@
             <th>@ViewLang.Division</th>
             <th>@ViewLang.Department</th>
             <th>@ViewLang.JobTitle</th>
-            <th>@ViewLang.InService</th>
-            <th>@ViewLang.Probation</th>
+            <th>@ViewLang.EmploymentStatus</th>
             <th>@ViewLang.Action</th>
         </tr>
     </thead>
@@ -35,18 +34,7 @@
                     <td>@employee.DivisionCode</td>
                     <td>@employee.DepartmentCode</td>
                     <td>@employee.JobTitle</td>
-                    <td class="text-center has-icon">
-                        @if (employee.InService)
-                        {
-                            <span class="icon-active"></span>
-                        }
-                    </td>
-                    <td class="text-center has-icon">
-                        @if (employee.InProbation)
-                        {
-                            <span class="icon-active"></span>
-                        }
-                    </td>
+                    <td>@employee.EmployeeStatus</td>
                     <td class="text-center has-icon">
                         <div class="dropdown config-action">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

@@ -30,9 +30,7 @@
 
         public string JobTitle { get; set; }
 
-        public bool InService { get; set; }
-
-        public bool InProbation { get; set; }
+        public string EmployeeStatus { get; set; }
 
         public Policy EditProfilePolicy { get; set; }
 

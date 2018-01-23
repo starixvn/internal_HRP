@@ -33,12 +33,9 @@
         <input asp-for="DepartmentIds" hidden />
     </div>
     <div class="group">
-        <label class="text">@ViewLang.InService</label>
-        <select class="control service" asp-for="InService" asp-items="Html.GetEnumSelectList<Selection>()"></select>
-    </div>
-    <div class="group">
-        <label class="text">@ViewLang.InProbation</label>
-        <select class="control probation" asp-for="InProbation" asp-items="Html.GetEnumSelectList<Selection>()"></select>
+        <label class="text">@ViewLang.Status</label>
+        <select class="control service" asp-for="EmployeeStatus" asp-items="Model.EmployeeStatus"></select>
+        <input asp-for="EmployeeStatusIds" hidden />
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>

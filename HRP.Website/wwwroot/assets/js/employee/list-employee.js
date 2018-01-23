@@ -133,6 +133,8 @@ var listDepartment = {
                 var companyTree = listDepartment.buildCompanyTree(res.companies, res.divisions, res.departments);
                 $("#CompanySelect").fanexMultiSelect({
                     listData: companyTree,
+                    useCustomCheckAllText: true,
+                    customCheckAllText: "All",
                     onCheck: function () {
                         var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',')
                         var departmentIds = listDepartment.SetDepartmentIdsValue(selectedValue);
@@ -210,32 +212,37 @@ var listDepartment = {
 
 var listEmployeeStatus = {
     getItemsList: function (selectElement) {
-        if ($(selectElement).is("select")) {
-            if ($(selectElement).prop("multiple")) {
-                // select element with multiple prop
-                var values = [];
-                $.each($(selectElement).prop("options"), function () {
-                    var item = {
-                        id: $(selectElement).prop("name"),
-                        value: this.value,
-                        text: this.text,
-                        checked: this.selected,
-                        enable: true,
-                        cssClass: "-option-check"
-                    }
-                    values.push(item);
-                });
-
-                return values;
+        var values = [];
+        $.each($(selectElement).prop("options"), function () {
+            var item = {
+                id: $(selectElement).prop("name"),
+                value: this.value,
+                text: this.text,
+                checked: true,
+                enable: true,
+                cssClass: "-option-check"
             }
-        }
+            values.push(item);
+        });
+        return values;
+    },
 
-        return null;
+    init: function () {
+        $("#EmployeeStatus").fanexMultiSelect({
+            listData: listEmployeeStatus.getItemsList($("#EmployeeStatus")),
+            useCustomCheckAllText: true,
+            customCheckAllText: "All",
+            onCheck: function () {
+                var selectedValue = $("#EmployeeStatus").fanexMultiSelect('getItems', true).join(',')
+                $("#EmployeeStatusIds").val(selectedValue);
+            }
+        });
     }
 };
 $(document).ready(function () {
     listEmployee.init();
     listDepartment.init();
+    listEmployeeStatus.init();
 });
 
 $('#quick-search').off('keyup').on('keyup', function () {
