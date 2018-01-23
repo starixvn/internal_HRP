@@ -42,8 +42,7 @@
             string departmentIds = null,
             string employeeStatusIds = null,
             int? employeeId = null,
-            string fullName = null,
-            string nickName = null)
+            string displayName = null)
         {
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
@@ -54,8 +53,7 @@
                 EmployeeStatusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
                 EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value"),
                 EmployeeId = employeeId,
-                FullName = fullName,
-                NickName = nickName
+                DisplayName = displayName
             };
 
             return View(viewModel);
