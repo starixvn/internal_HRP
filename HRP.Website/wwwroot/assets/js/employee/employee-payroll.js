@@ -6,7 +6,7 @@
     };
 
     function round(value, currency) {
-        if(currency === 'VND')
+        if (currency === 'VND')
             return Math.round(value / 1000) * 1000;
 
         return Number(Math.round(value + 'e2') + 'e-2').toFixed(2);
@@ -97,9 +97,11 @@
         var currency = $('select.allowance-detail-calculate', parent).val();
         if (currency != '') {
             var amount = Number($('input.allowance-detail-calculate', parent).val());
-            if (amount !== 0) {
-                var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
-                var value = round(amount * exchangeRates, allowanceCurrency);
+            var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
+            var value = round(amount * exchangeRates, allowanceCurrency);
+            if (value == 0) {
+                $('.allowance-convert-amount', parent).val('');
+            } else {
                 $('.allowance-convert-amount', parent).val(value);
             }
         }
@@ -144,7 +146,7 @@
             },
             triggerClose: {
                 click: true,
-                //mouseleave: true,
+                mouseleave: true,
                 scroll: true
             },
             functionReady: function (instance, helper) {
@@ -163,7 +165,7 @@
                 var parent = $(this).closest('.group-complex');
                 $('input.basic-salary-calculate[readonly]').removeAttr('readonly');
                 $('input.basic-salary-calculate', parent).attr('readonly', 'readonly');
-            }          
+            }
         }).change();
 
         $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
@@ -219,7 +221,7 @@
         $('.calendar input').datetimepicker({
             format: 'MM/DD/YYYY',
             useCurrent: false,
-            allowInputToggle : true
+            allowInputToggle: true
         });
 
         $('.bank-type-select').on('change', function () {
@@ -256,7 +258,32 @@
         });
 
         $.validator.addMethod('greaterthanzero', function (value, element, param) {
-            return value === '' || Number(value) > 0;
+            if (!element.readOnly)
+                return value === '' || Number(value) > 0;
+            else
+                return true;
+        }, $('#greater-than-zero-message').val());
+
+        $.validator.addMethod('invalidsetting', function (value, element, param) {
+            if (element.readOnly)
+                return value === '' || Number(value) > 0;
+            else
+                return true;
+        });
+
+        var classNames = ['basic-salary-ebanking', 'basic-salary-directbanking1', 'basic-salary-directbanking2',
+            'basic-salary-cash', 'allowance-directbanking1', 'allowance-directbanking2', 'allowance-cash'];
+
+        classNames.forEach(function (className) {
+            $.validator.addClassRules(className, {
+                required: function (element) {
+                    return checkRelatedElementsHaveValue('.' + className, element);
+                }
+            });
+        });
+
+        $.validator.addClassRules('number', {
+            greaterthanzero: true
         });
 
         var validator = $('#payroll-form').validate({
@@ -305,132 +332,7 @@
                         var oldValue = basicSalary.data('old-value');
                         return oldValue != '' && basicSalary.val() != oldValue;
                     }
-                },
-                'BasicSalary.EbankingCurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-ebanking', element);
-                    }
-                },
-                'BasicSalary.EbankingAmount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-ebanking', element);
-                    },
-                },
-                'BasicSalary.EbankingAccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-ebanking', element);
-                    }
-                },
-                'BasicSalary.DirectBanking1CurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking1', element);
-                    }
-                },
-                'BasicSalary.DirectBanking1Amount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking1', element);
-                    }
-                },
-                'BasicSalary.DirectBanking1BankTypeId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking1', element);
-                    }
-                },
-                'BasicSalary.DirectBanking1AccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking1', element);
-                    }
-                },
-                'BasicSalary.DirectBanking2CurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking2', element);
-                    }
-                },
-                'BasicSalary.DirectBanking2Amount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking2', element);
-                    }
-                },
-                'BasicSalary.DirectBanking2BankTypeId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking2', element);
-                    }
-                },
-                'BasicSalary.DirectBanking2AccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-directbanking2', element);
-                    }
-                },
-                'BasicSalary.CashCurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-cash', element);
-                    }
-                },
-                'BasicSalary.CashAmount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-cash', element);
-                    }
-                },
-                'BasicSalary.CashAccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.basic-salary-cash', element);
-                    }
-                },
-                'Allowance.DirectBanking1CurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking1', element);
-                    }
-                },
-                'Allowance.DirectBanking1Amount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking1', element);
-                    }
-                },
-                'Allowance.DirectBanking1BankTypeId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking1', element);
-                    }
-                },
-                'Allowance.DirectBanking1AccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking1', element);
-                    }
-                },
-                'Allowance.DirectBanking2CurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking2', element);
-                    }
-                },
-                'Allowance.DirectBanking2Amount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking2', element);
-                    }
-                },
-                'Allowance.DirectBanking2BankTypeId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking2', element);
-                    }
-                },
-                'Allowance.DirectBanking2AccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-directbanking2', element);
-                    }
-                },
-                'Allowance.CashCurrencyCode': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-cash', element);
-                    }
-                },
-                'Allowance.CashAmount': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-cash', element);
-                    }
-                },
-                'Allowance.CashAccountId': {
-                    required: function (element) {
-                        return checkRelatedElementsHaveValue('.allowance-cash', element);
-                    }
-                },
+                }
             }
         });
     }

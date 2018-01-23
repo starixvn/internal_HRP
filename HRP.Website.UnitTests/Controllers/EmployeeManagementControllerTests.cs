@@ -664,7 +664,7 @@
             return service;
         }
 
-        private IEmployeePayrollService FakeEmployeePayrollServicee()
+        private static IEmployeePayrollService FakeEmployeePayrollServicee()
         {
             var service = Substitute.For<IEmployeePayrollService>();
 

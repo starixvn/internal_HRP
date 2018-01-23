@@ -35,24 +35,21 @@
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
         public IActionResult Index(DateTime? selectedTime)
         {
-            if (!selectedTime.HasValue)
-            {
-                selectedTime = DateTime.Today;
-            }
-
+            var date = selectedTime ?? DateTime.Today;
+            
             var criteria = new GetExchangeRateCriteria
             {
-                Month = selectedTime.Value.Month,
-                Year = selectedTime.Value.Year,
+                Month = date.Month,
+                Year = date.Year,
             };
 
             var viewModel = new CurrencySettingViewModel
             {
-                SelectedTime = selectedTime.Value,
+                SelectedTime = date,
                 MinMonth = configuration.Value.LaunchMonth,
                 CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(criteria),
                 Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && selectedTime.Value.Month == DateTime.Today.Month
+                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && date.Month == DateTime.Today.Month
             };
 
             return View(viewModel);

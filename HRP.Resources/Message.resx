@@ -606,4 +606,7 @@
   <data name="EmployeePayrollReasonRequired" xml:space="preserve">
     <value>Reason is required!</value>
   </data>
+  <data name="GreaterThanZero" xml:space="preserve">
+    <value>Please enter number greater than 0</value>
+  </data>
 </root>

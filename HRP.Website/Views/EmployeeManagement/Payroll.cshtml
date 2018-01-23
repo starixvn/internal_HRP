@@ -42,7 +42,7 @@
 }
 
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
-
+<input type="hidden" id="greater-than-zero-message" value="@Message.GreaterThanZero" />
 <form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll">
     <input type="hidden" asp-for="EmployeeId" />
     <input type="hidden" asp-for="CompanyId" />
@@ -110,7 +110,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-ebanking" asp-for="BasicSalary.EbankingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -134,7 +134,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -157,7 +157,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate" asp-for="BasicSalary.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true"data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -180,7 +180,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-cash" asp-for="BasicSalary.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
             <div class="payment-transaction">
@@ -220,7 +220,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-directbanking1" asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <select class="control bank-type-select allowance-directbanking1" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
@@ -243,7 +243,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-directbanking2" asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <select class="control bank-type-select allowance-directbanking2" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
@@ -266,7 +266,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-cash" asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
-                       data-rule-greaterthanzero="true" data-msg-greaterthanzero="@Message.EmployeePayroll_InvalidSetting" />
+                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>

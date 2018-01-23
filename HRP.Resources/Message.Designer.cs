@@ -745,6 +745,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter number greater than 0.
+        /// </summary>
+        public static string GreaterThanZero {
+            get {
+                return ResourceManager.GetString("GreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group Date Commencement is required!.
         /// </summary>
         public static string GroupDateCommencementRequired {
