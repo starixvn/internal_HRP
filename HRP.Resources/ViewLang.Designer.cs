@@ -367,6 +367,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New Item.
+        /// </summary>
+        public static string CreateNewItem {
+            get {
+                return ResourceManager.GetString("CreateNewItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create New User.
         /// </summary>
         public static string CreateNewUser {
@@ -475,6 +484,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Division.
         /// </summary>
         public static string Division {
@@ -498,6 +516,15 @@ namespace HRP.Resources {
         public static string DST {
             get {
                 return ResourceManager.GetString("DST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -687,6 +714,15 @@ namespace HRP.Resources {
         public static string ExpiredDate {
             get {
                 return ResourceManager.GetString("ExpiredDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field.
+        /// </summary>
+        public static string Field {
+            get {
+                return ResourceManager.GetString("Field", resourceCulture);
             }
         }
         
@@ -1299,6 +1335,15 @@ namespace HRP.Resources {
         public static string Saving {
             get {
                 return ResourceManager.GetString("Saving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
         

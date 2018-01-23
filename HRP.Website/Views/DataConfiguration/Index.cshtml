@@ -23,10 +23,9 @@
     <li class="active">Data Configuration</li>
 </ol>
 
-<!--temp code-->
 <form id="filterFieldForm" class="search-form">
     <div class="group">
-        <label class="text">@ViewLang.Status</label>
+        <label class="text">@ViewLang.Field</label>
         <select class="control" id="fieldId">
             <option value="@((int)FieldType.CompanyLocal)">@ViewLang.CompanyLocal</option>
             <option value="@((int)FieldType.CompanyBVI)">@ViewLang.CompanyBVI</option>
@@ -37,55 +36,54 @@
 </form>
 <div class="top-header">
     <div class="pull-left">
-       <a class="button -add create-user" data-toggle="modal" data-target="#newItem">
+        <a class="button -add create-user" data-toggle="modal" data-target="#newItem">
             <span class="icon-add"></span>
-            Create New Item
+            @ViewLang.CreateNewItem
         </a>
     </div>
     <div class="pull-right search-box">
-        <input type="search" class="control" placeholder="Search" />
+        <input type="search" class="control" placeholder="@ViewLang.Search" />
         <span class="icon-search"></span>
     </div>
 </div>
 
 <!-- Create New Item -->
 <div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content -has-title">
-      <div class="modal-header">
-        <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-        <h4 class="modal-title" id="myModalLabel">New Item of 'Company'</h4>
-      </div>
-      <div class="modal-body form-information">
-        <label class="text -has-required">Company</label>
-        <div class="group-control">
-            <input class="control" type="text" />
-        </div>        
-        <label class="text">Description</label>
-        <div class="group-control">
-            <input class="control" type="text" />     
-        </div>               
-        <div class="group-control">
-            <label>
-                <input type="checkbox" id="showPassword" />
-                <span>Active</span>
-            </label>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title" id="myModalLabel">New Item of 'Company'</h4>
+            </div>
+            <div class="modal-body form-information">
+                <label class="text -has-required">Company</label>
+                <div class="group-control">
+                    <input class="control" type="text" />
+                </div>
+                <label class="text">Description</label>
+                <div class="group-control">
+                    <input class="control" type="text" />
+                </div>
+                <div class="group-control">
+                    <label>
+                        <input type="checkbox" id="showPassword" />
+                        <span>Active</span>
+                    </label>
+                </div>
+                <div class="list-button">
+                    <button class="button -primary">Save</button>
+                    <button class="button -second" type="button">Cancel</button>
+                </div>
+            </div>
         </div>
-        <div class="list-button">
-            <button class="button -primary">Save</button>
-            <button class="button -second" type="button">Cancel</button>            
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<div id="tableFieldItem">
+<div id="tableWrapper">
 </div>
 
 <input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-create-url="@DataConfigurationActionLink.CreateCompanyLocal" data-update-url="@DataConfigurationActionLink.UpdateCompanyLocal" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyLocal" />
 <input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyBVI" />
-<!--temp code-->
 
 <environment include="Development">
     @section Scripts {

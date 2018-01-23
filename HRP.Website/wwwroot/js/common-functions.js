@@ -69,7 +69,7 @@
                 break;
         }
 
-        window.location = rootURL + url;
+        //window.location = rootURL + url;
     }
 
     function getUrlParameter(sParam) {

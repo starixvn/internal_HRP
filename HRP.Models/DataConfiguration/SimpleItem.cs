@@ -2,6 +2,8 @@
 {
     public class SimpleItem
     {
+        public int ItemId { get; set; }
+
         public string ItemName { get; set; }
 
         public string Description { get; set; }

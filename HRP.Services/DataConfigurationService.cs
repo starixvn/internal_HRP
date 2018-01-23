@@ -24,10 +24,11 @@
         {
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
 
-            if (companies != null)
+            if (companies.Any())
             {
                 var result = companies.Select(c => new SimpleItem
                 {
+                    ItemId = c.CompanyId,
                     ItemName = c.Code,
                     Description = c.Name,
                     IsActive = c.IsActive
@@ -36,7 +37,7 @@
                 return result;
             }
 
-            return null;
+            return new List<SimpleItem>();
         }
 
         public async Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item)

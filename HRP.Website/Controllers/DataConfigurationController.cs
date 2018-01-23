@@ -5,6 +5,7 @@
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
     using HRP.Models.DataConfiguration;
+    using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,16 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
-        public IActionResult GetAllCompanyBVI()
+        public async Task<IActionResult> GetAllCompanyBVI()
         {
-            return PartialView("_ListSimpleItem");
+            var companies = await dataConfigurationService.GetAllCompanyBVIAsync();
+            var viewModel = new SimpleItemTableViewModel
+            {
+                FieldName = ViewLang.CompanyBVI,
+                Items = companies
+            };
+
+            return PartialView("_SimpleItemTable", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]

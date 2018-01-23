@@ -618,4 +618,19 @@
   <data name="CompanyLocal" xml:space="preserve">
     <value>Company Local</value>
   </data>
+  <data name="CreateNewItem" xml:space="preserve">
+    <value>Create New Item</value>
+  </data>
+  <data name="Field" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>
