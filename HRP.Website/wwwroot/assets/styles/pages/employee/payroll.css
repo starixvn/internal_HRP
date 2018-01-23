@@ -189,6 +189,38 @@ input[type="radio"]:disabled + span {
   opacity: 0.5;
 }
 
+.tooltipster-sidetip.tooltipster-light .tooltipster-box {
+  border-color: #2a9ded;
+  background-color: #fff8d4;
+}
+
+.tooltipster-sidetip.tooltipster-light .tooltipster-content {
+  padding: 10px;
+  color: #333;
+}
+
+.tooltipster-sidetip.tooltipster-light .tooltipster-arrow {
+  left: 30% !important;
+}
+
+.tooltipster-sidetip.tooltipster-light.tooltipster-top .tooltipster-arrow-background {
+  border-top-color: #fff8d4;
+  top: -2px;
+}
+
+.tooltipster-sidetip.tooltipster-light.tooltipster-top .tooltipster-arrow-border {
+  border-top-color: #2a9ded;
+}
+
+.tooltipster-sidetip.tooltipster-light label {
+  padding-top: 6px;
+  font-weight: normal;
+}
+
+.tooltipster-fade.tooltipster-show {
+  margin-top: 8px;
+}
+
 .payroll .actual {
   color: #333;
   font-weight: bold;
@@ -301,6 +333,11 @@ input[type="radio"]:disabled + span {
 
 .payroll .add-account:hover {
   background-color: #188a38;
+}
+
+.payroll .add-account.disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 
 .payroll .conversion {

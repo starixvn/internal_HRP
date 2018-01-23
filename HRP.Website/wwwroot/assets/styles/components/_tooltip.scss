@@ -1,0 +1,33 @@
+.tooltipster-sidetip.tooltipster-light {
+    .tooltipster-box {
+        border-color: #2a9ded;
+        background-color: #fff8d4; 
+    }
+
+    .tooltipster-content {
+        padding: 10px;
+        color: #333;
+    }
+
+    .tooltipster-arrow {
+        left: 30% !important;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+        border-top-color: #fff8d4;
+        top: -2px;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-border {
+        border-top-color: #2a9ded;        
+    }
+
+    label {
+        padding-top: 6px;
+        font-weight: normal;
+    }
+}
+
+.tooltipster-fade.tooltipster-show {
+    margin-top: 8px;
+}
