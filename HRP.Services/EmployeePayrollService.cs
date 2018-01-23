@@ -8,7 +8,6 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
-    using HRP.Services.Interfaces;
 
     public class EmployeePayrollService : IEmployeePayrollService
     {
