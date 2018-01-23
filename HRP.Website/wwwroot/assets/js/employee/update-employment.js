@@ -19,9 +19,9 @@ var updateEmployment = (function ($) {
 
     function loadEmploymentForm() {
         var employeeId = $('#personalDetailsForm #EmployeeId').val();
-        var departmentIds = commonFunctions.getUrlParameter('departmentIds'),
-            employeeStatusIds = commonFunctions.getUrlParameter('employeeStatusIds'),
-            employeeFilterId = commonFunctions.getUrlParameter('employeeFilterId');
+        var departmentIds = commonFunctions.getUrlParameter('DepartmentIds'),
+            employeeStatusIds = commonFunctions.getUrlParameter('EmployeeStatusIds'),
+            employeeFilterId = commonFunctions.getUrlParameter('EmployeeFilterId');
 
         $.ajax({
             type: 'GET',

@@ -6,6 +6,7 @@
     using AutoFixture;
     using Fanex.Data;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -26,6 +27,7 @@
         private readonly Fixture fixture;
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICryptoService cryptoService;
         private IEmployeeManagementRepository employeeRepository;
 
         public EmployeeManagementServiceTests()
@@ -441,6 +443,74 @@
 
         #endregion GetDataToCreateEmployment
 
+        #region GetDataToUpdateEmployment
+
+        [Fact]
+        public void GetDataToUpdateEmployment_EmployeeIdIsInvalid_ReturnNull()
+        {
+            // Arrange
+            var employeeService = GetEmployeeManagementService();
+
+            // Act
+            var actual = employeeService.GetDataToUpdateEmployment(-1);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetDataToUpdateEmployment_EmployeeIdIsValid_ReturnExpectedModel()
+        {
+            // Arrange
+            var pdfPassword = "1234";
+            var isHost = true;
+            var expected = new UpdateEmploymentViewModel();
+            var employeeService = GetEmployeeManagementService();
+            employeeRepository.GetDataToUpdateEmployment(Arg.Any<GetDataToUpdateEmploymentCriteria>()).Returns(expected);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(isHost);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns(pdfPassword);
+
+            // Act
+            var actual = employeeService.GetDataToUpdateEmployment(1);
+
+            // Assert
+            Assert.Equal(expected.CompanyId, actual.CompanyId);
+            Assert.Equal(expected.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(expected.JobTitle, actual.JobTitle);
+            Assert.Equal(expected.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(expected.GroupStartDate, actual.GroupStartDate);
+            Assert.Equal(expected.GroupEndDate, actual.GroupEndDate);
+            Assert.Equal(expected.CompanyStartDate, actual.CompanyStartDate);
+            Assert.Equal(expected.CompanyEndDate, actual.CompanyEndDate);
+            Assert.Equal(expected.CompanyCode, actual.CompanyCode);
+            Assert.Equal(expected.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(expected.EmploymentType, actual.EmploymentType);
+            Assert.Equal(expected.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(expected.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(expected.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(expected.JobGradeId, actual.JobGradeId);
+            Assert.Equal(expected.DivisionId, actual.DivisionId);
+            Assert.Equal(expected.DepartmentId, actual.DepartmentId);
+            Assert.Equal(expected.CostCenterId, actual.CostCenterId);
+            Assert.Equal(expected.SectionId, actual.SectionId);
+            Assert.Equal(expected.Email, actual.Email);
+            Assert.Equal(expected.CountryId, actual.CountryId);
+            Assert.Equal(expected.CityId, actual.CityId);
+            Assert.Equal(expected.OfficeId, actual.OfficeId);
+            Assert.Equal(expected.WorkPermit.LocalCompanyId, actual.WorkPermit.LocalCompanyId);
+            Assert.Equal(expected.WorkPermit.Type1, actual.WorkPermit.Type1);
+            Assert.Equal(expected.WorkPermit.StartDateType1, actual.WorkPermit.StartDateType1);
+            Assert.Equal(expected.WorkPermit.EndDateType1, actual.WorkPermit.EndDateType1);
+            Assert.Equal(expected.WorkPermit.StartDateType2, actual.WorkPermit.StartDateType2);
+            Assert.Equal(expected.WorkPermit.EndDateType2, actual.WorkPermit.EndDateType2);
+            Assert.Equal(expected.DST, actual.DST);
+            Assert.Equal(expected.DBT, actual.DBT);
+            Assert.Equal(isHost, actual.IsHost);
+            Assert.Equal(pdfPassword, actual.PDFPassword);
+        }
+
+        #endregion GetDataToUpdateEmployment
+
         #region Helper
 
         private static IBaseService FakeBaseService()
@@ -477,7 +547,7 @@
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             employeeRepository = FakeEmployeeRepository();
-            var cryptoService = FakeCryptoService();
+            cryptoService = FakeCryptoService();
             var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService, employeeRepository);
 
             return service;

@@ -105,9 +105,15 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployee()
+        public async Task<IActionResult> CreateEmployee(
+            string departmentIds = null,
+            string employeeStatusIds = null,
+            int? employeeId = null)
         {
             var viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
+            viewModel.Filter.DepartmentIds = departmentIds;
+            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
+            viewModel.Filter.EmployeeId = employeeId;
 
             return View("CreateEmployee", viewModel);
         }
@@ -138,12 +144,12 @@
         public IActionResult CreateEmployment(
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeFilterId = null)
+            int? employeeId = null)
         {
             CreateEmploymentViewModel viewModel = employeeManagementService.GetDataToCreateEmployment();
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
-            viewModel.Filter.EmployeeId = employeeFilterId;
+            viewModel.Filter.EmployeeId = employeeId;
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -169,7 +175,7 @@
             int id,
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeFilterId = null)
+            int? employeeId = null)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);
 
@@ -177,6 +183,10 @@
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
+
+            viewModel.Filter.DepartmentIds = departmentIds;
+            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
+            viewModel.Filter.EmployeeId = employeeId;
 
             return View("UpdateEmployee", viewModel);
         }

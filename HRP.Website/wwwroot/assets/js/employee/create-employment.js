@@ -90,9 +90,9 @@ var createEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
-        var departmentIds = commonFunctions.getUrlParameter('departmentIds'),
-            employeeStatusIds = commonFunctions.getUrlParameter('employeeStatusIds'),
-            employeeFilterId = commonFunctions.getUrlParameter('employeeFilterId');
+        var departmentIds = commonFunctions.getUrlParameter('DepartmentIds'),
+            employeeStatusIds = commonFunctions.getUrlParameter('EmployeeStatusIds'),
+            employeeId = commonFunctions.getUrlParameter('EmployeeId');
 
         $.ajax({
             type: 'GET',
@@ -101,7 +101,7 @@ var createEmployment = (function ($) {
             data: {
                 departmentIds: departmentIds,
                 employeeStatusIds: employeeStatusIds,
-                employeeFilterId: employeeFilterId
+                employeeId: employeeId
             },
             success: function (data) {
                 $employmentContentTab.html(data);

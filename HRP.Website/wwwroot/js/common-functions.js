@@ -73,12 +73,17 @@
     }
 
     function getUrlParameter(sParam) {
-        var sPageURL = decodeURIComponent(window.location.href);
-        var results = new RegExp('[\?&]' + sParam + '=([^]*)').exec(sPageURL);
-        if (results === null) {
-            return null;
-        } else {
-            return results[1] || 0;
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
         }
     }
 

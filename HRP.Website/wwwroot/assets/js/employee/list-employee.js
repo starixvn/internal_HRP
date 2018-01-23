@@ -46,7 +46,7 @@ var listEmployee = {
                 success: function (response) {
                     $('#employee-list').html(response);
                     listEmployee.initDataTable();
-                    //listEmployee.setReturnUrl(queryString);
+                    listEmployee.setReturnUrl(queryString);
                 },
                 error: commonFunctions.handleAjaxError
             });
