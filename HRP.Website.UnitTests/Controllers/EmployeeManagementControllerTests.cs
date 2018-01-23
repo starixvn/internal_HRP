@@ -24,6 +24,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IEmployeeManagementService employeeManagementService;
+        private IEmployeePayrollService payrollService;
         private Fixture fixture;
 
         public EmployeeManagementControllerTests()
@@ -440,6 +441,81 @@
             Assert.Equal(expected, (IEnumerable<Office>)jsonResult.Value);
         }
 
+
+        [Fact]
+        public void Payroll_InvalidEmployeeId_RedirectToErrorPage()
+        {
+            var employeeId = 0;
+            employeeManagementController = GetEmployeeManagementController();
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(x => null);
+
+            //Act
+            var actual = employeeManagementController.Payroll(employeeId);
+
+            //Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("PageNotFound", redirectResult.ActionName);
+            Assert.Equal("Error", redirectResult.ControllerName);
+        }
+
+        [Fact]
+        public void Payroll_ValidEmployeeId_ReturnView()
+        {
+            var employeeId = 1;
+            employeeManagementController = GetEmployeeManagementController();
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(new EmployeePayrollViewModel { EmployeeId = employeeId });
+
+            var actual = employeeManagementController.Payroll(employeeId);
+
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
+            Assert.NotNull(viewResult.Model);
+        }
+
+        [Fact]
+        public void Payroll_ValidModel_ReturnRedirect()
+        {
+            var employeeId = 1;
+            var model = new EmployeePayrollViewModel
+            {
+                EmployeeId = employeeId,
+                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
+                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
+                Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
+            };
+
+            employeeManagementController = GetEmployeeManagementController();
+            payrollService.When(x => x.UpdatePayroll(model, sessionService.UserId));
+
+            var actual = employeeManagementController.SavePayroll(model);
+            payrollService.Received().UpdatePayroll(model, sessionService.UserId);
+
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
+
+        [Fact]
+        public void Payroll_InValidModel_ReturnView()
+        {
+            var employeeId = 1;
+            var model = new EmployeePayrollViewModel
+            {
+                EmployeeId = employeeId,
+                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
+                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
+                Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
+            };
+
+            employeeManagementController = GetEmployeeManagementController();
+            employeeManagementController.ModelState.AddModelError("", "Error");
+
+            var actual = employeeManagementController.SavePayroll(model);
+
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
+            Assert.NotNull(viewResult.Model);
+        }
+
         #region Helpers
 
         private static ISessionService FakeSessionService()
@@ -464,12 +540,21 @@
             return service;
         }
 
+        private IEmployeePayrollService FakeEmployeePayrollServicee()
+        {
+            var service = Substitute.For<IEmployeePayrollService>();
+
+            return service;
+        }
+
         private EmployeeManagementController GetEmployeeManagementController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
             employeeManagementService = FakeEmployeeManagementService();
-            var controller = new EmployeeManagementController(baseService, employeeManagementService, null, sessionService);
+            payrollService = FakeEmployeePayrollServicee();
+
+            var controller = new EmployeeManagementController(baseService, employeeManagementService, payrollService, sessionService);
 
             return controller;
         }

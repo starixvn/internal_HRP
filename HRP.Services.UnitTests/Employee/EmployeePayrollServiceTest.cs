@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Fanex.Data.Repository;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
@@ -17,7 +18,7 @@
         private IDynamicRepository repository;
         private ICryptoService cryptoService;
 
-        //[Fact]
+        [Fact]
         public void GetEmployeePayroll_ReturnModel()
         {
             var employeeId = 1;
@@ -25,11 +26,48 @@
 
             InitializeServices();
             repository.FetchMultiple(Arg.Any<GetEmployeePayrollCriteria>(), Arg.Any<Type[]>())
-                .Returns(new List<object>[] {});
+                .Returns(new[] 
+                {
+                    new List<object>
+                    {
+                        new EmployeePayrollViewModel { EmployeeId = employeeId }
+                    },
+                    new List<object>(),
+                    new List<object>(),
+                    new List<object>()
+                });
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetLatestExchangeRatesCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
+
+            var service = new EmployeePayrollService(baseService, repository, cryptoService);
+            var actual = service.GetEmployeePayroll(employeeId, userId);
+
+            Assert.NotNull(actual);
+            Assert.Equal(employeeId, actual.EmployeeId);
+        }
+
+        [Fact]
+        public void UpdatePayroll_UpdateSuccessfully()
+        {
+            var employeeId = 1;
+            var userId = 1;
+
+            InitializeServices();
+            baseService.ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(new CommandResult());
+            cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
+
+            var service = new EmployeePayrollService(baseService, repository, cryptoService);
+            var model = new EmployeePayrollViewModel {
+                EmployeeId = employeeId,
+                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
+                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
+                Deduction = new EmployeePayrollDeduction { EmployeeId =  employeeId }
+            };
+            service.UpdatePayroll(model, userId);
+
+            baseService.Received().ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>());
         }
 
         private void InitializeServices()
