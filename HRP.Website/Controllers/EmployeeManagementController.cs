@@ -41,7 +41,9 @@
         public IActionResult Index(
             string departmentIds = null,
             string employeeStatusIds = null,
-            int employeeId = 0)
+            int? employeeId = null,
+            string fullName = null,
+            string nickName = null)
         {
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
@@ -50,7 +52,10 @@
                 IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
                 DepartmentIds = departmentIds ?? GetDepartmentIds(listDepartment.Departments),
                 EmployeeStatusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
-                EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value")
+                EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value"),
+                EmployeeId = employeeId,
+                FullName = fullName,
+                NickName = nickName
             };
 
             return View(viewModel);
