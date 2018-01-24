@@ -612,4 +612,7 @@
   <data name="GreaterThanZero" xml:space="preserve">
     <value>Please enter number greater than 0</value>
   </data>
+  <data name="NewItemOf" xml:space="preserve">
+    <value>New Item of '{0}'</value>
+  </data>
 </root>

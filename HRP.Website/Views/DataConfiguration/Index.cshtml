@@ -34,29 +34,41 @@
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
 </form>
-<div class="top-header">
-    <div class="pull-left">
-        <a class="button -add create-user" data-toggle="modal" data-target="#newItem">
-            <span class="icon-add"></span>
-            @ViewLang.CreateNewItem
-        </a>
-    </div>
-    <div class="pull-right search-box">
-        <input type="search" class="control" placeholder="@ViewLang.Search" />
-        <span class="icon-search"></span>
-    </div>
-</div>
 
-<!-- Create New Item -->
-<div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Section Create New Item -->
+<div class="modal fade" id="newChildItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content -has-title">
             <div class="modal-header">
                 <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                <h4 class="modal-title" id="myModalLabel">New Item of 'Company'</h4>
+                <h4 class="modal-title" id="myModalLabel">New Item of 'Section'</h4>
             </div>
             <div class="modal-body form-information">
                 <label class="text -has-required">Company</label>
+                <div class="group-control">
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <label class="text -has-required">Division</label>
+                <div class="group-control">
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <label class="text -has-required">Department</label>
+                <div class="group-control">
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <label class="text -has-required">Cost Center</label>
+                <div class="group-control">
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <label class="text -has-required">Section</label>
                 <div class="group-control">
                     <input class="control" type="text" />
                 </div>
@@ -88,6 +100,7 @@
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/assets/js/configuration/data-configuration.js"></script>
     }

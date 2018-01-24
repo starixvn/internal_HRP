@@ -997,7 +997,16 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nickname Administrator must not over {1} characters long..
+        ///   Looks up a localized string similar to New Item of &apos;{0}&apos;.
+        /// </summary>
+        public static string NewItemOf {
+            get {
+                return ResourceManager.GetString("NewItemOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+ ///   Looks up a localized string similar to Nickname Administrator must not over {1} characters long..
         /// </summary>
         public static string NicknameAdministratorMaxLength {
             get {

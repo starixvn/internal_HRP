@@ -7,7 +7,7 @@
     }
 
     function initDataTable() {
-        $('#user-table').dataTable({
+        $('#tableItems').dataTable({
             'ordering': false,
             'lengthMenu': [[20, 50, 100], [20, 50, 100]],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
@@ -23,7 +23,13 @@
                 }
             }
         });
-    };
+    }
+
+    function registerEventQuickSearch() {
+        $('#quickSearch').on('keyup', function () {
+            $('#tableItems').DataTable().search($(this).val()).draw();
+        });
+    }
 
     function registerEventShowListItem() {
         $filterFieldForm.on('submit', function (e) {
@@ -43,7 +49,9 @@
     }
 
     function onGetSuccess(response) {
-        $('#tableWrapper').html(response)
+        $('#tableWrapper').html(response);
+        initDataTable();
+        registerEventQuickSearch();
     }
 
     return {
