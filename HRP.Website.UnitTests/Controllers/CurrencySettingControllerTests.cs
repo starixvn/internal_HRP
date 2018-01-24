@@ -93,7 +93,7 @@
                 EnableEncrypt = true,
                 CertificateFilePath = "D=\\Test.pfx",
                 PasswordToSignTheCertificateFile = "123456",
-                BaseHostUrl = "http=//localhost=56977",
+                Domain = "http=//localhost=56977",
                 LaunchMonth = DateTime.Today
             };
 

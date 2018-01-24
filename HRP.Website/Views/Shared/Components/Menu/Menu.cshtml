@@ -11,14 +11,14 @@
             var childMenus = Model.Where(x => x.ParentId == parent.MenuId).OrderBy(x => x.DisplayOrder);
 
             <li class="menu">
-                <a href="@parent.Url" class="link"><span class="@parent.Description"></span>@parent.Name</a>
+                <a href="@parent.Link" class="link"><span class="@parent.Description"></span>@parent.Name</a>
                 @if (childMenus != null && childMenus.Any())
                 {
                     <ul class="submenu">
                         @foreach (var child in childMenus)
                         {
                             <li>
-                                <a href="@child.Url" class="link">@child.Name</a>
+                                <a href="@child.Link" class="link">@child.Name</a>
                             </li>
                         }
                     </ul>

@@ -93,7 +93,7 @@ namespace HRP.Services
             });
 
             var body = emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
-            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.BaseHostUrl, tokenOTPRegister);
+            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.Domain, tokenOTPRegister);
             body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
             var mailModel = new MailModel
@@ -137,7 +137,7 @@ namespace HRP.Services
         {
             var user = GetUserByUsername(username);
             var body = emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
-            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.BaseHostUrl, tokenResetPassword);
+            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.Domain, tokenResetPassword);
             body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
 
             var mailModel = new MailModel

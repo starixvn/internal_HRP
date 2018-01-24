@@ -12,7 +12,7 @@
 
         public string PasswordToSignTheCertificateFile { get; set; }
 
-        public string BaseHostUrl { get; set; }
+        public string Domain { get; set; }
 
         public DateTime LaunchMonth { get; set; }
     }
