@@ -56,6 +56,8 @@ var listEmployee = {
 
     query: function () {
         if (listEmployee.checkSelectionValue()) {
+            listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
+            listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
             var queryString = listEmployee.getQueryString();
             $.ajax({
                 url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList?' + queryString,
@@ -71,13 +73,35 @@ var listEmployee = {
                 },
                 error: commonFunctions.handleAjaxError
             });
+        } else {
+            listEmployee.showSelectError();
+        }
+    },
+
+    showSelectError: function () {
+        var departmentIds = $("#DepartmentIds").val();
+        var employeeStatusIds = $("#EmployeeStatusIds").val();
+        if (!departmentIds) {
+            listEmployee.showErrorMessage("#company-validation", "#CompanySelect");
+        }
+        if (departmentIds) {
+            listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
+        }
+        if (!employeeStatusIds) {
+            listEmployee.showErrorMessage("#employment-status-validation", "#EmployeeStatus");
+        }
+        if (employeeStatusIds) {
+            listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
         }
     },
 
     checkSelectionValue: function () {
         var departmentIds = $("#DepartmentIds").val();
         var employeeStatusIds = $("#EmployeeStatusIds").val();
-        if (departmentIds && employeeStatusIds) return true;
+        if (departmentIds && employeeStatusIds) {
+            
+            return true;
+        } 
         return false;
     },
 
@@ -191,11 +215,7 @@ var listDepartment = {
                     onCheck: function () {
                         var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',');
                         $("#DepartmentIds").val(selectedValue);
-                        if (!selectedValue) {
-                            listEmployee.showErrorMessage("#company-validation", "#CompanySelect");
-                        } else {
-                            listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
-                        }
+                        
                     }
                 });
             },
@@ -280,11 +300,7 @@ var listEmployeeStatus = {
             onCheck: function () {
                 var selectedValue = $("#EmployeeStatus").fanexMultiSelect('getItems', true).join(',')
                 $("#EmployeeStatusIds").val(selectedValue);
-                if (!selectedValue) {
-                    listEmployee.showErrorMessage("#employment-status-validation", "#EmployeeStatus");
-                } else {
-                    listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
-                }
+                
             }
         });
     }
