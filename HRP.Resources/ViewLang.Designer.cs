@@ -1033,20 +1033,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nick Name.
+        ///   Looks up a localized string similar to Nickname.
         /// </summary>
         public static string Nickname {
             get {
                 return ResourceManager.GetString("Nickname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nick Name.
-        /// </summary>
-        public static string NickNameSpacing {
-            get {
-                return ResourceManager.GetString("NickNameSpacing", resourceCulture);
             }
         }
         

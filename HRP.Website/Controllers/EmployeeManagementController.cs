@@ -206,7 +206,7 @@
             if (ModelState.IsValid)
             {
                 var commandResult = await employeeManagementService.UpdatePersonalDetailsAsync(employee);
-                var returnMessage = commandResult.IsSuccessful ? string.Format(Message.UpdateEmployeeSuccessful, employee.NickName) : commandResult.Message;
+                var returnMessage = commandResult.IsSuccessful ? string.Format(Message.UpdateEmployeeSuccessful, employee.Nickname) : commandResult.Message;
 
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = returnMessage });
             }

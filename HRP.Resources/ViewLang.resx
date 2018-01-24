@@ -388,7 +388,7 @@
     <value>Work Permit</value>
   </data>
   <data name="Nickname" xml:space="preserve">
-    <value>Nick Name</value>
+    <value>Nickname</value>
   </data>
   <data name="WorkLocation" xml:space="preserve">
     <value>Work Location</value>
@@ -455,9 +455,6 @@
   </data>
   <data name="Gender" xml:space="preserve">
     <value>Gender</value>
-  </data>
-  <data name="NickNameSpacing" xml:space="preserve">
-    <value>Nick Name</value>
   </data>
   <data name="PlaceOfBirth" xml:space="preserve">
     <value>Place of Birth</value>

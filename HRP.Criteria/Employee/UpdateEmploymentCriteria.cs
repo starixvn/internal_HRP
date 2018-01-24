@@ -130,51 +130,51 @@
 
         public string FullNamePFileAdmin { get; set; }
 
-        public string NickNamePFileAdmin { get; set; }
+        public string NicknamePFileAdmin { get; set; }
 
         public string FullNameBVISalary { get; set; }
 
-        public string NickNameBVISalary { get; set; }
+        public string NicknameBVISalary { get; set; }
 
         public string FullNameBVIAllowance { get; set; }
 
-        public string NickNameBVIAllowance { get; set; }
+        public string NicknameBVIAllowance { get; set; }
 
         public string FullNameLocalSalary { get; set; }
 
-        public string NickNameLocalSalary { get; set; }
+        public string NicknameLocalSalary { get; set; }
 
         public string FullNameAdministrator { get; set; }
 
-        public string NickNameAdministrator { get; set; }
+        public string NicknameAdministrator { get; set; }
 
         public string FullNameEvaluator1 { get; set; }
 
-        public string NickNameEvaluator1 { get; set; }
+        public string NicknameEvaluator1 { get; set; }
 
         public string FullNameEvaluator2 { get; set; }
 
-        public string NickNameEvaluator2 { get; set; }
+        public string NicknameEvaluator2 { get; set; }
 
         public string FullNameReviewer { get; set; }
 
-        public string NickNameReviewer { get; set; }
+        public string NicknameReviewer { get; set; }
 
         public string FullNameManagement { get; set; }
 
-        public string NickNameManagement { get; set; }
+        public string NicknameManagement { get; set; }
 
         public string FullNameIncrement { get; set; }
 
-        public string NickNameIncrement { get; set; }
+        public string NicknameIncrement { get; set; }
 
         public string FullNameBVIBonus { get; set; }
 
-        public string NickNameBVIBonus { get; set; }
+        public string NicknameBVIBonus { get; set; }
 
         public string FullNameLocalBonus { get; set; }
 
-        public string NickNameLocalBonus { get; set; }
+        public string NicknameLocalBonus { get; set; }
 
         public string PDFPassword { get; set; }
 

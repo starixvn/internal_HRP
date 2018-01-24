@@ -148,7 +148,7 @@ var listEmployee = {
                         if (data && data.length > 0) {
                             response($.map(data, function (item) {
                                 return {
-                                    label: item.nickName + ' (' + item.fullName + ')',
+                                    label: item.nickname + ' (' + item.fullName + ')',
                                     value: item.employeeId
                                 };
                             }));

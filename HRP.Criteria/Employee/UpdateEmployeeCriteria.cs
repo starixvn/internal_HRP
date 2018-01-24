@@ -9,7 +9,7 @@
 
         public string FullName { get; set; }
 
-        public string NickName { get; set; }
+        public string Nickname { get; set; }
 
         public int Gender { get; set; }
 
@@ -76,7 +76,7 @@
                 && MaritalStatus > 0
                 && NoOfChildren > 0
                 && !string.IsNullOrWhiteSpace(FullName)
-                && !string.IsNullOrWhiteSpace(NickName)
+                && !string.IsNullOrWhiteSpace(Nickname)
                 && !string.IsNullOrWhiteSpace(OverseasPhoneNo)
                 && !string.IsNullOrWhiteSpace(NRICNo)
                 && !string.IsNullOrWhiteSpace(PassportNo)

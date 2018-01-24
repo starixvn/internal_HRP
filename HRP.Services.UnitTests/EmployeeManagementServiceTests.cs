@@ -65,7 +65,7 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(criteria.FullName, viewModel.FullName);
-            Assert.Equal(criteria.NickName, viewModel.NickName);
+            Assert.Equal(criteria.Nickname, viewModel.Nickname);
             Assert.Equal(criteria.Gender, viewModel.Gender);
             Assert.Equal(criteria.DateOfBirth, viewModel.DateOfBirth);
             Assert.Equal(criteria.PlaceOfBirth, viewModel.PlaceOfBirth);
@@ -137,7 +137,7 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(criteria.FullName, viewModel.FullName);
-            Assert.Equal(criteria.NickName, viewModel.NickName);
+            Assert.Equal(criteria.Nickname, viewModel.Nickname);
             Assert.Equal(criteria.Gender, viewModel.Gender);
             Assert.Equal(criteria.DateOfBirth, viewModel.DateOfBirth);
             Assert.Equal(criteria.PlaceOfBirth, viewModel.PlaceOfBirth);
