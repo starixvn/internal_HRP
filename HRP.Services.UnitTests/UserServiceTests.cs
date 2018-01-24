@@ -12,8 +12,6 @@ namespace HRP.Services.UnitTests
 
     public class UserServiceTests
     {
-        private UserService userService;
-        private IOptionsSnapshot<AppSettingsOptions> configuration;
         private IBaseMailService emailService;
         private IBaseService baseService;
 
@@ -27,7 +25,7 @@ namespace HRP.Services.UnitTests
             {
                 Code = 0
             };
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
@@ -45,7 +43,7 @@ namespace HRP.Services.UnitTests
             {
                 Code = 1
             };
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
@@ -61,7 +59,7 @@ namespace HRP.Services.UnitTests
         public void GetUserByUsername_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
 
             // Act
@@ -75,7 +73,7 @@ namespace HRP.Services.UnitTests
         public void IsCorrectPassword_MatchPassword_ReturnTrue()
         {
             //Arrange
-            userService = GetUserService();
+            var userService = GetUserService();
             var hashedPassword = BCrypt.HashPassword("test");
 
             //Act
@@ -89,7 +87,7 @@ namespace HRP.Services.UnitTests
         public void IsCorrectPassword_NotMatchPassword_ReturnFalse()
         {
             //Arrange
-            userService = GetUserService();
+            var userService = GetUserService();
             var hashedPassword = BCrypt.HashPassword("wrongPassword");
 
             //Act
@@ -104,7 +102,7 @@ namespace HRP.Services.UnitTests
         {
             // Arrange
             var commandResult = new CommandResult();
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
@@ -124,7 +122,7 @@ namespace HRP.Services.UnitTests
             {
                 Code = 0
             };
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
             baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
 
@@ -143,7 +141,7 @@ namespace HRP.Services.UnitTests
             {
                 Code = 1
             };
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
 
             // Act
@@ -159,7 +157,7 @@ namespace HRP.Services.UnitTests
         public void SendMailToRegisterOTP_WhenCalled_ExpectedSendMail()
         {
             // Arrange
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(new User());
 
             // Act
@@ -174,7 +172,7 @@ namespace HRP.Services.UnitTests
         {
             // Arrange
             var commandResult = new CommandResult();
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateUserOTPStatusCriteria>()).Returns(commandResult);
 
             // Act
@@ -189,7 +187,7 @@ namespace HRP.Services.UnitTests
         {
             // Arrange
             var commandResult = new CommandResult();
-            userService = GetUserService();
+            var userService = GetUserService();
             baseService.ExecuteNonQuery(Arg.Any<UpdateSecretKeyCriteria>()).Returns(commandResult);
 
             // Act
@@ -215,7 +213,7 @@ namespace HRP.Services.UnitTests
                 BaseHostUrl = "http=//localhost=56977"
             };
 
-            configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
+            var configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
             configuration.Value.Returns(appSettingsOptions);
 
             var service = new UserService(emailService, configuration, baseService);

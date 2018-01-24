@@ -54,33 +54,33 @@
 
         public static IBaseService FakeBaseService()
         {
-            var baseService = Substitute.For<IBaseService>();
-            baseService.ExecuteNonQueryAsync(Arg.Any<ICriteria>()).Returns(new CommandResult());
+            var service = Substitute.For<IBaseService>();
+            service.ExecuteNonQueryAsync(Arg.Any<ICriteria>()).Returns(new CommandResult());
 
-            return baseService;
+            return service;
         }
 
         public static ISessionService FakeSessionService()
         {
-            var sessionService = Substitute.For<ISessionService>();
-            sessionService.Username = "hunter.tran.hrp";
-            sessionService.UserId = 23;
+            var service = Substitute.For<ISessionService>();
+            service.Username = "hunter.tran.hrp";
+            service.UserId = 23;
 
-            return sessionService;
+            return service;
         }
 
         public static ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
         {
-            var twoFactorAuthService = Substitute.For<ITwoFactorAuthenticatorService>();
-            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), SkipOtpCheck).Returns(false);
+            var service = Substitute.For<ITwoFactorAuthenticatorService>();
+            service.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            service.ValidateOTPCode(Arg.Any<string>(), SkipOtpCheck).Returns(false);
 
-            return twoFactorAuthService;
+            return service;
         }
 
         public static IUserService FakeUserService()
         {
-            var userService = Substitute.For<IUserService>();
+            var service = Substitute.For<IUserService>();
 
             var user = new User
             {
@@ -99,10 +99,10 @@
                 IsSystemAdmin = false,
             };
 
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
-            userService.UpdateOTPStatus(Arg.Any<int>(), Arg.Any<bool>()).Returns(true);
+            service.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            service.UpdateOTPStatus(Arg.Any<int>(), Arg.Any<bool>()).Returns(true);
 
-            return userService;
+            return service;
         }
 
         public AccountController FakeAccountController(bool isAuthenticated)
@@ -476,7 +476,7 @@
             Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Index", ((RedirectToActionResult)actual).ActionName);
         }
-        
+
         [Fact]
         public void VerifySetupOTP_NullUser_RedirectToLogin()
         {

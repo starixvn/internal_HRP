@@ -25,7 +25,7 @@
         private ISessionService sessionService;
         private IEmployeeManagementService employeeManagementService;
         private IEmployeePayrollService payrollService;
-        private Fixture fixture;
+        private readonly Fixture fixture;
 
         public EmployeeManagementControllerTests()
         {
