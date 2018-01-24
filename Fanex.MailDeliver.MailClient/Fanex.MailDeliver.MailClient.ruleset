@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SonarQube - Nexus / HRP Sonar way" ToolsVersion="15.0">
-  <Include Path="..\sonarqube\hrpcsharp.ruleset" Action="Default" />
-</RuleSet>

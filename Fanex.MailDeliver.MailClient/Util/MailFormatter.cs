@@ -3,7 +3,7 @@
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
 
-    public class MailFormatter
+    public static class MailFormatter
     {
         private static BinaryFormatter _formatter = new BinaryFormatter();
 
