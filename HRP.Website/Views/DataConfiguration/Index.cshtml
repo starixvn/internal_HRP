@@ -94,12 +94,17 @@
 <div id="tableWrapper">
 </div>
 
-<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-create-url="@DataConfigurationActionLink.CreateCompanyLocal" data-update-url="@DataConfigurationActionLink.UpdateCompanyLocal" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyLocal" />
-<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-get-all-url="@DataConfigurationActionLink.GetAllCompanyBVI" />
+<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyLocal" />
+<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />
+
+@*<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />*@
 
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/assets/js/configuration/data-configuration.js"></script>

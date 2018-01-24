@@ -52,33 +52,39 @@
 </table>
 
 <!-- Create New Item -->
-<div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content -has-title">
-            <div class="modal-header">
-                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
-            </div>
-            <div class="modal-body form-information">
-                <label class="text -has-required">@Model.FieldName</label>
-                <div class="group-control">
-                    <input class="control" type="text" />
+<form id="createItemForm" action="@Model.LinkCreateItem" method="post">
+    <div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content -has-title">
+                <div class="modal-header">
+                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                    <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
                 </div>
-                <label class="text">@ViewLang.Description</label>
-                <div class="group-control">
-                    <input class="control" type="text" />
-                </div>
-                <div class="group-control">
-                    <label>
-                        <input type="checkbox" id="showPassword" />
-                        <span>@ViewLang.Active</span>
-                    </label>
-                </div>
-                <div class="list-button">
-                    <button class="button -primary">Save</button>
-                    <button class="button -second" type="button">Cancel</button>
+                <div class="modal-body form-information">
+                    <label class="text -has-required">@Model.FieldName</label>
+                    <div class="group-control">
+                        <span class="text-danger" asp-validation-for="NewItem.ItemName"></span>
+                        <input class="control" type="text" asp-for="NewItem.ItemName" 
+                               data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
+                               data-val-length ="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)"/>
+                    </div>
+                    <label class="text">@ViewLang.Description</label>
+                    <div class="group-control">
+                        <span class="text-danger" asp-validation-for="NewItem.Description"></span>
+                        <input class="control" type="text" asp-for="NewItem.Description" />
+                    </div>
+                    <div class="group-control">
+                        <label>
+                            <input type="checkbox" asp-for="NewItem.IsActive" />
+                            <span>@ViewLang.Active</span>
+                        </label>
+                    </div>
+                    <div class="list-button">
+                        <button class="button -primary" type="submit">@ViewLang.Save</button>
+                        <button class="button -second" type="button" data-dismiss="modal">@ViewLang.Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>

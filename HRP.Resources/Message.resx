@@ -615,4 +615,13 @@
   <data name="NewItemOf" xml:space="preserve">
     <value>New Item of '{0}'</value>
   </data>
+  <data name="DescriptionMaxLength" xml:space="preserve">
+    <value>Description must not over {1} characters long.</value>
+  </data>
+  <data name="ItemNameMaxLength" xml:space="preserve">
+    <value>{0} must not over {1} characters long.</value>
+  </data>
+  <data name="ItemNameRequired" xml:space="preserve">
+    <value>{0} is required!</value>
+  </data>
 </root>

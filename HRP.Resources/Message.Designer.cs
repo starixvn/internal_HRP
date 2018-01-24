@@ -259,6 +259,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description must not over {1} characters long..
+        /// </summary>
+        public static string DescriptionMaxLength {
+            get {
+                return ResourceManager.GetString("DescriptionMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Division Change Date is required!.
         /// </summary>
         public static string DivisionChangeDateRequired {
@@ -853,6 +862,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} must not over {1} characters long..
+        /// </summary>
+        public static string ItemNameMaxLength {
+            get {
+                return ResourceManager.GetString("ItemNameMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is required!.
+        /// </summary>
+        public static string ItemNameRequired {
+            get {
+                return ResourceManager.GetString("ItemNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Category Change Date is required!.
         /// </summary>
         public static string JobCategoryChangeDateRequired {
@@ -1006,7 +1033,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
- ///   Looks up a localized string similar to Nickname Administrator must not over {1} characters long..
+        ///   Looks up a localized string similar to Nickname Administrator must not over {1} characters long..
         /// </summary>
         public static string NicknameAdministratorMaxLength {
             get {

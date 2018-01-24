@@ -31,7 +31,8 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 FieldName = ViewLang.CompanyBVI,
-                Items = companies
+                Items = companies,
+                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -46,10 +47,11 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateCompanyBVI(SimpleItem item)
+        public async Task<IActionResult> CreateCompanyBVI(SimpleItem newItem)
         {
-            var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(item);
+            var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(newItem);
 
             return View(commandResult);
         }

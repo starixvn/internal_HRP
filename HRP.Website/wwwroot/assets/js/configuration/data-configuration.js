@@ -36,7 +36,7 @@
             e.preventDefault();
 
             var fieldId = $('#fieldId').val();
-            var getAllUrl = $('.field-' + fieldId).data('get-all-url');
+            var getAllUrl = $('.field-' + fieldId).data('url-get-all');
 
             $.ajax({
                 type: 'GET',
@@ -48,10 +48,15 @@
         });
     }
 
+    function initValidationCreateItemForm() {
+        $.validator.unobtrusive.parse('#createItemForm');
+    }
+
     function onGetSuccess(response) {
         $('#tableWrapper').html(response);
         initDataTable();
         registerEventQuickSearch();
+        initValidationCreateItemForm();
     }
 
     return {
