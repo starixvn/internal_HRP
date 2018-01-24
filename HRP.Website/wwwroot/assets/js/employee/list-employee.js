@@ -36,6 +36,13 @@ var listEmployee = {
         });
     },
 
+    setReturnUrlToElement: function (element, returnParams) {
+        if ($(element).is("a")) {
+            var href = $(element).attr("href");
+            $(element).attr("href", href + "?" + returnParams);
+        }
+    },
+
     getQueryString: function () {
         var departmentIds = $("#DepartmentIds").val();
         var employmentStatusIds = $("#EmployeeStatusIds").val();
@@ -58,6 +65,9 @@ var listEmployee = {
                     $('#employee-list').html(response);
                     listEmployee.initDataTable();
                     listEmployee.setReturnUrl(queryString);
+                    if ($("#create-employee").length) {
+                        listEmployee.setReturnUrlToElement("#create-employee", queryString);
+                    }
                 },
                 error: commonFunctions.handleAjaxError
             });
