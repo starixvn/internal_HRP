@@ -1,9 +1,8 @@
 ﻿namespace HRP.Criteria.Employee
 {
     using System;
-    using Fanex.Data.Repository;
 
-    public class CreateEmployeeCriteria : CriteriaBase
+    public class CreateEmployeeCriteria : CommandBaseCriteria
     {
         public int EmployeeId { get; set; }
 
