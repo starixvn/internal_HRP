@@ -36,9 +36,20 @@ var listEmployee = {
         });
     },
 
+    getQueryString: function () {
+        var departmentIds = $("#DepartmentIds").val();
+        var employmentStatusIds = $("#EmployeeStatusIds").val();
+        var employeeId = $("#EmployeeId").val();
+        var employeeName = $("#SearchEmployee").val();
+        return "departmentIds=" + departmentIds
+            + "&employeeStatusIds=" + employmentStatusIds
+            + "&employeeId=" + employeeId
+            + "&displayName=" + employeeName;
+    },
+
     query: function () {
         if (listEmployee.checkSelectionValue()) {
-            var queryString = $('form.form-filter').serialize();
+            var queryString = listEmployee.getQueryString();
             $.ajax({
                 url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList?' + queryString,
                 type: 'GET',
@@ -171,7 +182,7 @@ var listDepartment = {
                         var selectedValue = $("#CompanySelect").fanexMultiSelect('getItems', true).join(',');
                         $("#DepartmentIds").val(selectedValue);
                         if (!selectedValue) {
-                            listEmployee.showErrorMessage("#company-validation","#CompanySelect");
+                            listEmployee.showErrorMessage("#company-validation", "#CompanySelect");
                         } else {
                             listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
                         }
