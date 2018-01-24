@@ -27,7 +27,7 @@
             <span class="msg-error" asp-validation-for="Phone"></span>
         </div>
 
-        <label class="text" for="email">@ViewLang.EmailAddress<span class="required">*</span></label>
+        <label class="text -has-required" for="email">@ViewLang.EmailAddress</label>
         <div class="group-control">
             <input type="text" class="control" asp-for="Email" value="@Model.Email" />
             <span class="msg-error" asp-validation-for="Email"></span>

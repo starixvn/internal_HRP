@@ -1,21 +1,31 @@
-﻿.search-form {
+﻿
+%text {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-weight: bold;
+    text-transform: capitalize;
+
+    &.-has-required {
+        position: relative;
+    }
+
+    &.-has-required:after {
+        position: relative;
+        top: 2px;
+        margin-left: 4px;
+        content: "*";
+        color: #ff0000;
+    }
+}
+
+.search-form {
     .group {
         display: inline-block;
         padding-right: 10px;
         
         .text {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            &.-has-required {
-                position: relative;
-            }
-    
-            &.-has-required:after {
-                content: "*";
-                margin-left: 4px;
-                color: #ff0000;
-            }
+            @extend %text;
         }
 
         .control {
@@ -47,25 +57,11 @@
 
 .form-information {
     .text {
+        @extend %text;
         position: relative;
-        display: block;
-        margin-bottom: 5px;
-        font-weight: normal;
-        text-transform: capitalize;
-        font-weight: bold;
-        color: #666;
 
         &.-has-required {
             display: inline-block;
-            clear: both;
-        }
-
-        &.-has-required:after {
-            content: "*";
-            position: absolute;
-            right: -12px;
-            top: 2px;
-            color: #ff0000;
         }
 
         &.without-control {
@@ -126,11 +122,6 @@
             margin-top: 0;
             margin-bottom: 0;
         }
-    }
-
-    .required {
-        color: #ff0000;
-        margin-left: 4px;
     }
     
     .msg-error, .text-danger {

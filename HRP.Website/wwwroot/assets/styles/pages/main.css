@@ -371,7 +371,7 @@ input[type="checkbox"]:disabled + span {
 }
 
 .modal-content .modal-footer .button:first-child {
-  margin-right: 16px;
+  margin-right: 10px;
 }
 
 .modal-content.-has-title .modal-header {
@@ -380,6 +380,7 @@ input[type="checkbox"]:disabled + span {
 
 .modal-content.-has-title .modal-title {
   font-size: 16px;
+  font-weight: bold;
 }
 
 .modal-content.-has-title .modal-footer {
