@@ -35,7 +35,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         public async Task<IActionResult> EditEmployeeBankDetails(EditEmployeeBankDetailsViewModel viewModel)
         {
-            var employee = employeeManagementService.GetEmployeeById(viewModel.EmployeeId);
+            var employee = employeeManagementService.GetEmployeeById(viewModel.Id);
 
             var refNames = string.Format(
                 "{0},{1}",
@@ -51,7 +51,7 @@
 
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
-            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
+            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.Id);
 
             if(viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
             {
@@ -103,7 +103,7 @@
 
             if (result.IsSuccessful)
             {
-                var redirectViewModel = new EditEmployeeBankDetailsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+                var redirectViewModel = new EditEmployeeBankDetailsViewModel { Id = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
             }
 
@@ -148,7 +148,7 @@
 
             if (result.IsSuccessful)
             {
-                var redirectViewModel = new EditEmployeeBankDetailsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+                var redirectViewModel = new EditEmployeeBankDetailsViewModel { Id = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
             }
 

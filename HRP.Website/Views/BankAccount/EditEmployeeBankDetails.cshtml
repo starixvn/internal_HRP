@@ -26,7 +26,7 @@
 
 @*Filter form*@
 <form asp-action="EditEmployeeBankDetails" asp-controller="BankAccount" method="get" class="search-form">
-    <input asp-for="EmployeeId" type="hidden" />
+    <input asp-for="Id" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
         <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" class="fanex-select"></select>
@@ -43,7 +43,7 @@
         <a class="button -add create-user"
            asp-action="CreateNewBankAccount"
            asp-controller="BankAccount"
-           asp-route-employeeId="@Model.EmployeeId">
+           asp-route-employeeId="@Model.Id">
             <span class="icon-add"></span>
             Create New Bank Account
         </a>
