@@ -226,11 +226,15 @@
             $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
         });
 
-        $('.calendar input').datetimepicker({
+        $('.calendar').datetimepicker({
             format: 'MM/DD/YYYY',
             useCurrent: false,
             allowInputToggle: true
         });
+
+        $('.icon-calendar').on('click', function () {
+            $(this).closest('.calendar').data('DateTimePicker').toggle();
+        })
 
         $('.bank-type-select').on('change', function () {
             $(this).siblings('.select2.bank-account-select').val('').trigger('change')

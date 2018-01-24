@@ -165,6 +165,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult EditUser(EditUserViewModel viewModel)
         {

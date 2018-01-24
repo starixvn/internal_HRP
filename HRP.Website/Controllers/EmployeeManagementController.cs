@@ -383,6 +383,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
         public IActionResult SavePayroll(EmployeePayrollViewModel model)
         {

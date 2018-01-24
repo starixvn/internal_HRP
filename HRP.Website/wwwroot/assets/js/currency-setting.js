@@ -81,7 +81,8 @@
                     url: commonFunctions.rootURL + 'CurrencySetting/Save',
                     data: {
                         selectedTime: $("#SelectedTime").val(),
-                        exchangeRates: data
+                        exchangeRates: data,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', '#currency-form').val()
                     },
                     success: function (response) {
                         if (response.isSuccessful) {
