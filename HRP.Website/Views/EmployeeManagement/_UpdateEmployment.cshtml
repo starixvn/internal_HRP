@@ -616,7 +616,8 @@
         <a class="button -second" asp-action="index"
            asp-route-departmentIds="@Model.Filter.DepartmentIds"
            asp-route-employeeStatusIds="@Model.Filter.EmployeeStatusIds"
-           asp-route-employeeId="@Model.Filter.EmployeeId">@ViewLang.Cancel</a>
+           asp-route-employeeId="@Model.Filter.EmployeeId"
+           asp-route-displayName="@Model.Filter.DisplayName">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
             <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>

@@ -108,12 +108,14 @@
         public async Task<IActionResult> CreateEmployee(
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeId = null)
+            int? employeeId = null,
+            string displayName = null)
         {
             var viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
             viewModel.Filter.EmployeeId = employeeId;
+            viewModel.Filter.DisplayName = displayName;
 
             return View("CreateEmployee", viewModel);
         }
@@ -144,12 +146,14 @@
         public IActionResult CreateEmployment(
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeId = null)
+            int? employeeId = null,
+            string displayName = null)
         {
             CreateEmploymentViewModel viewModel = employeeManagementService.GetDataToCreateEmployment();
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
             viewModel.Filter.EmployeeId = employeeId;
+            viewModel.Filter.DisplayName = displayName;
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -175,7 +179,8 @@
             int id,
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeId = null)
+            int? employeeId = null,
+            string displayName = null)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);
 
@@ -187,6 +192,7 @@
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
             viewModel.Filter.EmployeeId = employeeId;
+            viewModel.Filter.DisplayName = displayName;
 
             return View("UpdateEmployee", viewModel);
         }
@@ -223,7 +229,8 @@
             int employeeId,
             string departmentIds = null,
             string employeeStatusIds = null,
-            int? employeeFilterId = null)
+            int? employeeFilterId = null,
+            string displayName = null)
         {
             UpdateEmploymentViewModel viewModel = employeeManagementService.GetDataToUpdateEmployment(employeeId);
 
@@ -235,6 +242,7 @@
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
             viewModel.Filter.EmployeeId = employeeFilterId;
+            viewModel.Filter.DisplayName = displayName;
 
             return PartialView("_UpdateEmployment", viewModel);
         }

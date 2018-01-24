@@ -25,18 +25,16 @@
     }
 
     function onUpdateSuccess(response) {
-            if (response.isSuccessful) {
-                commonFunctions.showSuccessMessage('Updated sucessfully!');
-            } else {
-                if (response.errors) {
-                    $form.validate().showErrors(response.errors);
-                } else {
-                    $form.find('.list-message-error')
-                        .append('<span class="message">' + response.message + '</span>');
-                }
-
+        if (response.isSuccessful) {
+            commonFunctions.showSuccessMessage('Updated sucessfully!');
+        } else {
+            if (response.errors) {
+                $form.validate().showErrors(response.errors);
                 commonFunctions.showValidationSummary($form);
+            } else {
+                commonFunctions.showErrorMessage(response.message);
             }
+        }
     }
 
     function initModule() {

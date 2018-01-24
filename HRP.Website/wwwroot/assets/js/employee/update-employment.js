@@ -77,12 +77,10 @@ var updateEmployment = (function ($) {
             } else {
                 if (response.errors) {
                     $updateEmploymentForm.validate().showErrors(response.errors);
+                    commonFunctions.showValidationSummary($updateEmploymentForm);
                 } else {
-                    $updateEmploymentForm.find('.list-message-error')
-                        .append('<span class="message">' + response.message + '</span>');
+                    commonFunctions.showErrorMessage(response.message);
                 }
-
-                commonFunctions.showValidationSummary($updateEmploymentForm);
             }
         }
     };

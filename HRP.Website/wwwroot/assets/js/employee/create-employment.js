@@ -71,12 +71,10 @@ var createEmployment = (function ($) {
                         } else {
                             if (response.errors) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
+                                commonFunctions.showValidationSummary($createEmploymentForm);
                             } else {
-                                $createEmploymentForm.find('.list-message-error')
-                                    .append('<span class="message">' + response.message + '</span>');
+                                commonFunctions.showErrorMessage(response.message);
                             }
-
-                            commonFunctions.showValidationSummary($createEmploymentForm);
                         }
                     },
                     error: commonFunctions.handleAjaxError
