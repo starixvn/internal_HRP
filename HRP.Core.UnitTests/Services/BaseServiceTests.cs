@@ -50,7 +50,7 @@
             // Arrange
             var expected = new List<MenuItem>
             {
-                new MenuItem { MenuId = 1, Name = "configuration", Description = "", Url = "/", FunctionId = 1, ParentId = null, IsActive = true, DisplayOrder = 1 }
+                new MenuItem { MenuId = 1, Name = "configuration", Description = "", Link = "/", FunctionId = 1, ParentId = null, IsActive = true, DisplayOrder = 1 }
             };
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
