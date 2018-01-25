@@ -33,7 +33,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
-        public async Task<IActionResult> EditEmployeeBankDetails(EditEmployeeBankDetailsViewModel viewModel)
+        public async Task<IActionResult> EmployeeBankAccounts(EditEmployeeBankDetailsViewModel viewModel)
         {
             var employee = employeeManagementService.GetEmployeeById(viewModel.Id);
 
@@ -104,7 +104,7 @@
             if (result.IsSuccessful)
             {
                 var redirectViewModel = new EditEmployeeBankDetailsViewModel { Id = viewModel.BankAccount.EmployeeId };
-                return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
+                return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
 
             return View(viewModel);
@@ -149,7 +149,7 @@
             if (result.IsSuccessful)
             {
                 var redirectViewModel = new EditEmployeeBankDetailsViewModel { Id = viewModel.BankAccount.EmployeeId };
-                return RedirectToAction("EditEmployeeBankDetails", redirectViewModel);
+                return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
 
             return View(viewModel);
