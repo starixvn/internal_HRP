@@ -389,6 +389,7 @@
                     employment.OldSectionId = employment.SectionId;
                     employment.OldCostCenterId = employment.CostCenterId;
                     employment.PDFPassword = cryptoService.Decrypt(employment.PDFPassword);
+                    employment.OldPDFPassword = employment.PDFPassword;
                     employment.IsHost = sessionService.HasPermissionOnCompany(employment.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
                 }
             }
@@ -486,6 +487,7 @@
                 NicknameLocalBonus = viewModel.EPA.NicknameLocalBonus,
                 FullNamePFileAdmin = viewModel.FullNamePFileAdmin,
                 NicknamePFileAdmin = viewModel.NicknamePFileAdmin,
+                IsPDFPasswordChanged = viewModel.PDFPassword != viewModel.OldPDFPassword,
                 UpdatedBy = sessionService.UserId
             };
 

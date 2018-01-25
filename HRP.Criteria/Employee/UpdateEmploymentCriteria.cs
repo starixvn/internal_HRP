@@ -178,6 +178,8 @@
 
         public string PDFPassword { get; set; }
 
+        public bool IsPDFPasswordChanged { get; set; }
+
         public int UpdatedBy { get; set; }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
