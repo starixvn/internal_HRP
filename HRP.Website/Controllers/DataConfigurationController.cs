@@ -1,9 +1,12 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Services;
+    using HRP.Criteria.Company;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -12,10 +15,13 @@
     public class DataConfigurationController : Controller
     {
         private readonly IDataConfigurationService dataConfigurationService;
+        private readonly IBaseService baseService;
 
-        public DataConfigurationController(IDataConfigurationService dataConfigurationService)
+        public DataConfigurationController(IDataConfigurationService dataConfigurationService,
+            IBaseService baseService)
         {
             this.dataConfigurationService = dataConfigurationService;
+            this.baseService = baseService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
@@ -32,10 +38,19 @@
             {
                 FieldName = ViewLang.CompanyBVI,
                 Items = companies,
-                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI
+                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI,
+                LinkCheckExists = DataConfigurationActionLink.CheckCompanyBVIExists
             };
 
             return PartialView("_SimpleItemTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> CheckCompanyBVIExists(SimpleItem newItem)
+        {
+            var isExisted = (await baseService.GetDataAsync<int>(new CheckCompanyExistsCriteria { Code = newItem.ItemName })).Any();
+
+            return Json(isExisted ? string.Format(Message.ItemNameExisted, newItem.ItemName) : "true");
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -47,13 +62,19 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCompanyBVI(SimpleItem newItem)
         {
-            var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(newItem);
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(newItem);
 
-            return View(commandResult);
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
         }
     }
 }

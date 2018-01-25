@@ -862,6 +862,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; has been successfully created..
+        /// </summary>
+        public static string ItemCreatedSuccessful {
+            get {
+                return ResourceManager.GetString("ItemCreatedSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; has already existed!.
+        /// </summary>
+        public static string ItemNameExisted {
+            get {
+                return ResourceManager.GetString("ItemNameExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} must not over {1} characters long..
         /// </summary>
         public static string ItemNameMaxLength {

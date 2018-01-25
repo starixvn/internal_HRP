@@ -37,6 +37,16 @@
     </div>    
 </form>
 
+<div class="-has-icon msg-success hidden">
+</div>
+
+<div id="tableWrapper">
+</div>
+
+<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyLocal" />
+<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />
+
+@*<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />*@
 <!-- Section Create New Item -->
 <div class="modal fade" id="newChildItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -92,15 +102,6 @@
         </div>
     </div>
 </div>
-
-<div id="tableWrapper">
-</div>
-
-<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyLocal" />
-<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />
-
-@*<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />*@
-
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>

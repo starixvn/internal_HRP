@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc;
 
     public class SimpleItem
     {
@@ -9,6 +10,7 @@
 
         [Required]
         [StringLength(50)]
+        [Remote("")]
         public string ItemName { get; set; }
 
         [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DescriptionMaxLength")]

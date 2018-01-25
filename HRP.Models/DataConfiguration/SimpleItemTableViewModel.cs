@@ -15,6 +15,8 @@
 
         public string LinkCreateItem { get; set; }
 
+        public string LinkCheckExists { get; set; }
+
         public SimpleItem NewItem { get; set; }
     }
 }

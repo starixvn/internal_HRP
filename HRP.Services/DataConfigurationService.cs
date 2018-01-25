@@ -9,15 +9,19 @@
     using HRP.Criteria.Company;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Resources;
     using HRP.Services.Interfaces;
 
     public class DataConfigurationService : IDataConfigurationService
     {
         private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
 
-        public DataConfigurationService(IBaseService baseService)
+        public DataConfigurationService(IBaseService baseService,
+            ISessionService sessionService)
         {
             this.baseService = baseService;
+            this.sessionService = sessionService;
         }
 
         public async Task<IEnumerable<SimpleItem>> GetAllCompanyBVIAsync()
@@ -46,10 +50,15 @@
             {
                 Code = item.ItemName,
                 Name = item.Description,
-                IsActive = item.IsActive
+                IsActive = item.IsActive,
+                CreatedBy = sessionService.UserId
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
 
             return commandResult;
         }

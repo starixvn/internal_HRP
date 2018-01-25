@@ -19,7 +19,7 @@
 <<<<<<< HEAD
     <Prefer32Bit>true</Prefer32Bit>
 =======
->>>>>>> 89897 - apply select2 to create, update employee
+>>>>>>> #89883 - Create new item in Data Config
   </PropertyGroup>
 
   <ItemGroup>

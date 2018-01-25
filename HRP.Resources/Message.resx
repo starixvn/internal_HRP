@@ -624,4 +624,10 @@
   <data name="ItemNameRequired" xml:space="preserve">
     <value>{0} is required!</value>
   </data>
+  <data name="ItemNameExisted" xml:space="preserve">
+    <value>The '{0}' has already existed!</value>
+  </data>
+  <data name="ItemCreatedSuccessful" xml:space="preserve">
+    <value>The '{0}' has been successfully created.</value>
+  </data>
 </root>

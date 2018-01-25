@@ -52,7 +52,7 @@
 </table>
 
 <!-- Create New Item -->
-<form id="createItemForm" action="@Model.LinkCreateItem" method="post">
+<form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true">
     <div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content -has-title">
@@ -60,17 +60,25 @@
                     <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
                     <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
                 </div>
+
                 <div class="modal-body form-information">
+                    <div class="list-message-error hidden">
+                        <span class="message" asp-validation-for="NewItem.ItemName"></span>
+                        <span class="message" asp-validation-for="NewItem.Description"></span>
+                    </div>
+                    <div class="-has-icon msg-error hidden" id="create-item-error-alert">
+                    </div>
                     <label class="text -has-required">@Model.FieldName</label>
                     <div class="group-control">
-                        <span class="text-danger" asp-validation-for="NewItem.ItemName"></span>
-                        <input class="control" type="text" asp-for="NewItem.ItemName" 
+
+                        <input class="control js-itemName" type="text" asp-for="NewItem.ItemName"
                                data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
-                               data-val-length ="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)"/>
+                               data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)"
+                               data-val-remote-url="@Model.LinkCheckExists" />
                     </div>
                     <label class="text">@ViewLang.Description</label>
                     <div class="group-control">
-                        <span class="text-danger" asp-validation-for="NewItem.Description"></span>
+
                         <input class="control" type="text" asp-for="NewItem.Description" />
                     </div>
                     <div class="group-control">
@@ -80,7 +88,7 @@
                         </label>
                     </div>
                     <div class="list-button">
-                        <button class="button -primary" type="submit">@ViewLang.Save</button>
+                        <button class="button -primary js-btnSave" type="submit">@ViewLang.Save</button>
                         <button class="button -second" type="button" data-dismiss="modal">@ViewLang.Cancel</button>
                     </div>
                 </div>

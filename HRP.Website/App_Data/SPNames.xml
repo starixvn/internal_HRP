@@ -96,6 +96,7 @@
     <Setting Key="Employee_UpdatePayroll" SpName="Employee_UpdatePayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="DataConfiguration">
+    <Setting Key="DataConfiguration_CheckCompanyBVIExists" SpName="DataConfiguration_CheckCompanyBVIExists" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="DataConfiguration_CreateCompanyBVI" SpName="DataConfiguration_CreateCompanyBVI" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>
