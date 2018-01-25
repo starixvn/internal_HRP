@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRP.Services", "HRP.Services\HRP.Services.csproj", "{A82B603F-A59E-4C3A-8A28-4DD415F741E8}"
 EndProject
@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\HRPCSharp.ruleset = SonarQube\HRPCSharp.ruleset
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HRP.Database", "HRP.Database\HRP.Database.sqlproj", "{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -202,6 +204,24 @@ Global
 		{DF31DE0E-580E-47B1-A071-30D549A353B1}.Release|x64.Build.0 = Release|Any CPU
 		{DF31DE0E-580E-47B1-A071-30D549A353B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF31DE0E-580E-47B1-A071-30D549A353B1}.Release|x86.Build.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x64.Build.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x64.ActiveCfg = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x64.Build.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x64.Deploy.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x86.Build.0 = Release|Any CPU
+		{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}.Release|x86.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
