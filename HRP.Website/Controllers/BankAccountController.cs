@@ -8,7 +8,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria;
-    using HRP.Criteria.Bank;
+    using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Bank;
@@ -68,7 +68,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateNewBankAccount(int employeeId)
+        public async Task<IActionResult> CreateBankAccount(int employeeId)
         {
             var employee = employeeManagementService.GetEmployeeById(employeeId);
 
@@ -97,7 +97,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateNewBankAccount(CreateNewBankAccountViewModel viewModel)
+        public IActionResult CreateBankAccount(CreateNewBankAccountViewModel viewModel)
         {
             var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
 
