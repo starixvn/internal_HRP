@@ -44,8 +44,17 @@
                 Departments = new List<Department>()
             };
 
+            var refResource = new ReferenceResourceModel
+            {
+                ResourceId = 1,
+                RefName = "EmploymentStatus",
+                Value = "Confirmed",
+                Description = ""
+            };
             //Act
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
+            baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus })
+                .Returns(new List<ReferenceResourceModel> { refResource });
             var actual = employeeController.Index();
 
             //Assert

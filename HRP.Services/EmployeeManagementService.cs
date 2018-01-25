@@ -293,13 +293,16 @@
                  ReferenceResource.MaritalStatus,
                  ReferenceResource.NoOfChildren);
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames }).ConfigureAwait(false);
-
+            var listGender = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
+            var listNational = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
+            var listMaritalStatus = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
+            var listNoOfChildren = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
             var viewModel = new CreateEmployeeViewModel
             {
-                GenderList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender))),
-                NationalityList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality))),
-                MaritalStatusList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus))),
-                NoOfChildrenList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren))),
+                GenderList = listGender,
+                NationalityList = listNational,
+                MaritalStatusList = listMaritalStatus,
+                NoOfChildrenList = listNoOfChildren,
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host)
             };
 

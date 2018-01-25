@@ -46,11 +46,12 @@
         {
             var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
             var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
+            var statusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList());
             var viewModel = new EmployeeManagementViewModel
             {
                 IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
                 DepartmentIds = departmentIds ?? GetDepartmentIds(listDepartment.Departments),
-                EmployeeStatusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList()),
+                EmployeeStatusIds = statusIds,
                 EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value"),
                 EmployeeId = employeeId,
                 DisplayName = displayName

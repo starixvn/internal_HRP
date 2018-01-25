@@ -176,6 +176,7 @@ namespace HRP.Website.Controllers
                 ActivePanel = AccountTab.Otp,
                 IsOTPRegistered = false,
                 SetupOtpViewModel = setupOtpViewModel,
+                ChangePasswordViewModel = new ChangePasswordViewModel(),
                 UserProfileViewModel = userProfile
             };
 
