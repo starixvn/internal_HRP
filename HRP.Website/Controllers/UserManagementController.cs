@@ -146,13 +146,8 @@
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
         public IActionResult EditUser(int id)
         {
-            if (id <= 0)
-            {
-                return RedirectToAction("Index");
-            }
-
             var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
-            if(viewModel == null)
+            if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
@@ -179,7 +174,7 @@
                     EditedBy = sessionService.UserId
                 };
 
-                var result = baseService.ExecuteNonQuery(criteria);
+                CommandResult result = baseService.ExecuteNonQuery(criteria);
                 return Json(result);
             }
 

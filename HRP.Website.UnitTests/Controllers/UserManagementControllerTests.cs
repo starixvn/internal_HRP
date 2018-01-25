@@ -23,6 +23,22 @@
         private ISessionService sessionService;
         private IFunctionService functionService;
 
+        [Fact]
+        public void Index_WhenCalled_ReturnExpectedViewResult()
+        {
+            // Arrange
+            var userController = GetUserManagementController();
+            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
+
+            // Act
+            var actual = userController.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+            Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
+        }
+
         #region AssignPermission
 
         [Fact]
@@ -82,8 +98,10 @@
 
         #endregion AssignPermission
 
+        #region CreateUser
+
         [Fact]
-        public void CreateUser_WhenCalled_ReturnExpectedView()
+        public void CreateUser_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
             var userController = GetUserManagementController();
@@ -98,7 +116,7 @@
         }
 
         [Fact]
-        public void CreateUser_InvalidModel_ReturnErrors()
+        public void CreateUser_ModelStateIsInvalid_ReturnErrors()
         {
             // Arrange
             var model = new CreateUserViewModel();
@@ -114,12 +132,16 @@
         }
 
         [Fact]
-        public void CreateUser_ValidModel_ReturnSucessfully()
+        public void CreateUser_ModelStateIsValid_ReturnExpectedCommandResult()
         {
             // Arrange
             var model = new CreateUserViewModel { Password = "Admin1234" };
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
             var userController = GetUserManagementController();
-            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(expected);
             userController.Url = Substitute.For<IUrlHelper>();
             userController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
 
@@ -131,8 +153,12 @@
             Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
+        #endregion CreateUser
+
+        #region EditUser
+
         [Fact]
-        public void EditUser_InvalidModel_ReturnErrors()
+        public void EditUser_ModelStateIsInvalid_ReturnErrors()
         {
             // Arrange
             var model = new EditUserViewModel();
@@ -148,12 +174,16 @@
         }
 
         [Fact]
-        public void EditUser_ValidModel_ReturnSucessfully()
+        public void EditUser_ModelStateIsValid_ReturnExpectedCommandResult()
         {
             // Arrange
             var model = new EditUserViewModel();
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
             var userController = GetUserManagementController();
-            baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(expected);
 
             // Act
             var actual = userController.EditUser(model);
@@ -164,50 +194,39 @@
         }
 
         [Fact]
-        public void EditUser_InvalidId_RetdirectToIndexPage()
+        public void EditUser_ViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
             var userController = GetUserManagementController();
+            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(x => null);
 
             // Act
-            var actual = userController.EditUser(0);
+            var result = userController.EditUser(1);
 
             // Assert
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Index", viewResult.ActionName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
         }
 
         [Fact]
-        public void EditUser_ValidId_ReturnExpectedView()
+        public void EditUser_ViewModelHasValue_ReturnExpectedViewModel()
         {
             // Arrange
-            var id = 1;
+            var expected = new EditUserViewModel { UserId = 1, IsSystemAdmin = false };
             var userController = GetUserManagementController();
-            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(new EditUserViewModel { UserId = id, IsSystemAdmin = false });
+            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(expected);
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userController.EditUser(id);
+            var actual = userController.EditUser(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
         }
 
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedView()
-        {
-            // Arrange
-            var userController = GetUserManagementController();
-            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
-
-            // Act
-            var actual = userController.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
-        }
+        #endregion EditUser
 
         [Fact]
         public void GetUsers_WhenCalled_ReturnExpectedView()
