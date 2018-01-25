@@ -59,6 +59,7 @@ var dataTable = {
                 "searchable": false,
                 "targets": [0, -1]
             }],
+            "order": [[2, "asc"]],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             'info': false
         });
