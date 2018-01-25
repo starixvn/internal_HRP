@@ -73,6 +73,7 @@ var listEmployee = {
                     if ($("#create-employee").length) {
                         listEmployee.setReturnUrlToElement("#create-employee", queryString);
                     }
+                    listEmployee.initSelect2();
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -198,6 +199,12 @@ var listEmployee = {
                 var employeeName = $(this).val();
                 if (!employeeName) $("#EmployeeId").val("");
             }
+        });
+    },
+
+    initSelect2: function () {
+        $("select[name=employee-table_length]").select2({
+            minimumResultsForSearch: Infinity
         });
     }
 };

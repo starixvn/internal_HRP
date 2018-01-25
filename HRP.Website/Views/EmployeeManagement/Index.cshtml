@@ -12,6 +12,7 @@
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
     }
 </environment>
@@ -42,7 +43,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control employee" placeholder="Full name or Nickname" asp-for="DisplayName" maxlength="70"/>
+        <input type="text" class="control employee" placeholder="Full name or Nickname" asp-for="DisplayName" maxlength="70" />
         <input asp-for="EmployeeId" hidden>
     </div>
     <button type="submit" class="button -primary">@ViewLang.Submit</button>
@@ -70,6 +71,7 @@
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
