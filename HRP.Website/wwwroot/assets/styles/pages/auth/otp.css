@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -404,4 +405,3 @@ body {
 .change-password .control {
   padding-right: 40px;
 }
-/*# sourceMappingURL=otp.css.map */

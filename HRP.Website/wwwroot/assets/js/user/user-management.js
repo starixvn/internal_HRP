@@ -1,5 +1,5 @@
 ﻿var userManagement = (function ($) {
-    var init = function () {
+    function initDataTable() {
         $('#user-table').dataTable({
             'ordering': false,
             'lengthMenu': [[20, 50, 100], [20, 50, 100]],
@@ -16,18 +16,34 @@
                 }
             }
         });
+
+        $('#user-table_length select').select2({
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        });
+    }
+
+    function initModule() {
+        $('.js-select2').select2({
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        });
+
+        initDataTable();
     };
 
+    return {
+        onSearchSuccess: function (response, status) {
+            initDataTable();
+        },
+        initModule: initModule
+    };
+}(jQuery));
+
+$(document).ready(function () {
     $('#quick-search').off('keyup').on('keyup', function () {
         $('#user-table').DataTable().search($(this).val()).draw();
     });
 
-    return {
-        onSearchSuccess: function (response, status) {
-            init();
-        },
-        init: init
-    };
-}(jQuery));
-
-userManagement.init();
+    userManagement.initModule();
+});

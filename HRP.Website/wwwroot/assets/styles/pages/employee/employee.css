@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -644,4 +645,3 @@ table.dataTable thead .sorting_desc:after {
 .space-between-parts {
   margin-top: 18px;
 }
-/*# sourceMappingURL=employee.css.map */

@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -585,4 +586,3 @@ table.dataTable thead .sorting_desc:after {
 .modal .modal-dialog .list-button .button:first-child {
   margin-right: 0;
 }
-/*# sourceMappingURL=data-configuration.css.map */

@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -389,4 +390,3 @@ hr {
   margin-bottom: 10px;
   border-top-color: #dfdfdf;
 }
-/*# sourceMappingURL=payroll.css.map */

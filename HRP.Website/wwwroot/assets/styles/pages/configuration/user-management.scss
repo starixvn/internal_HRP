@@ -1,9 +1,9 @@
-
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
 @import "../../components/forms";
 @import "../../components/tables";
 @import "../../components/popups";
+@import "../../components/customize-select2";
 
 /* Table */
 .icon-details {
@@ -12,18 +12,18 @@
 
 .icon-permission {
     font-size: 18px;
-}  
+}
 
 .table.super-admin-func {
     width: 577px;
 }
 
 /* Assign Permission */
-.assign-permission {   
+.assign-permission {
     .level-first {
         color: $primary-color;
     }
-    
+
     .icon-level-first {
         font-size: 8px;
         margin-right: 3px;
@@ -46,7 +46,7 @@
 
     .sub-header input[type='checkbox'] {
         margin-top: 5px;
-    }   
+    }
 }
 
 .list-button .button:first-child {

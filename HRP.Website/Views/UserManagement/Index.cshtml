@@ -2,18 +2,17 @@
 @using HRP.Models.UserManagement
 @model UserManagementViewModel
 
-<environment include="Development">
-    @section Styles {
+@section Styles {
+    <environment include="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
-    }
-</environment>
-<environment exclude="Development">
-    @section Styles {
+    </environment>
+    <environment exclude="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
         <link href="~/assets/bundles/user/css/user-management.min.css" rel="stylesheet" />
-    }
-</environment>
+    </environment>
+}
 
 <ol class="breadcrumb">
     <li class="like-link">Configuration</li>
@@ -23,7 +22,7 @@
       data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="userManagement.onSearchSuccess">
     <div class="group">
         <label class="text">@ViewLang.Status</label>
-        <select class="control" name="status">
+        <select class="control js-select2" name="status">
             <option>@ViewLang.All</option>
             <option value="true">@ViewLang.Active</option>
             <option value="false">@ViewLang.Inactive</option>
@@ -52,16 +51,15 @@
     @await Component.InvokeAsync("UserTable")
 </div>
 
-<environment include="Development">
-    @section Scripts {
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/assets/js/user-management.js"></script>
-    }
-</environment>
-<environment exclude="Development">
-    @section Scripts {
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/user/user-management.js"></script>
+    </environment>
+    <environment exclude="Development">
         <script src="~/assets/bundles/user/js/user-management.min.js"></script>
-    }
-</environment>
+    </environment>
+}

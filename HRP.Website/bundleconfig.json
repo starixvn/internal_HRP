@@ -39,15 +39,13 @@
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "wwwroot/assets/styles/pages/main.css"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
+    ]
   },
   {
     "outputFileName": "wwwroot/assets/bundles/user/css/user-management.min.css",
     "inputFiles": [
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
+      "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/assets/styles/pages/configuration/user-management.css"
     ]
   },
@@ -153,7 +151,7 @@
   {
     "outputFileName": "wwwroot/assets/bundles/user/js/assign-permission-to-user.min.js",
     "inputFiles": [
-      "wwwroot/assets/js/assign-permission-to-user.js"
+      "wwwroot/assets/js/user/assign-permission-to-user.js"
     ],
     "minify": {
       "enabled": true,
@@ -163,10 +161,11 @@
   {
     "outputFileName": "wwwroot/assets/bundles/user/js/user-management.min.js",
     "inputFiles": [
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/assets/js/user-management.js"
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/assets/js/user/user-management.js"
     ],
     "minify": {
       "enabled": true,
@@ -204,7 +203,7 @@
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/assets/js/create-user.js"
+      "wwwroot/assets/js/user/create-user.js"
     ],
     "minify": {
       "enabled": true,
@@ -217,7 +216,7 @@
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/assets/js/edit-user.js"
+      "wwwroot/assets/js/user/edit-user.js"
     ],
     "minify": {
       "enabled": true,

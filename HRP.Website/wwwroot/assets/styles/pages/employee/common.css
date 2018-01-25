@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -256,4 +257,3 @@
 .list-button {
   margin-top: 8px;
 }
-/*# sourceMappingURL=common.css.map */

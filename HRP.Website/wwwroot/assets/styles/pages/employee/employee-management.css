@@ -80,7 +80,8 @@
 }
 
 .form-information .list-button {
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
 }
 
 .form-information .list-button .button {
@@ -565,4 +566,3 @@ table.dataTable thead .sorting_desc:after {
   top: 4px;
   font-size: 16px;
 }
-/*# sourceMappingURL=employee-management.css.map */
