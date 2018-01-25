@@ -53,7 +53,8 @@
 
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.Id);
 
-            if(viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
+            if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
+                || viewModel.SelectedBankTypes == null)
             {
                 viewModel.SelectedBankTypes = bankTypes.Select(x => x.ResourceId).ToArray();
             }
@@ -158,7 +159,7 @@
         [HttpGet]
         public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
-            if (bankTypeId == (int) Core.Enumerations.BankType.ContraCoAccount)
+            if (bankTypeId == (int)Core.Enumerations.BankType.ContraCoAccount)
             {
                 var result = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.ContraCoAccount });
                 return Json(result.Select(x => new { id = x.ResourceId, text = x.Value }));
