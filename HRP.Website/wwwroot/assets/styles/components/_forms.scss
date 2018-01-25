@@ -84,7 +84,8 @@
     }
 
     .list-button {
-        overflow: hidden;
+        display: inline-block;
+        width: 100%;
 
         .button {
             float: left;
