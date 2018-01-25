@@ -323,17 +323,16 @@
   {
     "outputFileName": "wwwroot/assets/bundles/employee/js/employee-payroll.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/moment/min/moment.min.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
       "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.min.js",
-      "wwwroot/lib/bignumber.js/bignumber.min.js",
       "wwwroot/assets/js/employee/employee-payroll.js"
     ],
     "minify": {
-      "enabled": true,
-      "renameLocals": true
+      "renameLocals": true,
+      "enabled": true
     }
   }
 ]

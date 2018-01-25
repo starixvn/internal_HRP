@@ -1,7 +1,7 @@
 ﻿var employeePayroll = (function ($) {
     function checkRelatedElementsHaveValue(className, element) {
         return $(className).not(element).serializeArray().filter(function (item) {
-            return item.value != '';
+            return item.value !== '';
         }).length > 0;
     };
 
@@ -361,14 +361,14 @@
                     required: function (element) {
                         var basicSalary = $('#BasicSalary_Salary');
                         var oldValue = basicSalary.data('old-value');
-                        return oldValue != '' && Number(basicSalary.val()) != Number(oldValue);
+                        return oldValue !== '' && Number(basicSalary.val()) !== Number(oldValue);
                     }
                 },
                 'BasicSalary.EffectiveDate': {
                     required: function (element) {
                         var basicSalary = $('#BasicSalary_Salary');
                         var oldValue = basicSalary.data('old-value');
-                        return oldValue != '' && Number(basicSalary.val()) != Number(oldValue);
+                        return oldValue !== '' && Number(basicSalary.val()) !== Number(oldValue);
                     }
                 }
             }
