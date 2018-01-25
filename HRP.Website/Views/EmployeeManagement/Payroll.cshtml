@@ -23,7 +23,7 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
-    <li class="like-link">@ViewLang.EmployeeList</li>
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li class="active">@ViewLang.EditEmployeePayroll @Model.Code - @Model.FullName - @Model.Nickname</li>
 </ol>
 

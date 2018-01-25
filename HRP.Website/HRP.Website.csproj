@@ -4,6 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <DebugType>Full</DebugType>
     <RuntimeIdentifier>win10-x86</RuntimeIdentifier>
+    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
   </PropertyGroup>
 
 
