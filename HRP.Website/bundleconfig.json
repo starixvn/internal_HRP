@@ -328,6 +328,7 @@
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
       "wwwroot/lib/select2/dist/js/select2.js",
       "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.min.js",
+      "wwwroot/lib/bignumber.js/bignumber.min.js",
       "wwwroot/assets/js/employee/employee-payroll.js"
     ],
     "minify": {

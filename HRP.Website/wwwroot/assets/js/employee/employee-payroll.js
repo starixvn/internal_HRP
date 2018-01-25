@@ -5,12 +5,19 @@
         }).length > 0;
     };
 
-    function round(value, currency) {
+    BigNumber.prototype.roundWithCurrency = function (dp, currency) {
         if (currency === 'VND')
-            return Math.round(value / 1000) * 1000;
+            return this.div(1000).round().mul(1000);
 
-        return Number(Math.round(value + 'e2') + 'e-2').toFixed(2);
-    }
+        return this.round(dp);
+    };
+
+    BigNumber.prototype.toStringWithCurrency = function (currency) {
+        if (currency === 'VND')
+            return this.toString();
+
+        return this.toFixed(2);
+    };
 
     function calculateBasicSalary() {
         var totalAmountCurrency = $('#BasicSalary_CurrencyCode').val();
@@ -19,10 +26,10 @@
         if (totalAmountCurrency === '' || isNaN($basicSalary.val()))
             return;
 
-        var totalAmount = round(Number($basicSalary.val()), totalAmountCurrency);
+        var totalAmount = new BigNumber(Number($basicSalary.val())).roundWithCurrency(2, totalAmountCurrency);
 
         if ($basicSalary.val() !== '')
-            $basicSalary.val(totalAmount);
+            $basicSalary.val(totalAmount.toStringWithCurrency(totalAmountCurrency));
 
         var selectedAutoCalculate = $('input[name="BasicSalary.AutoCalculateOn"]:checked');
         var parent = selectedAutoCalculate.closest('.group-complex');
@@ -36,20 +43,20 @@
             if (currency !== '') {
                 var $element = $('input.basic-salary-calculate[type="text"]', parent);
                 if ($element.val() !== '' && !isNaN($element.val())) {
-                    var amount = round($element.val(), currency);
+                    var amount = new BigNumber($element.val());
                     var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + totalAmountCurrency + '"]').val());
-                    totalAmount -= amount * exchangeRates;
+                    totalAmount = totalAmount.minus(amount.mul(exchangeRates));
                 }
             }
         });
 
-        totalAmount = round(totalAmount * Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()), autoCalculateCurrency);
-        $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount);
+        totalAmount = totalAmount.mul(Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val())).roundWithCurrency(2, autoCalculateCurrency);
+        $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
     };
 
     function calculateAmountForBanks() {
         var totalAmountCurrency = $('#Allowance_CurrencyCode').val();
-        var totalAmount = Number($('#allowance-total-amount').val());
+        var totalAmount = new BigNumber($('#allowance-total-amount').val());
 
         if (totalAmountCurrency === '')
             return;
@@ -66,44 +73,41 @@
             if (currency !== '') {
                 var $element = $('input.allowance-calculate[type="text"]', parent);
                 if ($element.val() !== '' && !isNaN($element.val())) {
-                    var amount = Number($element.val());
+                    var amount = new BigNumber($element.val());
                     var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + totalAmountCurrency + '"]').val());
-                    totalAmount -= amount * exchangeRates;
+                    totalAmount = totalAmount.minus(amount.mul(exchangeRates));
                 }
             }
         });
 
-        totalAmount = round(totalAmount * Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()), autoCalculateCurrency);
-        $('input.allowance-calculate[type="text"]', parent).val(totalAmount);
+        totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()).roundWithCurrency(2, autoCalculateCurrency);
+        $('input.allowance-calculate[type="text"]', parent).val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
     };
 
     function calculateTotalAllowance(allowanceCurrency) {
-        var totalAmount = 0;
+        var totalAmount = new BigNumber(0);
         if (allowanceCurrency === '') {
             $('#allowance-total-amount').val('');
             return;
         }
 
         $('.allowance-convert-amount').each(function (i, e) {
-            totalAmount += Number($(e).val())
+            totalAmount = totalAmount.plus(Number($(e).val()));
         });
 
-        $('#allowance-total-amount').val(round(totalAmount, allowanceCurrency));
+        $('#allowance-total-amount').val(totalAmount.roundWithCurrency(2, allowanceCurrency).toStringWithCurrency(allowanceCurrency));
         calculateAmountForBanks();
     }
 
     function convertToAllowanceCurrency(element, allowanceCurrency) {
         var parent = element.closest('.allowance-detail');
         var currency = $('select.allowance-detail-calculate', parent).val();
-        if (currency != '') {
-            var amount = Number($('input.allowance-detail-calculate', parent).val());
+        var amount = $('input.allowance-detail-calculate', parent).val();
+        if (currency !== '' && !isNaN(amount) && amount !== '') {
+            var amount = new BigNumber(amount);
             var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
-            var value = round(amount * exchangeRates, allowanceCurrency);
-            if (value == 0) {
-                $('.allowance-convert-amount', parent).val('');
-            } else {
-                $('.allowance-convert-amount', parent).val(value);
-            }
+            var value = amount.mul(exchangeRates).roundWithCurrency(2, allowanceCurrency);
+            $('.allowance-convert-amount', parent).val(value.toStringWithCurrency(allowanceCurrency));
         }
         else {
             $('.allowance-convert-amount', parent).val('');
@@ -127,9 +131,19 @@
         var $currency = parent.find('select');
         var $amount = parent.find('input');
         if ($currency.val() !== '' && $amount.val() !== '' && !isNaN($amount.val())) {
-            $amount.val(round($amount.val(), $currency.val()));
+            var number = new BigNumber($amount.val());
+            var currency = $currency.val();
+            $amount.val(number.roundWithCurrency(2, currency).toStringWithCurrency(currency));
         }
     };
+
+    function validatedInvalidRelatedElements(element) {
+        var parent = $(element).closest('.group-complex');
+        var validateElements = $('input.input-validation-error, select.input-validation-error').not(element);
+        if (validateElements.length > 0) {
+            validateElements.valid();
+        }
+    }
 
     function init() {
         calculateBasicSalary();
@@ -190,11 +204,13 @@
         }).change();
 
         $('.basic-salary-calculate').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
             roundingAmount(e.target);
             calculateBasicSalary();
         });
 
         $('.allowance-calculate').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
             roundingAmount(e.target);
             calculateAmountForBanks();
         });
@@ -226,23 +242,28 @@
             $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
         });
 
-        $('.calendar').datetimepicker({
+        $('.calendar input').datetimepicker({
             format: 'MM/DD/YYYY',
             useCurrent: false,
             allowInputToggle: true
         });
 
         $('.icon-calendar').on('click', function () {
-            $(this).closest('.calendar').data('DateTimePicker').toggle();
+            $(this).siblings('input').data('DateTimePicker').toggle();
         })
 
-        $('.bank-type-select').on('change', function () {
+        $('.bank-type-select').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
             $(this).siblings('.select2.bank-account-select').val('').trigger('change')
             if (this.value == 3) {
                 $(this).siblings('.add-account').addClass('disabled');
             } else {
                 $(this).siblings('.add-account').removeClass('disabled');
             }
+        });
+
+        $('.bank-account-select').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
         });
 
         $('.number:enabled').on('keypress', function (e) {
@@ -340,14 +361,14 @@
                     required: function (element) {
                         var basicSalary = $('#BasicSalary_Salary');
                         var oldValue = basicSalary.data('old-value');
-                        return oldValue != '' && basicSalary.val() != oldValue;
+                        return oldValue != '' && Number(basicSalary.val()) != Number(oldValue);
                     }
                 },
                 'BasicSalary.EffectiveDate': {
                     required: function (element) {
                         var basicSalary = $('#BasicSalary_Salary');
                         var oldValue = basicSalary.data('old-value');
-                        return oldValue != '' && basicSalary.val() != oldValue;
+                        return oldValue != '' && Number(basicSalary.val()) != Number(oldValue);
                     }
                 }
             }

@@ -13,6 +13,7 @@
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "moment": "^2.20.1",
     "inputmask": "^3.3.11",
-    "tooltipster": "^4.2.5"
+    "tooltipster": "^4.2.5",
+    "bignumber.js": "^5.0.0"
   }
 }
