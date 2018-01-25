@@ -46,7 +46,9 @@
         <input type="text" class="control employee" placeholder="Full name or Nickname" asp-for="DisplayName" maxlength="70" />
         <input asp-for="EmployeeId" hidden>
     </div>
-    <button type="submit" class="button -primary">@ViewLang.Submit</button>
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
+    </div>    
 </form>
 <div class="top-header">
     <div class="pull-left">

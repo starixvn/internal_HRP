@@ -18,14 +18,19 @@
   color: #ff0000;
 }
 
+.search-form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
 .search-form .group {
-  display: inline-block;
   padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 .search-form .group .control {
   display: block;
-  margin-bottom: 10px;
 }
 
 .search-form .calendar {
@@ -566,3 +571,4 @@ table.dataTable thead .sorting_desc:after {
   top: 4px;
   font-size: 16px;
 }
+/*# sourceMappingURL=employee-management.css.map */

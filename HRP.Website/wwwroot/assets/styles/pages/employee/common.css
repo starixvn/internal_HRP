@@ -18,14 +18,19 @@
   color: #ff0000;
 }
 
+.search-form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
 .search-form .group {
-  display: inline-block;
   padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 .search-form .group .control {
   display: block;
-  margin-bottom: 10px;
 }
 
 .search-form .calendar {
@@ -150,8 +155,8 @@
   -o-border-radius: 2px;
   border-radius: 2px;
   outline: none;
-  height: 28px;
-  line-height: 28px;
+  height: 32px;
+  line-height: 32px;
   padding-left: 5px;
   padding-right: 10px;
   background-color: #fff;
@@ -165,7 +170,7 @@
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
-  height: 28px;
+  height: 32px;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field:focus {
@@ -218,6 +223,17 @@
   border-radius: 0;
 }
 
+/* Edit height for select2 */
+/* Customize select2 */
+.select2-container--default .select2-selection--single {
+  height: 28px;
+  line-height: 28px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  height: 28px;
+}
+
 .form-information .group-title, .form-information .like-group-title {
   color: #1973b2 !important;
   font-weight: bold;
@@ -257,3 +273,4 @@
 .list-button {
   margin-top: 8px;
 }
+/*# sourceMappingURL=common.css.map */

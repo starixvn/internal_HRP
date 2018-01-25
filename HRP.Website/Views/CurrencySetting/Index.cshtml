@@ -28,7 +28,9 @@
             <input type="text" class="control datepickerinput" asp-for="SelectedTime" data-min-month="@Model.MinMonth.ToString("yyyy-MM-dd")" />
         </div>
     </div>
-    <button type="submit" class="button -primary">@ViewLang.Submit</button>
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
+    </div>    
 </form>
 
 <div class="msg-success -has-icon hidden"></div>

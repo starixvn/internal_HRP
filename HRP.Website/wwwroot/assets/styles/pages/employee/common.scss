@@ -3,6 +3,22 @@
 @import "../../components/forms";
 @import "../../components/customize-select2";
 
+
+/* Edit height for select2 */
+
+/* Customize select2 */
+.select2-container--default {
+    .select2-selection--single {
+        height: 28px;
+        line-height: 28px;  
+    }
+
+    .select2-search--dropdown .select2-search__field {
+        height: 28px;
+    }
+}
+
+
 .form-information {  
     .group-title, .like-group-title {
         color: $primary-color !important;

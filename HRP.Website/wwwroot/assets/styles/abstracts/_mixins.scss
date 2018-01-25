@@ -1,7 +1,6 @@
-﻿
-/// Adds a browser prefix to the property
-/// @param {*} $property Property
-/// @param {*} $value Value
+﻿// Adds a browser prefix to the property
+// @param {*} $property Property
+// @param {*} $value Value
 
 @mixin css3-prefix($property, $value) {
   -webkit-#{$property}: #{$value};
