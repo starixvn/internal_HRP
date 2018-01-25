@@ -350,7 +350,7 @@ var employmentCommonFuncs = (function ($) {
                                     label: item.nickname + ' (' + item.fullName + ')',
                                     fullname: item.fullName,
                                     nickname: item.nickname,
-                                    value: item.employeeId
+                                    value: item.idNo
                                 };
                             }));
                         }
@@ -360,11 +360,16 @@ var employmentCommonFuncs = (function ($) {
             minLength: 2,
             select: function (event, ui) {
                 event.preventDefault();
+                $selectorName.val(ui.item.value);
                 $selectorFullName.val(ui.item.fullname);
                 $selectorNickname.val(ui.item.nickname);
                 $selectorFullName.valid();
                 $selectorNickname.valid();
 
+                return false;
+            },
+            focus: function (event, ui) {
+                event.preventDefault();
                 return false;
             }
         });
