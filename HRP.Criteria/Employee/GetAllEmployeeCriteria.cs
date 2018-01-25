@@ -12,6 +12,8 @@
 
         public int? EmployeeId { get; set; }
 
+        public string EmployeeName { get; set; } = string.Empty;
+
         public override string GetSettingKey() => "Employee_GetAllEmployees";
 
         public override bool IsValid() => UserId > 0;

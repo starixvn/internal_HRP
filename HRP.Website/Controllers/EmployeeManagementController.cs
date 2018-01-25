@@ -82,12 +82,12 @@
                 DepartmentIds = model.DepartmentIds,
                 EmployeeStatusIds = model.EmployeeStatusIds,
                 EmployeeId = model.EmployeeId,
+                EmployeeName = model.DisplayName,
                 UserId = sessionService.UserId
             };
             var employees = baseService.GetData<EmployeeBasicInfo>(criteria);
-            var employeesSorted = employees.OrderBy(e => e.CompanyCode).ThenBy(e => e.IDNo).ToList();
 
-            return PartialView("_ListEmployee", employeesSorted);
+            return PartialView("_ListEmployee", employees);
         }
 
         [HttpGet]

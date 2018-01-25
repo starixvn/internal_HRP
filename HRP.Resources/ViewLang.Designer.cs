@@ -1042,7 +1042,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nickname.
+        ///   Looks up a localized string similar to Nick Name.
         /// </summary>
         public static string Nickname {
             get {

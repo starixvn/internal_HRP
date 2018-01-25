@@ -50,7 +50,7 @@ var listEmployee = {
         var departmentIds = $("#DepartmentIds").val();
         var employmentStatusIds = $("#EmployeeStatusIds").val();
         var employeeId = $("#EmployeeId").val();
-        var employeeName = $("#SearchEmployee").val();
+        var employeeName = $("#DisplayName").val();
         return "departmentIds=" + departmentIds
             + "&employeeStatusIds=" + employmentStatusIds
             + "&employeeId=" + employeeId
@@ -61,11 +61,6 @@ var listEmployee = {
         if (listEmployee.checkSelectionValue()) {
             listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
             listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
-            var displayName = $("#SearchEmployee").val();
-            var employeeId = $("#EmployeeId").val();
-            if (displayName && !employeeId) {
-                $("#EmployeeId").val(0);
-            }
             var queryString = listEmployee.getQueryString();
             $.ajax({
                 url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList?' + queryString,
@@ -165,7 +160,7 @@ var listEmployee = {
     },
 
     searchEmployeeSuggestion: function () {
-        $("#SearchEmployee").autocomplete({
+        $("#DisplayName").autocomplete({
             source: function (request, response) {
                 var term = request.term;
 
@@ -190,13 +185,13 @@ var listEmployee = {
             minLength: 2,
             select: function (event, ui) {
                 event.preventDefault();
-                $("#SearchEmployee").val(ui.item.label);
+                $("#DisplayName").val(ui.item.label);
                 $("#EmployeeId").val(ui.item.value);
                 return false;
             },
             focus: function (event, ui) {
                 event.preventDefault();
-                $("#SearchEmployee").val(ui.item.label);
+                $("#DisplayName").val(ui.item.label);
                 return false;
             },
             change: function (event, ui) {
@@ -318,6 +313,12 @@ $(document).ready(function () {
 
 $('#quick-search').off('keyup').on('keyup', function () {
     $('#employee-table').DataTable().search($(this).val()).draw();
+});
+
+$("#DisplayName").keyup(function () {
+    if (!$(this).val()) {
+        $('#EmployeeId').val('');
+    }
 });
 
 $('form.form-filter').submit(function (e) {
