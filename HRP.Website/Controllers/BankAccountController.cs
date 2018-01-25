@@ -84,7 +84,7 @@
             var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
             var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
 
-            var viewModel = new CreateNewBankAccountViewModel
+            var viewModel = new CreateBankAccountViewModel
             {
                 EmployeeId = employeeId,
                 EmployeeName = employee.FullName
@@ -97,7 +97,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccount(CreateNewBankAccountViewModel viewModel)
+        public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
             var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
 

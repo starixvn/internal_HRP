@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class CreateNewBankAccountViewModel
+    public class CreateBankAccountViewModel
     {
-        public CreateNewBankAccountViewModel(
+        public CreateBankAccountViewModel(
             string employeeName,
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
@@ -14,7 +14,7 @@
             Initialize(employeeName, bankTypes, bankAccountTypes);
         }
 
-        public CreateNewBankAccountViewModel()
+        public CreateBankAccountViewModel()
         {
             BankAccount = new BankAccount();
         }

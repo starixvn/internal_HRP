@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class EditBankAccountViewModel : CreateNewBankAccountViewModel
+    public class EditBankAccountViewModel : CreateBankAccountViewModel
     {
         public EditBankAccountViewModel(
             string employeeName,
