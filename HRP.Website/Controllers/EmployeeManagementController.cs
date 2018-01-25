@@ -111,7 +111,7 @@
             int? employeeId = null,
             string displayName = null)
         {
-            var viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
+            CreateEmployeeViewModel viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
             viewModel.Filter.DepartmentIds = departmentIds;
             viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
             viewModel.Filter.EmployeeId = employeeId;
@@ -125,7 +125,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreatePersonalDetails(CreateEmployeeViewModel employee)
         {
-            var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
+            CommandResult validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
             {
                 ModelState.AddModelError(nameof(employee.ProfilePicture), validatePicture.Message);
