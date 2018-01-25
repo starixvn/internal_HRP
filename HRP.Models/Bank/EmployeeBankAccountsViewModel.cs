@@ -4,9 +4,9 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EditEmployeeBankDetailsViewModel
+    public class EmployeeBankAccountsViewModel
     {
-        public EditEmployeeBankDetailsViewModel(
+        public EmployeeBankAccountsViewModel(
             string employeeName,
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
@@ -14,7 +14,7 @@
             Initialize(employeeName, bankTypes, bankAccountTypes);
         }
 
-        public EditEmployeeBankDetailsViewModel()
+        public EmployeeBankAccountsViewModel()
         {
         }
 
