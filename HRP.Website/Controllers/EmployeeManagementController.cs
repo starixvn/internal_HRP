@@ -199,7 +199,6 @@
 
         [Route("EmployeeManagement/Update/PersonalDetails")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdatePersonalDetails(CreateEmployeeViewModel employee)
         {
@@ -249,7 +248,6 @@
 
         [Route("EmployeeManagement/Update/Employment")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateEmployment(UpdateEmploymentViewModel viewModel)
         {
@@ -383,7 +381,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
         public IActionResult SavePayroll(EmployeePayrollViewModel model)
         {

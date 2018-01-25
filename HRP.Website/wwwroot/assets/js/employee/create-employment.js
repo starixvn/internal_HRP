@@ -29,13 +29,12 @@ var createEmployment = (function ($) {
         var $element = $createEmploymentForm.find('.msg-success');
         var delay = 5;
         var textAlert = 'Created successfully. You will be redirected in ';
-        $element.removeClass('hidden');
-        $element.html(textAlert + delay + ' seconds.');
+        $element.removeClass('hidden').html(textAlert + delay + ' seconds.');
 
         var intervalCountDown = setInterval(function () {
             if (delay === 0) {
                 clearInterval(intervalCountDown);
-                $btnCancel.click();
+                window.location = $btnCancel.attr('href');
             } else {
                 delay--;
                 $element.html(textAlert + delay + ' seconds.');
@@ -88,9 +87,10 @@ var createEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
-        var departmentIds = commonFunctions.getUrlParameter('DepartmentIds'),
-            employeeStatusIds = commonFunctions.getUrlParameter('EmployeeStatusIds'),
-            employeeId = commonFunctions.getUrlParameter('EmployeeId');
+        var departmentIds = commonFunctions.getUrlParameter('departmentIds'),
+            employeeStatusIds = commonFunctions.getUrlParameter('employeeStatusIds'),
+            employeeId = commonFunctions.getUrlParameter('employeeId'),
+            displayName = commonFunctions.getUrlParameter('displayName');
 
         $.ajax({
             type: 'GET',
@@ -99,7 +99,8 @@ var createEmployment = (function ($) {
             data: {
                 departmentIds: departmentIds,
                 employeeStatusIds: employeeStatusIds,
-                employeeId: employeeId
+                employeeId: employeeId,
+                displayName: displayName
             },
             success: function (data) {
                 $employmentContentTab.html(data);

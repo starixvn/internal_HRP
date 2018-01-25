@@ -56,7 +56,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Host)]
         public IActionResult Save(DateTime selectedTime, IEnumerable<CurrencyExchangeRateModel> exchangeRates)
         {

@@ -2,7 +2,8 @@
 @using HRP.Resources
 @model CreateEmployeeViewModel
 
-<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data" id="personalDetailsForm">
+<form class="personal-detail form-information" name="personalDetailsForm" enctype="multipart/form-data"
+      id="personalDetailsForm" asp-action="CreatePersonalDetails">
     @Html.Partial("_PersonalDetailsForm", Model)
 
     <div class="list-button">

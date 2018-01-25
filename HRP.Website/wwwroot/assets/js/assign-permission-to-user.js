@@ -300,10 +300,14 @@ var assignPermissionToUser = (function ($) {
             }
 
             if (model.length > 0) {
+                var $form = $('#AssignPermissionForm');
+                var token = $('input[name="__RequestVerificationToken"]', $form).val();
+
                 $.ajax({
                     type: 'POST',
                     url: commonFunctions.rootURL + 'UserManagement/AssignPermission',
                     data: {
+                        __RequestVerificationToken: token,
                         permissions: model
                     },
                     success: function (response) {

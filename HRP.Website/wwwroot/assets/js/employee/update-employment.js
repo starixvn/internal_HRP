@@ -19,9 +19,10 @@ var updateEmployment = (function ($) {
 
     function loadEmploymentForm() {
         var employeeId = $('#personalDetailsForm #EmployeeId').val();
-        var departmentIds = commonFunctions.getUrlParameter('DepartmentIds'),
-            employeeStatusIds = commonFunctions.getUrlParameter('EmployeeStatusIds'),
-            employeeFilterId = commonFunctions.getUrlParameter('EmployeeId');
+        var departmentIds = commonFunctions.getUrlParameter('departmentIds'),
+            employeeStatusIds = commonFunctions.getUrlParameter('employeeStatusIds'),
+            employeeFilterId = commonFunctions.getUrlParameter('employeeId'),
+            displayName = commonFunctions.getUrlParameter('displayName');
 
         $.ajax({
             type: 'GET',
@@ -30,7 +31,9 @@ var updateEmployment = (function ($) {
             data: {
                 employeeId: employeeId,
                 departmentIds: departmentIds,
-                employeeStatusIds: employeeStatusIds
+                employeeStatusIds: employeeStatusIds,
+                employeeFilterId: employeeFilterId,
+                displayName: displayName
             },
             success: function (data) {
                 $employmentContentTab.html(data);

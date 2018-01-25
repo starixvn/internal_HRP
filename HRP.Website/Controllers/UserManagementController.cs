@@ -104,7 +104,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult CreateUser(CreateUserViewModel viewModel)
         {
@@ -165,7 +164,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
         public IActionResult EditUser(EditUserViewModel viewModel)
         {
