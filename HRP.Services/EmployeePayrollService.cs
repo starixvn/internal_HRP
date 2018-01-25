@@ -36,7 +36,7 @@
                 viewModel.CanUpdate = criteria.CanUpdate;
 
                 viewModel.BasicSalary = result[1].Cast<EmployeePayrollBasicSalaryModel>().FirstOrDefault()
-                    ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash" };
+                    ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash", InitFirstTime = true };
                 viewModel.Allowance = result[2].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
                 viewModel.Deduction = result[3].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
                 viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
@@ -76,7 +76,7 @@
 
         public void UpdatePayroll(EmployeePayrollViewModel model, int userId)
         {
-            var isSalaryChanged = !string.IsNullOrEmpty(model.BasicSalary.OldSalary) && model.BasicSalary.OldSalary != model.BasicSalary.Salary;
+            var isSalaryChanged =  model.BasicSalary.OldSalary != model.BasicSalary.Salary;
 
             var criteria = new UpdateEmployeePayrollCriteria
             {

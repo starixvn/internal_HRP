@@ -242,15 +242,19 @@
             $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
         });
 
-        $('.calendar input').datetimepicker({
-            format: 'MM/DD/YYYY',
-            useCurrent: false,
-            allowInputToggle: true
-        });
+        if ($('#BasicSalary_InitFirstTime').val() === 'True') {
+            $('#BasicSalary_EffectiveDate, #BasicSalary_ReasonId').attr('disabled', 'disabled');
+        } else {
+            $('.calendar input').datetimepicker({
+                format: 'MM/DD/YYYY',
+                useCurrent: false,
+                allowInputToggle: true
+            });
 
-        $('.icon-calendar').on('click', function () {
-            $(this).siblings('input').data('DateTimePicker').toggle();
-        })
+            $('.icon-calendar').on('click', function () {
+                $(this).siblings('input').data('DateTimePicker').toggle();
+            })
+        }
 
         $('.bank-type-select').on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
@@ -266,9 +270,18 @@
             validatedInvalidRelatedElements(e.target);
         });
 
-        $('.number:enabled').on('keypress', function (e) {
-            if ((e.target.value.indexOf('.') >= 0 && e.which === 46) || (e.which !== 46 && (e.which < 48 || e.which > 57))) {
-                return false;
+        $('.number:enabled').on('keydown', function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
             }
         });
 

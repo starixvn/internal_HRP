@@ -85,5 +85,7 @@
         public DateTime? EffectiveDate { get; set; }
 
         public int? ReasonId { get; set; }
+
+        public bool InitFirstTime { get; set; }
     }
 }
