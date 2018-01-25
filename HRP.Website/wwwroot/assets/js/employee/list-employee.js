@@ -32,7 +32,12 @@ var listEmployee = {
         var allLink = $("#employee-table").find("a");
         $.each(allLink, function (i, e) {
             var href = $(this).attr("href");
-            $(e).attr("href", href + "?" + returnParams);
+
+            var isSkip = $(e).data("skip");
+
+            if (isSkip !== true) {
+                $(e).attr("href", href + "?" + returnParams);
+            }
         });
     },
 

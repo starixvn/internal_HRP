@@ -68,7 +68,8 @@
                                     <li>
                                         <a asp-action="EmployeeBankAccounts"
                                            asp-controller="BankAccount"
-                                           asp-route-Id="@employee.EmployeeId">
+                                           asp-route-Id="@employee.EmployeeId"
+                                           data-skip="true">
                                             <span class="icon-bank-details"></span>
                                             @if (employee.EditBankPolicy == Policy.Host)
                                             {
