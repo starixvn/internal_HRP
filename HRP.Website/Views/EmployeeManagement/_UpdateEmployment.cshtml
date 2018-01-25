@@ -41,8 +41,8 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyId">@ViewLang.BVI</label>
-                    <select class="control" asp-for="CompanyId" asp-items="@(new SelectList(Model.Companies, "CompanyId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="CompanyId"
+                            asp-items="@(new SelectList(Model.Companies, "CompanyId", "Code"))">
                     </select>
                 </div>
                 <div class="component calendar">
@@ -52,7 +52,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CompanyReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CompanyReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CompanyReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -60,8 +61,8 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalCompanyId">@ViewLang.Local</label>
-                    <select class="control" asp-for="LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="LocalCompanyId"
+                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
                     </select>
                 </div>
                 <div class="component calendar">
@@ -71,7 +72,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="LocalCompanyReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="LocalCompanyReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="LocalCompanyReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -90,7 +92,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobTitleReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobTitleReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobTitleReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -98,8 +101,9 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalJobTitleId">@ViewLang.Local</label>
-                    <select class="control search-suggestion" asp-for="LocalJobTitleId" asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-search-suggestion" asp-for="LocalJobTitleId"
+                            asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -108,8 +112,9 @@
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
-                    <label class="text" for="LocalJobTitleReasonId">@ViewLang.Reason</label>
-                    <select class="control" id="LocalJobTitleReason" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <label class="text" asp-for="LocalJobTitleReasonId">@ViewLang.Reason</label>
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="LocalJobTitleReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -130,7 +135,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="GroupDateReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="GroupDateReasonId" asp-items="@(new SelectList(Model.GroupDateReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="GroupDateReasonId"
+                            asp-items="@(new SelectList(Model.GroupDateReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -149,7 +155,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CompanyDateReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CompanyDateReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CompanyDateReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -184,7 +191,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="IDNoReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="IDNoReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="IDNoReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -195,8 +203,9 @@
                     <label class="text like-group-title -has-required " asp-for="EmploymentType">
                         <span class="icon-group"></span>@ViewLang.EmploymentType
                     </label>
-                    <select class="control" asp-for="EmploymentType" asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentType"
+                            asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
             </div>
@@ -206,8 +215,9 @@
                     <label class="text like-group-title -has-required" asp-for="EmploymentStatus">
                         <span class="icon-group"></span>@ViewLang.EmploymentStatus
                     </label>
-                    <select class="control" asp-for="EmploymentStatus" asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentStatus"
+                            asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -223,7 +233,8 @@
                     <label class="text like-group-title -has-required" asp-for="JobCategoryId">
                         <span class="icon-group"></span>@ViewLang.JobCategory
                     </label>
-                    <select class="control" asp-for="JobCategoryId" asp-items="@(new SelectList(Model.JobCategories, "JobCategoryId", "Name"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="JobCategoryId"
+                            asp-items="@(new SelectList(Model.JobCategories, "JobCategoryId", "Name"))">
                         <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
                     </select>
                 </div>
@@ -235,7 +246,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobCategoryReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobCategoryReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobCategoryReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -245,24 +257,27 @@
                     <label class="text like-group-title -has-required" asp-for="GradeLevelId">
                         <span class="icon-group"></span>@ViewLang.GradeLevel
                     </label>
-                    <select class="control search-suggestion" asp-for="GradeLevelId" asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-search-suggestion" asp-for="GradeLevelId"
+                            asp-items="@(new SelectList(Model.GradeLevels, "GradeLevelId", "Name"))">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="JobGradeId">@ViewLang.JobGrade</label>
-                    <select class="control" asp-for="JobGradeId" asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="JobGradeId"
+                            asp-items="@(new SelectList(Model.JobGrades, "JobGradeId", "Name"))">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobGradeChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" for="JobGradeChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="JobGradeChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="JobGradeReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="JobGradeReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobGradeReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -272,9 +287,9 @@
                     <label class="text like-group-title -has-required" asp-for="DivisionId">
                         <span class="icon-group"></span>@ViewLang.Division
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.DivisionId" asp-for="DivisionId"
+                    <select class="control js-select2 js-search-suggestion" data-oldval="@Model.DivisionId" asp-for="DivisionId"
                             asp-items="@(new SelectList(Model.Divisions, "DivisionId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -284,7 +299,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DivisionReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="DivisionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DivisionReasonId" 
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -294,9 +310,9 @@
                     <label class="text like-group-title -has-required" asp-for="DepartmentId">
                         <span class="icon-group"></span>@ViewLang.Department
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.DepartmentId" asp-for="DepartmentId"
+                    <select class="control js-select2 js-search-suggestion" data-oldval="@Model.DepartmentId" asp-for="DepartmentId"
                             asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -306,7 +322,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DepartmentReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="DepartmentReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DepartmentReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -316,9 +333,9 @@
                     <label class="text like-group-title -has-required" asp-for="CostCenterId">
                         <span class="icon-group"></span>@ViewLang.CostCenter
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId"
+                    <select class="control js-select2 js-search-suggestion" data-oldval="@Model.CostCenterId" asp-for="CostCenterId"
                             asp-items="@(new SelectList(Model.CostCenters, "CostCenterId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -329,7 +346,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="CostCenterReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="CostCenterReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CostCenterReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -339,9 +357,9 @@
                     <label class="text like-group-title -has-required" asp-for="SectionId">
                         <span class="icon-group"></span>@ViewLang.Section
                     </label>
-                    <select class="control search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId"
+                    <select class="control js-select2 js-search-suggestion" data-oldval="@Model.SectionId" asp-for="SectionId"
                             asp-items="@(new SelectList(Model.Sections, "SectionId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
@@ -351,7 +369,8 @@
                 </div>
                 <div class="component">
                     <label class="text" asp-for="SectionReasonId">@ViewLang.Reason</label>
-                    <select class="control" asp-for="SectionReasonId" asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="SectionReasonId"
+                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -368,20 +387,20 @@
             <div class="group-complex -emp-layout6">
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
-                    <select class="control search-suggestion" asp-for="CountryId" asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-search-suggestion" asp-for="CountryId"
+                            asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))">
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
-                    <select class="control search-suggestion" asp-for="CityId" asp-items="@(new SelectList(Model.Cities, "CityId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-search-suggestion" asp-for="CityId"
+                            asp-items="@(new SelectList(Model.Cities, "CityId", "Code"))">
                     </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
-                    <select class="control search-suggestion" asp-for="OfficeId" asp-items="@(new SelectList(Model.Offices, "OfficeId", "Code"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-search-suggestion" asp-for="OfficeId"
+                            asp-items="@(new SelectList(Model.Offices, "OfficeId", "Code"))">
                     </select>
                 </div>
             </div>
@@ -389,47 +408,46 @@
             <div class="group-title"><span class="icon-group"></span>@ViewLang.WorkPermit</div>
             <label class="text -has-required" asp-for="WorkPermit.LocalCompanyId">@ViewLang.Company</label>
             <div class="group-control">
-                <select class="control width-206" asp-for="WorkPermit.LocalCompanyId" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
-                    <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                <select class="control width-206 js-select2 js-select2-hidesearchbox" asp-for="WorkPermit.LocalCompanyId"
+                        asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <option value=""></option>
                 </select>
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text -has-required" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
-                    <select class="control" asp-for="WorkPermit.Type1" asp-items="@(new SelectList(Model.WorkPermitType1s, "ResourceId", "Value"))">
-                        <option value="" style="display: none;">@ViewLang.PleaseSelect</option>
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="WorkPermit.Type1"
+                            asp-items="@(new SelectList(Model.WorkPermitType1s, "ResourceId", "Value"))">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.EndDateType1">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1"
-                           data-mindate="@minDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1" data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text" asp-for="WorkPermit.Type2">@ViewLang.Type2</label>
-                    <select class="control" asp-for="WorkPermit.Type2" asp-items="@(new SelectList(Model.WorkPermitType2s, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="WorkPermit.Type2"
+                            asp-items="@(new SelectList(Model.WorkPermitType2s, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.StartDateType2">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2" data-mindate="@minDate" data-maxdate="@maxDate">
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.EndDateType2">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2"
-                           data-mindate="@minDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2" data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>
             </div>
@@ -438,13 +456,15 @@
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="DST">@ViewLang.DST</label>
-                    <select class="control" asp-for="DST" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DST"
+                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DBT">@ViewLang.DBT</label>
-                    <select class="control" asp-for="DBT" asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DBT"
+                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>

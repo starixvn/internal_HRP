@@ -42,8 +42,8 @@
         <div class="group-complex -per-layout1">
             <div class="component">
                 <label class="text -has-required">@ViewLang.Gender</label>
-                <select class="control" asp-for="Gender" asp-items="@Model.GenderList">
-                    <option value="">@ViewLang.PleaseSelect</option>
+                <select class="control js-select2-hide-searchbox" asp-for="Gender" asp-items="@Model.GenderList">
+                    <option value=""></option>
                 </select>
             </div>
             <div class="component calendar">
@@ -60,8 +60,8 @@
         <div class="group-complex -per-layout2">
             <div class="component">
                 <label class="text -has-required">@ViewLang.Nationality</label>
-                <select class="control" asp-for="Nationality" asp-items="@Model.NationalityList">
-                    <option value="">@ViewLang.PleaseSelect</option>
+                <select class="control js-select2-hide-searchbox" asp-for="Nationality" asp-items="@Model.NationalityList">
+                    <option value=""></option>
                 </select>
             </div>
             <div class="component">
@@ -72,14 +72,14 @@
         <div class="group-complex -per-layout3">
             <div class="component">
                 <label class="text -has-required">@ViewLang.MaritalStatus</label>
-                <select class="control" asp-for="MaritalStatus" asp-items="@Model.MaritalStatusList">
-                    <option value="">@ViewLang.PleaseSelect</option>
+                <select class="control js-select2-hide-searchbox" asp-for="MaritalStatus" asp-items="@Model.MaritalStatusList">
+                    <option value=""></option>
                 </select>
             </div>
             <div class="component">
                 <label class="text -has-required">@ViewLang.NoOfChildren</label>
-                <select class="control" asp-for="NoOfChildren" asp-items="@Model.NoOfChildrenList">
-                    <option value="">@ViewLang.PleaseSelect</option>
+                <select class="control js-select2-hide-searchbox" asp-for="NoOfChildren" asp-items="@Model.NoOfChildrenList">
+                    <option value=""></option>
                 </select>
             </div>
         </div>
@@ -114,8 +114,7 @@
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.ExpiredDate</label>
-                <input type="text" class="control datetimepicker" asp-for="ExpiredDate"
-                       data-mindate="@minDate">
+                <input type="text" class="control datetimepicker" asp-for="ExpiredDate" data-mindate="@minDate">
                 <span class="icon-calendar"></span>
             </div>
         </div>

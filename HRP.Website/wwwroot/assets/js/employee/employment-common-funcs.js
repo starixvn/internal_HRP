@@ -5,7 +5,7 @@ var employmentCommonFuncs = (function ($) {
         $countryElement, $cityElement, $officeElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
         $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
-        defaultOption = '<option value="" style="display: none;">--Please select--</option>',
+        defaultOption = '<option value=""></option>',
         currentDate;
 
     function registerEventChangeBVICompany() {
@@ -36,7 +36,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $divisionElement.html(htmlOptions);
-                    $divisionElement.select2('destroy').select2();
                     // reset
                     $departmentElement.html(defaultOption);
                     $sectionElement.html(defaultOption);
@@ -71,7 +70,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $departmentElement.html(htmlOptions);
-                    $departmentElement.select2('destroy').select2();
                     // reset
                     $sectionElement.html(defaultOption);
                     $costCenterElement.html(defaultOption);
@@ -105,7 +103,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $costCenterElement.html(htmlOptions);
-                    $costCenterElement.select2('destroy').select2();
                     // reset
                     $sectionElement.html(defaultOption);
                 },
@@ -138,7 +135,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $sectionElement.html(htmlOptions);
-                    $sectionElement.select2('destroy').select2();
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -231,7 +227,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $cityElement.html(htmlOptions);
-                    $cityElement.select2('destroy').select2();
                     // reset
                     $officeElement.html(defaultOption);
                 },
@@ -264,7 +259,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $officeElement.html(htmlOptions);
-                    $officeElement.select2('destroy').select2();
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -272,7 +266,25 @@ var employmentCommonFuncs = (function ($) {
     }
 
     function initSelect2($form) {
-        $form.find('select.search-suggestion').select2();
+        $form.find('.js-select2-hidesearchbox').select2({
+            placeholder: '--Please select--',
+            minimumResultsForSearch: Infinity
+        });
+
+        $form.find('.js-search-suggestion').select2({
+            placeholder: '--Please select--'
+        });
+
+        $form.find('.js-select2-hidesearchbox-hideplaceholder').select2({
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        });
+
+        $form.find('.js-select2-allowclear-hidesearchbox-hideplaceholder').select2({
+            placeholder: '',
+            allowClear: true,
+            minimumResultsForSearch: Infinity
+        });
     }
 
     function calculateLengthOfService() {
@@ -440,7 +452,7 @@ var employmentCommonFuncs = (function ($) {
             var $element = $(element);
             $element.addClass(errorClass).removeClass(validClass);
 
-            if ($element.hasClass('search-suggestion')) {
+            if ($element.hasClass('js-select2')) {
                 $element.next().find('.select2-selection')
                     .removeClass(errorClass).removeClass('control').removeClass(validClass)
                     .addClass(errorClass).addClass('control');
@@ -450,17 +462,19 @@ var employmentCommonFuncs = (function ($) {
             var $element = $(element);
             $element.removeClass(errorClass).addClass(validClass);
 
-            if ($element.hasClass('search-suggestion')) {
+            if ($element.hasClass('js-select2')) {
                 $element.next().find('.select2-selection')
                     .removeClass(errorClass).removeClass('control').removeClass(validClass)
                     .addClass(validClass);
             }
         };
 
-        $form.find('select.search-suggestion').on('change', function () {
+        $form.find('.js-select2').on('change', function () {
             var $this = $(this);
-            if (!$.isEmptyObject($validator.submitted) && $this.val()) {
-                $this.next().find('.select2-selection').removeClass('input-validation-error').removeClass('control');
+            var $select2 = $this.next().find('.select2-selection');
+
+            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('input-validation-error')) {
+                $select2.removeClass('input-validation-error').removeClass('control');
                 $this.valid();
             }
         });

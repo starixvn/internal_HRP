@@ -4,6 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <DebugType>Full</DebugType>
     <RuntimeIdentifier>win10-x86</RuntimeIdentifier>
+    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
   </PropertyGroup>
 
 
@@ -14,12 +15,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CodeAnalysisRuleSet>HRP.Website.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
 <<<<<<< HEAD
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>true</Prefer32Bit>
 =======
-    <PlatformTarget>x86</PlatformTarget>
->>>>>>> 89857 - update search suggestion
+>>>>>>> 89897 - apply select2 to create, update employee
   </PropertyGroup>
 
   <ItemGroup>
@@ -54,12 +54,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NPOI" Version="2.3.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />

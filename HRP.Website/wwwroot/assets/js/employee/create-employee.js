@@ -1,9 +1,11 @@
 ﻿var createEmployee = (function ($) {
-    var $createPersonalDetalsForm, $personalDetailsStep, $employmentStep;
+    var $form, $personalDetailsStep, $employmentStep;
 
     function registerEventSubmitForm() {
-        $createPersonalDetalsForm.submit(function (e) {
+        $form.submit(function (e) {
             e.preventDefault();
+
+            employeeCommonFuncs.initSelect2($form);
 
             if ($(this).valid()) {
                 var formData = new FormData(this);
@@ -19,7 +21,7 @@
                     error: commonFunctions.handleAjaxError
                 });
             } else {
-                commonFunctions.showValidationSummary($createPersonalDetalsForm);
+                commonFunctions.showValidationSummary($form);
             }
         });
     }
@@ -30,18 +32,18 @@
             $employmentStep.addClass('active');
             $('#EmploymentHeaderTab').trigger('click');
         } else {
-            $createPersonalDetalsForm.validate().showErrors(response.errors);
-            commonFunctions.showValidationSummary($createPersonalDetalsForm);
+            $form.validate().showErrors(response.errors);
+            commonFunctions.showValidationSummary($form);
         }
     }
 
     function initModule() {
-        $createPersonalDetalsForm = $('#personalDetailsForm');
+        $form = $('#personalDetailsForm');
         $personalDetailsStep = $('#PersonalDetailsStep');
         $employmentStep = $('#EmploymentStep');
 
-        commonFunctions.initDatetimepicker($createPersonalDetalsForm);
-        employeeCommonFuncs.initForm($createPersonalDetalsForm);
+        commonFunctions.initDatetimepicker($form);
+        employeeCommonFuncs.initForm($form);
         registerEventSubmitForm();
     }
 

@@ -71,12 +71,55 @@
         });
     }
 
+    function initSelect2($form) {
+        $form.find('.js-select2-hide-searchbox').select2({
+            placeholder: '--Please select--',
+            minimumResultsForSearch: Infinity
+        });
+    }
+
+    function reparseform($form) {
+        var $validator = $form.validate();
+        $validator.settings.highlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.addClass(errorClass).removeClass(validClass);
+
+            if ($element.hasClass('js-select2-hide-searchbox')) {
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(errorClass).addClass('control');
+            }
+        };
+        $validator.settings.unhighlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.removeClass(errorClass).addClass(validClass);
+
+            if ($element.hasClass('js-select2-hide-searchbox')) {
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(validClass);
+            }
+        };
+        $form.find('.js-select2-hide-searchbox').on('change', function () {
+            var $this = $(this);
+            var $select2 = $this.next().find('.select2-selection');
+
+            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('input-validation-error')) {
+                $select2.removeClass('input-validation-error').removeClass('control');
+                $this.valid();
+            }
+        });
+    }
+
     function initForm($form) {
         registerEventChangePicture($form);
         registerEventFormChange($form);
+        initSelect2($form);
+        reparseform($form);
     }
 
     return {
-        initForm: initForm
+        initForm: initForm,
+        initSelect2: initSelect2
     };
 }(jQuery));
