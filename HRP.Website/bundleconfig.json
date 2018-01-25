@@ -72,6 +72,7 @@
       "wwwroot/lib/jquery-ui/jquery-ui.css",
       "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
       "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
+      "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/assets/styles/pages/employee/employee-management.css"
     ]
   },
@@ -299,6 +300,7 @@
       "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
       "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
       "wwwroot/assets/js/employee/list-employee.js"
     ],
     "minify": {
