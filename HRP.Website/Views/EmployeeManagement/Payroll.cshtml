@@ -364,7 +364,7 @@
                 <input type="text" class="control number" name="duty-meal-per-day" id="duty-meal-per-day" value="@(string.IsNullOrEmpty(Model.Allowance.DutyMealAmount) ? "" : (decimal.Parse(Model.Allowance.DutyMealAmount) / Model.BasicSalary.WorkingDays ).ToString())" />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Secondment</div>
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.SecondmentCurrencyCode">
@@ -377,7 +377,7 @@
                 <input type="text" class="control number allowance-convert-amount" disabled />
             </div>
         </div>
-        <div class="group-complex -payroll-layout3">
+        <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">Others</div>
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyCode">

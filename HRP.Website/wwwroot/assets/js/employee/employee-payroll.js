@@ -51,7 +51,12 @@
         });
 
         totalAmount = totalAmount.mul(Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val())).roundWithCurrency(2, autoCalculateCurrency);
-        $('input.basic-salary-calculate[type="text"]', parent).val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+
+        var $autoCalculatedElement = $('input.basic-salary-calculate[type="text"]', parent);
+        $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+        if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
+            $autoCalculatedElement.valid();
+        }
     };
 
     function calculateAmountForBanks() {
@@ -81,7 +86,12 @@
         });
 
         totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()).roundWithCurrency(2, autoCalculateCurrency);
-        $('input.allowance-calculate[type="text"]', parent).val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+
+        var $autoCalculatedElement = $('input.allowance-calculate[type="text"]', parent);
+        $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+        if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
+            $autoCalculatedElement.valid();
+        }
     };
 
     function calculateTotalAllowance(allowanceCurrency) {
