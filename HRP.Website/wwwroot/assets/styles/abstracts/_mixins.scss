@@ -1,4 +1,4 @@
-﻿// Adds a browser prefix to the property
+// Adds a browser prefix to the property
 // @param {*} $property Property
 // @param {*} $value Value
 
@@ -11,7 +11,7 @@
           #{$property}: #{$value};
 }
 
-/// Box Shadow
+// Box Shadow
 
 @mixin box-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4), $inset: "") {
   @if ($inset != "") {
@@ -42,9 +42,9 @@
     @include css3-prefix('border-radius', $radius);
 }
 
-/// Transition
-/// @param {List} $properties - Properties
-/// @require {mixin} css3-prefix
+// Transition
+// @param {List} $properties - Properties
+// @require {mixin} css3-prefix
 
 @mixin transition($properties...) {
 
@@ -57,9 +57,9 @@
   }
 }
 
-/// Transform
-/// @param {List} $params - Params
-/// @require {mixin} css3-prefix
+// Transform
+// @param {List} $params - Params
+// @require {mixin} css3-prefix
 
 @mixin transform($params) {
   @include css3-prefix('transform', $params);
