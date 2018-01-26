@@ -184,6 +184,37 @@
             }
         });
 
+        $('.select2').select2({
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity,
+        });
+
+        $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
+
+        $('.select2-ajax').select2({
+            ajax: {
+                url: $('#get-bank-acount-url').val(),
+                data: function (params) {
+                    var query = {
+                        employeeId: $('#EmployeeId').val(),
+                        bankTypeId: $(this).siblings('.bank-type-select').val()
+                    }
+
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity,
+        });
+
         if ($('#CanUpdate').val() !== 'True') {
             $('select, input', '#payroll-form').attr('disabled', 'disabled');
             $('.add-account').addClass('disabled');
@@ -192,7 +223,8 @@
 
         $('.add-account').each(function (index, element) {
             var $element = $(element)
-            if ($element.siblings('.bank-type-select').val() == 3) {
+            var bankType = $element.siblings('.bank-type-select').val();
+            if (bankType == 3 || bankType == '' ) {
                 $element.addClass('disabled');
             }
         });
@@ -268,11 +300,11 @@
 
         $('.bank-type-select').on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
-            $(this).siblings('.select2.bank-account-select').val('').trigger('change')
-            if (this.value == 3) {
-                $(this).siblings('.add-account').addClass('disabled');
-            } else {
+            $(this).siblings('.bank-account-select').val('').trigger('change')
+            if (this.value == 2 || this.value == 1) {
                 $(this).siblings('.add-account').removeClass('disabled');
+            } else {
+                $(this).siblings('.add-account').addClass('disabled');
             }
         });
 
@@ -293,29 +325,6 @@
             if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
                 e.preventDefault();
             }
-        });
-
-        $('.select2').select2({
-            ajax: {
-                url: $('#get-bank-acount-url').val(),
-                data: function (params) {
-                    var query = {
-                        employeeId: $('#EmployeeId').val(),
-                        bankTypeId: $(this).siblings('.bank-type-select').val()
-                    }
-
-                    return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            allowClear: true,
-            placeholder: '',
-            minimumResultsForSearch: Infinity,
         });
 
         $.validator.addMethod('greaterthanzero', function (value, element, param) {
@@ -365,19 +374,19 @@
                     $('#validation-summary').addClass('hidden');
                 }
             },
-            highlight: function (element, errorClass) {
+            highlight: function (element, errorClass, validClass) {
                 var $element = $(element);
-                $element.addClass('input-validation-error');
+                $element.addClass('input-validation-error').removeClass(validClass);
 
-                if ($element.hasClass('select2'))
-                    $element.next().find('.select2-selection').addClass('input-validation-error').addClass('control');
+                if ($element.hasClass('select2') || $element.hasClass('select2-ajax'))
+                    $element.next().find('.select2-selection').addClass('control input-validation-error');
             },
             unhighlight: function (element, errorClass, validClass) {
                 var $element = $(element);
                 $element.removeClass('input-validation-error').addClass(validClass);
 
-                if ($element.hasClass('select2'))
-                    $element.next().find('.select2-selection').removeClass('input-validation-error control').removeClass(validClass);
+                if ($element.hasClass('select2') || $element.hasClass('select2-ajax'))
+                    $element.next().find('.select2-selection').removeClass('input-validation-error control');
             },
             rules: {
                 'BasicSalary.ReasonId': {
