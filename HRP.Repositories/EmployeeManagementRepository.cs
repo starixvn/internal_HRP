@@ -47,7 +47,7 @@ namespace HRP.Repositories
                 {
                     var employment = multi.ReadFirstOrDefault<UpdateEmploymentViewModel>();
 
-                    if (employment != null)
+                    if (employment != null && employment.EmployeeId > 0)
                     {
                         employment.WorkPermit = multi.ReadFirstOrDefault<WorkPermit>();
                         employment.Paymaster = multi.ReadFirstOrDefault<Paymaster>();
@@ -74,9 +74,13 @@ namespace HRP.Repositories
                         employment.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
                         employment.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);
                         employment.GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons);
-                    }
 
-                    return employment;
+                        return employment;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
         }

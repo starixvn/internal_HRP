@@ -99,6 +99,105 @@
             Assert.Empty(actual.WorkPermitType2s);
         }
 
+        [Fact]
+        public void GetDataToUpdateEmployment_NotExistedEmployment_ReturnNull()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(x => null);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetDataToUpdateEmployment(criteria);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetDataToUpdateEmployment_ExistedEmployment_ReturnAsExpectedModel()
+        {
+            // Arrange
+            var employment = new UpdateEmploymentViewModel
+            {
+                EmployeeId = 1
+            };
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var companies = GetCompanyForTest();
+            var jobCategories = GetJobCategoryForTest();
+            var countries = GetCountryForTest();
+            var repository = new EmployeeManagementRepository();
+            multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(employment);
+            multiResultReader.Read<Company>().Returns(companies);
+            multiResultReader.Read<JobCategory>().Returns(jobCategories);
+            multiResultReader.Read<Country>().Returns(countries);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetDataToUpdateEmployment(criteria);
+
+            // Assert
+            Assert.IsType<UpdateEmploymentViewModel>(actual);
+            Assert.Equal(employment.EmployeeId, actual.EmployeeId);
+            Assert.Equal(employment.CompanyId, actual.CompanyId);
+            Assert.Equal(employment.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(employment.JobTitle, actual.JobTitle);
+            Assert.Equal(employment.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(employment.GroupStartDate, actual.GroupStartDate);
+            Assert.Equal(employment.GroupEndDate, actual.GroupEndDate);
+            Assert.Equal(employment.CompanyStartDate, actual.CompanyStartDate);
+            Assert.Equal(employment.CompanyEndDate, actual.CompanyEndDate);
+            Assert.Equal(employment.CompanyCode, actual.CompanyCode);
+            Assert.Equal(employment.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(employment.EmploymentType, actual.EmploymentType);
+            Assert.Equal(employment.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(employment.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(employment.JobGradeId, actual.JobGradeId);
+            Assert.Equal(employment.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(employment.DivisionId, actual.DivisionId);
+            Assert.Equal(employment.DepartmentId, actual.DepartmentId);
+            Assert.Equal(employment.CostCenterId, actual.CostCenterId);
+            Assert.Equal(employment.SectionId, actual.SectionId);
+            Assert.Equal(employment.CountryId, actual.CountryId);
+            Assert.Equal(employment.CityId, actual.CityId);
+            Assert.Equal(employment.OfficeId, actual.OfficeId);
+            Assert.Equal(employment.Email, actual.Email);
+            Assert.Equal(employment.DST, actual.DST);
+            Assert.Equal(employment.DBT, actual.DBT);
+            Assert.Equal(employment.TaxIDNo, actual.TaxIDNo);
+            Assert.Equal(employment.SSSNo, actual.SSSNo);
+            Assert.Equal(employment.HealthInsNo, actual.HealthInsNo);
+            Assert.Equal(employment.HDMFNo, actual.HDMFNo);
+            Assert.Equal(employment.FullNamePFileAdmin, actual.FullNamePFileAdmin);
+            Assert.Equal(employment.NicknamePFileAdmin, actual.NicknamePFileAdmin);
+            Assert.Equal(employment.PDFPassword, actual.PDFPassword);
+            Assert.Null(actual.WorkPermit);
+            Assert.Null(actual.Paymaster);
+            Assert.Null(actual.EPA);
+            Assert.Equal(companies, actual.Companies);
+            Assert.Empty(actual.Divisions);
+            Assert.Empty(actual.Departments);
+            Assert.Empty(actual.CostCenters);
+            Assert.Empty(actual.Sections);
+            Assert.Equal(jobCategories, actual.JobCategories);
+            Assert.Empty(actual.GradeLevels);
+            Assert.Empty(actual.JobGrades);
+            Assert.Equal(countries, actual.Countries);
+            Assert.Empty(actual.Cities);
+            Assert.Empty(actual.Offices);
+            Assert.Empty(actual.LocalCompanies);
+            Assert.Empty(actual.LocalJobTitles);
+            Assert.Empty(actual.EmploymentTypes);
+            Assert.Empty(actual.EmploymentStatuses);
+            Assert.Empty(actual.WorkPermitType1s);
+            Assert.Empty(actual.WorkPermitType2s);
+            Assert.Empty(actual.CommonReasons);
+            Assert.Empty(actual.GroupDateReasons);
+        }
+
         #region Helpers
 
         private static IMultiResultReader FakeMultipleResultReader()
