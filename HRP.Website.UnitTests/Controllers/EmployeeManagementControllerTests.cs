@@ -119,24 +119,16 @@
         {
             // Arrange
             var viewName = "CreateEmployee";
-            var departmentIds = "1,2";
-            var employeeStatusIds = "1,2";
-            var employeeId = 1;
-            var displayName = "tim";
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.InitDataForNewEmployeeAsync().Returns(new CreateEmployeeViewModel());
 
             // Act
-            var actual = await employeeController.CreateEmployee(departmentIds, employeeStatusIds, employeeId, displayName);
+            var actual = await employeeController.CreateEmployee();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<CreateEmployeeViewModel>(viewResult.Model);
+            Assert.IsAssignableFrom<CreateEmployeeViewModel>(viewResult.Model);
             Assert.Equal(viewName, viewResult.ViewName);
-            Assert.Equal(departmentIds, viewModel.Filter.DepartmentIds);
-            Assert.Equal(employeeStatusIds, viewModel.Filter.EmployeeStatusIds);
-            Assert.Equal(employeeId, viewModel.Filter.EmployeeId);
-            Assert.Equal(displayName, viewModel.Filter.DisplayName);
         }
 
         [Fact]
@@ -285,25 +277,17 @@
         {
             //Arrange
             var viewName = "_CreateEmployment";
-            var departmentIds = "1,2";
-            var employeeStatusIds = "1,2";
-            var employeeFilterId = 1;
-            var displayName = "tim";
             var expected = new CreateEmploymentViewModel();
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.GetDataToCreateEmployment().Returns(new CreateEmploymentViewModel());
 
             //Act
-            var actual = employeeController.CreateEmployment(departmentIds, employeeStatusIds, employeeFilterId, displayName);
+            var actual = employeeController.CreateEmployment();
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<CreateEmploymentViewModel>(viewResult.Model);
+            Assert.IsAssignableFrom<CreateEmploymentViewModel>(viewResult.Model);
             Assert.Equal(viewName, viewResult.ViewName);
-            Assert.Equal(departmentIds, viewModel.Filter.DepartmentIds);
-            Assert.Equal(employeeStatusIds, viewModel.Filter.EmployeeStatusIds);
-            Assert.Equal(employeeFilterId, viewModel.Filter.EmployeeId);
-            Assert.Equal(displayName, viewModel.Filter.DisplayName);
         }
 
         [Fact]
@@ -385,10 +369,6 @@
         {
             // Arrange
             var employeeId = 1;
-            var departmentIds = "1,2";
-            var employeeStatusIds = "1,2";
-            var employeeFilterId = 1;
-            var displayName = "tim";
             var expected = new UpdateEmploymentViewModel
             {
                 EmployeeId = employeeId
@@ -397,16 +377,11 @@
             employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var actual = employeeController.UpdateEmployment(employeeId, departmentIds, employeeStatusIds, employeeFilterId, displayName);
+            var actual = employeeController.UpdateEmployment(employeeId);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<UpdateEmploymentViewModel>(viewResult.Model);
-            Assert.Equal(expected.EmployeeId, viewModel.EmployeeId);
-            Assert.Equal(departmentIds, viewModel.Filter.DepartmentIds);
-            Assert.Equal(employeeStatusIds, viewModel.Filter.EmployeeStatusIds);
-            Assert.Equal(employeeFilterId, viewModel.Filter.EmployeeId);
-            Assert.Equal(displayName, viewModel.Filter.DisplayName);
+            Assert.IsAssignableFrom<UpdateEmploymentViewModel>(viewResult.Model);
         }
 
         [Fact]

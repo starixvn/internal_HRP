@@ -6,7 +6,6 @@
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
     using HRP.Resources;
-    using Microsoft.AspNetCore.Mvc;
 
     public class EmploymentBaseViewModel
     {
@@ -141,7 +140,5 @@
         public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> WorkPermitType2s { get; set; } = new List<ReferenceResourceModel>();
-
-        public EmployeeManagementViewModel Filter { get; set; } = new EmployeeManagementViewModel();
     }
 }

@@ -12,11 +12,7 @@
     @Html.Partial("_PersonalDetailsForm", Model)
 
     <div class="list-button">
-        <a class="button -second" asp-action="index"
-           asp-route-departmentIds="@Model.Filter.DepartmentIds"
-           asp-route-employeeStatusIds="@Model.Filter.EmployeeStatusIds"
-           asp-route-employeeId="@Model.Filter.EmployeeId"
-           asp-route-displayName="@Model.Filter.DisplayName">@ViewLang.Cancel</a>
+        <a class="button -second js-btnCancel" href="javascript:;">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
             <button type="submit" class="button -primary js-btnSubmit">@ViewLang.Save</button>

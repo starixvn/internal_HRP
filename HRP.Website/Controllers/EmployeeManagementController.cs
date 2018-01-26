@@ -106,17 +106,9 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployee(
-            string departmentIds = null,
-            string employeeStatusIds = null,
-            int? employeeId = null,
-            string displayName = null)
+        public async Task<IActionResult> CreateEmployee()
         {
             CreateEmployeeViewModel viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
-            viewModel.Filter.DepartmentIds = departmentIds;
-            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
-            viewModel.Filter.EmployeeId = employeeId;
-            viewModel.Filter.DisplayName = displayName;
 
             return View("CreateEmployee", viewModel);
         }
@@ -144,17 +136,9 @@
         [Route("EmployeeManagement/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment(
-            string departmentIds = null,
-            string employeeStatusIds = null,
-            int? employeeId = null,
-            string displayName = null)
+        public IActionResult CreateEmployment()
         {
             CreateEmploymentViewModel viewModel = employeeManagementService.GetDataToCreateEmployment();
-            viewModel.Filter.DepartmentIds = departmentIds;
-            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
-            viewModel.Filter.EmployeeId = employeeId;
-            viewModel.Filter.DisplayName = displayName;
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -176,12 +160,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployee(
-            int id,
-            string departmentIds = null,
-            string employeeStatusIds = null,
-            int? employeeId = null,
-            string displayName = null)
+        public IActionResult UpdateEmployee(int id)
         {
             var viewModel = employeeManagementService.GetEmployeeById(id);
 
@@ -189,11 +168,6 @@
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
-
-            viewModel.Filter.DepartmentIds = departmentIds;
-            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
-            viewModel.Filter.EmployeeId = employeeId;
-            viewModel.Filter.DisplayName = displayName;
 
             return View("UpdateEmployee", viewModel);
         }
@@ -225,12 +199,7 @@
         [Route("EmployeeManagement/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployment(
-            int employeeId,
-            string departmentIds = null,
-            string employeeStatusIds = null,
-            int? employeeFilterId = null,
-            string displayName = null)
+        public IActionResult UpdateEmployment(int employeeId)
         {
             UpdateEmploymentViewModel viewModel = employeeManagementService.GetDataToUpdateEmployment(employeeId);
 
@@ -238,11 +207,6 @@
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
-
-            viewModel.Filter.DepartmentIds = departmentIds;
-            viewModel.Filter.EmployeeStatusIds = employeeStatusIds;
-            viewModel.Filter.EmployeeId = employeeFilterId;
-            viewModel.Filter.DisplayName = displayName;
 
             return PartialView("_UpdateEmployment", viewModel);
         }

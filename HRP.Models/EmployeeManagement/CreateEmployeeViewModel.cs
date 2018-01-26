@@ -105,7 +105,5 @@
         public IFormFile ProfilePicture { get; set; }
 
         public bool IsHost { get; set; }
-
-        public EmployeeManagementViewModel Filter { get; set; } = new EmployeeManagementViewModel();
     }
 }

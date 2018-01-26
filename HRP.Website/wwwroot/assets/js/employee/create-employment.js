@@ -34,7 +34,7 @@ var createEmployment = (function ($) {
         var intervalCountDown = setInterval(function () {
             if (delay === 0) {
                 clearInterval(intervalCountDown);
-                window.location = $btnCancel.attr('href');
+                $btnCancel.click();
             } else {
                 delay--;
                 $element.html(textAlert + delay + ' seconds.');
@@ -87,21 +87,10 @@ var createEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
-        var departmentIds = commonFunctions.getUrlParameter('departmentIds'),
-            employeeStatusIds = commonFunctions.getUrlParameter('employeeStatusIds'),
-            employeeId = commonFunctions.getUrlParameter('employeeId'),
-            displayName = commonFunctions.getUrlParameter('displayName');
-
         $.ajax({
             type: 'GET',
             url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
             dataType: 'html',
-            data: {
-                departmentIds: departmentIds,
-                employeeStatusIds: employeeStatusIds,
-                employeeId: employeeId,
-                displayName: displayName
-            },
             success: function (data) {
                 $employmentContentTab.html(data);
 

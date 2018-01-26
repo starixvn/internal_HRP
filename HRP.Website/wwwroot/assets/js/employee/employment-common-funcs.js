@@ -4,7 +4,7 @@ var employmentCommonFuncs = (function ($) {
     var $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
         $countryElement, $cityElement, $officeElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
-        $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
+        $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement, $btnCancel,
         defaultOption = '<option value=""></option>',
         currentDate;
 
@@ -265,6 +265,12 @@ var employmentCommonFuncs = (function ($) {
         });
     }
 
+    function registerEventClickCancel() {
+        $btnCancel.on('click', function () {
+            window.history.back();
+        });
+    }
+
     function initSelect2($form) {
         $form.find('.js-select2-hidesearchbox').select2({
             placeholder: '--Please select--',
@@ -512,6 +518,7 @@ var employmentCommonFuncs = (function ($) {
         $countryElement = $form.find('#CountryId');
         $cityElement = $form.find('#CityId');
         $officeElement = $form.find('#OfficeId');
+        $btnCancel = $form.find('.js-btnCancel');
 
         reparseform($form);
         initSelect2($form);
@@ -524,6 +531,7 @@ var employmentCommonFuncs = (function ($) {
         registerEventChangeGradeLevel();
         registerEventChangeCountry();
         registerEventChangeCity();
+        registerEventClickCancel();
         initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NicknamePFileAdmin'));
         initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NicknameBVISalary'));
         initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NicknameBVIAllowance'));

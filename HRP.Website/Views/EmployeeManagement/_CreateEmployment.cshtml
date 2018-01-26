@@ -596,11 +596,7 @@
     </div>
     <div class="list-button">
         <button type="button" class="button -back js-btnBack">@ViewLang.Back</button>
-        <a class="button -second js-btnCancel" asp-action="index"
-           asp-route-departmentIds="@Model.Filter.DepartmentIds"
-           asp-route-employeeStatusIds="@Model.Filter.EmployeeStatusIds"
-           asp-route-employeeId="@Model.Filter.EmployeeId"
-           asp-route-displayName="@Model.Filter.DisplayName">@ViewLang.Cancel</a>
+        <a class="button -second js-btnCancel" href="javascript:;">@ViewLang.Cancel</a>
         <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>

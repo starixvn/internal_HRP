@@ -111,11 +111,18 @@
         });
     }
 
+    function registerEventClickCancel($form) {
+        $form.find('.js-btnCancel').on('click', function () {
+            window.history.back();
+        });
+    }
+
     function initForm($form) {
         registerEventChangePicture($form);
         registerEventFormChange($form);
         initSelect2($form);
         reparseform($form);
+        registerEventClickCancel($form);
     }
 
     return {
