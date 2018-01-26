@@ -1,18 +1,13 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
-    using Criteria;
     using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
-    using Models;
     using Models.Bank;
-    using Services;
     using Services.Interfaces;
 
     [HRPAuthorize]
@@ -21,33 +16,36 @@
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
         private readonly IBankAccountService bankAccountService;
+        private readonly IRefResourceService refResourceService;
+
+        private readonly string[] refNames =
+        {
+            ReferenceResource.BankType,
+            ReferenceResource.BankAccountType,
+            ReferenceResource.ContraCoAccount
+        };
 
         public BankAccountController(
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
-            IBankAccountService bankAccountService)
+            IBankAccountService bankAccountService,
+            IRefResourceService refResourceService)
         {
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
             this.bankAccountService = bankAccountService;
+            this.refResourceService = refResourceService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
-        public async Task<IActionResult> EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
+        public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
             var employee = employeeManagementService.GetEmployeeById(viewModel.Id);
 
-            var refNames = string.Format(
-                "{0},{1}",
-                ReferenceResource.BankType,
-                ReferenceResource.BankAccountType);
+            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var refResources =
-                await baseService.GetDataAsync<ReferenceResourceModel>(
-                    new GetRefResourceByNamesCriteria { RefNames = refNames });
-
-            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
@@ -69,21 +67,14 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateBankAccount(int employeeId)
+        public IActionResult CreateBankAccount(int employeeId)
         {
             var employee = employeeManagementService.GetEmployeeById(employeeId);
 
-            var refNames = string.Format(
-                "{0},{1}",
-                ReferenceResource.BankType,
-                ReferenceResource.BankAccountType);
+            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var refResources =
-                await baseService.GetDataAsync<ReferenceResourceModel>(
-                    new GetRefResourceByNamesCriteria { RefNames = refNames });
-
-            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             var viewModel = new CreateBankAccountViewModel
             {
@@ -112,23 +103,16 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> EditBankAccount(int bankAccountId)
+        public IActionResult EditBankAccount(int bankAccountId)
         {
             var bankAccount = bankAccountService.GetBankAccountById(bankAccountId);
 
             var employee = employeeManagementService.GetEmployeeById(bankAccount.EmployeeId);
 
-            var refNames = string.Format(
-                "{0},{1}",
-                ReferenceResource.BankType,
-                ReferenceResource.BankAccountType);
+            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var refResources =
-                await baseService.GetDataAsync<ReferenceResourceModel>(
-                    new GetRefResourceByNamesCriteria { RefNames = refNames });
-
-            var bankTypes = GetRefResourceByName(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = GetRefResourceByName(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             var viewModel = new EditBankAccountViewModel
             {
@@ -161,7 +145,9 @@
         {
             if (bankTypeId == (int)Core.Enumerations.BankType.ContraCoAccount)
             {
-                var result = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.ContraCoAccount });
+                var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+                var result = refResourceService.FilterReferenceResources(refResources, ReferenceResource.ContraCoAccount);
+
                 return Json(result.Select(x => new { id = x.ResourceId, text = x.Value }));
             }
             else
@@ -169,11 +155,6 @@
                 var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
                 return Json(result.Select(x => new { id = x.Id, text = x.AccountName }));
             }
-        }
-
-        private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
-        {
-            return refResources.Where(x => x.RefName == refName);
         }
     }
 }

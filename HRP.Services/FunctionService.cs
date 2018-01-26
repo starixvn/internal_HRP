@@ -4,7 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
-    using HRP.Criteria;
+    using Criteria;
+    using Interfaces;
     using Models.UserPermisson;
 
     public class FunctionService : IFunctionService

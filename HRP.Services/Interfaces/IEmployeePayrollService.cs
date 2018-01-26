@@ -1,6 +1,6 @@
-﻿namespace HRP.Services
+﻿namespace HRP.Services.Interfaces
 {
-    using HRP.Models.EmployeeManagement;
+    using Models.EmployeeManagement;
 
     public interface IEmployeePayrollService
     {

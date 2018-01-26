@@ -1,10 +1,10 @@
-﻿namespace HRP.Services
+﻿namespace HRP.Services.Interfaces
 {
     using System.Threading.Tasks;
-    using HRP.Core.Model;
-    using HRP.Models;
-    using HRP.Models.EmployeeManagement;
+    using Core.Model;
     using Microsoft.AspNetCore.Http;
+    using Models;
+    using Models.EmployeeManagement;
 
     public interface IEmployeeManagementService
     {

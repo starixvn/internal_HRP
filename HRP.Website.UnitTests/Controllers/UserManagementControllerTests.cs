@@ -3,18 +3,18 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Models;
-    using HRP.Models.UserManagement;
-    using HRP.Models.UserPermisson;
-    using HRP.Services;
-    using HRP.Website.Controllers;
+    using Core.Constants;
+    using Core.Enumerations;
+    using Core.Model;
+    using Core.Services;
+    using Criteria;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Models.UserManagement;
+    using Models.UserPermisson;
     using NSubstitute;
+    using Services.Interfaces;
+    using Website.Controllers;
     using Xunit;
 
     public class UserManagementControllerTests

@@ -3,30 +3,31 @@ namespace HRP.Services
     using System;
     using Core.Model;
     using Google.Authenticator;
+    using Interfaces;
     using Microsoft.Extensions.Options;
 
     public class TwoFactorAuthenticatorService : ITwoFactorAuthenticatorService
     {
-        private readonly int _qrImageWidth = 200;
-        private readonly int _qrImageHeight = 200;
+        private readonly int qrImageWidth = 200;
+        private readonly int qrImageHeight = 200;
 
-        private readonly IOptionsSnapshot<OtpConfig> _config;
+        private readonly IOptionsSnapshot<OtpConfig> config;
 
         public TwoFactorAuthenticatorService(IOptionsSnapshot<OtpConfig> config)
         {
-            _config = config;
+            this.config = config;
         }
 
         public string SetupGoogleAuthInfo(string username, string secretKey)
         {
             var twoFactorAuthen = new TwoFactorAuthenticator();
-            var setupInfo = twoFactorAuthen.GenerateSetupCode(_config.Value.AppName, username, secretKey, _qrImageWidth, _qrImageHeight);
+            var setupInfo = twoFactorAuthen.GenerateSetupCode(config.Value.AppName, username, secretKey, qrImageWidth, qrImageHeight);
             return setupInfo.ManualEntryKey;
         }
 
         public bool ValidateOTPCode(string secretKey, string otpCode)
         {
-            var timeExpireOTP = TimeSpan.FromSeconds(_config.Value.OtpExpireTime);
+            var timeExpireOTP = TimeSpan.FromSeconds(config.Value.OtpExpireTime);
 
             var twoFactorAuthenticator = new TwoFactorAuthenticator();
 

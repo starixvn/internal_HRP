@@ -10,12 +10,12 @@
     using Core.Services;
     using Criteria;
     using Criteria.Employee;
-    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.EmployeeManagement;
-    using Services;
+    using Resources;
+    using Services.Interfaces;
 
     [HRPAuthorize]
     public class EmployeeManagementController : Controller

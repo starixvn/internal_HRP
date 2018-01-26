@@ -1,4 +1,4 @@
-namespace HRP.Services
+namespace HRP.Services.Interfaces
 {
     public interface ITwoFactorAuthenticatorService
     {

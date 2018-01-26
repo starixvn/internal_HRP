@@ -5,18 +5,18 @@
     using System.Linq;
     using System.Threading.Tasks;
     using BCrypt.Net;
-    using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
-    using HRP.Core.Extensions;
-    using HRP.Core.Filters;
-    using HRP.Core.Model;
-    using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Models;
-    using HRP.Models.UserManagement;
-    using HRP.Models.UserPermisson;
-    using HRP.Services;
+    using Core.Constants;
+    using Core.Enumerations;
+    using Core.Extensions;
+    using Core.Filters;
+    using Core.Model;
+    using Core.Services;
+    using Criteria;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Models.UserManagement;
+    using Models.UserPermisson;
+    using Services.Interfaces;
 
     [HRPAuthorize]
     public class UserManagementController : Controller

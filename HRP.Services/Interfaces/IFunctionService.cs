@@ -1,4 +1,4 @@
-﻿namespace HRP.Services
+﻿namespace HRP.Services.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
