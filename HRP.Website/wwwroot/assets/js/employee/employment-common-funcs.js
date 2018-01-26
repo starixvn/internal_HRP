@@ -265,12 +265,6 @@ var employmentCommonFuncs = (function ($) {
         });
     }
 
-    function registerEventClickCancel() {
-        $btnCancel.on('click', function () {
-            window.history.back();
-        });
-    }
-
     function initSelect2($form) {
         $form.find('.js-select2-hidesearchbox').select2({
             placeholder: '--Please select--',
@@ -531,7 +525,6 @@ var employmentCommonFuncs = (function ($) {
         registerEventChangeGradeLevel();
         registerEventChangeCountry();
         registerEventChangeCity();
-        registerEventClickCancel();
         initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NicknamePFileAdmin'));
         initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NicknameBVISalary'));
         initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NicknameBVIAllowance'));
@@ -546,6 +539,7 @@ var employmentCommonFuncs = (function ($) {
         initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NicknameLocalBonus'));
 
         registerEventFormChange($form);
+        commonFunctions.registerEventGoBack($btnCancel);
     }
 
     return {

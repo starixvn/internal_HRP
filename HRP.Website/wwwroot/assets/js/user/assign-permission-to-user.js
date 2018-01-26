@@ -360,6 +360,7 @@ var assignPermissionToUser = (function ($) {
     function registerEvents() {
         registerEventCheckAdminFunc();
         registerEventCheckUserFunc();
+        commonFunctions.registerEventGoBack($('#btnCancel'));
         registerEventSave();
     }
 

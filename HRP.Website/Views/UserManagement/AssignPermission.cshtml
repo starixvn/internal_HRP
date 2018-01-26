@@ -135,10 +135,10 @@
         </tbody>
     </table>
     <div class="list-button">
-        <a class="button -second" id="btCancel" asp-action="index">@ViewLang.Cancel</a>
+        <a class="button -second" id="btnCancel" href="javascript:;">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
-            <a class="button -primary" id="btnSave">@ViewLang.Save</a>
+            <a class="button -primary" id="btnSave"  href="javascript:;">@ViewLang.Save</a>
         }
     </div>
 </form>

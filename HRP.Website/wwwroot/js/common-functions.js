@@ -87,6 +87,12 @@
         }
     }
 
+    function registerEventGoBack($btnCancel) {
+        $btnCancel.on('click', function () {
+            window.history.back();
+        });
+    }
+
     function initModule() {
         rootURL = $('#RootURL').val();
     }
@@ -100,7 +106,8 @@
         showValidationSummary: showValidationSummary,
         hideValidationSummary: hideValidationSummary,
         initDatetimepicker: initDatetimepicker,
-        getUrlParameter: getUrlParameter
+        getUrlParameter: getUrlParameter,
+        registerEventGoBack: registerEventGoBack
     }
 }(jQuery));
 
