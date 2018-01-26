@@ -14,7 +14,7 @@ body {
     color: $text-color;
 }
 
-/* Change  OTP */
+// Change  OTP
 .otp {
     .title {
         font-size: 16px;
@@ -35,8 +35,7 @@ body {
     }
 }
 
-/* Register OTP */
-
+// Register OTP
 .register-otp  {
     padding-top: 10px;
     color: $text-color;
@@ -176,7 +175,7 @@ body {
     }
 }
 
-/* Notication OTP */
+// Notication OTP
 .notication-otp {
     @include border-radius(4px);
     @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");  
@@ -204,7 +203,7 @@ body {
     }
 }
 
-/* Change password */
+// Change password
 .change-password {
     .control {
         padding-right: 40px;

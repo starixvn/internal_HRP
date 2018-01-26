@@ -1,4 +1,4 @@
-﻿.button {
+.button {
     @include border-radius(2px); 
     @include transition($transition-common);
     @include box-shadow-multiple("0 2px 2px 0px rgba(0,0,0,0.3)");

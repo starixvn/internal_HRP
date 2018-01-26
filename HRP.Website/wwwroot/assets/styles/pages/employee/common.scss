@@ -4,9 +4,7 @@
 @import "../../components/customize-select2";
 
 
-/* Edit height for select2 */
-
-/* Customize select2 */
+// Customize select2
 .select2-container--default {
     .select2-selection--single {
         height: 28px;
@@ -17,7 +15,6 @@
         height: 28px;
     }
 }
-
 
 .form-information {  
     .group-title, .like-group-title {
@@ -60,3 +57,4 @@
 .list-button {
     margin-top: 8px;
 }
+

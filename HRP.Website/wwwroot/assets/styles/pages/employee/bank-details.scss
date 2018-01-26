@@ -5,12 +5,12 @@
 @import "../../components/tables";
 @import "../../components/customize-fanex-multiSelect";
 
-/* Bank details */
+// Bank details
 .fanex-multiselect-div  {
     margin-left: 0 !important;
 }
 
-/* Create New Bank Account */
+// Create New Bank Account
 .layout-two-col {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
