@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
+    using HRP.Core.Services;
     using Model;
     using NSubstitute;
     using Repositories;
-    using Services;
     using Xunit;
 
     public class BaseServiceTests

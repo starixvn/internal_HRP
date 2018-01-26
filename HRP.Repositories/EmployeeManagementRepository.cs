@@ -1,4 +1,4 @@
-namespace HRP.Repositories.Interfaces
+namespace HRP.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,12 +7,13 @@ namespace HRP.Repositories.Interfaces
     using HRP.Core.Constants;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Repositories.Interfaces;
 
     public class EmployeeManagementRepository : IEmployeeManagementRepository
     {
         public CreateEmploymentViewModel GetDataToCreateEmployment(ICriteria criteria)
         {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = db.QueryMultiple(criteria))
                 {
@@ -40,7 +41,7 @@ namespace HRP.Repositories.Interfaces
 
         public UpdateEmploymentViewModel GetDataToUpdateEmployment(ICriteria criteria)
         {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = db.QueryMultiple(criteria))
                 {

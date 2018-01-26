@@ -12,6 +12,7 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
+    using HRP.Repositories;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Interfaces;

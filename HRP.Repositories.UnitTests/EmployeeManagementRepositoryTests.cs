@@ -1,0 +1,149 @@
+﻿namespace HRP.Repositories.UnitTests
+{
+    using System;
+    using System.Collections.Generic;
+    using Fanex.Data;
+    using Fanex.Data.Repository;
+    using HRP.Models;
+    using HRP.Models.EmployeeManagement;
+    using NSubstitute;
+    using Xunit;
+
+    public class EmployeeManagementRepositoryTests
+    {
+        private readonly IObjectDb objectDb;
+
+        public EmployeeManagementRepositoryTests()
+        {
+            DbSettingProviderManager
+            .StartTestingSession()
+            .Run();
+
+            objectDb = Substitute.For<IObjectDb>();
+            ObjectDbFactory.Mock((key, time) => objectDb);
+        }
+
+        [Fact]
+        public void GetDataToCreateEmployment_WhenCalled_ReturnAsExpectedModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            var companies = GetCompanyForTest();
+            var jobCategories = GetJobCategoryForTest();
+            var countries = GetCountryForTest();
+            multiResultReader.Read<Company>().Returns(companies);
+            multiResultReader.Read<JobCategory>().Returns(jobCategories);
+            multiResultReader.Read<Country>().Returns(countries);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetDataToCreateEmployment(criteria);
+
+            // Assert
+            Assert.IsType<CreateEmploymentViewModel>(actual);
+            Assert.Equal(0, actual.CompanyId);
+            Assert.Equal(0, actual.LocalCompanyId);
+            Assert.Null(actual.JobTitle);
+            Assert.Equal(0, actual.LocalJobTitleId);
+            Assert.Equal(DateTime.MinValue, actual.GroupStartDate);
+            Assert.Null(actual.GroupEndDate);
+            Assert.Null(actual.CompanyStartDate);
+            Assert.Null(actual.CompanyEndDate);
+            Assert.Null(actual.CompanyCode);
+            Assert.Null(actual.EmployeeCode);
+            Assert.Equal(0, actual.EmploymentType);
+            Assert.Equal(0, actual.EmploymentStatus);
+            Assert.Equal(0, actual.JobCategoryId);
+            Assert.Equal(0, actual.JobGradeId);
+            Assert.Equal(0, actual.GradeLevelId);
+            Assert.Equal(0, actual.DivisionId);
+            Assert.Equal(0, actual.DepartmentId);
+            Assert.Equal(0, actual.CostCenterId);
+            Assert.Equal(0, actual.SectionId);
+            Assert.Equal(0, actual.CountryId);
+            Assert.Equal(0, actual.CityId);
+            Assert.Equal(0, actual.OfficeId);
+            Assert.Null(actual.Email);
+            Assert.Null(actual.DST);
+            Assert.Null(actual.DBT);
+            Assert.Null(actual.TaxIDNo);
+            Assert.Null(actual.SSSNo);
+            Assert.Null(actual.HealthInsNo);
+            Assert.Null(actual.HDMFNo);
+            Assert.Null(actual.FullNamePFileAdmin);
+            Assert.Null(actual.NicknamePFileAdmin);
+            Assert.Null(actual.PDFPassword);
+            Assert.Equal(0, actual.WorkPermit.LocalCompanyId);
+            Assert.Equal(0, actual.WorkPermit.Type1);
+            Assert.Equal(DateTime.MinValue, actual.WorkPermit.StartDateType1);
+            Assert.Equal(DateTime.MinValue, actual.WorkPermit.EndDateType1);
+            Assert.Null(actual.WorkPermit.Type2);
+            Assert.Null(actual.WorkPermit.StartDateType2);
+            Assert.Null(actual.WorkPermit.EndDateType2);
+            Assert.Null(actual.Paymaster.FullNameBVISalary);
+            Assert.Null(actual.Paymaster.NicknameBVISalary);
+            Assert.Null(actual.Paymaster.FullNameBVIAllowance);
+            Assert.Null(actual.Paymaster.NicknameBVIAllowance);
+            Assert.Null(actual.Paymaster.FullNameLocalSalary);
+            Assert.Null(actual.Paymaster.NicknameLocalSalary);
+            Assert.Equal(companies, actual.Companies);
+            Assert.Equal(jobCategories, actual.JobCategories);
+            Assert.Equal(countries, actual.Countries);
+            Assert.Empty(actual.LocalCompanies);
+            Assert.Empty(actual.LocalJobTitles);
+            Assert.Empty(actual.EmploymentTypes);
+            Assert.Empty(actual.EmploymentStatuses);
+            Assert.Empty(actual.WorkPermitType1s);
+            Assert.Empty(actual.WorkPermitType2s);
+        }
+
+        #region Helpers
+
+        private static IMultiResultReader FakeMultipleResultReader()
+        {
+            return Substitute.For<IMultiResultReader>();
+        }
+
+        private static ICriteria FakeCriteia()
+        {
+            var criteria = Substitute.For<ICriteria>();
+            criteria.GetSettingKey().Returns("HRP_Test");
+
+            return criteria;
+        }
+
+        private static IEnumerable<Company> GetCompanyForTest()
+        {
+            var companies = new List<Company>
+            {
+                new Company { CompanyId = 1, Code = "DAR", Name = "DAR", IsActive = true }
+            };
+
+            return companies;
+        }
+
+        private static IEnumerable<JobCategory> GetJobCategoryForTest()
+        {
+            var jobCategories = new List<JobCategory>
+            {
+                new JobCategory { JobCategoryId = 1, Name = "DAR", Description = "DAR", IsActive = true }
+            };
+
+            return jobCategories;
+        }
+
+        private static IEnumerable<Country> GetCountryForTest()
+        {
+            var countries = new List<Country>
+            {
+                new Country { CountryId = 1, Name = "DAR", Code = "DAR", IsActive = true }
+            };
+
+            return countries;
+        }
+
+        #endregion Helpers
+    }
+}
