@@ -14,17 +14,16 @@
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script type="text/javascript" src="~/assets/js/bank/create-bank-account.js"></script>
+    <script type="text/javascript" src="~/assets/js/bank/state-handler.js"></script>
 }
 
 <ol class="breadcrumb">
-    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee Management</a></li>
-    <li>
-        <a href="#">Employee List</a>
-    </li>
+    <li class="like-link">Employee Management</li>
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee List</a></li>
     <li>
         <a asp-action="EmployeeBankAccounts"
            asp-controller="BankAccount"
-           asp-route-EmployeeId="@Model.EmployeeId">Edit Bank Details of Employee '@Model.EmployeeName'</a>
+           asp-route-Id="@Model.EmployeeId">Edit Bank Details of Employee '@Model.EmployeeName'</a>
     </li>
     <li class="active">Create New Bank Account</li>
 </ol>

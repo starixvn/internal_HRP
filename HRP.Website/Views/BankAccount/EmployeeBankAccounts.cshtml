@@ -19,13 +19,14 @@
 }
 
 <ol class="breadcrumb">
-    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee Management</a></li>
+    <li class="like-link">Employee Management</li>
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee List</a></li>
     <li class="active">Edit Bank Details of Employee '@Model.EmployeeName'</li>
 </ol>
 
 
 @*Filter form*@
-<form asp-action="EmployeeBankAccounts" asp-controller="BankAccount" method="get" class="search-form">
+<form asp-action="EmployeeBankAccounts" asp-controller="BankAccount" method="get" class="search-form save-state">
     <input asp-for="Id" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
