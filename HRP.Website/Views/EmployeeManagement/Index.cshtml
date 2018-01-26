@@ -26,11 +26,11 @@
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li class="active">@ViewLang.EmployeeList</li>
 </ol>
-<form class="search-form form-filter" method="get">
-    <div class="list-message-error hidden" id="error-alert">
-        <p class="message" id="company-validation" hidden>@Message.SelectAtLeastOneCompany</p>
-        <p class="message" id="employment-status-validation" hidden>@Message.SelectAtLeastOneEmploymentStatus</p>
-    </div>
+<div class="list-message-error hidden" id="error-alert">
+    <p class="message" id="company-validation" hidden>@Message.SelectAtLeastOneCompany</p>
+    <p class="message" id="employment-status-validation" hidden>@Message.SelectAtLeastOneEmploymentStatus</p>
+</div>
+<form class="search-form form-filter" method="get">    
     <div class="group">
         <label class="text -has-required">@ViewLang.Company</label>
         <select class="control company" id="CompanySelect"></select>
