@@ -1,6 +1,9 @@
-﻿@using HRP.Resources
-@using HRP.Core.Enumerations
+﻿@using HRP.Core.Enumerations
 @using HRP.Core.Constants
+@using HRP.Models.DataConfiguration
+@using HRP.Resources
+
+@model IEnumerable<Field>
 @{
     ViewData["Title"] = "Data Configuration";
 }
@@ -26,15 +29,20 @@
 <form id="filterFieldForm" class="search-form">
     <div class="group">
         <label class="text">@ViewLang.Field</label>
-        <select class="control" id="fieldId">
-            <option value="@((int)FieldType.CompanyLocal)">@ViewLang.CompanyLocal</option>
+        <select class="control" id="fieldType">
+            @foreach (var field in Model)
+            {
+                <option value="@field.FieldId">@field.FieldName</option>
+
+            }
             <option value="@((int)FieldType.CompanyBVI)">@ViewLang.CompanyBVI</option>
-            <option value="@((int)FieldType.Currency)">@ViewLang.Currency</option>
         </select>
+
+        <input type="hidden" id="fieldId" value="@Model.FirstOrDefault().FieldId"/>
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
-    </div>    
+    </div>
 </form>
 
 <div class="-has-icon msg-success hidden">
@@ -43,9 +51,23 @@
 <div id="tableWrapper">
 </div>
 
-<input type="hidden" class="field-@((int)FieldType.CompanyLocal)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyLocal" />
-<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />
+@foreach (var field in Model)
+{
+    <input type="hidden" class="field-@(field.FieldId)" data-url-get-all="@field.LinkGetAllItem" />
+}
 
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalUpdateLabel" id="editItemModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title" id="modalUpdateLabel">@Message.EditItem</h4>
+            </div>
+            <div class="modal-body form-information" id="editItemModalBody">
+            </div>
+        </div>
+    </div>
+</div>
 @*<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />*@
 <!-- Section Create New Item -->
 <div class="modal fade" id="newChildItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

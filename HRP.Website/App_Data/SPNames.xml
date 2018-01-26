@@ -98,5 +98,7 @@
   <Function Name="DataConfiguration">
     <Setting Key="DataConfiguration_CheckCompanyBVIExists" SpName="DataConfiguration_CheckCompanyBVIExists" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="DataConfiguration_CreateCompanyBVI" SpName="DataConfiguration_CreateCompanyBVI" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="DataConfiguration_GetCompanyBVIById" SpName="DataConfiguration_GetCompanyBVIById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="DataConfiguration_UpdateCompanyBVI" SpName="DataConfiguration_UpdateCompanyBVI" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

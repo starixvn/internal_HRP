@@ -367,6 +367,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Item.
+        /// </summary>
+        public static string EditItem {
+            get {
+                return ResourceManager.GetString("EditItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} has been successfully updated..
         /// </summary>
         public static string EditUserSuccess {
@@ -894,6 +903,15 @@ namespace HRP.Resources {
         public static string ItemNameRequired {
             get {
                 return ResourceManager.GetString("ItemNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The item has been successfully updated..
+        /// </summary>
+        public static string ItemUpdatedSuccessful {
+            get {
+                return ResourceManager.GetString("ItemUpdatedSuccessful", resourceCulture);
             }
         }
         

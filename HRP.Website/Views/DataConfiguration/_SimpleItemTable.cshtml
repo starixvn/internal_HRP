@@ -42,7 +42,7 @@
                     }
                 </td>
                 <td class="text-center has-icon">
-                    <span class="icon-edit" data-toggle="modal" data-target="#newChildItem"></span>
+                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.LinkUpdateItem" data-item-id="@item.ItemId"></span>
                 </td>
             </tr>
 
@@ -52,7 +52,8 @@
 </table>
 
 <!-- Create New Item -->
-<form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true">
+<form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true"
+      data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onCreateNewItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
     <div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content -has-title">
@@ -60,35 +61,34 @@
                     <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
                     <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
                 </div>
-
                 <div class="modal-body form-information">
+                    <input asp-for="Item.ItemId" type="hidden" />
                     <div class="list-message-error hidden">
-                        <span class="message" asp-validation-for="NewItem.ItemName"></span>
-                        <span class="message" asp-validation-for="NewItem.Description"></span>
+                        <span class="message" asp-validation-for="Item.ItemName"></span>
+                        <span class="message" asp-validation-for="Item.Description"></span>
                     </div>
                     <div class="-has-icon msg-error hidden" id="create-item-error-alert">
                     </div>
                     <label class="text -has-required">@Model.FieldName</label>
                     <div class="group-control">
 
-                        <input class="control js-itemName" type="text" asp-for="NewItem.ItemName"
+                        <input class="control js-itemName" type="text" asp-for="Item.ItemName"
                                data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
-                               data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)"
-                               data-val-remote-url="@Model.LinkCheckExists" />
+                               data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />
                     </div>
                     <label class="text">@ViewLang.Description</label>
                     <div class="group-control">
 
-                        <input class="control" type="text" asp-for="NewItem.Description" />
+                        <input class="control" type="text" asp-for="Item.Description" />
                     </div>
                     <div class="group-control">
                         <label>
-                            <input type="checkbox" asp-for="NewItem.IsActive" />
+                            <input type="checkbox" asp-for="Item.IsActive" />
                             <span>@ViewLang.Active</span>
                         </label>
                     </div>
                     <div class="list-button">
-                        <button class="button -primary js-btnSave" type="submit">@ViewLang.Save</button>
+                        <button class="button -primary" type="submit">@ViewLang.Save</button>
                         <button class="button -second" type="button" data-dismiss="modal">@ViewLang.Cancel</button>
                     </div>
                 </div>

@@ -4,6 +4,8 @@
 
     public class CheckCompanyExistsCriteria : CriteriaBase
     {
+        public int CompanyId { get; set; }
+
         public string Code { get; set; }
 
         public override bool IsValid() => !string.IsNullOrEmpty(Code);

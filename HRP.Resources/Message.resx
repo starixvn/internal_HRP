@@ -630,4 +630,10 @@
   <data name="ItemCreatedSuccessful" xml:space="preserve">
     <value>The '{0}' has been successfully created.</value>
   </data>
+  <data name="EditItem" xml:space="preserve">
+    <value>Edit Item</value>
+  </data>
+  <data name="ItemUpdatedSuccessful" xml:space="preserve">
+    <value>The item has been successfully updated.</value>
+  </data>
 </root>

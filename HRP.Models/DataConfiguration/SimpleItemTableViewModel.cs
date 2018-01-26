@@ -6,7 +6,7 @@
     {
         public SimpleItemTableViewModel()
         {
-            NewItem = new SimpleItem();
+            Item = new SimpleItem();
         }
 
         public string FieldName { get; set; }
@@ -15,8 +15,8 @@
 
         public string LinkCreateItem { get; set; }
 
-        public string LinkCheckExists { get; set; }
+        public string LinkUpdateItem { get; set; }
 
-        public SimpleItem NewItem { get; set; }
+        public SimpleItem Item { get; set; }
     }
 }

@@ -3,7 +3,9 @@
 
     function initModule() {
         $filterFieldForm = $('#filterFieldForm');
+        $createItemForm = $('#createItemForm');
         registerEventShowListItem();
+        registerEventSelectField();
     }
 
     function initDataTable() {
@@ -31,6 +33,12 @@
         });
     }
 
+    function registerEventSelectField() {
+        $('#fieldType').on('change', function () {
+            $('#fieldId').val($(this).val());
+        });
+    }
+
     function registerEventShowListItem() {
         $filterFieldForm.on('submit', function (e) {
             e.preventDefault();
@@ -48,55 +56,11 @@
         });
     }
 
-    function registerEventSubmitFormCreateNewItem() {
-        $createItemForm.on('submit', function (e) {
-            if ($createItemForm.valid()) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    type: 'POST',
-                    url: commonFunctions.rootURL + $(this).attr('action'),
-                    dataType: 'json',
-                    data: formData,
-                    success: function (response) {
-                        if (response.isSuccessful) {                           
-                            $("#newItem .close").trigger('click'); ////ref
-                            $('.modal-backdrop').remove();
-                            commonFunctions.showSuccessMessage(response.message);////ref
-                            $filterFieldForm.trigger('submit'); ////ref
-                        } else {
-                            if (response.errors) {
-                                $createItemForm.validate().showErrors(response.errors); //todo test here
-                                commonFunctions.showValidationSummary($createItemForm);
-                            } else {
-                                commonFunctions.showErrorMessage(response.message);
-                            }
-                        }
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
-            } else {
-                commonFunctions.showValidationSummary($createItemForm);
-            }
-        });
-    }
+    function initValidationForm(formElementId) {
+        var $form = $(formElementId);
+        $.validator.unobtrusive.parse(formElementId);
 
-    function initValidationCreateItemForm() {
-        //
-        $.validator.unobtrusive.parse('#createItemForm');
-        var formSetting = $createItemForm.data("validator").settings;
-        formSetting.onkeyup = false;
-        //
-        var fieldItemName = $('#createItemForm .js-itemName');
-        fieldItemName.rules().remote.complete = function (data) {
-            if ($.parseJSON(data.responseText) !== "true") {
-                commonFunctions.showValidationSummary($createItemForm);
-            } else {
-                handleDisplayValidationSummary($createItemForm);
-            }
-        };
-        //
-        $createItemForm.on('change keyup click', function () {
+        $form.on('change keyup click submit', function () {
             handleDisplayValidationSummary($(this));
         });
     }
@@ -110,17 +74,72 @@
         }
     }
 
+    function registerEventClickIconEditItem() {
+        $('.js-iconEditItem').on('click', function () {
+            var itemId = $(this).data('item-id');
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + $(this).data('url-update'),
+                dataType: 'html',
+                data: { "id": itemId },
+                success: function (data) {
+                    // ref
+                    $('#editItemModalBody').html(data);
+
+                    initValidationForm('#editItemForm');
+
+                    $('#editItemModal').modal('show');
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
+    function onCreateNewItemSuccess(response) {
+        if (response.isSuccessful) {
+            $("#newItem .close").trigger('click'); ////ref
+            $('.modal-backdrop').remove();
+            commonFunctions.showSuccessMessage(response.message);////ref
+            $filterFieldForm.trigger('submit'); ////ref
+        } else {
+            if (response.errors) {
+                $createItemForm.validate().showErrors(response.errors); //todo test here
+                commonFunctions.showValidationSummary($createItemForm);
+            } else {
+                commonFunctions.showErrorMessage(response.message);
+            }
+        }
+    }
+
+    function onUpdateItemSuccess(response) {
+        var $editItemForm = $('#editItemForm');
+        if (response.isSuccessful) {
+            $("#editItemModal .close").trigger('click'); ////ref
+            $('.modal-backdrop').remove();
+            commonFunctions.showSuccessMessage(response.message);////ref
+            $filterFieldForm.trigger('submit'); ////ref
+        } else {
+            if (response.errors) {
+                $editItemForm.validate().showErrors(response.errors); //todo test here
+                commonFunctions.showValidationSummary($editItemForm);
+            } else {
+                alert(response.message);
+            }
+        }
+    }
+
     function onGetSuccess(response) {
         $('#tableWrapper').html(response);
-        $createItemForm = $('#createItemForm');
         initDataTable();
         registerEventQuickSearch();
-        initValidationCreateItemForm();
-        registerEventSubmitFormCreateNewItem();
+        initValidationForm('#createItemForm');
+        registerEventClickIconEditItem();
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        onCreateNewItemSuccess: onCreateNewItemSuccess,
+        onUpdateItemSuccess: onUpdateItemSuccess
     };
 }(jQuery));
 

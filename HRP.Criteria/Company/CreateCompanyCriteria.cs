@@ -1,7 +1,5 @@
 ﻿namespace HRP.Criteria.Company
 {
-    using Fanex.Data.Repository;
-
     public class CreateCompanyCriteria : CommandBaseCriteria
     {
         public string Code { get; set; }
