@@ -21,52 +21,14 @@ var listEmployee = {
     },
 
     hideErrorMessage: function (message, input) {
-        if (listEmployee.checkSelectionValue()) {
+        if (listEmployee.validateSelection()) {
             $("#error-alert").addClass("hidden");
         }
         $(message).hide();
         $(input).removeClass("validation-error");
     },
 
-    setReturnUrl: function (returnParams) {
-        var allLink = $("#employee-table").find("a");
-        $.each(allLink, function (i, e) {
-            var href = $(this).attr("href");
-
-            var isSkip = $(e).data("skip");
-
-            if (isSkip !== true) {
-                $(e).attr("href", href + "?" + returnParams);
-            }
-        });
-    },
-
-    setReturnUrlToElement: function (element, returnParams) {
-        if ($(element).is("a")) {
-            var href = $(element).attr("href");
-            if (href.indexOf("?") !== -1) {
-                href = href.replace(/\?.*$/, "");
-            }
-            $(element).attr("href", href + "?" + returnParams);
-        }
-    },
-
-    getQueryString: function () {
-        var departmentIds = $("#DepartmentIds").val();
-        var employmentStatusIds = $("#EmployeeStatusIds").val();
-        var employeeId = $("#EmployeeId").val();
-        var employeeName = $("#DisplayName").val();
-        return "departmentIds=" + departmentIds
-            + "&employeeStatusIds=" + employmentStatusIds
-            + "&employeeId=" + employeeId
-            + "&displayName=" + employeeName;
-    },
-
     query: function () {
-        if (listEmployee.checkSelectionValue()) {
-            listEmployee.hideErrorMessage("#company-validation", "#CompanySelect");
-            listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
-            var queryString = listEmployee.getQueryString();
             $.ajax({
                 url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
                 type: 'GET',
@@ -75,17 +37,10 @@ var listEmployee = {
                 success: function (response) {
                     $('#employee-list').html(response);
                     listEmployee.initDataTable();
-                    listEmployee.setReturnUrl(queryString);
-                    if ($("#create-employee").length) {
-                        listEmployee.setReturnUrlToElement("#create-employee", queryString);
-                    }
                     listEmployee.initSelect2();
                 },
                 error: commonFunctions.handleAjaxError
             });
-        } else {
-            listEmployee.showSelectError();
-        }
     },
 
     showSelectError: function () {
@@ -105,7 +60,7 @@ var listEmployee = {
         }
     },
 
-    checkSelectionValue: function () {
+    validateSelection: function () {
         var departmentIds = $("#DepartmentIds").val();
         var employeeStatusIds = $("#EmployeeStatusIds").val();
         if (departmentIds && employeeStatusIds) {
@@ -322,8 +277,9 @@ $(document).ready(function () {
     listEmployee.init();
     listDepartment.init();
     listEmployeeStatus.init();
-});
 
+    
+});
 $('#quick-search').off('keyup').on('keyup', function () {
     $('#employee-table').DataTable().search($(this).val()).draw();
 });
@@ -333,4 +289,14 @@ $("#DisplayName").keyup(function () {
         $('#EmployeeId').val('');
     }
 });
+
+$("form").on("submit", function (e) {
+    if (!listEmployee.validateSelection()) {
+        e.preventDefault();
+        listEmployee.showSelectError();
+    } else {
+        e.currentTarget();
+    }
+});
+
 
