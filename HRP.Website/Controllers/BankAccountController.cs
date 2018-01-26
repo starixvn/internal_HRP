@@ -38,6 +38,8 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
+        [IgnoreAntiforgeryToken]
+        [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
             var employee = employeeManagementService.GetEmployeeById(viewModel.Id);

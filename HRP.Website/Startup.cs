@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core;
+    using Core.Enumerations;
     using Core.Model;
     using Core.Services;
     using Fanex.Data;
@@ -35,13 +36,14 @@
             Dictionary<string, string> connections = Configuration
                 .GetSection("ConnectionStrings")
                 .GetChildren()
-                .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
+                .ToDictionary(connection => connection.Key, connection => connection.Value,
+                    StringComparer.OrdinalIgnoreCase);
 
             DbSettingProviderManager
-            .StartNewSession()
-            .UseConnectionStrings(connections)
-            .UseDefaultDbSettingProvider("~/App_Data")
-            .Run();
+                .StartNewSession()
+                .UseConnectionStrings(connections)
+                .UseDefaultDbSettingProvider("~/App_Data")
+                .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
             services.Configure<MailConfig>(options => Configuration.GetSection("MailConfig").Bind(options));
@@ -49,18 +51,19 @@
 
             // Cookie Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
-                options.SlidingExpiration = true;
-                options.LoginPath = "/Auth/Login";
-                options.LogoutPath = "/Auth/Logout";
-                options.Events.OnSigningOut = context =>
+                .AddCookie(options =>
                 {
-                    context.Response.Redirect(options.LoginPath);
-                    return Task.CompletedTask;
-                };
-            });
+                    options.ExpireTimeSpan =
+                        TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
+                    options.SlidingExpiration = true;
+                    options.LoginPath = "/Auth/Login";
+                    options.LogoutPath = "/Auth/Logout";
+                    options.Events.OnSigningOut = context =>
+                    {
+                        context.Response.Redirect(options.LoginPath);
+                        return Task.CompletedTask;
+                    };
+                });
 
             // Cookie Authentication
             services.AddAuthentication(options =>
@@ -71,15 +74,25 @@
             });
 
             services.AddMvc(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddSessionStateTempDataProvider();
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    options.CacheProfiles.Add(CachingProfile.Default.ToString(), new CacheProfile
+                    {
+                        Duration = 600,
+                        Location = ResponseCacheLocation.Client
+                    });
+                })
+                .AddSessionStateTempDataProvider();
+
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                 options.Cookie.HttpOnly = true;
             });
+
+            // Cache
+            services.AddResponseCaching();
 
             // DI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -110,6 +123,9 @@
             {
                 app.UseExceptionHandler("/Error/500");
             }
+
+            // Cache
+            app.UseResponseCaching();
 
             app.UseStaticFiles();
             app.UseAuthentication();

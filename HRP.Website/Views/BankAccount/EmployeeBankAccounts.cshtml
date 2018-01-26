@@ -26,7 +26,11 @@
 
 
 @*Filter form*@
-<form asp-action="EmployeeBankAccounts" asp-controller="BankAccount" method="get" class="search-form save-state">
+<form asp-action="EmployeeBankAccounts"
+      asp-controller="BankAccount"
+      asp-antiforgery="false"
+      method="post"
+      class="search-form save-state">
     <input asp-for="Id" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
@@ -38,7 +42,7 @@
     </div>
     <div class="group">
         <button type="submit" class="button -primary">Submit</button>
-    </div>    
+    </div>
 </form>
 
 <div class="top-header">
