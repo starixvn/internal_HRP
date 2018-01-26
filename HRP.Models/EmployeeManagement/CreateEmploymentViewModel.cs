@@ -1,220 +1,105 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using HRP.Core.CustomValidations;
-    using HRP.Core.Enumerations;
-    using HRP.Resources;
-    using Microsoft.AspNetCore.Mvc;
+    using System.ServiceModel.Channels;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     [Serializable]
-    public class CreateEmploymentViewModel : CreateEmployeeViewModel
+    public class CreateEmploymentViewModel : EmploymentBaseViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVICompanyRequired")]
-        public int CompanyId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameRequired")]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
+        public string FullName { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? CompanyChangeDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NicknameRequired")]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NicknameMaxLength")]
+        public string Nickname { get; set; }
 
-        public int? CompanyReasonId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GenderRequired")]
+        public int Gender { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalCompanyRequired")]
-        public int LocalCompanyId { get; set; }
+        public SelectList GenderList { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? LocalCompanyChangeDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateOfBirthRequired")]
+        public DateTime DateOfBirth { get; set; }
 
-        public int? LocalCompanyReasonId { get; set; }
+        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PlaceOfBirthMaxLength")]
+        public string PlaceOfBirth { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleRequired")]
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "BVIJobTitleMaxLength")]
-        public string JobTitle { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NationalityRequired")]
+        public int Nationality { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? JobTitleChangeDate { get; set; }
+        public SelectList NationalityList { get; set; }
 
-        public int? JobTitleReasonId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoRequired")]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoMaxLength")]
+        public string NRICNo { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalJobTitleRequired")]
-        public int LocalJobTitleId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MaritalStatusRequired")]
+        public int MaritalStatus { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? LocalJobTitleChangeDate { get; set; }
+        public SelectList MaritalStatusList { get; set; }
 
-        public int? LocalJobTitleReasonId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NoOfChildrenRequired")]
+        public int NoOfChildren { get; set; }
 
-        [DataType(DataType.Date)]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GroupDateCommencementRequired")]
-        [GenericCompare(
-            CompareToPropertyName = nameof(GroupEndDate),
-            DisplayName = "Group Start Date",
-            OtherPropertyDisplayName = "Group End Date",
-            Operator = GenericCompareOperator.LessThanOrEqual)]
-        public DateTime GroupStartDate { get; set; }
+        public SelectList NoOfChildrenList { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? GroupEndDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoRequired")]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoMaxLength")]
+        public string OverseasPhoneNo { get; set; }
 
-        public int? GroupDateReasonId { get; set; }
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalPhoneNoMaxLength")]
+        public string LocalPhoneNo { get; set; }
 
-        [DataType(DataType.Date)]
-        [GenericCompare(
-            CompareToPropertyName = nameof(CompanyEndDate),
-            DisplayName = "Company Start Date",
-            OtherPropertyDisplayName = "Company End Date",
-            Operator = GenericCompareOperator.LessThanOrEqual)]
-        public DateTime? CompanyStartDate { get; set; }
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OtherPhoneNoMaxLength")]
+        public string OtherPhoneNo { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? CompanyEndDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoRequired")]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoMaxLength")]
+        public string PassportNo { get; set; }
 
-        public int? CompanyDateReasonId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateIssueRequired")]
+        public DateTime DateIssue { get; set; }
 
-        public string CompanyCode { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ExpiredDateRequired")]
+        public DateTime ExpiredDate { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
-        public string EmployeeCode { get; set; }
+        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PlaceOfIssueMaxLength")]
+        public string PlaceOfIssue { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? IDNoChangeDate { get; set; }
+        [StringLength(32, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SkypeMaxLength")]
+        public string Skype { get; set; }
 
-        public int? IDNoReasonId { get; set; }
+        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PersonalEmailMaxLength")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PersonalEmailInvalid")]
+        public string PersonalEmail { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentTypeRequired")]
-        public int EmploymentType { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PermanentAddressRequired")]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PermanentAddressMaxLength")]
+        public string PermanentAddress { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentStatusRequired")]
-        public int EmploymentStatus { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ResidenceAddressRequired")]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ResidenceAddressMaxLength")]
+        public string ResidenceAddress { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? EmploymentStatusChangeDate { get; set; }
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MailingAddressMaxLength")]
+        public string MailingAddress { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "JobCategoryRequired")]
-        public int JobCategoryId { get; set; }
+        public EmergencyContact EmergencyContact { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? JobCategoryChangeDate { get; set; }
+        public string ProfilePic { get; set; }
 
-        public int? JobCategoryReasonId { get; set; }
+        public string ProfilePicLink
+        {
+            get
+            {
+                return string.IsNullOrEmpty(ProfilePic) ? "/assets/styles/images/profile.png" : "/ProfilePicture/" + ProfilePic;
+            }
+        }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeRequired")]
-        public int JobGradeId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GradeLevelRequired")]
-        public int GradeLevelId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? JobGradeChangeDate { get; set; }
-
-        public int? JobGradeReasonId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DivisionRequired")]
-        public int DivisionId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? DivisionChangeDate { get; set; }
-
-        public int? DivisionReasonId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DepartmentRequired")]
-        public int DepartmentId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? DepartmentChangeDate { get; set; }
-
-        public int? DepartmentReasonId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SectionRequired")]
-        public int SectionId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? SectionChangeDate { get; set; }
-
-        public int? SectionReasonId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CostCenterRequired")]
-        public int CostCenterId { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? CostCenterChangeDate { get; set; }
-
-        public int? CostCenterReasonId { get; set; }
-
-        [Display(ResourceType = typeof(ViewLang), Name = "EmailAddress")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailRequired")]
-        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailMaxLength")]
-        [DataType(DataType.EmailAddress, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
-        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CountryRequired")]
-        public int CountryId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CityRequired")]
-        public int CityId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OfficeRequired")]
-        public int OfficeId { get; set; }
-
-        public int? DST { get; set; }
-
-        public int? DBT { get; set; }
-
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "TaxIDNoMaxLength")]
-        public string TaxIDNo { get; set; }
-
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "TaxIDNoMaxLength")]
-        public string SSSNo { get; set; }
-
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "HealthInsNoMaxLength")]
-        public string HealthInsNo { get; set; }
-
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "HDMFNoMaxLength")]
-        public string HDMFNo { get; set; }
-
-        public WorkPermit WorkPermit { get; set; } = new WorkPermit();
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNamePFileAdminMaxLength")]
-        public string FullNamePFileAdmin { get; set; }
-
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NicknamePFileAdminMaxLength")]
-        public string NicknamePFileAdmin { get; set; }
-
-        public Paymaster Paymaster { get; set; } = new Paymaster();
-
-        public EPA EPA { get; set; } = new EPA();
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordRequired")]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PDFPasswordMaxLength")]
-        public string PDFPassword { get; set; }
-
-        public bool IsBack { get; set; }
-
-        public IEnumerable<Company> Companies { get; set; } = new List<Company>();
-
-        public IEnumerable<ReferenceResourceModel> LocalCompanies { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> LocalJobTitles { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> EmploymentTypes { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> EmploymentStatuses { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<JobCategory> JobCategories { get; set; } = new List<JobCategory>();
-
-        public IEnumerable<Country> Countries { get; set; } = new List<Country>();
-
-        public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> WorkPermitType2s { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> GroupDateReasons { get; set; } = new List<ReferenceResourceModel>();
+        public IFormFile ProfilePicture { get; set; }
     }
 }

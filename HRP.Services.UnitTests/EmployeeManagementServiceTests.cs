@@ -127,7 +127,7 @@
                 Message = "Successful!"
             };
             var criteria = fixture.Create<UpdateEmployeeCriteria>();
-            var viewModel = FakeCreateEmployeeViewModel();
+            var viewModel = FakeUpdateEmployeeViewModel();
             var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
 
@@ -173,7 +173,7 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var viewModel = FakeCreateEmployeeViewModel();
+            var viewModel = FakeUpdateEmployeeViewModel();
             viewModel.ProfilePicture = FakePictureProfile();
             var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
@@ -244,7 +244,7 @@
         public void GetEmployeeById_WithValidEmployeeId_ReturnViewModel(int employeeId)
         {
             // Arrange
-            var expected = FakeCreateEmployeeViewModel();
+            var expected = FakeUpdateEmployeeViewModel();
             var employeeService = GetEmployeeManagementService();
             var reader = Substitute.For<IMultiResultReader>();
             reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel> { expected });
@@ -605,6 +605,11 @@
         private CreateEmploymentViewModel FakeCreateEmployeeViewModel()
         {
             return fixture.Create<CreateEmploymentViewModel>();
+        }
+
+        private CreateEmployeeViewModel FakeUpdateEmployeeViewModel()
+        {
+            return fixture.Create<CreateEmployeeViewModel>();
         }
 
         private IEnumerable<ReferenceResourceModel> FakeListReferenceResourceModel()

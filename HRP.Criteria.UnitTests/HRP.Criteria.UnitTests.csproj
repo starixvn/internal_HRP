@@ -95,6 +95,7 @@
     <Compile Include="Employee\GetDataToUpdateEmploymentCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmployeeCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmployeePayrollCriteriaTest.cs" />
+    <Compile Include="Employee\CreateEmployeeCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmploymentCriteriaTests.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />

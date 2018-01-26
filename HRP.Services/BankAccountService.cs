@@ -8,7 +8,7 @@
     using Interfaces;
     using Models.Bank;
 
-    public class BankAccountService : BaseService, IBankAccountService
+    public class BankAccountService : IBankAccountService
     {
         private readonly IBaseService baseService;
 

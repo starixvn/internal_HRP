@@ -30,9 +30,7 @@ namespace HRP.Repositories.Interfaces
                         JobCategories = jobCategories,
                         Countries = coutries,
                         WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
-                        WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
-                        CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons),
-                        GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons)
+                        WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2)
                     };
 
                     return model;
