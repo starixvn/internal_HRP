@@ -68,9 +68,10 @@ var listEmployee = {
             listEmployee.hideErrorMessage("#employment-status-validation", "#EmployeeStatus");
             var queryString = listEmployee.getQueryString();
             $.ajax({
-                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList?' + queryString,
+                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
                 type: 'GET',
                 dataType: 'html',
+                data: $('form.form-filter').serialize(),
                 success: function (response) {
                     $('#employee-list').html(response);
                     listEmployee.initDataTable();
@@ -333,7 +334,3 @@ $("#DisplayName").keyup(function () {
     }
 });
 
-$('form.form-filter').submit(function (e) {
-    e.preventDefault();
-    listEmployee.query();
-});
