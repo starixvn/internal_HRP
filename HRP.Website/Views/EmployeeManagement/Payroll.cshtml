@@ -414,12 +414,12 @@
         <div class="list-button">
             @if (Model.CanUpdate)
             {
-                <a asp-action="Index" class="button -second">@ViewLang.Cancel</a>
+                <a href="javascript:history.back()" class="button -second">@ViewLang.Cancel</a>
                 <button class="button -primary">@ViewLang.Save</button>
             }
             else
             {
-                <a asp-action="Index" class="button -second">@ViewLang.Back</a>
+                <a href="javascript:history.back()" class="button -second">@ViewLang.Back</a>
             }
 
         </div>
