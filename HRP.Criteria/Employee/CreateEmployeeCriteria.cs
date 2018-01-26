@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class CreateEmployeeCriteria : CommandBaseCriteria
+    public class CreateEmployeeCriteria : EmploymentBaseCriteria
     {
         public int EmployeeId { get; set; }
 
@@ -60,128 +60,6 @@
 
         public string ECPhoneNo2 { get; set; }
 
-        public int CompanyId { get; set; }
-
-        public int LocalCompanyId { get; set; }
-
-        public string JobTitle { get; set; }
-
-        public int LocalJobTitleId { get; set; }
-
-        public string CompanyCode { get; set; }
-
-        public string EmployeeCode { get; set; }
-
-        public int EmploymentType { get; set; }
-
-        public int EmploymentStatus { get; set; }
-
-        public int JobCategoryId { get; set; }
-
-        public int JobGradeId { get; set; }
-
-        public int GradeLevelId { get; set; }
-
-        public int DivisionId { get; set; }
-
-        public int DepartmentId { get; set; }
-
-        public int SectionId { get; set; }
-
-        public int CostCenterId { get; set; }
-
-        public DateTime GroupStartDate { get; set; }
-
-        public DateTime? GroupEndDate { get; set; }
-
-        public DateTime? CompanyStartDate { get; set; }
-
-        public DateTime? CompanyEndDate { get; set; }
-
-        public string Email { get; set; }
-
-        public int CountryId { get; set; }
-
-        public int CityId { get; set; }
-
-        public int OfficeId { get; set; }
-
-        public int WorkPermitCompanyId { get; set; }
-
-        public int Type1 { get; set; }
-
-        public DateTime StartDateType1 { get; set; }
-
-        public DateTime EndDateType1 { get; set; }
-
-        public int? Type2 { get; set; }
-
-        public DateTime? StartDateType2 { get; set; }
-
-        public DateTime? EndDateType2 { get; set; }
-
-        public int? DST { get; set; }
-
-        public int? DBT { get; set; }
-
-        public string TaxIDNo { get; set; }
-
-        public string SSSNo { get; set; }
-
-        public string HealthInsNo { get; set; }
-
-        public string HDMFNo { get; set; }
-
-        public string FullNamePFileAdmin { get; set; }
-
-        public string NicknamePFileAdmin { get; set; }
-
-        public string FullNameBVISalary { get; set; }
-
-        public string NicknameBVISalary { get; set; }
-
-        public string FullNameBVIAllowance { get; set; }
-
-        public string NicknameBVIAllowance { get; set; }
-
-        public string FullNameLocalSalary { get; set; }
-
-        public string NicknameLocalSalary { get; set; }
-
-        public string FullNameAdministrator { get; set; }
-
-        public string NicknameAdministrator { get; set; }
-
-        public string FullNameEvaluator1 { get; set; }
-
-        public string NicknameEvaluator1 { get; set; }
-
-        public string FullNameEvaluator2 { get; set; }
-
-        public string NicknameEvaluator2 { get; set; }
-
-        public string FullNameReviewer { get; set; }
-
-        public string NicknameReviewer { get; set; }
-
-        public string FullNameManagement { get; set; }
-
-        public string NicknameManagement { get; set; }
-
-        public string FullNameIncrement { get; set; }
-
-        public string NicknameIncrement { get; set; }
-
-        public string FullNameBVIBonus { get; set; }
-
-        public string NicknameBVIBonus { get; set; }
-
-        public string FullNameLocalBonus { get; set; }
-
-        public string NicknameLocalBonus { get; set; }
-
-        public string PDFPassword { get; set; }
-
         public int CreatedBy { get; set; }
 
         public override string GetSettingKey() => "Employee_CreateEmployee";
@@ -200,32 +78,7 @@
             && !string.IsNullOrWhiteSpace(OverseasPhoneNo)
             && !string.IsNullOrWhiteSpace(PermanentAddress)
             && !string.IsNullOrWhiteSpace(ResidenceAddress)
-            && CompanyId > 0
-            && LocalCompanyId > 0
-            && !string.IsNullOrWhiteSpace(JobTitle)
-            && LocalJobTitleId > 0
-            && !string.IsNullOrWhiteSpace(CompanyCode)
-            && !string.IsNullOrWhiteSpace(EmployeeCode)
-            && EmploymentType > 0
-            && EmploymentStatus > 0
-            && JobCategoryId > 0
-            && JobGradeId > 0
-            && GradeLevelId > 0
-            && DivisionId > 0
-            && DepartmentId > 0
-            && SectionId > 0
-            && CostCenterId > 0
-            && !string.IsNullOrWhiteSpace(Email)
-            && CountryId > 0
-            && CityId > 0
-            && OfficeId > 0
-            && WorkPermitCompanyId > 0
-            && Type1 > 0
-            && !string.IsNullOrWhiteSpace(FullNameBVISalary)
-            && !string.IsNullOrWhiteSpace(FullNameBVIAllowance)
-            && !string.IsNullOrWhiteSpace(FullNameAdministrator)
-            && !string.IsNullOrWhiteSpace(PDFPassword)
-            && !string.IsNullOrWhiteSpace(FullNamePFileAdmin)
+            && IsValidParams()
             && CreatedBy > 0;
 #pragma warning restore S1067 // Expressions should not be too complex
     }

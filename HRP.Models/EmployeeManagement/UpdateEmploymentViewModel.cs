@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc;
 
     public class UpdateEmploymentViewModel : EmploymentBaseViewModel
     {
@@ -74,6 +75,12 @@
         [EmploymentChangeValue(OldProperty = nameof(OldCompanyEndDate), NewProperty = nameof(CompanyEndDate),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "CompanyDateReasonRequired")]
         public int? CompanyDateReasonId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
+        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
+        public string EmployeeCode { get; set; }
 
         public string OldEmployeeCode { get; set; }
 
