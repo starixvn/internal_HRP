@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -43,14 +42,6 @@
             return PartialView("_SimpleItemTable", viewModel);
         }
 
-        ////[HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
-        ////public async Task<IActionResult> CheckCompanyBVIExists(SimpleItem item)
-        ////{
-        ////    var isExisted = (await baseService.GetDataAsync<int>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName })).Any();
-
-        ////    return Json(isExisted ? string.Format(Message.ItemNameExisted, item.ItemName) : "true");
-        ////}
-
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public IActionResult CreateCompanyBVI()
         {
@@ -90,7 +81,7 @@
 
             if (company != null)
             {
-                var viewModal = new UpdateSimpleItemViewModal
+                var viewModal = new UpdateSimpleItemViewModel
                 {
                     FieldName = ViewLang.CompanyBVI,
                     Item = company,
@@ -125,6 +116,17 @@
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
 
             return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllDivision()
+        {
+            var viewModel = await dataConfigurationService.GetAllDivisionAsync();
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDivision;
+            viewModel.LinkUpdateItem = DataConfigurationActionLink.UpdateDivision;
+            viewModel.FieldName = ViewLang.Division;
+
+            return PartialView("_DivisionTable", viewModel);
         }
 
         private static string UppercaseFirstLetter(string s)

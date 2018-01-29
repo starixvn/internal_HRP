@@ -19,5 +19,7 @@
         Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item);
 
         Task<CommandResult> UpdateCompanyBVIAsync(SimpleItem item);
+
+        Task<DivisionTableViewModel> GetAllDivisionAsync();
     }
 }

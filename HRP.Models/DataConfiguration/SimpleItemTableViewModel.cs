@@ -9,9 +9,9 @@
             Item = new SimpleItem();
         }
 
-        public string FieldName { get; set; }
-
         public IEnumerable<SimpleItem> Items { get; set; }
+
+        public string FieldName { get; set; }
 
         public string LinkCreateItem { get; set; }
 

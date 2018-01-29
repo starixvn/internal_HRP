@@ -10,6 +10,6 @@
 
         public override bool IsValid() => !string.IsNullOrEmpty(Code);
 
-        public override string GetSettingKey() => "DataConfiguration_CheckCompanyBVIExists";
+        public override string GetSettingKey() => "Company_CheckExists";
     }
 }

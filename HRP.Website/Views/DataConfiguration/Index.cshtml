@@ -1,5 +1,4 @@
 ﻿@using HRP.Core.Enumerations
-@using HRP.Core.Constants
 @using HRP.Models.DataConfiguration
 @using HRP.Resources
 
@@ -32,13 +31,13 @@
         <select class="control" id="fieldType">
             @foreach (var field in Model)
             {
-                <option value="@field.FieldId">@field.FieldName</option>
+                <option value="@field.FieldId" data-url-get-all="@field.LinkGetAllItem">@field.FieldName</option>
 
             }
             <option value="@((int)FieldType.CompanyBVI)">@ViewLang.CompanyBVI</option>
         </select>
 
-        <input type="hidden" id="fieldId" value="@Model.FirstOrDefault().FieldId"/>
+        <input type="hidden" id="selectedField" value="@Model.FirstOrDefault().FieldId" />
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
@@ -51,10 +50,10 @@
 <div id="tableWrapper">
 </div>
 
-@foreach (var field in Model)
-{
-    <input type="hidden" class="field-@(field.FieldId)" data-url-get-all="@field.LinkGetAllItem" />
-}
+@*@foreach (var field in Model)
+    {
+        <input type="hidden" class="field-@(field.FieldId)" data-url-get-all="@field.LinkGetAllItem" />
+    }*@
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalUpdateLabel" id="editItemModal">
     <div class="modal-dialog" role="document">
@@ -68,7 +67,7 @@
         </div>
     </div>
 </div>
-@*<input type="hidden" class="field-@((int)FieldType.CompanyBVI)" data-create-url="@DataConfigurationActionLink.CreateCompanyBVI" data-update-url="@DataConfigurationActionLink.UpdateCompanyBVI" data-url-get-all="@DataConfigurationActionLink.GetAllCompanyBVI" />*@
+
 <!-- Section Create New Item -->
 <div class="modal fade" id="newChildItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">

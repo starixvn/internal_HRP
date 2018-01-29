@@ -12,6 +12,6 @@
 
         public override bool IsValid() => !string.IsNullOrEmpty(Code);
 
-        public override string GetSettingKey() => "DataConfiguration_CreateCompanyBVI";
+        public override string GetSettingKey() => "Company_Create";
     }
 }

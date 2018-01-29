@@ -12,9 +12,14 @@
   </Function>
   <Function Name="Company">
     <Setting Key="Company_GetAll" SpName="Company_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_CheckExists" SpName="Company_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_Create" SpName="Company_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_GetById" SpName="Company_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_Update" SpName="Company_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Division">
     <Setting Key="Division_GetByCompanyId" SpName="Division_GetByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_GetAll" SpName="Division_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Department">
     <Setting Key="Department_GetByDivisionId" SpName="Department_GetByDivisionId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -97,9 +102,5 @@
     <Setting Key="Employee_UpdatePayroll" SpName="Employee_UpdatePayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="DataConfiguration">
-    <Setting Key="DataConfiguration_CheckCompanyBVIExists" SpName="DataConfiguration_CheckCompanyBVIExists" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="DataConfiguration_CreateCompanyBVI" SpName="DataConfiguration_CreateCompanyBVI" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="DataConfiguration_GetCompanyBVIById" SpName="DataConfiguration_GetCompanyBVIById" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="DataConfiguration_UpdateCompanyBVI" SpName="DataConfiguration_UpdateCompanyBVI" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

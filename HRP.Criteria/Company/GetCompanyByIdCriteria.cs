@@ -8,6 +8,6 @@
 
         public override bool IsValid() => CompanyId > 0;
 
-        public override string GetSettingKey() => "DataConfiguration_GetCompanyBVIById";
+        public override string GetSettingKey() => "Company_GetById";
     }
 }

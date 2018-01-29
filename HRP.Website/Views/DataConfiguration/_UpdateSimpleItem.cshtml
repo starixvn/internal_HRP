@@ -1,6 +1,6 @@
 ﻿@using HRP.Models.DataConfiguration
 @using HRP.Resources
-@model UpdateSimpleItemViewModal
+@model UpdateSimpleItemViewModel
 
 <form action="@Model.LinkUpdateItem" method="post" asp-antiforgery="true" id="editItemForm"
       data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onUpdateItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">

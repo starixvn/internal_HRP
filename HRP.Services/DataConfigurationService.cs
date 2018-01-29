@@ -4,16 +4,19 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Company;
+    using HRP.Criteria.Division;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
     using HRP.Services.Interfaces;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class DataConfigurationService : IDataConfigurationService
     {
@@ -53,6 +56,8 @@
 
             return fieldList.OrderBy(x => x.FieldName);
         }
+
+        #region CompanyBVI
 
         public async Task<IEnumerable<SimpleItem>> GetAllCompanyBVIAsync()
         {
@@ -141,6 +146,35 @@
             }
 
             return commandResult;
+        }
+
+        #endregion CompanyBVI
+
+        public async Task<DivisionTableViewModel> GetAllDivisionAsync()
+        {
+            var criteria = new GetAllDivisionCriteria();
+
+            if (criteria.IsValid())
+            {
+                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+                {
+                    using (var multi = db.QueryMultiple(criteria))
+                    {
+                        var divisions = await multi.ReadAsync<DivisionItem>().ConfigureAwait(false);
+                        var companies = await multi.ReadAsync<Company>().ConfigureAwait(false);
+
+                        var result = new DivisionTableViewModel
+                        {
+                            Divisions = divisions,
+                            CompanyList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
+                        };
+
+                        return result;
+                    }
+                }
+            }
+
+            return new DivisionTableViewModel();
         }
     }
 }

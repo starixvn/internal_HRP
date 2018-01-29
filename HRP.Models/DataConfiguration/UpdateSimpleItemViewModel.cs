@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.DataConfiguration
 {
-    public class UpdateSimpleItemViewModal
+    public class UpdateSimpleItemViewModel
     {
         public string FieldName { get; set; }
 

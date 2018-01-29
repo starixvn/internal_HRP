@@ -1,11 +1,9 @@
 ﻿var dataConfiguration = (function ($) {
-    var $filterFieldForm, $createItemForm;
+    var $filterFieldForm;
 
     function initModule() {
         $filterFieldForm = $('#filterFieldForm');
-        $createItemForm = $('#createItemForm');
         registerEventShowListItem();
-        registerEventSelectField();
     }
 
     function initDataTable() {
@@ -33,18 +31,14 @@
         });
     }
 
-    function registerEventSelectField() {
-        $('#fieldType').on('change', function () {
-            $('#fieldId').val($(this).val());
-        });
-    }
-
     function registerEventShowListItem() {
         $filterFieldForm.on('submit', function (e) {
             e.preventDefault();
-
-            var fieldId = $('#fieldId').val();
-            var getAllUrl = $('.field-' + fieldId).data('url-get-all');
+            var $fieldType = $('#fieldType');
+            var $selectedField = $('#selectedField');
+            var fieldId = $fieldType.val();
+            var getAllUrl = $fieldType.find(':selected').data('url-get-all');
+            $selectedField.val(fieldId);
 
             $.ajax({
                 type: 'GET',
@@ -95,12 +89,21 @@
         });
     }
 
+    function reloadListItem() {
+        var $fieldType = $('#fieldType');
+        var $selectedField = $('#selectedField');
+
+        $fieldType.val($selectedField.val());
+        $filterFieldForm.trigger('submit'); ////ref
+    }
+
     function onCreateNewItemSuccess(response) {
+        $createItemForm = $('#createItemForm');
         if (response.isSuccessful) {
             $("#newItem .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage(response.message);////ref
-            $filterFieldForm.trigger('submit'); ////ref
+            reloadListItem();
         } else {
             if (response.errors) {
                 $createItemForm.validate().showErrors(response.errors); //todo test here
@@ -117,7 +120,7 @@
             $("#editItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage(response.message);////ref
-            $filterFieldForm.trigger('submit'); ////ref
+            reloadListItem();
         } else {
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here
