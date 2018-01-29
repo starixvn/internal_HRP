@@ -1,16 +1,57 @@
 ﻿namespace HRP.Core.UnitTests.Services
 {
+    using System;
     using Fanex.MailDeliver.MailClient.API;
+    using Fanex.MailDeliver.Model;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
-    public class BaseMailServiceTests
+    public class BaseMailServiceTests : IDisposable
     {
         private BaseMailService baseMailService;
         private IMailDeliver mailDeliver;
+        [Fact]
+        public void GetEmailDeliver_ThrowNullReferenceException()
+        {
+            // Arrange
+            MailConfigs mailConfig = null;
+            var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
+            configuration.Value.Returns(mailConfig);
+
+            baseMailService = Substitute.ForPartsOf<BaseMailService>(configuration);
+
+            // Action
+            Action testDelegate = () => baseMailService.GetMailDeliver();
+
+            // Assert
+            Assert.Throws<NullReferenceException>(testDelegate);
+        }
+
+        [Fact]
+        public void SendEmail_MailRecordIsNull_ThrowNullReferenceException()
+        {
+            // Arrange
+            MailRecord mailRecord = null;
+            var mailConfig = new MailConfigs
+            {
+                AppId = 52,
+                MailAddress = "net.tcp://10.18.200.116:8787/MailService",
+                SenderName = "HRP"
+            };
+            var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
+            configuration.Value.Returns(mailConfig);
+
+            baseMailService = Substitute.ForPartsOf<BaseMailService>(configuration);
+
+            // Action
+            Action testDelegate = () => baseMailService.SendMail(mailRecord);
+
+            // Assert
+            Assert.Throws<NullReferenceException>(testDelegate);
+        }
 
         [Fact]
         public void SendEmail_EmailIsNull_ReturnFalse()
@@ -114,6 +155,20 @@
             };
 
             return model;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (baseMailService != null)
+            {
+                baseMailService.Dispose();
+            }
         }
     }
 }
