@@ -16,12 +16,12 @@
             this.configuration = configuration;
         }
 
-        protected virtual void SendMail(MailRecord mailRecord)
+        public virtual void SendMail(MailRecord mailRecord)
         {
             mailDeliver.SendMail(mailRecord);
         }
 
-        protected virtual MailDeliver GetMailDeliver()
+        public virtual MailDeliver GetMailDeliver()
         {
             mailDeliver = new MailDeliver(configuration.Value.AppId, configuration.Value.MailAddress);
             return mailDeliver;
