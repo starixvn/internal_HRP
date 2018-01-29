@@ -43,13 +43,13 @@
             return PartialView("_SimpleItemTable", viewModel);
         }
 
-        //[HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
-        //public async Task<IActionResult> CheckCompanyBVIExists(SimpleItem item)
-        //{
-        //    var isExisted = (await baseService.GetDataAsync<int>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName })).Any();
+        ////[HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        ////public async Task<IActionResult> CheckCompanyBVIExists(SimpleItem item)
+        ////{
+        ////    var isExisted = (await baseService.GetDataAsync<int>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName })).Any();
 
-        //    return Json(isExisted ? string.Format(Message.ItemNameExisted, item.ItemName) : "true");
-        //}
+        ////    return Json(isExisted ? string.Format(Message.ItemNameExisted, item.ItemName) : "true");
+        ////}
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public IActionResult CreateCompanyBVI()
