@@ -1,6 +1,5 @@
 ﻿namespace HRP.Criteria.UnitTests.Employee
 {
-    using AutoFixture;
     using HRP.Criteria.Employee;
     using Xunit;
 
@@ -24,8 +23,21 @@
         public void IsValid_WithValidParams_ReturnTrue()
         {
             // Arrange
-            var fixture = new Fixture();
-            var criteria = fixture.Create<UpdateEmployeeCriteria>();
+            var criteria = new UpdateEmployeeCriteria
+            {
+                EmployeeId = 1,
+                Gender = 1,
+                Nationality = 1,
+                MaritalStatus = 1,
+                NoOfChildren = 1,
+                FullName = "tim",
+                Nickname = "tim.trinh",
+                OverseasPhoneNo = "0123",
+                NRICNo = "0123",
+                PassportNo = "0123",
+                PermanentAddress = "test",
+                ResidenceAddress = "test"
+            };
 
             // Act
             var actual = criteria.IsValid();

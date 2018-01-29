@@ -35,7 +35,10 @@
 
         protected virtual void Dispose(bool disposing)
         {
-            mailDeliver.Dispose();
+            if (mailDeliver != null)
+            {
+                mailDeliver.Dispose();
+            }
         }
     }
 }

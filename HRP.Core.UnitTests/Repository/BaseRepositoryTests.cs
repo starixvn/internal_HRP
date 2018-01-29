@@ -12,44 +12,33 @@
 
     public class BaseRepositoryTests
     {
-        private readonly BaseRepositoryTestable baseRepository;
         private readonly IObjectDb objectDb;
         private const string ExceptionMessage = "Object reference not set to an instance of an object.";
 
         public BaseRepositoryTests()
         {
-            objectDb = Substitute.For<IObjectDb>();
+            DbSettingProviderManager
+            .StartTestingSession()
+            .Run();
 
-            baseRepository = Substitute.ForPartsOf<BaseRepositoryTestable>();
-            baseRepository.When(r => r.Public_GetObjectDb(Arg.Any<string>())).DoNotCallBase();
-            baseRepository.Public_GetObjectDb(Arg.Any<string>()).Returns(objectDb);
+            objectDb = Substitute.For<IObjectDb>();
+            ObjectDbFactory.Mock((key, time) => objectDb);
         }
+
+        #region ExecuteNonQuery
 
         [Fact]
         public void ExecuteNonQuery_CriteriaIsNull_ThrowNullReferenceException()
         {
             // Arrange
             ICriteria criteria = null;
+            var repository = new BaseRepository();
 
             // Action
-            Action testDelegate = () => baseRepository.Public_ExecuteNonQuery(criteria);
+            Action testDelegate = () => repository.ExecuteNonQuery(criteria);
 
             // Assert
             Assert.Throws<NullReferenceException>(testDelegate);
-        }
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaNotNull_CallGetObjectDb()
-        {
-            // Arrange
-            var criteria = FakeCriteria();
-            var expected = criteria.GetSettingKey();
-
-            // Action
-            baseRepository.Public_ExecuteNonQuery(criteria);
-
-            // Assert
-            baseRepository.Received().Public_GetObjectDb(expected);
         }
 
         [Fact]
@@ -57,9 +46,10 @@
         {
             // Arrange
             var criteria = FakeCriteria();
+            var repository = new BaseRepository();
 
             // Action
-            baseRepository.Public_ExecuteNonQuery(criteria);
+            repository.ExecuteNonQuery(criteria);
 
             // Assert
             objectDb.Received().ExecuteNonQuery(criteria);
@@ -69,57 +59,38 @@
         public void ExecuteNonQuery_OutputParams_ReturnAsResult()
         {
             // Arrange
+            var repository = new BaseRepository();
             var criteria = FakeCriteria();
             var outputParams = FakeOutputParamsSuccess();
             var expected = GetSuccessResult();
             objectDb.GetOuputParams().Returns(outputParams);
 
             // Action
-            var result = baseRepository.Public_ExecuteNonQuery(criteria);
+            var result = repository.ExecuteNonQuery(criteria);
 
             // Assert
             Assert.Equal(expected.Code, result.Code);
             Assert.Equal(expected.Message, result.Message);
         }
 
-        [Fact]
-        public void ExecuteNonQuery_AfterUseObjectDb_Dispose()
-        {
-            // Arrange
-            var criteria = FakeCriteria();
+        #endregion ExecuteNonQuery
 
-            // Action
-            baseRepository.Public_ExecuteNonQuery(criteria);
-
-            // Assert
-            objectDb.Received().Dispose();
-        }
+        #region ExecuteNonQueryAsync
 
         [Fact]
         public async Task ExecuteNonQueryAsync_CriteriaIsNull_ThrowNullReferenceException()
         {
             // Arrange
             ICriteria criteria = null;
+            var repository = new BaseRepository();
 
-            var task = Task.Run(() => baseRepository.Public_ExecuteNonQueryAsync(criteria));
+            // Act
+            var task = Task.Run(() => repository.ExecuteNonQueryAsync(criteria));
             var exception = await Record.ExceptionAsync(async () => await task);
 
+            // Assert
             Assert.Equal(exception.HResult, -2147467261);
             Assert.Equal(exception.Message, ExceptionMessage);
-        }
-
-        [Fact]
-        public async Task ExecuteNonQueryAsync_CriteriaNotNull_CallGetObjectDb()
-        {
-            // Arrange
-            var criteria = FakeCriteria();
-            var expected = criteria.GetSettingKey();
-
-            // Action
-            await baseRepository.Public_ExecuteNonQueryAsync(criteria);
-
-            // Assert
-            baseRepository.Received().Public_GetObjectDb(expected);
         }
 
         [Fact]
@@ -127,9 +98,10 @@
         {
             // Arrange
             var criteria = FakeCriteria();
+            var repository = new BaseRepository();
 
             // Action
-            await baseRepository.Public_ExecuteNonQueryAsync(criteria);
+            await repository.ExecuteNonQueryAsync(criteria);
 
             // Assert
             await objectDb.Received().ExecuteNonQueryAsync(criteria);
@@ -139,31 +111,23 @@
         public async Task ExecuteNonQueryAsync_OutputParams_ReturnAsResult()
         {
             // Arrange
+            var repository = new BaseRepository();
             var criteria = FakeCriteria();
             var outputParams = FakeOutputParamsSuccess();
             var expected = GetSuccessResult();
             objectDb.GetOuputParams().Returns(outputParams);
 
             // Action
-            var result = await baseRepository.Public_ExecuteNonQueryAsync(criteria);
+            var result = await repository.ExecuteNonQueryAsync(criteria);
 
             // Assert
             Assert.Equal(expected.Code, result.Code);
             Assert.Equal(expected.Message, result.Message);
         }
 
-        [Fact]
-        public async Task ExecuteNonQueryAsync_AfterUseObjectDb_Dispose()
-        {
-            // Arrange
-            var criteria = FakeCriteria();
+        #endregion ExecuteNonQueryAsync
 
-            // Action
-            await baseRepository.Public_ExecuteNonQueryAsync(criteria);
-
-            // Assert
-            objectDb.Received().Dispose();
-        }
+        #region Helpers
 
         private static ICriteria FakeCriteria()
         {
@@ -193,5 +157,7 @@
                 Message = string.Empty
             };
         }
+
+        #endregion Helpers
     }
 }

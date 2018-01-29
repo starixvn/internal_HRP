@@ -380,7 +380,6 @@
     <Compile Include="Criteria\ReCheckInUserCriteriaTests.cs" />
     <Compile Include="Middlewares\ErrorHandlingMiddlewareTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\BaseRepositoryTestable.cs" />
     <Compile Include="Repository\BaseRepositoryTests.cs" />
     <Compile Include="Services\BaseMailServiceTests.cs" />
     <Compile Include="Services\BaseServiceTests.cs" />

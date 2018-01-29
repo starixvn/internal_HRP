@@ -11,7 +11,7 @@ namespace HRP.Core.Repositories
     {
         public CommandResult ExecuteNonQuery(ICriteria criteria)
         {
-            using (var db = GetObjectDb(criteria.GetSettingKey()))
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(criteria);
                 CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
@@ -22,18 +22,13 @@ namespace HRP.Core.Repositories
 
         public async Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria)
         {
-            using (var db = GetObjectDb(criteria.GetSettingKey()))
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 await db.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
                 CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
 
                 return commandResult;
             }
-        }
-
-        protected virtual IObjectDb GetObjectDb(string key)
-        {
-            return new ObjectDb(key);
         }
 
         private CommandResult GetCommandResult(Hashtable hash)
