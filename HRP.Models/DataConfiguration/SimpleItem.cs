@@ -16,6 +16,6 @@
 
         public bool IsActive { get; set; }
 
-        public static string FieldName { get; set; }
+        public string FieldName { get; set; }
     }
 }

@@ -1,11 +1,6 @@
 ﻿var dataConfiguration = (function ($) {
     var $filterFieldForm;
 
-    function initModule() {
-        $filterFieldForm = $('#filterFieldForm');
-        registerEventShowListItem();
-    }
-
     function initDataTable() {
         $('#tableItems').dataTable({
             'ordering': false,
@@ -68,6 +63,25 @@
         }
     }
 
+    function registerEventClickCreateNewItem() {
+        $('.js-createNewItem').on('click', function () {
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + $(this).data('url-create'),
+                dataType: 'html',
+                success: function (data) {
+                    // ref
+                    $('#createItemModalContent').html(data);
+
+                    initValidationForm('#createItemForm');
+
+                    $('#newItemModal').modal('show');
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
     function registerEventClickIconEditItem() {
         $('.js-iconEditItem').on('click', function () {
             var itemId = $(this).data('item-id');
@@ -98,9 +112,9 @@
     }
 
     function onCreateNewItemSuccess(response) {
-        $createItemForm = $('#createItemForm');
+        var  $createItemForm = $('#createItemForm');
         if (response.isSuccessful) {
-            $("#newItem .close").trigger('click'); ////ref
+            $("#newItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage(response.message);////ref
             reloadListItem();
@@ -135,8 +149,14 @@
         $('#tableWrapper').html(response);
         initDataTable();
         registerEventQuickSearch();
-        initValidationForm('#createItemForm');
+        //initValidationForm('#createItemForm');
+        registerEventClickCreateNewItem();
         registerEventClickIconEditItem();
+    }
+
+    function initModule() {
+        $filterFieldForm = $('#filterFieldForm');
+        registerEventShowListItem();
     }
 
     return {

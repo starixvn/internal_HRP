@@ -50,10 +50,14 @@
 <div id="tableWrapper">
 </div>
 
-@*@foreach (var field in Model)
-    {
-        <input type="hidden" class="field-@(field.FieldId)" data-url-get-all="@field.LinkGetAllItem" />
-    }*@
+<!-- Create New Item -->
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="newItemModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title" id="createItemModalContent">
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalUpdateLabel" id="editItemModal">
     <div class="modal-dialog" role="document">

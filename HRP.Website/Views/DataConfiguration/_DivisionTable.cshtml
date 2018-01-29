@@ -5,7 +5,7 @@
     var rowNumber = 1;
 }
 
-@Html.Partial("_TopHeaderTable")
+@Html.Partial("_TopHeaderTable", Model.LinkCreateItem)
 <table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
@@ -40,61 +40,3 @@
         }
     </tbody>
 </table>
-
-<!-- Create New Item -->
-
-<div class="modal fade" id="newItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content -has-title">
-            <div class="modal-header">
-                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
-            </div>
-            <div class="modal-body form-information">
-                <form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true"
-                      data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onCreateNewItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-                    <input asp-for="NewDivision.DivisionId" type="hidden" />
-                    <div class="list-message-error hidden">
-                        <span class="message" asp-validation-for="NewDivision.CompanyId"></span>
-                        <span class="message" asp-validation-for="NewDivision.Code"></span>
-                        <span class="message" asp-validation-for="NewDivision.Name"></span>
-                    </div>
-                    <div class="-has-icon msg-error hidden" id="create-item-error-alert">
-                    </div>
-
-                    <label class="text -has-required">@ViewLang.CompanyBVI</label>
-                    <div class="group-control">
-                        <select class="control js-select2-hide-searchbox" asp-for="NewDivision.CompanyId" asp-items="@Model.CompanyList"
-                                data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.CompanyBVI)">
-                            <option value=""></option>
-                        </select>
-                    </div>
-
-                    <label class="text -has-required">@Model.FieldName</label>
-                    <div class="group-control">
-
-                        <input class="control js-itemName" type="text" asp-for="NewDivision.Code"
-                               data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
-                               data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />
-                    </div>
-
-                    <label class="text">@ViewLang.Description</label>
-                    <div class="group-control">
-                        <input class="control" type="text" asp-for="NewDivision.Name" />
-                    </div>
-
-                    <div class="group-control">
-                        <label>
-                            <input type="checkbox" asp-for="NewDivision.IsActive" />
-                            <span>@ViewLang.Active</span>
-                        </label>
-                    </div>
-                    <div class="list-button">
-                        <button class="button -primary" type="submit">@ViewLang.Save</button>
-                        <button class="button -second" type="button" data-dismiss="modal">@ViewLang.Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>

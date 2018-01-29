@@ -5,6 +5,7 @@
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -33,8 +34,8 @@
             var companies = await dataConfigurationService.GetAllCompanyBVIAsync();
             var viewModel = new SimpleItemTableViewModel
             {
-                FieldName = ViewLang.CompanyBVI,
                 Items = companies,
+                FieldName = ViewLang.CompanyBVI,
                 LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI,
                 LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
             };
@@ -45,9 +46,13 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public IActionResult CreateCompanyBVI()
         {
-            var model = new SimpleItem();
+            var viewModel = new CreateSimpleItemViewModel
+            {
+                FieldName = ViewLang.CompanyBVI,
+                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI
+            };
 
-            return View(model);
+            return PartialView("_CreateSimpleItem", viewModel);
         }
 
         [HttpPost]
@@ -121,12 +126,33 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllDivision()
         {
-            var viewModel = await dataConfigurationService.GetAllDivisionAsync();
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDivision;
-            viewModel.LinkUpdateItem = DataConfigurationActionLink.UpdateDivision;
-            viewModel.FieldName = ViewLang.Division;
+            var divisions = await dataConfigurationService.GetAllDivisionAsync();
+            var viewModel = new DivisionTableViewModel
+            {
+                Divisions = divisions,
+                FieldName = ViewLang.Division,
+                LinkCreateItem = DataConfigurationActionLink.CreateDivision,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
+            };
 
             return PartialView("_DivisionTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateDivision()
+        {
+            var viewModel = await dataConfigurationService.GetDataForCreateDivisionAsync();
+            viewModel.FieldName = ViewLang.Division;
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDivision;
+
+            return PartialView("_CreateDivision", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateDivision(Division division)
+        {
+            return View();
         }
 
         private static string UppercaseFirstLetter(string s)

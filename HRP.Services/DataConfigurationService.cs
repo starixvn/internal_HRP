@@ -150,31 +150,22 @@
 
         #endregion CompanyBVI
 
-        public async Task<DivisionTableViewModel> GetAllDivisionAsync()
+        public async Task<IEnumerable<DivisionRow>> GetAllDivisionAsync()
         {
-            var criteria = new GetAllDivisionCriteria();
+            var divisions = await baseService.GetDataAsync<DivisionRow>(new GetAllDivisionCriteria()).ConfigureAwait(false);
 
-            if (criteria.IsValid())
+            return divisions;
+        }
+
+        public async Task<CreateDivisionViewModel> GetDataForCreateDivisionAsync()
+        {
+            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
+            var viewModel = new CreateDivisionViewModel
             {
-                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-                {
-                    using (var multi = db.QueryMultiple(criteria))
-                    {
-                        var divisions = await multi.ReadAsync<DivisionItem>().ConfigureAwait(false);
-                        var companies = await multi.ReadAsync<Company>().ConfigureAwait(false);
+                CompanyList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
+            };
 
-                        var result = new DivisionTableViewModel
-                        {
-                            Divisions = divisions,
-                            CompanyList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
-                        };
-
-                        return result;
-                    }
-                }
-            }
-
-            return new DivisionTableViewModel();
+            return viewModel;
         }
     }
 }

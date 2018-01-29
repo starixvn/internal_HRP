@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.DataConfiguration
 {
-    public class DivisionItem : Division
+    public class DivisionRow : Division
     {
         public string CompanyName { get; set; }
     }
