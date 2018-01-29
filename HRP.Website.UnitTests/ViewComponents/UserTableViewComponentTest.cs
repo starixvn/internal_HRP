@@ -1,7 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.ViewComponents
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -15,66 +14,70 @@
 
     public class UserTableViewComponentTest
     {
-        private readonly IList<UserModel> users = new List<UserModel>
+        private ISessionService sessionService;
+        private IBaseService baseService;
+
+        [Fact]
+        public async Task InvokeAsync_CheckViewName_ReturnAsExpected()
         {
-            new UserModel { UserId = 1, IsActive = true },
-            new UserModel { UserId = 2, IsActive = false },
-            new UserModel { UserId = 3, IsActive = true }
-        };
+            // Arrange
+            var expected = "UserTable";
+            var viewComponent = GetUserTableViewComponent();
 
-        private readonly ISessionService sessionService = Substitute.For<ISessionService>();
-        private readonly IBaseService baseService = Substitute.For<IBaseService>();
+            // Act
+            var actual = await viewComponent.InvokeAsync(null);
 
-        private UserTableViewComponent GetMenuViewComponent()
-        {
-            var viewComponent = new UserTableViewComponent(sessionService, baseService);
-
-            return viewComponent;
+            // Assert
+            var viewResult = Assert.IsType<ViewViewComponentResult>(actual);
+            Assert.Equal(expected, viewResult.ViewName);
         }
 
         [Fact]
-        public async Task InvokeAsync_AllStatuses_ReturnAllUsers()
+        public async Task InvokeAsync_CheckViewBag_ReturnAsExpected()
         {
-            var viewComponent = GetMenuViewComponent();
+            // Arrange
+            var canEdit = true;
+            var viewComponent = GetUserTableViewComponent();
+            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(canEdit);
+
+            // Act
+            var actual = await viewComponent.InvokeAsync(null);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewViewComponentResult>(actual);
+            Assert.Equal(canEdit, viewResult.ViewData["CanEdit"]);
+        }
+
+        [Fact]
+        public async Task InvokeAsync_WhenCalled_ReturnAsExpectedUsers()
+        {
+            // Arrange
+            var users = new List<UserModel>
+            {
+                new UserModel { UserId = 1, Username = "tim.trinh", FullName = "thang", Email = "tim.trinh@gmail.com", IsActive = true },
+                new UserModel { UserId = 2, Username = "hunter.tran", FullName = "tuan", Email = "hunter.tran@gmail.com", IsActive = false },
+                new UserModel { UserId = 3, Username = "raymond.le", FullName = "quang", Email = "raymond.le@gmail.com", IsActive = true }
+            };
+            var viewComponent = GetUserTableViewComponent();
             baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users);
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
+            // Act
             var actual = await viewComponent.InvokeAsync(null);
 
+            // Assert
             var viewResult = Assert.IsType<ViewViewComponentResult>(actual);
             var viewModel = Assert.IsAssignableFrom<IEnumerable<UserModel>>(viewResult.ViewData.Model);
-
-            Assert.Equal(users.Count, viewModel.Count());
+            Assert.Equal(users, viewModel);
         }
 
-        [Fact]
-        public async Task InvokeAsync_ActiveStatus_ReturnActiveUsers()
+        private UserTableViewComponent GetUserTableViewComponent()
         {
-            var viewComponent = GetMenuViewComponent();
-            baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users.Where(x => x.IsActive));
-            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
+            sessionService = Substitute.For<ISessionService>();
+            baseService = Substitute.For<IBaseService>();
+            var viewComponent = new UserTableViewComponent(sessionService, baseService);
 
-            var actual = await viewComponent.InvokeAsync(null);
-
-            var viewResult = Assert.IsType<ViewViewComponentResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<IEnumerable<UserModel>>(viewResult.ViewData.Model);
-
-            Assert.True(viewModel.All(x => x.IsActive));
-        }
-
-        [Fact]
-        public async Task InvokeAsync_InactiveStatus_ReturnInactiveUsers()
-        {
-            var viewComponent = GetMenuViewComponent();
-            baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users.Where(x => !x.IsActive));
-            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
-
-            var actual = await viewComponent.InvokeAsync(null);
-
-            var viewResult = Assert.IsType<ViewViewComponentResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<IEnumerable<UserModel>>(viewResult.ViewData.Model);
-
-            Assert.True(viewModel.All(x => !x.IsActive));
+            return viewComponent;
         }
     }
 }

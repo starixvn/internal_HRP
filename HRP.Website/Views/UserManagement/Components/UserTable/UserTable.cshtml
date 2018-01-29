@@ -5,7 +5,7 @@
 
 @{
     var rowNumber = 1;
-    var canEdit = (bool)ViewBag.CanEdit;
+    var canEdit = (bool)ViewData["CanEdit"];
     var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
 }
 

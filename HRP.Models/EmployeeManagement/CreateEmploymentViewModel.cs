@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ServiceModel.Channels;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     [Serializable]
     public class CreateEmploymentViewModel : EmploymentBaseViewModel
@@ -20,8 +19,6 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GenderRequired")]
         public int Gender { get; set; }
 
-        public SelectList GenderList { get; set; }
-
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateOfBirthRequired")]
         public DateTime DateOfBirth { get; set; }
 
@@ -31,8 +28,6 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NationalityRequired")]
         public int Nationality { get; set; }
 
-        public SelectList NationalityList { get; set; }
-
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoRequired")]
         [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoMaxLength")]
         public string NRICNo { get; set; }
@@ -40,12 +35,8 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MaritalStatusRequired")]
         public int MaritalStatus { get; set; }
 
-        public SelectList MaritalStatusList { get; set; }
-
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NoOfChildrenRequired")]
         public int NoOfChildren { get; set; }
-
-        public SelectList NoOfChildrenList { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoRequired")]
         [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoMaxLength")]

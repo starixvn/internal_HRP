@@ -23,7 +23,7 @@
         {
             var criteria = new GetUsersCriteria { IsActive = status };
             var users = await baseService.GetDataAsync<UserModel>(criteria);
-            ViewBag.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
+            ViewData["CanEdit"] = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host);
 
             return View("UserTable", users);
         }

@@ -4,9 +4,9 @@
     using System.Threading.Tasks;
     using Core.Model;
     using Core.Services;
+    using HRP.Website.ViewComponents;
     using Microsoft.AspNetCore.Mvc.ViewComponents;
     using NSubstitute;
-    using Views.Shared.Components.Menu;
     using Xunit;
 
     public class MenuViewComponentTests
