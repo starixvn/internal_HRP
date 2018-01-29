@@ -1,6 +1,7 @@
 ﻿namespace HRP.Core.UnitTests.Services
 {
     using System;
+    using System.IO;
     using Fanex.MailDeliver.MailClient.API;
     using Fanex.MailDeliver.Model;
     using HRP.Core.Model;
@@ -13,6 +14,7 @@
     {
         private BaseMailService baseMailService;
         private IMailDeliver mailDeliver;
+
         [Fact]
         public void GetEmailDeliver_ThrowNullReferenceException()
         {
@@ -93,7 +95,7 @@
 
             // Action
             var expected = baseMailService.SendEmail(model);
-
+            
             // Assert
             Assert.True(expected);
         }
@@ -126,6 +128,32 @@
             mailDeliver.Received().SendMail(expected);
         }
 
+        [Fact]
+        public void ReadTextFile_InvalidPathFile_ThrowArgumentException()
+        {
+            // Arrange
+            FakeBaseMailService();
+
+            // Action
+            Action testDelegate = () => baseMailService.ReadTextFile(string.Empty);
+
+            // Assert
+            Assert.Throws<ArgumentException>(testDelegate);
+        }
+
+        [Fact]
+        public void ReadTextFile_InvalidPathFile_ThrowFileNotFoundException()
+        {
+            // Arrange
+            FakeBaseMailService();
+
+            // Action
+            Action testDelegate = () => baseMailService.ReadTextFile("aaa.txt");
+
+            // Assert
+            Assert.Throws<FileNotFoundException>(testDelegate);
+        }
+        
         private void FakeBaseMailService()
         {
             var mailConfig = new MailConfigs
