@@ -17,6 +17,7 @@
         private readonly IEmployeeManagementService employeeManagementService;
         private readonly IBankAccountService bankAccountService;
         private readonly IRefResourceService refResourceService;
+        private readonly ISessionService sessionService;
 
         private readonly string[] refNames =
         {
@@ -29,12 +30,14 @@
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
             IBankAccountService bankAccountService,
-            IRefResourceService refResourceService)
+            IRefResourceService refResourceService,
+            ISessionService sessionService)
         {
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;
             this.bankAccountService = bankAccountService;
             this.refResourceService = refResourceService;
+            this.sessionService = sessionService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
@@ -44,12 +47,23 @@
         {
             var employee = employeeManagementService.GetPersonalDetails(viewModel.EmployeeId);
 
+            var updateEmploymentViewModel = employeeManagementService.GetDataToUpdateEmployment(viewModel.EmployeeId);
+
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
             var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
+
+            viewModel.CanCreate = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
+                                  && sessionService.HasPermissionOnCompany(
+                                      updateEmploymentViewModel.CompanyId,
+                                      FunctionKey.EmployeeBankDetails,
+                                      Policy.Host);
+
+            // TODO: maybe cancreate and canedit is different
+            viewModel.CanEdit = viewModel.CanCreate;
 
             var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 

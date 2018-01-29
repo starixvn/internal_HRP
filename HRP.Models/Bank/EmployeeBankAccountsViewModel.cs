@@ -85,5 +85,9 @@
             
             ////BankTypes = bankTypes.ToList();
         }
+
+        public bool CanCreate { get; set; }
+
+        public bool CanEdit { get; set; }
     }
 }

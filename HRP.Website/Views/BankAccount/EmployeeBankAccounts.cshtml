@@ -47,13 +47,16 @@
 
 <div class="top-header">
     <div class="pull-left">
-        <a class="button -add create-user"
-           asp-action="CreateBankAccount"
-           asp-controller="BankAccount"
-           asp-route-employeeId="@Model.EmployeeId">
-            <span class="icon-add"></span>
-            Create New Bank Account
-        </a>
+        @if (Model.CanCreate)
+        {
+            <a class="button -add create-user"
+               asp-action="CreateBankAccount"
+               asp-controller="BankAccount"
+               asp-route-employeeId="@Model.EmployeeId">
+                <span class="icon-add"></span>
+                Create New Bank Account
+            </a>
+        }
     </div>
 
     <div class="pull-right search-box">
@@ -75,7 +78,10 @@
             <th>Type of Account</th>
             <th>SWIFT Code</th>
             <th>Active</th>
-            <th>Edit</th>
+            @if (Model.CanEdit)
+            {
+                <th>Edit</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -101,12 +107,15 @@
                         <span class="icon-active"></span>
                     }
                 </td>
-                <td class="text-center has-icon">
-                    <a class="icon-edit"
-                       asp-action="EditBankAccount"
-                       asp-controller="BankAccount"
-                       asp-route-bankAccountId="@Model.BankAccounts[index].Id"></a>
-                </td>
+                @if (Model.CanEdit)
+                {
+                    <td class="text-center has-icon">
+                        <a class="icon-edit"
+                           asp-action="EditBankAccount"
+                           asp-controller="BankAccount"
+                           asp-route-bankAccountId="@Model.BankAccounts[index].Id"></a>
+                    </td>
+                }
             </tr>
         }
     </tbody>
