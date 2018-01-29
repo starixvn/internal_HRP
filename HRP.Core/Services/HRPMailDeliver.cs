@@ -1,11 +1,12 @@
 ﻿namespace HRP.Core.Services
 {
+    using System;
     using Fanex.MailDeliver.MailClient.API;
     using Fanex.MailDeliver.Model;
     using HRP.Core.Model;
     using Microsoft.Extensions.Options;
 
-    public class HRPMailDeliver
+    public class HRPMailDeliver : IDisposable
     {
         protected IOptionsSnapshot<MailConfigs> configuration;
         private MailDeliver mailDeliver;
@@ -24,6 +25,17 @@
         {
             mailDeliver = new MailDeliver(configuration.Value.AppId, configuration.Value.MailAddress);
             return mailDeliver;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            mailDeliver.Dispose();
         }
     }
 }
