@@ -42,7 +42,7 @@
         [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            var employee = employeeManagementService.GetEmployeeById(viewModel.EmployeeId);
+            var employee = employeeManagementService.GetPersonalDetails(viewModel.EmployeeId);
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
@@ -71,7 +71,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(int employeeId)
         {
-            var employee = employeeManagementService.GetEmployeeById(employeeId);
+            var employee = employeeManagementService.GetPersonalDetails(employeeId);
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
@@ -109,7 +109,7 @@
         {
             var bankAccount = bankAccountService.GetBankAccountById(bankAccountId);
 
-            var employee = employeeManagementService.GetEmployeeById(bankAccount.EmployeeId);
+            var employee = employeeManagementService.GetPersonalDetails(bankAccount.EmployeeId);
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 

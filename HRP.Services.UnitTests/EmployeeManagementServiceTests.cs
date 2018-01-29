@@ -1,11 +1,10 @@
 ﻿namespace HRP.Services.UnitTests
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using AutoFixture;
     using Fanex.Data;
-    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -17,14 +16,12 @@
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
 
     public class EmployeeManagementServiceTests
     {
         private readonly IObjectDb mockObjectDb;
-        private readonly Fixture fixture;
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
@@ -38,62 +35,29 @@
 
             mockObjectDb = Substitute.For<IObjectDb>();
             ObjectDbFactory.Mock((key, time) => mockObjectDb);
-
-            fixture = InitFixture();
         }
 
         #region CreateEmployeeAsync
 
         [Fact]
-        public async Task CreateEmployeeAsync_WithValidCreateEmployeeViewModel_ReturnCommandResult()
+        public async Task CreateEmployeeAsync_ProfilePictureIsNull_ReturnAsExpectedCommandResult()
         {
             // Arrange
-            var expected = new CommandResult
-            {
-                Code = 0,
-                Message = "Successful!"
-            };
-            var criteria = new CreateEmployeeCriteria();
-
-            var viewModel = FakeCreateEmployeeViewModel();
+            var expected = new CommandResult();
+            var viewModel = new CreateEmploymentViewModel();
             var employeeService = GetEmployeeManagementService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateEmployeeCriteria>(x => criteria = x)).Returns(expected);
+            cryptoService.Encrypt(Arg.Any<string>()).Returns("aa");
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
             // Act
             var actual = await employeeService.CreateEmployeeAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(criteria.FullName, viewModel.FullName);
-            Assert.Equal(criteria.Nickname, viewModel.Nickname);
-            Assert.Equal(criteria.Gender, viewModel.Gender);
-            Assert.Equal(criteria.DateOfBirth, viewModel.DateOfBirth);
-            Assert.Equal(criteria.PlaceOfBirth, viewModel.PlaceOfBirth);
-            Assert.Equal(criteria.Nationality, viewModel.Nationality);
-            Assert.Equal(criteria.NRICNo, viewModel.NRICNo);
-            Assert.Equal(criteria.MaritalStatus, viewModel.MaritalStatus);
-            Assert.Equal(criteria.NoOfChildren, viewModel.NoOfChildren);
-            Assert.Equal(criteria.OverseasPhoneNo, viewModel.OverseasPhoneNo);
-            Assert.Equal(criteria.LocalPhoneNo, viewModel.LocalPhoneNo);
-            Assert.Equal(criteria.OtherPhoneNo, viewModel.OtherPhoneNo);
-            Assert.Equal(criteria.PassportNo, viewModel.PassportNo);
-            Assert.Equal(criteria.DateIssue, viewModel.DateIssue);
-            Assert.Equal(criteria.ExpiredDate, viewModel.ExpiredDate);
-            Assert.Equal(criteria.PlaceOfIssue, viewModel.PlaceOfIssue);
-            Assert.Equal(criteria.Skype, viewModel.Skype);
-            Assert.Equal(criteria.PersonalEmail, viewModel.PersonalEmail);
-            Assert.Equal(criteria.PermanentAddress, viewModel.PermanentAddress);
-            Assert.Equal(criteria.ResidenceAddress, viewModel.ResidenceAddress);
-            Assert.Equal(criteria.MailingAddress, viewModel.MailingAddress);
-            Assert.Equal(criteria.ECName, viewModel.EmergencyContact.Name);
-            Assert.Equal(criteria.ECRelationship, viewModel.EmergencyContact.Relationship);
-            Assert.Equal(criteria.ECAddress, viewModel.EmergencyContact.Address);
-            Assert.Equal(criteria.ECPhoneNo1, viewModel.EmergencyContact.PhoneNo1);
-            Assert.Equal(criteria.ECPhoneNo2, viewModel.EmergencyContact.PhoneNo2);
         }
 
         [Fact]
-        public async Task CreateEmployeeAsync_CreateEmployeeViewModelHasValueProfilePicture_SavePictureAsync()
+        public async Task CreateEmployeeAsync_CreatedSuccessfullyAndProfilePictureIsNotNull_ExpectedSavePicture()
         {
             // Arrange
             var expected = new CommandResult
@@ -101,9 +65,9 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var viewModel = FakeCreateEmployeeViewModel();
-            viewModel.ProfilePicture = FakePictureProfile();
+            var viewModel = new CreateEmploymentViewModel { ProfilePicture = FakePictureProfile() };
             var employeeService = GetEmployeeManagementService();
+            cryptoService.Encrypt(Arg.Any<string>()).Returns("aa");
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
             // Act
@@ -118,54 +82,27 @@
         #region UpdatePersonalDetailsAsync
 
         [Fact]
-        public async Task UpdatePersonalDetailsAsync_WithValidUpdateEmployeeCriteria_ReturnCommandResult()
+        public async Task UpdatePersonalDetailsAsync_ProfilePictureIsNull_ReturnAsExpectedCommandResult()
         {
             // Arrange
             var expected = new CommandResult
             {
-                Code = 0,
+                Code = 1,
                 Message = "Successful!"
             };
-            var criteria = fixture.Create<UpdateEmployeeCriteria>();
-            var viewModel = FakeUpdateEmployeeViewModel();
+            var viewModel = new CreateEmployeeViewModel();
             var employeeService = GetEmployeeManagementService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateEmployeeCriteria>(x => criteria = x)).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
             // Act
             var actual = await employeeService.UpdatePersonalDetailsAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(criteria.FullName, viewModel.FullName);
-            Assert.Equal(criteria.Nickname, viewModel.Nickname);
-            Assert.Equal(criteria.Gender, viewModel.Gender);
-            Assert.Equal(criteria.DateOfBirth, viewModel.DateOfBirth);
-            Assert.Equal(criteria.PlaceOfBirth, viewModel.PlaceOfBirth);
-            Assert.Equal(criteria.Nationality, viewModel.Nationality);
-            Assert.Equal(criteria.NRICNo, viewModel.NRICNo);
-            Assert.Equal(criteria.MaritalStatus, viewModel.MaritalStatus);
-            Assert.Equal(criteria.NoOfChildren, viewModel.NoOfChildren);
-            Assert.Equal(criteria.OverseasPhoneNo, viewModel.OverseasPhoneNo);
-            Assert.Equal(criteria.LocalPhoneNo, viewModel.LocalPhoneNo);
-            Assert.Equal(criteria.OtherPhoneNo, viewModel.OtherPhoneNo);
-            Assert.Equal(criteria.PassportNo, viewModel.PassportNo);
-            Assert.Equal(criteria.DateIssue, viewModel.DateIssue);
-            Assert.Equal(criteria.ExpiredDate, viewModel.ExpiredDate);
-            Assert.Equal(criteria.PlaceOfIssue, viewModel.PlaceOfIssue);
-            Assert.Equal(criteria.Skype, viewModel.Skype);
-            Assert.Equal(criteria.PersonalEmail, viewModel.PersonalEmail);
-            Assert.Equal(criteria.PermanentAddress, viewModel.PermanentAddress);
-            Assert.Equal(criteria.ResidenceAddress, viewModel.ResidenceAddress);
-            Assert.Equal(criteria.MailingAddress, viewModel.MailingAddress);
-            Assert.Equal(criteria.ECName, viewModel.EmergencyContact.Name);
-            Assert.Equal(criteria.ECRelationship, viewModel.EmergencyContact.Relationship);
-            Assert.Equal(criteria.ECAddress, viewModel.EmergencyContact.Address);
-            Assert.Equal(criteria.ECPhoneNo1, viewModel.EmergencyContact.PhoneNo1);
-            Assert.Equal(criteria.ECPhoneNo2, viewModel.EmergencyContact.PhoneNo2);
         }
 
         [Fact]
-        public async Task UpdatePersonalDetailsAsync_CreateEmployeeViewModelHasValueProfilePicture_SavePictureAsync()
+        public async Task UpdatePersonalDetailsAsync_UpdatedSuccessfullyAndProfilePictureIsNotNull_ExpectedSavePicture()
         {
             // Arrange
             var expected = new CommandResult
@@ -173,8 +110,7 @@
                 Code = 0,
                 Message = "Successful!"
             };
-            var viewModel = FakeUpdateEmployeeViewModel();
-            viewModel.ProfilePicture = FakePictureProfile();
+            var viewModel = new CreateEmployeeViewModel { ProfilePicture = FakePictureProfile() };
             var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
@@ -221,63 +157,93 @@
 
         #endregion GetAllCompanyDivisonDepartment
 
-        #region GetEmployeeById
+        #region GetPersonalDetails
 
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void GetEmployeeById_WithInvalidEmployeeId_ReturnNull(int employeeId)
+        public void GetPersonalDetails_EmployeeIdIsInvalid_ReturnNull(int employeeId)
         {
             // Arrange
             var employeeService = GetEmployeeManagementService();
 
             // Act
-            var actual = employeeService.GetEmployeeById(employeeId);
+            var actual = employeeService.GetPersonalDetails(employeeId);
 
             // Assert
             Assert.Null(actual);
         }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(99)]
-        public void GetEmployeeById_WithValidEmployeeId_ReturnViewModel(int employeeId)
+        [Fact]
+        public void GetPersonalDetails_EmployeeIdIsValid_ReturnAsExpectedViewModel()
         {
             // Arrange
-            var expected = FakeUpdateEmployeeViewModel();
+            var expected = new CreateEmployeeViewModel();
             var employeeService = GetEmployeeManagementService();
-            var reader = Substitute.For<IMultiResultReader>();
-            reader.Read<CreateEmployeeViewModel>().Returns(new List<CreateEmployeeViewModel> { expected });
-            mockObjectDb.QueryMultiple(Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId)).Returns(reader);
+            employeeRepository.GetPersonalDetails(Arg.Any<GetEmployeeByIdCriteria>()).Returns(expected);
 
             // Act
-            var actual = employeeService.GetEmployeeById(employeeId);
+            var actual = employeeService.GetPersonalDetails(1);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(expected.ProfilePicLink, actual.ProfilePicLink);
         }
 
-        #endregion GetEmployeeById
+        #endregion GetPersonalDetails
 
-        #region InitDataForNewEmployeeAsync
+        #region GetDataToCreateEmployeeAsync
 
         [Fact]
-        public async Task InitDataForNewEmployeeAsync_WhenCall_ReturnCreateEmployeeViewModelAsync()
+        public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedViewModel()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<ReferenceResourceModel>>();
+            var expected = new List<ReferenceResourceModel>();
             var employeeService = GetEmployeeManagementService();
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
             // Act
-            var actual = await employeeService.InitDataForNewEmployeeAsync();
+            var actual = await employeeService.GetDataToCreateEmployeeAsync();
 
             // Assert
             Assert.IsType<CreateEmployeeViewModel>(actual);
+            Assert.Equal(0, actual.EmployeeId);
+            Assert.Null(actual.FullName);
+            Assert.Null(actual.Nickname);
+            Assert.Equal(0, actual.Gender);
+            Assert.Equal(DateTime.MinValue, actual.DateOfBirth);
+            Assert.Null(actual.PlaceOfBirth);
+            Assert.Equal(0, actual.Nationality);
+            Assert.Null(actual.NRICNo);
+            Assert.Equal(0, actual.MaritalStatus);
+            Assert.Equal(0, actual.NoOfChildren);
+            Assert.Null(actual.OverseasPhoneNo);
+            Assert.Null(actual.LocalPhoneNo);
+            Assert.Null(actual.OtherPhoneNo);
+            Assert.Null(actual.PassportNo);
+            Assert.Equal(DateTime.MinValue, actual.DateIssue);
+            Assert.Equal(DateTime.MinValue, actual.ExpiredDate);
+            Assert.Null(actual.PlaceOfIssue);
+            Assert.Null(actual.Skype);
+            Assert.Null(actual.PersonalEmail);
+            Assert.Null(actual.PermanentAddress);
+            Assert.Null(actual.ResidenceAddress);
+            Assert.Null(actual.MailingAddress);
+            Assert.Null(actual.ProfilePic);
+            Assert.Null(actual.ProfilePicture);
+            Assert.False(actual.IsHost);
+            Assert.Equal(0, actual.EmergencyContact.EmployeeId);
+            Assert.Null(actual.EmergencyContact.Name);
+            Assert.Null(actual.EmergencyContact.Relationship);
+            Assert.Null(actual.EmergencyContact.Address);
+            Assert.Null(actual.EmergencyContact.PhoneNo1);
+            Assert.Null(actual.EmergencyContact.PhoneNo2);
+            Assert.Empty(actual.GenderList);
+            Assert.Empty(actual.NationalityList);
+            Assert.Empty(actual.MaritalStatusList);
+            Assert.Empty(actual.NoOfChildrenList);
         }
 
-        #endregion InitDataForNewEmployeeAsync
+        #endregion GetDataToCreateEmployeeAsync
 
         #region CheckValidPicture
 
@@ -600,49 +566,6 @@
             file.Length.Returns(1024);
 
             return file;
-        }
-
-        private CreateEmploymentViewModel FakeCreateEmployeeViewModel()
-        {
-            return fixture.Create<CreateEmploymentViewModel>();
-        }
-
-        private CreateEmployeeViewModel FakeUpdateEmployeeViewModel()
-        {
-            return fixture.Create<CreateEmployeeViewModel>();
-        }
-
-        private IEnumerable<ReferenceResourceModel> FakeListReferenceResourceModel()
-        {
-            var result = new List<ReferenceResourceModel>();
-            var gender = fixture.Build<ReferenceResourceModel>()
-                    .With(x => x.RefName, ReferenceResource.Gender)
-                    .Create();
-            var nationality = fixture.Build<ReferenceResourceModel>()
-                    .With(x => x.RefName, ReferenceResource.Nationality)
-                    .Create();
-            var maritalStatus = fixture.Build<ReferenceResourceModel>()
-                    .With(x => x.RefName, ReferenceResource.MaritalStatus)
-                    .Create();
-            var noOfChildren = fixture.Build<ReferenceResourceModel>()
-                    .With(x => x.RefName, ReferenceResource.NoOfChildren)
-                    .Create();
-            result.Add(gender);
-            result.Add(nationality);
-            result.Add(maritalStatus);
-            result.Add(noOfChildren);
-
-            return result;
-        }
-
-        private Fixture InitFixture()
-        {
-            var fixtureInstance = new Fixture();
-            fixtureInstance.Register<IFormFile>(() => null);
-            fixtureInstance.Register(() => FakeListReferenceResourceModel());
-            fixtureInstance.Register<SelectList>(() => null);
-
-            return fixtureInstance;
         }
 
         #endregion Helper

@@ -108,7 +108,7 @@
         initDatetimepicker: initDatetimepicker,
         getUrlParameter: getUrlParameter,
         registerEventGoBack: registerEventGoBack
-    }
+    };
 }(jQuery));
 
 $(document).ready(function () {

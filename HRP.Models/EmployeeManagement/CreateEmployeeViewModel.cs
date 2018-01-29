@@ -90,7 +90,7 @@
         [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MailingAddressMaxLength")]
         public string MailingAddress { get; set; }
 
-        public EmergencyContact EmergencyContact { get; set; }
+        public EmergencyContact EmergencyContact { get; set; } = new EmergencyContact();
 
         public string ProfilePic { get; set; }
 

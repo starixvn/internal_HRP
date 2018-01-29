@@ -108,7 +108,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployee()
         {
-            CreateEmployeeViewModel viewModel = await employeeManagementService.InitDataForNewEmployeeAsync();
+            CreateEmployeeViewModel viewModel = await employeeManagementService.GetDataToCreateEmployeeAsync();
 
             return View("CreateEmployee", viewModel);
         }
@@ -162,7 +162,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public IActionResult UpdateEmployee(int id)
         {
-            var viewModel = employeeManagementService.GetEmployeeById(id);
+            var viewModel = employeeManagementService.GetPersonalDetails(id);
 
             if (viewModel == null)
             {

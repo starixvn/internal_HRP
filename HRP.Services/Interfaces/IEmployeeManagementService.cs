@@ -8,13 +8,13 @@
 
     public interface IEmployeeManagementService
     {
-        Task<CreateEmployeeViewModel> InitDataForNewEmployeeAsync();
+        Task<CreateEmployeeViewModel> GetDataToCreateEmployeeAsync();
 
         Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee);
 
         Task<CommandResult> UpdatePersonalDetailsAsync(CreateEmployeeViewModel employee);
 
-        CreateEmployeeViewModel GetEmployeeById(int employeeId);
+        CreateEmployeeViewModel GetPersonalDetails(int employeeId);
 
         CommandResult CheckValidPicture(IFormFile file);
 

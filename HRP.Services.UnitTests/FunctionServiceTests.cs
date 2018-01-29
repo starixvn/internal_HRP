@@ -21,8 +21,8 @@
             // Arrange
             var expected = new List<FunctionModel>
             {
-                new FunctionModel { FunctionId = 1 },
-                new FunctionModel { FunctionId = 2, ParentId = 1 }
+                new FunctionModel { FunctionId = 1, FunctionKey = "test", Name = "test", IsReadOnly = false, IsActive = true, IsAdmin = false },
+                new FunctionModel { FunctionId = 2, ParentId = 1, FunctionKey = "test", Name = "test", IsReadOnly = false, IsActive = true, IsAdmin = false }
             };
             var functionService = GetFunctionService();
             baseService.GetDataAsync<FunctionModel>(Arg.Any<GetAllFunctionCriteria>()).Returns(expected);

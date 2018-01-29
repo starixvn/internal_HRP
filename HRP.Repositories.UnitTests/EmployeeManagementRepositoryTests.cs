@@ -23,6 +23,96 @@
             ObjectDbFactory.Mock((key, time) => objectDb);
         }
 
+        #region GetPersonalDetails
+
+        [Fact]
+        public void GetPersonalDetailsNotExistedEmployee_ReturnNull()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(x => null);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetPersonalDetails(criteria);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetPersonalDetails_EmployeeIsInvalid_ReturnNull()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            var employee = new CreateEmployeeViewModel();
+            multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(employee);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetPersonalDetails(criteria);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetPersonalDetails_EmployeeIsValid_ReturnAsExpectedModel()
+        {
+            // Arrange
+            var employee = new CreateEmployeeViewModel
+            {
+                EmployeeId = 1
+            };
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(employee);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetPersonalDetails(criteria);
+
+            // Assert
+            Assert.IsType<CreateEmployeeViewModel>(actual);
+            Assert.Equal(employee.EmployeeId, actual.EmployeeId);
+            Assert.Equal(employee.FullName, actual.FullName);
+            Assert.Equal(employee.Nickname, actual.Nickname);
+            Assert.Equal(employee.Gender, actual.Gender);
+            Assert.Equal(employee.DateOfBirth, actual.DateOfBirth);
+            Assert.Equal(employee.PlaceOfBirth, actual.PlaceOfBirth);
+            Assert.Equal(employee.Nationality, actual.Nationality);
+            Assert.Equal(employee.NRICNo, actual.NRICNo);
+            Assert.Equal(employee.MaritalStatus, actual.MaritalStatus);
+            Assert.Equal(employee.NoOfChildren, actual.NoOfChildren);
+            Assert.Equal(employee.OverseasPhoneNo, actual.OverseasPhoneNo);
+            Assert.Equal(employee.LocalPhoneNo, actual.LocalPhoneNo);
+            Assert.Equal(employee.OtherPhoneNo, actual.OtherPhoneNo);
+            Assert.Equal(employee.PassportNo, actual.PassportNo);
+            Assert.Equal(employee.DateIssue, actual.DateIssue);
+            Assert.Equal(employee.ExpiredDate, actual.ExpiredDate);
+            Assert.Equal(employee.PlaceOfIssue, actual.PlaceOfIssue);
+            Assert.Equal(employee.Skype, actual.Skype);
+            Assert.Equal(employee.PersonalEmail, actual.PersonalEmail);
+            Assert.Equal(employee.PermanentAddress, actual.PermanentAddress);
+            Assert.Equal(employee.ResidenceAddress, actual.ResidenceAddress);
+            Assert.Equal(employee.MailingAddress, actual.MailingAddress);
+            Assert.Equal(employee.ProfilePic, actual.ProfilePic);
+            Assert.Equal(employee.ProfilePicture, actual.ProfilePicture);
+            Assert.Equal(employee.IsHost, actual.IsHost);
+            Assert.Null(actual.EmergencyContact);
+            Assert.Empty(actual.GenderList);
+            Assert.Empty(actual.NationalityList);
+            Assert.Empty(actual.MaritalStatusList);
+            Assert.Empty(actual.NoOfChildrenList);
+        }
+
+        #endregion GetPersonalDetails
+
         [Fact]
         public void GetDataToCreateEmployment_WhenCalled_ReturnAsExpectedModel()
         {
@@ -99,6 +189,8 @@
             Assert.Empty(actual.WorkPermitType2s);
         }
 
+        #region GetDataToUpdateEmployment
+
         [Fact]
         public void GetDataToUpdateEmployment_NotExistedEmployment_ReturnNull()
         {
@@ -117,7 +209,25 @@
         }
 
         [Fact]
-        public void GetDataToUpdateEmployment_ExistedEmployment_ReturnAsExpectedModel()
+        public void GetDataToUpdateEmployment_EmploymentIsInvalid_ReturnNull()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var repository = new EmployeeManagementRepository();
+            var employment = new UpdateEmploymentViewModel();
+            multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(employment);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = repository.GetDataToUpdateEmployment(criteria);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetDataToUpdateEmployment_EmploymentIsValid_ReturnAsExpectedModel()
         {
             // Arrange
             var employment = new UpdateEmploymentViewModel
@@ -214,6 +324,8 @@
             Assert.Empty(actual.CommonReasons);
             Assert.Empty(actual.GroupDateReasons);
         }
+
+        #endregion GetDataToUpdateEmployment
 
         #region Helpers
 

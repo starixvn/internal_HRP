@@ -391,7 +391,7 @@ var employmentCommonFuncs = (function ($) {
         jQuery.validator.addMethod('employmentchange', function (value, element, params) {
             var oldproperty = $(element).data('val-oldproperty');
             var newproperty = $(element).data('val-newproperty');
-            if (oldproperty == undefined || newproperty == undefined) {
+            if (oldproperty === undefined || newproperty === undefined) {
                 return true;
             }
 

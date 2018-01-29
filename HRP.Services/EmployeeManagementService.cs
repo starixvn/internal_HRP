@@ -139,7 +139,7 @@
             criteria.PDFPassword = cryptoService.Encrypt(employee.PDFPassword);
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
+            if (commandResult.IsSuccessful && employee.ProfilePicture != null)
             {
                 await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString()).ConfigureAwait(false);
                 commandResult.Data = criteria.EmployeeId;
@@ -222,7 +222,7 @@
             return null;
         }
 
-        public CreateEmployeeViewModel GetEmployeeById(int employeeId)
+        public CreateEmployeeViewModel GetPersonalDetails(int employeeId)
         {
             var criteria = new GetEmployeeByIdCriteria
             {
@@ -230,38 +230,17 @@
                 UserId = sessionService.UserId,
                 FunctionKey = FunctionKey.EmployeeProfile
             };
+            CreateEmployeeViewModel employee = null;
 
             if (criteria.IsValid())
             {
-                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-                {
-                    using (var multi = db.QueryMultiple(criteria))
-                    {
-                        var employee = multi.Read<CreateEmployeeViewModel>().FirstOrDefault();
-                        var emergencyContact = multi.Read<EmergencyContact>().FirstOrDefault();
-                        var genderList = multi.Read<ReferenceResourceModel>();
-                        var nationalityList = multi.Read<ReferenceResourceModel>();
-                        var maritalStatusList = multi.Read<ReferenceResourceModel>();
-                        var noOfChildrenList = multi.Read<ReferenceResourceModel>();
-
-                        if (employee != null)
-                        {
-                            employee.EmergencyContact = emergencyContact;
-                            employee.GenderList = GetSelectList(genderList);
-                            employee.NationalityList = GetSelectList(nationalityList);
-                            employee.MaritalStatusList = GetSelectList(maritalStatusList);
-                            employee.NoOfChildrenList = GetSelectList(noOfChildrenList);
-                        }
-
-                        return employee;
-                    }
-                }
+                employee = employeeRepository.GetPersonalDetails(criteria);
             }
 
-            return null;
+            return employee;
         }
 
-        public async Task<CreateEmployeeViewModel> InitDataForNewEmployeeAsync()
+        public async Task<CreateEmployeeViewModel> GetDataToCreateEmployeeAsync()
         {
             var refNames = string.Format(
                  "{0},{1},{2},{3}",
@@ -279,8 +258,7 @@
                 GenderList = listGender,
                 NationalityList = listNational,
                 MaritalStatusList = listMaritalStatus,
-                NoOfChildrenList = listNoOfChildren,
-                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host)
+                NoOfChildrenList = listNoOfChildren
             };
 
             return viewModel;

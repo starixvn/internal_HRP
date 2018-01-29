@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using AutoFixture;
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -10,7 +9,6 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
-    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -26,12 +24,6 @@
         private ISessionService sessionService;
         private IEmployeeManagementService employeeManagementService;
         private IEmployeePayrollService payrollService;
-        private readonly Fixture fixture;
-
-        public EmployeeManagementControllerTests()
-        {
-            fixture = InitFixture();
-        }
 
         [Fact]
         public void Index_WhenCalled_ReturnsViewResult()
@@ -120,7 +112,7 @@
             // Arrange
             var viewName = "CreateEmployee";
             var employeeController = GetEmployeeManagementController();
-            employeeManagementService.InitDataForNewEmployeeAsync().Returns(new CreateEmployeeViewModel());
+            employeeManagementService.GetDataToCreateEmployeeAsync().Returns(new CreateEmployeeViewModel());
 
             // Act
             var actual = await employeeController.CreateEmployee();
@@ -197,7 +189,7 @@
         {
             // Arrange
             var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(x => null);
+            employeeManagementService.GetPersonalDetails(Arg.Any<int>()).Returns(x => null);
 
             // Act
             var result = employeeController.UpdateEmployee(0);
@@ -212,9 +204,9 @@
         public void UpdateEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
         {
             // Arrange
-            var expected = fixture.Create<CreateEmployeeViewModel>();
+            var expected = new CreateEmployeeViewModel();
             var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetEmployeeById(Arg.Any<int>()).Returns(expected);
+            employeeManagementService.GetPersonalDetails(Arg.Any<int>()).Returns(expected);
 
             // Act
             var result = employeeController.UpdateEmployee(99);
@@ -228,7 +220,7 @@
         public async Task UpdatePersonalDetails_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
         {
             // Arrange
-            var model = fixture.Create<CreateEmployeeViewModel>();
+            var model = new CreateEmployeeViewModel();
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
 
@@ -252,7 +244,7 @@
                 Code = 0,
                 Message = "Successful."
             };
-            var model = fixture.Create<CreateEmployeeViewModel>();
+            var model = new CreateEmployeeViewModel();
             var employeeController = GetEmployeeManagementController();
             employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
             employeeManagementService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
@@ -740,15 +732,6 @@
             var controller = new EmployeeManagementController(baseService, employeeManagementService, payrollService, sessionService);
 
             return controller;
-        }
-
-        private static Fixture InitFixture()
-        {
-            var fixture = new Fixture();
-            fixture.Register<IFormFile>(() => null);
-            fixture.Register<SelectList>(() => null);
-
-            return fixture;
         }
 
         #endregion Helpers
