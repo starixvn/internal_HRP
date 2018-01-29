@@ -348,23 +348,6 @@
 
                 if (employment != null)
                 {
-                    employment.OldCompanyId = employment.CompanyId;
-                    employment.OldLocalCompanyId = employment.LocalCompanyId;
-                    employment.OldJobTitle = employment.JobTitle;
-                    employment.OldLocalJobTitleId = employment.LocalJobTitleId;
-                    employment.OldGroupStartDate = employment.GroupStartDate;
-                    employment.OldGroupEndDate = employment.GroupEndDate;
-                    employment.OldCompanyStartDate = employment.CompanyStartDate;
-                    employment.OldCompanyEndDate = employment.CompanyEndDate;
-                    employment.OldEmployeeCode = employment.EmployeeCode;
-                    employment.OldEmploymentStatus = employment.EmploymentStatus;
-                    employment.OldJobCategoryId = employment.JobCategoryId;
-                    employment.OldJobGradeId = employment.JobGradeId;
-                    employment.OldGradeLevelId = employment.GradeLevelId;
-                    employment.OldDivisionId = employment.DivisionId;
-                    employment.OldDepartmentId = employment.DepartmentId;
-                    employment.OldSectionId = employment.SectionId;
-                    employment.OldCostCenterId = employment.CostCenterId;
                     employment.PDFPassword = cryptoService.Decrypt(employment.PDFPassword);
                     employment.OldPDFPassword = employment.PDFPassword;
                     employment.IsHost = sessionService.HasPermissionOnCompany(employment.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);

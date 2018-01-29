@@ -6,6 +6,7 @@
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc;
 
     public class EmploymentBaseViewModel
     {
@@ -46,6 +47,12 @@
         public DateTime? CompanyEndDate { get; set; }
 
         public string CompanyCode { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
+        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
+        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode),
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
+        public virtual string EmployeeCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmploymentTypeRequired")]
         public int EmploymentType { get; set; }

@@ -80,7 +80,7 @@
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
         [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
-        public string EmployeeCode { get; set; }
+        public override string EmployeeCode { get; set; }
 
         public string OldEmployeeCode { get; set; }
 

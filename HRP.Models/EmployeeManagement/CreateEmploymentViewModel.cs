@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ServiceModel.Channels;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     [Serializable]
@@ -102,11 +101,5 @@
         }
 
         public IFormFile ProfilePicture { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
-        public string EmployeeCode { get; set; }
     }
 }
