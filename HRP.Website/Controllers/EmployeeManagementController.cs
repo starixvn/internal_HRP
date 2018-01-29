@@ -295,7 +295,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetGradeLevelByJobCategoryId(int jobCategoryId)
         {
-            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId };
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId, IsActive = true };
             var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria);
 
             return Json(gradeLevels);
@@ -305,7 +305,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetJobGradeByGradeLevelId(int gradeLevelId)
         {
-            var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId };
+            var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId, IsActive = true };
             var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria);
 
             return Json(jobGrades);
