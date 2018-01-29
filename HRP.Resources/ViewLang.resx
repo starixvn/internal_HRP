@@ -633,4 +633,70 @@
   <data name="EffectiveDate" xml:space="preserve">
     <value>Effective Date</value>
   </data>
+  <data name="Actual" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="Allowances" xml:space="preserve">
+    <value>Allowances</value>
+  </data>
+  <data name="BasicSalary" xml:space="preserve">
+    <value>Basic Salary</value>
+  </data>
+  <data name="Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="Conversion" xml:space="preserve">
+    <value>Conversion</value>
+  </data>
+  <data name="Deductions" xml:space="preserve">
+    <value>Deductions</value>
+  </data>
+  <data name="DirectBanking1" xml:space="preserve">
+    <value>Direct Banking 1</value>
+  </data>
+  <data name="DirectBanking2" xml:space="preserve">
+    <value>Direct Banking 2</value>
+  </data>
+  <data name="DutyMeal" xml:space="preserve">
+    <value>Duty Meal</value>
+  </data>
+  <data name="FitnessFirst" xml:space="preserve">
+    <value>Fitness First</value>
+  </data>
+  <data name="HomePassage" xml:space="preserve">
+    <value>Home Passage</value>
+  </data>
+  <data name="Housing" xml:space="preserve">
+    <value>Housing</value>
+  </data>
+  <data name="HPI" xml:space="preserve">
+    <value>HPI</value>
+  </data>
+  <data name="MobilePhone" xml:space="preserve">
+    <value>Mobile Phone</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="PaymentTransaction" xml:space="preserve">
+    <value>Payment Transaction</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="RommingCharges" xml:space="preserve">
+    <value>Romming Charges</value>
+  </data>
+  <data name="Secondment" xml:space="preserve">
+    <value>Secondment</value>
+  </data>
+  <data name="StandardWorkingDays" xml:space="preserve">
+    <value>Standard Working Days</value>
+  </data>
+  <data name="Subsistence" xml:space="preserve">
+    <value>Subsistence</value>
+  </data>
+  <data name="WorkingDays" xml:space="preserve">
+    <value>Working Days</value>
+  </data>
 </root>

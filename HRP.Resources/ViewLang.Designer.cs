@@ -97,6 +97,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual.
+        /// </summary>
+        public static string Actual {
+            get {
+                return ResourceManager.GetString("Actual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string Address {
@@ -120,6 +129,15 @@ namespace HRP.Resources {
         public static string All {
             get {
                 return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allowances.
+        /// </summary>
+        public static string Allowances {
+            get {
+                return ResourceManager.GetString("Allowances", resourceCulture);
             }
         }
         
@@ -196,6 +214,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basic Salary.
+        /// </summary>
+        public static string BasicSalary {
+            get {
+                return ResourceManager.GetString("BasicSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic Salary Change Reason.
         /// </summary>
         public static string BasicSalaryChangeReason {
@@ -255,6 +282,15 @@ namespace HRP.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash.
+        /// </summary>
+        public static string Cash {
+            get {
+                return ResourceManager.GetString("Cash", resourceCulture);
             }
         }
         
@@ -327,6 +363,15 @@ namespace HRP.Resources {
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversion.
+        /// </summary>
+        public static string Conversion {
+            get {
+                return ResourceManager.GetString("Conversion", resourceCulture);
             }
         }
         
@@ -475,6 +520,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deductions.
+        /// </summary>
+        public static string Deductions {
+            get {
+                return ResourceManager.GetString("Deductions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         public static string Department {
@@ -489,6 +543,24 @@ namespace HRP.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direct Banking 1.
+        /// </summary>
+        public static string DirectBanking1 {
+            get {
+                return ResourceManager.GetString("DirectBanking1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direct Banking 2.
+        /// </summary>
+        public static string DirectBanking2 {
+            get {
+                return ResourceManager.GetString("DirectBanking2", resourceCulture);
             }
         }
         
@@ -516,6 +588,15 @@ namespace HRP.Resources {
         public static string DST {
             get {
                 return ResourceManager.GetString("DST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duty Meal.
+        /// </summary>
+        public static string DutyMeal {
+            get {
+                return ResourceManager.GetString("DutyMeal", resourceCulture);
             }
         }
         
@@ -736,6 +817,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fitness First.
+        /// </summary>
+        public static string FitnessFirst {
+            get {
+                return ResourceManager.GetString("FitnessFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forgot Password.
         /// </summary>
         public static string ForgotPassword {
@@ -826,11 +916,38 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home Passage.
+        /// </summary>
+        public static string HomePassage {
+            get {
+                return ResourceManager.GetString("HomePassage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Host.
         /// </summary>
         public static string Host {
             get {
                 return ResourceManager.GetString("Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Housing.
+        /// </summary>
+        public static string Housing {
+            get {
+                return ResourceManager.GetString("Housing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HPI.
+        /// </summary>
+        public static string HPI {
+            get {
+                return ResourceManager.GetString("HPI", resourceCulture);
             }
         }
         
@@ -997,6 +1114,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mobile Phone.
+        /// </summary>
+        public static string MobilePhone {
+            get {
+                return ResourceManager.GetString("MobilePhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month/Year.
         /// </summary>
         public static string MonthYear {
@@ -1105,6 +1231,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Others.
+        /// </summary>
+        public static string Others {
+            get {
+                return ResourceManager.GetString("Others", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overseas No..
         /// </summary>
         public static string OverseasNo {
@@ -1146,6 +1281,15 @@ namespace HRP.Resources {
         public static string Paymaster {
             get {
                 return ResourceManager.GetString("Paymaster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Transaction.
+        /// </summary>
+        public static string PaymentTransaction {
+            get {
+                return ResourceManager.GetString("PaymentTransaction", resourceCulture);
             }
         }
         
@@ -1258,6 +1402,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rate.
+        /// </summary>
+        public static string Rate {
+            get {
+                return ResourceManager.GetString("Rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read.
         /// </summary>
         public static string Read {
@@ -1321,6 +1474,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Romming Charges.
+        /// </summary>
+        public static string RommingCharges {
+            get {
+                return ResourceManager.GetString("RommingCharges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -1344,6 +1506,15 @@ namespace HRP.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondment.
+        /// </summary>
+        public static string Secondment {
+            get {
+                return ResourceManager.GetString("Secondment", resourceCulture);
             }
         }
         
@@ -1402,6 +1573,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Standard Working Days.
+        /// </summary>
+        public static string StandardWorkingDays {
+            get {
+                return ResourceManager.GetString("StandardWorkingDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string StartDate {
@@ -1425,6 +1605,15 @@ namespace HRP.Resources {
         public static string Submit {
             get {
                 return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsistence.
+        /// </summary>
+        public static string Subsistence {
+            get {
+                return ResourceManager.GetString("Subsistence", resourceCulture);
             }
         }
         
@@ -1587,6 +1776,15 @@ namespace HRP.Resources {
         public static string ViewUserPermission {
             get {
                 return ResourceManager.GetString("ViewUserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working Days.
+        /// </summary>
+        public static string WorkingDays {
+            get {
+                return ResourceManager.GetString("WorkingDays", resourceCulture);
             }
         }
         
