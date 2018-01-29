@@ -29,23 +29,26 @@ var listEmployee = {
     },
 
     query: function () {
-            $.ajax({
-                url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-                type: 'GET',
-                dataType: 'html',
-                data: $('form.form-filter').serialize(),
-                success: function (response) {
-                    $('#employee-list').html(response);
-                    listEmployee.initDataTable();
-                    listEmployee.initSelect2();
-                },
-                error: commonFunctions.handleAjaxError
-            });
+        $.ajax({
+            url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
+            type: 'POST',
+            dataType: 'html',
+            data: $('form.form-filter').serialize(),
+            success: function (response) {
+                $('#employee-list').html(response);
+                listEmployee.initDataTable();
+                listEmployee.initSelect2();
+            },
+            error: commonFunctions.handleAjaxError
+        });
     },
 
     showSelectError: function () {
         var departmentIds = $("#DepartmentIds").val();
         var employeeStatusIds = $("#EmployeeStatusIds").val();
+        console.log(departmentIds);
+        console.log(employeeStatusIds);
+
         if (!departmentIds) {
             listEmployee.showErrorMessage("#company-validation", "#CompanySelect");
         }
@@ -277,8 +280,6 @@ $(document).ready(function () {
     listEmployee.init();
     listDepartment.init();
     listEmployeeStatus.init();
-
-    
 });
 $('#quick-search').off('keyup').on('keyup', function () {
     $('#employee-table').DataTable().search($(this).val()).draw();
@@ -290,13 +291,10 @@ $("#DisplayName").keyup(function () {
     }
 });
 
-$("form").on("submit", function (e) {
-    if (!listEmployee.validateSelection()) {
-        e.preventDefault();
-        listEmployee.showSelectError();
-    } else {
-        e.currentTarget();
+$("#submit").on("click", function () {
+    if (listEmployee.validateSelection()) {
+        listEmployee.query();
     }
+    listEmployee.showSelectError();
+
 });
-
-
