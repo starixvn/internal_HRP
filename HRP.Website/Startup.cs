@@ -46,7 +46,7 @@
                 .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<MailConfig>(options => Configuration.GetSection("MailConfig").Bind(options));
+            services.Configure<MailConfigs>(options => Configuration.GetSection("MailConfig").Bind(options));
             services.Configure<OtpConfig>(options => Configuration.GetSection(nameof(OtpConfig)).Bind(options));
 
             // Cookie Authentication

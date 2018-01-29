@@ -7,34 +7,38 @@ namespace HRP.Core.Services
     using Microsoft.Extensions.Options;
     using Model;
 
-    public class BaseMailService : IBaseMailService
+    public class BaseMailService : HRPMailDeliver, IBaseMailService
     {
-        private readonly IOptionsSnapshot<Model.MailConfig> _configuration;
-
-        public BaseMailService(IOptionsSnapshot<Model.MailConfig> configuration)
+        public BaseMailService(IOptionsSnapshot<MailConfigs> configuration) : base(configuration)
         {
-            _configuration = configuration;
         }
 
-        public void SendEmail(MailModel email)
+        public bool SendEmail(MailModel email)
         {
-            if (email == null || !IsValidEmail(email.ReceiverEmail))
+            using (var client = GetEmailDeliver())
             {
-                return;
+                if (email == null || !IsValidEmail(email.ReceiverEmail))
+                {
+                    return false;
+                }
+
+                var mailItem = new MailRecord
+                {
+                    MailTo = email.ReceiverEmail,
+                    MailCc = email.MailCC,
+                    Subject = email.Subject,
+                    Body = email.Body
+                };
+
+                SendMail(mailItem);
             }
 
-            var mailItem = new MailRecord
-            {
-                MailTo = email.ReceiverEmail,
-                MailCc = email.MailCC,
-                Subject = email.Subject,
-                Body = email.Body
-            };
+            return true;
+        }
 
-            using (var client = new MailDeliver(_configuration.Value.AppId, _configuration.Value.MailAddress))
-            {
-                client.SendMail(mailItem);
-            }
+        public MailDeliver GetEmailDeliver()
+        {
+            return GetMailDeliver();
         }
 
         public string ReadTextFile(string filePath)

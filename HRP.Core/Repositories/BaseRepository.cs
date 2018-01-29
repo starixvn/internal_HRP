@@ -9,7 +9,7 @@ namespace HRP.Core.Repositories
 
     public class BaseRepository : IBaseRepository
     {
-        public virtual CommandResult ExecuteNonQuery(ICriteria criteria)
+        public CommandResult ExecuteNonQuery(ICriteria criteria)
         {
             using (var db = GetObjectDb(criteria.GetSettingKey()))
             {
@@ -20,7 +20,7 @@ namespace HRP.Core.Repositories
             }
         }
 
-        public virtual async Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria)
+        public async Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria)
         {
             using (var db = GetObjectDb(criteria.GetSettingKey()))
             {

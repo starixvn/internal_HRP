@@ -1,6 +1,6 @@
 namespace HRP.Core.Model
 {
-    public class MailConfig
+    public class MailConfigs
     {
         public int AppId { get; set; }
 
