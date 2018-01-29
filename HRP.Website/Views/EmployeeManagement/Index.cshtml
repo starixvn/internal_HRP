@@ -38,7 +38,7 @@
         <label class="text -has-required">@ViewLang.EmploymentStatus</label>
         <select class="control service" asp-for="EmployeeStatus" asp-items="Model.EmployeeStatus"></select>
     </div>
-    <form class="search-form form-filter" method="post">
+    <form class="search-form form-filter" method="get">
         <input asp-for="DepartmentIds" class="hidden" />
         <input asp-for="EmployeeStatusIds" hidden />
         <div class="group">
@@ -47,7 +47,7 @@
             <input asp-for="EmployeeId" hidden>
         </div>
         <div class="group">
-            <button type="button" id="submit" class="button -primary">@ViewLang.Submit</button>
+            <button type="submit" class="button -primary">@ViewLang.Submit</button>
         </div>
     </form>
 </div>

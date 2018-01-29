@@ -31,7 +31,7 @@ var listEmployee = {
     query: function () {
         $.ajax({
             url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-            type: 'POST',
+            type: 'GET',
             dataType: 'html',
             data: $('form.form-filter').serialize(),
             success: function (response) {
@@ -291,10 +291,9 @@ $("#DisplayName").keyup(function () {
     }
 });
 
-$("#submit").on("click", function () {
-    if (listEmployee.validateSelection()) {
-        listEmployee.query();
+$("form").on("submit", function (e) {
+    if (!listEmployee.validateSelection()) {
+        e.preventDefault();
+        listEmployee.showSelectError();
     }
-    listEmployee.showSelectError();
-
 });

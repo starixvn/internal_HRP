@@ -76,9 +76,6 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        [IgnoreAntiforgeryToken]
-        [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
-        [HttpPost]
         public IActionResult EmployeeList(EmployeeManagementViewModel model)
         {
             var criteria = new GetAllEmployeeCriteria
