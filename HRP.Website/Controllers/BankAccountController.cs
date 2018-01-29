@@ -42,30 +42,30 @@
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         [IgnoreAntiforgeryToken]
-        [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
+        ////[ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            var employee = employeeManagementService.GetPersonalDetails(viewModel.EmployeeId);
-
-            var updateEmploymentViewModel = employeeManagementService.GetDataToUpdateEmployment(viewModel.EmployeeId);
-
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
             var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
-            viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
+            var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
+
+            viewModel.BankAccounts = data.BankAccounts;
+            viewModel.EmployeeName = data.EmployeeName;
+            viewModel.CompanyId = data.CompanyId;
+
+            viewModel.Initialize(bankTypes, bankAccountTypes);
 
             viewModel.CanCreate = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
                                   && sessionService.HasPermissionOnCompany(
-                                      updateEmploymentViewModel.CompanyId,
+                                      viewModel.CompanyId,
                                       FunctionKey.EmployeeBankDetails,
                                       Policy.Host);
 
             // TODO: maybe cancreate and canedit is different
             viewModel.CanEdit = viewModel.CanCreate;
-
-            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 
             if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
                 || viewModel.SelectedBankTypes == null)
@@ -74,7 +74,7 @@
             }
 
             viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
-                    bankAccounts,
+                    viewModel.BankAccounts,
                     viewModel.SelectedBankTypes,
                     viewModel.IsActiveBankAccount)
                 .ToList();

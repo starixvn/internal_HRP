@@ -7,11 +7,10 @@
     public class EmployeeBankAccountsViewModel
     {
         public EmployeeBankAccountsViewModel(
-            string employeeName,
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
-            Initialize(employeeName, bankTypes, bankAccountTypes);
+            Initialize(bankTypes, bankAccountTypes);
         }
 
         public EmployeeBankAccountsViewModel()
@@ -21,6 +20,8 @@
         public int EmployeeId { get; set; }
 
         public string EmployeeName { get; set; }
+
+        public int CompanyId { get; set; }
 
         public int[] SelectedBankTypes { get; set; }
 
@@ -34,10 +35,8 @@
 
         public IList<BankAccount> BankAccounts { get; set; }
 
-        public void Initialize(string employeeName, IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
+        public void Initialize(IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
-            EmployeeName = employeeName;
-
             BankAccountTypes = bankAccountTypes;
 
             PopulateBankTypes(bankTypes);

@@ -5,6 +5,7 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Bank;
+    using Fanex.Data;
     using Interfaces;
     using Models.Bank;
 
@@ -23,14 +24,28 @@
             return baseService.ExecuteNonQuery(criteria);
         }
 
-        public IEnumerable<BankAccount> GetBankAccountsByEmployeeId(int employeeId)
+        public EmployeeBankAccountsViewModel GetBankAccountsByEmployeeId(int employeeId)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
             {
                 EmployeeId = employeeId
             };
 
-            return baseService.GetData<BankAccount>(criteria);
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (var results = db.QueryMultiple(criteria))
+                {
+                    var viewModel =
+                        new EmployeeBankAccountsViewModel
+                        {
+                            BankAccounts = results.Read<BankAccount>().ToList(),
+                            CompanyId = results.ReadSingle<int>(),
+                            EmployeeName = results.ReadSingle<string>()
+                        };
+
+                    return viewModel;
+                }
+            }
         }
 
         public BankAccount GetBankAccountById(int bankAccountId)

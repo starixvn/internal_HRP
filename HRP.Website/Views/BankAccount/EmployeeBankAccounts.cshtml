@@ -29,8 +29,8 @@
 <form asp-action="EmployeeBankAccounts"
       asp-controller="BankAccount"
       asp-antiforgery="false"
-      method="post"
-      class="search-form save-state">
+      method="get"
+      class="search-form">
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
