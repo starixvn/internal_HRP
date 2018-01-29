@@ -42,7 +42,7 @@
         [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            var employee = employeeManagementService.GetEmployeeById(viewModel.Id);
+            var employee = employeeManagementService.GetEmployeeById(viewModel.EmployeeId);
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
@@ -51,7 +51,7 @@
 
             viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
 
-            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.Id);
+            var bankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 
             if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
                 || viewModel.SelectedBankTypes == null)
@@ -97,7 +97,7 @@
 
             if (result.IsSuccessful)
             {
-                var redirectViewModel = new EmployeeBankAccountsViewModel { Id = viewModel.BankAccount.EmployeeId };
+                var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
 
@@ -135,7 +135,7 @@
 
             if (result.IsSuccessful)
             {
-                var redirectViewModel = new EmployeeBankAccountsViewModel { Id = viewModel.BankAccount.EmployeeId };
+                var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
 
