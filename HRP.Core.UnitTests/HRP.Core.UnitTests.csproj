@@ -383,6 +383,7 @@
     <Compile Include="Repository\BaseRepositoryTests.cs" />
     <Compile Include="Services\BaseMailServiceTests.cs" />
     <Compile Include="Services\BaseServiceTests.cs" />
+    <Compile Include="Services\SessionServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
