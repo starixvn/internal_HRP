@@ -8,7 +8,7 @@
 
         public string Code { get; set; }
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => CompanyId >= 0 && !string.IsNullOrWhiteSpace(Code);
 
         public override string GetSettingKey() => "Company_CheckExists";
     }

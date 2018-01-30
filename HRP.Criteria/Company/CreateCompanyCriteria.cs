@@ -10,7 +10,7 @@
 
         public int CreatedBy { get; set; }
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => CreatedBy > 0 && !string.IsNullOrEmpty(Code);
 
         public override string GetSettingKey() => "Company_Create";
     }

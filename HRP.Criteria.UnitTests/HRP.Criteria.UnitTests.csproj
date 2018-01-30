@@ -72,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
+    <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
+    <Compile Include="Company\GetCompanyByIdCriteriaTests.cs" />
     <Compile Include="CostCenter\GetCostCenterByDepartmentIdCriteriaTests.cs" />
     <Compile Include="Country\GetAllCountryCriteriaTests.cs" />
     <Compile Include="Currency\GetActiveCurrencyCodesCriteriaTest.cs" />

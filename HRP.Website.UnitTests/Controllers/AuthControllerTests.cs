@@ -199,7 +199,7 @@
             //Arrange
             var authController = GetAuthController();
             baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
-            var model = new ResetPasswordViewModel { Password = "1234aa" };
+            var model = new ResetPasswordViewModel { Password = "1234aa", PasswordConfirm = "1234aa" };
             baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             //Act

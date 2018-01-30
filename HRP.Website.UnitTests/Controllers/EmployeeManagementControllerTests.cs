@@ -514,7 +514,7 @@
             // Arrange
             var expected = new List<EmployeeSuggestionViewModel>
             {
-                new EmployeeSuggestionViewModel { EmployeeId = 1, FullName = "Tim", Nickname = "tim.trinh" }
+                new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
             };
             var employeeController = GetEmployeeManagementController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
