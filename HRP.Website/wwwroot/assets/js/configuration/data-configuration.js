@@ -92,7 +92,7 @@
                 data: { "id": itemId },
                 success: function (data) {
                     // ref
-                    $('#editItemModalBody').html(data);
+                    $('#editItemModalContent').html(data);
 
                     initValidationForm('#editItemForm');
 
@@ -112,7 +112,7 @@
     }
 
     function onCreateNewItemSuccess(response) {
-        var  $createItemForm = $('#createItemForm');
+        var $createItemForm = $('#createItemForm');
         if (response.isSuccessful) {
             $("#newItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
@@ -149,7 +149,6 @@
         $('#tableWrapper').html(response);
         initDataTable();
         registerEventQuickSearch();
-        //initValidationForm('#createItemForm');
         registerEventClickCreateNewItem();
         registerEventClickIconEditItem();
     }

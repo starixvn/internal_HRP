@@ -1,16 +1,15 @@
 ﻿namespace HRP.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Company;
+    using HRP.Criteria.Department;
     using HRP.Criteria.Division;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -52,6 +51,13 @@
                 FieldId = (int)FieldType.Division,
                 FieldName = ViewLang.Division,
                 LinkGetAllItem = DataConfigurationActionLink.GetAllDivision
+            });
+
+            fieldList.Add(new Field
+            {
+                FieldId = (int)FieldType.Department,
+                FieldName = ViewLang.Department,
+                LinkGetAllItem = DataConfigurationActionLink.GetAllDepartment
             });
 
             return fieldList.OrderBy(x => x.FieldName);
@@ -150,9 +156,11 @@
 
         #endregion CompanyBVI
 
-        public async Task<IEnumerable<DivisionRow>> GetAllDivisionAsync()
+        #region Division
+
+        public async Task<IEnumerable<Division>> GetAllDivisionAsync()
         {
-            var divisions = await baseService.GetDataAsync<DivisionRow>(new GetAllDivisionCriteria()).ConfigureAwait(false);
+            var divisions = await baseService.GetDataAsync<Division>(new GetAllDivisionCriteria()).ConfigureAwait(false);
 
             return divisions;
         }
@@ -167,5 +175,78 @@
 
             return viewModel;
         }
+
+        public async Task<bool> IsExistedDivisionAsync(Division division)
+        {
+            var criteria = new CheckDivisionExistsCriteria
+            {
+                DivisionId = division.DivisionId,
+                Code = division.Code,
+                CompanyId = division.CompanyId
+            };
+            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateDivisionAsync(Division division)
+        {
+            var criteria = new CreateDivisionCriteria
+            {
+                Code = division.Code,
+                Name = division.Name,
+                CompanyId = division.CompanyId,
+                IsActive = division.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<Division> GetDivisionByIdAsync(int id)
+        {
+            var division = await baseService.GetDataEntityAsync<Division>(new GetDivisionByIdCriteria { DivisionId = id }).ConfigureAwait(false);
+
+            return division;
+        }
+
+        public async Task<CommandResult> UpdateDivisionAsync(Division division)
+        {
+            var criteria = new UpdateDivisionCriteria
+            {
+                DivisionId = division.DivisionId,
+                Code = division.Code,
+                Name = division.Name,
+                IsActive = division.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Division
+
+        #region Department
+
+        public async Task<IEnumerable<Department>> GetAllDepartmentAsync()
+        {
+            var departments = await baseService.GetDataAsync<Department>(new GetAllDepartmentCriteria()).ConfigureAwait(false);
+
+            return departments;
+        }
+
+        #endregion Department
     }
 }

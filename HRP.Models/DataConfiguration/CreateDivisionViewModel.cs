@@ -4,6 +4,11 @@
 
     public class CreateDivisionViewModel
     {
+        public CreateDivisionViewModel()
+        {
+            Division = new Division();
+        }
+
         public SelectList CompanyList { get; set; }
 
         public Division Division { get; set; }

@@ -10,7 +10,6 @@
 <div class="modal-body form-information">
     <form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true"
           data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onCreateNewItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
-        <input asp-for="Item.ItemId" type="hidden" />
         <div class="list-message-error hidden">
             <span class="message" asp-validation-for="Item.ItemName"></span>
             <span class="message" asp-validation-for="Item.Description"></span>

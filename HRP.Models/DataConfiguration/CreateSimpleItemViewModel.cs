@@ -2,6 +2,11 @@
 {
     public class CreateSimpleItemViewModel
     {
+        public CreateSimpleItemViewModel()
+        {
+            Item = new SimpleItem();
+        }
+
         public SimpleItem Item { get; set; }
 
         public string FieldName { get; set; }

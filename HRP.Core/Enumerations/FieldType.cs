@@ -23,6 +23,9 @@ namespace HRP.Core.Enumerations
         NoOfChildren = 6,
 
         [Display(Name = "Division")]
-        Division = 18
+        Division = 18,
+
+        [Display(Name = "Department")]
+        Department = 20
     }
 }

@@ -20,8 +20,18 @@
 
         Task<CommandResult> UpdateCompanyBVIAsync(SimpleItem item);
 
-        Task<IEnumerable<DivisionRow>> GetAllDivisionAsync();
+        Task<IEnumerable<Division>> GetAllDivisionAsync();
 
         Task<CreateDivisionViewModel> GetDataForCreateDivisionAsync();
+
+        Task<bool> IsExistedDivisionAsync(Division division);
+
+        Task<CommandResult> CreateDivisionAsync(Division division);
+
+        Task<Division> GetDivisionByIdAsync(int id);
+
+        Task<CommandResult> UpdateDivisionAsync(Division division);
+
+        Task<IEnumerable<Department>> GetAllDepartmentAsync();
     }
 }

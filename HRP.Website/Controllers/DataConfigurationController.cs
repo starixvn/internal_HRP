@@ -152,7 +152,68 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateDivision(Division division)
         {
-            return View();
+            var isExistedItem = await dataConfigurationService.IsExistedDivisionAsync(division);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(division), ".", nameof(division.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, division.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateDivisionAsync(division);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateDivision(int id)
+        {
+            var division = await dataConfigurationService.GetDivisionByIdAsync(id);
+
+            if (division != null)
+            {
+                var viewModal = new UpdateDivisionViewModel
+                {
+                    FieldName = ViewLang.Division,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateDivision,
+                    Division = division
+                };
+
+                return PartialView("_UpdateDivision", viewModal);
+            }
+
+            return Content("404 not found");
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateDivision(Division division)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedDivisionAsync(division);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(division), ".", nameof(division.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, division.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateDivisionAsync(division);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
         }
 
         private static string UppercaseFirstLetter(string s)

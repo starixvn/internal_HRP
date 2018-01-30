@@ -4,7 +4,7 @@
 
     public class DivisionTableViewModel
     {
-        public IEnumerable<DivisionRow> Divisions { get; set; }
+        public IEnumerable<Division> Divisions { get; set; }
 
         public string FieldName { get; set; }
 

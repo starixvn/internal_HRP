@@ -17,5 +17,9 @@ namespace HRP.Core.Constants
         public const string CreateDivision = DataConfiguration + "/CreateDivision";
         public const string UpdateDivision = DataConfiguration + "/UpdateDivision";
         public const string GetAllDivision = DataConfiguration + "/GetAllDivision";
+
+        public const string CreateDepartment = DataConfiguration + "/CreateDepartment";
+        public const string UpdateDepartment = DataConfiguration + "/UpdateDepartment";
+        public const string GetAllDepartment = DataConfiguration + "/GetAllDepartment";
     }
 }

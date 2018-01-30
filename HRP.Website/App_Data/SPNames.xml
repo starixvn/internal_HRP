@@ -20,9 +20,14 @@
   <Function Name="Division">
     <Setting Key="Division_GetByCompanyId" SpName="Division_GetByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Division_GetAll" SpName="Division_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_CheckExists" SpName="Division_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_Create" SpName="Division_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_GetById" SpName="Division_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_Update" SpName="Division_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Department">
     <Setting Key="Department_GetByDivisionId" SpName="Department_GetByDivisionId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Department_GetAll" SpName="Department_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Cost Center">
     <Setting Key="CostCenter_GetByDepartmentId" SpName="CostCenter_GetByDepartmentId" DbName="bodb_HRP" Plain="0"></Setting>

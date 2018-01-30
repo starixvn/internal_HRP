@@ -1,0 +1,19 @@
+﻿namespace HRP.Criteria.Division
+{
+    public class UpdateDivisionCriteria : CommandBaseCriteria
+    {
+        public int DivisionId { get; set; }
+
+        public string Code { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public int UpdatedBy { get; set; }
+
+        public override string GetSettingKey() => "Division_Update";
+
+        public override bool IsValid() => DivisionId > 0 && !string.IsNullOrEmpty(Code);
+    }
+}

@@ -14,5 +14,7 @@
         public bool IsActive { get; set; }
 
         public int DivisionId { get; set; }
+
+        public string DivisionCode { get; set; }
     }
 }
