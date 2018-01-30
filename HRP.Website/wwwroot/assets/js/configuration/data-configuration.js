@@ -73,12 +73,23 @@
                     // ref
                     $('#createItemModalContent').html(data);
 
-                    initValidationForm('#createItemForm');
+                    // check if exists Division select
+                    var createFormName = '#createItemForm';
+                    if ($(createFormName).find('.js-divisionId').length > 0) {
+                        registerEventChangeCompanyBVI();
+                    }
+
+                    initValidationForm(createFormName);
 
                     $('#newItemModal').modal('show');
                 },
                 error: commonFunctions.handleAjaxError
             });
+        });
+    }
+
+    function registerEventChangeCompanyBVI() {
+        $('.js-companyId').on('change', function () {
         });
     }
 
@@ -103,7 +114,7 @@
         });
     }
 
-    function reloadListItem() {
+    function reloadTableListItem() {
         var $fieldType = $('#fieldType');
         var $selectedField = $('#selectedField');
 
@@ -117,7 +128,7 @@
             $("#newItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage(response.message);////ref
-            reloadListItem();
+            reloadTableListItem();
         } else {
             if (response.errors) {
                 $createItemForm.validate().showErrors(response.errors); //todo test here
@@ -134,7 +145,7 @@
             $("#editItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage(response.message);////ref
-            reloadListItem();
+            reloadTableListItem();
         } else {
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here

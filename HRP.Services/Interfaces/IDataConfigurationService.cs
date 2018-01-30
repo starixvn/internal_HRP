@@ -5,6 +5,7 @@
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.Department;
 
     public interface IDataConfigurationService
     {
@@ -33,5 +34,7 @@
         Task<CommandResult> UpdateDivisionAsync(Division division);
 
         Task<IEnumerable<Department>> GetAllDepartmentAsync();
+
+        Task<CreateDepartmentViewModel> GetDataForCreateDepartmentAsync();
     }
 }

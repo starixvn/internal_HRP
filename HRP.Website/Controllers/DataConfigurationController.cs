@@ -7,6 +7,7 @@
     using HRP.Core.Filters;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.Department;
     using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,8 @@
 
             return View(fieldList);
         }
+
+        #region CompanyBVI
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllCompanyBVI()
@@ -123,6 +126,10 @@
             return Json(new { isSuccessful = false, errors });
         }
 
+        #endregion CompanyBVI
+
+        #region Division
+
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllDivision()
         {
@@ -215,6 +222,37 @@
 
             return Json(new { isSuccessful = false, errors });
         }
+
+        #endregion Division
+
+        #region Department
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllDepartment()
+        {
+            var departments = await dataConfigurationService.GetAllDepartmentAsync();
+            var viewModel = new DepartmentTableViewModel
+            {
+                Departments = departments,
+                FieldName = ViewLang.Department,
+                LinkCreateItem = DataConfigurationActionLink.CreateDepartment,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment
+            };
+
+            return PartialView("_DepartmentTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateDepartment()
+        {
+            var viewModel = await dataConfigurationService.GetDataForCreateDepartmentAsync();
+            viewModel.FieldName = ViewLang.Department;
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDepartment;
+
+            return PartialView("_CreateDepartment", viewModel);
+        }
+
+        #endregion Department
 
         private static string UppercaseFirstLetter(string s)
         {

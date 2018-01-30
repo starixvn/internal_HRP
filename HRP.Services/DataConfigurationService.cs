@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
@@ -13,6 +14,7 @@
     using HRP.Criteria.Division;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.Department;
     using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -167,10 +169,9 @@
 
         public async Task<CreateDivisionViewModel> GetDataForCreateDivisionAsync()
         {
-            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
             var viewModel = new CreateDivisionViewModel
             {
-                CompanyList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
+                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
             };
 
             return viewModel;
@@ -247,6 +248,23 @@
             return departments;
         }
 
+        public async Task<CreateDepartmentViewModel> GetDataForCreateDepartmentAsync()
+        {
+            var viewModel = new CreateDepartmentViewModel
+            {
+                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
+            };
+
+            return viewModel;
+        }
+
         #endregion Department
+
+        private async Task<SelectList> GetCompanyBVISelectListAsync()
+        {
+            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
+
+            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+        }
     }
 }
