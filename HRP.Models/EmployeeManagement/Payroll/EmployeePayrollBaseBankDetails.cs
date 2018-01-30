@@ -3,7 +3,7 @@
     using System.ServiceModel.Channels;
     using HRP.Core.CustomValidations;
 
-    public abstract class EmployeePayrollBaseBankDetails
+    public class EmployeePayrollBaseBankDetails
     {
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId), nameof(DirectBanking1BankTypeId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollCurrencyRequried")]
