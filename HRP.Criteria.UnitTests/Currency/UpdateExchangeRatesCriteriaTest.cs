@@ -1,8 +1,6 @@
-﻿
-namespace HRP.Criteria.UnitTests.Currency
+﻿namespace HRP.Criteria.UnitTests.Currency
 {
     using System;
-    using System.Collections.Generic;
     using Xunit;
 
     public class UpdateExchangeRatesCriteriaTest
@@ -17,24 +15,43 @@ namespace HRP.Criteria.UnitTests.Currency
             Assert.Equal(expected, actual);
         }
 
-        public static IEnumerable<object[]> TestCase()
-        {
-            yield return new object[] { DateTime.Today, "<root></root>", 1, true };
-            yield return new object[] { DateTime.Today, "<root></root>", 0, false };
-            yield return new object[] { DateTime.Today, string.Empty, 1, false };
-        }
-
-        [Theory, MemberData(nameof(TestCase))]
-        public void IsValid_ReturnAsExpected(DateTime exchangeRateMonth, string exchangeRates, int updatedBy, bool expected)
+        [Fact]
+        public void IsValid_ValidData_ReturnTrue()
         {
             var criteria = new UpdateExchangeRatesCriteria
             {
-                ExchangeRateMonth = exchangeRateMonth,
-                ExchangeRates = exchangeRates,
-                UpdatedBy = updatedBy
+                ExchangeRateMonth = DateTime.Today,
+                ExchangeRates = "<root></root>",
+                UpdatedBy = 1
             };
 
-            Assert.Equal(expected, criteria.IsValid());
+            Assert.True(criteria.IsValid());
+        }
+
+        [Fact]
+        public void IsValid_InvalidUserId_ReturnFalse()
+        {
+            var criteria = new UpdateExchangeRatesCriteria
+            {
+                ExchangeRateMonth = DateTime.Today,
+                ExchangeRates = "<root></root>",
+                UpdatedBy = 0
+            };
+
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public void IsValid_InvalidExchangeRatesData_ReturnFalse()
+        {
+            var criteria = new UpdateExchangeRatesCriteria
+            {
+                ExchangeRateMonth = DateTime.Today,
+                ExchangeRates = string.Empty,
+                UpdatedBy = 1
+            };
+
+            Assert.False(criteria.IsValid());
         }
     }
 }

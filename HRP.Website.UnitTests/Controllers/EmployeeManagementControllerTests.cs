@@ -638,7 +638,17 @@
         {
             var employeeId = 1;
             var employeeManagementController = GetEmployeeManagementController();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(new EmployeePayrollViewModel { EmployeeId = employeeId });
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId)
+            .Returns(
+                new EmployeePayrollViewModel
+                {
+                    EmployeeId = employeeId,
+                    FullName = "Full Name",
+                    Nickname = "Nick Name",
+                    Code = "DAR",
+                    CompanyId = 1
+                }
+            );
 
             var actual = employeeManagementController.Payroll(employeeId);
 

@@ -15,19 +15,40 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(1, 1, true)]
-        [InlineData(0, 1, false)]
-        [InlineData(1, 0, false)]
-        public void IsValid_ReturnAsExpected(int employeeId, int userId, bool expected)
+        [Fact]
+        public void IsValid_ValidData_ReturnTrue()
         {
             var criteria = new GetEmployeePayrollCriteria
             {
-                EmployeeId = employeeId,
-                UserId = userId
+                EmployeeId = 1,
+                UserId = 1
             };
 
-            Assert.Equal(expected, criteria.IsValid());
+            Assert.True(criteria.IsValid());
+        }
+
+        [Fact]
+        public void IsValid_InvalidEmployeeId_ReturnFalse()
+        {
+            var criteria = new GetEmployeePayrollCriteria
+            {
+                EmployeeId = 0,
+                UserId = 1
+            };
+
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public void IsValid_InvalidUserId_ReturnFalse()
+        {
+            var criteria = new GetEmployeePayrollCriteria
+            {
+                EmployeeId = 1,
+                UserId = 0
+            };
+
+            Assert.False(criteria.IsValid());
         }
     }
 }

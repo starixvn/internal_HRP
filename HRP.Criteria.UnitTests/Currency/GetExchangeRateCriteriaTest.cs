@@ -1,5 +1,4 @@
-﻿
-namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests
 {
     using Xunit;
 
@@ -15,20 +14,43 @@ namespace HRP.Criteria.UnitTests
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(1, 2012, true)]
-        [InlineData(0, 2012, false)]
-        [InlineData(1, 0, false)]
-        [InlineData(13, 2012, false)]
-        public void IsValid_ReturnAsExpected(int month, int year, bool expected)
+        [Fact]
+        public void IsValid_ValidData_ReturnTrue()
         {
-            var criteria = new GetExchangeRateCriteria {
-                Month = month,
-                Year = year
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = 1,
+                Year = 2012
             };
 
             var actual = criteria.IsValid();
-            Assert.Equal(expected, actual);
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void IsValid_InvalidMonth_ReturnFalse()
+        {
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = 0,
+                Year = 2012
+            };
+
+            var actual = criteria.IsValid();
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_InvalidYear_ReturnFalse()
+        {
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = 1,
+                Year = 0
+            };
+
+            var actual = criteria.IsValid();
+            Assert.False(actual);
         }
     }
 }
