@@ -30,7 +30,13 @@
                 {
                     new List<object>
                     {
-                        new EmployeePayrollViewModel { EmployeeId = employeeId }
+                        new EmployeePayrollViewModel
+                        {
+                            EmployeeId = employeeId,FullName = "Full Name",
+                            Nickname = "Nick Name",
+                            Code = "DAR",
+                            CompanyId = 1
+                        }
                     },
                     new List<object>(),
                     new List<object>(),
