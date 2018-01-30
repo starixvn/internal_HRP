@@ -114,7 +114,7 @@
         var currency = $('select.allowance-detail-calculate', parent).val();
         var amount = $('input.allowance-detail-calculate', parent).val();
         if (currency !== '' && !isNaN(amount) && amount !== '') {
-            var amount = new BigNumber(amount);
+            amount = new BigNumber(amount);
             var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
             var value = amount.mul(exchangeRates).roundWithCurrency(2, allowanceCurrency);
             $('.allowance-convert-amount', parent).val(value.toStringWithCurrency(allowanceCurrency));

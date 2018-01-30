@@ -59,8 +59,6 @@
 
         public int? AllowanceDirectBanking1BankTypeId { get; set; }
 
-        public int? AllowanceDirectBanking1AccountName { get; set; }
-
         public string AllowanceDirectBanking2CurrencyCode { get; set; }
 
         public string AllowanceDirectBanking2Amount { get; set; }
@@ -68,8 +66,6 @@
         public int? AllowanceDirectBanking2AccountId { get; set; }
 
         public int? AllowanceDirectBanking2BankTypeId { get; set; }
-
-        public int? AllowanceDirectBanking2AccountName { get; set; }
 
         public string AllowanceCashCurrencyCode { get; set; }
 
