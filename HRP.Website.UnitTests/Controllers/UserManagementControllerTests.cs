@@ -213,7 +213,7 @@
         public void EditUser_ViewModelHasValue_ReturnExpectedViewModel()
         {
             // Arrange
-            var expected = new EditUserViewModel { UserId = 1, IsSystemAdmin = false };
+            var expected = new EditUserViewModel { UserId = 1, Username = "Min", IsSystemAdmin = false };
             var userController = GetUserManagementController();
             baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(expected);
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
@@ -223,7 +223,8 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
+            var model = Assert.IsAssignableFrom<EditUserViewModel>(viewResult.Model);
+            Assert.True(model.CanEdit);
         }
 
         #endregion EditUser
