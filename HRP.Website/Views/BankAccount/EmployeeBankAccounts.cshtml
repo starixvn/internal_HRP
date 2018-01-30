@@ -29,9 +29,10 @@
 <form asp-action="EmployeeBankAccounts"
       asp-controller="BankAccount"
       asp-antiforgery="false"
-      method="get"
+      asp-route-EmployeeId="@Model.EmployeeId"
+      method="post"
       class="search-form">
-    <input asp-for="EmployeeId" type="hidden" />
+    @*<input asp-for="EmployeeId" type="hidden" />*@
     <div class="group">
         <label class="text">Bank Type</label>
         <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" class="fanex-select"></select>

@@ -42,7 +42,7 @@
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         [IgnoreAntiforgeryToken]
-        ////[ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
+        [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
