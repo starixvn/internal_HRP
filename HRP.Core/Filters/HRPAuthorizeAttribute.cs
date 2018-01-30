@@ -44,9 +44,9 @@ namespace HRP.Core.Filters
                 OnUserId = currentSession.OnUserId
             };
 
-            baseService.ExecuteNonQuery(criteria);
+            var isKickedOut = baseService.GetDataEntity<bool>(criteria);
 
-            if (criteria.IsKickedOut)
+            if (isKickedOut)
             {
                 DoSignOut(context, currentSession, baseService);
             }

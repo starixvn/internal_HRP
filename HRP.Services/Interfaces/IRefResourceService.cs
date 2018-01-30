@@ -9,6 +9,6 @@
 
         IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string resourceName);
+            string refName);
     }
 }

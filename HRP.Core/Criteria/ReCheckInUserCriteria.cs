@@ -6,8 +6,6 @@
     {
         public int OnUserId { get; set; }
 
-        public bool IsKickedOut { get; set; }
-
         public override bool IsValid() => OnUserId > 0;
 
         public override string GetSettingKey() => "User_ReCheckIn";

@@ -244,6 +244,7 @@
     <Compile Include="Employee\EmployeePayrollServiceTest.cs" />
     <Compile Include="FunctionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefResourceServiceTests.cs" />
     <Compile Include="TwoFactorAuthenticationServiceTests.cs" />
     <Compile Include="UserServiceTests.cs" />
   </ItemGroup>

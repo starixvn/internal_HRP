@@ -7,7 +7,7 @@
     using Interfaces;
     using Models;
 
-    public class RefResourceService : BaseService, IRefResourceService
+    public class RefResourceService : IRefResourceService
     {
         private readonly IBaseService baseService;
 
@@ -18,20 +18,34 @@
 
         public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names)
         {
-            var refNames = string.Join(",", names);
+            IEnumerable<ReferenceResourceModel> refResources = new List<ReferenceResourceModel>();
 
-            return baseService.GetData<ReferenceResourceModel>(
-                new GetRefResourceByNamesCriteria
+            if (names != null)
+            {
+                var refNames = string.Join(",", names);
+                var criteria = new GetRefResourceByNamesCriteria
                 {
                     RefNames = refNames
-                });
+                };
+
+                refResources = baseService.GetData<ReferenceResourceModel>(criteria);
+            }
+
+            return refResources;
         }
 
         public IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string resourceName)
+            string refName)
         {
-            return refResources.Where(x => x.RefName == resourceName);
+            IEnumerable<ReferenceResourceModel> referenceResources = new List<ReferenceResourceModel>();
+
+            if (refResources != null && !string.IsNullOrWhiteSpace(refName))
+            {
+                referenceResources = refResources.Where(x => x.RefName == refName);
+            }
+
+            return referenceResources;
         }
     }
 }
