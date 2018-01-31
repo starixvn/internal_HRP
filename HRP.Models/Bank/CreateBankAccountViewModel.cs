@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateBankAccountViewModel
@@ -46,5 +47,11 @@
                 nameof(ReferenceResourceModel.ResourceId),
                 nameof(ReferenceResourceModel.Value));
         }
+    }
+
+    public enum CreateBankAccountError
+    {
+        [Display(Name = "Account Name and Account Number existed. Please enter another value")]
+        AccountExisted = 1
     }
 }

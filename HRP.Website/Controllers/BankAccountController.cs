@@ -42,7 +42,7 @@
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         [IgnoreAntiforgeryToken]
-        [ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
+        ////[ResponseCache(CacheProfileName = nameof(CachingProfile.Default))]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
@@ -113,6 +113,10 @@
             {
                 var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+            }
+            else
+            {
+                ModelState.AddModelError("BankAccount.AccountName",nameof(CreateBankAccountError.AccountExisted));
             }
 
             return View(viewModel);
