@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Company
+﻿namespace HRP.Criteria
 {
     public class UpdateCompanyCriteria : CommandBaseCriteria
     {
@@ -12,7 +12,7 @@
 
         public int UpdatedBy { get; set; }
 
-        public override bool IsValid() => (CompanyId > 0) && !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => CompanyId > 0 && !string.IsNullOrWhiteSpace(Code) && UpdatedBy > 0;
 
         public override string GetSettingKey() => "Company_Update";
     }

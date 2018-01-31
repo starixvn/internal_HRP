@@ -19,7 +19,7 @@
         }
 
         [Fact]
-        public void IsValid_ReturnTrue()
+        public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
             var criteria = new GetAllJobCategoryCriteria();

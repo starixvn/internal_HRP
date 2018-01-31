@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Company
+﻿namespace HRP.Criteria
 {
     public class CreateCompanyCriteria : CommandBaseCriteria
     {
@@ -10,7 +10,7 @@
 
         public int CreatedBy { get; set; }
 
-        public override bool IsValid() => CreatedBy > 0 && !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => CreatedBy > 0 && !string.IsNullOrWhiteSpace(Code);
 
         public override string GetSettingKey() => "Company_Create";
     }

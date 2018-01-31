@@ -3,15 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Criteria.Company;
-    using HRP.Criteria.Department;
-    using HRP.Criteria.Division;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.Department;

@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Division
+﻿namespace HRP.Criteria
 {
     using Fanex.Data.Repository;
 
@@ -12,6 +12,6 @@
 
         public override string GetSettingKey() => "Division_CheckExists";
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => DivisionId >= 0 && CompanyId >= 0 && !string.IsNullOrWhiteSpace(Code);
     }
 }

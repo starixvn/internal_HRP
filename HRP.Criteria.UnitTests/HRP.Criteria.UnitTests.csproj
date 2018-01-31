@@ -73,16 +73,24 @@
   <ItemGroup>
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
+    <Compile Include="Company\CreateCompanyCriteriaTests.cs" />
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
     <Compile Include="Company\GetCompanyByIdCriteriaTests.cs" />
+    <Compile Include="Company\UpdateCompanyCriteriaTests.cs" />
     <Compile Include="CostCenter\GetCostCenterByDepartmentIdCriteriaTests.cs" />
     <Compile Include="Country\GetAllCountryCriteriaTests.cs" />
     <Compile Include="Currency\GetActiveCurrencyCodesCriteriaTest.cs" />
     <Compile Include="Currency\GetExchangeRateCriteriaTest.cs" />
     <Compile Include="Currency\GetLatestExchangeRatesCriteriaTest.cs" />
     <Compile Include="Currency\UpdateExchangeRatesCriteriaTest.cs" />
+    <Compile Include="Department\GetAllDepartmentCriteriaTests.cs" />
     <Compile Include="Department\GetDepartmentByDivisionIdCriteriaTests.cs" />
+    <Compile Include="Division\CheckDivisionExistsCriteriaTests.cs" />
+    <Compile Include="Division\CreateDivisionCriteriaTests.cs" />
+    <Compile Include="Division\GetAllDivisionCriteriaTests.cs" />
     <Compile Include="Division\GetDivisionByCompanyIdCriteriaTests.cs" />
+    <Compile Include="Division\GetDivisionByIdCriteriaTests.cs" />
+    <Compile Include="Division\UpdateDivisionCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
     <Compile Include="Employee\GetAllCompanyDivsionDepartmentCriteriaTests.cs" />
     <Compile Include="Employee\GetDataToCreateEmploymentCriteriaTests.cs" />

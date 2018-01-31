@@ -1,6 +1,5 @@
 ﻿namespace HRP.Criteria.UnitTests
 {
-    using HRP.Criteria.Company;
     using Xunit;
 
     public class GetCompanyByIdCriteriaTests

@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Division
+﻿namespace HRP.Criteria
 {
     public class UpdateDivisionCriteria : CommandBaseCriteria
     {
@@ -14,6 +14,6 @@
 
         public override string GetSettingKey() => "Division_Update";
 
-        public override bool IsValid() => DivisionId > 0 && !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => DivisionId > 0 && !string.IsNullOrWhiteSpace(Code) && UpdatedBy > 0;
     }
 }

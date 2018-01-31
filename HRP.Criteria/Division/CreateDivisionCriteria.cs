@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Division
+﻿namespace HRP.Criteria
 {
     public class CreateDivisionCriteria : CommandBaseCriteria
     {
@@ -14,6 +14,6 @@
 
         public override string GetSettingKey() => "Division_Create";
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Code) && CompanyId > 0;
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(Code) && CompanyId > 0 && CreatedBy > 0;
     }
 }
