@@ -35,6 +35,11 @@
   </Function>
   <Function Name="Cost Center">
     <Setting Key="CostCenter_GetByDepartmentId" SpName="CostCenter_GetByDepartmentId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_GetAll" SpName="CostCenter_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_CheckExists" SpName="CostCenter_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_Create" SpName="CostCenter_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_GetById" SpName="CostCenter_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_Update" SpName="CostCenter_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Section">
     <Setting Key="Section_GetByCostCenterId" SpName="Section_GetByCostCenterId" DbName="bodb_HRP" Plain="0"></Setting>
