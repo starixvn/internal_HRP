@@ -5,9 +5,7 @@ namespace HRP.Core.Filters
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.AspNetCore.Mvc.Routing;
     using Services;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
@@ -22,13 +20,10 @@ namespace HRP.Core.Filters
 
             var currentSession = new SessionService(context.HttpContext.Session);
 
-            var urlHelper = new UrlHelper(context);
-
             if (currentSession.UserId <= 0 || string.IsNullOrWhiteSpace(currentSession.Username))
             {
-                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .ConfigureAwait(false);
-                context.HttpContext.Response.Redirect(urlHelper.Action("Login", "Auth"));
+                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+                context.HttpContext.Response.Redirect("/auth/login");
             }
             else
             {
@@ -36,7 +31,7 @@ namespace HRP.Core.Filters
             }
         }
 
-        private static void ReCheckIn(ActionContext context, ISessionService currentSession)
+        private static void ReCheckIn(AuthorizationFilterContext context, ISessionService currentSession)
         {
             var baseService = new BaseService();
             var criteria = new ReCheckInUserCriteria
@@ -52,7 +47,7 @@ namespace HRP.Core.Filters
             }
         }
 
-        private static void DoSignOut(ActionContext context, ISessionService currentSession, IBaseService baseService)
+        private static void DoSignOut(AuthorizationFilterContext context, ISessionService currentSession, IBaseService baseService)
         {
             var criteria = new LogOutUserCriteria
             {
@@ -63,10 +58,8 @@ namespace HRP.Core.Filters
 
             baseService.ExecuteNonQuery(criteria);
 
-            var urlHelper = new UrlHelper(context);
-
             context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            context.HttpContext.Response.Redirect(urlHelper.Action("Login", "Auth"));
+            context.HttpContext.Response.Redirect("/auth/login");
         }
     }
 }
