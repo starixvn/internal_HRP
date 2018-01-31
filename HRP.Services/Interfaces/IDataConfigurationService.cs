@@ -5,6 +5,7 @@
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -46,7 +47,13 @@
 
         Task<CommandResult> UpdateDepartmentAsync(Department department);
 
+        Task<IEnumerable<CostCenter>> GetAllCostCenterAsync();
+
+        Task<CreateCostCenterViewModel> GetDataForCreateCostCenterAsync();
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
+
+        Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId);
     }
 }

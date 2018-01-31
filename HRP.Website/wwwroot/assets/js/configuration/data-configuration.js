@@ -75,8 +75,13 @@
 
                     // check if exists Division select
                     var createFormName = '#createItemForm';
-                    if ($(createFormName).find('.js-divisionId').length > 0) {
+                    var $createForm = $(createFormName);
+                    if ($createForm.find('.js-divisionId').length > 0) {
                         registerEventChangeCompanyBVI();
+
+                        if ($createForm.find('.js-departmentId').length > 0) {
+                            registerEventChangeDivision();
+                        }
                     }
 
                     initValidationForm(createFormName);
@@ -91,7 +96,7 @@
     function registerEventChangeCompanyBVI() {
         $('.js-companyId').on('change', function () {
             var companyId = $(this).val();
-
+            //reset division, department, cost center....
             $.ajax({
                 type: 'GET',
                 url: commonFunctions.rootURL + 'DataConfiguration/GetDivisionSelectListByCompanyId',
@@ -99,6 +104,23 @@
                 data: { companyId: companyId },
                 success: function (data) {
                     $('.js-divisionId').html(data);
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
+    function registerEventChangeDivision() {
+        $('.js-divisionId').on('change', function () {
+            var divisionId = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'DataConfiguration/GetDepartmentSelectListByDivisionId',
+                dataType: 'html',
+                data: { divisionId: divisionId },
+                success: function (data) {
+                    $('.js-departmentId').html(data);
                 },
                 error: commonFunctions.handleAjaxError
             });

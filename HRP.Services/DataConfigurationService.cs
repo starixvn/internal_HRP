@@ -8,9 +8,11 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -325,6 +327,27 @@
 
         #endregion Department
 
+        #region Cost Center
+
+        public async Task<IEnumerable<CostCenter>> GetAllCostCenterAsync()
+        {
+            var costCenters = await baseService.GetDataAsync<CostCenter>(new GetAllCostCenterCriteria()).ConfigureAwait(false);
+
+            return costCenters;
+        }
+
+        public async Task<CreateCostCenterViewModel> GetDataForCreateCostCenterAsync()
+        {
+            var viewModel = new CreateCostCenterViewModel
+            {
+                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
+            };
+
+            return viewModel;
+        }
+
+        #endregion Cost Center
+
         #region Common
 
         public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
@@ -333,6 +356,14 @@
             var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
 
             return new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
+        }
+
+        public async Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId)
+        {
+            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId };
+            var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
+
+            return new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
         }
 
         private async Task<SelectList> GetCompanyBVISelectListAsync()

@@ -29,7 +29,7 @@
 
         <label class="text -has-required">@ViewLang.Division</label>
         <div class="group-control">
-            <select class="control js-divisionId" asp-for="Department.DivisionId" asp-items="@Model.DivisionList"
+            <select class="control js-divisionId" asp-for="Department.DivisionId"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.Division)">
                 <option value=""></option>
             </select>

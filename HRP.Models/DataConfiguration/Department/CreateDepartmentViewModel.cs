@@ -12,8 +12,6 @@
 
         public SelectList CompanyList { get; set; }
 
-        public SelectList DivisionList { get; set; }
-
         public Department Department { get; set; }
 
         public string FieldName { get; set; }

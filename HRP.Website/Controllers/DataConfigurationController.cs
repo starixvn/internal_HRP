@@ -8,6 +8,7 @@
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -332,16 +333,26 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllCostCenter()
         {
-            var divisions = await dataConfigurationService.GetAllDivisionAsync();
-            var viewModel = new DivisionTableViewModel
+            var costCenters = await dataConfigurationService.GetAllCostCenterAsync();
+            var viewModel = new CostCenterTableViewModel
             {
-                Divisions = divisions,
-                FieldName = ViewLang.Division,
-                LinkCreateItem = DataConfigurationActionLink.CreateDivision,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
+                CostCenters = costCenters,
+                FieldName = ViewLang.CostCenter,
+                LinkCreateItem = DataConfigurationActionLink.CreateCostCenter,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter
             };
 
-            return PartialView("_DivisionTable", viewModel);
+            return PartialView("_CostCenterTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCostCenter()
+        {
+            var viewModel = await dataConfigurationService.GetDataForCreateCostCenterAsync();
+            viewModel.FieldName = ViewLang.CostCenter;
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateCostCenter;
+
+            return PartialView("_CreateCostCenter", viewModel);
         }
 
         #endregion Cost Center
@@ -352,6 +363,14 @@
             var divisionList = await dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(companyId);
 
             return PartialView("_SelectListItem", divisionList);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetDepartmentSelectListByDivisionId(int divisionId)
+        {
+            var departmentList = await dataConfigurationService.GetDepartmentSelectListByDivisionIdAsync(divisionId);
+
+            return PartialView("_SelectListItem", departmentList);
         }
 
         private static string UppercaseFirstLetter(string s)
