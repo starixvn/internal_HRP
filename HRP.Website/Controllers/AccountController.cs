@@ -22,7 +22,7 @@ namespace HRP.Website.Controllers
     using Services;
     using Services.Interfaces;
 
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
@@ -33,7 +33,7 @@ namespace HRP.Website.Controllers
             ISessionService sessionService,
             IBaseService baseService,
             ITwoFactorAuthenticatorService twoFactorAuthService,
-            IUserService userService)
+            IUserService userService) : base(baseService, sessionService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;

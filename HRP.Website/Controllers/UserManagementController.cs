@@ -19,7 +19,7 @@
     using Services.Interfaces;
 
     [HRPAuthorize]
-    public class UserManagementController : Controller
+    public class UserManagementController : BaseController
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
@@ -28,7 +28,7 @@
         public UserManagementController(
             ISessionService sessionService,
             IBaseService baseService,
-            IFunctionService functionService)
+            IFunctionService functionService) : base(baseService, sessionService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;

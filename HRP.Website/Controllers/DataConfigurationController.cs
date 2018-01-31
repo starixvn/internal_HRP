@@ -5,6 +5,7 @@
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.Department;
@@ -12,11 +13,15 @@
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
-    public class DataConfigurationController : Controller
+    [HRPAuthorize]
+    public class DataConfigurationController : BaseController
     {
         private readonly IDataConfigurationService dataConfigurationService;
 
-        public DataConfigurationController(IDataConfigurationService dataConfigurationService)
+        public DataConfigurationController(
+            IDataConfigurationService dataConfigurationService,
+            ISessionService sessionService,
+            IBaseService baseService) : base(baseService, sessionService)
         {
             this.dataConfigurationService = dataConfigurationService;
         }

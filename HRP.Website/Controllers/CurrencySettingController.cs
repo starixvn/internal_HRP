@@ -15,7 +15,7 @@
     using Microsoft.Extensions.Options;
 
     [HRPAuthorize]
-    public class CurrencySettingController : Controller
+    public class CurrencySettingController : BaseController
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
@@ -24,7 +24,7 @@
         public CurrencySettingController(
             ISessionService sessionService,
             IBaseService baseService,
-            IOptionsSnapshot<AppSettingsOptions> configuration)
+            IOptionsSnapshot<AppSettingsOptions> configuration) : base(baseService, sessionService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;

@@ -18,7 +18,7 @@
     using Services.Interfaces;
 
     [HRPAuthorize]
-    public class EmployeeManagementController : Controller
+    public class EmployeeManagementController : BaseController
     {
         private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeManagementService;
@@ -29,7 +29,7 @@
             IBaseService baseService,
             IEmployeeManagementService employeeManagementService,
             IEmployeePayrollService payrollService,
-            ISessionService sessionService)
+            ISessionService sessionService) : base(baseService, sessionService)
         {
             this.baseService = baseService;
             this.employeeManagementService = employeeManagementService;

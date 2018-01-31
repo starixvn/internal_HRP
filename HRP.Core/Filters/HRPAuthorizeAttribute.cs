@@ -1,7 +1,6 @@
 namespace HRP.Core.Filters
 {
     using System;
-    using Criteria;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
@@ -25,41 +24,6 @@ namespace HRP.Core.Filters
                 context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
                 context.HttpContext.Response.Redirect("/auth/login");
             }
-            else
-            {
-                ReCheckIn(context, currentSession);
-            }
-        }
-
-        private static void ReCheckIn(AuthorizationFilterContext context, ISessionService currentSession)
-        {
-            var baseService = new BaseService();
-            var criteria = new ReCheckInUserCriteria
-            {
-                OnUserId = currentSession.OnUserId
-            };
-
-            var isKickedOut = baseService.GetDataEntity<bool>(criteria);
-
-            if (isKickedOut)
-            {
-                DoSignOut(context, currentSession, baseService);
-            }
-        }
-
-        private static void DoSignOut(AuthorizationFilterContext context, ISessionService currentSession, IBaseService baseService)
-        {
-            var criteria = new LogOutUserCriteria
-            {
-                OnUserId = currentSession.OnUserId,
-                IP = context.HttpContext.Connection.RemoteIpAddress.ToString(),
-                Platform = context.HttpContext.Request.Headers["User-Agent"].ToString()
-            };
-
-            baseService.ExecuteNonQuery(criteria);
-
-            context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            context.HttpContext.Response.Redirect("/auth/login");
         }
     }
 }
