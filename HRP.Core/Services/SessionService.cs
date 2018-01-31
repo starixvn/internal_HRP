@@ -3,17 +3,12 @@ namespace HRP.Core.Services
     using System.Collections.Generic;
     using System.Linq;
     using Enumerations;
+    using HRP.Core.Constants;
     using Microsoft.AspNetCore.Http;
     using Model;
 
     public class SessionService : ISessionService
     {
-        public const string InternalUsername = "InternalUsername";
-        public const string InternalUserId = "InternalUserId";
-        public const string InternalOnUserId = "InternalOnUserId";
-        public const string InternalMenuItemList = "InternalMenuItemList";
-        public const string InternalFunctionList = "InternalFunctionList";
-
         private readonly ISession _session;
 
         public SessionService(ISession session)
@@ -28,32 +23,32 @@ namespace HRP.Core.Services
 
         public int UserId
         {
-            get => _session?.GetInt32(InternalUserId) ?? 0;
-            set => _session?.SetInt32(InternalUserId, value);
+            get => _session?.GetInt32(SessionKey.InternalUserId) ?? 0;
+            set => _session?.SetInt32(SessionKey.InternalUserId, value);
         }
 
         public int OnUserId
         {
-            get => _session?.GetInt32(InternalOnUserId) ?? 0;
-            set => _session?.SetInt32(InternalOnUserId, value);
+            get => _session?.GetInt32(SessionKey.InternalOnUserId) ?? 0;
+            set => _session?.SetInt32(SessionKey.InternalOnUserId, value);
         }
 
         public string Username
         {
-            get => _session.GetString(InternalUsername) ?? string.Empty;
-            set => _session.SetString(InternalUsername, value);
+            get => _session.GetString(SessionKey.InternalUsername) ?? string.Empty;
+            set => _session.SetString(SessionKey.InternalUsername, value);
         }
 
         public IEnumerable<MenuItem> MenuItems
         {
-            get => _session.Get<List<MenuItem>>(InternalMenuItemList);
-            set => _session.Set(InternalMenuItemList, value);
+            get => _session.Get<List<MenuItem>>(SessionKey.InternalMenuItemList);
+            set => _session.Set(SessionKey.InternalMenuItemList, value);
         }
 
         public IEnumerable<FunctionModel> Functions
         {
-            get => _session.Get<List<FunctionModel>>(InternalFunctionList);
-            set => _session.Set(InternalFunctionList, value);
+            get => _session.Get<List<FunctionModel>>(SessionKey.InternalFunctionList);
+            set => _session.Set(SessionKey.InternalFunctionList, value);
         }
 
         public bool HasPermissionOnFunction(string functionKey, Policy policy)

@@ -116,7 +116,7 @@
             // Arrange
             IEnumerable<FunctionModel> functions = new List<FunctionModel>
             {
-                new FunctionModel { FunctionId = 1, FunctionKey = "UserManagement"}
+                new FunctionModel { FunctionId = 1, FunctionKey = "UserManagement" }
             };
             _session = new MockSession();
             sessionService = GetSessionService(_session);

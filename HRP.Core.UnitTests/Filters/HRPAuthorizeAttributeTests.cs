@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Net;
+    using HRP.Core.Constants;
     using HRP.Core.Filters;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
@@ -15,13 +16,20 @@
 
     public class HRPAuthorizeAttributeTests
     {
-        [Fact]
-        public void OnAuthorization_UserIdAndUsernameAreInvalid_ExpectedRedirectToAccessDenied()
+        [Theory]
+        [InlineData(1, "")]
+        [InlineData(0, "tim.trinh")]
+        [InlineData(0, "")]
+        public void OnAuthorization_UserIdAndUsernameAreInvalid_ExpectedRedirectToAccessDenied(int userId, string username)
         {
             // Arrange
             var authService = Substitute.For<IAuthenticationService>();
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+
+            var session = new MockSession();
+            session.SetInt32(SessionKey.InternalUserId, userId);
+            session.SetString(SessionKey.InternalUsername, username);
             var httpContext = new DefaultHttpContext
             {
                 RequestServices = serviceProvider,
