@@ -16,19 +16,13 @@
 
         public string PlaceOfBirth { get; set; }
 
-        public int Nationality { get; set; }
-
-        public string NRICNo { get; set; }
-
         public int MaritalStatus { get; set; }
 
         public int NoOfChildren { get; set; }
 
-        public string OverseasPhoneNo { get; set; }
+        public int Nationality { get; set; }
 
-        public string LocalPhoneNo { get; set; }
-
-        public string OtherPhoneNo { get; set; }
+        public string NRICNo { get; set; }
 
         public string PassportNo { get; set; }
 
@@ -37,6 +31,12 @@
         public DateTime ExpiredDate { get; set; }
 
         public string PlaceOfIssue { get; set; }
+
+        public string OverseasPhoneNo { get; set; }
+
+        public string LocalPhoneNo { get; set; }
+
+        public string OtherPhoneNo { get; set; }
 
         public string Skype { get; set; }
 
