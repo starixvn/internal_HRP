@@ -13,5 +13,12 @@
             var actual = criteria.GetSettingKey();
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void IsValid_ReturnTrue()
+        {
+            var criteria = new GetLatestExchangeRatesCriteria();
+            Assert.True(criteria.IsValid());
+        }
     }
 }

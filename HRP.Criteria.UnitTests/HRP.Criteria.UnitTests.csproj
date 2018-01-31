@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bank\SearchBankAccountCriteriaTest.cs" />
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
     <Compile Include="Company\CreateCompanyCriteriaTests.cs" />
