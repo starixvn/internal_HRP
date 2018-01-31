@@ -2,12 +2,14 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.UserManagement;
@@ -213,9 +215,21 @@
         public void EditUser_ViewModelHasValue_ReturnExpectedViewModel()
         {
             // Arrange
-            var expected = new EditUserViewModel { UserId = 1, Username = "Min", IsSystemAdmin = false };
+            var user = new EditUserViewModel { UserId = 1, Username = "Min", IsSystemAdmin = true };
             var userController = GetUserManagementController();
-            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(expected);
+            userController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(
+                        new ClaimsIdentity(new List<Claim>
+                        {
+                            new Claim(Constants.IsSystemAdmin, true.ToString())
+                        })
+                    )
+                }
+            };
+            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(user);
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
