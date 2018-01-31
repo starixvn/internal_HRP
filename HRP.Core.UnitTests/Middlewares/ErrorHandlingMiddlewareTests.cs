@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
@@ -24,7 +25,24 @@
             await middleware.Invoke(context);
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.Found, context.Response.StatusCode);
             Assert.Equal("/error/500", context.Response.Headers.Values.First().ToString());
+        }
+
+        [Fact]
+        public async Task Invoke_RequestSucceeded_ReturnAsExpected()
+        {
+            // Arrange
+            var context = new DefaultHttpContext();
+            var logger = Substitute.For<ILogger<ErrorHandlingMiddleware>>();
+            var next = Substitute.For<RequestDelegate>();
+            var middleware = new ErrorHandlingMiddleware(next, logger);
+
+            // Act
+            await middleware.Invoke(context);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, context.Response.StatusCode);
         }
     }
 }

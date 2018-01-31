@@ -17,8 +17,10 @@
         private ISession _session;
         private SessionService sessionService;
 
+        #region UserId
+
         [Fact]
-        public void UserId_WhenCalled_GetAndSetCorrectly()
+        public void UserId_SessionServiceWithSession_GetAndSetCorrectly()
         {
             // Arrange
             var userId = 1;
@@ -32,6 +34,25 @@
             // Assert
             Assert.Equal(userId, actual);
         }
+
+        [Fact]
+        public void UserId_SessionServiceWithHttpContextAccessor_GetAndSetCorrectly()
+        {
+            // Arrange
+            var userId = 1;
+            var accessor = Substitute.For<IHttpContextAccessor>();
+            accessor.HttpContext.Session.Returns(new MockSession());
+            sessionService = GetSessionService(accessor);
+            sessionService.UserId = userId;
+
+            // Act
+            var actual = sessionService.UserId;
+
+            // Assert
+            Assert.Equal(userId, actual);
+        }
+
+        #endregion UserId
 
         [Fact]
         public void OnUserId_WhenCalled_GetAndSetCorrectly()
@@ -293,7 +314,7 @@
             sessionService.UserId = 1;
 
             // Act
-            sessionService.ClearAll(); ;
+            sessionService.ClearAll();
 
             // Assert
             Assert.Equal(0, sessionService.UserId);
