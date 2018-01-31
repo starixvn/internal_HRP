@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ExportExcelController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="App_Data\SPNames.xml" />
   </ItemGroup>
 

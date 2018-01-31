@@ -43,7 +43,8 @@
             // Arrange
             var criteria = new ReCheckInUserCriteria
             {
-                OnUserId = 1
+                OnUserId = 1,
+                IsKickedOut = false
             };
 
             // Act
