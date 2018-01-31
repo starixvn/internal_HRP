@@ -1,7 +1,9 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
+    using System;
     using HRP.Core.Enumerations;
 
+    [Serializable]
     public class EmployeeBasicInfo
     {
         public int EmployeeId { get; set; }

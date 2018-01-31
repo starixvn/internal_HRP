@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -84,9 +85,33 @@
                 Divisions = new List<Division>(),
                 Departments = new List<Department>()
             };
+
+            var employeeList = new List<EmployeeBasicInfo>
+            {
+                new EmployeeBasicInfo
+                {
+                    EmployeeId = 1234,
+                    EmployeeCode = "OW",
+                    Nickname = "Oliver",
+                    FullName = "Oliver Dang",
+                    CompanyId = 1,
+                    CompanyCode = "OW",
+                    CompanyName = "Onework",
+                    DivisionCode = "",
+                    DivisionName = "HR",
+                    DepartmentCode = "",
+                    DepartmentName = "HR",
+                    JobTitle = "Software Engineer",
+                    EmployeeStatus = "Probation",
+                    EditBankPolicy = Policy.Host,
+                    EditPayRollPolicy = Policy.Host,
+                    EditProfilePolicy = Policy.Host
+                }
+            };
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
             var employeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
             sessionService.UserId = 1;
+            baseService.GetData<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employeeList);
             var viewModel = new EmployeeManagementViewModel
             {
                 DepartmentIds = string.Empty,
