@@ -1204,6 +1204,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 404 Not Found.
+        /// </summary>
+        public static string NotFoundError {
+            get {
+                return ResourceManager.GetString("NotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NRIC No. must not over {1} characters long..
         /// </summary>
         public static string NRICNoMaxLength {

@@ -58,6 +58,13 @@
                 LinkGetAllItem = DataConfigurationActionLink.GetAllDepartment
             });
 
+            fieldList.Add(new Field
+            {
+                FieldId = (int)FieldType.CostCenter,
+                FieldName = ViewLang.CostCenter,
+                LinkGetAllItem = DataConfigurationActionLink.GetAllCostCenter
+            });
+
             return fieldList.OrderBy(x => x.FieldName);
         }
 
@@ -254,7 +261,78 @@
             return viewModel;
         }
 
+        public async Task<bool> IsExistedDepartmentAsync(Department department)
+        {
+            var criteria = new CheckDepartmentExistsCriteria
+            {
+                DepartmentId = department.DepartmentId,
+                Code = department.Code,
+                DivisionId = department.DivisionId
+            };
+
+            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateDepartmentAsync(Department department)
+        {
+            var criteria = new CreateDepartmentCriteria
+            {
+                Code = department.Code,
+                Name = department.Name,
+                DivisionId = department.DivisionId,
+                IsActive = department.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<Department> GetDepartmentByIdAsync(int id)
+        {
+            var department = await baseService.GetDataEntityAsync<Department>(new GetDepartmentByIdCriteria { DepartmentId = id }).ConfigureAwait(false);
+
+            return department;
+        }
+
+        public async Task<CommandResult> UpdateDepartmentAsync(Department department)
+        {
+            var criteria = new UpdateDepartmentCriteria
+            {
+                DepartmentId = department.DepartmentId,
+                Code = department.Code,
+                Name = department.Name,
+                IsActive = department.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
         #endregion Department
+
+        #region Common
+
+        public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
+        {
+            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId };
+            var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
+
+            return new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
+        }
 
         private async Task<SelectList> GetCompanyBVISelectListAsync()
         {
@@ -262,5 +340,7 @@
 
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }
+
+        #endregion Common
     }
 }

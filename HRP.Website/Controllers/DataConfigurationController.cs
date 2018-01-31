@@ -104,7 +104,7 @@
                 return PartialView("_UpdateSimpleItem", viewModal);
             }
 
-            return Content("404 not found");
+            return Content(Message.NotFoundError);
         }
 
         [HttpPost]
@@ -201,7 +201,7 @@
                 return PartialView("_UpdateDivision", viewModal);
             }
 
-            return Content("404 not found");
+            return Content(Message.NotFoundError);
         }
 
         [HttpPost]
@@ -257,7 +257,102 @@
             return PartialView("_CreateDepartment", viewModel);
         }
 
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateDepartment(Department department)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedDepartmentAsync(department);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, department.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateDepartmentAsync(department);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateDepartment(int id)
+        {
+            var department = await dataConfigurationService.GetDepartmentByIdAsync(id);
+
+            if (department != null)
+            {
+                var viewModal = new UpdateDepartmentViewModel
+                {
+                    FieldName = ViewLang.Department,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment,
+                    Department = department
+                };
+
+                return PartialView("_UpdateDepartment", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateDepartment(Department department)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedDepartmentAsync(department);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, department.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateDepartmentAsync(department);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
         #endregion Department
+
+        #region Cost Center
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllCostCenter()
+        {
+            var divisions = await dataConfigurationService.GetAllDivisionAsync();
+            var viewModel = new DivisionTableViewModel
+            {
+                Divisions = divisions,
+                FieldName = ViewLang.Division,
+                LinkCreateItem = DataConfigurationActionLink.CreateDivision,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
+            };
+
+            return PartialView("_DivisionTable", viewModel);
+        }
+
+        #endregion Cost Center
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetDivisionSelectListByCompanyId(int companyId)
+        {
+            var divisionList = await dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(companyId);
+
+            return PartialView("_SelectListItem", divisionList);
+        }
 
         private static string UppercaseFirstLetter(string s)
         {

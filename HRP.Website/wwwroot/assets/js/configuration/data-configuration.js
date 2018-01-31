@@ -90,6 +90,18 @@
 
     function registerEventChangeCompanyBVI() {
         $('.js-companyId').on('change', function () {
+            var companyId = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'DataConfiguration/GetDivisionSelectListByCompanyId',
+                dataType: 'html',
+                data: { companyId: companyId },
+                success: function (data) {
+                    $('.js-divisionId').html(data);
+                },
+                error: commonFunctions.handleAjaxError
+            });
         });
     }
 

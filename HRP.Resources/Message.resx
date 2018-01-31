@@ -636,4 +636,7 @@
   <data name="ItemUpdatedSuccessful" xml:space="preserve">
     <value>The item has been successfully updated.</value>
   </data>
+  <data name="NotFoundError" xml:space="preserve">
+    <value>404 Not Found</value>
+  </data>
 </root>

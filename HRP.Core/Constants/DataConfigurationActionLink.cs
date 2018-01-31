@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HRP.Core.Constants
+﻿namespace HRP.Core.Constants
 {
     public static class DataConfigurationActionLink
     {
@@ -21,5 +19,9 @@ namespace HRP.Core.Constants
         public const string CreateDepartment = DataConfiguration + "/CreateDepartment";
         public const string UpdateDepartment = DataConfiguration + "/UpdateDepartment";
         public const string GetAllDepartment = DataConfiguration + "/GetAllDepartment";
+
+        public const string CreateCostCenter = DataConfiguration + "/CreateCostCenter";
+        public const string UpdateCostCenter = DataConfiguration + "/UpdateCostCenter";
+        public const string GetAllCostCenter = DataConfiguration + "/GetAllCostCenter";
     }
 }

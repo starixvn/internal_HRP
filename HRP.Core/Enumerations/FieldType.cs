@@ -26,6 +26,9 @@ namespace HRP.Core.Enumerations
         Division = 18,
 
         [Display(Name = "Department")]
-        Department = 20
+        Department = 20,
+
+        [Display(Name = "Cost Center")]
+        CostCenter = 24
     }
 }

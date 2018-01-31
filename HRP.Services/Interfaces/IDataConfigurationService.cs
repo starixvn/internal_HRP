@@ -6,6 +6,7 @@
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.Department;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IDataConfigurationService
     {
@@ -36,5 +37,16 @@
         Task<IEnumerable<Department>> GetAllDepartmentAsync();
 
         Task<CreateDepartmentViewModel> GetDataForCreateDepartmentAsync();
+
+        Task<bool> IsExistedDepartmentAsync(Department department);
+
+        Task<CommandResult> CreateDepartmentAsync(Department department);
+
+        Task<Department> GetDepartmentByIdAsync(int id);
+
+        Task<CommandResult> UpdateDepartmentAsync(Department department);
+
+        //// Common funcs
+        Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
     }
 }
