@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests.Filters
+﻿namespace HRP.Core.UnitTests
 {
     using System;
     using System.Linq;

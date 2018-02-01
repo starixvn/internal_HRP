@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests.Repository
+﻿namespace HRP.Core.UnitTests
 {
     using System;
     using System.Collections;

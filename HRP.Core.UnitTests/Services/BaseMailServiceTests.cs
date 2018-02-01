@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests.Services
+﻿namespace HRP.Core.UnitTests
 {
     using System;
     using System.IO;

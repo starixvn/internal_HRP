@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests.Services
+﻿namespace HRP.Core.UnitTests
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -38,7 +38,10 @@
             // Arrange
             var userId = 1;
             var accessor = Substitute.For<IHttpContextAccessor>();
-            accessor.HttpContext.Session.Returns(new MockSession());
+            accessor.HttpContext = new DefaultHttpContext
+            {
+                Session = new MockSession()
+            };
             sessionService = GetSessionService(accessor);
             sessionService.UserId = userId;
 

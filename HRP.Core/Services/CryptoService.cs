@@ -13,20 +13,24 @@ namespace HRP.Core.Services
         private X509Certificate2 cert2;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
-        public CryptoService(IOptionsSnapshot<AppSettingsOptions> configuration)
+        public CryptoService(
+            IOptionsSnapshot<AppSettingsOptions> configuration)
         {
             this.configuration = configuration;
             InitCertificate();
         }
 
-        public CryptoService(X509Certificate2 cert)
+        public CryptoService(
+            IOptionsSnapshot<AppSettingsOptions> configuration,
+            X509Certificate2 cert)
         {
+            this.configuration = configuration;
             cert2 = cert;
         }
 
         public string Encrypt(string plainText)
         {
-            string cipherText = string.Empty;
+            var cipherText = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(plainText))
             {
@@ -49,7 +53,7 @@ namespace HRP.Core.Services
 
         public string Decrypt(string cipherText)
         {
-            string plainText = string.Empty;
+            var plainText = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(cipherText))
             {
