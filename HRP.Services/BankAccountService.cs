@@ -43,7 +43,7 @@
                 return result == 1;
             }
 
-            return false;
+            return true;
         }
 
         public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)

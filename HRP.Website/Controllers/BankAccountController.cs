@@ -144,6 +144,8 @@
             var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
+            ////var test = new List<BankType>(bankTypes);
+
             var disabledBankTypes = new List<ReferenceResourceModel>();
 
             foreach (var bankType in bankTypes)
