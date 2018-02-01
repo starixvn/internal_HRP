@@ -28,7 +28,7 @@ var createEmployment = (function ($) {
     function displaySuccessMessage() {
         var $element = $createEmploymentForm.find('.msg-success');
         var delay = 5;
-        var textAlert = 'Created successfully. You will be redirected in ';
+        var textAlert = 'Employment has been successfully created. You will be redirected in ';
         $element.removeClass('hidden').html(textAlert + delay + ' seconds.');
 
         var intervalCountDown = setInterval(function () {

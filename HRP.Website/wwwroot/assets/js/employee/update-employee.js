@@ -26,7 +26,7 @@
 
     function onUpdateSuccess(response) {
         if (response.isSuccessful) {
-            commonFunctions.showSuccessMessage('Updated sucessfully!');
+            commonFunctions.showSuccessMessage('Personal Detail has been successfully updated!');
         } else {
             if (response.errors) {
                 $form.validate().showErrors(response.errors);
