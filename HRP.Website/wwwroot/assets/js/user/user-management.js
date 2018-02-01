@@ -19,14 +19,16 @@
 
         $('#user-table_length select').select2({
             placeholder: '',
-            minimumResultsForSearch: Infinity
+            minimumResultsForSearch: Infinity,
+            width: '70px'
         });
     }
 
     function initModule() {
         $('.js-select2').select2({
             placeholder: '',
-            minimumResultsForSearch: Infinity
+            minimumResultsForSearch: Infinity,
+            width: '92px'
         });
 
         initDataTable();
