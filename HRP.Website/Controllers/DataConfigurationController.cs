@@ -10,6 +10,7 @@
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
+    using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
@@ -355,7 +356,174 @@
             return PartialView("_CreateCostCenter", viewModel);
         }
 
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCostCenter(CostCenter costCenter)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, costCenter.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateCostCenterAsync(costCenter);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCostCenter(int id)
+        {
+            var costCenter = await dataConfigurationService.GetCostCenterByIdAsync(id);
+
+            if (costCenter != null)
+            {
+                var viewModal = new UpdateCostCenterViewModel
+                {
+                    FieldName = ViewLang.CostCenter,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter,
+                    CostCenter = costCenter
+                };
+
+                return PartialView("_UpdateCostCenter", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCostCenter(CostCenter costCenter)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, costCenter.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
         #endregion Cost Center
+
+        #region Section
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllSection()
+        {
+            var sections = await dataConfigurationService.GetAllSectionAsync();
+            var viewModel = new SectionTableViewModel
+            {
+                Sections = sections,
+                FieldName = ViewLang.Section,
+                LinkCreateItem = DataConfigurationActionLink.CreateSection,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateSection
+            };
+
+            return PartialView("_SectionTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateSection()
+        {
+            var viewModel = await dataConfigurationService.GetDataForCreateSectionAsync();
+            viewModel.FieldName = ViewLang.Section;
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateSection;
+
+            return PartialView("_CreateSection", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateSection(Section section)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedSectionAsync(section);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(section), ".", nameof(section.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, section.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateSectionAsync(section);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateSection(int id)
+        {
+            var section = await dataConfigurationService.GetSectionByIdAsync(id);
+
+            if (section != null)
+            {
+                var viewModal = new UpdateSectionViewModel
+                {
+                    FieldName = ViewLang.Section,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateSection,
+                    Section = section
+                };
+
+                return PartialView("_UpdateSection", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateSection(Section section)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedSectionAsync(section);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(section), ".", nameof(section.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, section.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateSectionAsync(section);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Section
+
+        #region Commons
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetDivisionSelectListByCompanyId(int companyId)
@@ -373,6 +541,22 @@
             return PartialView("_SelectListItem", departmentList);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetCostCenterSelectListByDepartmentId(int departmentId)
+        {
+            var costCenterList = await dataConfigurationService.GetCostCenterSelectListByDepartmentIdAsync(departmentId);
+
+            return PartialView("_SelectListItem", costCenterList);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetSectionSelectListByCostCenterId(int costCenterId)
+        {
+            var sectionList = await dataConfigurationService.GetSectionSelectListByCostCenterIdAsync(costCenterId);
+
+            return PartialView("_SelectListItem", sectionList);
+        }
+
         private static string UppercaseFirstLetter(string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -384,5 +568,7 @@
 
             return new string(a);
         }
+
+        #endregion Commons
     }
 }

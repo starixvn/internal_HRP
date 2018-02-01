@@ -43,6 +43,11 @@
   </Function>
   <Function Name="Section">
     <Setting Key="Section_GetByCostCenterId" SpName="Section_GetByCostCenterId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_GetAll" SpName="Section_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_CheckExists" SpName="Section_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_Create" SpName="Section_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_GetById" SpName="Section_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_Update" SpName="Section_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Job Category">
     <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>

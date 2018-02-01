@@ -14,6 +14,6 @@
 
         public override string GetSettingKey() => "Department_Create";
 
-        public override bool IsValid() => DivisionId > 0 && !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => DivisionId > 0 && !string.IsNullOrWhiteSpace(Code) && CreatedBy > 0;
     }
 }

@@ -7,6 +7,7 @@
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
+    using HRP.Models.DataConfiguration.Section;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IDataConfigurationService
@@ -51,9 +52,33 @@
 
         Task<CreateCostCenterViewModel> GetDataForCreateCostCenterAsync();
 
+        Task<bool> IsExistedCostCenterAsync(CostCenter costCenter);
+
+        Task<CommandResult> CreateCostCenterAsync(CostCenter costCenter);
+
+        Task<CostCenter> GetCostCenterByIdAsync(int id);
+
+        Task<CommandResult> UpdateCostCenterAsync(CostCenter costCenter);
+
+        Task<IEnumerable<Section>> GetAllSectionAsync();
+
+        Task<CreateSectionViewModel> GetDataForCreateSectionAsync();
+
+        Task<bool> IsExistedSectionAsync(Section section);
+
+        Task<CommandResult> CreateSectionAsync(Section section);
+
+        Task<Section> GetSectionByIdAsync(int id);
+
+        Task<CommandResult> UpdateSectionAsync(Section section);
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
         Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId);
+
+        Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId);
+
+        Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
     }
 }

@@ -23,5 +23,9 @@
         public const string CreateCostCenter = DataConfiguration + "/CreateCostCenter";
         public const string UpdateCostCenter = DataConfiguration + "/UpdateCostCenter";
         public const string GetAllCostCenter = DataConfiguration + "/GetAllCostCenter";
+
+        public const string CreateSection = DataConfiguration + "/CreateSection";
+        public const string UpdateSection = DataConfiguration + "/UpdateSection";
+        public const string GetAllSection = DataConfiguration + "/GetAllSection";
     }
 }

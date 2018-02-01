@@ -14,6 +14,6 @@
 
         public override string GetSettingKey() => "Department_Update";
 
-        public override bool IsValid() => DepartmentId > 0 && !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => DepartmentId > 0 && !string.IsNullOrWhiteSpace(Code) && UpdatedBy > 0;
     }
 }

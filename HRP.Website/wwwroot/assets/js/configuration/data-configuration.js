@@ -1,5 +1,13 @@
 ﻿var dataConfiguration = (function ($) {
-    var $filterFieldForm;
+    var domElement = {
+        FilterFieldForm: '#filterFieldForm',
+        CompanyId: '.js-companyId',
+        DivisionId: '.js-divisionId',
+        DepartmentId: '.js-departmentId',
+        CostCenterId: '.js-costCenterId',
+        SectionId: '.js-sectionId'
+    };
+    var htmlDefaultOption = '<option value=""></option>';
 
     function initDataTable() {
         $('#tableItems').dataTable({
@@ -27,7 +35,7 @@
     }
 
     function registerEventShowListItem() {
-        $filterFieldForm.on('submit', function (e) {
+        $(domElement.FilterFieldForm).on('submit', function (e) {
             e.preventDefault();
             var $fieldType = $('#fieldType');
             var $selectedField = $('#selectedField');
@@ -73,17 +81,12 @@
                     // ref
                     $('#createItemModalContent').html(data);
 
-                    // check if exists Division select
+                    registerEventChangeCompanyBVI();
+                    registerEventChangeDivision();
+                    registerEventChangeDepartment();
+                    registerEventChangeCostCenter();
+
                     var createFormName = '#createItemForm';
-                    var $createForm = $(createFormName);
-                    if ($createForm.find('.js-divisionId').length > 0) {
-                        registerEventChangeCompanyBVI();
-
-                        if ($createForm.find('.js-departmentId').length > 0) {
-                            registerEventChangeDivision();
-                        }
-                    }
-
                     initValidationForm(createFormName);
 
                     $('#newItemModal').modal('show');
@@ -94,36 +97,93 @@
     }
 
     function registerEventChangeCompanyBVI() {
-        $('.js-companyId').on('change', function () {
-            var companyId = $(this).val();
+        $(domElement.CompanyId).on('change', function () {
             //reset division, department, cost center....
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + 'DataConfiguration/GetDivisionSelectListByCompanyId',
-                dataType: 'html',
-                data: { companyId: companyId },
-                success: function (data) {
-                    $('.js-divisionId').html(data);
-                },
-                error: commonFunctions.handleAjaxError
-            });
+            var $divisionId = $(domElement.DivisionId);
+            $divisionId.html(htmlDefaultOption);
+            $(domElement.DepartmentId).html(htmlDefaultOption);
+            $(domElement.CostCenterId).html(htmlDefaultOption);
+            $(domElement.SectionId).html(htmlDefaultOption);
+
+            var companyId = $(this).val();
+            if (companyId !== "" && $divisionId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetDivisionSelectListByCompanyId',
+                    dataType: 'html',
+                    data: { companyId: companyId },
+                    success: function (data) {
+                        $divisionId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
         });
     }
 
     function registerEventChangeDivision() {
-        $('.js-divisionId').on('change', function () {
-            var divisionId = $(this).val();
+        $(domElement.DivisionId).on('change', function () {
+            var $departmentId = $(domElement.DepartmentId);
+            $departmentId.html(htmlDefaultOption);
+            $(domElement.CostCenterId).html(htmlDefaultOption);
+            $(domElement.SectionId).html(htmlDefaultOption);
 
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + 'DataConfiguration/GetDepartmentSelectListByDivisionId',
-                dataType: 'html',
-                data: { divisionId: divisionId },
-                success: function (data) {
-                    $('.js-departmentId').html(data);
-                },
-                error: commonFunctions.handleAjaxError
-            });
+            var divisionId = $(this).val();
+            if (divisionId !== "" && $departmentId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetDepartmentSelectListByDivisionId',
+                    dataType: 'html',
+                    data: { divisionId: divisionId },
+                    success: function (data) {
+                        $departmentId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
+        });
+    }
+
+    function registerEventChangeDepartment() {
+        $(domElement.DepartmentId).on('change', function () {
+            var $costCenterId = $(domElement.CostCenterId);
+            $costCenterId.html(htmlDefaultOption);
+            $(domElement.SectionId).html(htmlDefaultOption);
+
+            var departmentId = $(this).val();
+            if (departmentId !== "" && $costCenterId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetCostCenterSelectListByDepartmentId',
+                    dataType: 'html',
+                    data: { departmentId: departmentId },
+                    success: function (data) {
+                        $costCenterId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
+        });
+    }
+
+    function registerEventChangeCostCenter() {
+        $(domElement.CostCenterId).on('change', function () {
+            var $sectionId = $(domElement.SectionId);
+            $sectionId.html(htmlDefaultOption);
+
+            var costCenterId = $(this).val();
+            if (costCenterId !== "" && $sectionId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetSectionSelectListByCostCenterId',
+                    dataType: 'html',
+                    data: { costCenterId: costCenterId },
+                    success: function (data) {
+                        $sectionId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
         });
     }
 
@@ -153,7 +213,7 @@
         var $selectedField = $('#selectedField');
 
         $fieldType.val($selectedField.val());
-        $filterFieldForm.trigger('submit'); ////ref
+        $(domElement.FilterFieldForm).trigger('submit'); ////ref
     }
 
     function onCreateNewItemSuccess(response) {
@@ -199,7 +259,6 @@
     }
 
     function initModule() {
-        $filterFieldForm = $('#filterFieldForm');
         registerEventShowListItem();
     }
 

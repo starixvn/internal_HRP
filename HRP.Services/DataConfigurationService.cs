@@ -10,10 +10,12 @@
     using HRP.Criteria;
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
+    using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
+    using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,41 +34,49 @@
 
         public IEnumerable<Field> GetDataForIndexPage()
         {
-            var fieldList = new List<Field>();
-            fieldList.Add(new Field
+            var fieldList = new List<Field>
             {
-                FieldId = (int)FieldType.CompanyBVI,
-                FieldName = ViewLang.CompanyBVI,
-                LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyBVI
-            });
+                new Field                {
+                    FieldId = (int)FieldType.CompanyBVI,
+                    FieldName = ViewLang.CompanyBVI,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyBVI
+                },
 
-            fieldList.Add(new Field
-            {
-                FieldId = (int)FieldType.CompanyLocal,
-                FieldName = ViewLang.CompanyLocal,
-                LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyLocal
-            });
+                new Field
+                {
+                    FieldId = (int)FieldType.CompanyLocal,
+                    FieldName = ViewLang.CompanyLocal,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyLocal
+                },
 
-            fieldList.Add(new Field
-            {
-                FieldId = (int)FieldType.Division,
-                FieldName = ViewLang.Division,
-                LinkGetAllItem = DataConfigurationActionLink.GetAllDivision
-            });
+                new Field
+                {
+                    FieldId = (int)FieldType.Division,
+                    FieldName = ViewLang.Division,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllDivision
+                },
 
-            fieldList.Add(new Field
-            {
-                FieldId = (int)FieldType.Department,
-                FieldName = ViewLang.Department,
-                LinkGetAllItem = DataConfigurationActionLink.GetAllDepartment
-            });
+                new Field
+                {
+                    FieldId = (int)FieldType.Department,
+                    FieldName = ViewLang.Department,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllDepartment
+                },
 
-            fieldList.Add(new Field
-            {
-                FieldId = (int)FieldType.CostCenter,
-                FieldName = ViewLang.CostCenter,
-                LinkGetAllItem = DataConfigurationActionLink.GetAllCostCenter
-            });
+                new Field
+                {
+                    FieldId = (int)FieldType.CostCenter,
+                    FieldName = ViewLang.CostCenter,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCostCenter
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.Section,
+                    FieldName = ViewLang.Section,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllSection
+                }
+            };
 
             return fieldList.OrderBy(x => x.FieldName);
         }
@@ -346,7 +356,150 @@
             return viewModel;
         }
 
+        public async Task<bool> IsExistedCostCenterAsync(CostCenter costCenter)
+        {
+            var criteria = new CheckCostCenterExistsCriteria
+            {
+                CostCenterId = costCenter.CostCenterId,
+                Code = costCenter.Code,
+                DepartmentId = costCenter.DepartmentId
+            };
+
+            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateCostCenterAsync(CostCenter costCenter)
+        {
+            var criteria = new CreateCostCenterCriteria
+            {
+                Code = costCenter.Code,
+                Name = costCenter.Name,
+                DepartmentId = costCenter.DepartmentId,
+                IsActive = costCenter.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<CostCenter> GetCostCenterByIdAsync(int id)
+        {
+            var costCenter = await baseService.GetDataEntityAsync<CostCenter>(new GetCostCenterByIdCriteria { CostCenterId = id }).ConfigureAwait(false);
+
+            return costCenter;
+        }
+
+        public async Task<CommandResult> UpdateCostCenterAsync(CostCenter costCenter)
+        {
+            var criteria = new UpdateCostCenterCriteria
+            {
+                CostCenterId = costCenter.CostCenterId,
+                Code = costCenter.Code,
+                Name = costCenter.Name,
+                IsActive = costCenter.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
         #endregion Cost Center
+
+        #region Section
+
+        public async Task<IEnumerable<Section>> GetAllSectionAsync()
+        {
+            var sections = await baseService.GetDataAsync<Section>(new GetAllSectionCriteria()).ConfigureAwait(false);
+
+            return sections;
+        }
+
+        public async Task<CreateSectionViewModel> GetDataForCreateSectionAsync()
+        {
+            var viewModel = new CreateSectionViewModel
+            {
+                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
+            };
+
+            return viewModel;
+        }
+
+        public async Task<bool> IsExistedSectionAsync(Section section)
+        {
+            var criteria = new CheckSectionExistsCriteria
+            {
+                SectionId = section.SectionId,
+                Code = section.Code,
+                CostCenterId = section.CostCenterId
+            };
+
+            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateSectionAsync(Section section)
+        {
+            var criteria = new CreateSectionCriteria
+            {
+                Code = section.Code,
+                Name = section.Name,
+                CostCenterId = section.CostCenterId,
+                IsActive = section.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<Section> GetSectionByIdAsync(int id)
+        {
+            var section = await baseService.GetDataEntityAsync<Section>(new GetSectionByIdCriteria { SectionId = id }).ConfigureAwait(false);
+
+            return section;
+        }
+
+        public async Task<CommandResult> UpdateSectionAsync(Section section)
+        {
+            var criteria = new UpdateSectionCriteria
+            {
+                SectionId = section.SectionId,
+                Code = section.Code,
+                Name = section.Name,
+                IsActive = section.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Section
 
         #region Common
 
@@ -364,6 +517,22 @@
             var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
 
             return new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
+        }
+
+        public async Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId)
+        {
+            var criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = departmentId };
+            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
+
+            return new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
+        }
+
+        public async Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId)
+        {
+            var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId };
+            var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
+
+            return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
         }
 
         private async Task<SelectList> GetCompanyBVISelectListAsync()
