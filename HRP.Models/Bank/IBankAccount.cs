@@ -1,9 +1,10 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Mvc;
     using Resources;
 
-    // For StringLengthAttribute source code: 
+    // For StringLengthAttribute source code:
     // https://github.com/Microsoft/referencesource/blob/master/System.ComponentModel.DataAnnotations/DataAnnotations/StringLengthAttribute.cs
     // Line 76
 
@@ -19,6 +20,10 @@
         [Display(ResourceType = typeof(ViewLang), Name = "AccountNumber")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Remote(
+            action: "CheckBankAccountExisted",
+            controller: "BankAccount",
+            AdditionalFields = nameof(Id) + "," + nameof(AccountName) + "," + nameof(EmployeeId))]
         string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]
@@ -52,7 +57,7 @@
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
         string BeneficiaryName { get; set; }
-        
+
         int EmployeeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "BankAccount_IsActive")]

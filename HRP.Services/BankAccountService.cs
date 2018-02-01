@@ -24,6 +24,28 @@
             return baseService.ExecuteNonQuery(criteria);
         }
 
+        public bool CheckIsBankAccountExisted(IBankAccount bankAccount)
+        {
+            var criteria = new CheckBankAccountExistedCriteria
+            {
+                Id = bankAccount.Id,
+                AccountName = bankAccount.AccountName,
+                AccountNumber = bankAccount.AccountNumber,
+                EmployeeId = bankAccount.EmployeeId
+            };
+
+            if (criteria.IsValid())
+            {
+                var result = baseService.GetDataEntity<int>(criteria);
+
+                // 1: Existed
+                // 0: Not Existed
+                return result == 1;
+            }
+
+            return false;
+        }
+
         public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria

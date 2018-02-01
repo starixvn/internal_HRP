@@ -1,7 +1,9 @@
 var formhandler = {
     init: function () {
-        $("form").on("submit input change keyup",
-            function () {
+        formhandler.checkFormError();
+
+        $("form").on("submit input change keyup click",
+            function() {
                 formhandler.checkFormError();
             });
     },

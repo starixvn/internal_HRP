@@ -3,7 +3,9 @@
     using System.Linq;
     using Core.Constants;
     using Core.Enumerations;
+    using Core.Extensions;
     using Core.Filters;
+    using Core.Model;
     using Core.Services;
     using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
@@ -90,23 +92,41 @@
             return View(viewModel);
         }
 
+        [AcceptVerbs("Get", "Post")]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult CheckBankAccountExisted(BankAccount bankAccount)
+        {
+            var isExisted = bankAccountService.CheckIsBankAccountExisted(bankAccount);
+
+            return isExisted ? Json(data: nameof(BankAccountError.AccountExisted)) : Json(data: true);
+        }
+
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
-            viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
-            var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+            CommandResult result = null;
 
-            if (result.IsSuccessful)
+            if (ModelState.IsValid)
             {
-                var redirectViewModel =
-                    new EmployeeBankAccountsViewModel { EmployeeId = viewModel.EmployeeId };
-                return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+                viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
+                result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+
+                if (result.IsSuccessful)
+                {
+                    var redirectViewModel =
+                        new EmployeeBankAccountsViewModel { EmployeeId = viewModel.EmployeeId };
+                    return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+                }
             }
 
             PrepareCreateBankAccountViewModel(viewModel);
 
-            ModelState.AddModelError("BankAccount.AccountName", nameof(CreateBankAccountError.AccountExisted));
+            if (result != null)
+            {
+                viewModel.Error = (BankAccountError)result.Code;
+                ModelState.AddModelError("BankAccount.AccountName", viewModel.Error.GetDisplayName());
+            }
 
             return View(viewModel);
         }

@@ -29,6 +29,10 @@
 
         public IBankAccount BankAccount { get; set; }
 
+        public bool IsBankAccountExisted { get; set; }
+
+        public BankAccountError Error { get; set; }
+
         public void Initialize(
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
@@ -45,7 +49,7 @@
         }
     }
 
-    public enum CreateBankAccountError
+    public enum BankAccountError
     {
         [Display(Name = "Account Name and Account Number existed. Please enter another value")]
         AccountExisted = 1

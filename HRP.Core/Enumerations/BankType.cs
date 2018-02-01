@@ -10,6 +10,7 @@ namespace HRP.Core.Enumerations
         [Display(Name = "Direct Banking")]
         DirectBanking = 2,
 
+        // TODO: Will create bug when user create new Bank Type on DB - Noted by Hunter
         [Display(Name = "Contra Co. Account")]
         ContraCoAccount = 3,
     }
