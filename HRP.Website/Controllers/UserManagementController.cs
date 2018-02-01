@@ -37,21 +37,19 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
-        public IActionResult Index()
+        public IActionResult Index(UserStatus? status)
         {
             var viewModel = new UserManagementViewModel
             {
-                CanCreateNewUser = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host)
+                CanCreateNewUser = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host),
             };
 
-            return View(viewModel);
-        }
+            if(status != null)
+            {
+                viewModel.Status = status == UserStatus.Active;
+            }
 
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
-        public IActionResult GetUsers(bool? status)
-        {
-            return ViewComponent("UserTable", new { status });
+            return View(viewModel);
         }
 
         [HttpGet]

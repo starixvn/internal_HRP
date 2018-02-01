@@ -29,7 +29,7 @@
             minimumResultsForSearch: Infinity
         });
 
-        $('form').submit();
+        initDataTable();
     };
 
     return {

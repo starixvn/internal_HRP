@@ -162,7 +162,6 @@
   {
     "outputFileName": "wwwroot/assets/bundles/user/js/user-management.min.js",
     "inputFiles": [
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/datatables.net/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.min.js",
       "wwwroot/lib/select2/dist/js/select2.js",

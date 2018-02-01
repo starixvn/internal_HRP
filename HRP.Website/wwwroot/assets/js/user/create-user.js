@@ -1,6 +1,7 @@
 ﻿var createUser = (function ($) {
     $(function () {
-        var settings = $.data($('#create-user-form')[0], 'validator').settings;
+        var $form = $('#create-user-form')[0];
+        var settings = $.data($form, 'validator').settings;
         settings.onkeyup = false;
 
         $('#show-password').on('change', function () {
@@ -10,6 +11,8 @@
                 $('#Password').attr('type', 'password');
             }
         });
+
+        $form.reset();
     });
 
     var displayValidationErrorMessages = function (errors) {

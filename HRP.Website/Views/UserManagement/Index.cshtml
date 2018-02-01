@@ -1,5 +1,7 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Enumerations
 @using HRP.Models.UserManagement
+@using HRP.Resources
+
 @model UserManagementViewModel
 
 @section Styles {
@@ -18,19 +20,18 @@
     <li class="like-link">Configuration</li>
     <li class="active">@ViewLang.UserManagement</li>
 </ol>
-<form class="search-form" asp-action="GetUsers" asp-controller="UserManagement"
-      data-ajax-method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="userManagement.onSearchSuccess">
+<form class="search-form" asp-action="Index" asp-controller="UserManagement" method="get">
     <div class="group">
         <label class="text">@ViewLang.Status</label>
-        <select class="control js-select2" name="status">
+        <select class="control js-select2" asp-for="Status">
             <option>@ViewLang.All</option>
-            <option value="true">@ViewLang.Active</option>
-            <option value="false">@ViewLang.Inactive</option>
+            <option value="@UserStatus.Active">@ViewLang.Active</option>
+            <option value="@UserStatus.Inactive">@ViewLang.Inactive</option>
         </select>
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
-    </div>    
+    </div>
 </form>
 
 <div class="top-header">
@@ -50,12 +51,11 @@
 </div>
 
 <div id="result">
-    @*@await Component.InvokeAsync("UserTable")*@
+    @await Component.InvokeAsync("UserTable", new { status = Model.Status })
 </div>
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>

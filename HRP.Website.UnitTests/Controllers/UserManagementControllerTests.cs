@@ -33,7 +33,7 @@
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userController.Index();
+            var actual = userController.Index(null);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -242,20 +242,6 @@
         }
 
         #endregion EditUser
-
-        [Fact]
-        public void GetUsers_WhenCalled_ReturnExpectedView()
-        {
-            // Arrange
-            var userController = GetUserManagementController();
-            sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
-
-            // Act
-            var actual = userController.GetUsers(true);
-
-            // Assert
-            Assert.IsType<ViewComponentResult>(actual);
-        }
 
         [Fact]
         public void CheckUsernameExisted_ExistedUserName_ReturnFalse()
