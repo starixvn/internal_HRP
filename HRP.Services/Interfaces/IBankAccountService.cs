@@ -8,7 +8,7 @@
     {
         CommandResult CreateBankAccount(IBankAccount bankAccount);
 
-        EmployeeBankAccountsViewModel GetBankAccountsByEmployeeId(int employeeId);
+        EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId);
 
         CommandResult UpdateBankAccount(IBankAccount bankAccount);
 

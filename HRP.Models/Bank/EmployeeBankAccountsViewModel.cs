@@ -2,10 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EmployeeBankAccountsViewModel
+    public class EmployeeBankAccountsViewModel : EmployeeBankAccounts
     {
         public EmployeeBankAccountsViewModel(
             IEnumerable<ReferenceResourceModel> bankTypes,
@@ -18,12 +17,6 @@
         {
         }
 
-        public int EmployeeId { get; set; }
-
-        public string EmployeeName { get; set; }
-
-        public int CompanyId { get; set; }
-
         public int[] SelectedBankTypes { get; set; }
 
         public MultiSelectList BankTypes { get; set; }
@@ -33,8 +26,6 @@
         public List<SelectListItem> BankAccountActive { get; set; }
 
         public IEnumerable<ReferenceResourceModel> BankAccountTypes { get; set; }
-
-        public IList<BankAccount> BankAccounts { get; set; }
 
         public void Initialize(IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
@@ -82,7 +73,7 @@
                 bankTypesWithAllOption,
                 nameof(ReferenceResourceModel.ResourceId),
                 nameof(ReferenceResourceModel.Value));
-            
+
             ////BankTypes = bankTypes.ToList();
         }
 

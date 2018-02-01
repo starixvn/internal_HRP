@@ -24,7 +24,7 @@
             return baseService.ExecuteNonQuery(criteria);
         }
 
-        public EmployeeBankAccountsViewModel GetBankAccountsByEmployeeId(int employeeId)
+        public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
             {
@@ -36,7 +36,7 @@
                 using (var results = db.QueryMultiple(criteria))
                 {
                     var viewModel =
-                        new EmployeeBankAccountsViewModel
+                        new EmployeeBankAccounts
                         {
                             BankAccounts = results.Read<BankAccount>().ToList(),
                             CompanyId = results.ReadSingle<int>(),

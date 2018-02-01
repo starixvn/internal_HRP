@@ -14,7 +14,6 @@
     public class BankAccountController : BaseController
     {
         private readonly IBaseService baseService;
-        private readonly IEmployeeManagementService employeeManagementService;
         private readonly IBankAccountService bankAccountService;
         private readonly IRefResourceService refResourceService;
         private readonly ISessionService sessionService;
@@ -28,13 +27,11 @@
 
         public BankAccountController(
             IBaseService baseService,
-            IEmployeeManagementService employeeManagementService,
             IBankAccountService bankAccountService,
             IRefResourceService refResourceService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
             this.baseService = baseService;
-            this.employeeManagementService = employeeManagementService;
             this.bankAccountService = bankAccountService;
             this.refResourceService = refResourceService;
             this.sessionService = sessionService;
@@ -54,9 +51,10 @@
 
             viewModel.BankAccounts = data.BankAccounts;
             viewModel.EmployeeName = data.EmployeeName;
-            viewModel.CompanyId = data.CompanyId;
 
             viewModel.Initialize(bankTypes, bankAccountTypes);
+
+            viewModel.CompanyId = data.CompanyId;
 
             viewModel.CanCreate = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
                                   && sessionService.HasPermissionOnCompany(
@@ -85,20 +83,9 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(int employeeId)
         {
-            var employee = employeeManagementService.GetPersonalDetails(employeeId);
+            var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
 
-            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
-
-            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
-
-            var viewModel = new CreateBankAccountViewModel
-            {
-                EmployeeId = employeeId,
-                EmployeeName = employee.FullName
-            };
-
-            viewModel.Initialize(employee.FullName, bankTypes, bankAccountTypes);
+            PrepareCreateBankAccountViewModel(viewModel);
 
             return View(viewModel);
         }
@@ -107,19 +94,35 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
+            viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
             var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
 
             if (result.IsSuccessful)
             {
-                var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+                var redirectViewModel =
+                    new EmployeeBankAccountsViewModel { EmployeeId = viewModel.EmployeeId };
                 return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
-            else
-            {
-                ModelState.AddModelError("BankAccount.AccountName",nameof(CreateBankAccountError.AccountExisted));
-            }
+
+            PrepareCreateBankAccountViewModel(viewModel);
+
+            ModelState.AddModelError("BankAccount.AccountName", nameof(CreateBankAccountError.AccountExisted));
 
             return View(viewModel);
+        }
+
+        private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel)
+        {
+            var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
+            ////viewModel.EmployeeId = data.EmployeeId;
+            viewModel.EmployeeName = data.EmployeeName;
+
+            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+
+            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+
+            viewModel.Initialize(bankTypes, bankAccountTypes);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
@@ -127,7 +130,7 @@
         {
             var bankAccount = bankAccountService.GetBankAccountById(bankAccountId);
 
-            var employee = employeeManagementService.GetPersonalDetails(bankAccount.EmployeeId);
+            var data = bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId);
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
@@ -137,10 +140,10 @@
             var viewModel = new EditBankAccountViewModel
             {
                 EmployeeId = bankAccount.EmployeeId,
-                EmployeeName = employee.FullName
+                EmployeeName = data.EmployeeName
             };
 
-            viewModel.Initialize(employee.FullName, bankAccount, bankTypes, bankAccountTypes);
+            viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes);
 
             return View(viewModel);
         }

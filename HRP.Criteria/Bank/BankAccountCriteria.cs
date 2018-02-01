@@ -1,9 +1,8 @@
 ﻿namespace HRP.Criteria.Bank
 {
-    using Fanex.Data.Repository;
     using Models.Bank;
 
-    public abstract class BankAccountCriteria : CriteriaBase, IBankAccount
+    public abstract class BankAccountCriteria : CommandBaseCriteria, IBankAccount
     {
         protected BankAccountCriteria(IBankAccount bankAccount)
         {

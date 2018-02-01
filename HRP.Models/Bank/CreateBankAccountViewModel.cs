@@ -7,12 +7,11 @@
     public class CreateBankAccountViewModel
     {
         public CreateBankAccountViewModel(
-            string employeeName,
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
             BankAccount = new BankAccount();
-            Initialize(employeeName, bankTypes, bankAccountTypes);
+            Initialize(bankTypes, bankAccountTypes);
         }
 
         public CreateBankAccountViewModel()
@@ -31,12 +30,9 @@
         public IBankAccount BankAccount { get; set; }
 
         public void Initialize(
-            string employeeName,
             IEnumerable<ReferenceResourceModel> bankTypes,
             IEnumerable<ReferenceResourceModel> bankAccountTypes)
         {
-            EmployeeName = employeeName;
-
             BankTypes = new SelectList(
                 bankTypes,
                 nameof(ReferenceResourceModel.ResourceId),
