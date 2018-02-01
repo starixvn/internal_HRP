@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Core.Constants;
     using Core.Enumerations;
@@ -9,6 +10,7 @@
     using Core.Services;
     using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
     using Models.Bank;
     using Services.Interfaces;
 
@@ -19,6 +21,7 @@
         private readonly IBankAccountService bankAccountService;
         private readonly IRefResourceService refResourceService;
         private readonly ISessionService sessionService;
+        private const int MAX_BANK_ACCOUNT_PER_TYPE = 3;
 
         private readonly string[] refNames =
         {
@@ -124,8 +127,7 @@
 
             if (result != null)
             {
-                viewModel.Error = (BankAccountError)result.Code;
-                ModelState.AddModelError("BankAccount.AccountName", viewModel.Error.GetDisplayName());
+                ModelState.AddModelError("BankAccount.AccountName", ((BankAccountError)result.Code).GetDisplayName());
             }
 
             return View(viewModel);
@@ -134,7 +136,7 @@
         private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel)
         {
             var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
-            ////viewModel.EmployeeId = data.EmployeeId;
+
             viewModel.EmployeeName = data.EmployeeName;
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
@@ -142,7 +144,18 @@
             var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
-            viewModel.Initialize(bankTypes, bankAccountTypes);
+            var disabledBankTypes = new List<ReferenceResourceModel>();
+
+            foreach (var bankType in bankTypes)
+            {
+                var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.ResourceId && x.IsActive);
+                if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE)
+                {
+                    disabledBankTypes.Add(bankType);
+                }
+            }
+
+            viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
