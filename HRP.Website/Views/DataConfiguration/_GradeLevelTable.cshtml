@@ -1,0 +1,42 @@
+﻿@using HRP.Resources
+@using HRP.Models.DataConfiguration.GradeLevel
+@model GradeLevelTableViewModel
+@{
+    var rowNumber = 1;
+}
+
+@Html.Partial("_TopHeaderTable", Model.LinkCreateItem)
+<table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>@ViewLang.SymbolCount</th>
+            <th>@Model.FieldName</th>
+            <th>@ViewLang.Description</th>
+            <th>@ViewLang.JobCategory</th>
+            <th class="col-active">@ViewLang.Active</th>
+            <th class="col-edit">@ViewLang.Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GradeLevelList)
+        {
+            <tr>
+                <td>@rowNumber</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.JobCategoryName</td>
+                <td class="text-center has-icon">
+                    @if (item.IsActive)
+                    {
+                        <span class="icon-active"></span>
+                    }
+                </td>
+                <td class="text-center has-icon">
+                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.LinkUpdateItem" data-item-id="@item.GradeLevelId"></span>
+                </td>
+            </tr>
+
+            rowNumber++;
+        }
+    </tbody>
+</table>

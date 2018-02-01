@@ -7,6 +7,8 @@
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
+    using HRP.Models.DataConfiguration.Division;
+    using HRP.Models.DataConfiguration.GradeLevel;
     using HRP.Models.DataConfiguration.Section;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -71,6 +73,18 @@
         Task<Section> GetSectionByIdAsync(int id);
 
         Task<CommandResult> UpdateSectionAsync(Section section);
+
+        Task<IEnumerable<GradeLevel>> GetAllGradeLevelAsync();
+
+        Task<CreateGradeLevelViewModel> GetDataForCreateGradeLevelAsync();
+
+        Task<bool> IsExistedGradeLevelAsync(GradeLevel gradeLevel);
+
+        Task<CommandResult> CreateGradeLevelAsync(GradeLevel gradeLevel);
+
+        Task<GradeLevel> GetGradeLevelByIdAsync(int id);
+
+        Task<CommandResult> UpdateGradeLevelAsync(GradeLevel gradeLevel);
 
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);

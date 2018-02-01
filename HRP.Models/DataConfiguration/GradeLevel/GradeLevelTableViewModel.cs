@@ -1,10 +1,11 @@
-﻿namespace HRP.Models.DataConfiguration
+﻿namespace HRP.Models.DataConfiguration.GradeLevel
 {
     using System.Collections.Generic;
+    using HRP.Models;
 
-    public class DivisionTableViewModel
+    public class GradeLevelTableViewModel
     {
-        public IEnumerable<Division> Divisions { get; set; }
+        public IEnumerable<GradeLevel> GradeLevelList { get; set; }
 
         public string FieldName { get; set; }
 

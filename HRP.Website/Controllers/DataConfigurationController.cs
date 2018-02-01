@@ -10,6 +10,8 @@
     using HRP.Models.DataConfiguration;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
+    using HRP.Models.DataConfiguration.Division;
+    using HRP.Models.DataConfiguration.GradeLevel;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -522,6 +524,103 @@
         }
 
         #endregion Section
+
+        #region Grade Level
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllGradeLevel()
+        {
+            var gradeLevelList = await dataConfigurationService.GetAllGradeLevelAsync();
+            var viewModel = new GradeLevelTableViewModel
+            {
+                GradeLevelList = gradeLevelList,
+                FieldName = ViewLang.GradeLevel,
+                LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel
+            };
+
+            return PartialView("_GradeLevelTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateGradeLevel()
+        {
+            var viewModel = await dataConfigurationService.GetDataForCreateGradeLevelAsync();
+            viewModel.FieldName = ViewLang.GradeLevel;
+            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel;
+
+            return PartialView("_CreateGradeLevel", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateGradeLevel(GradeLevel gradeLevel)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, gradeLevel.Name));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateGradeLevel(int id)
+        {
+            var gradeLevel = await dataConfigurationService.GetGradeLevelByIdAsync(id);
+
+            if (gradeLevel != null)
+            {
+                var viewModal = new UpdateGradeLevelViewModel
+                {
+                    FieldName = ViewLang.GradeLevel,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel,
+                    GradeLevel = gradeLevel
+                };
+
+                return PartialView("_UpdateGradeLevel", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateGradeLevel(GradeLevel gradeLevel)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, gradeLevel.Name));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Grade Level
 
         #region Commons
 

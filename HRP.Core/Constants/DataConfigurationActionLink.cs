@@ -27,5 +27,13 @@
         public const string CreateSection = DataConfiguration + "/CreateSection";
         public const string UpdateSection = DataConfiguration + "/UpdateSection";
         public const string GetAllSection = DataConfiguration + "/GetAllSection";
+
+        public const string CreateJobCategory = DataConfiguration + "/CreateJobCategory";
+        public const string UpdateJobCategory = DataConfiguration + "/UpdateJobCategory";
+        public const string GetAllJobCategory = DataConfiguration + "/GetAllJobCategory";
+
+        public const string CreateGradeLevel = DataConfiguration + "/CreateGradeLevel";
+        public const string UpdateGradeLevel = DataConfiguration + "/UpdateGradeLevel";
+        public const string GetAllGradeLevel = DataConfiguration + "/GetAllGradeLevel";
     }
 }

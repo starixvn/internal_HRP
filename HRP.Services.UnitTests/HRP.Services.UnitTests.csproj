@@ -241,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankAccountServiceTests.cs" />
+    <Compile Include="DataConfigurationServiceTests.cs" />
     <Compile Include="EmployeeManagementServiceTests.cs" />
     <Compile Include="Employee\EmployeePayrollServiceTest.cs" />
     <Compile Include="FunctionServiceTests.cs" />

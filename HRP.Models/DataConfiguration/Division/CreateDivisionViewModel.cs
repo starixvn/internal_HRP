@@ -1,5 +1,6 @@
-﻿namespace HRP.Models.DataConfiguration
+﻿namespace HRP.Models.DataConfiguration.Division
 {
+    using HRP.Models;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateDivisionViewModel

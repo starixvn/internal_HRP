@@ -32,6 +32,12 @@ namespace HRP.Core.Enumerations
         CostCenter = 24,
 
         [Display(Name = "Section")]
-        Section = 22
+        Section = 22,
+
+        [Display(Name = "Job Category")]
+        JobCategory = 13,
+
+        [Display(Name = "Grade Level")]
+        GradeLevel = 15
     }
 }
