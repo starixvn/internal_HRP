@@ -33,7 +33,7 @@
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userController.Index(null);
+            var actual = userController.Index(UserStatus.Active);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
