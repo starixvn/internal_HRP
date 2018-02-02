@@ -394,7 +394,6 @@
     <Compile Include="Controllers\UserManagementControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewComponents\MenuViewComponentTests.cs" />
-    <Compile Include="ViewComponents\UserTableViewComponentTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

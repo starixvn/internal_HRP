@@ -1,8 +1,13 @@
 ﻿namespace HRP.Models.UserManagement
 {
+    using System.Collections.Generic;
+
     public class UserManagementViewModel
     {
-        public bool CanCreateNewUser { get; set; }
         public bool? Status { get; set; }
+
+        public bool IsHost { get; set; }
+
+        public IEnumerable<UserModel> Users { get; set; } = new List<UserModel>();
     }
 }

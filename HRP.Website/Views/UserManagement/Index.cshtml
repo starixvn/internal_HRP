@@ -1,8 +1,15 @@
-﻿@using HRP.Core.Enumerations
-@using HRP.Models.UserManagement
+﻿@using HRP.Core.Constants
+@using HRP.Models
 @using HRP.Resources
+@using HRP.Core.Enumerations
+@using HRP.Models.UserManagement
 
 @model UserManagementViewModel
+
+@{
+    var rowNumber = 1;
+    var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
+}
 
 @section Styles {
     <environment include="Development">
@@ -36,7 +43,7 @@
 
 <div class="top-header">
     <div class="pull-left">
-        @if (Model.CanCreateNewUser)
+        @if (Model.IsHost)
         {
             <a asp-action="CreateUser" asp-controller="UserManagement" class="button -add create-user" id="btn-create-user">
                 <span class="icon-add"></span>
@@ -50,9 +57,78 @@
     </div>
 </div>
 
-<div id="result">
-    @await Component.InvokeAsync("UserTable", new { status = Model.Status })
-</div>
+<table id="user-table" class="table table-bordered table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>@ViewLang.SymbolCount</th>
+            <th>@ViewLang.Username</th>
+            <th>@ViewLang.FullName</th>
+            <th>@ViewLang.PhoneNo</th>
+            <th>@ViewLang.EmailAdd</th>
+            <th>@ViewLang.Creator</th>
+            <th>@ViewLang.CreatedDate</th>
+            <th>@ViewLang.Active</th>
+            <th>@ViewLang.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr id="user-@user.UserId">
+                <td class="text-center">@rowNumber</td>
+                <td>@user.Username</td>
+                <td>@user.FullName</td>
+                <td>@user.Phone</td>
+                <td>@user.Email</td>
+                <td class="text-center">@user.CreatedBy</td>
+                <td class="text-center">@Html.DisplayFor(x => user.CreatedDate)</td>
+                <td class="text-center has-icon">
+                    @if (user.IsActive)
+                    {
+                        <span class="icon-active"></span>
+                    }
+                </td>
+                <td class="text-center has-icon">
+                    <div class="dropdown config-action">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-@user.UserId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="icon-configuration"></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-@user.UserId">
+                            @if (Model.IsHost && (!user.IsSystemAdmin || isSystemAdmin))
+                            {
+                                <li>
+                                    <a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId">
+                                        <span class="icon-details"></span>@ViewLang.EditUserDetails
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId">
+                                        <span class="icon-permission"></span>@ViewLang.EditUserPermission
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId">
+                                        <span class="icon-edit"></span>@ViewLang.ViewUserDetails
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="AssignPermission" asp-controller="UserManagement" asp-route-id="@user.UserId">
+                                        <span class="icon-permission"></span>@ViewLang.ViewUserPermission
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            rowNumber++;
+        }
+    </tbody>
+</table>
 
 @section Scripts {
     <environment include="Development">

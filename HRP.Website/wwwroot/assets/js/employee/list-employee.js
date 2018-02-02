@@ -63,38 +63,18 @@ var listEmployee = {
             'ordering': true,
             'order': [[1, "asc"]],
             "columns": [
-                {
-                    "sortable": false
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": true
-                },
-                {
-                    "sortable": false
-                }
+                { "sortable": false },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": true },
+                { "sortable": false }
             ],
-            'lengthMenu': [[50, 100, 500], [50, 100, 500]],
+            'lengthMenu': [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             'info': false,
             'language': {

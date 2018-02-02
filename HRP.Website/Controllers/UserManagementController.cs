@@ -37,17 +37,16 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
-        public IActionResult Index(UserStatus? status)
+        public async Task<IActionResult> Index(UserStatus? status)
         {
             var viewModel = new UserManagementViewModel
             {
-                CanCreateNewUser = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host),
+                Status = status.HasValue ? status == UserStatus.Active : (bool?)null,
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host),
             };
 
-            if(status != null)
-            {
-                viewModel.Status = status == UserStatus.Active;
-            }
+            var criteria = new GetUsersCriteria { IsActive = viewModel.Status };
+            viewModel.Users = await baseService.GetDataAsync<UserModel>(criteria);
 
             return View(viewModel);
         }

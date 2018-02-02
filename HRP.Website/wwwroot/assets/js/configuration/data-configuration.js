@@ -12,7 +12,7 @@
     function initDataTable() {
         $('#tableItems').dataTable({
             'ordering': false,
-            'lengthMenu': [[20, 50, 100], [20, 50, 100]],
+            'lengthMenu': [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             'info': false,
             'language': {

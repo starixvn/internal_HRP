@@ -1,5 +1,6 @@
 ﻿var commonFunctions = (function ($) {
-    var rootURL;
+    var rootURL,
+        pagerRanges = [20, 50, 100];
 
     function showErrorMessage(message) {
         $('.msg-error').text(message).removeClass('hidden');
@@ -100,6 +101,7 @@
     return {
         initModule: initModule,
         rootURL: $('#RootURL').val(),
+        pagerRanges: pagerRanges,
         handleAjaxError: handleAjaxError,
         showErrorMessage: showErrorMessage,
         showSuccessMessage: showSuccessMessage,

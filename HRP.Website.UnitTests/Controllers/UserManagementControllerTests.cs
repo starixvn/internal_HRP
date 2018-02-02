@@ -26,19 +26,28 @@
         private IFunctionService functionService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
+        public async Task Index_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
+            var users = new List<UserModel>
+            {
+                new UserModel { UserId = 1, Username = "tim.trinh", FullName = "thang", Email = "tim.trinh@gmail.com", IsActive = true },
+                new UserModel { UserId = 2, Username = "hunter.tran", FullName = "tuan", Email = "hunter.tran@gmail.com", IsActive = false },
+                new UserModel { UserId = 3, Username = "raymond.le", FullName = "quang", Email = "raymond.le@gmail.com", IsActive = true }
+            };
             var userController = GetUserManagementController();
+            baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users);
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userController.Index(UserStatus.Active);
+            var actual = await userController.Index(UserStatus.Active);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
-            Assert.IsAssignableFrom<UserManagementViewModel>(viewResult.Model);
+            Assert.True(viewModel.IsHost);
+            Assert.Equal(users, viewModel.Users);
         }
 
         #region AssignPermission
