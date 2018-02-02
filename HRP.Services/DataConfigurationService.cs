@@ -145,7 +145,7 @@
             {
                 return new SimpleItem
                 {
-                    ItemId = id,
+                    ItemId = company.CompanyId,
                     ItemName = company.Code,
                     Description = company.Name,
                     IsActive = company.IsActive

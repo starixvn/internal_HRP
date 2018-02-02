@@ -2,6 +2,8 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using HRP.Core.CustomValidations;
+    using HRP.Core.Enumerations;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,6 +47,11 @@
         [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoMaxLength")]
         public string PassportNo { get; set; }
 
+        [GenericCompare(
+            CompareToPropertyName = nameof(ExpiredDate),
+            DisplayName = "Date Issue",
+            OtherPropertyDisplayName = "Expired Date",
+            Operator = GenericCompareOperator.LessThanOrEqual)]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateIssueRequired")]
         public DateTime DateIssue { get; set; }
 
