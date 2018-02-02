@@ -2,14 +2,15 @@
 
 var listEmployee = {
     init: function () {
-        listEmployee.query();
+        listEmployee.initDataTable();
         listEmployee.searchEmployeeSuggestion();
+        listEmployee.initSelect2();
     },
 
     getValueIsSelected: function (inputIds, selectId) {
         var idsValue = inputIds.split(",");
         for (var i = 0; i < idsValue.length; i++) {
-            if (idsValue[i] == selectId) return true;
+            if (idsValue[i] === selectId) return true;
         }
         return false;
     },
@@ -26,21 +27,6 @@ var listEmployee = {
         }
         $(message).hide();
         $(input).removeClass("validation-error");
-    },
-
-    query: function () {
-        $.ajax({
-            url: commonFunctions.rootURL + 'EmployeeManagement/EmployeeList',
-            type: 'GET',
-            dataType: 'html',
-            data: $('form.form-filter').serialize(),
-            success: function (response) {
-                $('#employee-list').html(response);
-                listEmployee.initDataTable();
-                listEmployee.initSelect2();
-            },
-            error: commonFunctions.handleAjaxError
-        });
     },
 
     showSelectError: function () {
@@ -198,7 +184,7 @@ var listDepartment = {
     GetDivisionIds: function (divisions, companyId, departments) {
         var value = [];
         for (var i = 0; i < divisions.length; i++) {
-            if (divisions[i].companyId == companyId) {
+            if (divisions[i].companyId === companyId) {
                 var division = {
                     value: divisions[i].divisionId,
                     text: divisions[i].code,
@@ -216,7 +202,7 @@ var listDepartment = {
     GetDepartmentIds: function (departments, divisionId) {
         var value = [];
         for (var i = 0; i < departments.length; i++) {
-            if (departments[i].divisionId == divisionId) {
+            if (departments[i].divisionId === divisionId) {
                 var department = {
                     value: departments[i].departmentId,
                     text: departments[i].code,

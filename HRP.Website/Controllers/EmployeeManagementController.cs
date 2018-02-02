@@ -56,6 +56,15 @@
                 EmployeeId = employeeId,
                 DisplayName = displayName
             };
+            var criteria = new GetAllEmployeeCriteria
+            {
+                DepartmentIds = viewModel.DepartmentIds,
+                EmployeeStatusIds = viewModel.EmployeeStatusIds,
+                EmployeeId = viewModel.EmployeeId,
+                EmployeeName = viewModel.DisplayName,
+                UserId = sessionService.UserId
+            };
+            viewModel.Employees = baseService.GetData<EmployeeBasicInfo>(criteria);
 
             return View(viewModel);
         }
@@ -73,22 +82,6 @@
             var departmentIds = string.Empty;
             departmentIds = string.Join(",", departments.Select(x => x.DepartmentId).ToList());
             return departmentIds;
-        }
-
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public IActionResult EmployeeList(EmployeeManagementViewModel model)
-        {
-            var criteria = new GetAllEmployeeCriteria
-            {
-                DepartmentIds = model.DepartmentIds,
-                EmployeeStatusIds = model.EmployeeStatusIds,
-                EmployeeId = model.EmployeeId,
-                EmployeeName = model.DisplayName,
-                UserId = sessionService.UserId
-            };
-            var employees = baseService.GetData<EmployeeBasicInfo>(criteria);
-
-            return PartialView("_ListEmployee", employees);
         }
 
         [HttpGet]

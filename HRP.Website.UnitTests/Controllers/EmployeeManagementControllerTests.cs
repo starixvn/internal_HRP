@@ -13,7 +13,6 @@
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Services.Interfaces;
@@ -45,10 +44,35 @@
                 Value = "Confirmed",
                 Description = ""
             };
+            var employeeList = new List<EmployeeBasicInfo>
+            {
+                new EmployeeBasicInfo
+                {
+                    EmployeeId = 1234,
+                    EmployeeCode = "OW",
+                    Nickname = "Oliver",
+                    FullName = "Oliver Dang",
+                    CompanyId = 1,
+                    CompanyCode = "OW",
+                    CompanyName = "Onework",
+                    DivisionCode = "",
+                    DivisionName = "HR",
+                    DepartmentCode = "",
+                    DepartmentName = "HR",
+                    JobTitle = "Software Engineer",
+                    EmployeeStatus = "Probation",
+                    EditBankPolicy = Policy.Host,
+                    EditPayRollPolicy = Policy.Host,
+                    EditProfilePolicy = Policy.Host
+                }
+            };
+
             //Act
+            baseService.GetData<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employeeList);
             employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
             baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus })
                 .Returns(new List<ReferenceResourceModel> { refResource });
+
             var actual = employeeController.Index();
 
             //Assert
@@ -73,60 +97,6 @@
 
             //Assert
             Assert.IsType<JsonResult>(actual);
-        }
-
-        [Fact]
-        public void EmployeeList_WhenCall_ReturnPartialViewAndEmployeeList()
-        {
-            var employeeController = GetEmployeeManagementController();
-            var listCompany = new ListCompanyDivisionDepartment
-            {
-                Companies = new List<Company>(),
-                Divisions = new List<Division>(),
-                Departments = new List<Department>()
-            };
-
-            var employeeList = new List<EmployeeBasicInfo>
-            {
-                new EmployeeBasicInfo
-                {
-                    EmployeeId = 1234,
-                    EmployeeCode = "OW",
-                    Nickname = "Oliver",
-                    FullName = "Oliver Dang",
-                    CompanyId = 1,
-                    CompanyCode = "OW",
-                    CompanyName = "Onework",
-                    DivisionCode = "",
-                    DivisionName = "HR",
-                    DepartmentCode = "",
-                    DepartmentName = "HR",
-                    JobTitle = "Software Engineer",
-                    EmployeeStatus = "Probation",
-                    EditBankPolicy = Policy.Host,
-                    EditPayRollPolicy = Policy.Host,
-                    EditProfilePolicy = Policy.Host
-                }
-            };
-            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
-            var employeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
-            sessionService.UserId = 1;
-            baseService.GetData<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employeeList);
-            var viewModel = new EmployeeManagementViewModel
-            {
-                DepartmentIds = string.Empty,
-                EmployeeStatusIds = "1,2,3,4,5",
-                EmployeeStatus = new SelectList(employeeStatus, "ResourceId", "Value"),
-                EmployeeId = 41
-            };
-
-            //Act
-            var actual = employeeController.EmployeeList(viewModel);
-            var viewResult = Assert.IsType<PartialViewResult>(actual);
-
-            //Assert
-            Assert.Equal("_ListEmployee", viewResult.ViewName);
-            Assert.IsAssignableFrom<IEnumerable<EmployeeBasicInfo>>(viewResult.ViewData.Model);
         }
 
         #region CreateEmployee
