@@ -9,7 +9,7 @@
 <table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
-            <th>@ViewLang.SymbolCount</th>
+            <th class="col-number">@ViewLang.SymbolCount</th>
             <th>@Model.FieldName</th>
             <th>@ViewLang.Description</th>
             <th class="col-active">@ViewLang.Active</th>
@@ -20,7 +20,7 @@
         @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@rowNumber</td>
+                <td class="text-center">@rowNumber</td>
                 <td>@item.ItemName</td>
                 <td>@item.Description</td>
                 <td class="text-center has-icon">

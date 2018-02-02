@@ -6,7 +6,7 @@
 <table id="employee-table" class="table table-bordered table-hover table-striped dataTable">
     <thead>
         <tr>
-            <th>@ViewLang.SymbolCount</th>
+            <th class="col-number">@ViewLang.SymbolCount</th>
             <th>@ViewLang.IDNo</th>
             <th>@ViewLang.Nickname</th>
             <th>@ViewLang.FullName</th>
@@ -27,7 +27,7 @@
                 var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
                 index++;
                 <tr>
-                    <td>@index</td>
+                    <td class="text-center">@index</td>
                     <td>@employee.IDNo</td>
                     <td>@employee.Nickname</td>
                     <td>@employee.FullName</td>

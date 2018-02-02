@@ -9,7 +9,7 @@
 <table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
-            <th>@ViewLang.SymbolCount</th>
+            <th class="col-number">@ViewLang.SymbolCount</th>
             <th>@Model.FieldName</th>
             <th>@ViewLang.Description</th>
             <th>@ViewLang.CompanyBVI</th>
@@ -21,7 +21,7 @@
         @foreach (var item in Model.Divisions)
         {
             <tr>
-                <td>@rowNumber</td>
+                <td class="text-center">@rowNumber</td>
                 <td>@item.Code</td>
                 <td>@item.Name</td>
                 <td>@item.CompanyCode</td>

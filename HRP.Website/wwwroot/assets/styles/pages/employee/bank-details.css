@@ -284,6 +284,10 @@ input[type="checkbox"]:disabled + span {
   border-bottom-width: 1px;
 }
 
+.table .col-number {
+  width: 50px;
+}
+
 .table .has-icon {
   line-height: 1;
 }
