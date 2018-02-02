@@ -111,6 +111,51 @@
         }
 
         [Fact]
+        public void GetBankAccountById_InValidId_ReturnEmpty()
+        {
+            // Arrange
+            var bankAccountService = GetBankAccountService();
+            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(default(BankAccount));
+
+            // Act
+            var actual = bankAccountService.GetBankAccountById(0);
+
+            // Assert
+            Assert.Equal(default(BankAccount), actual);
+        }
+
+        [Fact]
+        public void GetBankAccountById_ValidId_ReturnEmpty()
+        {
+            // Arrange
+            var bankAccountService = GetBankAccountService();
+            var bankAccount = new BankAccount();
+            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(bankAccount);
+
+            // Act
+            var actual = bankAccountService.GetBankAccountById(1);
+
+            // Assert
+            Assert.Equal(bankAccount, actual);
+        }
+
+        [Fact]
+        public void UpdateBankAccount_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var bankAccountService = GetBankAccountService();
+            var expected = new CommandResult();
+            var bankAccount = new BankAccount();
+            baseService.ExecuteNonQuery(Arg.Any<ICriteria>()).Returns(expected);
+
+            // Act
+            var actual = bankAccountService.UpdateBankAccount(bankAccount);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void GetBankAccountByEmployeeId_InValidId_ReturnEmpty()
         {
             // Arrange
