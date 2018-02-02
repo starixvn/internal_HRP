@@ -157,7 +157,7 @@
 
     function validatedInvalidRelatedElements(element) {
         var parent = $(element).closest('.group-complex');
-        var validateElements = $('input.input-validation-error, select.input-validation-error');
+        var validateElements = $('input.input-validation-error, select.input-validation-error').not(element);
         if (validateElements.length > 0) {
             validateElements.valid();
         }
@@ -192,6 +192,21 @@
             }
         });
 
+        $('.bank-type-select').on('change', function (e) {
+            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+            validatedInvalidRelatedElements(e.target);
+
+            if (this.value == 2 || this.value == 1) {
+                $(this).siblings('.add-account').removeClass('disabled');
+            } else {
+                $(this).siblings('.add-account').addClass('disabled');
+            }
+        });
+
+        $('.bank-account-select').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
+        });
+
         $('.select2').select2({
             allowClear: true,
             placeholder: '',
@@ -202,7 +217,9 @@
             if ($(this).data('unselecting')) {
                 $(this).removeData('unselecting');
                 e.preventDefault();
-            }
+                }
+        }).on('change', function () {
+            $(this).valid();    
         });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
@@ -235,7 +252,9 @@
                 $(this).removeData('unselecting');
                 e.preventDefault();
             }
-        });;
+        }).on('change', function () {
+            $(this).valid();    
+        });
 
         if ($('#CanUpdate').val() !== 'True') {
             $('select, input', '#payroll-form').attr('disabled', 'disabled');
@@ -319,20 +338,6 @@
                 $(this).siblings('input').data('DateTimePicker').toggle();
             })
         }
-
-        $('.bank-type-select').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
-            $(this).siblings('.bank-account-select').val('').trigger('change')
-            if (this.value == 2 || this.value == 1) {
-                $(this).siblings('.add-account').removeClass('disabled');
-            } else {
-                $(this).siblings('.add-account').addClass('disabled');
-            }
-        });
-
-        $('.bank-account-select').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
-        });
 
         $('.number:enabled').on('keydown', function (e) {
             // Allow: backspace, delete, tab, escape, enter and .
