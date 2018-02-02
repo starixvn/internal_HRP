@@ -5,6 +5,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -557,6 +558,182 @@
 
         #endregion Department
 
+        #region Cost Center
+
+        [Fact]
+        public async Task GetAllCostCenterAsync_BaseServiceGetCostCenterList_ReturnCostCenterList()
+        {
+            // Arrange
+            var expected = new List<CostCenter> { MockCostCenter() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<CostCenter>(Arg.Any<GetAllCostCenterCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await dataConfigurationService.GetAllCostCenterAsync() as List<CostCenter>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected.Count, actual.Count);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task IsExistedCostCenterAsync_BaseServiceGetIntegerList_ReturnTrue()
+        {
+            // Arrange
+            var costCenter = MockCostCenter();
+            var criteria = new CheckCostCenterExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Do<CheckCostCenterExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
+
+            Assert.True(actual);
+            Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
+            Assert.Equal(costCenter.Code, criteria.Code);
+            Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
+        }
+
+        [Fact]
+        public async Task IsExistedCostCenterAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
+        {
+            // Arrange
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Any<CheckCostCenterExistsCriteria>()).Returns(new List<int>());
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedCostCenterAsync(new CostCenter());
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public async Task CreateCostCenterAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var costCenter = MockCostCenter();
+            var criteria = new CreateCostCenterCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateCostCenterAsync(costCenter);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
+            Assert.Equal(costCenter.Code, criteria.Code);
+            Assert.Equal(costCenter.Name, criteria.Name);
+            Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
+            Assert.Equal(costCenter.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateCostCenterAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateCostCenterCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateCostCenterAsync(new CostCenter());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetCostCenterByIdAsync_BaseServiceGetCostCenterInstance_ReturnCostCenterInstance()
+        {
+            // Arrange
+            var id = 31;
+            var costCenter = MockCostCenter();
+            var criteria = new GetCostCenterByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<CostCenter>(Arg.Do<GetCostCenterByIdCriteria>(x => criteria = x)).Returns(costCenter);
+
+            // Act
+            var actual = await dataConfigurationService.GetCostCenterByIdAsync(id);
+
+            // Assert
+            Assert.IsType<CostCenter>(actual);
+            Assert.Equal(costCenter.CostCenterId, actual.CostCenterId);
+            Assert.Equal(costCenter.Code, actual.Code);
+            Assert.Equal(costCenter.Name, actual.Name);
+            Assert.Equal(costCenter.IsActive, actual.IsActive);
+            Assert.Equal(costCenter.CompanyId, actual.CompanyId);
+            Assert.Equal(costCenter.CompanyCode, actual.CompanyCode);
+            Assert.Equal(costCenter.DivisionId, actual.DivisionId);
+            Assert.Equal(costCenter.DivisionCode, actual.DivisionCode);
+            Assert.Equal(costCenter.DepartmentId, actual.DepartmentId);
+            Assert.Equal(costCenter.DepartmentCode, actual.DepartmentCode);
+            Assert.Equal(id, criteria.CostCenterId);
+        }
+
+        [Fact]
+        public async Task GetCostCenterByIdAsync_BaseServiceGetNullCostCenter_ReturnNull()
+        {
+            // Arrange
+            CostCenter costCenter = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<CostCenter>(Arg.Any<GetCostCenterByIdCriteria>()).Returns(costCenter);
+
+            // Act
+            var actual = await dataConfigurationService.GetCostCenterByIdAsync(21);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var costCenter = MockCostCenter();
+            var criteria = new UpdateCostCenterCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
+            Assert.Equal(costCenter.Code, criteria.Code);
+            Assert.Equal(costCenter.Name, criteria.Name);
+            Assert.Equal(costCenter.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateCostCenterCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCostCenterAsync(new CostCenter());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Cost Center
+
         #region Common
 
         [Fact]
@@ -649,6 +826,23 @@
                 CompanyCode = "nex",
                 DivisionId = 1,
                 DivisionCode = "divc"
+            };
+        }
+
+        private CostCenter MockCostCenter()
+        {
+            return new CostCenter
+            {
+                CostCenterId = 11,
+                Code = "costcenter",
+                Name = "desccc",
+                IsActive = true,
+                CompanyId = 3,
+                CompanyCode = "nex1",
+                DivisionId = 2,
+                DivisionCode = "divc11",
+                DepartmentId = 1,
+                DepartmentCode = "Sm"
             };
         }
     }

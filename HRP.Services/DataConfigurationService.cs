@@ -329,16 +329,6 @@
             return costCenters;
         }
 
-        public async Task<CreateCostCenterViewModel> GetDataForCreateCostCenterAsync()
-        {
-            var viewModel = new CreateCostCenterViewModel
-            {
-                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
-            };
-
-            return viewModel;
-        }
-
         public async Task<bool> IsExistedCostCenterAsync(CostCenter costCenter)
         {
             var criteria = new CheckCostCenterExistsCriteria

@@ -357,9 +357,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCostCenter()
         {
-            var viewModel = await dataConfigurationService.GetDataForCreateCostCenterAsync();
-            viewModel.FieldName = ViewLang.CostCenter;
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateCostCenter;
+            var viewModel = new CreateCostCenterViewModel
+            {
+                CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
+                FieldName = ViewLang.CostCenter,
+                LinkCreateItem = DataConfigurationActionLink.CreateCostCenter
+            };
 
             return PartialView("_CreateCostCenter", viewModel);
         }

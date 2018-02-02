@@ -48,8 +48,6 @@
 
         Task<IEnumerable<CostCenter>> GetAllCostCenterAsync();
 
-        Task<CreateCostCenterViewModel> GetDataForCreateCostCenterAsync();
-
         Task<bool> IsExistedCostCenterAsync(CostCenter costCenter);
 
         Task<CommandResult> CreateCostCenterAsync(CostCenter costCenter);
