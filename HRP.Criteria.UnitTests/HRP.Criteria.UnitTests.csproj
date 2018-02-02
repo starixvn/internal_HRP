@@ -73,7 +73,7 @@
   <ItemGroup>
     <Compile Include="Bank\BankAccountCriteriaTest.cs" />
     <Compile Include="Bank\SearchBankAccountCriteriaTest.cs" />
-    <Compile Include="Bank\TheoryDatum.cs" />
+    <Compile Include="TheoryDatum.cs" />
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
     <Compile Include="Company\CreateCompanyCriteriaTests.cs" />

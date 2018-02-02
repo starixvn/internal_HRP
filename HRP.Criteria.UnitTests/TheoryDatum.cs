@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.UnitTests.Bank
+﻿namespace HRP.Criteria.UnitTests
 {
     public class TheoryDatum<TSystemUnderTest, TExecptedOutput> : TheoryDatum
     {
