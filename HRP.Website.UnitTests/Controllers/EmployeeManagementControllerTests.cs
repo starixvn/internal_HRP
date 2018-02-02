@@ -730,7 +730,7 @@
             };
 
             var employeeManagementController = GetEmployeeManagementController();
-            employeeManagementController.ModelState.AddModelError("", "Error");
+            employeeManagementController.ModelState.AddModelError(nameof(model.EmployeeId), "Error");
 
             var actual = employeeManagementController.SavePayroll(model);
 
