@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services.UnitTests
 {
+    using System.Collections.Generic;
     using Core.Model;
     using Core.Services;
     using Criteria.Bank;
@@ -11,7 +12,7 @@
 
     public class BankAccountServiceTests
     {
-        ////private readonly IObjectDb mockObjectDb;
+        private readonly IObjectDb mockObjectDb;
         private IBaseService baseService;
 
         public BankAccountServiceTests()
@@ -20,8 +21,8 @@
                 .StartTestingSession()
                 .Run();
 
-            ////mockObjectDb = Substitute.For<IObjectDb>();
-            ////ObjectDbFactory.Mock((key, time) => mockObjectDb);
+            mockObjectDb = Substitute.For<IObjectDb>();
+            ObjectDbFactory.Mock((key, time) => mockObjectDb);
         }
 
         private BankAccountService GetBankAccountService()
@@ -108,11 +109,37 @@
             Assert.True(actual);
         }
 
+        [Fact]
+        public void GetBankAccountByEmployeeId_InValidId_ReturnEmpty()
+        {
+            // Arrange
+            var bankAccountService = GetBankAccountService();
+            var multiResultReader = FakeMultipleResultReader();
+
+            multiResultReader.Read<BankAccount>().Returns(new List<BankAccount>());
+            multiResultReader.ReadSingle<int>().Returns(0);
+            multiResultReader.ReadSingle<string>().Returns(string.Empty);
+
+            mockObjectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = bankAccountService.GetBankAccountsByEmployeeId(0);
+
+            // Assert
+            Assert.IsType<EmployeeBankAccounts>(actual);
+            Assert.Equal(0, actual.CompanyId);
+            Assert.Equal(string.Empty, actual.EmployeeName);
+            Assert.Empty(actual.BankAccounts);
+        }
+
         private static IBaseService FakeBaseService()
         {
-            var service = Substitute.For<IBaseService>();
+            return Substitute.For<IBaseService>();
+        }
 
-            return service;
+        private static IMultiResultReader FakeMultipleResultReader()
+        {
+            return Substitute.For<IMultiResultReader>();
         }
     }
 }
