@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Core.Model;
     using Core.Services;
     using Criteria.Bank;
@@ -130,6 +131,104 @@
             Assert.Equal(0, actual.CompanyId);
             Assert.Equal(string.Empty, actual.EmployeeName);
             Assert.Empty(actual.BankAccounts);
+        }
+
+        [Fact]
+        public void GetBankAccountByEmployeeId_ValidId_ReturnSets()
+        {
+            // Arrange
+            var bankAccountService = GetBankAccountService();
+            var multiResultReader = FakeMultipleResultReader();
+
+            var bankAccounts = new List<BankAccount> { new BankAccount() };
+
+            multiResultReader.Read<BankAccount>().Returns(bankAccounts);
+            multiResultReader.ReadSingle<int>().Returns(1);
+            multiResultReader.ReadSingle<string>().Returns("test");
+
+            mockObjectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+
+            // Act
+            var actual = bankAccountService.GetBankAccountsByEmployeeId(0);
+
+            // Assert
+            Assert.IsType<EmployeeBankAccounts>(actual);
+            Assert.Equal(1, actual.CompanyId);
+            Assert.NotNull(actual.EmployeeName);
+            Assert.NotEmpty(actual.BankAccounts);
+        }
+
+        [Theory]
+        [InlineData(new[] { 1 }, true)]
+        [InlineData(new[] { 2 }, true)]
+        [InlineData(new[] { 1 }, false)]
+        [InlineData(new[] { 2 }, false)]
+        [InlineData(new[] { 0 }, true)]
+        [InlineData(new[] { 0 }, false)]
+        public void FilterBankAccount_FilterDataNotNull_ReturnBankAccounts(int[] bankTypes, bool isActive)
+        {
+            // Arrange
+            var bankAccounts = FakeBankAccounts();
+            var bankAccountService = GetBankAccountService();
+            bool? nullableIsActive = isActive;
+
+            // Act
+            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankTypes, nullableIsActive);
+
+            var filteredCount = actual.Count(x => x.IsActive = isActive && bankTypes.Contains(x.BankType));
+            var expected = bankAccounts.Count(x => x.IsActive = isActive && bankTypes.Contains(x.BankType));
+
+            // Assert
+            Assert.Equal(expected, filteredCount);
+        }
+
+        [Theory]
+        [InlineData(new[] { 0 })]
+        [InlineData(new[] { 1 })]
+        [InlineData(new[] { 2 })]
+        public void FilterBankAccount_IsActiveNull_ReturnBankAccounts(int[] bankTypes)
+        {
+            // Arrange
+            var bankAccounts = FakeBankAccounts();
+            var bankAccountService = GetBankAccountService();
+
+            // Act
+            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankTypes, null);
+
+            var filteredCount = actual.Count(x => bankTypes.Contains(x.BankType));
+            var expected = bankAccounts.Count(x => bankTypes.Contains(x.BankType));
+
+            // Assert
+            Assert.Equal(expected, filteredCount);
+        }
+
+        private static IEnumerable<BankAccount> FakeBankAccounts()
+        {
+            var bankAccounts = new List<BankAccount>
+            {
+                new BankAccount
+                {
+                    BankType = 1,
+                    IsActive = true
+                },
+                new BankAccount
+                {
+                    BankType = 1,
+                    IsActive = false
+                },
+                new BankAccount
+                {
+                    BankType = 2,
+                    IsActive = true
+                },
+                new BankAccount
+                {
+                    BankType = 2,
+                    IsActive = false
+                }
+            };
+
+            return bankAccounts;
         }
 
         private static IBaseService FakeBaseService()
