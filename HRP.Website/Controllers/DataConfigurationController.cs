@@ -157,9 +157,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateDivision()
         {
-            var viewModel = await dataConfigurationService.GetDataForCreateDivisionAsync();
-            viewModel.FieldName = ViewLang.Division;
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDivision;
+            var viewModel = new CreateDivisionViewModel
+            {
+                CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
+                FieldName = ViewLang.Division,
+                LinkCreateItem = DataConfigurationActionLink.CreateDivision
+            };
 
             return PartialView("_CreateDivision", viewModel);
         }
@@ -254,9 +257,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateDepartment()
         {
-            var viewModel = await dataConfigurationService.GetDataForCreateDepartmentAsync();
-            viewModel.FieldName = ViewLang.Department;
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateDepartment;
+            var viewModel = new CreateDepartmentViewModel
+            {
+                CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
+                FieldName = ViewLang.Department,
+                LinkCreateItem = DataConfigurationActionLink.CreateDepartment
+            };
 
             return PartialView("_CreateDepartment", viewModel);
         }

@@ -186,16 +186,6 @@
             return divisions;
         }
 
-        public async Task<CreateDivisionViewModel> GetDataForCreateDivisionAsync()
-        {
-            var viewModel = new CreateDivisionViewModel
-            {
-                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
-            };
-
-            return viewModel;
-        }
-
         public async Task<bool> IsExistedDivisionAsync(Division division)
         {
             var criteria = new CheckDivisionExistsCriteria
@@ -265,16 +255,6 @@
             var departments = await baseService.GetDataAsync<Department>(new GetAllDepartmentCriteria()).ConfigureAwait(false);
 
             return departments;
-        }
-
-        public async Task<CreateDepartmentViewModel> GetDataForCreateDepartmentAsync()
-        {
-            var viewModel = new CreateDepartmentViewModel
-            {
-                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
-            };
-
-            return viewModel;
         }
 
         public async Task<bool> IsExistedDepartmentAsync(Department department)
@@ -619,7 +599,7 @@
             return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
         }
 
-        private async Task<SelectList> GetCompanyBVISelectListAsync()
+        public async Task<SelectList> GetCompanyBVISelectListAsync()
         {
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
 

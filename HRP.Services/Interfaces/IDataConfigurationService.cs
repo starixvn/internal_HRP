@@ -28,8 +28,6 @@
 
         Task<IEnumerable<Division>> GetAllDivisionAsync();
 
-        Task<CreateDivisionViewModel> GetDataForCreateDivisionAsync();
-
         Task<bool> IsExistedDivisionAsync(Division division);
 
         Task<CommandResult> CreateDivisionAsync(Division division);
@@ -39,8 +37,6 @@
         Task<CommandResult> UpdateDivisionAsync(Division division);
 
         Task<IEnumerable<Department>> GetAllDepartmentAsync();
-
-        Task<CreateDepartmentViewModel> GetDataForCreateDepartmentAsync();
 
         Task<bool> IsExistedDepartmentAsync(Department department);
 
@@ -94,5 +90,7 @@
         Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId);
 
         Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
+
+        Task<SelectList> GetCompanyBVISelectListAsync();
     }
 }
