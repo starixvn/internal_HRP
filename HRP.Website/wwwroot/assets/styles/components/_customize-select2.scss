@@ -11,6 +11,9 @@
         border: 1px solid $border-color;
         color: $input-color;   
 
+        .select2-selection__arrow {
+            height: 30px;
+        }
         .select2-selection__arrow b {
             border-top-color: #838383;
             border-width: 4px 4px 0 4px;

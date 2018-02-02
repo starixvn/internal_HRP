@@ -6,16 +6,19 @@
 @import "../../components/customize-select2";
 
 // Table
-.icon-details {
-    font-size: 16px;
-}
+.table {
+    .dropdown-menu .icon-permission {
+        margin-right: 8px;
+        font-size: 18px;
+    }
 
-.icon-permission {
-    font-size: 18px;
-}
+    .icon-details {
+        font-size: 16px;
+    }
 
-.table.super-admin-func {
-    width: 577px;
+    &.super-admin-func {
+        width: 577px;
+    }
 }
 
 // Assign Permission

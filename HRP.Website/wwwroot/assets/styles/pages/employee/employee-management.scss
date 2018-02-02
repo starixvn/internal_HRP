@@ -12,21 +12,23 @@
     }
 }
 
-.dropdown-menu {
-    .icon-user {
-        top: 1px;
-        font-size: 13px;
-    }
-
-    .icon-bank-details {
-        top: 2px;
-        margin-right: 8px;            
-        font-size: 16px;
-    }
-
-    .icon-edit_payroll {
-        top: 4px;
-        
-        font-size: 16px;
-    }
+.table {
+    .dropdown-menu {
+        .icon-user {
+            top: 1px;
+            font-size: 13px;
+        }
+    
+        .icon-bank-details {
+            top: 2px;
+            margin-right: 8px;            
+            font-size: 16px;
+        }
+    
+        .icon-edit_payroll {
+            top: 4px;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+    }    
 }

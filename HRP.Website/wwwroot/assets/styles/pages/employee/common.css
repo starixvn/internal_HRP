@@ -15,6 +15,10 @@
   color: #333;
 }
 
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 30px;
+}
+
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
   border-top-color: #838383;
   border-width: 4px 4px 0 4px;
@@ -245,6 +249,10 @@
 .select2-container--default .select2-selection--single {
   height: 28px;
   line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 28px;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
