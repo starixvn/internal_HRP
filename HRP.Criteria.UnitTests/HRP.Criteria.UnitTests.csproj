@@ -71,7 +71,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bank\BankAccountCriteriaTest.cs" />
     <Compile Include="Bank\SearchBankAccountCriteriaTest.cs" />
+    <Compile Include="Bank\TheoryDatum.cs" />
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
     <Compile Include="Company\CreateCompanyCriteriaTests.cs" />
@@ -140,6 +142,10 @@
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj">
       <Project>{99978ef4-12e0-4bd4-a16e-dc4fab059411}</Project>
       <Name>HRP.Criteria</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj">
+      <Project>{FB14DD5E-FE8C-433D-BE71-1DCB5542A975}</Project>
+      <Name>HRP.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.UnitTests.Bank
 {
-    using HRP.Criteria.Bank;
+    using Criteria.Bank;
     using Xunit;
 
     public class SearchBankAccountCriteriaTest
