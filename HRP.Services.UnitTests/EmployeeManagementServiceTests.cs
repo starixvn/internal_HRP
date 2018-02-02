@@ -487,13 +487,28 @@
             var expected = new CommandResult();
             var employeeService = GetEmployeeManagementService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmploymentCriteria>()).Returns(expected);
-            cryptoService.Encrypt(Arg.Any<string>()).Returns("cipherText");
 
             // Act
             var actual = await employeeService.UpdateEmploymentAsync(model);
 
             // Assert
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task UpdateEmploymentAsync_WhenCalled_ExpectedCallEncrypt()
+        {
+            // Arrange
+            var model = new UpdateEmploymentViewModel();
+            var expected = new CommandResult();
+            var employeeService = GetEmployeeManagementService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmploymentCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await employeeService.UpdateEmploymentAsync(model);
+
+            // Assert
+            cryptoService.Received().Encrypt(Arg.Any<string>());
         }
 
         #endregion UpdateEmploymentAsync
