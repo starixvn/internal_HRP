@@ -203,7 +203,6 @@ body {
   color: #333;
 }
 
-/* Change  OTP */
 .otp .title {
   font-size: 16px;
 }
@@ -222,7 +221,6 @@ body {
   font-size: 20px;
 }
 
-/* Register OTP */
 .register-otp {
   padding-top: 10px;
   color: #333;
@@ -368,7 +366,6 @@ body {
   opacity: 0.3;
 }
 
-/* Notication OTP */
 .notication-otp {
   -webkit-border-radius: 4px;
   -khtml-border-radius: 4px;
@@ -406,7 +403,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* Change password */
 .change-password .control {
   padding-right: 40px;
 }

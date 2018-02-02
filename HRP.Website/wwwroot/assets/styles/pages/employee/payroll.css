@@ -367,7 +367,6 @@ input[type="radio"]:disabled + span {
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 6px;
-  /* Personal detail */
 }
 
 .group-complex.-payroll-layout1 {

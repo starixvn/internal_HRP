@@ -15,16 +15,6 @@ body {
     color: #666;
 }
 
-.wrapper {
-    width: 100%;
-    padding: 15px 20px;
-
-    @media screen and (min-device-width: 1366px) {
-        width: 1360px;
-        margin: auto;
-    }    
-}
-
 .header {
     display: flex;    
     justify-content: flex-start;
@@ -33,10 +23,14 @@ body {
     height: 61px;
     border-bottom: 1px solid #dcdcdc;    
 
-    .logo img {
-        float: left;
-        width: 177px;
-        height: 30px;
+    .logo {
+        padding-left: 16px;
+        
+        img {
+            float: left;
+            width: 177px;
+            height: 30px;
+        }
     }
 }
 

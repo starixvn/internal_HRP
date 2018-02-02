@@ -189,7 +189,6 @@ input[type="checkbox"]:disabled + span {
   opacity: 0.5;
 }
 
-/* Search Table */
 .top-header {
   -webkit-border-radius: 2px 2px 0 0;
   -khtml-border-radius: 2px 2px 0 0;
@@ -343,7 +342,6 @@ input[type="checkbox"]:disabled + span {
   padding-bottom: 6px;
 }
 
-/* Sorting */
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc,
 table.dataTable thead > tr > th.sorting,
@@ -452,7 +450,102 @@ table.dataTable thead .sorting_desc:after {
   border-bottom-right-radius: 2px;
 }
 
-/* Customize fanex-multiSelect */
+.select2-container--default .select2-selection--single {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  outline: none;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 5px;
+  padding-right: 10px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  color: #333;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-top-color: #838383;
+  border-width: 4px 4px 0 4px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #333;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  height: 32px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+  border-color: #1a87d3;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single {
+  -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  border-color: #1a87d3;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+  border-top-color: #838383;
+  border-width: 0 4px 4px 4px;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #dbdbdb;
+  color: #333;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #f57d14;
+  color: #fff;
+}
+
+.select2-container--open {
+  padding-top: 2px;
+}
+
+.select2-container--open.select2-container--below {
+  padding-top: 0;
+}
+
+.select2-container--open .select2-dropdown--below {
+  -webkit-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -khtml-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid #2a9ded;
+}
+
+.select2-results__option {
+  padding: 8px 5px;
+}
+
+.select2-dropdown {
+  -webkit-border-radius: 0;
+  -khtml-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: 0;
+  line-height: 30px;
+  color: #333;
+}
+
 .fanex-multiselect-widget {
   font-size: 13px;
   font-family: Roboto, Arial, Tahoma, sans-serif;
@@ -577,14 +670,13 @@ table.dataTable thead .sorting_desc:after {
 
 .fanex-multiselect-div label:hover {
   font-weight: normal !important;
+  color: #f57d14;
 }
 
-/* Bank details */
 .fanex-multiselect-div {
   margin-left: 0 !important;
 }
 
-/* Create New Bank Account */
 .layout-two-col {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

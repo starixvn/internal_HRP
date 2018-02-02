@@ -146,7 +146,6 @@
   opacity: .5;
 }
 
-/* Search Table */
 .top-header {
   -webkit-border-radius: 2px 2px 0 0;
   -khtml-border-radius: 2px 2px 0 0;
@@ -300,7 +299,6 @@
   padding-bottom: 6px;
 }
 
-/* Sorting */
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc,
 table.dataTable thead > tr > th.sorting,
@@ -496,7 +494,6 @@ table.dataTable thead .sorting_desc:after {
   width: 370px;
 }
 
-/* Customize select2 */
 .select2-container--default .select2-selection--single {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -515,8 +512,12 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
-  border-top-color: black;
-  border-width: 6px 3px 0 3px;
+  border-top-color: #838383;
+  border-width: 4px 4px 0 4px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #333;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
@@ -535,6 +536,21 @@ table.dataTable thead .sorting_desc:after {
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   border-color: #1a87d3;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+  border-top-color: #838383;
+  border-width: 0 4px 4px 4px;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #dbdbdb;
+  color: #333;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #f57d14;
+  color: #fff;
 }
 
 .select2-container--open {
@@ -556,12 +572,7 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .select2-results__option {
-  padding: 8px 4px;
-}
-
-.select2-container--default .select2-results__option[aria-selected=true] {
-  background-color: #dbdbdb;
-  color: #333;
+  padding: 8px 5px;
 }
 
 .select2-dropdown {
@@ -573,12 +584,16 @@ table.dataTable thead .sorting_desc:after {
   border-radius: 0;
 }
 
-/* Tables */
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: 0;
+  line-height: 30px;
+  color: #333;
+}
+
 .col-active, .col-edit {
   width: 94px;
 }
 
-/* Popup */
 .modal .modal-dialog {
   width: 370px;
 }

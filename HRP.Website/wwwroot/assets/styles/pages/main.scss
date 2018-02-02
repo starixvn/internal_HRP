@@ -9,53 +9,61 @@
 @import "../components/messages";
 @import "../components/tabs";
 
+
 body { 
     background-color: $page-bg;
     overflow: hidden;
-}
-
-.wrapper {
-    width: 100%;
-    padding: 10px;
-
-    @media screen and (min-device-width: 1366px) {
-        width: 1360px;
-        margin: auto;
-    }    
 }
 
 .header {    
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 55px;    
-    background-color: #fff;    
-    border-bottom: 1px solid #dcdcdc;  
-    z-index: 1000;
+    display: block;    
+    justify-content: space-between;
+    align-items: center;  
+    width: 100%;    
+    background-color: #fff;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1000;    
 
-    .wrapper {
-        display: grid;    
-        grid-template-columns: 177px 1fr 210px;
-        grid-template-rows: 54px;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0;
+    @media screen and (min-width: 1024px) {
+        display: grid;
+        grid-template-columns: 159px 1fr 178px;
+        grid-template-rows: 1fr;
     }
+    
+    .logo {
+        padding-left: 16px;
 
-    .logo img {
-        height: 26px;
+        @media screen and (max-width: 768px) {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        img {
+            height: 26px;
+        }
     }
 
     .main-menu {
-        margin-left: 48px;
+        margin-left: 8px;
         margin-bottom: 0;
+
+        @media screen and (min-width: 1024px) {
+            margin-left: 48px;
+        }
     }
 
     .user-info {
         margin-right: 16px;
-    }
 
+        @media screen and (max-width: 768px) {
+            position: absolute;
+            right: 0;
+            top: 10px;
+        }
+    }
 }
 
 .main-menu {
@@ -75,13 +83,18 @@ body {
         justify-content: center;
         align-items: center;
         line-height: 55px;    
-        padding-left: 16px;
-        padding-right: 16px;
-        margin-right: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
         text-decoration: none;
         position: relative;
         color: #687c89;
         font-weight: bold;
+
+        @media screen and (min-width: 1366px) {
+            padding-left: 16px;
+            padding-right: 16px;
+            margin-right: 16px;
+        }
 
         [class^="icon"] {
             margin-right: 4px;
@@ -192,14 +205,18 @@ body {
 }
 
 // Content
-
 .content-container {
     position: absolute;
     top: 55px;
     left: 0;
     width: 100%;
     bottom: 0;
+    padding: 12px;
     overflow: auto;
+
+    @media screen and (max-width: 768px) {
+        top: 94px;
+    }
 }
 
 .content {
@@ -255,7 +272,6 @@ body {
 }
 
 // Icons
-
 .icon-arrow-down {
 	height: 0;
     width: 0;

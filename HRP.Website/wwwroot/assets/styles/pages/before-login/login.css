@@ -111,23 +111,19 @@ a.button, a.button:hover {
 }
 
 ::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
   color: #888;
 }
 
 ::-moz-placeholder {
-  /* Firefox 19+ */
   color: #888;
   opacity: 1;
 }
 
 :-ms-input-placeholder {
-  /* IE 10+ */
   color: #888;
 }
 
 :-moz-placeholder {
-  /* Firefox 18- */
   color: #888;
   opacity: 1;
 }
@@ -379,15 +375,15 @@ input[type="text"][readonly] {
 }
 
 .block .footer {
-  height: 50px;
-  line-height: 50px;
-  margin-top: 10px;
   -webkit-border-radius: 0 0 4px 4px;
   -khtml-border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
   -ms-border-radius: 0 0 4px 4px;
   -o-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
+  height: 50px;
+  line-height: 50px;
+  margin-top: 10px;
   border-top: 1px solid #dadada;
   background-color: #e7e7e7;
   text-align: center;

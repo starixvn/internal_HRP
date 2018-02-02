@@ -13,10 +13,14 @@
 
     .form-content {
         display: grid;
-        grid-template-columns: 160px 530px 630px;
+        grid-template-columns: 160px 530px 545px;
         grid-template-rows: 1fr;
         justify-content: stretch;
         align-items: flex-start;
+
+        @media screen and (min-width: 1366px) {
+            grid-template-columns: 160px 530px 630px;            
+        }
     }
 }
 
@@ -72,10 +76,13 @@
 
 .employment {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     .col:first-child {
-        margin-right: 111px;
+        margin-right: 50px;
+        @media screen and (min-width: 1366px) {
+            margin-right: 111px;           
+        }
     }
 }
 
@@ -112,7 +119,10 @@
     /* Employment */
 
     &.-emp-layout1 {        
-        grid-template-columns: 210px repeat(2, 110px);        
+        grid-template-columns: 170px repeat(2, 110px);        
+        @media screen and (min-width: 1366px) {
+            grid-template-columns: 210px repeat(2, 110px);           
+        }
     }
 
     &.-emp-layout2 {        
@@ -120,15 +130,24 @@
     }
 
     &.-emp-layout3 {        
-        grid-template-columns: 210px 210px;        
+        grid-template-columns: 170px 170px;   
+        @media screen and (min-width: 1366px) {
+            grid-template-columns: 210px 210px;           
+        }     
     }
 
     &.-emp-layout4 {        
-        grid-template-columns: 210px repeat(3, 110px);        
+        grid-template-columns: 170px repeat(3, 110px);
+        @media screen and (min-width: 1366px) {
+            grid-template-columns: 210px repeat(3, 110px);           
+        }    
     }
 
     &.-emp-layout5 {        
-        grid-template-columns: 210px 110px;        
+        grid-template-columns: 170px 110px;
+        @media screen and (min-width: 1366px) {
+            grid-template-columns: 210px 110px;           
+        }      
     }
 
     &.-emp-layout6 {        

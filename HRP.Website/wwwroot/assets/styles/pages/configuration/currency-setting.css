@@ -146,7 +146,6 @@
   opacity: .5;
 }
 
-/* Search Table */
 .top-header {
   -webkit-border-radius: 2px 2px 0 0;
   -khtml-border-radius: 2px 2px 0 0;
@@ -300,7 +299,6 @@
   padding-bottom: 6px;
 }
 
-/* Sorting */
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc,
 table.dataTable thead > tr > th.sorting,
