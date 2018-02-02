@@ -1,6 +1,6 @@
-﻿namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests.Employee
 {
-    using HRP.Criteria.Employee;
+    using Criteria.Employee;
     using Xunit;
 
     public class GetDataToUpdateEmploymentCriteriaTests

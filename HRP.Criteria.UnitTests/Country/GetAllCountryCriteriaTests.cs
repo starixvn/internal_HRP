@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests.Country
 {
     using Xunit;
 

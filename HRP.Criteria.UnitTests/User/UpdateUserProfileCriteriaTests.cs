@@ -1,6 +1,6 @@
-﻿namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests.User
 {
-    using HRP.Criteria.User;
+    using Criteria.User;
     using Xunit;
 
     public class UpdateUserProfileCriteriaTests

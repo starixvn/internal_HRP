@@ -1,6 +1,6 @@
-﻿namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests.User
 {
-    using HRP.Criteria;
+    using Criteria;
     using Xunit;
 
     public class CheckUsernameExistedCriteriaTest
