@@ -3,6 +3,7 @@
     using System.Linq;
     using Fanex.Data.Repository;
     using HRP.Core.Constants;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
@@ -75,7 +76,7 @@
             viewModel.Deduction.FitnessFirstAmount = cryptoService.Decrypt(viewModel.Deduction.FitnessFirstAmount);
         }
 
-        public void UpdatePayroll(EmployeePayrollViewModel model, int userId)
+        public CommandResult UpdatePayroll(EmployeePayrollViewModel model, int userId)
         {
             var isSalaryChanged =  model.BasicSalary.OldSalary != model.BasicSalary.Salary;
 
@@ -139,7 +140,7 @@
                 UpdatedBy = userId
             };
 
-            baseService.ExecuteNonQuery(criteria);
+            return baseService.ExecuteNonQuery(criteria);
         }
     }
 }

@@ -351,11 +351,19 @@
         {
             if (ModelState.IsValid)
             {
-                payrollService.UpdatePayroll(model, sessionService.UserId);
-                return RedirectToAction("Index");
+                var result = payrollService.UpdatePayroll(model, sessionService.UserId);
+                return Json(new
+                {
+                    isSuccessful = result.IsSuccessful,
+                    message = result.Message,
+                    redirectTo = Url.Action("Index")
+                });
             }
 
-            return View("Payroll", model);
+            var errors = from item in ModelState
+                         where item.Value.Errors.Any()
+                         select new { item.Key, item.Value.Errors.FirstOrDefault().ErrorMessage };
+            return Json(new { isSuccessful = false, errors });
         }
     }
 }

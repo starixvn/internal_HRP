@@ -43,7 +43,9 @@
 
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 <input type="hidden" id="greater-than-zero-message" value="@Message.GreaterThanZero" />
-<form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll">
+<form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll"
+      data-ajax-method="post" data-ajax="true" data-ajax-begin="employeePayroll.onSaveBegin" data-ajax-failure="commonFunctions.handleAjaxError"
+      data-ajax-success="employeePayroll.onSaveSuccess" data-ajax-complete="employeePayroll.onSaveComplete">
     <input type="hidden" asp-for="EmployeeId" />
     <input type="hidden" asp-for="CompanyId" />
     <input type="hidden" asp-for="BasicSalary.EmployeeId" />
@@ -54,6 +56,14 @@
 
     <div class="list-message-error hidden" id="validation-summary">
     </div>
+
+    <div class="-has-icon msg-success hidden">
+        @Message.UpdateEmployeePayrollSuccessfully
+    </div>
+
+    <div class="-has-icon msg-error hidden">
+    </div>
+
     <div class="form-content">
         <!-- Basic Salary -->
         <div class="group-complex -payroll-layout1">
@@ -62,7 +72,7 @@
                 <label class="actual">@ViewLang.Actual</label>
             </div>
             <div class="currency-amount">
-                <select class="control without-label basic-salary-calculate select2" asp-for="BasicSalary.CurrencyCode" asp-items="currencySelectList">
+                <select class="control without-label basic-salary-calculate select2" asp-for="BasicSalary.CurrencyCode" asp-items="currencySelectList" data-old-value="@Model.BasicSalary.CurrencyCode">
                     <option></option>
                 </select>
                 <input type="text" class="control without-label number total-amount basic-salary-calculate" placeholder="Total Amount" asp-for="BasicSalary.Salary" data-old-value="@Model.BasicSalary.Salary" />
@@ -415,7 +425,7 @@
             @if (Model.CanUpdate)
             {
                 <a href="javascript:history.back()" class="button -second">@ViewLang.Cancel</a>
-                <button class="button -primary">@ViewLang.Save</button>
+                <button class="button -primary" type="submit" data-loading-text="@ViewLang.Saving ..." id="btn-save">@ViewLang.Save</button>
             }
             else
             {
@@ -430,6 +440,7 @@
     <environment include="Development">
         <script src="~/lib/bignumber.js/bignumber.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>

@@ -19,7 +19,7 @@
         private ICryptoService cryptoService;
 
         [Fact]
-        public void GetEmployeePayroll_ReturnModel()
+        public void GetEmployeePayroll_ValidData_ReturnModel()
         {
             var employeeId = 1;
             var userId = 1;
@@ -55,7 +55,7 @@
         }
 
         [Fact]
-        public void UpdatePayroll_UpdateSuccessfully()
+        public void UpdatePayroll_ValidData_UpdateSuccessfully()
         {
             var employeeId = 1;
             var userId = 1;

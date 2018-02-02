@@ -1564,6 +1564,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee Payroll has been successfully updated. You will be redirected in 5 seconds..
+        /// </summary>
+        public static string UpdateEmployeePayrollSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdateEmployeePayrollSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee {0} has been updated..
         /// </summary>
         public static string UpdateEmployeeSuccessful {

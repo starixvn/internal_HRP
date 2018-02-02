@@ -695,7 +695,7 @@
         }
 
         [Fact]
-        public void Payroll_ValidModel_ReturnRedirect()
+        public void Payroll_ValidModel_ReturnExpectedCommandResult()
         {
             var employeeId = 1;
             var model = new EmployeePayrollViewModel
@@ -707,17 +707,18 @@
             };
 
             var employeeManagementController = GetEmployeeManagementController();
-            payrollService.When(x => x.UpdatePayroll(model, sessionService.UserId));
+            employeeManagementController.Url = Substitute.For<IUrlHelper>();
+            employeeManagementController.Url.Action().ReturnsForAnyArgs("/EmployeeManagement/Index");
+            payrollService.UpdatePayroll(model, sessionService.UserId).Returns(new CommandResult { Code = 0 });
 
             var actual = employeeManagementController.SavePayroll(model);
-            payrollService.Received().UpdatePayroll(model, sessionService.UserId);
 
-            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Index", redirectResult.ActionName);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
         [Fact]
-        public void Payroll_InValidModel_ReturnView()
+        public void Payroll_InValidModel_ReturnErrors()
         {
             var employeeId = 1;
             var model = new EmployeePayrollViewModel
@@ -733,9 +734,8 @@
 
             var actual = employeeManagementController.SavePayroll(model);
 
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
-            Assert.NotNull(viewResult.Model);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
         #region Helpers

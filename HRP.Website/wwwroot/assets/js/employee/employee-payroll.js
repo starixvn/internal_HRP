@@ -19,6 +19,14 @@
         return this.toFixed(2);
     };
 
+    function checkCurrencyAndAmountChange() {
+        var $basicSalary = $('#BasicSalary_Salary');
+        var oldValue = $basicSalary.data('old-value');
+        var $currency = $('#BasicSalary_CurrencyCode');
+        var oldCurrency = $currency.data('old-value');
+        return (oldValue !== '' && Number($basicSalary.val()) !== Number(oldValue)) || (oldCurrency !== '' && oldCurrency !== $currency.val());
+    }
+
     function calculateBasicSalary() {
         var totalAmountCurrency = $('#BasicSalary_CurrencyCode').val();
         var $basicSalary = $('#BasicSalary_Salary');
@@ -149,7 +157,7 @@
 
     function validatedInvalidRelatedElements(element) {
         var parent = $(element).closest('.group-complex');
-        var validateElements = $('input.input-validation-error, select.input-validation-error').not(element);
+        var validateElements = $('input.input-validation-error, select.input-validation-error');
         if (validateElements.length > 0) {
             validateElements.valid();
         }
@@ -188,6 +196,13 @@
             allowClear: true,
             placeholder: '',
             minimumResultsForSearch: Infinity,
+        }).on('select2:unselecting', function () {
+            $(this).data('unselecting', true);
+        }).on('select2:opening', function (e) {
+            if ($(this).data('unselecting')) {
+                $(this).removeData('unselecting');
+                e.preventDefault();
+            }
         });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
@@ -213,7 +228,14 @@
             allowClear: true,
             placeholder: '',
             minimumResultsForSearch: Infinity,
-        });
+        }).on('select2:unselecting', function () {
+            $(this).data('unselecting', true);
+        }).on('select2:opening', function (e) {
+            if ($(this).data('unselecting')) {
+                $(this).removeData('unselecting');
+                e.preventDefault();
+            }
+        });;
 
         if ($('#CanUpdate').val() !== 'True') {
             $('select, input', '#payroll-form').attr('disabled', 'disabled');
@@ -358,13 +380,11 @@
 
         var validator = $('#payroll-form').validate({
             debug: true,
-            submitHandler: function (form) {
-                form.submit();
-            },
             onkeyup: false,
             focusInvalid: false,
             errorClass: 'message',
             wrapper: 'div',
+            ignore: 'input[type=hidden]',
             errorLabelContainer: '#validation-summary',
             showErrors: function (errorMap, errorList) {
                 this.defaultShowErrors();
@@ -391,16 +411,12 @@
             rules: {
                 'BasicSalary.ReasonId': {
                     required: function (element) {
-                        var basicSalary = $('#BasicSalary_Salary');
-                        var oldValue = basicSalary.data('old-value');
-                        return oldValue !== '' && Number(basicSalary.val()) !== Number(oldValue);
+                        return checkCurrencyAndAmountChange();
                     }
                 },
                 'BasicSalary.EffectiveDate': {
                     required: function (element) {
-                        var basicSalary = $('#BasicSalary_Salary');
-                        var oldValue = basicSalary.data('old-value');
-                        return oldValue !== '' && Number(basicSalary.val()) !== Number(oldValue);
+                        return checkCurrencyAndAmountChange();
                     }
                 }
             }
@@ -408,7 +424,25 @@
     }
 
     return {
-        init: init
+        init: init,
+        onSaveBegin: function () {
+            $('#btn-save').button('loading');
+        },
+        onSaveSuccess: function (response, status) {
+            if (response.isSuccessful) {
+                $('.msg-success').removeClass('hidden');
+                setTimeout(function () {
+                    window.location.href = response.redirectTo;
+                }, 5000);
+            } else {
+                if (response.message) {
+                    commonFunctions.showErrorMessage(response.message);
+                }
+            }
+        },
+        onSaveComplete: function () {
+            $('#btn-save').button('reset');
+        }
     }
 }(jQuery));
 

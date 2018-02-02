@@ -639,4 +639,7 @@
   <data name="NotFoundError" xml:space="preserve">
     <value>404 Not Found</value>
   </data>
+  <data name="UpdateEmployeePayrollSuccessfully" xml:space="preserve">
+    <value>Employee Payroll has been successfully updated. You will be redirected in 5 seconds.</value>
+  </data>
 </root>

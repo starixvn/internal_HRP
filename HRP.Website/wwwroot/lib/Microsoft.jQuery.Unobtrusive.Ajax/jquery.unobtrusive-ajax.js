@@ -173,6 +173,7 @@
     });
 
     $(document).on("submit", "form[data-ajax=true]", function (evt) {
+        debugger;
         var clickInfo = $(this).data(data_click) || [],
             clickTarget = $(this).data(data_target),
             isCancel = clickTarget && clickTarget.hasClass("cancel");
