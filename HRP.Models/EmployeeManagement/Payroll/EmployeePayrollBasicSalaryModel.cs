@@ -15,6 +15,8 @@
 
         public string CurrencyCode { get; set; }
 
+        public string OldCurrencyCode { get; set; }
+
         public int WorkingDays { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
