@@ -76,7 +76,7 @@
 
             // Check maximum account per type
             var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
-            if (bankTypes.Count() >= disabledBankTypes.Count)
+            if (bankTypes.Count() <= disabledBankTypes.Count)
             {
                 viewModel.CanCreate = false;
             }

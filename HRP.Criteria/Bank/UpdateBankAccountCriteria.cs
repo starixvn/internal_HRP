@@ -6,6 +6,7 @@
     {
         public UpdateBankAccountCriteria(IBankAccount bankAccount) : base(bankAccount)
         {
+            Id = bankAccount.Id;
         }
 
         public override string GetSettingKey() => "BankAccount_Update";
