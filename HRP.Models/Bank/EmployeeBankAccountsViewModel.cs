@@ -64,7 +64,7 @@
 
             var allOption = new BankType(0, "All");
 
-            bankTypesWithAllOption.Add(allOption);
+            bankTypesWithAllOption.Insert(0, allOption);
 
             BankTypes = new SelectList(
                 bankTypesWithAllOption,
