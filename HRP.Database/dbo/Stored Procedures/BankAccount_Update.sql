@@ -41,19 +41,18 @@ BEGIN
 		RETURN
 	END
 
-	IF EXISTS (
-			SELECT 1
-			FROM (
-			SELECT COUNT(Id) as Total
-			FROM [dbo].[BankAccount] WITH (NOLOCK)
-			WHERE [EmployeeId] = @EmployeeId
-			AND [BankType] = @BankType
-			AND [IsActive] = 1) as IdCount
-			WHERE IdCount.Total >= 3
-	)
+	declare @total int;
+
+	SELECT @total = COUNT(Id)
+	FROM [dbo].[BankAccount] WITH (NOLOCK)
+	WHERE [EmployeeId] = @EmployeeId
+	AND [BankType] = @BankType
+	AND [IsActive] = 1
+
+	IF(@total >= 3 and @IsActive = 1)
 	BEGIN
 		SET @ErrCode = 2
-		SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot change type'
+		SET @ErrMsg = N'This employee has reached the limit of number bank accounts'
 
 		RETURN
 	END
