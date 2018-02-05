@@ -388,6 +388,7 @@
     <Compile Include="Controllers\AuthControllerTests.cs" />
     <Compile Include="Controllers\BaseControllerTests.cs" />
     <Compile Include="Controllers\CurrencySettingControllerTests.cs" />
+    <Compile Include="Controllers\DataConfigurationControllerTests.cs" />
     <Compile Include="Controllers\EmployeeManagementControllerTests.cs" />
     <Compile Include="Controllers\ErrorControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />

@@ -1216,6 +1216,8 @@
 
         #endregion Common
 
+        #region Initialization
+
         private IDataConfigurationService GetDataConfigurationService()
         {
             baseService = FakeBaseService();
@@ -1347,5 +1349,8 @@
                 IsActive = true
             };
         }
+
+        #endregion Initialization
+
     }
 }

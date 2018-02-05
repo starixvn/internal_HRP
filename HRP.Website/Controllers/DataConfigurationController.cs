@@ -83,7 +83,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(item);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -183,7 +183,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateDivisionAsync(division);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -283,7 +283,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateDepartmentAsync(department);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -383,7 +383,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateCostCenterAsync(costCenter);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -483,7 +483,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateSectionAsync(section);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -673,10 +673,6 @@
 
         private static string UppercaseFirstLetter(string s)
         {
-            if (string.IsNullOrEmpty(s))
-            {
-                return string.Empty;
-            }
             char[] a = s.ToCharArray();
             a[0] = char.ToUpper(a[0]);
 

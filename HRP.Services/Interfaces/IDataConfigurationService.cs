@@ -5,11 +5,6 @@
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
-    using HRP.Models.DataConfiguration.CostCenter;
-    using HRP.Models.DataConfiguration.Department;
-    using HRP.Models.DataConfiguration.Division;
-    using HRP.Models.DataConfiguration.GradeLevel;
-    using HRP.Models.DataConfiguration.Section;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IDataConfigurationService
