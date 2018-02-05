@@ -49,8 +49,13 @@
         {
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankType)
+                .Select(x => new BankType(x));
+
+            var bankAccountTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
+                .Select(x => new BankAccountType(x));
 
             var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 
@@ -61,19 +66,25 @@
 
             viewModel.CompanyId = data.CompanyId;
 
-            viewModel.CanCreate = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
                                   && sessionService.HasPermissionOnCompany(
                                       viewModel.CompanyId,
                                       FunctionKey.EmployeeBankDetails,
                                       Policy.Host);
 
-            // TODO: maybe cancreate and canedit is different
-            viewModel.CanEdit = viewModel.CanCreate;
+            viewModel.CanCreate = viewModel.CanEdit;
+
+            // Check maximum account per type
+            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+            if (bankTypes.Count() >= disabledBankTypes.Count)
+            {
+                viewModel.CanCreate = false;
+            }
 
             if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
                 || viewModel.SelectedBankTypes == null)
             {
-                viewModel.SelectedBankTypes = bankTypes.Select(x => x.ResourceId).ToArray();
+                viewModel.SelectedBankTypes = bankTypes.Select(x => x.Id).ToArray();
             }
 
             viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
@@ -149,6 +160,13 @@
                 .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                 .Select(x => new BankAccountType(x));
 
+            List<BankType> disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+
+            viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
+        }
+
+        private static List<BankType> GetDisabledBankTypes(EmployeeBankAccounts data, IEnumerable<BankType> bankTypes)
+        {
             var disabledBankTypes = new List<BankType>();
 
             foreach (var bankType in bankTypes)
@@ -160,7 +178,7 @@
                 }
             }
 
-            viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
+            return disabledBankTypes;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]

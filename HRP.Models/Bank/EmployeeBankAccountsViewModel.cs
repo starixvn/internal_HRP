@@ -7,8 +7,8 @@
     public class EmployeeBankAccountsViewModel : EmployeeBankAccounts
     {
         public EmployeeBankAccountsViewModel(
-            IEnumerable<ReferenceResourceModel> bankTypes,
-            IEnumerable<ReferenceResourceModel> bankAccountTypes)
+            IEnumerable<BankType> bankTypes,
+            IEnumerable<BankAccountType> bankAccountTypes)
         {
             Initialize(bankTypes, bankAccountTypes);
         }
@@ -25,9 +25,9 @@
 
         public List<SelectListItem> BankAccountActive { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> BankAccountTypes { get; set; }
+        public IEnumerable<BankAccountType> BankAccountTypes { get; set; }
 
-        public void Initialize(IEnumerable<ReferenceResourceModel> bankTypes, IEnumerable<ReferenceResourceModel> bankAccountTypes)
+        public void Initialize(IEnumerable<BankType> bankTypes, IEnumerable<BankAccountType> bankAccountTypes)
         {
             BankAccountTypes = bankAccountTypes;
 
@@ -58,7 +58,7 @@
             };
         }
 
-        private void PopulateBankTypes(IEnumerable<ReferenceResourceModel> bankTypes)
+        private void PopulateBankTypes(IEnumerable<BankType> bankTypes)
         {
             ////var allOption = new ReferenceResourceModel
             ////{
@@ -71,8 +71,8 @@
 
             BankTypes = new MultiSelectList(
                 bankTypesWithAllOption,
-                nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value));
+                nameof(BankType.Id),
+                nameof(BankType.Name));
 
             ////BankTypes = bankTypes.ToList();
         }

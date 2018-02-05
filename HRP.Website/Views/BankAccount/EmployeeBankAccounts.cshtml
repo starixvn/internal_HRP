@@ -45,6 +45,24 @@
     </div>
 </form>
 
+<!--Cannot create more bank account modal-->
+<div id="reach-limit-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <p>This employee has reached the limit of number bank accounts. You cannot create more bank account.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="top-header">
     <div class="pull-left">
         @if (Model.CanCreate)
@@ -56,6 +74,13 @@
                 <span class="icon-add"></span>
                 Create New Bank Account
             </a>
+        }
+        else
+        {
+            <button class="button -add create-user" data-toggle="modal" data-target="#reach-limit-modal">
+                <span class="icon-add"></span>
+                Create New Bank Account
+            </button>
         }
     </div>
 
@@ -91,7 +116,7 @@
                 <td class="text-center">@(index + 1)</td>
                 @{
                     var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
-                    var bankAccountType = Model.BankAccountTypes.First(x => x.ResourceId == Model.BankAccounts[index].AccountType).Value;
+                    var bankAccountType = Model.BankAccountTypes.First(x => x.Id == Model.BankAccounts[index].AccountType).Name;
                 }
                 <td>@bankType</td>
                 <td>@Model.BankAccounts[index].AccountName</td>
