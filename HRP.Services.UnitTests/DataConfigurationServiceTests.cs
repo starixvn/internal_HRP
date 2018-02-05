@@ -61,36 +61,24 @@
             Assert.Equal(companies.Count, actual.Count);
         }
 
-        [Fact]
-        public async Task IsExistedCompanyBVIAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedCompanyBVIAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var item = MockSimpleItem();
             var criteria = new CheckCompanyExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckCompanyExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCompanyExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedCompanyBVIAsync(item);
 
             // Assert
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(item.ItemId, criteria.CompanyId);
             Assert.Equal(item.ItemName, criteria.Code);
-        }
-
-        [Fact]
-        public async Task IsExistedCompanyBVIAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckCompanyExistsCriteria>()).Returns(new List<int>());
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCompanyBVIAsync(new SimpleItem());
-
-            // Assert
-            Assert.False(actual);
         }
 
         [Fact]
@@ -233,36 +221,24 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task IsExistedDivisionAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedDivisionAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var division = MockDivision();
             var criteria = new CheckDivisionExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckDivisionExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckDivisionExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedDivisionAsync(division);
 
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(division.DivisionId, criteria.DivisionId);
             Assert.Equal(division.Code, criteria.Code);
             Assert.Equal(division.CompanyId, criteria.CompanyId);
-        }
-
-        [Fact]
-        public async Task IsExistedDivisionAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var listInteger = new List<int>();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckDivisionExistsCriteria>()).Returns(listInteger);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedDivisionAsync(new Division());
-
-            Assert.False(actual);
         }
 
         [Fact]
@@ -406,35 +382,24 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task IsExistedDepartmentAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedDepartmentAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var department = MockDepartment();
             var criteria = new CheckDepartmentExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckDepartmentExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckDepartmentExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedDepartmentAsync(department);
 
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(department.DepartmentId, criteria.DepartmentId);
             Assert.Equal(department.Code, criteria.Code);
             Assert.Equal(department.DivisionId, criteria.DivisionId);
-        }
-
-        [Fact]
-        public async Task IsExistedDepartmentAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckDepartmentExistsCriteria>()).Returns(new List<int>());
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedDepartmentAsync(new Department());
-
-            Assert.False(actual);
         }
 
         [Fact]
@@ -580,35 +545,24 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task IsExistedCostCenterAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedCostCenterAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var costCenter = MockCostCenter();
             var criteria = new CheckCostCenterExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckCostCenterExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCostCenterExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
 
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
             Assert.Equal(costCenter.Code, criteria.Code);
             Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
-        }
-
-        [Fact]
-        public async Task IsExistedCostCenterAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckCostCenterExistsCriteria>()).Returns(new List<int>());
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCostCenterAsync(new CostCenter());
-
-            Assert.False(actual);
         }
 
         [Fact]
@@ -756,35 +710,24 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task IsExistedSectionAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedSectionAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var section = MockSection();
             var criteria = new CheckSectionExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckSectionExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckSectionExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedSectionAsync(section);
 
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(section.SectionId, criteria.SectionId);
             Assert.Equal(section.Code, criteria.Code);
             Assert.Equal(section.CostCenterId, criteria.CostCenterId);
-        }
-
-        [Fact]
-        public async Task IsExistedSectionAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckSectionExistsCriteria>()).Returns(new List<int>());
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedSectionAsync(new Section());
-
-            Assert.False(actual);
         }
 
         [Fact]
@@ -934,35 +877,24 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task IsExistedGradeLevelAsync_BaseServiceGetIntegerList_ReturnTrue()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedGradeLevelAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
             var criteria = new CheckGradeLevelExistsCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Do<CheckGradeLevelExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckGradeLevelExistsCriteria>(x => criteria = x)).Returns(isExisted);
 
             // Act
             var actual = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
 
-            Assert.True(actual);
+            Assert.Equal(isExisted, actual);
             Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
             Assert.Equal(gradeLevel.Name, criteria.Name);
             Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
-        }
-
-        [Fact]
-        public async Task IsExistedGradeLevelAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
-        {
-            // Arrange
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<int>(Arg.Any<CheckGradeLevelExistsCriteria>()).Returns(new List<int>());
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedGradeLevelAsync(new GradeLevel());
-
-            Assert.False(actual);
         }
 
         [Fact]
@@ -1351,6 +1283,5 @@
         }
 
         #endregion Initialization
-
     }
 }

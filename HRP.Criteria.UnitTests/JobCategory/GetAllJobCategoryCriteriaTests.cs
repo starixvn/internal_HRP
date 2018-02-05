@@ -22,7 +22,10 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetAllJobCategoryCriteria();
+            var criteria = new GetAllJobCategoryCriteria
+            {
+                IsActive = true
+            };
 
             // Act
             var actual = criteria.IsValid();

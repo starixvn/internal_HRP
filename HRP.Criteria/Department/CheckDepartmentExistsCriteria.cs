@@ -12,6 +12,6 @@
 
         public override string GetSettingKey() => "Department_CheckExists";
 
-        public override bool IsValid() => !string.IsNullOrEmpty(Code);
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(Code);
     }
 }

@@ -22,7 +22,10 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetAllDivisionCriteria();
+            var criteria = new GetAllDivisionCriteria
+            {
+                IsActive = true
+            };
 
             // Act
             var actual = criteria.IsValid();

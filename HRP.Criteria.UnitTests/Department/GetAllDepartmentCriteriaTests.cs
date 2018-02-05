@@ -22,7 +22,10 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetAllDepartmentCriteria();
+            var criteria = new GetAllDepartmentCriteria
+            {
+                IsActive = true
+            };
 
             // Act
             var actual = criteria.IsValid();

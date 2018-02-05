@@ -103,7 +103,7 @@
 
         public async Task<bool> IsExistedCompanyBVIAsync(SimpleItem item)
         {
-            var isExisted = (await baseService.GetDataAsync<int>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName }).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName }).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -189,7 +189,7 @@
                 Code = division.Code,
                 CompanyId = division.CompanyId
             };
-            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -261,7 +261,7 @@
                 DivisionId = department.DivisionId
             };
 
-            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -333,7 +333,7 @@
                 DepartmentId = costCenter.DepartmentId
             };
 
-            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -405,7 +405,7 @@
                 CostCenterId = section.CostCenterId
             };
 
-            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -476,7 +476,7 @@
                 Name = gradeLevel.Name,
                 JobCategoryId = gradeLevel.JobCategoryId
             };
-            var isExisted = (await baseService.GetDataAsync<int>(criteria).ConfigureAwait(false)).Any();
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
 
             return isExisted;
         }
