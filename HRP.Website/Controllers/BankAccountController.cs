@@ -160,19 +160,24 @@
                 .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                 .Select(x => new BankAccountType(x));
 
-            List<BankType> disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
 
             viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
         }
 
-        private static List<BankType> GetDisabledBankTypes(EmployeeBankAccounts data, IEnumerable<BankType> bankTypes)
+        private static List<BankType> GetDisabledBankTypes(
+            EmployeeBankAccounts data,
+            IEnumerable<BankType> bankTypes,
+            int currentBankType = 0)
         {
             var disabledBankTypes = new List<BankType>();
 
             foreach (var bankType in bankTypes)
             {
                 var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.Id && x.IsActive);
-                if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE)
+
+                //TODO: wrong here
+                if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE && currentBankType != bankType.Id)
                 {
                     disabledBankTypes.Add(bankType);
                 }
@@ -198,13 +203,16 @@
                 .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                 .Select(x => new BankAccountType(x));
 
+            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+
             var viewModel = new EditBankAccountViewModel
             {
                 EmployeeId = bankAccount.EmployeeId,
                 EmployeeName = data.EmployeeName
             };
 
-            viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes);
+            viewModel.IsBankTypeDisabled = bankTypes.Count() <= disabledBankTypes.Count;
+            viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
 
             return View(viewModel);
         }

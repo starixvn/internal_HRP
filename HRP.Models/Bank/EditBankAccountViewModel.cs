@@ -19,9 +19,10 @@
         public void Initialize(
             IBankAccount bankAccount,
             IEnumerable<BankType> bankTypes,
-            IEnumerable<BankAccountType> bankAccountTypes)
+            IEnumerable<BankAccountType> bankAccountTypes,
+            IEnumerable<BankType> disabledBankTypes = null)
         {
-            Initialize(bankTypes, bankAccountTypes);
+            Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
             BankAccount = bankAccount;
         }
     }

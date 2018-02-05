@@ -30,10 +30,12 @@
 
         public IBankAccount BankAccount { get; set; }
 
+        public bool IsBankTypeDisabled { get; set; }
+
         public void Initialize(
             IEnumerable<BankType> bankTypes,
             IEnumerable<BankAccountType> bankAccountTypes,
-            IList<BankType> disabledBankTypes = null)
+            IEnumerable<BankType> disabledBankTypes = null)
         {
             BankTypes = disabledBankTypes != null
                 ? new SelectList(
