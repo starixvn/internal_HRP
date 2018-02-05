@@ -99,7 +99,7 @@
     <Compile Include="Division\GetDivisionByIdCriteriaTests.cs" />
     <Compile Include="Division\UpdateDivisionCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmpCodeExistedCriteriaTests.cs" />
-    <Compile Include="Employee\GetAllCompanyDivsionDepartmentCriteriaTests.cs" />
+    <Compile Include="Employee\GetDataFilterForIndexPageCriteriaTests.cs" />
     <Compile Include="Employee\GetDataToCreateEmploymentCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeByFilterCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeByIdCriteriaTests.cs" />

@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -26,77 +25,37 @@
         private IEmployeePayrollService payrollService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnsViewResult()
+        public async Task Index_WhenCalled_ReturnAsExpectedViewResult()
         {
             //Arrange
+            var employees = new List<EmployeeBasicInfo>
+            {
+                new EmployeeBasicInfo { EmployeeId = 1, Nickname = "tim.trinh" }
+            };
+            var viewModel = new EmployeeManagementViewModel
+            {
+                DepartmentIds = "1,2",
+                EmploymentStatusIds = "1,2"
+            };
             var employeeController = GetEmployeeManagementController();
-            var listCompany = new ListCompanyDivisionDepartment
-            {
-                Companies = new List<Company>(),
-                Divisions = new List<Division>(),
-                Departments = new List<Department>()
-            };
-
-            var refResource = new ReferenceResourceModel
-            {
-                ResourceId = 1,
-                RefName = "EmploymentStatus",
-                Value = "Confirmed",
-                Description = ""
-            };
-            var employeeList = new List<EmployeeBasicInfo>
-            {
-                new EmployeeBasicInfo
-                {
-                    EmployeeId = 1234,
-                    EmployeeCode = "OW",
-                    Nickname = "Oliver",
-                    FullName = "Oliver Dang",
-                    CompanyId = 1,
-                    CompanyCode = "OW",
-                    CompanyName = "Onework",
-                    DivisionCode = "",
-                    DivisionName = "HR",
-                    DepartmentCode = "",
-                    DepartmentName = "HR",
-                    JobTitle = "Software Engineer",
-                    EmployeeStatus = "Probation",
-                    EditBankPolicy = Policy.Host,
-                    EditPayRollPolicy = Policy.Host,
-                    EditProfilePolicy = Policy.Host
-                }
-            };
+            sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            employeeManagementService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
+            employeeManagementService.GetEmployeesAsync(Arg.Any<EmployeeManagementViewModel>()).Returns(employees);
 
             //Act
-            baseService.GetData<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employeeList);
-            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
-            baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus })
-                .Returns(new List<ReferenceResourceModel> { refResource });
-
-            var actual = employeeController.Index();
+            var actual = await employeeController.Index();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
-        }
-
-        [Fact]
-        public void GetCompanyTree_WhenCalled_ReturnJsonResult()
-        {
-            var employeeController = GetEmployeeManagementController();
-            var listCompany = new ListCompanyDivisionDepartment
-            {
-                Companies = new List<Company>(),
-                Divisions = new List<Division>(),
-                Departments = new List<Department>()
-            };
-
-            //Act
-            employeeManagementService.GetAllCompanyDivisonDepartment().Returns(listCompany);
-            var actual = employeeController.GetCompanyTree();
-
-            //Assert
-            Assert.IsType<JsonResult>(actual);
+            var model = Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
+            Assert.True(model.IsHostCreateEmployee);
+            Assert.Equal(viewModel.DepartmentIds, model.DepartmentIds);
+            Assert.Equal(viewModel.EmploymentStatusIds, model.EmploymentStatusIds);
+            Assert.Equal(viewModel.HierarchyCompanies, model.HierarchyCompanies);
+            Assert.Equal(viewModel.EmploymentStatuses, model.EmploymentStatuses);
+            Assert.Equal(viewModel.HierarchyCompanyJson, model.HierarchyCompanyJson);
+            Assert.Equal(viewModel.EmploymentStatusJson, model.EmploymentStatusJson);
+            Assert.Equal(employees, model.Employees);
         }
 
         #region CreateEmployee

@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
@@ -11,7 +10,6 @@
     using Criteria;
     using Criteria.Employee;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.EmployeeManagement;
     using Resources;
@@ -21,67 +19,36 @@
     public class EmployeeManagementController : BaseController
     {
         private readonly IBaseService baseService;
-        private readonly IEmployeeManagementService employeeManagementService;
+        private readonly IEmployeeManagementService employeeService;
         private readonly IEmployeePayrollService payrollService;
         private readonly ISessionService sessionService;
 
         public EmployeeManagementController(
             IBaseService baseService,
-            IEmployeeManagementService employeeManagementService,
+            IEmployeeManagementService employeeService,
             IEmployeePayrollService payrollService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
             this.baseService = baseService;
-            this.employeeManagementService = employeeManagementService;
+            this.employeeService = employeeService;
             this.payrollService = payrollService;
             this.sessionService = sessionService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public IActionResult Index(
+        public async Task<IActionResult> Index(
             string departmentIds = null,
-            string employeeStatusIds = null,
+            string employmentStatusIds = null,
             int? employeeId = null,
             string displayName = null)
         {
-            var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
-            var listEmployeeStatus = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.EmploymentStatus });
-            var statusIds = employeeStatusIds ?? string.Join(",", listEmployeeStatus.Select(x => x.ResourceId).ToList());
-            var viewModel = new EmployeeManagementViewModel
-            {
-                IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host),
-                DepartmentIds = departmentIds ?? GetDepartmentIds(listDepartment.Departments),
-                EmployeeStatusIds = statusIds,
-                EmployeeStatus = new SelectList(listEmployeeStatus, "ResourceId", "Value"),
-                EmployeeId = employeeId,
-                DisplayName = displayName
-            };
-            var criteria = new GetAllEmployeeCriteria
-            {
-                DepartmentIds = viewModel.DepartmentIds,
-                EmployeeStatusIds = viewModel.EmployeeStatusIds,
-                EmployeeId = viewModel.EmployeeId,
-                EmployeeName = viewModel.DisplayName,
-                UserId = sessionService.UserId
-            };
-            viewModel.Employees = baseService.GetData<EmployeeBasicInfo>(criteria);
+            EmployeeManagementViewModel viewModel = employeeService.GetDataFilterForIndexPage(departmentIds, employmentStatusIds);
+            viewModel.IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host);
+            viewModel.DisplayName = displayName;
+            viewModel.EmployeeId = employeeId;
+            viewModel.Employees = await employeeService.GetEmployeesAsync(viewModel);
 
             return View(viewModel);
-        }
-
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public IActionResult GetCompanyTree()
-        {
-            var listDepartment = employeeManagementService.GetAllCompanyDivisonDepartment();
-            return Json(listDepartment);
-        }
-
-        private static string GetDepartmentIds(IEnumerable<Department> departments)
-        {
-            var departmentIds = string.Empty;
-            departmentIds = string.Join(",", departments.Select(x => x.DepartmentId).ToList());
-            return departmentIds;
         }
 
         [HttpGet]
@@ -101,7 +68,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployee()
         {
-            CreateEmployeeViewModel viewModel = await employeeManagementService.GetDataToCreateEmployeeAsync();
+            CreateEmployeeViewModel viewModel = await employeeService.GetDataToCreateEmployeeAsync();
 
             return View("CreateEmployee", viewModel);
         }
@@ -111,7 +78,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreatePersonalDetails(CreateEmployeeViewModel employee)
         {
-            CommandResult validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
+            CommandResult validatePicture = employeeService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
             {
                 ModelState.AddModelError(nameof(employee.ProfilePicture), validatePicture.Message);
@@ -131,7 +98,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreateEmployment()
         {
-            CreateEmploymentViewModel viewModel = employeeManagementService.GetDataToCreateEmployment();
+            CreateEmploymentViewModel viewModel = employeeService.GetDataToCreateEmployment();
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -143,7 +110,7 @@
         {
             if (ModelState.IsValid)
             {
-                var commandResult = await employeeManagementService.CreateEmployeeAsync(viewModel);
+                var commandResult = await employeeService.CreateEmployeeAsync(viewModel);
 
                 return Json(commandResult);
             }
@@ -155,7 +122,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public IActionResult UpdateEmployee(int id)
         {
-            var viewModel = employeeManagementService.GetPersonalDetails(id);
+            var viewModel = employeeService.GetPersonalDetails(id);
 
             if (viewModel == null)
             {
@@ -170,7 +137,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdatePersonalDetails(CreateEmployeeViewModel employee)
         {
-            var validatePicture = employeeManagementService.CheckValidPicture(employee.ProfilePicture);
+            var validatePicture = employeeService.CheckValidPicture(employee.ProfilePicture);
             if (!validatePicture.IsSuccessful)
             {
                 ModelState.AddModelError(nameof(employee.ProfilePicture), validatePicture.Message);
@@ -178,7 +145,7 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = await employeeManagementService.UpdatePersonalDetailsAsync(employee);
+                var commandResult = await employeeService.UpdatePersonalDetailsAsync(employee);
                 var returnMessage = commandResult.IsSuccessful ? string.Format(Message.UpdateEmployeeSuccessful, employee.Nickname) : commandResult.Message;
 
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = returnMessage });
@@ -194,7 +161,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public IActionResult UpdateEmployment(int employeeId)
         {
-            UpdateEmploymentViewModel viewModel = employeeManagementService.GetDataToUpdateEmployment(employeeId);
+            UpdateEmploymentViewModel viewModel = employeeService.GetDataToUpdateEmployment(employeeId);
 
             if (viewModel == null)
             {
@@ -211,7 +178,7 @@
         {
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = await employeeManagementService.UpdateEmploymentAsync(viewModel);
+                CommandResult commandResult = await employeeService.UpdateEmploymentAsync(viewModel);
 
                 return Json(commandResult);
             }

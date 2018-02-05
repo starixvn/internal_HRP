@@ -4,7 +4,6 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -40,6 +39,38 @@
             this.cryptoService = cryptoService;
             this.sessionService = sessionService;
             this.employeeRepository = employeeRepository ?? new EmployeeManagementRepository();
+        }
+
+        public EmployeeManagementViewModel GetDataFilterForIndexPage(string departmentIds, string employmentStatusIds)
+        {
+            var criteria = new GetDataFilterForIndexPageCriteria
+            {
+                UserId = sessionService.UserId,
+                DepartmentIds = departmentIds,
+                EmploymentStatusIds = employmentStatusIds
+            };
+            var viewModel = new EmployeeManagementViewModel();
+
+            if (criteria.IsValid())
+            {
+                viewModel = employeeRepository.GetDataFilterForIndexPage(criteria);
+            }
+
+            return viewModel;
+        }
+
+        public async Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel)
+        {
+            var criteria = new GetAllEmployeeCriteria
+            {
+                DepartmentIds = viewModel.DepartmentIds,
+                EmploymentStatusIds = viewModel.EmploymentStatusIds,
+                EmployeeId = viewModel.EmployeeId,
+                EmployeeName = viewModel.DisplayName,
+                UserId = sessionService.UserId
+            };
+
+            return await baseService.GetDataAsync<EmployeeBasicInfo>(criteria).ConfigureAwait(false);
         }
 
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee)
@@ -191,35 +222,6 @@
             }
 
             return commandResult;
-        }
-
-        public ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment()
-        {
-            var criteria = new GetAllCompanyDivsionDepartmentCriteria { UserId = sessionService.UserId };
-
-            if (criteria.IsValid())
-            {
-                using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-                {
-                    using (var multi = db.QueryMultiple(criteria))
-                    {
-                        var companies = multi.Read<Company>();
-                        var divisions = multi.Read<Division>();
-                        var departments = multi.Read<Department>();
-                        var listDepartment = new ListCompanyDivisionDepartment();
-                        if (companies != null && divisions != null && departments != null)
-                        {
-                            listDepartment.Companies = companies;
-                            listDepartment.Divisions = divisions;
-                            listDepartment.Departments = departments;
-                        }
-
-                        return listDepartment;
-                    }
-                }
-            }
-
-            return null;
         }
 
         public CreateEmployeeViewModel GetPersonalDetails(int employeeId)

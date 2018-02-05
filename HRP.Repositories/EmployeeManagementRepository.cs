@@ -118,6 +118,44 @@ namespace HRP.Repositories
             }
         }
 
+        public EmployeeManagementViewModel GetDataFilterForIndexPage(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                {
+                    var viewModel = multi.ReadFirst<EmployeeManagementViewModel>();
+                    var companies = multi.Read<MultiSelectViewModel>();
+                    var divisions = multi.Read<MultiSelectViewModel>();
+                    var departments = multi.Read<MultiSelectViewModel>();
+                    var employmentStatuses = multi.Read<MultiSelectViewModel>();
+
+                    viewModel.HierarchyCompanies = companies.Select(company => new MultiSelectViewModel
+                    {
+                        Value = company.Value,
+                        Text = company.Text,
+                        Checked = company.Checked,
+                        Items = divisions.Where(division => division.ParentId == company.Value).Select(division => new MultiSelectViewModel
+                        {
+                            Value = division.Value,
+                            Text = division.Text,
+                            Checked = division.Checked,
+                            Items = departments.Where(dept => dept.ParentId == division.Value).Select(dept => new MultiSelectViewModel
+                            {
+                                Value = dept.Value,
+                                Text = dept.Text,
+                                Checked = dept.Checked
+                            })
+                        })
+                    });
+
+                    viewModel.EmploymentStatuses = employmentStatuses;
+
+                    return viewModel;
+                }
+            }
+        }
+
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {
             return refResources.Where(x => x.RefName == refName);

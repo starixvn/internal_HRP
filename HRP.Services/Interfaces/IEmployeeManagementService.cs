@@ -1,13 +1,17 @@
 ﻿namespace HRP.Services.Interfaces
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Core.Model;
     using Microsoft.AspNetCore.Http;
-    using Models;
     using Models.EmployeeManagement;
 
     public interface IEmployeeManagementService
     {
+        EmployeeManagementViewModel GetDataFilterForIndexPage(string departmentIds, string employmentStatusIds);
+
+        Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel);
+
         Task<CreateEmployeeViewModel> GetDataToCreateEmployeeAsync();
 
         Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee);
@@ -17,8 +21,6 @@
         CreateEmployeeViewModel GetPersonalDetails(int employeeId);
 
         CommandResult CheckValidPicture(IFormFile file);
-
-        ListCompanyDivisionDepartment GetAllCompanyDivisonDepartment();
 
         CreateEmploymentViewModel GetDataToCreateEmployment();
 

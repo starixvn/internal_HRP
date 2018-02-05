@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using Fanex.Data;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -21,21 +20,81 @@
 
     public class EmployeeManagementServiceTests
     {
-        private readonly IObjectDb mockObjectDb;
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
         private IEmployeeManagementRepository employeeRepository;
 
-        public EmployeeManagementServiceTests()
-        {
-            DbSettingProviderManager
-            .StartTestingSession()
-            .Run();
+        #region GetDataFilterForIndexPage
 
-            mockObjectDb = Substitute.For<IObjectDb>();
-            ObjectDbFactory.Mock((key, time) => mockObjectDb);
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void GetDataFilterForIndexPage_UserIdIsInvalid_ReturnDefaultViewModel(int userId)
+        {
+            // Arrange
+            var employeeService = GetEmployeeManagementService();
+            sessionService.UserId = userId;
+
+            // Act
+            var actual = employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>());
+
+            // Assert
+            Assert.IsAssignableFrom<EmployeeManagementViewModel>(actual);
+            Assert.False(actual.IsHostCreateEmployee);
+            Assert.Null(actual.DepartmentIds);
+            Assert.Null(actual.EmploymentStatusIds);
+            Assert.Null(actual.EmployeeId);
+            Assert.Null(actual.DisplayName);
+            Assert.Empty(actual.HierarchyCompanyJson);
+            Assert.Empty(actual.EmploymentStatusJson);
+            Assert.Empty(actual.Employees);
+            Assert.Empty(actual.HierarchyCompanies);
+            Assert.Empty(actual.EmploymentStatuses);
         }
+
+        [Fact]
+        public void GetDataFilterForIndexPage_UserIdIsValid_ReturnAsExpectedViewModel()
+        {
+            // Arrange
+            var viewModel = new EmployeeManagementViewModel
+            {
+                IsHostCreateEmployee = true,
+                DepartmentIds = "1,2"
+            };
+            var employeeService = GetEmployeeManagementService();
+            employeeRepository.GetDataFilterForIndexPage(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
+
+            // Act
+            var actual = employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>());
+
+            // Assert
+            Assert.Equal(viewModel, actual);
+        }
+
+        #endregion GetDataFilterForIndexPage
+
+        #region GetEmployeesAsync
+
+        [Fact]
+        public async Task GetEmployeesAsync_WhenCalled_ReturnAsExpectedEmployees()
+        {
+            // Arrange
+            var employees = new List<EmployeeBasicInfo>
+            {
+                new EmployeeBasicInfo { EmployeeId = 1, Nickname = "tim.trinh" }
+            };
+            var employeeService = GetEmployeeManagementService();
+            baseService.GetDataAsync<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employees);
+
+            // Act
+            var actual = await employeeService.GetEmployeesAsync(new EmployeeManagementViewModel());
+
+            // Assert
+            Assert.Equal(employees, actual);
+        }
+
+        #endregion GetEmployeesAsync
 
         #region CreateEmployeeAsync
 
@@ -122,40 +181,6 @@
         }
 
         #endregion UpdatePersonalDetailsAsync
-
-        #region GetAllCompanyDivisonDepartment
-
-        [Fact]
-        public void GetAllCompanyDivisionDepartment_ValidCriteria_ReturnList()
-        {
-            // Arrange
-            var employeeService = GetEmployeeManagementService();
-
-            // Act
-            var actual = employeeService.GetAllCompanyDivisonDepartment();
-
-            //Assert
-            Assert.NotNull(actual);
-            Assert.IsType<ListCompanyDivisionDepartment>(actual);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void GetAllCompanyDivisionDepartment_InvalidCriteria_ReturnNull(int userId)
-        {
-            //Arrange
-            var employeeService = GetEmployeeManagementService();
-            sessionService.UserId = userId;
-
-            //Act
-            var actual = employeeService.GetAllCompanyDivisonDepartment();
-
-            //Assert
-            Assert.Null(actual);
-        }
-
-        #endregion GetAllCompanyDivisonDepartment
 
         #region GetPersonalDetails
 

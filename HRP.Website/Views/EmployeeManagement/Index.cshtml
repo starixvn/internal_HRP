@@ -30,17 +30,19 @@
     <p class="message" id="employment-status-validation" hidden>@Message.SelectAtLeastOneEmploymentStatus</p>
 </div>
 <div class="search-form form-filter">
+    <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
+    <div class="hidden" id="EmploymentStatusJson">@Model.EmploymentStatusJson</div>
     <div class="group">
         <label class="text -has-required">@ViewLang.Company</label>
-        <select class="control company" id="CompanySelect"></select>
+        <select class="control company width-200" id="CompanyMultiSelect"></select>
     </div>
     <div class="group">
         <label class="text -has-required">@ViewLang.EmploymentStatus</label>
-        <select class="control service" asp-for="EmployeeStatus" asp-items="Model.EmployeeStatus"></select>
+        <select class="control service width-200" id="EmploymentStatusMultiSelect"></select>
     </div>
-    <form class="search-form form-filter" method="get">
-        <input asp-for="DepartmentIds" class="hidden" />
-        <input asp-for="EmployeeStatusIds" hidden />
+    <form class="search-form form-filter"  method="get">
+        <input asp-for="DepartmentIds" hidden />
+        <input asp-for="EmploymentStatusIds" hidden />
         <div class="group">
             <label class="text">@ViewLang.Employee</label>
             <input type="text" class="control employee" placeholder="Full name or Nickname" asp-for="DisplayName" maxlength="70" />

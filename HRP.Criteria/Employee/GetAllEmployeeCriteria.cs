@@ -8,7 +8,7 @@
 
         public string DepartmentIds { get; set; }
 
-        public string EmployeeStatusIds { get; set; }
+        public string EmploymentStatusIds { get; set; }
 
         public int? EmployeeId { get; set; }
 

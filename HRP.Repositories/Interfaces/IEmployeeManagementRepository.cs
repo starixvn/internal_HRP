@@ -10,5 +10,7 @@ namespace HRP.Repositories.Interfaces
         CreateEmploymentViewModel GetDataToCreateEmployment(ICriteria criteria);
 
         UpdateEmploymentViewModel GetDataToUpdateEmployment(ICriteria criteria);
+
+        EmployeeManagementViewModel GetDataFilterForIndexPage(ICriteria criteria);
     }
 }

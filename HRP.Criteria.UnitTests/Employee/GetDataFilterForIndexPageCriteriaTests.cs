@@ -3,14 +3,14 @@
     using HRP.Criteria.Employee;
     using Xunit;
 
-    public class GetAllCompanyDivsionDepartmentCriteriaTests
+    public class GetDataFilterForIndexPageCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var expected = "Employee_GetAllCompanyDivisionDepartment";
-            var criteria = new GetAllCompanyDivsionDepartmentCriteria();
+            var expected = "Employee_GetDataFilterForIndexPage";
+            var criteria = new GetDataFilterForIndexPageCriteria();
             // Act
             var actual = criteria.GetSettingKey();
 
@@ -23,7 +23,7 @@
         public void IsValid_WithValidParams_ReturnTrue(int userId)
         {
             // Arrange
-            var criteria = new GetAllCompanyDivsionDepartmentCriteria
+            var criteria = new GetDataFilterForIndexPageCriteria
             {
                 UserId = userId
             };
@@ -41,7 +41,7 @@
         public void IsValid_WithInValidParams_ReturnFalse(int userId)
         {
             // Arrange
-            var criteria = new GetAllCompanyDivsionDepartmentCriteria
+            var criteria = new GetDataFilterForIndexPageCriteria
             {
                 UserId = userId
             };

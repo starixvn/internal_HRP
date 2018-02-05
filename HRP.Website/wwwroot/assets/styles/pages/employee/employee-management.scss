@@ -7,6 +7,10 @@
 @import "../../components/customize-autocomplete";
 
 .search-form {
+    .width-200 {
+        width: 200px;
+    }
+
     .fanex-multiselect-options {
         width: 200px !important;
     }
