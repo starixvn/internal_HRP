@@ -112,7 +112,7 @@
         {
             var isExisted = bankAccountService.CheckIsBankAccountExisted(bankAccount);
 
-            return isExisted ? Json(data: nameof(BankAccountError.AccountExisted)) : Json(data: true);
+            return isExisted ? Json(data: BankAccountError.AccountExisted.GetDisplayName()) : Json(data: true);
         }
 
         [HttpPost]
