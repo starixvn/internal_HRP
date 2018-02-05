@@ -8,14 +8,17 @@
 @section Styles {
     <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
     <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
-    <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-    <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <script src="~/assets/js/bank/employee-bank.js"></script>
+    @*<script src="~/lib/fanex-multiselect/fanex.multiSelect.js" type="text/javascript"></script>*@
+    <script type="text/javascript" src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bank/transform-select.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/assets/js/bank/employee-bank.js" asp-append-version="true"></script>
 }
 
 <ol class="breadcrumb">
@@ -34,7 +37,7 @@
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">Bank Type</label>
-        <select asp-for="SelectedBankTypes" asp-items="@Model.BankTypes" class="fanex-select"></select>
+        <select asp-for="SelectedBankType" asp-items="@Model.BankTypes"></select>
     </div>
     <div class="group">
         <label class="text">Active</label>

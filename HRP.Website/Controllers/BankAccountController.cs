@@ -81,15 +81,15 @@
                 viewModel.CanCreate = false;
             }
 
-            if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
-                || viewModel.SelectedBankTypes == null)
-            {
-                viewModel.SelectedBankTypes = bankTypes.Select(x => x.Id).ToArray();
-            }
+            ////if ((viewModel.SelectedBankTypes != null && !viewModel.SelectedBankTypes.Any())
+            ////    || viewModel.SelectedBankTypes == null)
+            ////{
+            ////    viewModel.SelectedBankTypes = bankTypes.Select(x => x.Id).ToArray();
+            ////}
 
             viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
                     viewModel.BankAccounts,
-                    viewModel.SelectedBankTypes,
+                    viewModel.SelectedBankType,
                     viewModel.IsActiveBankAccount)
                 .ToList();
 
@@ -212,7 +212,6 @@
                 EmployeeName = data.EmployeeName
             };
 
-            viewModel.IsBankTypeDisabled = bankTypes.Count() <= disabledBankTypes.Count;
             viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
 
             return View(viewModel);
@@ -250,7 +249,6 @@
                 viewModel.EmployeeId = bankAccount.EmployeeId;
                 viewModel.EmployeeName = data.EmployeeName;
 
-                viewModel.IsBankTypeDisabled = bankTypes.Count() <= disabledBankTypes.Count;
                 viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
 
                 ModelState.AddModelError("BankAccount.AccountName", ((BankAccountError)result.Code).GetDisplayName());

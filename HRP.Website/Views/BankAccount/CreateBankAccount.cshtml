@@ -6,14 +6,17 @@
 }
 
 @section Styles {
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
 }
 
 @section Scripts {
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script type="text/javascript" src="~/assets/js/bank/create-bank-account.js"></script>
-    <script type="text/javascript" src="~/assets/js/bank/state-handler.js"></script>
+    <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bank/transform-select.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/assets/js/bank/create-bank-account.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/assets/js/bank/state-handler.js" asp-append-version="true"></script>
 }
 
 <ol class="breadcrumb">

@@ -82,7 +82,7 @@
             return baseService.ExecuteNonQuery(criteria);
         }
 
-        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int[] bankTypes, bool? isActive)
+        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)
         {
             var filteredBankAccounts = bankAccounts;
             if (isActive != null)
@@ -90,10 +90,16 @@
                 filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive = isActive.Value);
             }
 
-            if (bankTypes != null && !bankTypes.Contains(0))
+            if (bankType != 0)
             {
-                filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType);
             }
+
+            //// Left here just in case spec change to multiple banktypes selection
+            ////if (bankTypes != null && !bankTypes.Contains(0))
+            ////{
+            ////    filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
+            ////}
 
             return filteredBankAccounts.OrderBy(x => x.AccountName);
         }

@@ -5,5 +5,9 @@
         public BankType(ReferenceResourceModel referenceResource) : base(referenceResource)
         {
         }
+
+        public BankType(int id, string name) : base(id, name)
+        {
+        }
     }
 }

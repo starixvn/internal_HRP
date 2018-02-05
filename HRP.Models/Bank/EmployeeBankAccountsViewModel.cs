@@ -17,9 +17,9 @@
         {
         }
 
-        public int[] SelectedBankTypes { get; set; }
+        public int SelectedBankType { get; set; }
 
-        public MultiSelectList BankTypes { get; set; }
+        public SelectList BankTypes { get; set; }
 
         public bool? IsActiveBankAccount { get; set; }
 
@@ -60,21 +60,16 @@
 
         private void PopulateBankTypes(IEnumerable<BankType> bankTypes)
         {
-            ////var allOption = new ReferenceResourceModel
-            ////{
-            ////    ResourceId = 0,
-            ////    Value = "All"
-            ////};
-
             var bankTypesWithAllOption = bankTypes.ToList();
-            ////bankTypesWithAllOption.Add(allOption);
 
-            BankTypes = new MultiSelectList(
+            var allOption = new BankType(0, "All");
+
+            bankTypesWithAllOption.Add(allOption);
+
+            BankTypes = new SelectList(
                 bankTypesWithAllOption,
                 nameof(BankType.Id),
                 nameof(BankType.Name));
-
-            ////BankTypes = bankTypes.ToList();
         }
 
         public bool CanCreate { get; set; }

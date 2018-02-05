@@ -18,7 +18,7 @@
 
         IEnumerable<BankAccount> FilterBankAccounts(
             IEnumerable<BankAccount> bankAccounts,
-            int[] bankTypes,
+            int bankType,
             bool? isActive);
     }
 }

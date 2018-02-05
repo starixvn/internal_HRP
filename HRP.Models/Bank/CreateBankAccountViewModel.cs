@@ -30,8 +30,6 @@
 
         public IBankAccount BankAccount { get; set; }
 
-        public bool IsBankTypeDisabled { get; set; }
-
         public void Initialize(
             IEnumerable<BankType> bankTypes,
             IEnumerable<BankAccountType> bankAccountTypes,
