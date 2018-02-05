@@ -162,5 +162,6 @@
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountsByEmpId.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountById.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_CreateBankAccount.sql" />
+    <Build Include="dbo\Stored Procedures\BankAccount_CheckExisted.sql" />
   </ItemGroup>
 </Project>

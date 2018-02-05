@@ -61,7 +61,10 @@ var dataTable = {
             }],
             "order": [[2, "asc"]],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
-            'info': false
+            'info': false,
+            "language": {
+                "zeroRecords": "There is no data"
+            }
         });
 
         dataTable.assignSearchButton();
