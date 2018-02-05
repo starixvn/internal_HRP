@@ -1,6 +1,12 @@
 ﻿'use strict';
 
 var employeeList = (function ($) {
+    function initSelect2() {
+        $("select[name=employee-table_length]").select2({
+            minimumResultsForSearch: Infinity
+        });
+    }
+
     function initDataTable() {
         $('#employee-table').dataTable({
             'ordering': true,
@@ -31,12 +37,8 @@ var employeeList = (function ($) {
                 }
             }
         });
-    }
 
-    function initSelect2() {
-        $("select[name=employee-table_length]").select2({
-            minimumResultsForSearch: Infinity
-        });
+        initSelect2();
     }
 
     function searchEmployeeSuggestion() {
@@ -124,9 +126,7 @@ var employeeList = (function ($) {
     }
 
     function initModule() {
-        initDataTable();
         searchEmployeeSuggestion();
-        initSelect2();
 
         $('#quick-search').off('keyup').on('keyup', function () {
             $('#employee-table').DataTable().search($(this).val()).draw();
@@ -147,7 +147,8 @@ var employeeList = (function ($) {
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        initDataTable: initDataTable
     };
 }(jQuery));
 
@@ -174,3 +175,7 @@ $(document).ready(function () {
         }
     });
 });
+
+if (document.readyState === 'loading') {
+    employeeList.initDataTable();
+}

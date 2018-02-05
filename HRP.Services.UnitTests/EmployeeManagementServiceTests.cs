@@ -40,7 +40,7 @@
             var actual = employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>());
 
             // Assert
-            Assert.IsAssignableFrom<EmployeeManagementViewModel>(actual);
+            Assert.IsType<EmployeeManagementViewModel>(actual);
             Assert.False(actual.IsHostCreateEmployee);
             Assert.Null(actual.DepartmentIds);
             Assert.Null(actual.EmploymentStatusIds);

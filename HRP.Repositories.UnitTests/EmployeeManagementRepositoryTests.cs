@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models;
@@ -326,6 +327,45 @@
         }
 
         #endregion GetDataToUpdateEmployment
+
+        [Fact]
+        public void GetDataFilterForIndexPage_WhenCalled_ReturnAsExpectedModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var viewModel = new EmployeeManagementViewModel();
+            var multiSelects = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "1", Text = "DAR", Checked = true }
+            };
+            multiResultReader.ReadFirst<EmployeeManagementViewModel>().Returns(viewModel);
+            multiResultReader.Read<MultiSelectViewModel>().Returns(multiSelects);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new EmployeeManagementRepository();
+
+            // Act
+            var actual = repository.GetDataFilterForIndexPage(criteria);
+
+            // Assert
+            Assert.IsType<EmployeeManagementViewModel>(actual);
+            Assert.Equal(viewModel.IsHostCreateEmployee, actual.IsHostCreateEmployee);
+            Assert.Equal(viewModel.DepartmentIds, actual.DepartmentIds);
+            Assert.Equal(viewModel.EmploymentStatusIds, actual.EmploymentStatusIds);
+            Assert.Equal(viewModel.EmployeeId, actual.EmployeeId);
+            Assert.Equal(viewModel.DisplayName, actual.DisplayName);
+            Assert.Single(actual.HierarchyCompanies);
+            Assert.Equal(multiSelects.First().Value, actual.HierarchyCompanies.First().Value);
+            Assert.Equal(multiSelects.First().Text, actual.HierarchyCompanies.First().Text);
+            Assert.Equal(multiSelects.First().Checked, actual.HierarchyCompanies.First().Checked);
+            Assert.Equal(multiSelects.First().ParentId, actual.HierarchyCompanies.First().ParentId);
+            Assert.Empty(actual.HierarchyCompanies.First().Items);
+            Assert.Equal(multiSelects, actual.EmploymentStatuses);
+            Assert.Equal(multiSelects.First().Value, actual.EmploymentStatuses.First().Value);
+            Assert.Equal(multiSelects.First().Text, actual.EmploymentStatuses.First().Text);
+            Assert.Equal(multiSelects.First().Checked, actual.EmploymentStatuses.First().Checked);
+            Assert.Equal(multiSelects.First().ParentId, actual.EmploymentStatuses.First().ParentId);
+        }
 
         #region Helpers
 
