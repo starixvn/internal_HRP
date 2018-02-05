@@ -7,6 +7,8 @@
     using HRP.Criteria;
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
+    using HRP.Criteria.GradeLevel;
+    using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
@@ -734,7 +736,445 @@
 
         #endregion Cost Center
 
+        #region Section
+
+        [Fact]
+        public async Task GetAllSectionAsync_BaseServiceGetSectionList_ReturnSectionList()
+        {
+            // Arrange
+            var expected = new List<Section> { MockSection() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Section>(Arg.Any<GetAllSectionCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await dataConfigurationService.GetAllSectionAsync() as List<Section>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected.Count, actual.Count);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task IsExistedSectionAsync_BaseServiceGetIntegerList_ReturnTrue()
+        {
+            // Arrange
+            var section = MockSection();
+            var criteria = new CheckSectionExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Do<CheckSectionExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedSectionAsync(section);
+
+            Assert.True(actual);
+            Assert.Equal(section.SectionId, criteria.SectionId);
+            Assert.Equal(section.Code, criteria.Code);
+            Assert.Equal(section.CostCenterId, criteria.CostCenterId);
+        }
+
+        [Fact]
+        public async Task IsExistedSectionAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
+        {
+            // Arrange
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Any<CheckSectionExistsCriteria>()).Returns(new List<int>());
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedSectionAsync(new Section());
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public async Task CreateSectionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var section = MockSection();
+            var criteria = new CreateSectionCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateSectionAsync(section);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
+            Assert.Equal(section.Code, criteria.Code);
+            Assert.Equal(section.Name, criteria.Name);
+            Assert.Equal(section.CostCenterId, criteria.CostCenterId);
+            Assert.Equal(section.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateSectionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateSectionCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateSectionAsync(new Section());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetSectionByIdAsync_BaseServiceGetSectionInstance_ReturnSectionInstance()
+        {
+            // Arrange
+            var id = 41;
+            var section = MockSection();
+            var criteria = new GetSectionByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Section>(Arg.Do<GetSectionByIdCriteria>(x => criteria = x)).Returns(section);
+
+            // Act
+            var actual = await dataConfigurationService.GetSectionByIdAsync(id);
+
+            // Assert
+            Assert.IsType<Section>(actual);
+            Assert.Equal(section.SectionId, actual.SectionId);
+            Assert.Equal(section.Code, actual.Code);
+            Assert.Equal(section.Name, actual.Name);
+            Assert.Equal(section.IsActive, actual.IsActive);
+            Assert.Equal(section.CompanyId, actual.CompanyId);
+            Assert.Equal(section.CompanyCode, actual.CompanyCode);
+            Assert.Equal(section.DivisionId, actual.DivisionId);
+            Assert.Equal(section.DivisionCode, actual.DivisionCode);
+            Assert.Equal(section.DepartmentId, actual.DepartmentId);
+            Assert.Equal(section.DepartmentCode, actual.DepartmentCode);
+            Assert.Equal(section.CostCenterId, actual.CostCenterId);
+            Assert.Equal(section.CostCenterCode, actual.CostCenterCode);
+            Assert.Equal(id, criteria.SectionId);
+        }
+
+        [Fact]
+        public async Task GetSectionByIdAsync_BaseServiceGetNullSection_ReturnNull()
+        {
+            // Arrange
+            Section section = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Section>(Arg.Any<GetSectionByIdCriteria>()).Returns(section);
+
+            // Act
+            var actual = await dataConfigurationService.GetSectionByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateSectionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var section = MockSection();
+            var criteria = new UpdateSectionCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateSectionAsync(section);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(section.SectionId, criteria.SectionId);
+            Assert.Equal(section.Code, criteria.Code);
+            Assert.Equal(section.Name, criteria.Name);
+            Assert.Equal(section.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateSectionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateSectionCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateSectionAsync(new Section());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Section
+
+        #region Grade Level
+
+        [Fact]
+        public async Task GetAllGradeLevelAsync_BaseServiceGetGradeLevelList_ReturnGradeLevelList()
+        {
+            // Arrange
+            var expected = new List<GradeLevel> { MockGradeLevel() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<GradeLevel>(Arg.Any<GetAllGradeLevelCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await dataConfigurationService.GetAllGradeLevelAsync() as List<GradeLevel>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected.Count, actual.Count);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task IsExistedGradeLevelAsync_BaseServiceGetIntegerList_ReturnTrue()
+        {
+            // Arrange
+            var gradeLevel = MockGradeLevel();
+            var criteria = new CheckGradeLevelExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Do<CheckGradeLevelExistsCriteria>(x => criteria = x)).Returns(new List<int> { 1 });
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
+
+            Assert.True(actual);
+            Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
+            Assert.Equal(gradeLevel.Name, criteria.Name);
+            Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
+        }
+
+        [Fact]
+        public async Task IsExistedGradeLevelAsync_BaseServiceGetEmptyIntegerList_ReturnFalse()
+        {
+            // Arrange
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<int>(Arg.Any<CheckGradeLevelExistsCriteria>()).Returns(new List<int>());
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedGradeLevelAsync(new GradeLevel());
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var gradeLevel = MockGradeLevel();
+            var criteria = new CreateGradeLevelCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Name), actual.Message);
+            Assert.Equal(gradeLevel.Name, criteria.Name);
+            Assert.Equal(gradeLevel.Description, criteria.Description);
+            Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
+            Assert.Equal(gradeLevel.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateGradeLevelCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateGradeLevelAsync(new GradeLevel());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetGradeLevelByIdAsync_BaseServiceGetGradeLevelInstance_ReturnGradeLevelInstance()
+        {
+            // Arrange
+            var id = 51;
+            var gradeLevel = MockGradeLevel();
+            var criteria = new GetGradeLevelByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<GradeLevel>(Arg.Do<GetGradeLevelByIdCriteria>(x => criteria = x)).Returns(gradeLevel);
+
+            // Act
+            var actual = await dataConfigurationService.GetGradeLevelByIdAsync(id);
+
+            // Assert
+            Assert.IsType<GradeLevel>(actual);
+            Assert.Equal(gradeLevel.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(gradeLevel.Name, actual.Name);
+            Assert.Equal(gradeLevel.Description, actual.Description);
+            Assert.Equal(gradeLevel.IsActive, actual.IsActive);
+            Assert.Equal(gradeLevel.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(gradeLevel.JobCategoryName, actual.JobCategoryName);
+            Assert.Equal(id, criteria.GradeLevelId);
+        }
+
+        [Fact]
+        public async Task GetGradeLevelByIdAsync_BaseServiceGetNullGradeLevel_ReturnNull()
+        {
+            // Arrange
+            GradeLevel gradeLevel = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<GradeLevel>(Arg.Any<GetGradeLevelByIdCriteria>()).Returns(gradeLevel);
+
+            // Act
+            var actual = await dataConfigurationService.GetGradeLevelByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var gradeLevel = MockGradeLevel();
+            var criteria = new UpdateGradeLevelCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
+            Assert.Equal(gradeLevel.Name, criteria.Name);
+            Assert.Equal(gradeLevel.Description, criteria.Description);
+            Assert.Equal(gradeLevel.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateGradeLevelCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateGradeLevelAsync(new GradeLevel());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Grade Level
+
         #region Common
+
+        [Fact]
+        public async Task GetDivisionSelectListByCompanyIdAsync_BaseServiceGetDivisionList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 10;
+            var divisions = new List<Division> { MockDivision() };
+            var criteria = new GetDivisionByCompanyIdCriteria();
+            var expected = new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Division>(Arg.Do<GetDivisionByCompanyIdCriteria>(x => criteria = x)).Returns(divisions);
+
+            // Act
+            var actual = await dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.CompanyId);
+        }
+
+        [Fact]
+        public async Task GetDepartmentSelectListByDivisionIdAsync_BaseServiceGetDepartmentList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 11;
+            var departments = new List<Department> { MockDepartment() };
+            var criteria = new GetDepartmentByDivisionIdCriteria();
+            var expected = new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Department>(Arg.Do<GetDepartmentByDivisionIdCriteria>(x => criteria = x)).Returns(departments);
+
+            // Act
+            var actual = await dataConfigurationService.GetDepartmentSelectListByDivisionIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.DivisionId);
+        }
+
+        [Fact]
+        public async Task GetCostCenterSelectListByDepartmentIdAsync_BaseServiceGetCostCenterList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 12;
+            var costCenters = new List<CostCenter> { MockCostCenter() };
+            var criteria = new GetCostCenterDepartmentIdCriteria();
+            var expected = new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<CostCenter>(Arg.Do<GetCostCenterDepartmentIdCriteria>(x => criteria = x)).Returns(costCenters);
+
+            // Act
+            var actual = await dataConfigurationService.GetCostCenterSelectListByDepartmentIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.DepartmentId);
+        }
+
+        [Fact]
+        public async Task GetSectionSelectListByCostCenterIdAsync_BaseServiceGetSectionList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 13;
+            var sections = new List<Section> { MockSection() };
+            var criteria = new GetSectionByCostCenterIdCriteria();
+            var expected = new SelectList(sections, nameof(Section.SectionId), nameof(CostCenter.Code));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Section>(Arg.Do<GetSectionByCostCenterIdCriteria>(x => criteria = x)).Returns(sections);
+
+            // Act
+            var actual = await dataConfigurationService.GetSectionSelectListByCostCenterIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.CostCenterId);
+        }
 
         [Fact]
         public async Task GetCompanyBVISelectListAsync_BaseServiceGetCompanyList_ReturnSelectList()
@@ -747,6 +1187,25 @@
 
             // Act
             var actual = await dataConfigurationService.GetCompanyBVISelectListAsync();
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+        }
+
+        [Fact]
+        public async Task GetJobCategorySelectListAsync_BaseServiceGetJobCategoryList_ReturnSelectList()
+        {
+            // Arrange
+            var jobCategoryList = new List<JobCategory> { MockJobCategory() };
+            var expected = new SelectList(jobCategoryList, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<JobCategory>(Arg.Any<GetAllJobCategoryCriteria>()).Returns(jobCategoryList);
+
+            // Act
+            var actual = await dataConfigurationService.GetJobCategorySelectListAsync();
 
             // Assert
             Assert.IsType<SelectList>(actual);
@@ -843,6 +1302,49 @@
                 DivisionCode = "divc11",
                 DepartmentId = 1,
                 DepartmentCode = "Sm"
+            };
+        }
+
+        private Section MockSection()
+        {
+            return new Section
+            {
+                SectionId = 11,
+                Code = "section",
+                Name = "descs",
+                IsActive = true,
+                CompanyId = 2,
+                CompanyCode = "nex1",
+                DivisionId = 3,
+                DivisionCode = "divc11",
+                DepartmentId = 4,
+                DepartmentCode = "Sm",
+                CostCenterId = 5,
+                CostCenterCode = "cost"
+            };
+        }
+
+        private GradeLevel MockGradeLevel()
+        {
+            return new GradeLevel
+            {
+                GradeLevelId = 13,
+                Name = "GradeLevel",
+                Description = "descs",
+                IsActive = true,
+                JobCategoryId = 2,
+                JobCategoryName = "jobname"
+            };
+        }
+
+        private JobCategory MockJobCategory()
+        {
+            return new JobCategory
+            {
+                JobCategoryId = 22,
+                Name = "JobCategory",
+                Description = "descs11",
+                IsActive = true
             };
         }
     }

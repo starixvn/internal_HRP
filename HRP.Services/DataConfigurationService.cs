@@ -14,11 +14,6 @@
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
-    using HRP.Models.DataConfiguration.CostCenter;
-    using HRP.Models.DataConfiguration.Department;
-    using HRP.Models.DataConfiguration.Division;
-    using HRP.Models.DataConfiguration.GradeLevel;
-    using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -401,16 +396,6 @@
             return sections;
         }
 
-        public async Task<CreateSectionViewModel> GetDataForCreateSectionAsync()
-        {
-            var viewModel = new CreateSectionViewModel
-            {
-                CompanyList = await GetCompanyBVISelectListAsync().ConfigureAwait(false)
-            };
-
-            return viewModel;
-        }
-
         public async Task<bool> IsExistedSectionAsync(Section section)
         {
             var criteria = new CheckSectionExistsCriteria
@@ -481,16 +466,6 @@
             var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(new GetAllGradeLevelCriteria()).ConfigureAwait(false);
 
             return gradeLevelList;
-        }
-
-        public async Task<CreateGradeLevelViewModel> GetDataForCreateGradeLevelAsync()
-        {
-            var viewModel = new CreateGradeLevelViewModel
-            {
-                JobCategoryList = await GetJobCategorySelectListAsync().ConfigureAwait(false)
-            };
-
-            return viewModel;
         }
 
         public async Task<bool> IsExistedGradeLevelAsync(GradeLevel gradeLevel)
@@ -596,7 +571,7 @@
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }
 
-        private async Task<SelectList> GetJobCategorySelectListAsync()
+        public async Task<SelectList> GetJobCategorySelectListAsync()
         {
             var jobCategoryList = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria()).ConfigureAwait(false);
 

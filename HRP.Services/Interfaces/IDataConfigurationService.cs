@@ -58,8 +58,6 @@
 
         Task<IEnumerable<Section>> GetAllSectionAsync();
 
-        Task<CreateSectionViewModel> GetDataForCreateSectionAsync();
-
         Task<bool> IsExistedSectionAsync(Section section);
 
         Task<CommandResult> CreateSectionAsync(Section section);
@@ -69,8 +67,6 @@
         Task<CommandResult> UpdateSectionAsync(Section section);
 
         Task<IEnumerable<GradeLevel>> GetAllGradeLevelAsync();
-
-        Task<CreateGradeLevelViewModel> GetDataForCreateGradeLevelAsync();
 
         Task<bool> IsExistedGradeLevelAsync(GradeLevel gradeLevel);
 
@@ -90,5 +86,7 @@
         Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
 
         Task<SelectList> GetCompanyBVISelectListAsync();
+
+        Task<SelectList> GetJobCategorySelectListAsync();
     }
 }

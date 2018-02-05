@@ -457,9 +457,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateSection()
         {
-            var viewModel = await dataConfigurationService.GetDataForCreateSectionAsync();
-            viewModel.FieldName = ViewLang.Section;
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateSection;
+            var viewModel = new CreateSectionViewModel
+            {
+                CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
+                FieldName = ViewLang.Section,
+                LinkCreateItem = DataConfigurationActionLink.CreateSection
+            };
 
             return PartialView("_CreateSection", viewModel);
         }
@@ -554,9 +557,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateGradeLevel()
         {
-            var viewModel = await dataConfigurationService.GetDataForCreateGradeLevelAsync();
-            viewModel.FieldName = ViewLang.GradeLevel;
-            viewModel.LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel;
+            var viewModel = new CreateGradeLevelViewModel
+            {
+                JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
+                FieldName = ViewLang.GradeLevel,
+                LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel
+            };
 
             return PartialView("_CreateGradeLevel", viewModel);
         }
