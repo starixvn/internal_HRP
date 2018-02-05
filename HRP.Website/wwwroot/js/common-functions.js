@@ -1,6 +1,7 @@
 ﻿var commonFunctions = (function ($) {
     var rootURL,
-        pagerRanges = [20, 50, 100];
+        pagerRanges = [20, 50, 100],
+        noDataOnTableMsg = 'There is no data.';
 
     function showErrorMessage(message) {
         $('.msg-error').text(message).removeClass('hidden');
@@ -109,7 +110,8 @@
         hideValidationSummary: hideValidationSummary,
         initDatetimepicker: initDatetimepicker,
         getUrlParameter: getUrlParameter,
-        registerEventGoBack: registerEventGoBack
+        registerEventGoBack: registerEventGoBack,
+        noDataOnTableMsg: noDataOnTableMsg
     };
 }(jQuery));
 

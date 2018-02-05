@@ -34,7 +34,9 @@ var employeeList = (function ($) {
                     'last': 'Last',
                     'next': '<i class="icon-next"></i>',
                     'previous': '<i class="icon-back"></i>'
-                }
+                },
+                'zeroRecords': commonFunctions.noDataOnTableMsg,
+                'sZeroRecords': commonFunctions.noDataOnTableMsg
             }
         });
 
