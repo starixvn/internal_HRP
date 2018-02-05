@@ -36,11 +36,7 @@
 
             if (criteria.IsValid())
             {
-                var result = baseService.GetDataEntity<int>(criteria);
-
-                // 1: Existed
-                // 0: Not Existed
-                return result == 1;
+                return baseService.GetDataEntity<bool>(criteria);
             }
 
             return true;
