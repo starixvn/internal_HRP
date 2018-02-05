@@ -219,7 +219,7 @@
                 e.preventDefault();
                 }
         }).on('change', function () {
-            $(this).valid();    
+            $(this).click();    
         });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
@@ -253,7 +253,7 @@
                 e.preventDefault();
             }
         }).on('change', function () {
-            $(this).valid();    
+            $(this).click();    
         });
 
         if ($('#CanUpdate').val() !== 'True') {
@@ -354,6 +354,10 @@
             }
         });
 
+        var $form = $('#payroll-form');
+        $form.removeData('validator');
+        $form.removeData('unobtrusiveValidation');
+
         $.validator.addMethod('greaterthanzero', function (value, element, param) {
             if (!element.readOnly)
                 return value === '' || Number(value) > 0;
@@ -383,7 +387,7 @@
             greaterthanzero: true
         });
 
-        var validator = $('#payroll-form').validate({
+        var validator = $form.validate({
             debug: true,
             onkeyup: false,
             focusInvalid: false,

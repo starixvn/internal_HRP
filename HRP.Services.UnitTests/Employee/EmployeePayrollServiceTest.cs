@@ -32,7 +32,8 @@
                     {
                         new EmployeePayrollViewModel
                         {
-                            EmployeeId = employeeId,FullName = "Full Name",
+                            EmployeeId = employeeId,
+                            FullName = "Full Name",
                             Nickname = "Nick Name",
                             Code = "DAR",
                             CompanyId = 1
@@ -51,7 +52,9 @@
             var actual = service.GetEmployeePayroll(employeeId, userId);
 
             Assert.NotNull(actual);
-            Assert.Equal(employeeId, actual.EmployeeId);
+            Assert.NotNull(actual.BasicSalary);
+            Assert.NotNull(actual.Allowance);
+            Assert.NotNull(actual.Deduction);
         }
 
         [Fact]
@@ -61,7 +64,7 @@
             var userId = 1;
 
             InitializeServices();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(new CommandResult());
+            baseService.ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(new CommandResult { Code = 0 });
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             var service = new EmployeePayrollService(baseService, repository, cryptoService);
@@ -71,9 +74,12 @@
                 Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
                 Deduction = new EmployeePayrollDeduction { EmployeeId =  employeeId }
             };
-            service.UpdatePayroll(model, userId);
+
+            var actual = service.UpdatePayroll(model, userId);
 
             baseService.Received().ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>());
+            cryptoService.Received().Encrypt(Arg.Any<string>());
+            Assert.True(actual.IsSuccessful);
         }
 
         private void InitializeServices()

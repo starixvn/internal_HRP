@@ -324,6 +324,7 @@
     "outputFileName": "wwwroot/assets/bundles/employee/js/employee-payroll.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/moment/min/moment.min.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
