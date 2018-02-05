@@ -2,8 +2,10 @@
 -- Author:		Hunter.Tran
 -- Create date: 2018-01-16
 -- Description:	Update bank account
+-- Updated:
+---- 2018-02-05: Add ErrCode and ErrMsg to parameters
 -- =============================================
-CREATE PROCEDURE BankAccount_Update
+CREATE PROCEDURE [dbo].[BankAccount_Update]
 	@Id int,
 	@EmployeeId int,
 	@BankType int = 1,
@@ -15,12 +17,46 @@ CREATE PROCEDURE BankAccount_Update
 	@AccountNumber varchar(30),
 	@AccountType int = 1,
 	@BeneficiaryName nvarchar(70),
-	@IsActive bit = 1
+	@IsActive bit = 1,
+	@ErrCode INT = 0 OUTPUT,
+	@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
+
+	IF EXISTS (
+			SELECT 1
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
+			WHERE [AccountName] = @AccountName 
+			AND [AccountNumber] = @AccountNumber
+			AND [EmployeeId] = @EmployeeId
+			AND [Id] <> @Id
+			)
+	BEGIN
+		SET @ErrCode = 1
+		SET @ErrMsg = N'Account Name and Account number must be unique for an Employee'
+
+		RETURN
+	END
+
+	IF EXISTS (
+			SELECT 1
+			FROM (
+			SELECT COUNT(Id) as Total
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
+			WHERE [EmployeeId] = @EmployeeId
+			AND [BankType] = @BankType
+			AND [IsActive] = 1) as IdCount
+			WHERE IdCount.Total >= 3
+	)
+	BEGIN
+		SET @ErrCode = 2
+		SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot change type'
+
+		RETURN
+	END
 
 	UPDATE BankAccount WITH (ROWLOCK, UPDLOCK)
 	SET 

@@ -168,7 +168,8 @@
         private static List<BankType> GetDisabledBankTypes(
             EmployeeBankAccounts data,
             IEnumerable<BankType> bankTypes,
-            int currentBankType = 0)
+            int currentBankType = 0,
+            bool isCurrentBankAccountActive = true)
         {
             var disabledBankTypes = new List<BankType>();
 
@@ -177,7 +178,7 @@
                 var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.Id && x.IsActive);
 
                 //TODO: wrong here
-                if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE && currentBankType != bankType.Id)
+                if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE && currentBankType != bankType.Id && isCurrentBankAccountActive)
                 {
                     disabledBankTypes.Add(bankType);
                 }
@@ -203,7 +204,7 @@
                 .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                 .Select(x => new BankAccountType(x));
 
-            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType, bankAccount.IsActive);
 
             var viewModel = new EditBankAccountViewModel
             {
@@ -228,8 +229,34 @@
                 var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
                 return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
             }
+            else
+            {
+                var bankAccount = bankAccountService.GetBankAccountById(viewModel.BankAccount.Id);
 
-            return View(viewModel);
+                var data = bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId);
+
+                var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+
+                var bankTypes = refResourceService
+                    .FilterReferenceResources(refResources, ReferenceResource.BankType)
+                    .Select(x => new BankType(x));
+
+                var bankAccountTypes = refResourceService
+                    .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
+                    .Select(x => new BankAccountType(x));
+
+                var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType);
+
+                viewModel.EmployeeId = bankAccount.EmployeeId;
+                viewModel.EmployeeName = data.EmployeeName;
+
+                viewModel.IsBankTypeDisabled = bankTypes.Count() <= disabledBankTypes.Count;
+                viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
+
+                ModelState.AddModelError("BankAccount.AccountName", ((BankAccountError)result.Code).GetDisplayName());
+
+                return View(viewModel);
+            }
         }
 
         [HttpGet]
