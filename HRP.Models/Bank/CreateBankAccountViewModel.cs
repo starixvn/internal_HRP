@@ -8,8 +8,8 @@
     public class CreateBankAccountViewModel
     {
         public CreateBankAccountViewModel(
-            IEnumerable<ReferenceResourceModel> bankTypes,
-            IEnumerable<ReferenceResourceModel> bankAccountTypes)
+            IEnumerable<BankType> bankTypes,
+            IEnumerable<BankAccountType> bankAccountTypes)
         {
             BankAccount = new BankAccount();
             Initialize(bankTypes, bankAccountTypes);
@@ -31,24 +31,24 @@
         public IBankAccount BankAccount { get; set; }
 
         public void Initialize(
-            IEnumerable<ReferenceResourceModel> bankTypes,
-            IEnumerable<ReferenceResourceModel> bankAccountTypes,
-            IList<ReferenceResourceModel> disabledBankTypes = null)
+            IEnumerable<BankType> bankTypes,
+            IEnumerable<BankAccountType> bankAccountTypes,
+            IList<BankType> disabledBankTypes = null)
         {
             BankTypes = disabledBankTypes != null
                 ? new SelectList(
-                    bankTypes.Except(disabledBankTypes),
-                    nameof(ReferenceResourceModel.ResourceId),
-                    nameof(ReferenceResourceModel.Value))
+                    bankTypes.Except(disabledBankTypes, new RefResourceContructableComparer()),
+                    nameof(BankType.Id),
+                    nameof(BankType.Name))
                 : new SelectList(
                     bankTypes,
-                    nameof(ReferenceResourceModel.ResourceId),
-                    nameof(ReferenceResourceModel.Value));
+                    nameof(BankType.Id),
+                    nameof(BankType.Name));
 
             BankAccountTypes = new SelectList(
                 bankAccountTypes,
-                nameof(ReferenceResourceModel.ResourceId),
-                nameof(ReferenceResourceModel.Value));
+                nameof(BankAccountType.Id),
+                nameof(BankAccountType.Name));
         }
     }
 

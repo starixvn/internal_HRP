@@ -6,8 +6,8 @@
     {
         public EditBankAccountViewModel(
             IBankAccount bankAccount,
-            IEnumerable<ReferenceResourceModel> bankTypes,
-            IEnumerable<ReferenceResourceModel> bankAccountTypes)
+            IEnumerable<BankType> bankTypes,
+            IEnumerable<BankAccountType> bankAccountTypes)
         {
             Initialize(bankAccount, bankTypes, bankAccountTypes);
         }
@@ -18,8 +18,8 @@
 
         public void Initialize(
             IBankAccount bankAccount,
-            IEnumerable<ReferenceResourceModel> bankTypes,
-            IEnumerable<ReferenceResourceModel> bankAccountTypes)
+            IEnumerable<BankType> bankTypes,
+            IEnumerable<BankAccountType> bankAccountTypes)
         {
             Initialize(bankTypes, bankAccountTypes);
             BankAccount = bankAccount;

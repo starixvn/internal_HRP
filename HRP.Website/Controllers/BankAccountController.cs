@@ -10,9 +10,9 @@
     using Core.Services;
     using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
-    using Models;
     using Models.Bank;
     using Services.Interfaces;
+    using BankType = Models.Bank.BankType;
 
     [HRPAuthorize]
     public class BankAccountController : BaseController
@@ -141,16 +141,19 @@
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankType)
+                .Select(x => new BankType(x));
 
-            ////var test = new List<BankType>(bankTypes);
+            var bankAccountTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
+                .Select(x => new BankAccountType(x));
 
-            var disabledBankTypes = new List<ReferenceResourceModel>();
+            var disabledBankTypes = new List<BankType>();
 
             foreach (var bankType in bankTypes)
             {
-                var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.ResourceId && x.IsActive);
+                var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.Id && x.IsActive);
                 if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE)
                 {
                     disabledBankTypes.Add(bankType);
@@ -169,8 +172,13 @@
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-            var bankTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            var bankAccountTypes = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            var bankTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankType)
+                .Select(x => new BankType(x));
+
+            var bankAccountTypes = refResourceService
+                .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
+                .Select(x => new BankAccountType(x));
 
             var viewModel = new EditBankAccountViewModel
             {

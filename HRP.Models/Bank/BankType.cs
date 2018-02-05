@@ -1,15 +1,9 @@
 ﻿namespace HRP.Models.Bank
 {
-    public class BankType
+    public class BankType : RefResourceContructable
     {
-        public BankType(ReferenceResourceModel referenceResource)
+        public BankType(ReferenceResourceModel referenceResource) : base(referenceResource)
         {
-            Id = referenceResource.ResourceId;
-            Name = referenceResource.Value;
         }
-
-        public int Id { get; set; }
-
-        public string Name { get; set; }
     }
 }
