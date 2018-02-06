@@ -220,8 +220,8 @@
             // Act
             var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankType, nullableIsActive);
 
-            var filteredCount = actual.Count(x => x.IsActive = isActive && bankType == x.BankType);
-            var expected = bankAccounts.Count(x => x.IsActive = isActive && bankType == x.BankType);
+            var filteredCount = actual.Count(x => x.IsActive == isActive && bankType == x.BankType);
+            var expected = bankAccounts.Count(x => x.IsActive == isActive && bankType == x.BankType);
 
             // Assert
             Assert.Equal(expected, filteredCount);

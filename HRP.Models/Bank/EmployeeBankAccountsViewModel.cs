@@ -48,12 +48,12 @@
                 new SelectListItem
                 {
                     Value = true.ToString(),
-                    Text = "True"
+                    Text = "Yes"
                 },
                 new SelectListItem
                 {
                     Value = false.ToString(),
-                    Text = "False"
+                    Text = "No"
                 }
             };
         }
