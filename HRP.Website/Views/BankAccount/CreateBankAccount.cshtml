@@ -13,9 +13,10 @@
 @section Scripts {
     <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
     <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="~/assets/js/bank/transform-select.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/assets/js/bank/create-bank-account.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/assets/js/bank/bank-account-form.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/assets/js/bank/state-handler.js" asp-append-version="true"></script>
 }
 
@@ -27,9 +28,18 @@
            asp-controller="BankAccount"
            asp-route-EmployeeId="@Model.EmployeeId">Edit Bank Details of Employee '@Model.EmployeeName'</a>
     </li>
-    <li class="active">Create New Bank Account</li>
+    <li class="active">@ViewBag.Title</li>
 </ol>
 
-<form class="form-information block" asp-action="CreateBankAccount" asp-controller="BankAccount" method="post">
+<form class="form-information block bank-account-form"
+      asp-action="CreateBankAccount"
+      asp-controller="BankAccount"
+      method="post"
+      data-ajax="true"
+      data-ajax-method="post"
+      data-ajax-begin="bankAccountForm.onSaveBegin"
+      data-ajax-complete="bankAccountForm.onSaveComplete"
+      data-ajax-success="bankAccountForm.onSaveSuccess"
+      data-ajax-failure="bankAccountForm.onAjaxFailure">
     @Html.Partial("_EditBankAccount", Model)
 </form>

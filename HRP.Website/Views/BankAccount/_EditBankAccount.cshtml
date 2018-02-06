@@ -18,13 +18,22 @@
     <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
 </div>
 
+<div class="-has-icon msg-success hidden">
+    <span>Bank Account has been successfully updated! You will be redirected in </span>
+    <span class="count-down-remaining">5</span>
+    <span> seconds.</span>
+</div>
+
+<div class="-has-icon msg-error hidden">
+</div>
+
 <div class="layout-two-col">
     <div>
         <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
         <div class="group-control">
             @if (Model.BankTypes.Count() == 1)
             {
-                <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" disabled="disabled"></select>
+                <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" readonly="readonly"></select>
             }
             else
             {
@@ -93,5 +102,7 @@
        asp-action="EmployeeBankAccounts"
        asp-controller="BankAccount"
        asp-route-Id="@Model.EmployeeId">Cancel</a>
-    <button class="button -primary" type="submit">Save</button>
+    <button class="button -primary"
+            data-loading-text="@ViewLang.Saving ..."
+            type="submit">Save</button>
 </div>

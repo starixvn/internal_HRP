@@ -6,7 +6,6 @@
     using Core.Enumerations;
     using Core.Extensions;
     using Core.Filters;
-    using Core.Model;
     using Core.Services;
     using Criteria.Bank;
     using Microsoft.AspNetCore.Mvc;
@@ -128,29 +127,33 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
-            CommandResult result = null;
-
             if (ModelState.IsValid)
             {
                 viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
-                result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
+                var result = bankAccountService.CreateBankAccount(viewModel.BankAccount);
 
-                if (result.IsSuccessful)
+                ////if (result.IsSuccessful)
+                ////{
+                ////var redirectViewModel =
+                ////    new EmployeeBankAccountsViewModel { EmployeeId = viewModel.EmployeeId };
+                ////return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+
+                return Json(new
                 {
-                    var redirectViewModel =
-                        new EmployeeBankAccountsViewModel { EmployeeId = viewModel.EmployeeId };
-                    return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
-                }
+                    isSuccessful = result.IsSuccessful,
+                    message = ((BankAccountError)result.Code).GetDisplayName(),
+                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
+                });
+                ////}
             }
 
-            PrepareCreateBankAccountViewModel(viewModel);
+            ////PrepareCreateBankAccountViewModel(viewModel);
 
-            if (result != null)
-            {
-                ModelState.AddModelError("BankAccount.AccountName", ((BankAccountError)result.Code).GetDisplayName());
-            }
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Any())
+                .Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
 
-            return View(viewModel);
+            return Json(new { isSuccessful = false, errors });
         }
 
         private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel)
@@ -230,40 +233,58 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult EditBankAccount(EditBankAccountViewModel viewModel)
         {
-            var result = bankAccountService.UpdateBankAccount(viewModel.BankAccount);
-
-            if (result.IsSuccessful)
+            if (ModelState.IsValid)
             {
-                var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
-                return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+                var result = bankAccountService.UpdateBankAccount(viewModel.BankAccount);
+
+                return Json(new
+                {
+                    isSuccessful = result.IsSuccessful,
+                    message = ((BankAccountError)result.Code).GetDisplayName(),
+                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.BankAccount.EmployeeId })
+                });
             }
-            else
-            {
-                var bankAccount = bankAccountService.GetBankAccountById(viewModel.BankAccount.Id);
 
-                var data = bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId);
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Any())
+                .Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
 
-                var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            return Json(new { isSuccessful = false, errors });
 
-                var bankTypes = refResourceService
-                    .FilterReferenceResources(refResources, ReferenceResource.BankType)
-                    .Select(x => new BankType(x));
+            ////var result = bankAccountService.UpdateBankAccount(viewModel.BankAccount);
 
-                var bankAccountTypes = refResourceService
-                    .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
-                    .Select(x => new BankAccountType(x));
+            ////if (result.IsSuccessful)
+            ////{
+            ////    var redirectViewModel = new EmployeeBankAccountsViewModel { EmployeeId = viewModel.BankAccount.EmployeeId };
+            ////    return RedirectToAction("EmployeeBankAccounts", redirectViewModel);
+            ////}
+            ////else
+            ////{
+            ////    var bankAccount = bankAccountService.GetBankAccountById(viewModel.BankAccount.Id);
 
-                var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType, bankAccount.IsActive);
+            ////    var data = bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId);
 
-                viewModel.EmployeeId = bankAccount.EmployeeId;
-                viewModel.EmployeeName = data.EmployeeName;
+            ////    var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
-                viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
+            ////    var bankTypes = refResourceService
+            ////        .FilterReferenceResources(refResources, ReferenceResource.BankType)
+            ////        .Select(x => new BankType(x));
 
-                ModelState.AddModelError("BankAccount.BankType", ((BankAccountError)result.Code).GetDisplayName());
+            ////    var bankAccountTypes = refResourceService
+            ////        .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
+            ////        .Select(x => new BankAccountType(x));
 
-                return View(viewModel);
-            }
+            ////    var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType, bankAccount.IsActive);
+
+            ////    viewModel.EmployeeId = bankAccount.EmployeeId;
+            ////    viewModel.EmployeeName = data.EmployeeName;
+
+            ////    viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
+
+            ////    ModelState.AddModelError("BankAccount.BankType", ((BankAccountError)result.Code).GetDisplayName());
+
+            ////    return View(viewModel);
+            ////}
         }
 
         [HttpGet]
