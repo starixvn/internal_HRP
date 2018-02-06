@@ -26,25 +26,13 @@
             ObjectDbFactory.Mock((key, time) => mockObjectDb);
         }
 
-        private BankAccountService GetBankAccountService()
-        {
-            baseService = FakeBaseService();
-            return new BankAccountService(baseService);
-        }
-
         [Fact]
-        public void CreateBankAccount_CreateSuccess_ReturnAsExpected()
+        public void CreateBankAccount_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
-            var expected = new CommandResult
-            {
-                Code = 0,
-                Message = "Successful!"
-            };
-
+            var expected = new CommandResult();
             var bankAccountService = GetBankAccountService();
             var criteria = new CreateBankAccountCriteria(new BankAccount());
-
             baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(expected);
 
             // Act
@@ -55,52 +43,11 @@
         }
 
         [Fact]
-        public void CheckIsBankAccountExisted_InValidEmployeeId_ReturnTrue()
+        public void CheckIsBankAccountExisted_WhenCalled_ReturnAsExpected()
         {
             // Arrange
             var bankAccountService = GetBankAccountService();
             var bankAccount = new BankAccount { EmployeeId = 0 };
-
-            baseService.GetDataEntity<int>(Arg.Any<ICriteria>()).Returns(0);
-
-            // Act
-            var actual = bankAccountService.CheckIsBankAccountExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsBankAccountExisted_InValidAccountNameOrAccountNumber_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1
-            };
-
-            baseService.GetDataEntity<int>(Arg.Any<ICriteria>()).Returns(0);
-
-            // Act
-            var actual = bankAccountService.CheckIsBankAccountExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsBankAccountExisted_ValidCriteria_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1,
-                AccountNumber = "Test",
-                AccountName = "Test"
-            };
-
             baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(true);
 
             // Act
@@ -111,36 +58,22 @@
         }
 
         [Fact]
-        public void GetBankAccountById_InValidId_ReturnEmpty()
+        public void GetBankAccountById_WhenCalled_ReturnAsExpectedBankAccounts()
         {
             // Arrange
+            var expected = new BankAccount { Id = 1, EmployeeId = 1, BankType = 1 };
             var bankAccountService = GetBankAccountService();
-            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(default(BankAccount));
+            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
 
             // Act
             var actual = bankAccountService.GetBankAccountById(0);
 
             // Assert
-            Assert.Equal(default(BankAccount), actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetBankAccountById_ValidId_ReturnEmpty()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount();
-            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(bankAccount);
-
-            // Act
-            var actual = bankAccountService.GetBankAccountById(1);
-
-            // Assert
-            Assert.Equal(bankAccount, actual);
-        }
-
-        [Fact]
-        public void UpdateBankAccount_WhenCalled_ReturnAsExpected()
+        public void UpdateBankAccount_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
             var bankAccountService = GetBankAccountService();
@@ -156,40 +89,16 @@
         }
 
         [Fact]
-        public void GetBankAccountByEmployeeId_InValidId_ReturnEmpty()
+        public void GetBankAccountByEmployeeId_WhenCalled_ReturnAsExpectedModel()
         {
             // Arrange
             var bankAccountService = GetBankAccountService();
             var multiResultReader = FakeMultipleResultReader();
-
-            multiResultReader.Read<BankAccount>().Returns(new List<BankAccount>());
-            multiResultReader.ReadSingle<int>().Returns(0);
-            multiResultReader.ReadSingle<string>().Returns(string.Empty);
-
-            mockObjectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
-
-            // Act
-            var actual = bankAccountService.GetBankAccountsByEmployeeId(0);
-
-            // Assert
-            Assert.IsType<EmployeeBankAccounts>(actual);
-            Assert.Equal(0, actual.CompanyId);
-            Assert.Equal(string.Empty, actual.EmployeeName);
-            Assert.Empty(actual.BankAccounts);
-        }
-
-        [Fact]
-        public void GetBankAccountByEmployeeId_ValidId_ReturnSets()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var multiResultReader = FakeMultipleResultReader();
-
+            var employeeName = "test";
             var bankAccounts = new List<BankAccount> { new BankAccount() };
-
             multiResultReader.Read<BankAccount>().Returns(bankAccounts);
             multiResultReader.ReadSingle<int>().Returns(1);
-            multiResultReader.ReadSingle<string>().Returns("test");
+            multiResultReader.ReadSingle<string>().Returns(employeeName);
 
             mockObjectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
@@ -199,8 +108,8 @@
             // Assert
             Assert.IsType<EmployeeBankAccounts>(actual);
             Assert.Equal(1, actual.CompanyId);
-            Assert.NotNull(actual.EmployeeName);
-            Assert.NotEmpty(actual.BankAccounts);
+            Assert.Equal(employeeName, actual.EmployeeName);
+            Assert.Equal(bankAccounts, actual.BankAccounts);
         }
 
         [Theory]
@@ -247,6 +156,8 @@
             Assert.Equal(expected, filteredCount);
         }
 
+        #region Helpers
+
         private static IEnumerable<BankAccount> FakeBankAccounts()
         {
             var bankAccounts = new List<BankAccount>
@@ -285,5 +196,13 @@
         {
             return Substitute.For<IMultiResultReader>();
         }
+
+        private BankAccountService GetBankAccountService()
+        {
+            baseService = FakeBaseService();
+            return new BankAccountService(baseService);
+        }
+
+        #endregion Helpers
     }
 }

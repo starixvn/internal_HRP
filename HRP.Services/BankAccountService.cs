@@ -34,12 +34,7 @@
                 EmployeeId = bankAccount.EmployeeId
             };
 
-            if (criteria.IsValid())
-            {
-                return baseService.GetDataEntity<bool>(criteria);
-            }
-
-            return true;
+            return baseService.GetDataEntity<bool>(criteria);
         }
 
         public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)
@@ -53,13 +48,12 @@
             {
                 using (var results = db.QueryMultiple(criteria))
                 {
-                    var viewModel =
-                        new EmployeeBankAccounts
-                        {
-                            BankAccounts = results.Read<BankAccount>().ToList(),
-                            CompanyId = results.ReadSingle<int>(),
-                            EmployeeName = results.ReadSingle<string>()
-                        };
+                    var viewModel = new EmployeeBankAccounts
+                    {
+                        BankAccounts = results.Read<BankAccount>().ToList(),
+                        CompanyId = results.ReadSingle<int>(),
+                        EmployeeName = results.ReadSingle<string>()
+                    };
 
                     return viewModel;
                 }

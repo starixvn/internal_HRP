@@ -82,7 +82,21 @@
             // Arrange
             var employees = new List<EmployeeBasicInfo>
             {
-                new EmployeeBasicInfo { EmployeeId = 1, Nickname = "tim.trinh" }
+                new EmployeeBasicInfo
+                {
+                    EmployeeId = 1,
+                    EmployeeCode = "111",
+                    Nickname = "tim.trinh",
+                    FullName = "trinh dang thang",
+                    CompanyCode = "DAR",
+                    DivisionCode = "SM",
+                    DepartmentCode = "SM",
+                    JobTitle = "Management",
+                    EmployeeStatus = "Confirmed",
+                    EditBankPolicy = Policy.Read,
+                    EditPayRollPolicy = Policy.Read,
+                    EditProfilePolicy = Policy.Read
+                }
             };
             var employeeService = GetEmployeeManagementService();
             baseService.GetDataAsync<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employees);
