@@ -7,6 +7,7 @@
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.City;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
     using HRP.Models.DataConfiguration.Division;
@@ -69,7 +70,7 @@
         }
 
         [Fact]
-        public void CreateCompanyBVI_WhenCall_ReturnPartialViewWithCreateSimpleItemViewModel()
+        public void CreateCompanyBVI_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel()
         {
             // Arrange
             var controller = GetDataConfigurationController();
@@ -225,7 +226,7 @@
         }
 
         [Fact]
-        public async Task CreateDivision_WhenCall_ReturnPartialViewWithCreateDivisionViewModel()
+        public async Task CreateDivision_WhenCalled_ReturnPartialViewWithCreateDivisionViewModel()
         {
             // Arrange
             var companySelectList = MockCompanySelectList();
@@ -384,7 +385,7 @@
         }
 
         [Fact]
-        public async Task CreateDepartment_WhenCall_ReturnPartialViewWithCreateDepartmentViewModel()
+        public async Task CreateDepartment_WhenCalled_ReturnPartialViewWithCreateDepartmentViewModel()
         {
             // Arrange
             var companySelectList = MockCompanySelectList();
@@ -543,7 +544,7 @@
         }
 
         [Fact]
-        public async Task CreateCostCenter_WhenCall_ReturnPartialViewWithCreateCostCenterViewModel()
+        public async Task CreateCostCenter_WhenCalled_ReturnPartialViewWithCreateCostCenterViewModel()
         {
             // Arrange
             var companySelectList = MockCompanySelectList();
@@ -702,7 +703,7 @@
         }
 
         [Fact]
-        public async Task CreateSection_WhenCall_ReturnPartialViewWithCreateSectionViewModel()
+        public async Task CreateSection_WhenCalled_ReturnPartialViewWithCreateSectionViewModel()
         {
             // Arrange
             var companySelectList = MockCompanySelectList();
@@ -861,7 +862,7 @@
         }
 
         [Fact]
-        public async Task CreateGradeLevel_WhenCall_ReturnPartialViewWithCreateGradeLevelViewModel()
+        public async Task CreateGradeLevel_WhenCalled_ReturnPartialViewWithCreateGradeLevelViewModel()
         {
             // Arrange
             var jobCategorySelectList = MockJobCategorySelectList();
@@ -1020,7 +1021,7 @@
         }
 
         [Fact]
-        public async Task CreateJobGrade_WhenCall_ReturnPartialViewWithCreateJobGradeViewModel()
+        public async Task CreateJobGrade_WhenCalled_ReturnPartialViewWithCreateJobGradeViewModel()
         {
             // Arrange
             var jobCategorySelectList = MockJobCategorySelectList();
@@ -1155,6 +1156,165 @@
 
         #endregion Job Grade
 
+        #region City
+
+        [Fact]
+        public async Task GetAllCity_ServiceGetCityList_ReturnPartialViewWithCityTableViewModel()
+        {
+            // Arrange
+            var cities = new List<City> { MockCity() };
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetAllCityAsync().Returns(cities);
+
+            // Act
+            var actual = await controller.GetAllCity();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CityTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CityTable", viewResult.ViewName);
+            Assert.Equal(cities, viewModel.Cities);
+            Assert.Equal(ViewLang.City, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task CreateCity_WhenCalled_ReturnPartialViewWithCreateDivisionViewModel()
+        {
+            // Arrange
+            var countrySelectList = MockCountrySelectList();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCountrySelectListAsync().Returns(countrySelectList);
+
+            // Act
+            var actual = await controller.CreateCity();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateCityViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateCity", viewResult.ViewName);
+            Assert.Equal(countrySelectList, viewModel.CountryList);
+            Assert.Equal(ViewLang.City, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateCityPost_CityItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, city.Code), errors["City.Code"]);
+        }
+
+        [Fact]
+        public async Task CreateCityPost_CityItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(false);
+            dataConfigurationService.CreateCityAsync(city).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCity_ServiceGetCityItem_ReturnPartialViewWithUpdateCityViewModel()
+        {
+            // Arrange
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCityByIdAsync(Arg.Any<int>()).Returns(city);
+
+            // Act
+            var actual = await controller.UpdateCity(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateCity", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateCityViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(city, viewModel.City);
+            Assert.Equal(ViewLang.City, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateCity_ServiceGetNullCityItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            City city = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCityByIdAsync(Arg.Any<int>()).Returns(city);
+
+            // Act
+            var actual = await controller.UpdateCity(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateCityPost_CityItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, city.Code), errors["City.Code"]);
+        }
+
+        [Fact]
+        public async Task UpdateCityPost_CityItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(false);
+            dataConfigurationService.UpdateCityAsync(city).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion City
+
         #region Commons
 
         [Fact]
@@ -1246,7 +1406,7 @@
         {
             // Arrange
             var id = 25;
-            var gradeLevelSelectList = MockSectionSelectList();
+            var gradeLevelSelectList = MockGradeLevelSelectList();
             var controller = GetDataConfigurationController();
             dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(id).Returns(gradeLevelSelectList);
 
@@ -1441,6 +1601,30 @@
             };
         }
 
+        private Country MockCountry()
+        {
+            return new Country
+            {
+                CountryId = 99,
+                Code = "USA",
+                Name = "America",
+                IsActive = true,
+            };
+        }
+
+        private City MockCity()
+        {
+            return new City
+            {
+                CityId = 15,
+                Code = "HCM",
+                Name = "Ho Chi Minh",
+                IsActive = true,
+                CountryId = 3,
+                CountryCode = "VN"
+            };
+        }
+
         private SelectList MockCompanySelectList()
         {
             var companies = new List<Company> { MockCompany() };
@@ -1488,6 +1672,13 @@
             var gradeLevelList = new List<GradeLevel> { MockGradeLevel() };
 
             return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
+        }
+
+        private SelectList MockCountrySelectList()
+        {
+            var countries = new List<Country> { MockCountry() };
+
+            return new SelectList(countries, nameof(Country.CountryId), nameof(Country.Code));
         }
 
         #endregion Initialization

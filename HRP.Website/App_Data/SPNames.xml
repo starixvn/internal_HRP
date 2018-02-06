@@ -73,6 +73,11 @@
   </Function>
   <Function Name="City">
     <Setting Key="City_GetByCountryId" SpName="City_GetByCountryId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="City_GetAll" SpName="City_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="City_CheckExists" SpName="City_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="City_Create" SpName="City_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="City_GetById" SpName="City_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="City_Update" SpName="City_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Office">
     <Setting Key="Offive_GetByCityId" SpName="Offive_GetByCityId" DbName="bodb_HRP" Plain="0"></Setting>

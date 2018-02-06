@@ -1,0 +1,53 @@
+﻿@using HRP.Models.DataConfiguration.City
+@using HRP.Resources
+
+@model UpdateCityViewModel
+
+<div class="modal-header">
+    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+    <h4 class="modal-title">@Message.EditItem</h4>
+</div>
+<div class="modal-body form-information">
+    <form id="editItemForm" action="@Model.LinkUpdateItem" method="post" asp-antiforgery="true"
+          data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onUpdateItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
+        <div class="list-message-error hidden">
+            <span class="message" asp-validation-for="City.Code"></span>
+            <span class="message" asp-validation-for="City.Name"></span>
+        </div>
+
+        <div class="-has-icon msg-error hidden" id="create-item-error-alert">
+        </div>
+
+        <input asp-for="City.CityId" type="hidden" />
+
+        <label class="text -has-required">@ViewLang.Country</label>
+        <div class="group-control">
+            <select class="control js-select2-hide-searchbox" disabled>
+                <option value="@Model.City.CountryId">@Model.City.CountryCode</option>
+            </select>
+        </div>
+
+        <label class="text -has-required">@Model.FieldName</label>
+        <div class="group-control">
+            <input class="control" type="text" asp-for="City.Code"
+                   data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
+                   data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />
+        </div>
+
+        <label class="text">@ViewLang.Description</label>
+        <div class="group-control">
+            <input class="control" type="text" asp-for="City.Name" />
+        </div>
+
+        <div class="group-control">
+            <label>
+                <input type="checkbox" asp-for="City.IsActive" />
+                <span>@ViewLang.Active</span>
+            </label>
+        </div>
+        <div class="list-button">
+            <button class="button -primary" type="submit">@ViewLang.Save</button>
+            <button class="button -second" type="button" data-dismiss="modal">@ViewLang.Cancel</button>
+        </div>
+    </form>
+</div>

@@ -39,5 +39,13 @@
         public const string CreateJobGrade = DataConfiguration + "/CreateJobGrade";
         public const string UpdateJobGrade = DataConfiguration + "/UpdateJobGrade";
         public const string GetAllJobGrade = DataConfiguration + "/GetAllJobGrade";
+
+        public const string CreateCity = DataConfiguration + "/CreateCity";
+        public const string UpdateCity = DataConfiguration + "/UpdateCity";
+        public const string GetAllCity = DataConfiguration + "/GetAllCity";
+
+        public const string CreateOffice = DataConfiguration + "/CreateOffice";
+        public const string UpdateOffice = DataConfiguration + "/UpdateOffice";
+        public const string GetAllOffice = DataConfiguration + "/GetAllOffice";
     }
 }

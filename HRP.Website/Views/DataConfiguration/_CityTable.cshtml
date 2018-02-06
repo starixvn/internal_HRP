@@ -1,0 +1,42 @@
+﻿@using HRP.Resources
+@using HRP.Models.DataConfiguration.City
+@model CityTableViewModel
+@{
+    var rowNumber = 1;
+}
+
+@Html.Partial("_TopHeaderTable", Model.LinkCreateItem)
+<table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th class="col-number">@ViewLang.SymbolCount</th>
+            <th>@Model.FieldName</th>
+            <th>@ViewLang.Description</th>
+            <th>@ViewLang.Country</th>
+            <th class="col-active">@ViewLang.Active</th>
+            <th class="col-edit">@ViewLang.Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cities)
+        {
+            <tr>
+                <td class="text-center">@rowNumber</td>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.CountryCode</td>
+                <td class="text-center has-icon">
+                    @if (item.IsActive)
+                    {
+                        <span class="icon-active"></span>
+                    }
+                </td>
+                <td class="text-center has-icon">
+                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.LinkUpdateItem" data-item-id="@item.CityId"></span>
+                </td>
+            </tr>
+
+            rowNumber++;
+        }
+    </tbody>
+</table>

@@ -8,6 +8,7 @@
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
+    using HRP.Models.DataConfiguration.City;
     using HRP.Models.DataConfiguration.CostCenter;
     using HRP.Models.DataConfiguration.Department;
     using HRP.Models.DataConfiguration.Division;
@@ -737,6 +738,106 @@
         }
 
         #endregion Job Grade
+
+        #region City
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllCity()
+        {
+            var cities = await dataConfigurationService.GetAllCityAsync();
+            var viewModel = new CityTableViewModel
+            {
+                Cities = cities,
+                FieldName = ViewLang.City,
+                LinkCreateItem = DataConfigurationActionLink.CreateCity,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateCity
+            };
+
+            return PartialView("_CityTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCity()
+        {
+            var viewModel = new CreateCityViewModel
+            {
+                CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
+                FieldName = ViewLang.City,
+                LinkCreateItem = DataConfigurationActionLink.CreateCity
+            };
+
+            return PartialView("_CreateCity", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCity(City city)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCityAsync(city);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, city.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateCityAsync(city);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCity(int id)
+        {
+            var city = await dataConfigurationService.GetCityByIdAsync(id);
+
+            if (city != null)
+            {
+                var viewModal = new UpdateCityViewModel
+                {
+                    FieldName = ViewLang.City,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCity,
+                    City = city
+                };
+
+                return PartialView("_UpdateCity", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCity(City city)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCityAsync(city);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, city.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateCityAsync(city);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion City
 
         #region Commons
 

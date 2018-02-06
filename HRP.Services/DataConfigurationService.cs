@@ -8,6 +8,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
@@ -79,9 +80,23 @@
 
                 new Field
                 {
-                    FieldId = (int)FieldType.JobCategory,
+                    FieldId = (int)FieldType.JobGrade,
                     FieldName = ViewLang.JobGrade,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllJobGrade
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.City,
+                    FieldName = ViewLang.City,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCity
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.Office,
+                    FieldName = ViewLang.Office,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllOffice
                 }
             };
 
@@ -610,6 +625,77 @@
 
         #endregion Job Grade
 
+        #region City
+
+        public async Task<IEnumerable<City>> GetAllCityAsync()
+        {
+            var cities = await baseService.GetDataAsync<City>(new GetAllCityCriteria()).ConfigureAwait(false);
+
+            return cities;
+        }
+
+        public async Task<bool> IsExistedCityAsync(City city)
+        {
+            var criteria = new CheckCityExistsCriteria
+            {
+                CityId = city.CityId,
+                Code = city.Code,
+                CountryId = city.CountryId
+            };
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateCityAsync(City city)
+        {
+            var criteria = new CreateCityCriteria
+            {
+                Code = city.Code,
+                Name = city.Name,
+                CountryId = city.CountryId,
+                IsActive = city.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<City> GetCityByIdAsync(int id)
+        {
+            var city = await baseService.GetDataEntityAsync<City>(new GetCityByIdCriteria { CityId = id }).ConfigureAwait(false);
+
+            return city;
+        }
+
+        public async Task<CommandResult> UpdateCityAsync(City city)
+        {
+            var criteria = new UpdateCityCriteria
+            {
+                CityId = city.CityId,
+                Code = city.Code,
+                Name = city.Name,
+                IsActive = city.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion City
+
         #region Common
 
         public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
@@ -664,6 +750,13 @@
             var jobCategoryList = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria()).ConfigureAwait(false);
 
             return new SelectList(jobCategoryList, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
+        }
+
+        public async Task<SelectList> GetCountrySelectListAsync()
+        {
+            var countryList = await baseService.GetDataAsync<Country>(new GetAllCountryCriteria()).ConfigureAwait(false);
+
+            return new SelectList(countryList, nameof(Country.CountryId), nameof(Country.Code));
         }
 
         #endregion Common

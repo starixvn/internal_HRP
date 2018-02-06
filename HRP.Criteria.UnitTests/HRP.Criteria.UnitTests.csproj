@@ -78,6 +78,11 @@
     <Compile Include="Bank\GetBankAccountsByEmployeeIdCriteriaTest.cs" />
     <Compile Include="Bank\SearchBankAccountCriteriaTest.cs" />
     <Compile Include="Bank\UpdateBankAccountCriteriaTest.cs" />
+    <Compile Include="City\CheckCityExistsCriteriaTests.cs" />
+    <Compile Include="City\CreateCityCriteriaTests.cs" />
+    <Compile Include="City\GetAllCityCriteriaTests.cs" />
+    <Compile Include="City\GetCityByIdCriteriaTests.cs" />
+    <Compile Include="City\UpdateCityCriteriaTests.cs" />
     <Compile Include="CostCenter\CheckCostCenterExistsCriteriaTests.cs" />
     <Compile Include="CostCenter\CreateCostCenterCriteriaTests.cs" />
     <Compile Include="CostCenter\GetAllCostCenterCriteriaTests.cs" />

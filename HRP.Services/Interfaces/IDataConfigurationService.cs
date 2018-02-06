@@ -81,6 +81,16 @@
 
         Task<CommandResult> UpdateJobGradeAsync(JobGrade jobGrade);
 
+        Task<IEnumerable<City>> GetAllCityAsync();
+
+        Task<bool> IsExistedCityAsync(City city);
+
+        Task<CommandResult> CreateCityAsync(City city);
+
+        Task<City> GetCityByIdAsync(int id);
+
+        Task<CommandResult> UpdateCityAsync(City city);
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
@@ -95,5 +105,7 @@
         Task<SelectList> GetCompanyBVISelectListAsync();
 
         Task<SelectList> GetJobCategorySelectListAsync();
+
+        Task<SelectList> GetCountrySelectListAsync();
     }
 }
