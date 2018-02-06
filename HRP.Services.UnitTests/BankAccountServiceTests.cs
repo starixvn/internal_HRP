@@ -101,7 +101,7 @@
                 AccountName = "Test"
             };
 
-            baseService.GetDataEntity<int>(Arg.Any<ICriteria>()).Returns(1);
+            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(true);
 
             // Act
             var actual = bankAccountService.CheckIsBankAccountExisted(bankAccount);
@@ -204,13 +204,13 @@
         }
 
         [Theory]
-        [InlineData(new[] { 1 }, true)]
-        [InlineData(new[] { 2 }, true)]
-        [InlineData(new[] { 1 }, false)]
-        [InlineData(new[] { 2 }, false)]
-        [InlineData(new[] { 0 }, true)]
-        [InlineData(new[] { 0 }, false)]
-        public void FilterBankAccount_FilterDataNotNull_ReturnBankAccounts(int[] bankTypes, bool isActive)
+        [InlineData(0, true)]
+        [InlineData(0, false)]
+        [InlineData(1, true)]
+        [InlineData(1, false)]
+        [InlineData(2, true)]
+        [InlineData(2, false)]
+        public void FilterBankAccount_FilterDataNotNull_ReturnBankAccounts(int bankType, bool isActive)
         {
             // Arrange
             var bankAccounts = FakeBankAccounts();
@@ -218,30 +218,30 @@
             bool? nullableIsActive = isActive;
 
             // Act
-            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankTypes, nullableIsActive);
+            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankType, nullableIsActive);
 
-            var filteredCount = actual.Count(x => x.IsActive = isActive && bankTypes.Contains(x.BankType));
-            var expected = bankAccounts.Count(x => x.IsActive = isActive && bankTypes.Contains(x.BankType));
+            var filteredCount = actual.Count(x => x.IsActive = isActive && bankType == x.BankType);
+            var expected = bankAccounts.Count(x => x.IsActive = isActive && bankType == x.BankType);
 
             // Assert
             Assert.Equal(expected, filteredCount);
         }
 
         [Theory]
-        [InlineData(new[] { 0 })]
-        [InlineData(new[] { 1 })]
-        [InlineData(new[] { 2 })]
-        public void FilterBankAccount_IsActiveNull_ReturnBankAccounts(int[] bankTypes)
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void FilterBankAccount_IsActiveNull_ReturnBankAccounts(int bankType)
         {
             // Arrange
             var bankAccounts = FakeBankAccounts();
             var bankAccountService = GetBankAccountService();
 
             // Act
-            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankTypes, null);
+            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankType, null);
 
-            var filteredCount = actual.Count(x => bankTypes.Contains(x.BankType));
-            var expected = bankAccounts.Count(x => bankTypes.Contains(x.BankType));
+            var filteredCount = actual.Count(x => bankType == x.BankType);
+            var expected = bankAccounts.Count(x => bankType == x.BankType);
 
             // Assert
             Assert.Equal(expected, filteredCount);
