@@ -2,17 +2,15 @@
 {
     using Fanex.Data.Repository;
 
-    public class CheckBankAccountExistedCriteria : CriteriaBase
+    public class CheckAccountNameExistedCriteria : CriteriaBase
     {
         public int Id { get; set; }
 
         public string AccountName { get; set; }
 
-        public string AccountNumber { get; set; }
-
         public int EmployeeId { get; set; }
 
-        public override string GetSettingKey() => "BankAccount_CheckExisted";
+        public override string GetSettingKey() => "BankAccount_CheckNameExisted";
 
         public override bool IsValid()
         {
@@ -21,7 +19,7 @@
                 return false;
             }
 
-            if (string.IsNullOrEmpty(AccountName) || string.IsNullOrEmpty(AccountNumber))
+            if (string.IsNullOrEmpty(AccountName) || string.IsNullOrWhiteSpace(AccountName))
             {
                 return false;
             }

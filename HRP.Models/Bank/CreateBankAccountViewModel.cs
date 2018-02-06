@@ -54,9 +54,11 @@
 
     public enum BankAccountError
     {
-        [Display(Name = "Account Name and Account Number existed. Please enter another value")]
-        AccountExisted = 1,
+        [Display(Name = "Account Name existed. Please enter another value")]
+        AccountNameExisted = 1,
+        [Display(Name = "Account Number existed. Please enter another value")]
+        AccountNumberExisted = 2,
         [Display(Name = "This employee has reached the limit of number bank accounts. You cannot change type")]
-        MaximumAccountPerTypeReached = 2
+        MaximumAccountPerTypeReached = 3
     }
 }

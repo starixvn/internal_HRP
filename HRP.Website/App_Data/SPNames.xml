@@ -120,7 +120,8 @@
     <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Update" SpName="BankAccount_Update" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Search" SpName="BankAccount_Search" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="BankAccount_CheckExisted" SpName="BankAccount_CheckExisted" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_CheckNameExisted" SpName="BankAccount_CheckNameExisted" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_CheckNumberExisted" SpName="BankAccount_CheckNumberExisted" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="EmployeePayroll">
     <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>

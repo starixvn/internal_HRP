@@ -14,7 +14,9 @@
 
         BankAccount GetBankAccountById(int bankAccountId);
 
-        bool CheckIsBankAccountExisted(IBankAccount bankAccount);
+        bool CheckIsAccountNameExisted(IBankAccount bankAccount);
+
+        bool CheckIsAccountNumberExisted(IBankAccount bankAccount);
 
         IEnumerable<BankAccount> FilterBankAccounts(
             IEnumerable<BankAccount> bankAccounts,

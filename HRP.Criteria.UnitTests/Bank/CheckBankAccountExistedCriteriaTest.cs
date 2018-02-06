@@ -4,21 +4,20 @@
     using Criteria.Bank;
     using Xunit;
 
-    public class CheckBankAccountExistedCriteriaTest
+    public class CheckAccountNameExistedCriteriaTest
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new CheckBankAccountExistedCriteria
+            var criteria = new CheckAccountNameExistedCriteria
             {
                 Id = 1,
                 AccountName = "Test",
-                AccountNumber = "Test",
                 EmployeeId = 1
             };
 
-            var expected = "BankAccount_CheckExisted";
+            var expected = "BankAccount_CheckNameExisted";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -29,9 +28,9 @@
 
         [Theory]
         [MemberData(nameof(IsValidData))]
-        public void IsValid_WhenCalled_ReturnExpected(CheckBankAccountExistedCriteria checkBankAccountExistedCriteria, bool expectedResult)
+        public void IsValid_WhenCalled_ReturnExpected(CheckAccountNameExistedCriteria checkAccountNameExistedCriteria, bool expectedResult)
         {
-            Assert.True(checkBankAccountExistedCriteria.IsValid() == expectedResult);
+            Assert.True(checkAccountNameExistedCriteria.IsValid() == expectedResult);
         }
 
         public static IEnumerable<object[]> IsValidData
@@ -48,23 +47,18 @@
                 criteria.AccountName = string.Empty;
                 data.Add(TheoryDatum.Factory(criteria, false));
 
-                criteria = GetBaseCriteria();
-                criteria.AccountNumber = string.Empty;
-                data.Add(TheoryDatum.Factory(criteria, false));
-
                 data.Add(TheoryDatum.Factory(GetBaseCriteria(), true));
 
                 return data.ConvertAll(d => d.ToParameterArray());
             }
         }
 
-        private static CheckBankAccountExistedCriteria GetBaseCriteria()
+        private static CheckAccountNameExistedCriteria GetBaseCriteria()
         {
-            return new CheckBankAccountExistedCriteria
+            return new CheckAccountNameExistedCriteria
             {
                 Id = 1,
                 AccountName = "Test",
-                AccountNumber = "Test",
                 EmployeeId = 1
             };
         }

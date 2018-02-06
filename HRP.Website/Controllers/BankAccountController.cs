@@ -108,11 +108,20 @@
 
         [AcceptVerbs("Get", "Post")]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CheckBankAccountExisted(BankAccount bankAccount)
+        public IActionResult CheckAccountNameExisted(BankAccount bankAccount)
         {
-            var isExisted = bankAccountService.CheckIsBankAccountExisted(bankAccount);
+            var isExisted = bankAccountService.CheckIsAccountNameExisted(bankAccount);
 
-            return isExisted ? Json(data: BankAccountError.AccountExisted.GetDisplayName()) : Json(data: true);
+            return isExisted ? Json(data: BankAccountError.AccountNameExisted.GetDisplayName()) : Json(data: true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult CheckAccountNumberExisted(BankAccount bankAccount)
+        {
+            var isExisted = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
+
+            return isExisted ? Json(data: BankAccountError.AccountNumberExisted.GetDisplayName()) : Json(data: true);
         }
 
         [HttpPost]

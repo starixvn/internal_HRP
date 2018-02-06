@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bank\CheckAccountNumberExistedCriteriaTest.cs" />
     <Compile Include="Bank\CheckBankAccountExistedCriteriaTest.cs" />
     <Compile Include="Bank\CreateBankAccountCriteriaTest.cs" />
     <Compile Include="Bank\GetBankAccountByIdCriteriaTest.cs" />

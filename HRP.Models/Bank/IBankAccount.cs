@@ -15,15 +15,19 @@
         [Display(ResourceType = typeof(ViewLang), Name = "AccountName")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Remote(
+            action: "CheckAccountNameExisted",
+            controller: "BankAccount",
+            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId))]
         string AccountName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "AccountNumber")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
         [Remote(
-            action: "CheckBankAccountExisted",
+            action: "CheckAccountNumberExisted",
             controller: "BankAccount",
-            AdditionalFields = nameof(Id) + "," + nameof(AccountName) + "," + nameof(EmployeeId))]
+            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId))]
         string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]
