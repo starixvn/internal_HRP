@@ -38,6 +38,9 @@ namespace HRP.Core.Enumerations
         JobCategory = 13,
 
         [Display(Name = "Grade Level")]
-        GradeLevel = 15
+        GradeLevel = 15,
+
+        [Display(Name = "Job Grade")]
+        JobGrade = 16
     }
 }

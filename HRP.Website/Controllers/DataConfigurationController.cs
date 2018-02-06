@@ -12,6 +12,7 @@
     using HRP.Models.DataConfiguration.Department;
     using HRP.Models.DataConfiguration.Division;
     using HRP.Models.DataConfiguration.GradeLevel;
+    using HRP.Models.DataConfiguration.JobGrade;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -583,7 +584,7 @@
             {
                 var commandResult = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
 
-                return Json(new { isSuccessful = commandResult.IsSuccessful, code = commandResult.Code, message = commandResult.Message });
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -637,6 +638,106 @@
 
         #endregion Grade Level
 
+        #region Job Grade
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllJobGrade()
+        {
+            var jobGradeList = await dataConfigurationService.GetAllJobGradelAsync();
+            var viewModel = new JobGradeTableViewModel
+            {
+                JobGradeList = jobGradeList,
+                FieldName = ViewLang.JobGrade,
+                LinkCreateItem = DataConfigurationActionLink.CreateJobGrade,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade
+            };
+
+            return PartialView("_JobGradeTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateJobGrade()
+        {
+            var viewModel = new CreateJobGradeViewModel
+            {
+                JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
+                FieldName = ViewLang.JobGrade,
+                LinkCreateItem = DataConfigurationActionLink.CreateJobGrade
+            };
+
+            return PartialView("_CreateJobGrade", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateJobGrade(JobGrade jobGrade)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedJobGradeAsync(jobGrade);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, jobGrade.Name));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateJobGradeAsync(jobGrade);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateJobGrade(int id)
+        {
+            var jobGrade = await dataConfigurationService.GetJobGradeByIdAsync(id);
+
+            if (jobGrade != null)
+            {
+                var viewModal = new UpdateJobGradeViewModel
+                {
+                    FieldName = ViewLang.JobGrade,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade,
+                    JobGrade = jobGrade
+                };
+
+                return PartialView("_UpdateJobGrade", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateJobGrade(JobGrade jobGrade)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedJobGradeAsync(jobGrade);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, jobGrade.Name));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateJobGradeAsync(jobGrade);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Job Grade
+
         #region Commons
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -669,6 +770,14 @@
             var sectionList = await dataConfigurationService.GetSectionSelectListByCostCenterIdAsync(costCenterId);
 
             return PartialView("_SelectListItem", sectionList);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetGradeLevelSelectListByJobCategoryId(int jobCategoryId)
+        {
+            var gradeLevelList = await dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(jobCategoryId);
+
+            return PartialView("_SelectListItem", gradeLevelList);
         }
 
         private static string UppercaseFirstLetter(string s)

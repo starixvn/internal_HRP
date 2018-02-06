@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -8,6 +9,7 @@
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
+    using HRP.Criteria.JobGrade;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -21,6 +23,19 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+
+        [Fact]
+        public void GetDataForIndexPage_WhenCalled_ReturnOrderedFieldList()
+        {
+            // Arrange
+            var dataConfigurationService = GetDataConfigurationService();
+
+            // Act
+            var actual = dataConfigurationService.GetDataForIndexPage() as IOrderedEnumerable<Field>;
+
+            // Assert
+            Assert.NotNull(actual);
+        }
 
         #region CompanyBVI
 
@@ -1018,6 +1033,161 @@
 
         #endregion Grade Level
 
+        #region Job Grade
+
+        [Fact]
+        public async Task GetAllJobGradelAsync_BaseServiceGetJobGradeList_ReturnJobGradeList()
+        {
+            // Arrange
+            var expected = new List<JobGrade> { MockJobGrade() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<JobGrade>(Arg.Any<GetAllJobGradeCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await dataConfigurationService.GetAllJobGradelAsync() as List<JobGrade>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedJobGradeAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var criteria = new CheckJobGradeExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckJobGradeExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedJobGradeAsync(jobGrade);
+
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(jobGrade.JobGradeId, criteria.JobGradeId);
+            Assert.Equal(jobGrade.Name, criteria.Name);
+            Assert.Equal(jobGrade.GradeLevelId, criteria.GradeLevelId);
+        }
+
+        [Fact]
+        public async Task CreateJobGradeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var criteria = new CreateJobGradeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateJobGradeAsync(jobGrade);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Name), actual.Message);
+            Assert.Equal(jobGrade.Name, criteria.Name);
+            Assert.Equal(jobGrade.Description, criteria.Description);
+            Assert.Equal(jobGrade.GradeLevelId, criteria.GradeLevelId);
+            Assert.Equal(jobGrade.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateJobGradeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateJobGradeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateJobGradeAsync(new JobGrade());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetJobGradeByIdAsync_BaseServiceGetJobGradeInstance_ReturnJobGradeInstance()
+        {
+            // Arrange
+            var id = 61;
+            var jobGrade = MockJobGrade();
+            var criteria = new GetJobGradeByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<JobGrade>(Arg.Do<GetJobGradeByIdCriteria>(x => criteria = x)).Returns(jobGrade);
+
+            // Act
+            var actual = await dataConfigurationService.GetJobGradeByIdAsync(id);
+
+            // Assert
+            Assert.IsType<JobGrade>(actual);
+            Assert.Equal(jobGrade, actual);
+            Assert.Equal(id, criteria.JobGradeId);
+        }
+
+        [Fact]
+        public async Task GetJobGradeByIdAsync_BaseServiceGetNullJobGrade_ReturnNull()
+        {
+            // Arrange
+            JobGrade jobGrade = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<JobGrade>(Arg.Any<GetJobGradeByIdCriteria>()).Returns(jobGrade);
+
+            // Act
+            var actual = await dataConfigurationService.GetGradeLevelByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateJobGradeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var criteria = new UpdateJobGradeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateJobGradeAsync(jobGrade);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(jobGrade.JobGradeId, criteria.JobGradeId);
+            Assert.Equal(jobGrade.Name, criteria.Name);
+            Assert.Equal(jobGrade.Description, criteria.Description);
+            Assert.Equal(jobGrade.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateJobGradeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateJobGradeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateJobGradeAsync(new JobGrade());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Job Grade
+
         #region Common
 
         [Fact]
@@ -1146,6 +1316,28 @@
             Assert.Equal(expected.Items, actual.Items);
         }
 
+        [Fact]
+        public async Task GetGradeLevelSelectListByJobCateogryIdAsync_BaseServiceGetGradeLevelList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 14;
+            var gradeLevelList = new List<GradeLevel> { MockGradeLevel() };
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria();
+            var expected = new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<GradeLevel>(Arg.Do<GetGradeLevelByJobCategoryIdCriteria>(x => criteria = x)).Returns(gradeLevelList);
+
+            // Act
+            var actual = await dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.JobCategoryId);
+        }
+
         #endregion Common
 
         #region Initialization
@@ -1258,6 +1450,17 @@
             };
         }
 
+        private JobCategory MockJobCategory()
+        {
+            return new JobCategory
+            {
+                JobCategoryId = 22,
+                Name = "JobCategory",
+                Description = "descs11",
+                IsActive = true
+            };
+        }
+
         private GradeLevel MockGradeLevel()
         {
             return new GradeLevel
@@ -1271,14 +1474,18 @@
             };
         }
 
-        private JobCategory MockJobCategory()
+        private JobGrade MockJobGrade()
         {
-            return new JobCategory
+            return new JobGrade
             {
-                JobCategoryId = 22,
-                Name = "JobCategory",
-                Description = "descs11",
-                IsActive = true
+                JobGradeId = 14,
+                Name = "JobGrade",
+                Description = "descjg",
+                IsActive = true,
+                JobCategoryId = 2,
+                JobCategoryName = "jobname",
+                GradeLevelId = 3,
+                GradeLevelName = "gradele"
             };
         }
 

@@ -35,5 +35,9 @@
         public const string CreateGradeLevel = DataConfiguration + "/CreateGradeLevel";
         public const string UpdateGradeLevel = DataConfiguration + "/UpdateGradeLevel";
         public const string GetAllGradeLevel = DataConfiguration + "/GetAllGradeLevel";
+
+        public const string CreateJobGrade = DataConfiguration + "/CreateJobGrade";
+        public const string UpdateJobGrade = DataConfiguration + "/UpdateJobGrade";
+        public const string GetAllJobGrade = DataConfiguration + "/GetAllJobGrade";
     }
 }

@@ -62,6 +62,11 @@
   </Function>
   <Function Name="Job Grade">
     <Setting Key="JobGrade_GetByGradeLevelId" SpName="JobGrade_GetByGradeLevelId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_GetAll" SpName="JobGrade_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_CheckExists" SpName="JobGrade_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_Create" SpName="JobGrade_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_GetById" SpName="JobGrade_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_Update" SpName="JobGrade_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Country">
     <Setting Key="Country_GetAll" SpName="Country_GetAll" DbName="bodb_HRP" Plain="0"></Setting>

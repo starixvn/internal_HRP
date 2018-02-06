@@ -5,7 +5,9 @@
         DivisionId: '.js-divisionId',
         DepartmentId: '.js-departmentId',
         CostCenterId: '.js-costCenterId',
-        SectionId: '.js-sectionId'
+        SectionId: '.js-sectionId',
+        JobCategoryId: '.js-jobCateogryId',
+        GradeLevelId: '.js-gradeLevelId'
     };
     var htmlDefaultOption = '<option value=""></option>';
 
@@ -85,6 +87,8 @@
                     registerEventChangeDivision();
                     registerEventChangeDepartment();
                     registerEventChangeCostCenter();
+
+                    registerEventChangeJobCategory();
 
                     var createFormName = '#createItemForm';
                     initValidationForm(createFormName);
@@ -180,6 +184,28 @@
                     data: { costCenterId: costCenterId },
                     success: function (data) {
                         $sectionId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
+        });
+    }
+
+    function registerEventChangeJobCategory() {
+        $(domElement.JobCategoryId).on('change', function () {
+            //reset Grade Level
+            var $gradeLevelId = $(domElement.GradeLevelId);
+            $gradeLevelId.html(htmlDefaultOption);
+
+            var jobCategoryId = $(this).val();
+            if (jobCategoryId !== "" && $gradeLevelId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetGradeLevelSelectListByJobCategoryId',
+                    dataType: 'html',
+                    data: { jobCategoryId: jobCategoryId },
+                    success: function (data) {
+                        $gradeLevelId.html(data);
                     },
                     error: commonFunctions.handleAjaxError
                 });

@@ -11,6 +11,7 @@
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
+    using HRP.Criteria.JobGrade;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -34,7 +35,8 @@
         {
             var fieldList = new List<Field>
             {
-                new Field                {
+                new Field
+                {
                     FieldId = (int)FieldType.CompanyBVI,
                     FieldName = ViewLang.CompanyBVI,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyBVI
@@ -73,6 +75,13 @@
                     FieldId = (int)FieldType.GradeLevel,
                     FieldName = ViewLang.GradeLevel,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllGradeLevel
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.JobCategory,
+                    FieldName = ViewLang.JobGrade,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllJobGrade
                 }
             };
 
@@ -530,6 +539,77 @@
 
         #endregion Grade Level
 
+        #region Job Grade
+
+        public async Task<IEnumerable<JobGrade>> GetAllJobGradelAsync()
+        {
+            var jobGradeList = await baseService.GetDataAsync<JobGrade>(new GetAllJobGradeCriteria()).ConfigureAwait(false);
+
+            return jobGradeList;
+        }
+
+        public async Task<bool> IsExistedJobGradeAsync(JobGrade jobGrade)
+        {
+            var criteria = new CheckJobGradeExistsCriteria
+            {
+                JobGradeId = jobGrade.JobGradeId,
+                Name = jobGrade.Name,
+                GradeLevelId = jobGrade.GradeLevelId
+            };
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateJobGradeAsync(JobGrade jobGrade)
+        {
+            var criteria = new CreateJobGradeCriteria
+            {
+                Name = jobGrade.Name,
+                Description = jobGrade.Description,
+                GradeLevelId = jobGrade.GradeLevelId,
+                IsActive = jobGrade.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Name);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<JobGrade> GetJobGradeByIdAsync(int id)
+        {
+            var jobGrade = await baseService.GetDataEntityAsync<JobGrade>(new GetJobGradeByIdCriteria { JobGradeId = id }).ConfigureAwait(false);
+
+            return jobGrade;
+        }
+
+        public async Task<CommandResult> UpdateJobGradeAsync(JobGrade jobGrade)
+        {
+            var criteria = new UpdateJobGradeCriteria
+            {
+                JobGradeId = jobGrade.JobGradeId,
+                Name = jobGrade.Name,
+                Description = jobGrade.Description,
+                IsActive = jobGrade.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Job Grade
+
         #region Common
 
         public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
@@ -562,6 +642,14 @@
             var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
 
             return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
+        }
+
+        public async Task<SelectList> GetGradeLevelSelectListByJobCateogryIdAsync(int jobCategoryId)
+        {
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId };
+            var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(false);
+
+            return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
         }
 
         public async Task<SelectList> GetCompanyBVISelectListAsync()

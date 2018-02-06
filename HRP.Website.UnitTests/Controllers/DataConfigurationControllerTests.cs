@@ -11,6 +11,7 @@
     using HRP.Models.DataConfiguration.Department;
     using HRP.Models.DataConfiguration.Division;
     using HRP.Models.DataConfiguration.GradeLevel;
+    using HRP.Models.DataConfiguration.JobGrade;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -880,7 +881,7 @@
         }
 
         [Fact]
-        public async Task CreateGradeLevelPost_SectionItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateGradeLevelPost_GradeLevelItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
@@ -939,7 +940,7 @@
         }
 
         [Fact]
-        public async Task UpdateSection_ServiceGetNullGradeLevelItem_ReturnContentResultWithMessageNotFound()
+        public async Task UpdateGradeLevel_ServiceGetNullGradeLevelItem_ReturnContentResultWithMessageNotFound()
         {
             // Arrange
             GradeLevel gradeLevel = null;
@@ -994,6 +995,165 @@
         }
 
         #endregion Grade Level
+
+        #region Job Grade
+
+        [Fact]
+        public async Task GetAllJobGrade_ServiceGetJobGradeList_ReturnPartialViewWithJobGradeTableViewModel()
+        {
+            // Arrange
+            var jobGradeList = new List<JobGrade> { MockJobGrade() };
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetAllJobGradelAsync().Returns(jobGradeList);
+
+            // Act
+            var actual = await controller.GetAllJobGrade();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<JobGradeTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_JobGradeTable", viewResult.ViewName);
+            Assert.Equal(jobGradeList, viewModel.JobGradeList);
+            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task CreateJobGrade_WhenCall_ReturnPartialViewWithCreateJobGradeViewModel()
+        {
+            // Arrange
+            var jobCategorySelectList = MockJobCategorySelectList();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetJobCategorySelectListAsync().Returns(jobCategorySelectList);
+
+            // Act
+            var actual = await controller.CreateJobGrade();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateJobGradeViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateJobGrade", viewResult.ViewName);
+            Assert.Equal(jobCategorySelectList, viewModel.JobCategoryList);
+            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateJobGradePost_JobGradeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, jobGrade.Name), errors["JobGrade.Name"]);
+        }
+
+        [Fact]
+        public async Task CreateJobGradePost_JobGradeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(false);
+            dataConfigurationService.CreateJobGradeAsync(jobGrade).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobGrade_ServiceGetJobGradeItem_ReturnPartialViewWithUpdateJobGradeViewModel()
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetJobGradeByIdAsync(Arg.Any<int>()).Returns(jobGrade);
+
+            // Act
+            var actual = await controller.UpdateJobGrade(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateJobGrade", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateJobGradeViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(jobGrade, viewModel.JobGrade);
+            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateJobGrade_ServiceGetNullJobGradeItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            JobGrade jobGrade = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetJobGradeByIdAsync(Arg.Any<int>()).Returns(jobGrade);
+
+            // Act
+            var actual = await controller.UpdateJobGrade(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateJobGradePost_JobGradeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, jobGrade.Name), errors["JobGrade.Name"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobGradePost_JobGradeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(false);
+            dataConfigurationService.UpdateJobGradeAsync(jobGrade).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion Job Grade
 
         #region Commons
 
@@ -1079,6 +1239,27 @@
             Assert.Equal(sectionSelectList.DataValueField, viewModel.DataValueField);
             Assert.Equal(sectionSelectList.DataTextField, viewModel.DataTextField);
             Assert.Equal(sectionSelectList.Items, viewModel.Items);
+        }
+
+        [Fact]
+        public async Task GetGradeLevelSelectListByJobCategoryId_ServiceGetGradeLevelSelectList_ReturnPartialViewWithGradeLevelSelectList()
+        {
+            // Arrange
+            var id = 25;
+            var gradeLevelSelectList = MockSectionSelectList();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(id).Returns(gradeLevelSelectList);
+
+            // Act
+            var actual = await controller.GetGradeLevelSelectListByJobCategoryId(id);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
+            Assert.Equal("_SelectListItem", viewResult.ViewName);
+            Assert.Equal(gradeLevelSelectList.DataValueField, viewModel.DataValueField);
+            Assert.Equal(gradeLevelSelectList.DataTextField, viewModel.DataTextField);
+            Assert.Equal(gradeLevelSelectList.Items, viewModel.Items);
         }
 
         #endregion Commons
@@ -1234,6 +1415,21 @@
             };
         }
 
+        private JobGrade MockJobGrade()
+        {
+            return new JobGrade
+            {
+                JobGradeId = 14,
+                Name = "JobGrade",
+                Description = "descjg",
+                IsActive = true,
+                JobCategoryId = 2,
+                JobCategoryName = "jobname",
+                GradeLevelId = 3,
+                GradeLevelName = "gradele"
+            };
+        }
+
         private JobCategory MockJobCategory()
         {
             return new JobCategory
@@ -1285,6 +1481,13 @@
             var sections = new List<Section> { MockSection() };
 
             return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
+        }
+
+        private SelectList MockGradeLevelSelectList()
+        {
+            var gradeLevelList = new List<GradeLevel> { MockGradeLevel() };
+
+            return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
         }
 
         #endregion Initialization

@@ -71,6 +71,16 @@
 
         Task<CommandResult> UpdateGradeLevelAsync(GradeLevel gradeLevel);
 
+        Task<IEnumerable<JobGrade>> GetAllJobGradelAsync();
+
+        Task<bool> IsExistedJobGradeAsync(JobGrade jobGrade);
+
+        Task<CommandResult> CreateJobGradeAsync(JobGrade jobGrade);
+
+        Task<JobGrade> GetJobGradeByIdAsync(int id);
+
+        Task<CommandResult> UpdateJobGradeAsync(JobGrade jobGrade);
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
@@ -79,6 +89,8 @@
         Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId);
 
         Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
+
+        Task<SelectList> GetGradeLevelSelectListByJobCateogryIdAsync(int jobCategoryId);
 
         Task<SelectList> GetCompanyBVISelectListAsync();
 
