@@ -23,30 +23,6 @@
         private ISessionService sessionService;
 
         [Fact]
-        public void CheckBankAccountExisted_AccountExisted_ReturnJsonWithMessage()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsBankAccountExisted(bankAccount).Returns(true);
-
-            var actual = controller.CheckBankAccountExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(BankAccountError.AccountExisted.GetDisplayName(), jsonResult.Value.ToString());
-        }
-
-        [Fact]
-        public void CheckBankAccountExisted_AccountNotExisted_ReturnJsonWithTrue()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsBankAccountExisted(bankAccount).Returns(false);
-
-            var actual = controller.CheckBankAccountExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value);
-        }
-
-        [Fact]
         public void EmployeeBankAccounts_NoExistingAccount_ReturnViewAndCanCreate()
         {
             var controller = GetBankAccountController();
