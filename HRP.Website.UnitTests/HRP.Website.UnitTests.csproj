@@ -386,6 +386,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
     <Compile Include="Controllers\AuthControllerTests.cs" />
+    <Compile Include="Controllers\BankAccountControllerTests.cs" />
     <Compile Include="Controllers\BaseControllerTests.cs" />
     <Compile Include="Controllers\CurrencySettingControllerTests.cs" />
     <Compile Include="Controllers\DataConfigurationControllerTests.cs" />
