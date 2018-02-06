@@ -50,7 +50,12 @@
                 EmployeeId = bankAccount.EmployeeId
             };
 
-            return baseService.GetDataEntity<bool>(criteria);
+            if (criteria.IsValid())
+            {
+                return baseService.GetDataEntity<bool>(criteria);
+            }
+
+            return true;
         }
 
         public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)
