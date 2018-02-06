@@ -185,7 +185,7 @@
                 $('input[type="checkbox"]', helper.tooltip).on('change', function (e) {
                     if (e.target.checked) {
                         setTimeout(function () {
-                            $('.tooltipster').tooltipster('destroy')
+                            $('.tooltipster').tooltipster('destroy');
                         }, 500);
                     }
                 });
@@ -198,8 +198,13 @@
 
             if (this.value == 2 || this.value == 1) {
                 $(this).siblings('.add-account').removeClass('disabled');
+                $(this).siblings(".add-account").on("click",
+                    function() {
+
+                    });
             } else {
                 $(this).siblings('.add-account').addClass('disabled');
+                $(this).siblings(".add-account").off("click");
             }
         });
 
@@ -217,9 +222,9 @@
             if ($(this).data('unselecting')) {
                 $(this).removeData('unselecting');
                 e.preventDefault();
-                }
+            }
         }).on('change', function () {
-            $(this).click();    
+            $(this).click();
         });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
@@ -231,7 +236,7 @@
                     var query = {
                         employeeId: $('#EmployeeId').val(),
                         bankTypeId: $(this).siblings('.bank-type-select').val()
-                    }
+                    };
 
                     return query;
                 },
@@ -253,7 +258,7 @@
                 e.preventDefault();
             }
         }).on('change', function () {
-            $(this).click();    
+            $(this).click();
         });
 
         if ($('#CanUpdate').val() !== 'True') {
@@ -263,9 +268,9 @@
         }
 
         $('.add-account').each(function (index, element) {
-            var $element = $(element)
+            var $element = $(element);
             var bankType = $element.siblings('.bank-type-select').val();
-            if (bankType == 3 || bankType == '' ) {
+            if (bankType == 3 || bankType == '') {
                 $element.addClass('disabled');
             }
         });
@@ -336,7 +341,7 @@
 
             $('.icon-calendar').on('click', function () {
                 $(this).siblings('input').data('DateTimePicker').toggle();
-            })
+            });
         }
 
         $('.number:enabled').on('keydown', function (e) {
@@ -452,7 +457,7 @@
         onSaveComplete: function () {
             $('#btn-save').button('reset');
         }
-    }
+    };
 }(jQuery));
 
 $(document).ready(function () {

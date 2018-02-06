@@ -1,4 +1,4 @@
-﻿namespace HRP.Website.ViewComponents
+﻿namespace HRP.Website.Views.Shared.Components.Menu
 {
     using System.Threading.Tasks;
     using Core.Services;

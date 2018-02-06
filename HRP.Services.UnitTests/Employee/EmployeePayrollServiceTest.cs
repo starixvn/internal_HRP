@@ -9,6 +9,7 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
+    using Models.EmployeeManagement.Payroll;
     using NSubstitute;
     using Xunit;
 

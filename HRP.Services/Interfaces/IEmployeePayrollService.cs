@@ -2,6 +2,7 @@
 {
     using HRP.Core.Model;
     using Models.EmployeeManagement;
+    using Models.EmployeeManagement.Payroll;
 
     public interface IEmployeePayrollService
     {

@@ -1,6 +1,7 @@
 ﻿@using HRP.Resources;
 @using HRP.Core.Enumerations
-@model HRP.Models.EmployeeManagement.EmployeePayrollViewModel
+@using HRP.Models.EmployeeManagement.Payroll
+@model EmployeePayrollViewModel
 
 @section Styles {
     <environment include="Development">
@@ -20,6 +21,11 @@
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyCode), "CurrencyCode", "CurrencyCode");
     var bankTypes = Html.GetEnumSelectList<BankType>().Where(x => int.Parse(x.Value) != (int)BankType.Ebanking);
 }
+
+<!--Modals section-->
+<div id="dynamic-modals">
+
+</div>
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>

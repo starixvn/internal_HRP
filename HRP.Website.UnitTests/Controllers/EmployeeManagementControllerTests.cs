@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
+    using Models.EmployeeManagement.Payroll;
     using NSubstitute;
     using Services.Interfaces;
     using Xunit;

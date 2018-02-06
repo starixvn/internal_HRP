@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.EmployeeManagement;
+    using Models.EmployeeManagement.Payroll;
     using Resources;
     using Services.Interfaces;
 

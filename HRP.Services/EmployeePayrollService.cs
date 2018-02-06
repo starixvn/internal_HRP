@@ -10,6 +10,7 @@
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
     using Interfaces;
+    using Models.EmployeeManagement.Payroll;
 
     public class EmployeePayrollService : IEmployeePayrollService
     {

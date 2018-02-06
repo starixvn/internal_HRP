@@ -1,7 +1,7 @@
-﻿namespace HRP.Models.EmployeeManagement
+﻿namespace HRP.Models.EmployeeManagement.Payroll
 {
     using System.Collections.Generic;
-    using HRP.Models.Currency;
+    using Currency;
 
     public class EmployeePayrollViewModel
     {
