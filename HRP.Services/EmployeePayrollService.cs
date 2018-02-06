@@ -1,7 +1,6 @@
 ﻿namespace HRP.Services
 {
-    using System.Linq;
-    using Fanex.Data.Repository;
+    using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -15,72 +14,53 @@
     public class EmployeePayrollService : IEmployeePayrollService
     {
         private readonly IBaseService baseService;
-        private readonly IDynamicRepository repository;
         private readonly ICryptoService cryptoService;
 
-        public EmployeePayrollService(IBaseService baseService, IDynamicRepository repository, ICryptoService cryptoService)
+        public EmployeePayrollService(IBaseService baseService, ICryptoService cryptoService)
         {
             this.baseService = baseService;
-            this.repository = repository;
             this.cryptoService = cryptoService;
         }
 
         public EmployeePayrollViewModel GetEmployeePayroll(int employeeId, int userId)
         {
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId, UserId = userId };
-            var mappingTypes = new[] { typeof(EmployeePayrollViewModel), typeof(EmployeePayrollBasicSalaryModel), typeof(EmployeePayrollAllowanceModel), typeof(EmployeePayrollDeduction) };
-            var result = repository.FetchMultiple(criteria, mappingTypes);
-
-            var viewModel = result[0].Cast<EmployeePayrollViewModel>().FirstOrDefault();
-
-            if (viewModel != null)
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                viewModel.CanRead = criteria.CanRead;
-                viewModel.CanUpdate = criteria.CanUpdate;
+                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                {
+                    var viewModel = multi.ReadFirstOrDefault<EmployeePayrollViewModel>();
 
-                viewModel.BasicSalary = result[1].Cast<EmployeePayrollBasicSalaryModel>().FirstOrDefault()
-                    ?? new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, WorkingDays = 22, AutoCalculateOn = "Cash", InitFirstTime = true };
-                viewModel.BasicSalary.OldCurrencyCode = viewModel.BasicSalary.CurrencyCode;
-                viewModel.Allowance = result[2].Cast<EmployeePayrollAllowanceModel>().FirstOrDefault() ?? new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
-                viewModel.Deduction = result[3].Cast<EmployeePayrollDeduction>().FirstOrDefault() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
-                viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
-                viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-                viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason });
-                viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.CashAccount });
+                    if (viewModel != null)
+                    {
+                        var basicSalary = new EmployeePayrollBasicSalaryModel
+                        {
+                            EmployeeId = employeeId,
+                            WorkingDays = 22,
+                            AutoCalculateOn = "Cash",
+                            InitFirstTime = true
+                        };
+                        var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
 
-                DecryptData(viewModel);
+                        viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>() ?? basicSalary;
+                        viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowanceModel>() ?? allowance;
+                        viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeduction>() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+                        viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
+                        viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+                        viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PayrollSalaryChangeReason });
+                        viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.CashAccount });
+
+                        DecryptData(viewModel);
+                    }
+
+                    return viewModel;
+                }
             }
-
-            return viewModel;
-        }
-
-        private void DecryptData(EmployeePayrollViewModel viewModel)
-        {
-            viewModel.BasicSalary.Salary = viewModel.BasicSalary.OldSalary = cryptoService.Decrypt(viewModel.BasicSalary.Salary);
-            viewModel.BasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.BasicSalary.EbankingAmount);
-            viewModel.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking1Amount);
-            viewModel.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking2Amount);
-            viewModel.BasicSalary.CashAmount = cryptoService.Decrypt(viewModel.BasicSalary.CashAmount);
-
-            viewModel.Allowance.DirectBanking1Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking1Amount);
-            viewModel.Allowance.DirectBanking2Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking2Amount);
-            viewModel.Allowance.CashAmount = cryptoService.Decrypt(viewModel.Allowance.CashAmount);
-            viewModel.Allowance.SubsistenceAmount = cryptoService.Decrypt(viewModel.Allowance.SubsistenceAmount);
-            viewModel.Allowance.HomePassageAmount = cryptoService.Decrypt(viewModel.Allowance.HomePassageAmount);
-            viewModel.Allowance.HousingAmount = cryptoService.Decrypt(viewModel.Allowance.HousingAmount);
-            viewModel.Allowance.MobilePhoneAmount = cryptoService.Decrypt(viewModel.Allowance.MobilePhoneAmount);
-            viewModel.Allowance.HPIAmount = cryptoService.Decrypt(viewModel.Allowance.HPIAmount);
-            viewModel.Allowance.DutyMealAmount = cryptoService.Decrypt(viewModel.Allowance.DutyMealAmount);
-            viewModel.Allowance.SecondmentAmount = cryptoService.Decrypt(viewModel.Allowance.SecondmentAmount);
-            viewModel.Allowance.OthersAmount = cryptoService.Decrypt(viewModel.Allowance.OthersAmount);
-
-            viewModel.Deduction.RoomingChargesAmount = cryptoService.Decrypt(viewModel.Deduction.RoomingChargesAmount);
-            viewModel.Deduction.FitnessFirstAmount = cryptoService.Decrypt(viewModel.Deduction.FitnessFirstAmount);
         }
 
         public CommandResult UpdatePayroll(EmployeePayrollViewModel model, int userId)
         {
-            var isSalaryChanged =  model.BasicSalary.OldSalary != model.BasicSalary.Salary || model.BasicSalary.OldCurrencyCode != model.BasicSalary.CurrencyCode;
+            var isSalaryChanged = model.BasicSalary.OldSalary != model.BasicSalary.Salary || model.BasicSalary.OldCurrencyCode != model.BasicSalary.CurrencyCode;
 
             var criteria = new UpdateEmployeePayrollCriteria
             {
@@ -143,6 +123,30 @@
             };
 
             return baseService.ExecuteNonQuery(criteria);
+        }
+
+        private void DecryptData(EmployeePayrollViewModel viewModel)
+        {
+            viewModel.BasicSalary.Salary = viewModel.BasicSalary.OldSalary = cryptoService.Decrypt(viewModel.BasicSalary.Salary);
+            viewModel.BasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.BasicSalary.EbankingAmount);
+            viewModel.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking1Amount);
+            viewModel.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.BasicSalary.DirectBanking2Amount);
+            viewModel.BasicSalary.CashAmount = cryptoService.Decrypt(viewModel.BasicSalary.CashAmount);
+
+            viewModel.Allowance.DirectBanking1Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking1Amount);
+            viewModel.Allowance.DirectBanking2Amount = cryptoService.Decrypt(viewModel.Allowance.DirectBanking2Amount);
+            viewModel.Allowance.CashAmount = cryptoService.Decrypt(viewModel.Allowance.CashAmount);
+            viewModel.Allowance.SubsistenceAmount = cryptoService.Decrypt(viewModel.Allowance.SubsistenceAmount);
+            viewModel.Allowance.HomePassageAmount = cryptoService.Decrypt(viewModel.Allowance.HomePassageAmount);
+            viewModel.Allowance.HousingAmount = cryptoService.Decrypt(viewModel.Allowance.HousingAmount);
+            viewModel.Allowance.MobilePhoneAmount = cryptoService.Decrypt(viewModel.Allowance.MobilePhoneAmount);
+            viewModel.Allowance.HPIAmount = cryptoService.Decrypt(viewModel.Allowance.HPIAmount);
+            viewModel.Allowance.DutyMealAmount = cryptoService.Decrypt(viewModel.Allowance.DutyMealAmount);
+            viewModel.Allowance.SecondmentAmount = cryptoService.Decrypt(viewModel.Allowance.SecondmentAmount);
+            viewModel.Allowance.OthersAmount = cryptoService.Decrypt(viewModel.Allowance.OthersAmount);
+
+            viewModel.Deduction.RoomingChargesAmount = cryptoService.Decrypt(viewModel.Deduction.RoomingChargesAmount);
+            viewModel.Deduction.FitnessFirstAmount = cryptoService.Decrypt(viewModel.Deduction.FitnessFirstAmount);
         }
     }
 }

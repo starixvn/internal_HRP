@@ -243,7 +243,7 @@
     <Compile Include="BankAccountServiceTests.cs" />
     <Compile Include="DataConfigurationServiceTests.cs" />
     <Compile Include="EmployeeManagementServiceTests.cs" />
-    <Compile Include="Employee\EmployeePayrollServiceTest.cs" />
+    <Compile Include="EmployeePayrollServiceTests.cs" />
     <Compile Include="FunctionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefResourceServiceTests.cs" />

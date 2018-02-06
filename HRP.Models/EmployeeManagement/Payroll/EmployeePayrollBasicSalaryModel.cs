@@ -31,7 +31,7 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
         public int? EbankingAccountId { get; set; }
 
-        public string EbankingAccountName { get; set; }      
+        public string EbankingAccountName { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? EffectiveDate { get; set; }

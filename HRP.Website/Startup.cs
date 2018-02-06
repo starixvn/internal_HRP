@@ -9,7 +9,6 @@
     using Core.Model;
     using Core.Services;
     using Fanex.Data;
-    using Fanex.Data.Repository;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -107,7 +106,6 @@
             services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
             services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
-            services.AddScoped<IDynamicRepository, DynamicRepository>();
             services.AddScoped<IDataConfigurationService, DataConfigurationService>();
             services.AddScoped<IRefResourceService, RefResourceService>();
         }
