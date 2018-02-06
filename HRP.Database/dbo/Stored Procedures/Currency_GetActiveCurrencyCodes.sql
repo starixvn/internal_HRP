@@ -1,7 +1,17 @@
-﻿CREATE PROCEDURE [dbo].[Currency_GetActiveCurrencyCodes]
+﻿
+CREATE PROCEDURE [dbo].[Currency_GetActiveCurrencyCodes]
 AS
+/*
+Created: 20171222@Elton.Ton
+Task: Get active currency code
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
-	SET NOCOUNT ON
+	SET NOCOUNT ON;
 
 	SELECT c.CurrencyCode
 	FROM dbo.Currency AS c WITH (NOLOCK)

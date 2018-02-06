@@ -62,48 +62,65 @@ BEGIN
 	-- get employment
 	SELECT emp.EmployeeId
 		,emp.CompanyId
+		,emp.CompanyId AS OldCompanyId
 		,ec.CompanyChangeDate
 		,ec.CompanyReasonId
 		,emp.LocalCompanyId
+		,emp.LocalCompanyId AS OldLocalCompanyId
 		,ec.LocalCompanyChangeDate
 		,ec.LocalCompanyReasonId
 		,emp.JobTitle
+		,emp.JobTitle AS OldJobTitle
 		,ec.JobTitleChangeDate
 		,ec.JobTitleReasonId
 		,emp.LocalJobTitleId
+		,emp.LocalJobTitleId AS OldLocalJobTitleId
 		,ec.LocalJobTitleChangeDate
 		,ec.LocalJobTitleReasonId
 		,emp.CompanyCode
 		,emp.EmployeeCode
+		,emp.EmployeeCode AS OldEmployeeCode
 		,ec.IDNoChangeDate
 		,ec.IDNoReasonId
 		,emp.EmploymentType
 		,emp.EmploymentStatus
+		,emp.EmploymentStatus AS OldEmploymentStatus
 		,ec.EmploymentStatusChangeDate
 		,emp.JobCategoryId
+		,emp.JobCategoryId AS OldJobCategoryId
 		,ec.JobCategoryChangeDate
 		,ec.JobCategoryReasonId
 		,emp.JobGradeId
+		,emp.JobGradeId AS OldJobGradeId
 		,emp.GradeLevelId
+		,emp.GradeLevelId AS OldGradeLevelId
 		,ec.JobGradeChangeDate
 		,ec.JobGradeReasonId
 		,emp.DivisionId
+		,emp.DivisionId AS OldDivisionId
 		,ec.DivisionChangeDate
 		,ec.DivisionReasonId
 		,emp.DepartmentId
+		,emp.DepartmentId AS OldDepartmentId
 		,ec.DepartmentChangeDate
 		,ec.DepartmentReasonId
 		,emp.SectionId
+		,emp.SectionId AS OldSectionId
 		,ec.SectionChangeDate
 		,ec.SectionReasonId
 		,emp.CostCenterId
+		,emp.CostCenterId AS OldCostCenterId
 		,ec.CostCenterChangeDate
 		,ec.CostCenterReasonId
 		,emp.GroupStartDate
+		,emp.GroupStartDate AS OldGroupStartDate
 		,emp.GroupEndDate
+		,emp.GroupEndDate AS OldGroupEndDate
 		,ec.GroupDateReasonId
 		,emp.CompanyStartDate
+		,emp.CompanyStartDate AS OldCompanyStartDate
 		,emp.CompanyEndDate
+		,emp.CompanyEndDate AS OldCompanyEndDate
 		,ec.CompanyDateReasonId
 		,emp.Email
 		,emp.CountryId

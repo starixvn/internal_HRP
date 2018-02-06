@@ -19,4 +19,6 @@ BEGIN
 		,IsActive
 	FROM dbo.JobCategory WITH (NOLOCK)
 	WHERE ISNULL(@IsActive, IsActive) = IsActive
+	ORDER BY IsActive DESC
+			,[Name]
 END

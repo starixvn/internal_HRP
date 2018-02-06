@@ -1,6 +1,5 @@
 ﻿
 CREATE PROCEDURE [dbo].[User_ReCheckIn] @OnUserId INT
-	,@IsKickedOut BIT = 0 OUTPUT
 AS
 /*
 Created: 20171221@Tim.Trinh
@@ -13,6 +12,8 @@ Param's Explanation:
 */
 BEGIN
 	SET NOCOUNT ON;
+	
+	DECLARE @IsKickedOut BIT
 
 	IF EXISTS (
 			SELECT 1
@@ -33,7 +34,9 @@ BEGIN
 
 		IF @@ROWCOUNT = 0
 		BEGIN
-			SELECT @IsKickedOut = 1
+			SET @IsKickedOut = 1
 		END
 	END
+	
+	SELECT @IsKickedOut
 END

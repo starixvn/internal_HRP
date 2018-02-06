@@ -45,5 +45,5 @@ BEGIN
 		,Value
 		,[Description]
 	FROM dbo.RefResource WITH (NOLOCK)
-	WHERE RefName IN ('LocalCompany', 'LocalJobTitle', 'EmploymentType', 'EmploymentStatus', 'WorkPermitType1', 'WorkPermitType2', 'CommonReasons', 'GroupDateReasons')
+	WHERE RefName IN ('LocalCompany', 'LocalJobTitle', 'EmploymentType', 'EmploymentStatus', 'WorkPermitType1', 'WorkPermitType2')
 END

@@ -1,17 +1,19 @@
 ﻿-- =============================================
 -- Author:		Raymond.Le
--- Create date: 01/22/2018
--- Description:	Create new item of Company BVI field
+-- Create date: 01/30/2018
+-- Description:	Create new item of Division
 -- =============================================
-CREATE PROCEDURE [dbo].[DataConfiguration_CreateCompanyBVI] 
+CREATE PROCEDURE [dbo].[Division_Create]
 	@Code VARCHAR(50)
 	,@Name NVARCHAR(200) = ''
-	,@IsActive BIT = 0
+	,@CompanyId SMALLINT
+	,@IsActive BIT  = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
 BEGIN
+
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -19,36 +21,51 @@ BEGIN
 		,@duration INT
 		,@logData NVARCHAR(MAX)
 		,@xml XML
-		,@CompanyId SMALLINT
+		,@DivisionId SMALLINT
+
+	CREATE TABLE #tblCheckExists (
+		[Count] SMALLINT
+	)
 
 	SET @startRun = GETDATE()
 
-	IF EXISTS (SELECT 1 FROM dbo.Company WHERE Code = @Code)
+	-- Check exists Division
+	INSERT INTO #tblCheckExists(
+		[Count]
+	)
+	EXEC dbo.Division_CheckExists @CompanyId = @CompanyId,
+								@Code = @Code
+									
+	IF EXISTS (SELECT 1 FROM #tblCheckExists)
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'The ' + @Code +' has already existed!'
 		RETURN
 	END
 
-	INSERT INTO [dbo].Company (
+	INSERT INTO [dbo].Division (
 		Code
 		,Name
+		,CompanyId
 		,IsActive	
 	)	VALUES (
 		@Code
 		,@Name
+		,@CompanyId
 		,@IsActive
 	)
 
-	SET @CompanyId = SCOPE_IDENTITY()
-		--Write Log
+	SET @DivisionId = SCOPE_IDENTITY()
+
+	--Write Log
 	SET @xml = (
-			SELECT c.CompanyId AS '@cid'
-				,c.Code AS '@c'
-				,c.Name AS '@n'
-				,c.IsActive AS '@ia'
-			FROM dbo.[Company] AS c WITH (NOLOCK)
-			WHERE c.CompanyId = @CompanyId
+			SELECT DivisionId AS '@did'
+				,Code AS '@c'
+				,Name AS '@n'
+				,CompanyId AS '@cid'
+				,IsActive AS '@ia'
+			FROM dbo.Division WITH (NOLOCK)
+			WHERE DivisionId = @DivisionId
 			FOR XML PATH('r')
 				,TYPE
 			)
@@ -57,11 +74,12 @@ BEGIN
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
 
 	EXEC dbo.LogDetail_Insert @UserId = @CreatedBy
-		,@SPName = 'DataConfiguration_CreateCompanyBVI'
-		,@ObjectId = @CompanyId
+		,@SPName = 'Division_Create'
+		,@ObjectId = @DivisionId
 		,@ObjectTypeId = NULL
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-	 
+
+	DROP TABLE #tblCheckExists
 END

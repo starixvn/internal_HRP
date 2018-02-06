@@ -1,9 +1,9 @@
 ﻿
 CREATE PROCEDURE [dbo].[Employee_GetAllEmployees] @DepartmentIds VARCHAR(MAX) = ''
-	,@EmployeeStatusIds VARCHAR(MAX) = ''
 	,@EmployeeId INT = NULL
 	,@EmployeeName VARCHAR (70) = ''
 	,@UserId INT
+	,@EmploymentStatusIds VARCHAR(MAX) = NULL
 AS
 /*
 Created: 20180115@Oliver.Dang
@@ -17,19 +17,16 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
-	-- Spilit DepartmentIds
-	CREATE TABLE #DepartmentList (DepartmentId INT);
+	CREATE TABLE #tblDepartmentId (Id SMALLINT)
+	CREATE TABLE #tblEmployeeStatusId (Id TINYINT)
 
-	INSERT INTO #DepartmentList (DepartmentId)
+	INSERT INTO #tblDepartmentId (Id)
 	SELECT val
 	FROM dbo.strSplit(@DepartmentIds, ',')
 
-	--Spilit EmployeeStatusIds
-	CREATE TABLE #EmployeeStatusList (EmployeeStatusIds INT);
-
-	INSERT INTO #EmployeeStatusList (EmployeeStatusIds)
+	INSERT INTO #tblEmployeeStatusId (Id)
 	SELECT val
-	FROM dbo.strSplit(@EmployeeStatusIds, ',')
+	FROM dbo.strSplit(@EmploymentStatusIds, ',')
 
 	SELECT em.EmployeeId
 		,em.EmployeeCode
@@ -61,9 +58,9 @@ BEGIN
 			) AS EditBankPolicy
 	FROM dbo.Employment AS em WITH (NOLOCK)
 		INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
-		INNER JOIN #EmployeeStatusList AS es WITH (NOLOCK) ON em.EmploymentStatus = es.EmployeeStatusIds
-		LEFT JOIN dbo.RefResource AS ref WITH (NOLOCK) ON es.EmployeeStatusIds = ref.ResourceId
-		INNER JOIN #DepartmentList AS dl ON dl.DepartmentId = em.DepartmentId
+		INNER JOIN #tblEmployeeStatusId AS es WITH (NOLOCK) ON em.EmploymentStatus = es.Id
+		LEFT JOIN dbo.RefResource AS ref WITH (NOLOCK) ON es.Id = ref.ResourceId
+		INNER JOIN #tblDepartmentId AS dl ON dl.Id = em.DepartmentId
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
 		INNER JOIN dbo.Division AS di WITH (NOLOCK) ON em.DivisionId = di.DivisionId
 		INNER JOIN dbo.Department AS de WITH (NOLOCK) ON em.DepartmentId = de.DepartmentId
@@ -91,7 +88,7 @@ BEGIN
 		AND ref.RefName = 'EmploymentStatus'
 	ORDER BY em.CompanyCode, em.EmployeeCode
 
-	DROP TABLE #DepartmentList
+	DROP TABLE #tblDepartmentId
 
-	DROP TABLE #EmployeeStatusList
+	DROP TABLE #tblEmployeeStatusId
 END

@@ -253,14 +253,14 @@
                     .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                     .Select(x => new BankAccountType(x));
 
-                var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType);
+                var disabledBankTypes = GetDisabledBankTypes(data, bankTypes, bankAccount.BankType, bankAccount.IsActive);
 
                 viewModel.EmployeeId = bankAccount.EmployeeId;
                 viewModel.EmployeeName = data.EmployeeName;
 
                 viewModel.Initialize(bankAccount, bankTypes, bankAccountTypes, disabledBankTypes);
 
-                ModelState.AddModelError("BankAccount.AccountName", ((BankAccountError)result.Code).GetDisplayName());
+                ModelState.AddModelError("BankAccount.BankType", ((BankAccountError)result.Code).GetDisplayName());
 
                 return View(viewModel);
             }

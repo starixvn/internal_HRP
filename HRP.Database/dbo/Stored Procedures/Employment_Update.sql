@@ -86,6 +86,7 @@ CREATE PROCEDURE [dbo].[Employment_Update] @EmployeeId INT
 	,@FullNameLocalBonus NVARCHAR(70) = NULL
 	,@NicknameLocalBonus VARCHAR(30) = NULL
 	,@PDFPassword VARCHAR(2000)
+	,@IsPDFPasswordChanged BIT = 0
 	,@UpdatedBy INT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
@@ -111,7 +112,7 @@ BEGIN
 		,@nickname VARCHAR(30)
 		,@xml XML
 		,@idoc INT
-	
+
 	-- Check permission of user on Employee's company
 	IF NOT EXISTS (
 			SELECT 1
@@ -129,7 +130,7 @@ BEGIN
 
 		RETURN
 	END
-	
+
 	-- check ID No.
 	IF EXISTS (
 			SELECT 1
@@ -137,6 +138,7 @@ BEGIN
 				INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
 			WHERE e.CompanyCode = @CompanyCode
 				AND e.EmployeeCode = @EmployeeCode
+				AND e.CompanyId = @CompanyId
 				AND emp.EmployeeId <> @EmployeeId
 			)
 	BEGIN
@@ -167,6 +169,83 @@ BEGIN
 		RETURN
 	END
 
+	-- data isn't change => return
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Employee AS e WITH (NOLOCK)
+				INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
+				INNER JOIN dbo.EmploymentHistory AS his WITH (NOLOCK) ON em.EmployeeId = his.EmployeeId
+				INNER JOIN dbo.EmploymentWorkPermit AS wp WITH (NOLOCK) ON em.EmployeeId = wp.EmployeeId
+				INNER JOIN dbo.EmploymentPaymaster AS p WITH (NOLOCK) ON em.EmployeeId = p.EmployeeId
+				INNER JOIN dbo.EmploymentEPA AS epa WITH (NOLOCK) ON em.EmployeeId = epa.EmployeeId
+			WHERE e.EmployeeId = @EmployeeId
+				AND em.CompanyId = @CompanyId
+				AND em.LocalCompanyId = @LocalCompanyId
+				AND em.JobTitle = @JobTitle
+				AND em.LocalJobTitleId = @LocalJobTitleId
+				AND em.CompanyCode = @CompanyCode
+				AND em.EmployeeCode = @EmployeeCode
+				AND em.EmploymentType = @EmploymentType
+				AND em.EmploymentStatus = @EmploymentStatus
+				AND em.JobCategoryId = @JobCategoryId
+				AND em.JobGradeId = @JobGradeId
+				AND em.GradeLevelId = @GradeLevelId
+				AND em.DivisionId = @DivisionId
+				AND em.DepartmentId = @DepartmentId
+				AND em.SectionId = @SectionId
+				AND em.CostCenterId = @CostCenterId
+				AND em.GroupStartDate = @GroupStartDate
+				AND em.GroupEndDate = @GroupEndDate
+				AND em.CompanyStartDate = @CompanyStartDate
+				AND em.CompanyEndDate = @CompanyEndDate
+				AND em.Email = @Email
+				AND em.CountryId = @CountryId
+				AND em.CityId = @CityId
+				AND em.OfficeId = @OfficeId
+				AND em.DST = @DST
+				AND em.DBT = @DBT
+				AND em.TaxIDNo = @TaxIDNo
+				AND em.SSSNo = @SSSNo
+				AND em.HealthInsNo = @HealthInsNo
+				AND em.HDMFNo = @HDMFNo
+				AND em.FullNamePFileAdmin = @FullNamePFileAdmin
+				AND em.NicknamePFileAdmin = @NicknamePFileAdmin
+				AND wp.LocalCompanyId = @WorkPermitCompanyId
+				AND wp.Type1 = @Type1
+				AND wp.StartDateType1 = @StartDateType1
+				AND wp.EndDateType1 = @EndDateType1
+				AND wp.Type2 = @Type2
+				AND wp.StartDateType2 = @StartDateType2
+				AND wp.EndDateType2 = @EndDateType2
+				AND p.FullNameBVISalary = @FullNameBVISalary
+				AND p.NicknameBVISalary = @NicknameBVISalary
+				AND p.FullNameBVIAllowance = @FullNameBVIAllowance
+				AND p.NicknameBVIAllowance = @NicknameBVIAllowance
+				AND p.FullNameLocalSalary = @FullNameLocalSalary
+				AND p.NicknameLocalSalary = @NicknameLocalSalary
+				AND epa.FullNameAdministrator = @FullNameAdministrator
+				AND epa.NicknameAdministrator = @NicknameAdministrator
+				AND epa.FullNameEvaluator1 = @FullNameEvaluator1
+				AND epa.NicknameEvaluator1 = @NicknameEvaluator1
+				AND epa.FullNameEvaluator2 = @FullNameEvaluator2
+				AND epa.NicknameEvaluator2 = @NicknameEvaluator2
+				AND epa.FullNameReviewer = @FullNameReviewer
+				AND epa.NicknameReviewer = @NicknameReviewer
+				AND epa.FullNameManagement = @FullNameManagement
+				AND epa.NicknameManagement = @NicknameManagement
+				AND epa.FullNameIncrement = @FullNameIncrement
+				AND epa.NicknameIncrement = @NicknameIncrement
+				AND epa.FullNameBVIBonus = @FullNameBVIBonus
+				AND epa.NicknameBVIBonus = @NicknameBVIBonus
+				AND epa.FullNameLocalBonus = @FullNameLocalBonus
+				AND epa.NicknameLocalBonus = @NicknameLocalBonus
+				AND @IsPDFPasswordChanged = 1
+			)
+	BEGIN
+		RETURN
+	END
+
+	-- update
 	SET @startRun = GETDATE()
 	SET @xml = (
 			SELECT e.EmployeeId AS '@eid'

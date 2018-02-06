@@ -32,13 +32,25 @@ BEGIN
 	IF EXISTS (
 			SELECT 1
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
-			WHERE [AccountName] = @AccountName 
-			AND [AccountNumber] = @AccountNumber
+			WHERE [AccountName] = @AccountName
 			AND [EmployeeId] = @EmployeeId
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name and Account number must be unique for an Employee'
+		SET @ErrMsg = N'Account Name must be unique for an Employee'
+
+		RETURN
+	END
+
+	IF EXISTS (
+			SELECT 1
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
+			WHERE [AccountNumber] = @AccountNumber
+			AND [EmployeeId] = @EmployeeId
+			)
+	BEGIN
+		SET @ErrCode = 2
+		SET @ErrMsg = N'Account Number must be unique for an Employee'
 
 		RETURN
 	END

@@ -4,6 +4,7 @@
 -- Description:	Update bank account
 -- Updated:
 ---- 2018-02-05: Add ErrCode and ErrMsg to parameters
+---- 2018-02-06: Check if account changing banktype / status
 -- =============================================
 CREATE PROCEDURE [dbo].[BankAccount_Update]
 	@Id int,
@@ -29,29 +30,54 @@ BEGIN
 	IF EXISTS (
 			SELECT 1
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
-			WHERE [AccountName] = @AccountName 
-			AND [AccountNumber] = @AccountNumber
+			WHERE [AccountName] = @AccountName
 			AND [EmployeeId] = @EmployeeId
 			AND [Id] <> @Id
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name and Account number must be unique for an Employee'
+		SET @ErrMsg = N'Account Name must be unique for an Employee'
 
 		RETURN
 	END
 
-	declare @total int;
+	IF EXISTS (
+			SELECT 1
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
+			WHERE [AccountNumber] = @AccountNumber
+			AND [EmployeeId] = @EmployeeId
+			AND [Id] <> @Id
+			)
+	BEGIN
+		SET @ErrCode = 2
+		SET @ErrMsg = N'Account Number must be unique for an Employee'
 
-	SELECT @total = COUNT(Id)
+		RETURN
+	END
+
+	declare @totalActiveAccountInBankType int = 0;
+	declare @isAccountChangeBankType bit = 0;
+	declare @isAccountChangeStatus bit = 0;
+
+	SELECT @totalActiveAccountInBankType = COUNT(Id)
 	FROM [dbo].[BankAccount] WITH (NOLOCK)
 	WHERE [EmployeeId] = @EmployeeId
 	AND [BankType] = @BankType
 	AND [IsActive] = 1
 
-	IF(@total >= 3 and @IsActive = 1)
+	SELECT @isAccountChangeBankType = 1
+	FROM [dbo].[BankAccount]
+	WHERE [Id] = @Id
+	AND [BankType] <> @BankType
+
+	SELECT @isAccountChangeStatus = 1
+	FROM [dbo].[BankAccount]
+	WHERE [Id] = @Id
+	AND [IsActive] <> @IsActive
+
+	IF(@totalActiveAccountInBankType >= 3 and @IsActive = 1 and (@isAccountChangeBankType = 1 or @isAccountChangeStatus = 1))
 	BEGIN
-		SET @ErrCode = 2
+		SET @ErrCode = 3
 		SET @ErrMsg = N'This employee has reached the limit of number bank accounts'
 
 		RETURN
