@@ -91,6 +91,11 @@
     <Compile Include="GradeLevel\GetAllGradeLevelCriteriaTests.cs" />
     <Compile Include="GradeLevel\GetGradeLevelByIdCriteriaTests.cs" />
     <Compile Include="GradeLevel\UpdateGradeLevelCriteriaTests.cs" />
+    <Compile Include="Section\CheckSectionExistsCriteriaTests.cs" />
+    <Compile Include="Section\CreateSectionCriteriaTests.cs" />
+    <Compile Include="Section\GetAllSectionCriteriaTests.cs" />
+    <Compile Include="Section\GetSectionByIdCriteriaTests.cs" />
+    <Compile Include="Section\UpdateSectionCriteriaTests.cs" />
     <Compile Include="TheoryDatum.cs" />
     <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
