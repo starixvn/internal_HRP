@@ -1,7 +1,15 @@
 ﻿@model HRP.Models.Bank.EmployeeBankAccountsViewModel
 
 @{
-    ViewBag.Title = "Edit Bank Details of Employee '" + Model.EmployeeName + "'";
+    if (Model.HaveCreatePermission)
+    {
+        ViewBag.Title = "Edit Bank Details of Employee '" + Model.EmployeeName + "'";
+    }
+    else
+    {
+        ViewBag.Title = "View Bank Details of Employee '" + Model.EmployeeName + "'";
+    }
+
     Layout = "_Layout";
 }
 
@@ -24,7 +32,7 @@
 <ol class="breadcrumb">
     <li class="like-link">Employee Management</li>
     <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee List</a></li>
-    <li class="active">Edit Bank Details of Employee '@Model.EmployeeName'</li>
+    <li class="active">@ViewBag.Title</li>
 </ol>
 
 
@@ -68,22 +76,25 @@
 
 <div class="top-header">
     <div class="pull-left">
-        @if (Model.CanCreate)
+        @if (Model.HaveCreatePermission)
         {
-            <a class="button -add create-user"
-               asp-action="CreateBankAccount"
-               asp-controller="BankAccount"
-               asp-route-employeeId="@Model.EmployeeId">
-                <span class="icon-add"></span>
-                Create New Bank Account
-            </a>
-        }
-        else
-        {
-            <button class="button -add create-user" data-toggle="modal" data-target="#reach-limit-modal">
-                <span class="icon-add"></span>
-                Create New Bank Account
-            </button>
+            if (Model.CanCreate)
+            {
+                <a class="button -add create-user"
+                   asp-action="CreateBankAccount"
+                   asp-controller="BankAccount"
+                   asp-route-employeeId="@Model.EmployeeId">
+                    <span class="icon-add"></span>
+                    Create New Bank Account
+                </a>
+            }
+            else
+            {
+                <button class="button -add create-user" data-toggle="modal" data-target="#reach-limit-modal">
+                    <span class="icon-add"></span>
+                    Create New Bank Account
+                </button>
+            }
         }
     </div>
 

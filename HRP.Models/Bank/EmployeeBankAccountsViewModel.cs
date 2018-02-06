@@ -74,6 +74,8 @@
 
         public bool CanCreate { get; set; }
 
+        public bool HaveCreatePermission { get; set; }
+
         public bool CanEdit { get; set; }
     }
 }
