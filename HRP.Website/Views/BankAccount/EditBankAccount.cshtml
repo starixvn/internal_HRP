@@ -1,4 +1,5 @@
-﻿@model HRP.Models.Bank.EditBankAccountViewModel
+﻿@using HRP.Resources
+@model HRP.Models.Bank.EditBankAccountViewModel
 
 @{
     ViewBag.Title = "Edit Bank Account";
@@ -42,5 +43,16 @@
       data-ajax-success="bankAccountForm.onSaveSuccess"
       data-ajax-failure="bankAccountForm.onAjaxFailure">
     <input type="hidden" asp-for="BankAccount.Id" />
+
     @Html.Partial("_EditBankAccount", Model)
+
+    <div class="list-button">
+        <a class="button -second back"
+           asp-action="EmployeeBankAccounts"
+           asp-controller="BankAccount"
+           asp-route-Id="@Model.EmployeeId">Cancel</a>
+        <button class="button -primary"
+                data-loading-text="@ViewLang.Saving ..."
+                type="submit">Save</button>
+    </div>
 </form>

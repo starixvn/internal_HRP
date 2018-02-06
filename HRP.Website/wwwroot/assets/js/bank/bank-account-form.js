@@ -61,7 +61,7 @@ var bankAccountForm = {
             $(".bank-account-form .msg-success").removeClass("hidden");
 
             // Disable form
-            $(".bank-account-form :input").attr("disabled", true);
+            bankAccountForm.disableForm();
 
             setInterval(bankAccountForm.countdown, 1000);
 
@@ -93,6 +93,12 @@ var bankAccountForm = {
         }
 
         $(".bank-account-form .count-down-remaining").text(bankAccountForm.countTimeInSeconds);
+    },
+
+    disableForm: function() {
+        $(".bank-account-form :input").attr("disabled", true).addClass("disabled");
+        $(".bank-account-form button").attr("disabled", true).addClass("disabled");
+        $(".bank-account-form .button").attr("disabled", true).addClass("disabled");
     }
 }
 

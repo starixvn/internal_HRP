@@ -100,6 +100,16 @@
             return View(viewModel);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult CreateBankAccountInPayroll(int employeeId, int bankType)
+        {
+            var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
+
+            PrepareCreateBankAccountViewModel(viewModel);
+
+            return PartialView("_CreateBankAccountInPayroll", viewModel);
+        }
+
         [AcceptVerbs("Get", "Post")]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CheckAccountNameExisted(BankAccount bankAccount)

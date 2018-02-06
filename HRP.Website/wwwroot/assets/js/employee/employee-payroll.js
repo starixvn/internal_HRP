@@ -197,10 +197,22 @@
             validatedInvalidRelatedElements(e.target);
 
             if (this.value == 2 || this.value == 1) {
+                var selectedBankType = this.value;
                 $(this).siblings('.add-account').removeClass('disabled');
                 $(this).siblings(".add-account").on("click",
-                    function() {
-
+                    function () {
+                        var employeeId = $("#EmployeeId").val();
+                        $.ajax({
+                            url: "/BankAccount/CreateBankAccountInPayroll?employeeId=" +
+                                employeeId +
+                                "&" +
+                                "bankType=" +
+                                selectedBankType,
+                            success: function(data) {
+                                $("#dynamic-modals").html(data);
+                                $("#dynamic-modals .modal").modal();
+                            }
+                        });
                     });
             } else {
                 $(this).siblings('.add-account').addClass('disabled');

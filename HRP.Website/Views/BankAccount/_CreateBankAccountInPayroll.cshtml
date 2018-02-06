@@ -1,0 +1,36 @@
+﻿@using HRP.Models.Bank
+@using HRP.Resources
+@model CreateBankAccountViewModel
+
+<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Banking Account</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-information block bank-account-form"
+                      asp-action="CreateBankAccount"
+                      asp-controller="BankAccount"
+                      method="post"
+                      data-ajax="true"
+                      data-ajax-method="post"
+                      data-ajax-begin="bankAccountForm.onSaveBegin"
+                      data-ajax-complete="bankAccountForm.onSaveComplete"
+                      data-ajax-success="bankAccountForm.onSaveSuccess"
+                      data-ajax-failure="bankAccountForm.onAjaxFailure">
+                    @Html.Partial("_EditBankAccount", Model)
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="list-button">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="button -primary"
+                            data-loading-text="@ViewLang.Saving ..."
+                            type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
