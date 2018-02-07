@@ -119,10 +119,9 @@
         }
 
         [Fact]
-        public void CreateBankAccount_ValidModel_ReturnJson()
+        public void CreateBankAccount_ValidModel_ReturnJsonWithSuccess()
         {
             var controller = GetBankAccountController();
-            var resources = GetResources();
             var employeeId = 1;
             var model = new CreateBankAccountViewModel
             {
@@ -143,7 +142,6 @@
         public void CreateBankAccount_InValidModel_ReturnJsonWithError()
         {
             var controller = GetBankAccountController();
-            var resources = GetResources();
             var employeeId = 1;
             var model = new CreateBankAccountViewModel
             {
@@ -205,6 +203,72 @@
             var actual = controller.CheckAccountNumberExisted(bankAccount);
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.True((bool)jsonResult.Value);
+        }
+
+        [Fact]
+        public void EditBankAccount_ValidBankAccountId_ReturnJsonWithSuccess()
+        {
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+            var bankAccountId = 1;
+            var employeeId = 1;
+            var companyId = 1;
+            var bankAccount = new BankAccount { Id = bankAccountId, EmployeeId = employeeId, IsActive = true, BankType = 1 };
+            var employeeBankAcount = new EmployeeBankAccounts
+            {
+                EmployeeId = employeeId,
+                CompanyId = companyId,
+                BankAccounts = new List<BankAccount> { bankAccount }
+            };
+
+            bankAccountService.GetBankAccountById(bankAccountId).Returns(bankAccount);
+            bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId).Returns(employeeBankAcount);
+            refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
+            refResourceService.FilterReferenceResources(resources, ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            refResourceService.FilterReferenceResources(resources, ReferenceResource.BankAccountType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankAccountType));
+
+            var actual = controller.EditBankAccount(employeeId);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var model = Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void EditBankAccount_ValidModel_ReturnJsonWithSuccess()
+        {
+            var controller = GetBankAccountController();
+            var employeeId = 1;
+            var model = new EditBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankAccount = new BankAccount { EmployeeId = employeeId }
+            };
+            bankAccountService.UpdateBankAccount(model.BankAccount).Returns(new CommandResult { Code = 0 });
+            controller.Url = Substitute.For<IUrlHelper>();
+            controller.Url.Action().ReturnsForAnyArgs("/EmployeeBankAccounts/BankAccount");
+
+            var actual = controller.EditBankAccount(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
+
+        [Fact]
+        public void EditBankAccount_InValidModel_ReturnJsonWithError()
+        {
+            var controller = GetBankAccountController();
+            var employeeId = 1;
+            var model = new EditBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankAccount = new BankAccount { EmployeeId = employeeId }
+            };
+
+            controller.ModelState.AddModelError(nameof(model.BankAccount.AccountName), "Error");
+            var actual = controller.EditBankAccount(model);
+
+            bankAccountService.DidNotReceive().UpdateBankAccount(model.BankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
         private IEnumerable<ReferenceResourceModel> GetResources()

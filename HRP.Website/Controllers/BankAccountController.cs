@@ -146,10 +146,7 @@
                 });
             }
 
-            var errors = ModelState
-                .Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
-
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -274,9 +271,7 @@
                 });
             }
 
-            var errors = ModelState
-                .Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
 
             return Json(new { isSuccessful = false, errors });
         }
