@@ -12,7 +12,6 @@
             IEnumerable<BankAccountType> bankAccountTypes)
         {
             BankAccount = new BankAccount();
-            TypeOfForm = FormType.Page;
             Initialize(bankTypes, bankAccountTypes);
         }
 
@@ -31,7 +30,7 @@
 
         public IBankAccount BankAccount { get; set; }
 
-        public FormType TypeOfForm { get; set; }
+        public FormType TypeOfForm { get; set; } = FormType.Page;
 
         public bool CanCreate { get; set; }
 

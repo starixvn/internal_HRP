@@ -5,6 +5,7 @@
 -- Updated:
 ---- 2018-02-05: Add ErrCode and ErrMsg to parameters
 ---- 2018-02-06: Check if account changing banktype / status
+---- 2018-02-07: Allow Swift code to be null
 -- =============================================
 CREATE PROCEDURE [dbo].[BankAccount_Update]
 	@Id int,
@@ -13,7 +14,7 @@ CREATE PROCEDURE [dbo].[BankAccount_Update]
 	@BankName nvarchar(70),
 	@BankBranch nvarchar(70),
 	@BankAddress nvarchar(500),
-	@BankSwiftCode varchar(15),
+	@BankSwiftCode varchar(15) = NULL,
 	@AccountName nvarchar(30),
 	@AccountNumber varchar(30),
 	@AccountType int = 1,

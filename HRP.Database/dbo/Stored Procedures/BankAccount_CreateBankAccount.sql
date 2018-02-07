@@ -2,11 +2,11 @@
 -- Author:		Hunter.Tran
 -- Create date: 2018-01-10
 -- Description:	Create new bank account
--- Updated on: 2018-01-25
--- Update reason:
----- Add @Id
----- Check if Account name and Account number is already exist
----- Add Error Code and Error Message
+-- Update:
+---- 2018-01-25: Add @Id
+---- 2018-02-05: Check if Account name and Account number is already exist
+---- 2018-02-05: Add Error Code and Error Message
+---- 2018-02-07: Allow Swift code to be null
 -- =============================================
 CREATE PROCEDURE [dbo].[BankAccount_CreateBankAccount]
 	@Id int = 0,
@@ -15,7 +15,7 @@ CREATE PROCEDURE [dbo].[BankAccount_CreateBankAccount]
 	@BankName nvarchar(70),
 	@BankBranch nvarchar(70),
 	@BankAddress nvarchar(500),
-	@BankSwiftCode varchar(15),
+	@BankSwiftCode varchar(15) = NULL,
 	@AccountName nvarchar(30),
 	@AccountNumber varchar(30),
 	@AccountType int = 1,

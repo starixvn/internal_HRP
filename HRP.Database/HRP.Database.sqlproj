@@ -205,5 +205,6 @@
     <Build Include="dbo\Stored Procedures\BankAccount_CreateBankAccount.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_CheckNumberExisted.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_CheckNameExisted.sql" />
+    <Build Include="dbo\Stored Procedures\Office_Update.sql" />
   </ItemGroup>
 </Project>

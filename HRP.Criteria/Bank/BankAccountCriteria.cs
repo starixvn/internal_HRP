@@ -49,10 +49,10 @@
                 return false;
             }
 
-            if (string.IsNullOrEmpty(BankSwiftCode))
-            {
-                return false;
-            }
+            ////if (string.IsNullOrEmpty(BankSwiftCode))
+            ////{
+            ////    return false;
+            ////}
 
             if (string.IsNullOrEmpty(AccountName))
             {

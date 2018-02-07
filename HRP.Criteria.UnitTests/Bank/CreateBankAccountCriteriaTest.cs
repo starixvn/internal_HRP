@@ -61,7 +61,7 @@
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = new CreateBankAccountCriteria(bankAccount) { BankSwiftCode = string.Empty };
-                data.Add(TheoryDatum.Factory(criteria, false));
+                data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = new CreateBankAccountCriteria(bankAccount) { AccountName = string.Empty };
                 data.Add(TheoryDatum.Factory(criteria, false));

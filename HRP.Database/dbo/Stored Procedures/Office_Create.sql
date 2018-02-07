@@ -3,7 +3,7 @@
 -- Create date: 02/07/2018
 -- Description:	Create new item of Office
 -- =============================================
-CREATE PROCEDURE [dbo].Office_Create
+CREATE PROCEDURE [dbo].[Office_Create]
 	@Code VARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CityId SMALLINT
@@ -63,7 +63,7 @@ BEGIN
 			SELECT OfficeId AS '@oid'
 				,Code AS '@c'
 				,Name AS '@n'
-				,@CityId AS '@cid'
+				,CityId AS '@cid'
 				,IsActive AS '@ia'
 			FROM dbo.Office WITH (NOLOCK)
 			WHERE OfficeId = @OfficeId
