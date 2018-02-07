@@ -9,7 +9,7 @@
         <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form class="form-information block bank-account-form"
+                    <form class="form-information bank-account-form"
                           asp-action="CreateBankAccount"
                           asp-controller="BankAccount"
                           method="post"
@@ -26,8 +26,6 @@
                         </div>
                         <div class="modal-body">
                             @Html.Partial("_EditBankAccount", Model)
-                        </div>
-                        <div class="modal-footer">
                             <div class="list-button">
                                 <button type="button" class="button -second" data-dismiss="modal">Close</button>
                                 <button class="button -primary"
