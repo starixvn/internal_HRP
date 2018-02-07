@@ -1,9 +1,6 @@
 ﻿
-
 CREATE PROCEDURE [dbo].[Employee_GetPayroll] @EmployeeId INT
 	,@UserId INT
-	,@CanRead BIT OUT
-	,@CanUpdate BIT OUT
 AS
 /*
 Created: 20180112@Elton.Ton
@@ -13,6 +10,9 @@ Original:
 */
 BEGIN
 	SET NOCOUNT ON;
+
+	DECLARE @CanRead BIT = 0
+		,@CanUpdate BIT = 0
 
 	SELECT @CanRead = uf.IsRead
 		,@CanUpdate = uf.IsHost
@@ -29,6 +29,8 @@ BEGIN
 		,e.NickName
 		,em.CompanyCode + em.EmployeeCode AS 'Code'
 		,em.CompanyId
+		,@CanRead AS CanRead
+		,@CanUpdate AS CanUpdate
 	FROM dbo.Employee AS e WITH (NOLOCK)
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
 	WHERE e.EmployeeId = @EmployeeId

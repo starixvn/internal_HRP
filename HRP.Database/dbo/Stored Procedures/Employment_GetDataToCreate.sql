@@ -13,16 +13,16 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @functionId SMALLINT = 6
+	DECLARE @functionKey VARCHAR(50) = 'EmployeeProfile'
 
 	SELECT c.CompanyId
 		,c.Code
 		,c.[Name]
 	FROM dbo.[User] AS u WITH (NOLOCK)
 		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON u.UserId = uf.UserId
-		AND uf.FunctionId = @functionId
 		AND uf.IsHost = 1
 		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+		AND f.FunctionKey = @functionKey
 		AND f.IsActive = 1
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
 		AND c.IsActive = 1

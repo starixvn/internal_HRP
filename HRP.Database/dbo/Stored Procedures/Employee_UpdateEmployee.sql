@@ -55,19 +55,13 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check permission of user on Employee's company
-	IF NOT EXISTS (
-			SELECT 1
-			FROM dbo.UserFunction AS uf WITH (NOLOCK)
-				INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-				INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON em.CompanyId = uf.CompanyId
-				INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON em.EmployeeId = e.EmployeeId
-			WHERE f.FunctionKey = @FunctionKey
-				AND f.IsActive = 1
-				AND uf.UserId = @UpdatedBy
-				AND uf.IsHost = 1
-				AND em.EmployeeId = @EmployeeId
-			)
+	SELECT @companyId = e.CompanyId
+	FROM dbo.Employee AS emp WITH (NOLOCK)
+		INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
+	WHERE emp.EmployeeId = @EmployeeId
+
+	-- Check permission
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UpdatedBy, @companyId, @FunctionKey) <> 2
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'You do not have permission to update employee.'
@@ -76,11 +70,6 @@ BEGIN
 	END
 
 	-- check nickname
-	SELECT @companyId = e.CompanyId
-	FROM dbo.Employee AS emp WITH (NOLOCK)
-		INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
-	WHERE emp.EmployeeId = @EmployeeId
-
 	IF EXISTS (
 			SELECT 1
 			FROM dbo.Employee AS emp WITH (NOLOCK)
@@ -203,7 +192,6 @@ BEGIN
 		,PhoneNo2 = @ECPhoneNo2
 	WHERE EmployeeId = @EmployeeId
 
-	SET @ErrMsg = 'Update user successful'
 	--Write Log
 	SET @xml = (
 			SELECT e.EmployeeId AS '@ei'

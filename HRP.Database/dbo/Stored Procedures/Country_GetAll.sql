@@ -19,4 +19,6 @@ BEGIN
 		,IsActive
 	FROM dbo.Country WITH (NOLOCK)
 	WHERE ISNULL(@IsActive, IsActive) = IsActive
+	ORDER BY IsActive DESC
+		,Code 
 END

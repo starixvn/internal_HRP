@@ -129,17 +129,15 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
-	-- Check permission of user on Employee's company
-	IF NOT EXISTS (
-			SELECT 1
-			FROM dbo.UserFunction AS uf WITH (NOLOCK)
-				INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-			WHERE f.FunctionId = 6
-				AND f.IsActive = 1
-				AND uf.UserId = @CreatedBy
-				AND uf.CompanyId = @CompanyId
-				AND uf.IsHost = 1
-			)
+	DECLARE @functionKey VARCHAR(50) = 'EmployeeProfile'
+		,@startRun DATETIME
+		,@endRun DATETIME
+		,@duration INT
+		,@logData NVARCHAR(MAX)
+		,@xml XML
+
+	-- Check permission
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@CreatedBy, @CompanyId, @functionKey) <> 2
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'You do not have permission to create employee.'
@@ -176,12 +174,6 @@ BEGIN
 
 		RETURN
 	END
-
-	DECLARE @startRun DATETIME
-		,@endRun DATETIME
-		,@duration INT
-		,@logData NVARCHAR(MAX)
-		,@xml XML
 
 	SET @startRun = GETDATE()
 

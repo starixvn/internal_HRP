@@ -25,7 +25,7 @@ BEGIN
 		,@countryId SMALLINT
 		,@cityId SMALLINT
 		,@officeId SMALLINT
-		,@functionId SMALLINT = 6
+		,@functionKey VARCHAR(50) = 'EmployeeProfile'
 
 	SELECT @companyId = e.CompanyId
 		,@divisionId = e.DivisionId
@@ -43,18 +43,7 @@ BEGIN
 	WHERE e.EmployeeId = @EmployeeId
 
 	-- check permission
-	IF NOT EXISTS (
-			SELECT 1
-			FROM dbo.[User] AS u WITH (NOLOCK)
-				INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON u.UserId = uf.UserId
-				INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-				AND f.IsActive = 1
-				INNER JOIN dbo.Company AS c WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
-				AND c.IsActive = 1
-			WHERE u.UserId = @UserId
-				AND uf.FunctionId = @functionId
-				AND c.CompanyId = @companyId
-			)
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @companyId, @functionKey) = 0
 	BEGIN
 		RETURN
 	END
@@ -187,9 +176,9 @@ BEGIN
 		,c.[Name]
 	FROM dbo.[User] AS u WITH (NOLOCK)
 		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON u.UserId = uf.UserId
-		AND uf.FunctionId = @functionId
 		AND uf.IsHost = 1
 		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+		AND f.FunctionKey = @functionKey
 		AND f.IsActive = 1
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
 		AND c.IsActive = 1

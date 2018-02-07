@@ -102,9 +102,9 @@ Param's Explanation:
 */
 BEGIN
 	SET NOCOUNT ON;
-
-	-- For write log
-	DECLARE @startRun DATETIME
+	
+	DECLARE @functionKey VARCHAR(50) = 'EmployeeProfile'
+		,@startRun DATETIME
 		,@endRun DATETIME
 		,@duration INT
 		,@logData NVARCHAR(MAX)
@@ -113,17 +113,8 @@ BEGIN
 		,@xml XML
 		,@idoc INT
 
-	-- Check permission of user on Employee's company
-	IF NOT EXISTS (
-			SELECT 1
-			FROM dbo.UserFunction AS uf WITH (NOLOCK)
-				INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-			WHERE f.FunctionId = 6
-				AND f.IsActive = 1
-				AND uf.UserId = @UpdatedBy
-				AND uf.CompanyId = @CompanyId
-				AND uf.IsHost = 1
-			)
+	-- Check permission
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UpdatedBy, @CompanyId, @functionKey) <> 2
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'You do not have permission to update employment.'

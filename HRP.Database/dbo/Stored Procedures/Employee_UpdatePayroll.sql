@@ -1,5 +1,4 @@
 ﻿
-
 CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@Salary VARCHAR(MAX) = NULL
 	,@IsSalaryChanged BIT
@@ -77,20 +76,18 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
+		,@companyId SMALLINT
+		,@functionKey VARCHAR(50) = 'EmployeePayroll'
 
 	SET @startRun = GETDATE()
 
-	IF NOT EXISTS (
-			SELECT 1
-			FROM dbo.UserFunction AS uf WITH (NOLOCK)
-				INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON e.CompanyId = uf.CompanyId
-				AND e.EmployeeId = @EmployeeId
-				INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-				AND f.IsActive = 1
-			WHERE uf.UserId = @UpdatedBy
-				AND uf.FunctionId = 7
-				AND uf.IsHost = 1
-			)
+	SELECT @companyId = e.CompanyId
+	FROM dbo.Employee AS emp WITH (NOLOCK)
+		INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
+	WHERE emp.EmployeeId = @EmployeeId
+
+	-- check permission
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UpdatedBy, @companyId, @functionKey) <> 2
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'You dont have permission to update this employee payroll'
