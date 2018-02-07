@@ -182,6 +182,7 @@
 
     function applyClientSideInitForAddBankAccountModal() {
         $("#dynamic-modals select").select2({
+            width: "100%",
             minimumResultsForSearch: Infinity
         });
 
