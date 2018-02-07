@@ -378,6 +378,7 @@
   <ItemGroup>
     <Compile Include="Criteria\LogOutUserCriteriaTests.cs" />
     <Compile Include="Criteria\ReCheckInUserCriteriaTests.cs" />
+    <Compile Include="CustomValidations\EmploymentChangeValueAttributeTests.cs" />
     <Compile Include="Filters\HRPAuthorizeAttributeTests.cs" />
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />
     <Compile Include="Middlewares\ErrorHandlingMiddlewareTests.cs" />

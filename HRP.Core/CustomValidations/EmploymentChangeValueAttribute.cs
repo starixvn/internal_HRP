@@ -18,7 +18,7 @@
             var oldValue = (IComparable)oldPropertyInfo.GetValue(validationContext.ObjectInstance, null);
             var newValue = (IComparable)newPropertyInfo.GetValue(validationContext.ObjectInstance, null);
 
-            if (oldValue != null && (oldValue.CompareTo(newValue) < 0 || oldValue.CompareTo(newValue) > 0) && value == null)
+            if (value == null && oldValue != null && (oldValue.CompareTo(newValue) < 0 || oldValue.CompareTo(newValue) > 0))
             {
                 return new ValidationResult(ErrorMessage);
             }
