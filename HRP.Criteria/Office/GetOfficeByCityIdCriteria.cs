@@ -10,6 +10,6 @@
 
         public override bool IsValid() => CityId > 0;
 
-        public override string GetSettingKey() => "Offive_GetByCityId";
+        public override string GetSettingKey() => "Office_GetByCityId";
     }
 }

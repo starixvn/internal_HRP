@@ -40,6 +40,10 @@
         public const string UpdateJobGrade = DataConfiguration + "/UpdateJobGrade";
         public const string GetAllJobGrade = DataConfiguration + "/GetAllJobGrade";
 
+        public const string CreateCountry = DataConfiguration + "/CreateCountry";
+        public const string UpdateCountry = DataConfiguration + "/UpdateCountry";
+        public const string GetAllCountry = DataConfiguration + "/GetAllCountry";
+
         public const string CreateCity = DataConfiguration + "/CreateCity";
         public const string UpdateCity = DataConfiguration + "/UpdateCity";
         public const string GetAllCity = DataConfiguration + "/GetAllCity";

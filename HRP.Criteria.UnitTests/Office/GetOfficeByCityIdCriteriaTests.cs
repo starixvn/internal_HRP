@@ -9,7 +9,7 @@
         {
             // Arrange
             var criteria = new GetOfficeByCityIdCriteria();
-            var expected = "Offive_GetByCityId";
+            var expected = "Office_GetByCityId";
 
             // Act
             var actual = criteria.GetSettingKey();

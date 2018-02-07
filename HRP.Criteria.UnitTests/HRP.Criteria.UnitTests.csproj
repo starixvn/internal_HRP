@@ -97,6 +97,10 @@
     <Compile Include="GradeLevel\GetAllGradeLevelCriteriaTests.cs" />
     <Compile Include="GradeLevel\GetGradeLevelByIdCriteriaTests.cs" />
     <Compile Include="GradeLevel\UpdateGradeLevelCriteriaTests.cs" />
+    <Compile Include="JobCategory\CheckJobCategoryExistsCriteriaTests.cs" />
+    <Compile Include="JobCategory\CreateJobCategoryCriteriaTests.cs" />
+    <Compile Include="JobCategory\GetJobCategoryByIdCriteriaTests.cs" />
+    <Compile Include="JobCategory\UpdateJobCategoryCriteriaTests.cs" />
     <Compile Include="JobGrade\CheckJobGradeExistsCriteriaTests.cs" />
     <Compile Include="JobGrade\CreateJobGradeCriteriaTests.cs" />
     <Compile Include="JobGrade\GetAllJobGradeCriteriaTests.cs" />

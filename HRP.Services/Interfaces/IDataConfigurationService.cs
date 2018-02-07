@@ -61,6 +61,16 @@
 
         Task<CommandResult> UpdateSectionAsync(Section section);
 
+        Task<IEnumerable<SimpleItem>> GetAllJobCategoryAsync();
+
+        Task<bool> IsExistedJobCategoryAsync(SimpleItem item);
+
+        Task<CommandResult> CreateJobCategoryAsync(SimpleItem item);
+
+        Task<SimpleItem> GetJobCategoryByIdAsync(int id);
+
+        Task<CommandResult> UpdateJobCategoryAsync(SimpleItem item);
+
         Task<IEnumerable<GradeLevel>> GetAllGradeLevelAsync();
 
         Task<bool> IsExistedGradeLevelAsync(GradeLevel gradeLevel);

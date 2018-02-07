@@ -43,6 +43,9 @@ namespace HRP.Core.Enumerations
         [Display(Name = "Job Grade")]
         JobGrade = 16,
 
+        [Display(Name = "Country")]
+        Country = 26,
+
         [Display(Name = "City")]
         City = 27,
 

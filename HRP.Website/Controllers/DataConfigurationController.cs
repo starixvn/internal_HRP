@@ -101,14 +101,14 @@
 
             if (company != null)
             {
-                var viewModal = new UpdateSimpleItemViewModel
+                var viewModel = new UpdateSimpleItemViewModel
                 {
                     FieldName = ViewLang.CompanyBVI,
                     Item = company,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
                 };
 
-                return PartialView("_UpdateSimpleItem", viewModal);
+                return PartialView("_UpdateSimpleItem", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -201,14 +201,14 @@
 
             if (division != null)
             {
-                var viewModal = new UpdateDivisionViewModel
+                var viewModel = new UpdateDivisionViewModel
                 {
                     FieldName = ViewLang.Division,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateDivision,
                     Division = division
                 };
 
-                return PartialView("_UpdateDivision", viewModal);
+                return PartialView("_UpdateDivision", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -301,14 +301,14 @@
 
             if (department != null)
             {
-                var viewModal = new UpdateDepartmentViewModel
+                var viewModel = new UpdateDepartmentViewModel
                 {
                     FieldName = ViewLang.Department,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment,
                     Department = department
                 };
 
-                return PartialView("_UpdateDepartment", viewModal);
+                return PartialView("_UpdateDepartment", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -401,14 +401,14 @@
 
             if (costCenter != null)
             {
-                var viewModal = new UpdateCostCenterViewModel
+                var viewModel = new UpdateCostCenterViewModel
                 {
                     FieldName = ViewLang.CostCenter,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter,
                     CostCenter = costCenter
                 };
 
-                return PartialView("_UpdateCostCenter", viewModal);
+                return PartialView("_UpdateCostCenter", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -501,14 +501,14 @@
 
             if (section != null)
             {
-                var viewModal = new UpdateSectionViewModel
+                var viewModel = new UpdateSectionViewModel
                 {
                     FieldName = ViewLang.Section,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateSection,
                     Section = section
                 };
 
-                return PartialView("_UpdateSection", viewModal);
+                return PartialView("_UpdateSection", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -539,6 +539,105 @@
         }
 
         #endregion Section
+
+        #region Job Category
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllJobCategory()
+        {
+            var jobCategories = await dataConfigurationService.GetAllJobCategoryAsync();
+            var viewModel = new SimpleItemTableViewModel
+            {
+                Items = jobCategories,
+                FieldName = ViewLang.JobCategory,
+                LinkCreateItem = DataConfigurationActionLink.CreateJobCategory,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+            };
+
+            return PartialView("_SimpleItemTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public IActionResult CreateJobCategory()
+        {
+            var viewModel = new CreateSimpleItemViewModel
+            {
+                FieldName = ViewLang.JobCategory,
+                LinkCreateItem = DataConfigurationActionLink.CreateJobCategory
+            };
+
+            return PartialView("_CreateSimpleItem", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateJobCategory(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedJobCategoryAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateJobCategoryAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateJobCategory(int id)
+        {
+            var jobCategory = await dataConfigurationService.GetJobCategoryByIdAsync(id);
+
+            if (jobCategory != null)
+            {
+                var viewModel = new UpdateSimpleItemViewModel
+                {
+                    FieldName = ViewLang.JobCategory,
+                    Item = jobCategory,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+                };
+
+                return PartialView("_UpdateSimpleItem", viewModel);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateJobCategory(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedJobCategoryAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateJobCategoryAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Job Category
 
         #region Grade Level
 
@@ -601,14 +700,14 @@
 
             if (gradeLevel != null)
             {
-                var viewModal = new UpdateGradeLevelViewModel
+                var viewModel = new UpdateGradeLevelViewModel
                 {
                     FieldName = ViewLang.GradeLevel,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel,
                     GradeLevel = gradeLevel
                 };
 
-                return PartialView("_UpdateGradeLevel", viewModal);
+                return PartialView("_UpdateGradeLevel", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -701,14 +800,14 @@
 
             if (jobGrade != null)
             {
-                var viewModal = new UpdateJobGradeViewModel
+                var viewModel = new UpdateJobGradeViewModel
                 {
                     FieldName = ViewLang.JobGrade,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade,
                     JobGrade = jobGrade
                 };
 
-                return PartialView("_UpdateJobGrade", viewModal);
+                return PartialView("_UpdateJobGrade", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -801,14 +900,14 @@
 
             if (city != null)
             {
-                var viewModal = new UpdateCityViewModel
+                var viewModel = new UpdateCityViewModel
                 {
                     FieldName = ViewLang.City,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCity,
                     City = city
                 };
 
-                return PartialView("_UpdateCity", viewModal);
+                return PartialView("_UpdateCity", viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -901,14 +1000,14 @@
 
             if (office != null)
             {
-                var viewModal = new UpdateOfficeViewModel
+                var viewModel = new UpdateOfficeViewModel
                 {
                     FieldName = ViewLang.Office,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateOffice,
                     Office = office
                 };
 
-                return PartialView("_UpdateOffice", viewModal);
+                return PartialView("_UpdateOffice", viewModel);
             }
 
             return Content(Message.NotFoundError);

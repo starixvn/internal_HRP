@@ -51,6 +51,10 @@
   </Function>
   <Function Name="Job Category">
     <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_CheckExists" SpName="JobCategory_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_Create" SpName="JobCategory_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_GetById" SpName="JobCategory_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_Update" SpName="JobCategory_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Grade Level">
     <Setting Key="GradeLevel_GetByJobCategoryId" SpName="GradeLevel_GetByJobCategoryId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -80,7 +84,7 @@
     <Setting Key="City_Update" SpName="City_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Office">
-    <Setting Key="Offive_GetByCityId" SpName="Offive_GetByCityId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_GetByCityId" SpName="Office_GetByCityId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Office_GetAll" SpName="Office_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Office_CheckExists" SpName="Office_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Office_Create" SpName="Office_Create" DbName="bodb_HRP" Plain="0"></Setting>

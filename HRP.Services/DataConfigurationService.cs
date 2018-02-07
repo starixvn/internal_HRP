@@ -12,6 +12,7 @@
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
+    using HRP.Criteria.JobCategory;
     using HRP.Criteria.JobGrade;
     using HRP.Criteria.Office;
     using HRP.Criteria.Section;
@@ -74,6 +75,13 @@
 
                 new Field
                 {
+                    FieldId = (int)FieldType.JobCategory,
+                    FieldName = ViewLang.JobCategory,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllJobCategory
+                },
+
+                new Field
+                {
                     FieldId = (int)FieldType.GradeLevel,
                     FieldName = ViewLang.GradeLevel,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllGradeLevel
@@ -84,6 +92,13 @@
                     FieldId = (int)FieldType.JobGrade,
                     FieldName = ViewLang.JobGrade,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllJobGrade
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.Country,
+                    FieldName = ViewLang.Country,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCountry
                 },
 
                 new Field
@@ -483,6 +498,99 @@
         }
 
         #endregion Section
+
+        #region Job Category
+
+        public async Task<IEnumerable<SimpleItem>> GetAllJobCategoryAsync()
+        {
+            var jobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria()).ConfigureAwait(false);
+
+            if (jobCategories.Any())
+            {
+                var result = jobCategories.Select(c => new SimpleItem
+                {
+                    ItemId = c.JobCategoryId,
+                    ItemName = c.Name,
+                    Description = c.Description,
+                    IsActive = c.IsActive
+                }).ToList();
+
+                return result;
+            }
+
+            return new List<SimpleItem>();
+        }
+
+        public async Task<bool> IsExistedJobCategoryAsync(SimpleItem item)
+        {
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckJobCategoryExistsCriteria { JobCategoryId = item.ItemId, Name = item.ItemName }).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateJobCategoryAsync(SimpleItem item)
+        {
+            var criteria = new CreateJobCategoryCriteria
+            {
+                Name = item.ItemName,
+                Description = item.Description,
+                IsActive = item.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Name);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<SimpleItem> GetJobCategoryByIdAsync(int id)
+        {
+            var criteria = new GetJobCategoryByIdCriteria
+            {
+                JobCategoryId = id
+            };
+
+            var jobCategory = await baseService.GetDataEntityAsync<JobCategory>(criteria).ConfigureAwait(false);
+
+            if (jobCategory != null)
+            {
+                return new SimpleItem
+                {
+                    ItemId = jobCategory.JobCategoryId,
+                    ItemName = jobCategory.Name,
+                    Description = jobCategory.Description,
+                    IsActive = jobCategory.IsActive
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<CommandResult> UpdateJobCategoryAsync(SimpleItem item)
+        {
+            var criteria = new UpdateJobCategoryCriteria
+            {
+                JobCategoryId = item.ItemId,
+                Name = item.ItemName,
+                Description = item.Description,
+                IsActive = item.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Job Category
 
         #region Grade Level
 

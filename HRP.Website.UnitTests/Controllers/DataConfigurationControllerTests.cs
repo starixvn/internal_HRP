@@ -839,6 +839,162 @@
 
         #endregion Section
 
+        #region Job Category
+
+        [Fact]
+        public async Task GetAllJobCategory_ServiceGetSimpleItemList_ReturnPartialViewWithSimpleItemTableViewModel()
+        {
+            // Arrange
+            var items = new List<SimpleItem> { MockSimpleItem() };
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetAllJobCategoryAsync().Returns(items);
+
+            // Act
+            var actual = await controller.GetAllJobCategory();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_SimpleItemTable", viewResult.ViewName);
+            Assert.Equal(items, viewModel.Items);
+            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public void CreateJobCategory_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel()
+        {
+            // Arrange
+            var controller = GetDataConfigurationController();
+
+            // Act
+            var actual = controller.CreateJobCategory();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
+            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateJobCategoryPost_JobCategoryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task CreateJobCategoryPost_JobCategoryItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.CreateJobCategoryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategory_ServiceGetJobCategoryItem_ReturnPartialViewWithUpdateSimpleItemViewModel()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetJobCategoryByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateJobCategory(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(item, viewModel.Item);
+            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategory_ServiceGetNullJobCategoryItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            SimpleItem item = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetJobCategoryByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateJobCategory(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategoryPost_JobCategoryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategoryPost_JobCategoryItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.UpdateJobCategoryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion Job Category
+
         #region Grade Level
 
         [Fact]

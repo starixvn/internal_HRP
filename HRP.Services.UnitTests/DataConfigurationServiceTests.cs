@@ -10,6 +10,7 @@
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
+    using HRP.Criteria.JobCategory;
     using HRP.Criteria.JobGrade;
     using HRP.Criteria.Office;
     using HRP.Criteria.Section;
@@ -873,6 +874,183 @@
         }
 
         #endregion Section
+
+        #region Job Category
+
+        [Fact]
+        public async Task GetAllJobCategoryAsync_BaseServiceGetJobCategoryList_ReturnSimpleItemList()
+        {
+            // Arrange
+            var jobCategories = new List<JobCategory> { MockJobCategory() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<JobCategory>(Arg.Any<GetAllJobCategoryCriteria>()).Returns(jobCategories);
+            // Act
+            var actual = (await dataConfigurationService.GetAllJobCategoryAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(jobCategories.Count, actual.Count);
+            Assert.Equal(jobCategories[0].JobCategoryId, actual[0].ItemId);
+            Assert.Equal(jobCategories[0].Name, actual[0].ItemName);
+            Assert.Equal(jobCategories[0].Description, actual[0].Description);
+            Assert.Equal(jobCategories[0].IsActive, actual[0].IsActive);
+        }
+
+        [Fact]
+        public async Task GetAllJobCategoryAsync_BaseServiceGetEmptyJobCategoryList_ReturnEmptySimpleItemList()
+        {
+            // Arrange
+            var jobCategories = new List<JobCategory>();
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<JobCategory>(Arg.Any<GetAllJobCategoryCriteria>()).Returns(jobCategories);
+            // Act
+            var actual = (await dataConfigurationService.GetAllJobCategoryAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+            Assert.Equal(jobCategories.Count, actual.Count);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedJobCategoryAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CheckJobCategoryExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckJobCategoryExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedJobCategoryAsync(item);
+
+            // Assert
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(item.ItemId, criteria.JobCategoryId);
+            Assert.Equal(item.ItemName, criteria.Name);
+        }
+
+        [Fact]
+        public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CreateJobCategoryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateJobCategoryAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Name), actual.Message);
+            Assert.Equal(item.ItemName, criteria.Name);
+            Assert.Equal(item.Description, criteria.Description);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateJobCategoryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateJobCategoryAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetJobCategoryByIdAsync_BaseServiceGetJobCategoryInstance_ReturnSimpleItemInstance()
+        {
+            // Arrange
+            var id = 12;
+            var jobCategory = MockJobCategory();
+            var criteria = new GetJobCategoryByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<JobCategory>(Arg.Do<GetJobCategoryByIdCriteria>(x => criteria = x)).Returns(jobCategory);
+
+            // Act
+            var actual = await dataConfigurationService.GetJobCategoryByIdAsync(id);
+
+            // Assert
+            Assert.IsType<SimpleItem>(actual);
+            Assert.Equal(jobCategory.JobCategoryId, actual.ItemId);
+            Assert.Equal(jobCategory.Name, actual.ItemName);
+            Assert.Equal(jobCategory.Description, actual.Description);
+            Assert.Equal(jobCategory.IsActive, actual.IsActive);
+            Assert.Equal(id, criteria.JobCategoryId);
+        }
+
+        [Fact]
+        public async Task GetJobCategoryByIdAsync_BaseServiceGetNullJobCategory_ReturnNull()
+        {
+            // Arrange
+            JobCategory jobCategory = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<JobCategory>(Arg.Any<GetJobCategoryByIdCriteria>()).Returns(jobCategory);
+
+            // Act
+            var actual = await dataConfigurationService.GetJobCategoryByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new UpdateJobCategoryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateJobCategoryAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(item.ItemId, criteria.JobCategoryId);
+            Assert.Equal(item.ItemName, criteria.Name);
+            Assert.Equal(item.Description, criteria.Description);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateJobCategoryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateJobCategoryAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Job Category
 
         #region Grade Level
 
