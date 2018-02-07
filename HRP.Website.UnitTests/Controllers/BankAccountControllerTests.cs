@@ -6,6 +6,7 @@
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.Bank;
@@ -115,6 +116,95 @@
             var actual = controller.CreateBankAccount(employeeId);
             var viewResult = Assert.IsType<ViewResult>(actual);
             var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void CreateBankAccount_ValidModel_ReturnJson()
+        {
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+            var employeeId = 1;
+            var model = new CreateBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankAccount = new BankAccount { EmployeeId = employeeId }
+            };
+            bankAccountService.CreateBankAccount(model.BankAccount).Returns(new CommandResult { Code = 0 });
+            controller.Url = Substitute.For<IUrlHelper>();
+            controller.Url.Action().ReturnsForAnyArgs("/EmployeeBankAccounts/BankAccount");
+
+            var actual = controller.CreateBankAccount(model);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
+
+        [Fact]
+        public void CreateBankAccount_InValidModel_ReturnJsonWithError()
+        {
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+            var employeeId = 1;
+            var model = new CreateBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankAccount = new BankAccount { EmployeeId = employeeId }
+            };
+
+            controller.ModelState.AddModelError(nameof(model.BankAccount.AccountName), "Error");
+            var actual = controller.CreateBankAccount(model);
+
+            bankAccountService.DidNotReceive().CreateBankAccount(model.BankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
+
+        [Fact]
+        public void CheckAccountNameExisted_AccountExisted_ReturnJsonWithMessage()
+        {
+            var bankAccount = new BankAccount();
+            var controller = GetBankAccountController();
+            bankAccountService.CheckIsAccountNameExisted(bankAccount).Returns(true);
+
+            var actual = controller.CheckAccountNameExisted(bankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(BankAccountError.AccountNameExisted.GetDisplayName(), jsonResult.Value.ToString());
+        }
+
+        [Fact]
+        public void CheckAccountNameExisted_AccountNotExisted_ReturnJsonWithTrue()
+        {
+            var bankAccount = new BankAccount();
+            var controller = GetBankAccountController();
+            bankAccountService.CheckIsAccountNameExisted(bankAccount).Returns(false);
+
+            var actual = controller.CheckAccountNameExisted(bankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value);
+        }
+
+        [Fact]
+        public void CheckAccountNumberExisted_AccountExisted_ReturnJsonWithMessage()
+        {
+            var bankAccount = new BankAccount();
+            var controller = GetBankAccountController();
+            bankAccountService.CheckIsAccountNumberExisted(bankAccount).Returns(true);
+
+            var actual = controller.CheckAccountNumberExisted(bankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(BankAccountError.AccountNumberExisted.GetDisplayName(), jsonResult.Value.ToString());
+        }
+
+        [Fact]
+        public void CheckAccountNumberExisted_AccountNotExisted_ReturnJsonWithTrue()
+        {
+            var bankAccount = new BankAccount();
+            var controller = GetBankAccountController();
+            bankAccountService.CheckIsAccountNumberExisted(bankAccount).Returns(false);
+
+            var actual = controller.CheckAccountNumberExisted(bankAccount);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True((bool)jsonResult.Value);
         }
 
         private IEnumerable<ReferenceResourceModel> GetResources()
