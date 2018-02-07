@@ -763,6 +763,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} must be greater than {1}..
+        /// </summary>
+        public static string GreaterThanCompare {
+            get {
+                return ResourceManager.GetString("GreaterThanCompare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must be greater than or equal to {1}..
+        /// </summary>
+        public static string GreaterThanOrEqualCompare {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualCompare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter number greater than 0.
         /// </summary>
         public static string GreaterThanZero {
@@ -957,6 +975,24 @@ namespace HRP.Resources {
         public static string JobGradeReasonRequired {
             get {
                 return ResourceManager.GetString("JobGradeReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must be less than {1}..
+        /// </summary>
+        public static string LessThanCompare {
+            get {
+                return ResourceManager.GetString("LessThanCompare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must be less than or equal to {1}..
+        /// </summary>
+        public static string LessThanOrEqualCompare {
+            get {
+                return ResourceManager.GetString("LessThanOrEqualCompare", resourceCulture);
             }
         }
         

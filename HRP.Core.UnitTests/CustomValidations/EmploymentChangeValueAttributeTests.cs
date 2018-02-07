@@ -84,11 +84,9 @@
             // Arrange
             var attribute = new EmploymentChangeValueAttribute();
 
-            // Act
-            Action testDelegate = () => attribute.AddValidation(null);
-
-            // Assert
-            Assert.Throws<ArgumentNullException>(testDelegate);
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValidation(null));
+            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
         }
 
         [Fact]

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.Enumerations;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -74,14 +75,32 @@
 
         private string GetErrorMessage()
         {
-#pragma warning disable S1067 // Expressions should not be too complex
-            string operstring = Operator == GenericCompareOperator.GreaterThan ? "must be greater than " :
-                (Operator == GenericCompareOperator.GreaterThanOrEqual ? "must be greater than or equal to " :
-                (Operator == GenericCompareOperator.LessThan ? "must be less than " :
-                (Operator == GenericCompareOperator.LessThanOrEqual ? "must be less than or equal to " : string.Empty)));
-#pragma warning restore S1067 // Expressions should not be too complex
+            string errorMessage;
 
-            return string.Format("{0} {1} {2}", DisplayName, operstring, OtherPropertyDisplayName);
+            switch (Operator)
+            {
+                case GenericCompareOperator.GreaterThan:
+                    errorMessage = string.Format(Message.GreaterThanCompare, DisplayName, OtherPropertyDisplayName);
+                    break;
+
+                case GenericCompareOperator.GreaterThanOrEqual:
+                    errorMessage = string.Format(Message.GreaterThanOrEqualCompare, DisplayName, OtherPropertyDisplayName);
+                    break;
+
+                case GenericCompareOperator.LessThan:
+                    errorMessage = string.Format(Message.LessThanCompare, DisplayName, OtherPropertyDisplayName);
+                    break;
+
+                case GenericCompareOperator.LessThanOrEqual:
+                    errorMessage = string.Format(Message.LessThanOrEqualCompare, DisplayName, OtherPropertyDisplayName);
+                    break;
+
+                default:
+                    errorMessage = string.Empty;
+                    break;
+            }
+
+            return errorMessage;
         }
     }
 }
