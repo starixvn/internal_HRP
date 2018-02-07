@@ -16,7 +16,7 @@ namespace HRP.Core.Filters
         {
             if (context?.HttpContext == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(context));
             }
 
             var currentSession = new SessionService(context.HttpContext.Session);

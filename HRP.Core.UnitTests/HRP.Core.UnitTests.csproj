@@ -383,6 +383,7 @@
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />
     <Compile Include="Middlewares\ErrorHandlingMiddlewareTests.cs" />
     <Compile Include="MockSession.cs" />
+    <Compile Include="MockUrlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepositoryTests.cs" />
     <Compile Include="Services\BaseMailServiceTests.cs" />

@@ -1,5 +1,6 @@
 ﻿namespace HRP.Core.UnitTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -16,6 +17,17 @@
 
     public class HRPPermissionAttributeTests
     {
+        [Fact]
+        public void OnAuthorization_ContextIsNull_ThrowException()
+        {
+            // Arrange
+            var filter = new HRPPermissionAttribute();
+
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentNullException>(() => filter.OnAuthorization(null));
+            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
+        }
+
         [Fact]
         public void OnAuthorization_UserIdIsInvalid_ExpectedRedirectToAccessDenied()
         {

@@ -16,6 +16,17 @@
 
     public class HRPAuthorizeAttributeTests
     {
+        [Fact]
+        public void OnAuthorization_ContextIsNull_ThrowException()
+        {
+            // Arrange
+            var filter = new HRPAuthorizeAttribute();
+
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentNullException>(() => filter.OnAuthorization(null));
+            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
+        }
+
         [Theory]
         [InlineData(1, "")]
         [InlineData(0, "tim.trinh")]
@@ -33,7 +44,7 @@
             var httpContext = new DefaultHttpContext
             {
                 RequestServices = serviceProvider,
-                Session = new MockSession()
+                Session = session
             };
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
             var authContext = new AuthorizationFilterContext(actionContext, Enumerable.Empty<IFilterMetadata>().ToList());
@@ -45,6 +56,32 @@
             // Assert
             Assert.Equal("/auth/login", authContext.HttpContext.Response.Headers.Values.First().ToString());
             Assert.Equal((int)HttpStatusCode.Found, authContext.HttpContext.Response.StatusCode);
+        }
+
+        [Fact]
+        public void OnAuthorization_UserIdAndUsernameAreValid_RequestSucceeded()
+        {
+            var authService = Substitute.For<IAuthenticationService>();
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+
+            var session = new MockSession();
+            session.SetInt32(SessionKey.InternalUserId, 1);
+            session.SetString(SessionKey.InternalUsername, "tim.trinh");
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = serviceProvider,
+                Session = session
+            };
+            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            var authContext = new AuthorizationFilterContext(actionContext, Enumerable.Empty<IFilterMetadata>().ToList());
+            var filter = new HRPAuthorizeAttribute();
+
+            // Act
+            filter.OnAuthorization(authContext);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, authContext.HttpContext.Response.StatusCode);
         }
     }
 }
