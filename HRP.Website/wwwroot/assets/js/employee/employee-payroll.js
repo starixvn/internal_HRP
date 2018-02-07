@@ -246,7 +246,6 @@
                 $(this).siblings('.add-account').removeClass('disabled');
             } else {
                 $(this).siblings('.add-account').addClass('disabled');
-                $(this).siblings(".add-account").off("click");
             }
         });
 
