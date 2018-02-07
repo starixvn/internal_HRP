@@ -839,6 +839,105 @@
 
         #endregion Job Grade
 
+        #region Country
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllCountry()
+        {
+            var countries = await dataConfigurationService.GetAllCountryAsync();
+            var viewModel = new SimpleItemTableViewModel
+            {
+                Items = countries,
+                FieldName = ViewLang.Country,
+                LinkCreateItem = DataConfigurationActionLink.CreateCountry,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+            };
+
+            return PartialView("_SimpleItemTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public IActionResult CreateCountry()
+        {
+            var viewModel = new CreateSimpleItemViewModel
+            {
+                FieldName = ViewLang.Country,
+                LinkCreateItem = DataConfigurationActionLink.CreateCountry
+            };
+
+            return PartialView("_CreateSimpleItem", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCountry(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCountryAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateCountryAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCountry(int id)
+        {
+            var country = await dataConfigurationService.GetCountryByIdAsync(id);
+
+            if (country != null)
+            {
+                var viewModel = new UpdateSimpleItemViewModel
+                {
+                    FieldName = ViewLang.Country,
+                    Item = country,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+                };
+
+                return PartialView("_UpdateSimpleItem", viewModel);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCountry(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCountryAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateCountryAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Country
+
         #region City
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]

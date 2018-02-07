@@ -91,6 +91,16 @@
 
         Task<CommandResult> UpdateJobGradeAsync(JobGrade jobGrade);
 
+        Task<IEnumerable<SimpleItem>> GetAllCountryAsync();
+
+        Task<bool> IsExistedCountryAsync(SimpleItem item);
+
+        Task<CommandResult> CreateCountryAsync(SimpleItem item);
+
+        Task<SimpleItem> GetCountryByIdAsync(int id);
+
+        Task<CommandResult> UpdateCountryAsync(SimpleItem item);
+
         Task<IEnumerable<City>> GetAllCityAsync();
 
         Task<bool> IsExistedCityAsync(City city);

@@ -10,6 +10,7 @@
     using HRP.Criteria;
     using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
+    using HRP.Criteria.Country;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobCategory;
@@ -733,6 +734,99 @@
         }
 
         #endregion Job Grade
+
+        #region Country
+
+        public async Task<IEnumerable<SimpleItem>> GetAllCountryAsync()
+        {
+            var countries = await baseService.GetDataAsync<Country>(new GetAllCountryCriteria()).ConfigureAwait(false);
+
+            if (countries.Any())
+            {
+                var result = countries.Select(c => new SimpleItem
+                {
+                    ItemId = c.CountryId,
+                    ItemName = c.Code,
+                    Description = c.Name,
+                    IsActive = c.IsActive
+                }).ToList();
+
+                return result;
+            }
+
+            return new List<SimpleItem>();
+        }
+
+        public async Task<bool> IsExistedCountryAsync(SimpleItem item)
+        {
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCountryExistsCriteria { CountryId = item.ItemId, Code = item.ItemName }).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateCountryAsync(SimpleItem item)
+        {
+            var criteria = new CreateCountryCriteria
+            {
+                Code = item.ItemName,
+                Name = item.Description,
+                IsActive = item.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<SimpleItem> GetCountryByIdAsync(int id)
+        {
+            var criteria = new GetCountryByIdCriteria
+            {
+                CountryId = id
+            };
+
+            var country = await baseService.GetDataEntityAsync<Country>(criteria).ConfigureAwait(false);
+
+            if (country != null)
+            {
+                return new SimpleItem
+                {
+                    ItemId = country.CountryId,
+                    ItemName = country.Code,
+                    Description = country.Name,
+                    IsActive = country.IsActive
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<CommandResult> UpdateCountryAsync(SimpleItem item)
+        {
+            var criteria = new UpdateCountryCriteria
+            {
+                CountryId = item.ItemId,
+                Code = item.ItemName,
+                Name = item.Description,
+                IsActive = item.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Country
 
         #region City
 
