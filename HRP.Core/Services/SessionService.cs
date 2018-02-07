@@ -2,8 +2,8 @@ namespace HRP.Core.Services
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Constants;
     using Enumerations;
-    using HRP.Core.Constants;
     using Microsoft.AspNetCore.Http;
     using Model;
 

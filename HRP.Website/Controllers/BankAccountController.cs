@@ -65,14 +65,13 @@
 
             viewModel.CompanyId = data.CompanyId;
 
-            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host)
-                                  && sessionService.HasPermissionOnCompany(
-                                      viewModel.CompanyId,
-                                      FunctionKey.EmployeeBankDetails,
-                                      Policy.Host);
+            viewModel.HaveCreatePermission = HasPermissionOnFunctionAndCompany(
+                viewModel.CompanyId,
+                FunctionKey.EmployeeBankDetails,
+                Policy.Host);
 
-            viewModel.CanCreate = viewModel.CanEdit;
-            viewModel.HaveCreatePermission = viewModel.CanEdit;
+            viewModel.CanEdit = viewModel.HaveCreatePermission;
+            viewModel.CanCreate = viewModel.HaveCreatePermission;
 
             // Check maximum account per type
             var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
@@ -105,7 +104,9 @@
         {
             var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
 
-            PrepareCreateBankAccountViewModel(viewModel);
+            PrepareCreateBankAccountViewModel(viewModel, bankType);
+
+            viewModel.TypeOfForm = FormType.Modal;
 
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
@@ -152,7 +153,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel)
+        private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel, int selectedBankType = 0)
         {
             var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 
@@ -170,6 +171,30 @@
 
             var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
 
+            if (selectedBankType != 0)
+            {
+                // User create new bank account with pre-selected bank type in payroll page
+                foreach (var bankType in bankTypes)
+                {
+                    if (bankType.Id != selectedBankType && disabledBankTypes.All(x => x.Id != bankType.Id))
+                    {
+                        disabledBankTypes.Add(bankType);
+                    }
+                }
+
+                viewModel.HaveCreatePermission = HasPermissionOnFunctionAndCompany(
+                    data.CompanyId,
+                    FunctionKey.EmployeeBankDetails,
+                    Policy.Host);
+
+                viewModel.CanCreate = viewModel.HaveCreatePermission;
+
+                if (bankTypes.Count() <= disabledBankTypes.Count)
+                {
+                    viewModel.CanCreate = false;
+                }
+            }
+
             viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
         }
 
@@ -185,7 +210,6 @@
             {
                 var countOfBankAccountInType = data.BankAccounts.Count(x => x.BankType == bankType.Id && x.IsActive);
 
-                //TODO: wrong here
                 if (countOfBankAccountInType >= MAX_BANK_ACCOUNT_PER_TYPE && currentBankType != bankType.Id && isCurrentBankAccountActive)
                 {
                     disabledBankTypes.Add(bankType);
@@ -193,6 +217,15 @@
             }
 
             return disabledBankTypes;
+        }
+
+        private bool HasPermissionOnFunctionAndCompany(int companyId, string functionKey, Policy policy)
+        {
+            var hasPermissionOnFunction = sessionService.HasPermissionOnFunction(functionKey, policy);
+
+            var hasPermissionOnCompany = sessionService.HasPermissionOnCompany(companyId, functionKey, policy);
+
+            return hasPermissionOnFunction && hasPermissionOnCompany;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
@@ -261,7 +294,7 @@
             else
             {
                 var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
-                return Json(result.Select(x => new { id = x.Id, text = x.AccountName }));
+                return Json(result.Where(x => x.IsActive).Select(x => new { id = x.Id, text = x.AccountName }));
             }
         }
     }

@@ -12,6 +12,7 @@
             IEnumerable<BankAccountType> bankAccountTypes)
         {
             BankAccount = new BankAccount();
+            TypeOfForm = FormType.Page;
             Initialize(bankTypes, bankAccountTypes);
         }
 
@@ -29,6 +30,12 @@
         public SelectList BankAccountTypes { get; set; }
 
         public IBankAccount BankAccount { get; set; }
+
+        public FormType TypeOfForm { get; set; }
+
+        public bool CanCreate { get; set; }
+
+        public bool HaveCreatePermission { get; set; }
 
         public void Initialize(
             IEnumerable<BankType> bankTypes,
@@ -60,5 +67,11 @@
         AccountNumberExisted = 2,
         [Display(Name = "This employee has reached the limit number of active bank accounts in selected type")]
         MaximumAccountPerTypeReached = 3
+    }
+
+    public enum FormType
+    {
+        Modal,
+        Page
     }
 }

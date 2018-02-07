@@ -163,9 +163,55 @@
         }
     }
 
+    function getAddBankAccountModal(employeeId, selectedBankType) {
+        var createBankAccountInPayrollUrl = $("#create-bank-account-in-payroll-url").val();
+        $.ajax({
+            url: createBankAccountInPayrollUrl +
+                "?employeeId=" +
+                employeeId +
+                "&" +
+                "bankType=" +
+                selectedBankType,
+            success: function(data) {
+                $("#dynamic-modals").html(data);
+                applyClientSideInitForAddBankAccountModal();
+                $("#dynamic-modals .modal").modal();
+            }
+        });
+    }
+
+    function applyClientSideInitForAddBankAccountModal() {
+        $("#dynamic-modals select").select2({
+            minimumResultsForSearch: Infinity
+        });
+
+        bankAccountForm.init();
+
+        var form = $("#dynamic-modals form")
+            .removeData("validator") /* added by the raw jquery.validate plugin */
+            .removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/
+
+        $.validator.unobtrusive.parse(form);
+    }
+
+    function assignAddBankAccountButton() {
+        $("form.payroll").on("click",
+            ".add-account",
+            function() {
+                if ($(this).hasClass("disabled")) {
+                    return;
+                }
+
+                var selectedBankType = $(this).parent().find(".bank-type-select").val();
+                var employeeId = $("#EmployeeId").val();
+                getAddBankAccountModal(employeeId, selectedBankType);
+            });
+    }
+
     function init() {
         calculateBasicSalary();
         calculateAllowances();
+        assignAddBankAccountButton();
 
         $('.tooltipster').tooltipster({
             content: $('#tooltip-content'),
@@ -174,7 +220,7 @@
             interactive: true,
             trigger: 'custom',
             triggerOpen: {
-                mouseenter: true,
+                mouseenter: true
             },
             triggerClose: {
                 click: true,
@@ -197,23 +243,7 @@
             validatedInvalidRelatedElements(e.target);
 
             if (this.value == 2 || this.value == 1) {
-                var selectedBankType = this.value;
                 $(this).siblings('.add-account').removeClass('disabled');
-                $(this).siblings(".add-account").on("click",
-                    function () {
-                        var employeeId = $("#EmployeeId").val();
-                        $.ajax({
-                            url: "/BankAccount/CreateBankAccountInPayroll?employeeId=" +
-                                employeeId +
-                                "&" +
-                                "bankType=" +
-                                selectedBankType,
-                            success: function(data) {
-                                $("#dynamic-modals").html(data);
-                                $("#dynamic-modals .modal").modal();
-                            }
-                        });
-                    });
             } else {
                 $(this).siblings('.add-account').addClass('disabled');
                 $(this).siblings(".add-account").off("click");

@@ -4,14 +4,15 @@
 @model EmployeePayrollViewModel
 
 @section Styles {
-    <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
-    </environment>
+<environment include="Development">
+    <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
+    <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
+    <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
+</environment>
     <environment exclude="Development">
         <link href="~/assets/bundles/employee/css/payroll.min.css" rel="stylesheet" />
     </environment>
@@ -48,6 +49,7 @@
 }
 
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
+<input type="hidden" id="create-bank-account-in-payroll-url" value="@Url.Action("CreateBankAccountInPayroll","BankAccount")"/>
 <input type="hidden" id="greater-than-zero-message" value="@Message.GreaterThanZero" />
 <form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="employeePayroll.onSaveBegin" data-ajax-failure="commonFunctions.handleAjaxError"
@@ -444,17 +446,19 @@
 </form>
 
 @section Scripts {
-    <environment include="Development">
-        <script src="~/lib/bignumber.js/bignumber.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/tooltipster/dist/js/tooltipster.bundle.js"></script>
-        <script src="~/assets/js/employee/employee-payroll.js"></script>
-    </environment>
+<environment include="Development">
+    <script src="~/lib/bignumber.js/bignumber.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+    <script src="~/lib/select2/dist/js/select2.js"></script>
+    <script src="~/lib/tooltipster/dist/js/tooltipster.bundle.js"></script>
+    <script type="text/javascript" src="~/assets/js/bank/bank-account-form.js" asp-append-version="true"></script>
+    <script src="~/assets/js/employee/employee-payroll.js"></script>
+
+</environment>
     <environment exclude="Development">
         <script src="~/lib/bignumber.js/bignumber.min.js"></script>
         <script src="~/assets/bundles/employee/js/employee-payroll.min.js"></script>

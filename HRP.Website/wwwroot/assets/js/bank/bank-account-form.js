@@ -35,15 +35,17 @@ var bankAccountForm = {
         var observer = new MutationObserver(callback);
 
         // Start observing the target node for configured mutations
-        observer.observe(targetNode, bankAccountForm.config);
+        if (targetNode != undefined) {
+            observer.observe(targetNode, bankAccountForm.config);
+        }
     },
 
     checkFormError: function () {
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
-            $(".list-message-error").addClass("hidden");
+            $(".bank-account-form .list-message-error").addClass("hidden");
         } else {
-            $(".list-message-error").removeClass("hidden");
+            $(".bank-account-form .list-message-error").removeClass("hidden");
         }
     },
 
@@ -63,11 +65,21 @@ var bankAccountForm = {
             // Disable form
             bankAccountForm.disableForm();
 
-            setInterval(bankAccountForm.countdown, 1000);
+            if ($(".bank-account-form").data("formstyle") === "Page") {
+                setInterval(bankAccountForm.countdown, 1000);
 
-            setTimeout(function () {
-                window.location.href = response.redirectTo;
-            }, bankAccountForm.waitTime);
+                setTimeout(function () {
+                    window.location.href = response.redirectTo;
+                }, bankAccountForm.waitTime);
+            }
+
+            if ($(".bank-account-form").data("formstyle") === "Modal") {
+                setInterval(bankAccountForm.countdown, 1000);
+
+                setTimeout(function () {
+                    $(".bank-account-form").closest(".modal").modal("hide");
+                }, bankAccountForm.waitTime);
+            }
         } else {
             if (response.message) {
                 $(".bank-account-form .msg-error").text("");

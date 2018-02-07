@@ -1,5 +1,6 @@
-﻿@using HRP.Resources
-@model HRP.Models.Bank.CreateBankAccountViewModel
+﻿@using HRP.Models.Bank
+@using HRP.Resources
+@model CreateBankAccountViewModel
 
 <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
 
@@ -19,7 +20,14 @@
 </div>
 
 <div class="-has-icon msg-success hidden">
-    <span>Bank Account has been successfully updated! You will be redirected in </span>
+    @if (Model.TypeOfForm == FormType.Page)
+    {
+        <span>Bank Account has been successfully updated! You will be redirected in </span>
+    }
+    else
+    {
+        <span>Bank Account has been successfully updated! Popup will be dismissed in </span>
+    }
     <span class="count-down-remaining">5</span>
     <span> seconds.</span>
 </div>

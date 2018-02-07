@@ -57,24 +57,7 @@
 </form>
 
 <!--Cannot create more bank account modal-->
-<div id="reach-limit-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog -small" role="document">
-        <div class="modal-content -has-icon">
-            <div class="modal-header">
-                 <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-            </div>
-            <div class="modal-body">
-                <div class="circle">
-                    <span class="icon-warning"></span>
-                </div>
-                <p>This employee has reached the limit of number bank accounts. You cannot create more bank account.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="button -second" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+@Html.Partial("_CannotCreateMoreBankAccountModal")
 
 <div class="top-header">
     <div class="pull-left">

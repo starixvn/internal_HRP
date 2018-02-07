@@ -49,7 +49,7 @@
         string BankName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "SwiftCode")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
+        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
         string BankSwiftCode { get; set; }
 
