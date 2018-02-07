@@ -102,7 +102,6 @@
       "wwwroot/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/assets/styles/pages/employee/common.css",
-      "wwwroot/assets/styles/pages/employee/bank-details.css",
       "wwwroot/assets/styles/pages/employee/payroll.css"
     ]
   },
