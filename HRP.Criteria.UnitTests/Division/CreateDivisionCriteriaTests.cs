@@ -49,6 +49,7 @@
 
             // Assert
             Assert.True(actual);
+            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
         }
     }
 }

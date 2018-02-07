@@ -19,12 +19,15 @@
         }
 
         [Theory]
-        [InlineData("ahihi")]
-        public void IsValid_CodeIsValid_ReturnTrue(string code)
+        [InlineData(0, "ahihi")]
+        [InlineData(1, "ahihi")]
+        public void IsValid_ParamsAreValid_ReturnTrue(int id, string code)
         {
             // Arrange
             var criteria = new CheckCityExistsCriteria
             {
+                CityId = id,
+                CountryId = id,
                 Code = code
             };
 
@@ -36,13 +39,18 @@
         }
 
         [Theory]
-        [InlineData("   ")]
-        [InlineData("")]
-        public void IsValid_CodeIsInvalid_ReturnFalse(string code)
+        [InlineData(-1, "   ")]
+        [InlineData(-1, "")]
+        [InlineData(-1, "asdasd")]
+        [InlineData(1, "")]
+        [InlineData(0, "")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string code)
         {
             // Arrange
             var criteria = new CheckCityExistsCriteria
             {
+                CityId = id,
+                CountryId = id,
                 Code = code
             };
 

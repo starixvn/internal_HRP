@@ -13,6 +13,7 @@
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobGrade;
+    using HRP.Criteria.Office;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -696,6 +697,77 @@
 
         #endregion City
 
+        #region Office
+
+        public async Task<IEnumerable<Office>> GetAllOfficeAsync()
+        {
+            var offices = await baseService.GetDataAsync<Office>(new GetAllOfficeCriteria()).ConfigureAwait(false);
+
+            return offices;
+        }
+
+        public async Task<bool> IsExistedOfficeAsync(Office office)
+        {
+            var criteria = new CheckOfficeExistsCriteria
+            {
+                OfficeId = office.OfficeId,
+                Code = office.Code,
+                CityId = office.CityId
+            };
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateOfficeAsync(Office office)
+        {
+            var criteria = new CreateOfficeCriteria
+            {
+                Code = office.Code,
+                Name = office.Name,
+                CityId = office.CityId,
+                IsActive = office.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<Office> GetOfficeByIdAsync(int id)
+        {
+            var office = await baseService.GetDataEntityAsync<Office>(new GetOfficeByIdCriteria { OfficeId = id }).ConfigureAwait(false);
+
+            return office;
+        }
+
+        public async Task<CommandResult> UpdateOfficeAsync(Office office)
+        {
+            var criteria = new UpdateOfficeCriteria
+            {
+                OfficeId = office.OfficeId,
+                Code = office.Code,
+                Name = office.Name,
+                IsActive = office.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Office
+
         #region Common
 
         public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
@@ -736,6 +808,14 @@
             var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(false);
 
             return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
+        }
+
+        public async Task<SelectList> GetCitySelectListByCountryIdAsync(int countryId)
+        {
+            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId };
+            var cityList = await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
+
+            return new SelectList(cityList, nameof(City.CityId), nameof(City.Code));
         }
 
         public async Task<SelectList> GetCompanyBVISelectListAsync()

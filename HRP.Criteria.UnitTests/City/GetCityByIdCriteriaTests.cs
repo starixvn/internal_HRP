@@ -20,7 +20,7 @@
 
         [Theory]
         [InlineData(1)]
-        public void IsValid_DepartmentIdIsValid_ReturnTrue(int id)
+        public void IsValid_IdIsValid_ReturnTrue(int id)
         {
             // Arrange
             var criteria = new GetCityByIdCriteria
@@ -37,7 +37,7 @@
 
         [Theory]
         [InlineData(0)]
-        public void IsValid_DepartmentIdIsInvalid_ReturnFalse(int id)
+        public void IsValid_IdIsInvalid_ReturnFalse(int id)
         {
             // Arrange
             var criteria = new GetCityByIdCriteria

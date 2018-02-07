@@ -14,6 +14,7 @@
     using HRP.Models.DataConfiguration.Division;
     using HRP.Models.DataConfiguration.GradeLevel;
     using HRP.Models.DataConfiguration.JobGrade;
+    using HRP.Models.DataConfiguration.Office;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -839,6 +840,106 @@
 
         #endregion City
 
+        #region Office
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllOffice()
+        {
+            var offices = await dataConfigurationService.GetAllOfficeAsync();
+            var viewModel = new OfficeTableViewModel
+            {
+                Offices = offices,
+                FieldName = ViewLang.Office,
+                LinkCreateItem = DataConfigurationActionLink.CreateOffice,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateOffice
+            };
+
+            return PartialView("_OfficeTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateOffice()
+        {
+            var viewModel = new CreateOfficeViewModel
+            {
+                CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
+                FieldName = ViewLang.Office,
+                LinkCreateItem = DataConfigurationActionLink.CreateOffice
+            };
+
+            return PartialView("_CreateOffice", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateOffice(Office office)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedOfficeAsync(office);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, office.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateOfficeAsync(office);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateOffice(int id)
+        {
+            var office = await dataConfigurationService.GetOfficeByIdAsync(id);
+
+            if (office != null)
+            {
+                var viewModal = new UpdateOfficeViewModel
+                {
+                    FieldName = ViewLang.Office,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateOffice,
+                    Office = office
+                };
+
+                return PartialView("_UpdateOffice", viewModal);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateOffice(Office office)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedOfficeAsync(office);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, office.Code));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateOfficeAsync(office);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Office
+
         #region Commons
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -879,6 +980,14 @@
             var gradeLevelList = await dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(jobCategoryId);
 
             return PartialView("_SelectListItem", gradeLevelList);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> GetCitySelectListByCountryId(int countryId)
+        {
+            var cityList = await dataConfigurationService.GetCitySelectListByCountryIdAsync(countryId);
+
+            return PartialView("_SelectListItem", cityList);
         }
 
         private static string UppercaseFirstLetter(string s)

@@ -91,6 +91,16 @@
 
         Task<CommandResult> UpdateCityAsync(City city);
 
+        Task<IEnumerable<Office>> GetAllOfficeAsync();
+
+        Task<bool> IsExistedOfficeAsync(Office office);
+
+        Task<CommandResult> CreateOfficeAsync(Office office);
+
+        Task<Office> GetOfficeByIdAsync(int id);
+
+        Task<CommandResult> UpdateOfficeAsync(Office office);
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
@@ -101,6 +111,8 @@
         Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
 
         Task<SelectList> GetGradeLevelSelectListByJobCateogryIdAsync(int jobCategoryId);
+
+        Task<SelectList> GetCitySelectListByCountryIdAsync(int countryId);
 
         Task<SelectList> GetCompanyBVISelectListAsync();
 

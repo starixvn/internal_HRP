@@ -11,6 +11,7 @@
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobGrade;
+    using HRP.Criteria.Office;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -1344,6 +1345,161 @@
 
         #endregion City
 
+        #region Office
+
+        [Fact]
+        public async Task GetAllOfficeAsync_BaseServiceGetOfficeList_ReturnOfficeList()
+        {
+            // Arrange
+            var expected = new List<Office> { MockOffice() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Office>(Arg.Any<GetAllOfficeCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await dataConfigurationService.GetAllOfficeAsync() as List<Office>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedOfficeAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var office = MockOffice();
+            var criteria = new CheckOfficeExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckOfficeExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedOfficeAsync(office);
+
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(office.OfficeId, criteria.OfficeId);
+            Assert.Equal(office.Code, criteria.Code);
+            Assert.Equal(office.CityId, criteria.CityId);
+        }
+
+        [Fact]
+        public async Task CreateOfficeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var office = MockOffice();
+            var criteria = new CreateOfficeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateOfficeAsync(office);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
+            Assert.Equal(office.Code, criteria.Code);
+            Assert.Equal(office.Name, criteria.Name);
+            Assert.Equal(office.CityId, criteria.CityId);
+            Assert.Equal(office.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateOfficeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateOfficeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateOfficeAsync(new Office());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetOfficeByIdAsync_BaseServiceGetOfficeInstance_ReturnOfficeInstance()
+        {
+            // Arrange
+            var id = 23;
+            var criteria = new GetOfficeByIdCriteria();
+            var office = MockOffice();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Office>(Arg.Do<GetOfficeByIdCriteria>(x => criteria = x)).Returns(office);
+
+            // Act
+            var actual = await dataConfigurationService.GetOfficeByIdAsync(id);
+
+            // Assert
+            Assert.IsType<Office>(actual);
+            Assert.Equal(office, actual);
+            Assert.Equal(id, criteria.OfficeId);
+        }
+
+        [Fact]
+        public async Task GetOfficeByIdAsync_BaseServiceGetNullOffice_ReturnNull()
+        {
+            // Arrange
+            Office office = null;
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Office>(Arg.Any<GetOfficeByIdCriteria>()).Returns(office);
+
+            // Act
+            var actual = await dataConfigurationService.GetOfficeByIdAsync(21);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateOfficeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var office = MockOffice();
+            var criteria = new UpdateOfficeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateOfficeAsync(office);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(office.OfficeId, criteria.OfficeId);
+            Assert.Equal(office.Code, criteria.Code);
+            Assert.Equal(office.Name, criteria.Name);
+            Assert.Equal(office.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateOfficeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateOfficeCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateOfficeAsync(new Office());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Office
+
         #region Common
 
         [Fact]
@@ -1492,6 +1648,28 @@
             Assert.Equal(expected.DataTextField, actual.DataTextField);
             Assert.Equal(expected.Items, actual.Items);
             Assert.Equal(id, criteria.JobCategoryId);
+        }
+
+        [Fact]
+        public async Task GetCitySelectListByCountryIdAsync_BaseServiceGetCityList_ReturnSelectList()
+        {
+            // Arrange
+            var id = 15;
+            var cityList = new List<City> { MockCity() };
+            var criteria = new GetCityByCountryIdCriteria();
+            var expected = new SelectList(cityList, nameof(City.CityId), nameof(City.Code));
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<City>(Arg.Do<GetCityByCountryIdCriteria>(x => criteria = x)).Returns(cityList);
+
+            // Act
+            var actual = await dataConfigurationService.GetCitySelectListByCountryIdAsync(id);
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+            Assert.Equal(id, criteria.CountryId);
         }
 
         [Fact]
@@ -1685,6 +1863,21 @@
                 IsActive = true,
                 CountryId = 3,
                 CountryCode = "VN"
+            };
+        }
+
+        private Office MockOffice()
+        {
+            return new Office
+            {
+                OfficeId = 16,
+                Code = "Nex",
+                Name = "nexcelsolution",
+                IsActive = true,
+                CountryId = 3,
+                CountryCode = "VN",
+                CityId = 2,
+                CityCode = "hcmmm"
             };
         }
 

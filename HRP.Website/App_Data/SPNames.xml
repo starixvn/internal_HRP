@@ -81,6 +81,11 @@
   </Function>
   <Function Name="Office">
     <Setting Key="Offive_GetByCityId" SpName="Offive_GetByCityId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_GetAll" SpName="Office_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_CheckExists" SpName="Office_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_Create" SpName="Office_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_GetById" SpName="Office_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Office_Update" SpName="Office_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="User">
     <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>

@@ -22,6 +22,8 @@
         [InlineData("dar", 0)]
         [InlineData("", 1)]
         [InlineData("", 0)]
+        [InlineData("   ", -1)]
+        [InlineData(" ", 1)]
         public void IsValid_ParamsAreInvalid_ReturnFalse(string code, int createdBy)
         {
             // Arrange
@@ -45,6 +47,7 @@
 
             // Assert
             Assert.True(actual);
+            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
         }
     }
 }

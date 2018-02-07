@@ -13,6 +13,7 @@
     using HRP.Models.DataConfiguration.Division;
     using HRP.Models.DataConfiguration.GradeLevel;
     using HRP.Models.DataConfiguration.JobGrade;
+    using HRP.Models.DataConfiguration.Office;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -1315,6 +1316,165 @@
 
         #endregion City
 
+        #region Office
+
+        [Fact]
+        public async Task GetAllOffice_ServiceGetOfficeList_ReturnPartialViewWithOfficeTableViewModel()
+        {
+            // Arrange
+            var offices = new List<Office> { MockOffice() };
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetAllOfficeAsync().Returns(offices);
+
+            // Act
+            var actual = await controller.GetAllOffice();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<OfficeTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_OfficeTable", viewResult.ViewName);
+            Assert.Equal(offices, viewModel.Offices);
+            Assert.Equal(ViewLang.Office, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task CreateOffice_WhenCalled_ReturnPartialViewWithCreateOfficeViewModel()
+        {
+            // Arrange
+            var countrySelectList = MockCountrySelectList();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCountrySelectListAsync().Returns(countrySelectList);
+
+            // Act
+            var actual = await controller.CreateOffice();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateOfficeViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateOffice", viewResult.ViewName);
+            Assert.Equal(countrySelectList, viewModel.CountryList);
+            Assert.Equal(ViewLang.Office, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateOfficePost_OfficeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, office.Code), errors["Office.Code"]);
+        }
+
+        [Fact]
+        public async Task CreateOffice_OfficeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(false);
+            dataConfigurationService.CreateOfficeAsync(office).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateOffice_ServiceGetOfficeItem_ReturnPartialViewWithUpdateOfficeViewModel()
+        {
+            // Arrange
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetOfficeByIdAsync(Arg.Any<int>()).Returns(office);
+
+            // Act
+            var actual = await controller.UpdateOffice(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateOffice", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateOfficeViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(office, viewModel.Office);
+            Assert.Equal(ViewLang.Office, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateOffice_ServiceGetNullOfficeItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            Office office = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetOfficeByIdAsync(Arg.Any<int>()).Returns(office);
+
+            // Act
+            var actual = await controller.UpdateOffice(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateOfficePost_OfficeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, office.Code), errors["Office.Code"]);
+        }
+
+        [Fact]
+        public async Task UpdateOfficePost_OfficeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(false);
+            dataConfigurationService.UpdateOfficeAsync(office).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion Office
+
         #region Commons
 
         [Fact]
@@ -1420,6 +1580,27 @@
             Assert.Equal(gradeLevelSelectList.DataValueField, viewModel.DataValueField);
             Assert.Equal(gradeLevelSelectList.DataTextField, viewModel.DataTextField);
             Assert.Equal(gradeLevelSelectList.Items, viewModel.Items);
+        }
+
+        [Fact]
+        public async Task GetCitySelectListByCountryId_ServiceGetCitySelectList_ReturnPartialViewWithCitySelectList()
+        {
+            // Arrange
+            var id = 20;
+            var citySelectList = MockCitySelectList();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCitySelectListByCountryIdAsync(id).Returns(citySelectList);
+
+            // Act
+            var actual = await controller.GetCitySelectListByCountryId(id);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
+            Assert.Equal("_SelectListItem", viewResult.ViewName);
+            Assert.Equal(citySelectList.DataValueField, viewModel.DataValueField);
+            Assert.Equal(citySelectList.DataTextField, viewModel.DataTextField);
+            Assert.Equal(citySelectList.Items, viewModel.Items);
         }
 
         #endregion Commons
@@ -1625,6 +1806,21 @@
             };
         }
 
+        private Office MockOffice()
+        {
+            return new Office
+            {
+                OfficeId = 16,
+                Code = "Nex",
+                Name = "nexcelsolution",
+                IsActive = true,
+                CountryId = 3,
+                CountryCode = "VN",
+                CityId = 2,
+                CityCode = "hcmmm"
+            };
+        }
+
         private SelectList MockCompanySelectList()
         {
             var companies = new List<Company> { MockCompany() };
@@ -1679,6 +1875,13 @@
             var countries = new List<Country> { MockCountry() };
 
             return new SelectList(countries, nameof(Country.CountryId), nameof(Country.Code));
+        }
+
+        private SelectList MockCitySelectList()
+        {
+            var cities = new List<City> { MockCity() };
+
+            return new SelectList(cities, nameof(City.CityId), nameof(City.Code));
         }
 
         #endregion Initialization

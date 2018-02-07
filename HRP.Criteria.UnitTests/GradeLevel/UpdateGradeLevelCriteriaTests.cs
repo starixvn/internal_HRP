@@ -34,18 +34,23 @@
 
             // Assert
             Assert.True(actual);
+            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
         }
 
         [Theory]
-        [InlineData("   ")]
-        [InlineData("")]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(string name)
+        [InlineData(-1, "   ")]
+        [InlineData(-1, "")]
+        [InlineData(-1, "asdasd")]
+        [InlineData(0, "asdasd")]
+        [InlineData(1, " ")]
+        [InlineData(0, " ")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string name)
         {
             // Arrange
             var criteria = new UpdateGradeLevelCriteria
             {
-                GradeLevelId = 0,
-                UpdatedBy = 0,
+                GradeLevelId = id,
+                UpdatedBy = id,
                 Name = name
             };
 

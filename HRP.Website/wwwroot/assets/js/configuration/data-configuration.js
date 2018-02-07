@@ -1,5 +1,6 @@
 ﻿var dataConfiguration = (function ($) {
     var domElement = {
+        TableItems: '#tableItems',
         FilterFieldForm: '#filterFieldForm',
         CompanyId: '.js-companyId',
         DivisionId: '.js-divisionId',
@@ -7,12 +8,14 @@
         CostCenterId: '.js-costCenterId',
         SectionId: '.js-sectionId',
         JobCategoryId: '.js-jobCateogryId',
-        GradeLevelId: '.js-gradeLevelId'
+        GradeLevelId: '.js-gradeLevelId',
+        CountryId: '.js-countryId',
+        CityId: '.js-cityId'
     };
     var htmlDefaultOption = '<option value=""></option>';
 
     function initDataTable() {
-        $('#tableItems').dataTable({
+        $(domElement.TableItems).dataTable({
             'ordering': false,
             'lengthMenu': [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
             'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
@@ -28,11 +31,16 @@
                 }
             }
         });
+
+        var $table = $(domElement.TableItems);
+        $table.on('draw.dt', function () {
+            registerEventClickIconEditItem();
+        });
     }
 
     function registerEventQuickSearch() {
         $('#quickSearch').on('keyup', function () {
-            $('#tableItems').DataTable().search($(this).val()).draw();
+            $(domElement.TableItems).DataTable().search($(this).val()).draw();
         });
     }
 
@@ -73,6 +81,27 @@
         }
     }
 
+    function registerEventClickIconEditItem() {
+        $('.js-iconEditItem').off('click').on('click', function () {
+            var itemId = $(this).data('item-id');
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + $(this).data('url-update'),
+                dataType: 'html',
+                data: { "id": itemId },
+                success: function (data) {
+                    // ref
+                    $('#editItemModalContent').html(data);
+
+                    initValidationForm('#editItemForm');
+
+                    $('#editItemModal').modal('show');
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
     function registerEventClickCreateNewItem() {
         $('.js-createNewItem').on('click', function () {
             $.ajax({
@@ -89,6 +118,7 @@
                     registerEventChangeCostCenter();
 
                     registerEventChangeJobCategory();
+                    registerEventChangeCountry();
 
                     var createFormName = '#createItemForm';
                     initValidationForm(createFormName);
@@ -213,24 +243,25 @@
         });
     }
 
-    function registerEventClickIconEditItem() {
-        $('.js-iconEditItem').on('click', function () {
-            var itemId = $(this).data('item-id');
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + $(this).data('url-update'),
-                dataType: 'html',
-                data: { "id": itemId },
-                success: function (data) {
-                    // ref
-                    $('#editItemModalContent').html(data);
+    function registerEventChangeCountry() {
+        $(domElement.CountryId).on('change', function () {
+            //reset City
+            var $cityId = $(domElement.CityId);
+            $cityId.html(htmlDefaultOption);
 
-                    initValidationForm('#editItemForm');
-
-                    $('#editItemModal').modal('show');
-                },
-                error: commonFunctions.handleAjaxError
-            });
+            var countryId = $(this).val();
+            if (countryId !== "" && $cityId.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + 'DataConfiguration/GetCitySelectListByCountryId',
+                    dataType: 'html',
+                    data: { countryId: countryId },
+                    success: function (data) {
+                        $cityId.html(data);
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            }
         });
     }
 
@@ -271,7 +302,7 @@
                 $editItemForm.validate().showErrors(response.errors); //todo test here
                 commonFunctions.showValidationSummary($editItemForm);
             } else {
-                alert(response.message);
+                commonFunctions.showErrorMessage(response.message);
             }
         }
     }

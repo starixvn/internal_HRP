@@ -18,15 +18,16 @@
             Assert.Equal("City_Update", actual);
         }
 
-        [Fact]
-        public void IsValid_ParamsAreValid_ReturnTrue()
+        [Theory]
+        [InlineData(1, "ahihi")]
+        public void IsValid_ParamsAreValid_ReturnTrue(int id, string code)
         {
             // Arrange
             var criteria = new UpdateCityCriteria
             {
-                CityId = 1,
-                UpdatedBy = 2,
-                Code = "aa"
+                CityId = id,
+                UpdatedBy = id,
+                Code = code
             };
 
             // Act
@@ -34,18 +35,23 @@
 
             // Assert
             Assert.True(actual);
+            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
         }
 
         [Theory]
-        [InlineData("   ")]
-        [InlineData("")]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(string code)
+        [InlineData(-1, "   ")]
+        [InlineData(-1, "")]
+        [InlineData(-1, "asdasd")]
+        [InlineData(0, "asdasd")]
+        [InlineData(1, " ")]
+        [InlineData(0, " ")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string code)
         {
             // Arrange
             var criteria = new UpdateCityCriteria
             {
-                CityId = 0,
-                UpdatedBy = 0,
+                CityId = id,
+                UpdatedBy = id,
                 Code = code
             };
 

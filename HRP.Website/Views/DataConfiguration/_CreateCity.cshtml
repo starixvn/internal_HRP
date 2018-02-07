@@ -28,7 +28,6 @@
 
         <label class="text -has-required">@Model.FieldName</label>
         <div class="group-control">
-
             <input class="control js-itemName" type="text" asp-for="City.Code"
                    data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
                    data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />

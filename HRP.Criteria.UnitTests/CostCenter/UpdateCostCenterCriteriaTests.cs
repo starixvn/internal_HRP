@@ -39,18 +39,23 @@
 
             // Assert
             Assert.True(actual);
+            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
         }
 
         [Theory]
-        [InlineData("   ")]
-        [InlineData("")]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(string code)
+        [InlineData(-1, "   ")]
+        [InlineData(-1, "")]
+        [InlineData(-1, "asdasd")]
+        [InlineData(0, "asdasd")]
+        [InlineData(1, " ")]
+        [InlineData(0, " ")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string code)
         {
             // Arrange
             var criteria = new UpdateCostCenterCriteria
             {
-                CostCenterId = 0,
-                UpdatedBy = 0,
+                CostCenterId = id,
+                UpdatedBy = id,
                 Code = code
             };
 

@@ -12,6 +12,6 @@
 
         public override string GetSettingKey() => "Section_CheckExists";
 
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(Code);
+        public override bool IsValid() => SectionId >= 0 && CostCenterId >= 0 && !string.IsNullOrWhiteSpace(Code);
     }
 }

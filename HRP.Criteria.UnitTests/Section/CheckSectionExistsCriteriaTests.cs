@@ -19,13 +19,17 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void IsValid_ParamsAreValid_ReturnTrue()
+        [Theory]
+        [InlineData(0, "ahihi")]
+        [InlineData(1, "ahihi")]
+        public void IsValid_ParamsAreValid_ReturnTrue(int id, string code)
         {
             // Arrange
             var criteria = new CheckSectionExistsCriteria
             {
-                Code = "aw"
+                CostCenterId = id,
+                SectionId = id,
+                Code = code
             };
 
             // Act
@@ -36,13 +40,18 @@
         }
 
         [Theory]
-        [InlineData("   ")]
-        [InlineData("")]
-        public void IsValid_ParamsAreInvalid_ReturnTrue(string code)
+        [InlineData(-1, "   ")]
+        [InlineData(-1, "")]
+        [InlineData(-1, "asdasd")]
+        [InlineData(1, "")]
+        [InlineData(0, "")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string code)
         {
             // Arrange
             var criteria = new CheckSectionExistsCriteria
             {
+                CostCenterId = id,
+                SectionId = id,
                 Code = code
             };
 

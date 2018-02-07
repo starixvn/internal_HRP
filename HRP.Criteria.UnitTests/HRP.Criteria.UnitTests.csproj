@@ -102,6 +102,11 @@
     <Compile Include="JobGrade\GetAllJobGradeCriteriaTests.cs" />
     <Compile Include="JobGrade\GetJobGradeByIdCriteriaTests.cs" />
     <Compile Include="JobGrade\UpdateJobGradeCriteriaTests.cs" />
+    <Compile Include="Office\CheckOfficeExistsCriteriaTests.cs" />
+    <Compile Include="Office\CreateOfficeCriteriaTests.cs" />
+    <Compile Include="Office\GetAllOfficeCriteriaTests.cs" />
+    <Compile Include="Office\GetOfficeByIdCriteriaTests.cs" />
+    <Compile Include="Office\UpdateOfficeCriteriaTests.cs" />
     <Compile Include="Section\CheckSectionExistsCriteriaTests.cs" />
     <Compile Include="Section\CreateSectionCriteriaTests.cs" />
     <Compile Include="Section\GetAllSectionCriteriaTests.cs" />
