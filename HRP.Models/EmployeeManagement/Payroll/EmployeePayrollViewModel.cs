@@ -32,5 +32,7 @@
         public bool CanRead { get; set; }
 
         public bool CanUpdate { get; set; }
+
+        public bool CanCreateBankAccount { get; set; }
     }
 }

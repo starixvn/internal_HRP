@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -607,29 +608,28 @@
         {
             var employeeId = 1;
             var employeeManagementController = GetEmployeeManagementController();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId)
-            .Returns(
-                new EmployeePayrollViewModel
+            var viewModel = new EmployeePayrollViewModel
+            {
+                EmployeeId = employeeId,
+                FullName = "Full Name",
+                Nickname = "Nick Name",
+                Code = "DAR",
+                CompanyId = 1,
+                BasicSalary = new EmployeePayrollBasicSalaryModel
                 {
                     EmployeeId = employeeId,
-                    FullName = "Full Name",
-                    Nickname = "Nick Name",
-                    Code = "DAR",
-                    CompanyId = 1,
-                    BasicSalary = new EmployeePayrollBasicSalaryModel
-                    {
-                        EmployeeId = employeeId,
-                        EbankingAccountId = 1,
-                        EbankingAccountName = "E Account",
-                        DirectBanking1AccountId = 1,
-                        DirectBanking1BankTypeId = 1,
-                        DirectBanking1AccountName = "Account 1",
-                        DirectBanking2AccountId = 2,
-                        DirectBanking2BankTypeId = 2,
-                        DirectBanking2AccountName = "Account 2",
-                    }
+                    EbankingAccountId = 1,
+                    EbankingAccountName = "E Account",
+                    DirectBanking1AccountId = 1,
+                    DirectBanking1BankTypeId = 1,
+                    DirectBanking1AccountName = "Account 1",
+                    DirectBanking2AccountId = 2,
+                    DirectBanking2BankTypeId = 2,
+                    DirectBanking2AccountName = "Account 2",
                 }
-            );
+            };
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(viewModel);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
 
             var actual = employeeManagementController.Payroll(employeeId);
 

@@ -302,13 +302,16 @@
             $(this).click();
         });
 
+        if ($('#CanCreateBankAccount').val() !== 'True'){
+            $('.add-account').addClass('disabled');
+        }
+
         if ($('#CanUpdate').val() !== 'True') {
             $('select, input', '#payroll-form').attr('disabled', 'disabled');
-            $('.add-account').addClass('disabled');
             return;
         }
 
-        $('.add-account').each(function (index, element) {
+        $('.add-account:not(.disabled)').each(function (index, element) {
             var $element = $(element);
             var bankType = $element.siblings('.bank-type-select').val();
             if (bankType == 3 || bankType == '') {
