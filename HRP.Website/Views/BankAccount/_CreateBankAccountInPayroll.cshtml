@@ -8,7 +8,7 @@
     {
         <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content -has-title">
                     <form class="form-information bank-account-form"
                           asp-action="CreateBankAccount"
                           asp-controller="BankAccount"
@@ -21,7 +21,7 @@
                           data-ajax-success="bankAccountForm.onSaveSuccess"
                           data-ajax-failure="bankAccountForm.onAjaxFailure">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
                             <h4 class="modal-title">New Banking Account</h4>
                         </div>
                         <div class="modal-body">
