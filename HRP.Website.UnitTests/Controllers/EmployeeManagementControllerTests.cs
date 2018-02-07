@@ -109,7 +109,10 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-            Assert.Contains(errors.Keys, x => x == nameof(model.ProfilePicture));
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
+            );
         }
 
         [Fact]
@@ -129,8 +132,10 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-            Assert.DoesNotContain(errors.Keys, x => x == nameof(model.ProfilePicture));
-            Assert.Contains(errors.Keys, x => x == "nickname");
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
         }
 
         [Fact]
@@ -187,12 +192,13 @@
         }
 
         [Fact]
-        public async Task UpdatePersonalDetails_ModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        public async Task UpdatePersonalDetails_InvalidProfilePicture_ReturnJsonResultWithErrorList()
         {
             // Arrange
             var model = new CreateEmployeeViewModel();
+            var commandResult = new CommandResult();
             var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult());
+            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
 
             // Act
             var result = await employeeController.UpdatePersonalDetails(model);
@@ -200,9 +206,36 @@
             // Assert
             var viewResult = Assert.IsType<JsonResult>(result);
             var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
-
             Assert.False((bool)wrapper["isSuccessful"]);
-            Assert.IsType<Dictionary<string, string>>(wrapper["errors"]);
+            var errors = (Dictionary<string, string>)(wrapper["errors"]);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
+            );
+        }
+
+        [Fact]
+        public async Task UpdatePersonalDetails_ValidProfilePictureAndModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        {
+            // Arrange
+            var model = new CreateEmployeeViewModel();
+            var commandResult = new CommandResult { Code = 0 };
+            var employeeController = GetEmployeeManagementController();
+            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            employeeController.ModelState.AddModelError("nickname", "required");
+
+            // Act
+            var result = await employeeController.UpdatePersonalDetails(model);
+
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+            Assert.False((bool)wrapper["isSuccessful"]);
+            var errors = (Dictionary<string, string>)(wrapper["errors"]);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
         }
 
         [Fact]
@@ -267,7 +300,10 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-            Assert.Contains(errors.Keys, x => x == "company");
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("company", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
         }
 
         [Fact]
@@ -287,7 +323,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         #endregion CreateEmployment
@@ -361,7 +397,10 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-            Assert.Contains(errors.Keys, x => x == "company");
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("company", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
         }
 
         [Fact]
@@ -381,7 +420,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value.GetType().GetProperty("IsSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         #endregion UpdateEmployment
@@ -399,7 +438,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.NotEqual(expected, (bool)jsonResult.Value);
+            Assert.NotEqual(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -418,7 +457,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<Division>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -437,7 +476,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<Department>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -456,7 +495,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<Section>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -475,7 +514,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<CostCenter>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -494,7 +533,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<EmployeeSuggestionViewModel>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -513,21 +552,23 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<GradeLevel>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
         public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnJsonResult()
         {
             // Arrange
+            var expected = new List<EmployeeSuggestionViewModel>();
             var employeeController = GetEmployeeManagementController();
-            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(new List<EmployeeSuggestionViewModel>());
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(expected);
 
             // Actual
             var actual = await employeeController.GetEmployeeSuggestionByName("oliver");
 
             // Assert
-            Assert.IsType<JsonResult>(actual);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -546,7 +587,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<JobGrade>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -565,7 +606,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<City>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
@@ -582,22 +623,23 @@
             // Act
             var actual = await employeeController.GetOfficeByCityId(1);
 
-            //Assert
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, (IEnumerable<Office>)jsonResult.Value);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         [Fact]
         public void Payroll_InvalidEmployeeId_RedirectToErrorPage()
         {
+            // Arrange
             var employeeId = 0;
             var employeeManagementController = GetEmployeeManagementController();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(x => null);
 
-            //Act
+            // Act
             var actual = employeeManagementController.Payroll(employeeId);
 
-            //Assert
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("PageNotFound", redirectResult.ActionName);
             Assert.Equal("Error", redirectResult.ControllerName);
@@ -606,8 +648,9 @@
         [Fact]
         public void Payroll_ValidEmployeeId_ReturnView()
         {
+            // Arrange
             var employeeId = 1;
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeManagementController();
             var viewModel = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
@@ -631,16 +674,19 @@
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(viewModel);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
 
-            var actual = employeeManagementController.Payroll(employeeId);
+            // Act
+            var actual = employeeController.Payroll(employeeId);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
             Assert.NotNull(viewResult.Model);
         }
 
         [Fact]
-        public void Payroll_ValidModel_ReturnExpectedCommandResult()
+        public void SavePayroll_ValidModel_ReturnExpectedCommandResult()
         {
+            // Arrange
             var employeeId = 1;
             var model = new EmployeePayrollViewModel
             {
@@ -649,35 +695,34 @@
                 Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
                 Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
             };
+            var expected = new CommandResult { Code = 0 };
+            var employeeController = GetEmployeeManagementController();
+            employeeController.Url = Substitute.For<IUrlHelper>();
+            employeeController.Url.Action().ReturnsForAnyArgs("/EmployeeManagement/Index");
+            payrollService.UpdatePayroll(model, sessionService.UserId).Returns(expected);
 
-            var employeeManagementController = GetEmployeeManagementController();
-            employeeManagementController.Url = Substitute.For<IUrlHelper>();
-            employeeManagementController.Url.Action().ReturnsForAnyArgs("/EmployeeManagement/Index");
-            payrollService.UpdatePayroll(model, sessionService.UserId).Returns(new CommandResult { Code = 0 });
+            // Act
+            var actual = employeeController.SavePayroll(model);
 
-            var actual = employeeManagementController.SavePayroll(model);
-
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(expected.IsSuccessful, jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(expected.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
+            Assert.Equal("/EmployeeManagement/Index", jsonResult.Value.GetType().GetProperty("redirectTo").GetValue(jsonResult.Value));
         }
 
         [Fact]
-        public void Payroll_InValidModel_ReturnErrors()
+        public void SavePayroll_InValidModel_ReturnErrors()
         {
-            var employeeId = 1;
-            var model = new EmployeePayrollViewModel
-            {
-                EmployeeId = employeeId,
-                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
-                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
-                Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
-            };
+            // Arrange
+            var model = new EmployeePayrollViewModel();
+            var employeeController = GetEmployeeManagementController();
+            employeeController.ModelState.AddModelError("employee", "error");
 
-            var employeeManagementController = GetEmployeeManagementController();
-            employeeManagementController.ModelState.AddModelError(nameof(model.EmployeeId), "Error");
+            // Act
+            var actual = employeeController.SavePayroll(model);
 
-            var actual = employeeManagementController.SavePayroll(model);
-
+            // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }

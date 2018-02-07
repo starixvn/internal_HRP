@@ -126,7 +126,6 @@
             {
                 RequestServices = serviceProvider
             };
-            var routeData = new RouteData();
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
 
             return new ClientModelValidationContext(

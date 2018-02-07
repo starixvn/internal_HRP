@@ -296,7 +296,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
         public IActionResult Payroll(int id)
         {
-            var viewModel = payrollService.GetEmployeePayroll(id, sessionService.UserId);
+            EmployeePayrollViewModel viewModel = payrollService.GetEmployeePayroll(id, sessionService.UserId);
 
             if (viewModel == null)
             {
@@ -313,7 +313,7 @@
         {
             if (ModelState.IsValid)
             {
-                var result = payrollService.UpdatePayroll(model, sessionService.UserId);
+                CommandResult result = payrollService.UpdatePayroll(model, sessionService.UserId);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
