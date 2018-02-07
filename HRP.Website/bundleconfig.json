@@ -102,6 +102,7 @@
       "wwwroot/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/assets/styles/pages/employee/common.css",
+      "wwwroot/assets/styles/pages/employee/bank-details.css",
       "wwwroot/assets/styles/pages/employee/payroll.css"
     ]
   },
@@ -330,6 +331,7 @@
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
       "wwwroot/lib/select2/dist/js/select2.min.js",
       "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.min.js",
+      "wwwroot/assets/js/bank/bank-account-form.js",
       "wwwroot/assets/js/employee/employee-payroll.js"
     ],
     "minify": {
