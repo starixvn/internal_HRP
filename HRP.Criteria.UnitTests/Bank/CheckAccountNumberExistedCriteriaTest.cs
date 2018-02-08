@@ -14,7 +14,8 @@
             {
                 Id = 1,
                 AccountNumber = "Test",
-                EmployeeId = 1
+                EmployeeId = 1,
+                BankType = 1
             };
 
             var expected = "BankAccount_CheckNumberExisted";
@@ -41,6 +42,10 @@
 
                 var criteria = GetBaseCriteria();
                 criteria.EmployeeId = 0;
+                data.Add(TheoryDatum.Factory(criteria, false));
+
+                criteria = GetBaseCriteria();
+                criteria.BankType = 0;
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = GetBaseCriteria();

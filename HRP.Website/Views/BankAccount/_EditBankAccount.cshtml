@@ -8,7 +8,7 @@
 @*<div asp-validation-summary="All"></div>*@
 
 <div class="list-message-error hidden">
-    <span asp-validation-for="BankAccount.BankType" class="message"></span>
+    @*<span asp-validation-for="BankAccount.BankType" class="message"></span>*@
     <span asp-validation-for="BankAccount.AccountName" class="message"></span>
     <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
     <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
@@ -22,7 +22,10 @@
 <div class="-has-icon msg-success hidden">
     @if (Model.TypeOfForm == FormType.Page)
     {
-        <span>Bank Account has been successfully updated!</span>
+        <span>Bank Account has been successfully updated! </span>
+        <span>You will be redirected in </span>
+        <span class="count-down-remaining">5</span>
+        <span> seconds.</span>
     }
     else
     {

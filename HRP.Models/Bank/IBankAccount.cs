@@ -27,7 +27,7 @@
         [Remote(
             action: "CheckAccountNumberExisted",
             controller: "BankAccount",
-            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId))]
+            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
         string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]
@@ -55,6 +55,10 @@
 
         [Display(ResourceType = typeof(ViewLang), Name = "BankType")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
+        [Remote(
+            action: "CheckAccountNumberExisted",
+            controller: "BankAccount",
+            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(AccountNumber))]
         int BankType { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "BeneficiaryName")]
