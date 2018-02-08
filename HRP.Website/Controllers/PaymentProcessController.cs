@@ -13,11 +13,8 @@
 
     public class PaymentProcessController : BaseController
     {
-        private readonly IBaseService baseService;
-
         public PaymentProcessController(IBaseService baseService, ISessionService sessionService) : base(baseService, sessionService)
         {
-            this.baseService = baseService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
@@ -39,7 +36,7 @@
             var completedDate = DateTime.Today.AddMonths(3);
             if (ModelState.IsValid)
             {
-                if(viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate)
+                if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate)
                 {
                     return RedirectToAction("UploadAttendanceAndSalary");
                 }

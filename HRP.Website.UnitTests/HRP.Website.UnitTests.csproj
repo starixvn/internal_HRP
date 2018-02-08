@@ -393,6 +393,7 @@
     <Compile Include="Controllers\EmployeeManagementControllerTests.cs" />
     <Compile Include="Controllers\ErrorControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Controllers\PaymentProcessControllerTests.cs" />
     <Compile Include="Controllers\UserManagementControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewComponents\MenuViewComponentTests.cs" />
