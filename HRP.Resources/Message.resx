@@ -654,6 +654,9 @@
   <data name="LessThanOrEqualCompare" xml:space="preserve">
     <value>{0} must be less than or equal to {1}.</value>
   </data>
+  <data name="CreateEmploymentSuccessfully" xml:space="preserve">
+    <value>Employment has been successfully created!</value>
+  </data>
   <data name="UpdateCurrencySettingSuccessfully" xml:space="preserve">
     <value>Currency Setting has been successfully updated!</value>
   </data>

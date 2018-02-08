@@ -9,7 +9,11 @@
 }
 
 <form id="createEmploymentForm" class="form-information" name="createEmploymentForm" enctype="multipart/form-data">
-    <div class="-has-icon msg-success hidden"></div>
+    <div class="-has-icon msg-success hidden">
+        <span>@Message.CreateEmploymentSuccessfully You will be redirected in </span>
+        <span class="count-down">5</span>
+        <span> seconds.</span>
+    </div>
     <div class="-has-icon msg-error hidden"></div>
     @Html.Partial("_ValidationCreateEmployment", Model)
 

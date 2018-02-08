@@ -26,10 +26,10 @@ var createEmployment = (function ($) {
     }
 
     function displaySuccessMessage() {
-        var $element = $createEmploymentForm.find('.msg-success');
+        var $element = $createEmploymentForm.find('.msg-success'),
+            $countDownElement = $element.find('.count-down');
         var delay = 5;
-        var textAlert = 'Employment has been successfully created. You will be redirected in ';
-        $element.removeClass('hidden').html(textAlert + delay + ' seconds.');
+        $element.removeClass('hidden');
 
         var intervalCountDown = setInterval(function () {
             if (delay === 0) {
@@ -37,7 +37,7 @@ var createEmployment = (function ($) {
                 $btnCancel.click();
             } else {
                 delay--;
-                $element.html(textAlert + delay + ' seconds.');
+                $countDownElement.html(delay);
             }
         }, 1000);
     };

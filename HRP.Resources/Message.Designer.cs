@@ -214,6 +214,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employment has been successfully created!.
+        /// </summary>
+        public static string CreateEmploymentSuccessfully {
+            get {
+                return ResourceManager.GetString("CreateEmploymentSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Issue is required!.
         /// </summary>
         public static string DateIssueRequired {
