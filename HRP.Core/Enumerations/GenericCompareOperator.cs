@@ -2,6 +2,7 @@
 {
     public enum GenericCompareOperator
     {
+        None,
         GreaterThan,
         GreaterThanOrEqual,
         LessThan,
