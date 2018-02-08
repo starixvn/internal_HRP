@@ -64,7 +64,7 @@
 
             viewModel.CompanyId = data.CompanyId;
 
-            viewModel.HaveCreatePermission = HasPermissionOnFunctionAndCompany(
+            viewModel.HaveCreatePermission = sessionService.HasPermissionOnCompany(
                 viewModel.CompanyId,
                 FunctionKey.EmployeeBankDetails,
                 Policy.Host);
@@ -178,7 +178,7 @@
                     }
                 }
 
-                viewModel.HaveCreatePermission = HasPermissionOnFunctionAndCompany(
+                viewModel.HaveCreatePermission = sessionService.HasPermissionOnCompany(
                     data.CompanyId,
                     FunctionKey.EmployeeBankDetails,
                     Policy.Host);
@@ -213,15 +213,6 @@
             }
 
             return disabledBankTypes;
-        }
-
-        private bool HasPermissionOnFunctionAndCompany(int companyId, string functionKey, Policy policy)
-        {
-            var hasPermissionOnFunction = sessionService.HasPermissionOnFunction(functionKey, policy);
-
-            var hasPermissionOnCompany = sessionService.HasPermissionOnCompany(companyId, functionKey, policy);
-
-            return hasPermissionOnFunction && hasPermissionOnCompany;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
@@ -276,6 +267,7 @@
         }
 
         [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
             if (bankTypeId == (int)Core.Enumerations.BankType.ContraCoAccount)

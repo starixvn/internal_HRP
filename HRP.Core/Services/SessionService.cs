@@ -54,32 +54,17 @@ namespace HRP.Core.Services
         public bool HasPermissionOnFunction(string functionKey, Policy policy)
         {
             var functions = Functions?.Where(x => x.FunctionKey == functionKey);
-            var result = false;
-
-            if (functions != null && functions.Any())
-            {
-                switch (policy)
-                {
-                    case Policy.Read:
-                        result = functions.Max(x => x.IsRead) || functions.Max(x => x.IsHost);
-                        break;
-
-                    case Policy.Host:
-                        result = functions.Max(x => x.IsHost);
-                        break;
-
-                    default:
-                        result = false;
-                        break;
-                }
-            }
-
-            return result;
+            return IsHavePermission(policy, functions);
         }
 
         public bool HasPermissionOnCompany(int companyId, string functionKey, Policy policy)
         {
             var functions = Functions?.Where(x => x.CompanyId == companyId && x.FunctionKey == functionKey);
+            return IsHavePermission(policy, functions);
+        }
+
+        private static bool IsHavePermission(Policy policy, IEnumerable<FunctionModel> functions)
+        {
             var result = false;
 
             if (functions != null && functions.Any())

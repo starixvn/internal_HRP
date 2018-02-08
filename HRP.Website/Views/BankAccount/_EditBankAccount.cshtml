@@ -22,14 +22,14 @@
 <div class="-has-icon msg-success hidden">
     @if (Model.TypeOfForm == FormType.Page)
     {
-        <span>Bank Account has been successfully updated! You will be redirected in </span>
+        <span>Bank Account has been successfully updated!</span>
     }
     else
     {
         <span>Bank Account has been successfully updated! Popup will be dismissed in </span>
+        <span class="count-down-remaining">5</span>
+        <span> seconds.</span>
     }
-    <span class="count-down-remaining">5</span>
-    <span> seconds.</span>
 </div>
 
 <div class="-has-icon msg-error hidden">

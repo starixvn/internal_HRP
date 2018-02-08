@@ -62,18 +62,19 @@ var bankAccountForm = {
             $(".bank-account-form .msg-error").text("").addClass("hidden");
             $(".bank-account-form .msg-success").removeClass("hidden");
 
-            // Disable form
-            bankAccountForm.disableForm();
-
             if ($(".bank-account-form").data("formstyle") === "Page") {
-                setInterval(bankAccountForm.countdown, 1000);
+                //setInterval(bankAccountForm.countdown, 1000);
 
                 setTimeout(function () {
-                    window.location.href = response.redirectTo;
+                    //window.location.href = response.redirectTo;
+                    $(".bank-account-form .msg-success").text("").addClass("hidden");
                 }, bankAccountForm.waitTime);
             }
 
             if ($(".bank-account-form").data("formstyle") === "Modal") {
+                // Disable form
+                bankAccountForm.disableForm();
+
                 setInterval(bankAccountForm.countdown, 1000);
 
                 setTimeout(function () {
