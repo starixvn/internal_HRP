@@ -8,7 +8,7 @@
 @*<div asp-validation-summary="All"></div>*@
 
 <div class="list-message-error hidden">
-    @*<span asp-validation-for="BankAccount.BankType" class="message"></span>*@
+    <span asp-validation-for="BankAccount.BankType" class="message"></span>
     <span asp-validation-for="BankAccount.AccountName" class="message"></span>
     <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
     <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
@@ -56,7 +56,7 @@
     <div>
         <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
         <div class="group-control">
-            <input class="control" asp-for="BankAccount.AccountName" />
+            <input class="control revalidate" asp-for="BankAccount.AccountName" />
             @*<span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>*@
         </div>
     </div>
@@ -64,7 +64,7 @@
 
 <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
 <div class="group-control">
-    <input class="control" asp-for="BankAccount.AccountNumber" />
+    <input class="control revalidate" asp-for="BankAccount.AccountNumber" />
 </div>
 
 

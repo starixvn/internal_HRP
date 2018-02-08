@@ -56,7 +56,7 @@
         [Display(ResourceType = typeof(ViewLang), Name = "BankType")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [Remote(
-            action: "CheckAccountNumberExisted",
+            action: "CheckAccountNumberExistedOnBankType",
             controller: "BankAccount",
             AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(AccountNumber))]
         int BankType { get; set; }

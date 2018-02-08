@@ -55,6 +55,19 @@ var transformSelect = {
         $("select").select2({
             minimumResultsForSearch: Infinity
         });
+
+        $("select").on("change",
+            function () {
+                $(this).valid();
+                $(".revalidate").each(function() {
+                    $(this).removeData("previousValue");
+                    $(this).valid();
+                });
+            });
+
+        //$(".select2").select2().change(function () {
+        //    $(this).valid();
+        //});
     }
 }
 
