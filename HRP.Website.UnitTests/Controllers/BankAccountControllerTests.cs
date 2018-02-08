@@ -8,6 +8,7 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria.Bank;
     using HRP.Models;
     using HRP.Models.Bank;
     using HRP.Services.Interfaces;
@@ -271,6 +272,35 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
+        [Fact]
+        public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
+        {
+            var controller = GetBankAccountController();
+            var refNames = new[] { ReferenceResource.ContraCoAccount };
+
+            refResourceService.GetReferenceResourcesByNames(refNames).Returns(new List<ReferenceResourceModel>());
+
+            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankType.ContraCoAccount, 1);
+
+            baseService.DidNotReceive().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
+            refResourceService.Received().GetReferenceResourcesByNames(refNames);
+            Assert.IsType<JsonResult>(actual);
+        }
+
+        [Fact]
+        public void GetEmployeeBankAccounts_NotContraCoAccountType_ReturnEmployeeBankAccounts()
+        {
+            var controller = GetBankAccountController();
+
+            baseService.GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
+
+            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankType.Ebanking, 1);
+
+            baseService.Received().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
+            refResourceService.DidNotReceive().GetReferenceResourcesByNames(Arg.Any<string[]>());
+            Assert.IsType<JsonResult>(actual);
+        }
+
         private IEnumerable<ReferenceResourceModel> GetResources()
         {
             var resources = new List<ReferenceResourceModel>
@@ -278,12 +308,12 @@
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = 1
+                        ResourceId = (int) Core.Enumerations.BankType.Ebanking
                     },
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = 2
+                        ResourceId = (int) Core.Enumerations.BankType.DirectBanking
                     },
                     new ReferenceResourceModel
                     {

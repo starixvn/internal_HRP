@@ -280,10 +280,8 @@
         {
             if (bankTypeId == (int)Core.Enumerations.BankType.ContraCoAccount)
             {
-                var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
-                var result = refResourceService.FilterReferenceResources(refResources, ReferenceResource.ContraCoAccount);
-
-                return Json(result.Select(x => new { id = x.ResourceId, text = x.Value }));
+                var refResources = refResourceService.GetReferenceResourcesByNames(new[] { ReferenceResource.ContraCoAccount });
+                return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));
             }
             else
             {
