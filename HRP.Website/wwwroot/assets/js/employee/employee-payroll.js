@@ -3,7 +3,7 @@
         return $(className).not(element).serializeArray().filter(function (item) {
             return item.value !== '';
         }).length > 0;
-    };
+    }
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
         if (currency === 'VND')
@@ -65,7 +65,7 @@
         if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
             $autoCalculatedElement.valid();
         }
-    };
+    }
 
     function calculateAmountForBanks() {
         var totalAmountCurrency = $('#Allowance_CurrencyCode').val();
@@ -100,7 +100,7 @@
         if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
             $autoCalculatedElement.valid();
         }
-    };
+    }
 
     function calculateTotalAllowance(allowanceCurrency) {
         var totalAmount = new BigNumber(0);
@@ -153,7 +153,7 @@
             var currency = $currency.val();
             $amount.val(number.roundWithCurrency(2, currency).toStringWithCurrency(currency));
         }
-    };
+    }
 
     function validatedInvalidRelatedElements(element) {
         var parent = $(element).closest('.group-complex');
@@ -166,13 +166,8 @@
     function getAddBankAccountModal(employeeId, selectedBankType) {
         var createBankAccountInPayrollUrl = $("#create-bank-account-in-payroll-url").val();
         $.ajax({
-            url: createBankAccountInPayrollUrl +
-                "?employeeId=" +
-                employeeId +
-                "&" +
-                "bankType=" +
-                selectedBankType,
-            success: function(data) {
+            url: createBankAccountInPayrollUrl + "?employeeId=" + employeeId + "&bankType=" + selectedBankType,
+            success: function (data) {
                 $("#dynamic-modals").html(data);
                 applyClientSideInitForAddBankAccountModal();
                 $("#dynamic-modals .modal").modal();
@@ -198,7 +193,7 @@
     function assignAddBankAccountButton() {
         $("form.payroll").on("click",
             ".add-account",
-            function() {
+            function () {
                 if ($(this).hasClass("disabled")) {
                     return;
                 }
@@ -243,7 +238,7 @@
             $(this).siblings('.bank-account-select').val('').trigger('change.select2');
             validatedInvalidRelatedElements(e.target);
 
-            if (this.value == 2 || this.value == 1) {
+            if (this.value === 2 || this.value === 1) {
                 $(this).siblings('.add-account').removeClass('disabled');
             } else {
                 $(this).siblings('.add-account').addClass('disabled');
@@ -257,7 +252,7 @@
         $('.select2').select2({
             allowClear: true,
             placeholder: '',
-            minimumResultsForSearch: Infinity,
+            minimumResultsForSearch: Infinity
         }).on('select2:unselecting', function () {
             $(this).data('unselecting', true);
         }).on('select2:opening', function (e) {
@@ -291,7 +286,7 @@
             },
             allowClear: true,
             placeholder: '',
-            minimumResultsForSearch: Infinity,
+            minimumResultsForSearch: Infinity
         }).on('select2:unselecting', function () {
             $(this).data('unselecting', true);
         }).on('select2:opening', function (e) {
@@ -303,7 +298,7 @@
             $(this).click();
         });
 
-        if ($('#CanCreateBankAccount').val() !== 'True'){
+        if ($('#CanCreateBankAccount').val() !== 'True') {
             $('.add-account').addClass('disabled');
         }
 
@@ -315,7 +310,7 @@
         $('.add-account:not(.disabled)').each(function (index, element) {
             var $element = $(element);
             var bankType = $element.siblings('.bank-type-select').val();
-            if (bankType == 3 || bankType == '') {
+            if (bankType === 3 || bankType === '') {
                 $element.addClass('disabled');
             }
         });

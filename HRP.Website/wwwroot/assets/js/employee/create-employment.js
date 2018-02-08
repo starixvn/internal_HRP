@@ -40,7 +40,7 @@ var createEmployment = (function ($) {
                 $countDownElement.html(delay);
             }
         }, 1000);
-    };
+    }
 
     function registerEventSubmitForm() {
         $createEmploymentForm.submit(function (e) {
@@ -117,7 +117,7 @@ var createEmployment = (function ($) {
             var isFirstLoad = $(this).data('isfirstload');
 
             if (isFirstLoad) {
-                $(this).data('isfirstload', false)
+                $(this).data('isfirstload', false);
                 loadEmploymentForm();
             }
         });

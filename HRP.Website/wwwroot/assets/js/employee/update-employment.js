@@ -50,7 +50,7 @@ var updateEmployment = (function ($) {
             var isFirstLoad = $(this).data('isfirstload');
 
             if (isFirstLoad) {
-                $(this).data('isfirstload', false)
+                $(this).data('isfirstload', false);
                 loadEmploymentForm();
             }
         });

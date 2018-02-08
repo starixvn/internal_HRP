@@ -117,7 +117,7 @@ namespace HRP.Website.Controllers
             var otpRegisterToken = userService.GenerateTokenOTPRegister(sessionService.Username);
 
             // step 3: Show SetupOtp screen
-            return RedirectToAction( "SetupOtpAfterReset", "Account", new { token = otpRegisterToken });
+            return RedirectToAction("SetupOtpAfterReset", "Account", new { token = otpRegisterToken });
         }
 
         [AllowAnonymous]
