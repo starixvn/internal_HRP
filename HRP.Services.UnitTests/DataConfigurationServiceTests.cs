@@ -8,6 +8,7 @@
     using HRP.Criteria;
     using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
+    using HRP.Criteria.Country;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobCategory;
@@ -1367,6 +1368,185 @@
         }
 
         #endregion Job Grade
+
+        #region Country
+
+        [Fact]
+        public async Task GetAllCountryAsync_BaseServiceGetCountryList_ReturnSimpleItemList()
+        {
+            // Arrange
+            var countries = new List<Country> { MockCountry() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Country>(Arg.Any<GetAllCountryCriteria>()).Returns(countries);
+
+            // Act
+            var actual = (await dataConfigurationService.GetAllCountryAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(countries.Count, actual.Count);
+            Assert.Equal(countries[0].CountryId, actual[0].ItemId);
+            Assert.Equal(countries[0].Code, actual[0].ItemName);
+            Assert.Equal(countries[0].Name, actual[0].Description);
+            Assert.Equal(countries[0].IsActive, actual[0].IsActive);
+        }
+
+        [Fact]
+        public async Task GetAllCountryAsync_BaseServiceGetEmptyCountryList_ReturnEmptySimpleItemList()
+        {
+            // Arrange
+            var countries = new List<Country>();
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Country>(Arg.Any<GetAllCountryCriteria>()).Returns(countries);
+            // Act
+            var actual = (await dataConfigurationService.GetAllCountryAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+            Assert.Equal(countries.Count, actual.Count);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedCountryAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CheckCountryExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCountryExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedCountryAsync(item);
+
+            // Assert
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(item.ItemId, criteria.CountryId);
+            Assert.Equal(item.ItemName, criteria.Code);
+        }
+
+        [Fact]
+        public async Task CreateCountryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CreateCountryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateCountryAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
+            Assert.Equal(item.ItemName, criteria.Code);
+            Assert.Equal(item.Description, criteria.Name);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateCountryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateCountryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateCountryAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetCountryByIdAsync_BaseServiceGetCountryInstance_ReturnSimpleItemInstance()
+        {
+            // Arrange
+            var id = 14;
+            var country = MockCountry();
+            var criteria = new GetCountryByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Country>(Arg.Do<GetCountryByIdCriteria>(x => criteria = x)).Returns(country);
+
+            // Act
+            var actual = await dataConfigurationService.GetCountryByIdAsync(id);
+
+            // Assert
+            Assert.IsType<SimpleItem>(actual);
+            Assert.Equal(country.CountryId, actual.ItemId);
+            Assert.Equal(country.Code, actual.ItemName);
+            Assert.Equal(country.Name, actual.Description);
+            Assert.Equal(country.IsActive, actual.IsActive);
+            Assert.Equal(id, criteria.CountryId);
+        }
+
+        [Fact]
+        public async Task GetCountryByIdAsync_BaseServiceGetNullCountry_ReturnNull()
+        {
+            // Arrange
+            Country country = null;
+            var dataConfigurationService = GetDataConfigurationService();
+
+            baseService.GetDataEntityAsync<Country>(Arg.Any<GetCountryByIdCriteria>()).Returns(country);
+
+            // Act
+            var actual = await dataConfigurationService.GetCountryByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateCountryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new UpdateCountryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCountryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCountryAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(item.ItemId, criteria.CountryId);
+            Assert.Equal(item.ItemName, criteria.Code);
+            Assert.Equal(item.Description, criteria.Name);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateCountryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateCountryCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCountryAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Country
 
         #region City
 

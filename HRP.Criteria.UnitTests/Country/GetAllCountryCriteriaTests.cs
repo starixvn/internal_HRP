@@ -22,7 +22,10 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetAllCountryCriteria();
+            var criteria = new GetAllCountryCriteria
+            {
+                IsActive = true
+            };
 
             // Act
             var actual = criteria.IsValid();

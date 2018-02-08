@@ -1313,6 +1313,162 @@
 
         #endregion Job Grade
 
+        #region Country
+
+        [Fact]
+        public async Task GetAllCountry_ServiceGetSimpleItemList_ReturnPartialViewWithSimpleItemTableViewModel()
+        {
+            // Arrange
+            var items = new List<SimpleItem> { MockSimpleItem() };
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetAllCountryAsync().Returns(items);
+
+            // Act
+            var actual = await controller.GetAllCountry();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_SimpleItemTable", viewResult.ViewName);
+            Assert.Equal(items, viewModel.Items);
+            Assert.Equal(ViewLang.Country, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public void CreateCountry_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel()
+        {
+            // Arrange
+            var controller = GetDataConfigurationController();
+
+            // Act
+            var actual = controller.CreateCountry();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
+            Assert.Equal(ViewLang.Country, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateCountryPost_CountryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task CreateCountryPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.CreateCountryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCountry_ServiceGetCountryItem_ReturnPartialViewWithUpdateSimpleItemViewModel()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCountryByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateCountry(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(item, viewModel.Item);
+            Assert.Equal(ViewLang.Country, viewModel.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateCountry_ServiceGetNullCountryItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            SimpleItem item = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCountryByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateCountry(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateCountryPost_CountryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task UpdateCountryPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.UpdateCountryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion Country
+
         #region City
 
         [Fact]
