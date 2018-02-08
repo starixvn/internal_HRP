@@ -16,6 +16,7 @@
     using HRP.Criteria.JobCategory;
     using HRP.Criteria.JobGrade;
     using HRP.Criteria.Office;
+    using HRP.Criteria.RefResource;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -44,13 +45,6 @@
                     FieldId = (int)FieldType.CompanyBVI,
                     FieldName = ViewLang.CompanyBVI,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyBVI
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.CompanyLocal,
-                    FieldName = ViewLang.CompanyLocal,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyLocal
                 },
 
                 new Field
@@ -114,7 +108,17 @@
                     FieldId = (int)FieldType.Office,
                     FieldName = ViewLang.Office,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllOffice
-                }
+                },
+
+                new Field
+                {
+                    FieldId = (int)FieldType.CompanyLocal,
+                    FieldName = ViewLang.CompanyLocal,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyLocal,
+                    LinkCreateItem = string.Empty,
+                    LinkUpdateItem = string.Empty,
+                    IsRefResource = true
+                },
             };
 
             return fieldList.OrderBy(x => x.FieldName);
@@ -969,6 +973,113 @@
         }
 
         #endregion Office
+
+        #region RefResource Item
+
+        /// <summary>
+        /// Company Local, Currency
+        /// </summary>
+
+        public async Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName)
+        {
+            var items = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refName }).ConfigureAwait(false);
+
+            if (items.Any())
+            {
+                var result = items.Select(c => new SimpleItem
+                {
+                    ItemId = c.ResourceId,
+                    ItemName = c.Value,
+                    Description = c.Description,
+                    IsActive = c.IsActive
+                }).ToList();
+
+                return result;
+            }
+
+            return new List<SimpleItem>();
+        }
+
+        public async Task<bool> IsExistedRefResourceItemAsync(string refName, SimpleItem item)
+        {
+            var criteria = new CheckRefResourceExistsCriteria
+            {
+                RefName = refName,
+                ResourceId = item.ItemId,
+                Value = item.ItemName
+            };
+
+            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateRefResourceItemAsync(string refName, SimpleItem item)
+        {
+            var criteria = new CreateRefResourceCriteria
+            {
+                RefName = refName,
+                Value = item.ItemName,
+                Description = item.Description,
+                IsActive = item.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Value);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<SimpleItem> GetRefResourceByNameAndIdAsync(string refName, int resourceId)
+        {
+            var criteria = new GetRefResourceByNameAndIdCriteria
+            {
+                ResourceId = resourceId,
+                RefName = refName
+            };
+
+            var item = await baseService.GetDataEntityAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
+
+            if (item != null)
+            {
+                return new SimpleItem
+                {
+                    ItemId = item.ResourceId,
+                    ItemName = item.Value,
+                    Description = item.Description,
+                    IsActive = item.IsActive
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<CommandResult> UpdateRefResourceItemAsync(string refName, SimpleItem item)
+        {
+            var criteria = new UpdateRefResourceItemCriteria
+            {
+                RefName = refName,
+                ResourceId = item.ItemId,
+                Value = item.ItemName,
+                Description = item.Description,
+                IsActive = item.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion RefResource Item
 
         #region Common
 

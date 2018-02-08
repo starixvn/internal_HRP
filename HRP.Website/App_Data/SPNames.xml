@@ -2,6 +2,10 @@
 <Functions>
   <Function Name="Reference Resource">
     <Setting Key="RefResource_GetByNames" SpName="RefResource_GetByNames" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_CheckExists" SpName="RefResource_CheckExists" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_Create" SpName="RefResource_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_GetByNameAndId" SpName="RefResource_GetByNameAndId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_Update" SpName="RefResource_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Function">
     <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>

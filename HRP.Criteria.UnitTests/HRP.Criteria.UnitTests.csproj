@@ -115,6 +115,10 @@
     <Compile Include="Office\GetAllOfficeCriteriaTests.cs" />
     <Compile Include="Office\GetOfficeByIdCriteriaTests.cs" />
     <Compile Include="Office\UpdateOfficeCriteriaTests.cs" />
+    <Compile Include="RefResource\CheckRefResourceExistsCriteriaTests.cs" />
+    <Compile Include="RefResource\CreateRefResourceCriteriaTests.cs" />
+    <Compile Include="RefResource\GetRefResourceByNameAndIdCriteriaTests.cs" />
+    <Compile Include="RefResource\UpdateRefResourceItemCriteriaTests.cs" />
     <Compile Include="Section\CheckSectionExistsCriteriaTests.cs" />
     <Compile Include="Section\CreateSectionCriteriaTests.cs" />
     <Compile Include="Section\GetAllSectionCriteriaTests.cs" />

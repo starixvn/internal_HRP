@@ -14,6 +14,7 @@
     using HRP.Criteria.JobCategory;
     using HRP.Criteria.JobGrade;
     using HRP.Criteria.Office;
+    using HRP.Criteria.RefResource;
     using HRP.Criteria.Section;
     using HRP.Models;
     using HRP.Models.DataConfiguration;
@@ -1858,6 +1859,194 @@
 
         #endregion Office
 
+        #region RefResource Item
+
+        [Fact]
+        public async Task GetAllRefResourceItemAsync_BaseServiceGetReferenceResourceModelList_ReturnSimpleItemList()
+        {
+            // Arrange
+            var refName = "xxxzzz";
+            var items = new List<ReferenceResourceModel> { MockReferenceResourceModel() };
+            var criteria = new GetRefResourceByNamesCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Do<GetRefResourceByNamesCriteria>(x => criteria = x)).Returns(items);
+
+            // Act
+            var actual = (await dataConfigurationService.GetAllRefResourceItemAsync(refName)) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(items.Count, actual.Count);
+            Assert.Equal(items[0].ResourceId, actual[0].ItemId);
+            Assert.Equal(items[0].Value, actual[0].ItemName);
+            Assert.Equal(items[0].Description, actual[0].Description);
+            Assert.Equal(items[0].IsActive, actual[0].IsActive);
+            Assert.Equal(refName, criteria.RefNames);
+        }
+
+        [Fact]
+        public async Task GetAllRefResourceItemAsync_BaseServiceGetEmptyReferenceResourceModelList_ReturnEmptySimpleItemList()
+        {
+            // Arrange
+            var items = new List<ReferenceResourceModel>();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(items);
+
+            // Act
+            var actual = (await dataConfigurationService.GetAllRefResourceItemAsync("aaa")) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+            Assert.Equal(items.Count, actual.Count);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedRefResourceItemAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var refName = "xxxzzz";
+            var item = MockSimpleItem();
+            var criteria = new CheckRefResourceExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckRefResourceExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedRefResourceItemAsync(refName, item);
+
+            // Assert
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(item.ItemId, criteria.ResourceId);
+            Assert.Equal(item.ItemName, criteria.Value);
+            Assert.Equal(refName, criteria.RefName);
+        }
+
+        [Fact]
+        public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var refName = "xxxzzz";
+            var item = MockSimpleItem();
+            var criteria = new CreateRefResourceCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateRefResourceCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateRefResourceItemAsync(refName, item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Value), actual.Message);
+            Assert.Equal(item.ItemName, criteria.Value);
+            Assert.Equal(item.Description, criteria.Description);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+            Assert.Equal(refName, criteria.RefName);
+        }
+
+        [Fact]
+        public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateRefResourceCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateRefResourceCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateRefResourceItemAsync("aaba", new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetRefResourceByNameAndIdAsync_BaseServiceGetReferenceResourceModelInstance_ReturnSimpleItemInstance()
+        {
+            // Arrange
+            var id = 19;
+            var refName = "xxxzzz";
+            var item = MockReferenceResourceModel();
+            var criteria = new GetRefResourceByNameAndIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<ReferenceResourceModel>(Arg.Do<GetRefResourceByNameAndIdCriteria>(x => criteria = x)).Returns(item);
+
+            // Act
+            var actual = await dataConfigurationService.GetRefResourceByNameAndIdAsync(refName, id);
+
+            // Assert
+            Assert.IsType<SimpleItem>(actual);
+            Assert.Equal(item.ResourceId, actual.ItemId);
+            Assert.Equal(item.Value, actual.ItemName);
+            Assert.Equal(item.Description, actual.Description);
+            Assert.Equal(item.IsActive, actual.IsActive);
+            Assert.Equal(id, criteria.ResourceId);
+            Assert.Equal(refName, criteria.RefName);
+        }
+
+        [Fact]
+        public async Task GetRefResourceByNameAndIdAsync_BaseServiceGetNullReferenceResourceModel_ReturnNull()
+        {
+            // Arrange
+            ReferenceResourceModel refModel = null;
+            var dataConfigurationService = GetDataConfigurationService();
+
+            baseService.GetDataEntityAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNameAndIdCriteria>()).Returns(refModel);
+
+            // Act
+            var actual = await dataConfigurationService.GetRefResourceByNameAndIdAsync("cca", 11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var refName = "xxxzzz";
+            var item = MockSimpleItem();
+            var criteria = new UpdateRefResourceItemCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateRefResourceItemCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateRefResourceItemAsync(refName, item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(item.ItemId, criteria.ResourceId);
+            Assert.Equal(item.ItemName, criteria.Value);
+            Assert.Equal(item.Description, criteria.Description);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateRefResourceItemCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateRefResourceItemCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateRefResourceItemAsync("ss", new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion RefResource Item
+
         #region Common
 
         [Fact]
@@ -2236,6 +2425,18 @@
                 CountryCode = "VN",
                 CityId = 2,
                 CityCode = "hcmmm"
+            };
+        }
+
+        private ReferenceResourceModel MockReferenceResourceModel()
+        {
+            return new ReferenceResourceModel
+            {
+                ResourceId = 80,
+                RefName = "ahihi",
+                Value = "val",
+                Description = "desne",
+                IsActive = true
             };
         }
 

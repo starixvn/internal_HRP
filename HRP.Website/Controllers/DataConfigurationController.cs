@@ -1138,6 +1138,105 @@
 
         #endregion Office
 
+        #region Company Local
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllCompanyLocal()
+        {
+            var companies = await dataConfigurationService.GetAllRefResourceItemAsync(ReferenceResource.LocalCompany);
+            var viewModel = new SimpleItemTableViewModel
+            {
+                Items = companies,
+                FieldName = ViewLang.CompanyLocal,
+                LinkCreateItem = DataConfigurationActionLink.CreateCompanyLocal,
+                LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyLocal
+            };
+
+            return PartialView("_SimpleItemTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public IActionResult CreateCompanyLocal()
+        {
+            var viewModel = new CreateSimpleItemViewModel
+            {
+                FieldName = ViewLang.CompanyLocal,
+                LinkCreateItem = DataConfigurationActionLink.CreateCompanyLocal
+            };
+
+            return PartialView("_CreateSimpleItem", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCompanyLocal(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCompanyLocal(int id)
+        {
+            var company = await dataConfigurationService.GetRefResourceByNameAndIdAsync(ReferenceResource.LocalCompany, id);
+
+            if (company != null)
+            {
+                var viewModel = new UpdateSimpleItemViewModel
+                {
+                    FieldName = ViewLang.CompanyLocal,
+                    Item = company,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyLocal
+                };
+
+                return PartialView("_UpdateSimpleItem", viewModel);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCompanyLocal(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Company Local
+
         #region Commons
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]

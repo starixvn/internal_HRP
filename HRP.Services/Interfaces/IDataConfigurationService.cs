@@ -121,6 +121,16 @@
 
         Task<CommandResult> UpdateOfficeAsync(Office office);
 
+        Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName);
+
+        Task<bool> IsExistedRefResourceItemAsync(string refName, SimpleItem item);
+
+        Task<CommandResult> CreateRefResourceItemAsync(string refName, SimpleItem item);
+
+        Task<SimpleItem> GetRefResourceByNameAndIdAsync(string refName, int resourceId);
+
+        Task<CommandResult> UpdateRefResourceItemAsync(string refName, SimpleItem item);
+
         //// Common funcs
         Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
