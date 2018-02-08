@@ -60,7 +60,6 @@ input, button {
   padding-right: 16px;
   border: none;
   outline: none;
-  cursor: pointer;
   font-size: inherit;
   font-weight: bold;
   text-transform: capitalize;
@@ -107,6 +106,10 @@ input, button {
 
 a.button, a.button:hover {
   text-decoration: none;
+}
+
+.button:not(:disabled) {
+  cursor: pointer;
 }
 
 .block {

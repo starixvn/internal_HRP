@@ -18,6 +18,22 @@
   color: #ff0000;
 }
 
+.calendar {
+  position: relative;
+}
+
+.calendar .icon-calendar {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  color: #f57d14;
+  font-size: 22px;
+}
+
+.calendar .icon-calendar.disabled {
+  opacity: .5;
+}
+
 .search-form {
   display: flex;
   justify-content: flex-start;
@@ -34,7 +50,6 @@
 }
 
 .search-form .calendar {
-  position: relative;
   width: 105px;
 }
 
@@ -43,14 +58,8 @@
   padding-right: 26px;
 }
 
-.search-form .calendar:after {
-  position: absolute;
+.search-form .calendar .icon-calendar {
   bottom: 5px;
-  right: 6px;
-  font-family: 'hrp';
-  content: "\e902";
-  color: #f57d14;
-  font-size: 22px;
 }
 
 .form-information .text {
@@ -128,22 +137,6 @@
 
 .form-information .msg-error, .form-information .text-danger {
   margin-top: 10px;
-}
-
-.form-information .calendar {
-  position: relative;
-}
-
-.form-information .calendar .icon-calendar {
-  position: absolute;
-  bottom: 3px;
-  right: 4px;
-  color: #f57d14;
-  font-size: 22px;
-}
-
-.form-information .calendar .icon-calendar.disabled {
-  opacity: .5;
 }
 
 .top-header {
