@@ -64,7 +64,8 @@
             {
                 Id = 1,
                 AccountNumber = "Test",
-                EmployeeId = 1
+                EmployeeId = 1,
+                BankType = 1
             };
         }
     }
