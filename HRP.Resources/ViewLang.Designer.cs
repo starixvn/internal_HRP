@@ -1285,6 +1285,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment Process.
+        /// </summary>
+        public static string PaymentProcess {
+            get {
+                return ResourceManager.GetString("PaymentProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment Transaction.
         /// </summary>
         public static string PaymentTransaction {
@@ -1533,6 +1542,15 @@ namespace HRP.Resources {
         public static string SelectAutoCalculatedAmount {
             get {
                 return ResourceManager.GetString("SelectAutoCalculatedAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Working Month &amp; Company.
+        /// </summary>
+        public static string SelectWorkingMonthCompany {
+            get {
+                return ResourceManager.GetString("SelectWorkingMonthCompany", resourceCulture);
             }
         }
         

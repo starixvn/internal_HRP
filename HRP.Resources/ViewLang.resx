@@ -699,4 +699,10 @@
   <data name="WorkingDays" xml:space="preserve">
     <value>Working Days</value>
   </data>
+  <data name="PaymentProcess" xml:space="preserve">
+    <value>Payment Process</value>
+  </data>
+  <data name="SelectWorkingMonthCompany" xml:space="preserve">
+    <value>Select Working Month &amp; Company</value>
+  </data>
 </root>
