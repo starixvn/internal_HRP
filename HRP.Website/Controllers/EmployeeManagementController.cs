@@ -19,10 +19,8 @@
     [HRPAuthorize]
     public class EmployeeManagementController : BaseController
     {
-        private readonly IBaseService baseService;
         private readonly IEmployeeManagementService employeeService;
         private readonly IEmployeePayrollService payrollService;
-        private readonly ISessionService sessionService;
 
         public EmployeeManagementController(
             IBaseService baseService,
@@ -30,10 +28,8 @@
             IEmployeePayrollService payrollService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
-            this.baseService = baseService;
             this.employeeService = employeeService;
             this.payrollService = payrollService;
-            this.sessionService = sessionService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]

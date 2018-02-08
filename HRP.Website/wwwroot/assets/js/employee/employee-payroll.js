@@ -495,7 +495,7 @@
                 }, 5000);
             } else {
                 if (response.message) {
-                    commonFunctions.showErrorMessage(response.message);
+                    commonFunctions.showErrorMessage($('.msg-error'), response.message);
                 }
             }
         },

@@ -9,8 +9,8 @@
 
     public class BaseController : Controller
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
+        protected readonly IBaseService baseService;
+        protected readonly ISessionService sessionService;
 
         public BaseController(IBaseService baseService, ISessionService sessionService)
         {

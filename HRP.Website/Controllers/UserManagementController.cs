@@ -21,8 +21,6 @@
     [HRPAuthorize]
     public class UserManagementController : BaseController
     {
-        private readonly ISessionService sessionService;
-        private readonly IBaseService baseService;
         private readonly IFunctionService functionService;
 
         public UserManagementController(
@@ -30,8 +28,6 @@
             IBaseService baseService,
             IFunctionService functionService) : base(baseService, sessionService)
         {
-            this.sessionService = sessionService;
-            this.baseService = baseService;
             this.functionService = functionService;
         }
 

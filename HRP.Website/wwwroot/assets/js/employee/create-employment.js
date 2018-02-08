@@ -72,7 +72,7 @@ var createEmployment = (function ($) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
                                 commonFunctions.showValidationSummary($createEmploymentForm);
                             } else {
-                                commonFunctions.showErrorMessage(response.message);
+                                commonFunctions.showErrorMessage($createEmploymentForm.find('.msg-error'), response.message);
                             }
                         }
                     },

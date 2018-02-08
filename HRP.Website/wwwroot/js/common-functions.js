@@ -3,19 +3,27 @@
         pagerRanges = [20, 50, 100],
         noDataOnTableMsg = 'There is no data.';
 
-    function showErrorMessage(message) {
-        $('.msg-error').text(message).removeClass('hidden');
+    function showErrorMessage($element, message) {
+        $element.text(message).removeClass('hidden');
 
         setTimeout(function () {
-            $('.msg-error').text('').addClass('hidden');
+            $element.text('').addClass('hidden');
         }, 5000);
     }
 
-    function showSuccessMessage(message) {
-        $('.msg-success').text(message).removeClass('hidden');
+    function showSuccessMessage($element) {
+        $element.removeClass('hidden');
 
         setTimeout(function () {
-            $('.msg-success').text('').addClass('hidden');
+            $element.addClass('hidden');
+        }, 5000);
+    }
+
+    function showSuccessMessage($element, message) {
+        $element.text(message).removeClass('hidden');
+
+        setTimeout(function () {
+            $element.text('').addClass('hidden');
         }, 5000);
     }
 

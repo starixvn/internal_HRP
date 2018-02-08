@@ -67,13 +67,13 @@ var updateEmployment = (function ($) {
         initModule: initModule,
         onUpdateSuccess: function (response) {
             if (response.isSuccessful) {
-                commonFunctions.showSuccessMessage('Employment has been successfully updated!');
+                commonFunctions.showSuccessMessage($updateEmploymentForm.find('.msg-success'));
             } else {
                 if (response.errors) {
                     $updateEmploymentForm.validate().showErrors(response.errors);
                     commonFunctions.showValidationSummary($updateEmploymentForm);
                 } else {
-                    commonFunctions.showErrorMessage(response.message);
+                    commonFunctions.showErrorMessage($updateEmploymentForm.find('.msg-error'), response.message);
                 }
             }
         }

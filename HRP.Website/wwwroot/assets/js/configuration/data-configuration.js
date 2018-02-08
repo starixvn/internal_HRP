@@ -278,14 +278,14 @@
         if (response.isSuccessful) {
             $("#newItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
-            commonFunctions.showSuccessMessage(response.message);////ref
+            commonFunctions.showSuccessMessage($('.msg-success'), response.message);////ref
             reloadTableListItem();
         } else {
             if (response.errors) {
                 $createItemForm.validate().showErrors(response.errors); //todo test here
                 commonFunctions.showValidationSummary($createItemForm);
             } else {
-                commonFunctions.showErrorMessage(response.message);
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
         }
     }
@@ -295,14 +295,14 @@
         if (response.isSuccessful) {
             $("#editItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
-            commonFunctions.showSuccessMessage(response.message);////ref
+            commonFunctions.showSuccessMessage($('.msg-success'), response.message);////ref
             reloadTableListItem();
         } else {
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here
                 commonFunctions.showValidationSummary($editItemForm);
             } else {
-                commonFunctions.showErrorMessage(response.message);
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
         }
     }

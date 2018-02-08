@@ -15,7 +15,6 @@
     </environment>
 }
 
-
 <ol class="breadcrumb">
     <li class="like-link">Configuration</li>
     <li class="active">@ViewLang.CurrencySetting</li>
@@ -30,10 +29,12 @@
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
-    </div>    
+    </div>
 </form>
 
-<div class="msg-success -has-icon hidden"></div>
+<div class="msg-success -has-icon hidden">
+    @Message.UpdateCurrencySettingSuccessfully
+</div>
 <div class="msg-error -has-icon hidden"></div>
 
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Xml.Linq;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -17,8 +16,6 @@
     [HRPAuthorize]
     public class CurrencySettingController : BaseController
     {
-        private readonly ISessionService sessionService;
-        private readonly IBaseService baseService;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
         public CurrencySettingController(
@@ -26,8 +23,6 @@
             IBaseService baseService,
             IOptionsSnapshot<AppSettingsOptions> configuration) : base(baseService, sessionService)
         {
-            this.sessionService = sessionService;
-            this.baseService = baseService;
             this.configuration = configuration;
         }
 
@@ -36,7 +31,7 @@
         public IActionResult Index(DateTime? selectedTime)
         {
             var date = selectedTime ?? DateTime.Today;
-            
+
             var criteria = new GetExchangeRateCriteria
             {
                 Month = date.Month,

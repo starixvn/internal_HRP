@@ -1600,6 +1600,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currency Setting has been successfully updated!.
+        /// </summary>
+        public static string UpdateCurrencySettingSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdateCurrencySettingSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Payroll has been successfully updated. You will be redirected in 5 seconds..
         /// </summary>
         public static string UpdateEmployeePayrollSuccessfully {
@@ -1618,11 +1627,38 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employment has been successfully updated!.
+        /// </summary>
+        public static string UpdateEmploymentSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdateEmploymentSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update failed.
         /// </summary>
         public static string UpdateFail {
             get {
                 return ResourceManager.GetString("UpdateFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission has been successfully updated!.
+        /// </summary>
+        public static string UpdatePermissionSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdatePermissionSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Details has been successfully updated!.
+        /// </summary>
+        public static string UpdatePersonalDetailsSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdatePersonalDetailsSuccessfully", resourceCulture);
             }
         }
         

@@ -15,8 +15,6 @@ namespace HRP.Website.Controllers
 
     public class AuthController : BaseController
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
         private readonly IUserService userService;
 
         public AuthController(
@@ -25,8 +23,6 @@ namespace HRP.Website.Controllers
             IBaseService baseService) : base(baseService, sessionService)
         {
             this.userService = userService;
-            this.sessionService = sessionService;
-            this.baseService = baseService;
         }
 
         public IActionResult Login()

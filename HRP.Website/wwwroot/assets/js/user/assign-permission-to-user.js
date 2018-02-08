@@ -312,9 +312,9 @@ var assignPermissionToUser = (function ($) {
                     },
                     success: function (response) {
                         if (response.isSuccessful) {
-                            commonFunctions.showSuccessMessage('Permission has been successfully updated!');
+                            commonFunctions.showSuccessMessage($('.msg-success'));
                         } else {
-                            commonFunctions.showErrorMessage(response.Message);
+                            commonFunctions.showErrorMessage($('.msg-error'), response.Message);
                         }
                     },
                     error: commonFunctions.handleAjaxError

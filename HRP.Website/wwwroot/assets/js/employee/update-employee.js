@@ -26,13 +26,13 @@
 
     function onUpdateSuccess(response) {
         if (response.isSuccessful) {
-            commonFunctions.showSuccessMessage('Personal Detail has been successfully updated!');
+            commonFunctions.showSuccessMessage($form.find('.msg-success'));
         } else {
             if (response.errors) {
                 $form.validate().showErrors(response.errors);
                 commonFunctions.showValidationSummary($form);
             } else {
-                commonFunctions.showErrorMessage(response.message);
+                commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
             }
         }
     }

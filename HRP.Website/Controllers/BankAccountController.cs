@@ -16,10 +16,8 @@
     [HRPAuthorize]
     public class BankAccountController : BaseController
     {
-        private readonly IBaseService baseService;
         private readonly IBankAccountService bankAccountService;
         private readonly IRefResourceService refResourceService;
-        private readonly ISessionService sessionService;
         private const int MAX_BANK_ACCOUNT_PER_TYPE = 3;
 
         private readonly string[] refNames =
@@ -35,10 +33,8 @@
             IRefResourceService refResourceService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
-            this.baseService = baseService;
             this.bankAccountService = bankAccountService;
             this.refResourceService = refResourceService;
-            this.sessionService = sessionService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
