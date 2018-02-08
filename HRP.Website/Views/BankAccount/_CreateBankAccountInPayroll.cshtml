@@ -26,13 +26,13 @@
                         </div>
                         <div class="modal-body">
                             @Html.Partial("_EditBankAccount", Model)
-                            <div class="list-button">
-                                <button type="button" class="button -second" data-dismiss="modal">Close</button>
+                            <div class="list-button">                                
                                 <button class="button -primary"
                                         data-loading-text="@ViewLang.Saving ..."
                                         type="submit">
                                     Save
                                 </button>
+                                <button type="button" class="button -second" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </form>

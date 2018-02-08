@@ -187,6 +187,15 @@ hr {
 
 .bank-account-form {
     width: 578px;
+
+    .list-button .button {
+        float: right;
+
+        &:first-child {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+    }
 }
 
 .modal-content .modal-footer.only-button .button {

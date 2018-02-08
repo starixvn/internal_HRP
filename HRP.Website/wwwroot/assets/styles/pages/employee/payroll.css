@@ -405,6 +405,15 @@ hr {
   width: 578px;
 }
 
+.bank-account-form .list-button .button {
+  float: right;
+}
+
+.bank-account-form .list-button .button:first-child {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
 .modal-content .modal-footer.only-button .button {
   margin-right: 0;
 }
