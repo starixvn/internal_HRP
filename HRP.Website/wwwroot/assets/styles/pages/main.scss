@@ -250,7 +250,11 @@ body {
     margin-bottom: 12px;
     background-color: transparent;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
+
+    @media screen and (min-width: 1366px) {
+        font-size: 16px;
+    }
 
     a {
         color: $link-color;
