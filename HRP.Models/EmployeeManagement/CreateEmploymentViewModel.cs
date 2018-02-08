@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.ServiceModel.Channels;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Http;
 
     [Serializable]

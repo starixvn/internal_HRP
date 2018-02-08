@@ -1,7 +1,7 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
-    using System.ServiceModel.Channels;
     using HRP.Core.CustomValidations;
+    using HRP.Resources;
 
     public class EmployeePayrollBaseBankDetails
     {

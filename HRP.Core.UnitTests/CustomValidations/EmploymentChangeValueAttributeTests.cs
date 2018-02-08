@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using HRP.Core.CustomValidations;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,7 @@
 
             // Assert
             Assert.Single(validationResults);
+            Assert.Equal("Required", validationResults.First().ErrorMessage);
         }
 
         [Fact]
