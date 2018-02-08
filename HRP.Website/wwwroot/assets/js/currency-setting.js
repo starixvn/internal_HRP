@@ -108,17 +108,15 @@
             responsive: true
         });
 
-        var calendar = $('.calendar');
+        var calendar = $('.datetimepicker');
         calendar.datetimepicker({
             viewMode: 'months',
             format: 'MM-YYYY',
             minDate: $('#SelectedTime').data('min-month')
         });
 
-        calendar.on('click', function () {
-            $(this).data("DateTimePicker").toggle();
-        }).on('dp.show', function () {
-            $(this).find('.bootstrap-datetimepicker-widget').css('top', '32px');
+        $('.icon-calendar').on('click', function () {
+            $(this).siblings('.datetimepicker').data('DateTimePicker').toggle();
         });
     }
 

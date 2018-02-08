@@ -10,7 +10,7 @@
         });
 
         $('.icon-calendar').on('click', function () {
-            $(this).siblings('.datetimepicker').data('DateTimePicker').show();
+            $(this).siblings('.datetimepicker').data('DateTimePicker').toggle();
         });
     }
 
