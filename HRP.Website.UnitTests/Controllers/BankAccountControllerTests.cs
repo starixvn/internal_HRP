@@ -283,7 +283,7 @@
             var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankType.ContraCoAccount, 1);
 
             baseService.DidNotReceive().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
-            refResourceService.Received().GetReferenceResourcesByNames(refNames);
+            refResourceService.Received().GetReferenceResourcesByNames(Arg.Any<string[]>());
             Assert.IsType<JsonResult>(actual);
         }
 
