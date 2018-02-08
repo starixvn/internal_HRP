@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Primitives;
     using Models;
     using Models.Account;
@@ -174,73 +175,6 @@
 
         #endregion Helper
 
-        [Fact]
-        public void ChangePassword_AnyModel_ReturnJsonResult()
-        {
-            //Act
-            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
-
-            //Assert
-            Assert.IsType<JsonResult>(actual);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void UpdateProfile_AnyModel_ReturnJsonResult(int code)
-        {
-            //Arrange
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = code, Message = string.Empty });
-
-            //Act
-            var actual = accountController.UpdateProfile(new UserProfileViewModel());
-
-            //Assert
-            Assert.IsType<JsonResult>(actual);
-        }
-
-        [Theory]
-        [InlineData(0, 0, "Your password has been successfully changed.")]
-        [InlineData(-1, -1, "Update failed")]
-        public void ChangePassword_CorrectOldPasswordAndUpdatePassword_ReturnJsonResult(int codeCommandResult, int expectedCode, string expectedMessage)
-        {
-            //Arrange
-            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
-            var viewModel = new ChangePasswordViewModel
-            {
-                OldPassword = string.Empty,
-                Password = "test_password"
-            };
-
-            //Act
-            var actual = accountController.ChangePassword(viewModel);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-
-            //Assert
-            Assert.Equal(expectedCode, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
-            Assert.Equal(expectedMessage, (string)jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
-        }
-
-        [Fact]
-        public void ChangePassword_IncorrectOldPassword_ReturnJsonResult()
-        {
-            //Arrange
-            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
-            var viewModel = new ChangePasswordViewModel
-            {
-                OldPassword = string.Empty,
-                Password = "test_password"
-            };
-
-            //Act
-            var actual = accountController.ChangePassword(viewModel) as JsonResult;
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-
-            //Assert
-            Assert.Equal(-2, (int)jsonResult.Value.GetType().GetProperty("code").GetValue(jsonResult.Value));
-        }
-
         [Theory]
         [InlineData(AccountTab.Profile)]
         [InlineData(AccountTab.ChangePassword)]
@@ -258,88 +192,213 @@
             Assert.Equal(tab, viewModel.ActivePanel);
         }
 
-        [Fact]
-        public void RegisterOTPNotification_None_ReturnViewResult()
-        {
-            // Test
-            var actual = accountController.RegisterOTPNotification(sessionService.Username);
+        #region ChangePassword
 
-            var viewResult = Assert.IsType<ViewResult>(actual);
+        [Fact]
+        public void ChangePassword_ModelIsInvalid_ReturnAsExpectedJsonResult()
+        {
+            // Arrange
+            accountController.ModelState.AddModelError("error", "error");
+
+            // Act
+            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
 
             // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(-1, kvp.Value); },
+                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal("Update failed", kvp.Value); }
+            );
+        }
+
+        [Fact]
+        public void ChangePassword_IncorrectOldPassword_ReturnJsonResult()
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel) as JsonResult;
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(-2, kvp.Value); },
+                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal("The old password you entered is incorrect.", kvp.Value); }
+            );
+        }
+
+        [Theory]
+        [InlineData(0, 0, "Your password has been successfully changed.")]
+        [InlineData(-1, -1, "Update failed")]
+        public void ChangePassword_CorrectOldPasswordAndUpdatePassword_ReturnJsonResult(
+            int codeCommandResult,
+            int expectedCode,
+            string expectedMessage)
+        {
+            //Arrange
+            userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
+            var viewModel = new ChangePasswordViewModel
+            {
+                OldPassword = string.Empty,
+                Password = "test_password"
+            };
+
+            //Act
+            var actual = accountController.ChangePassword(viewModel);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(expectedCode, kvp.Value); },
+                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal(expectedMessage, kvp.Value); }
+            );
+        }
+
+        #endregion ChangePassword
+
+        [Fact]
+        public void RegisterOTPNotification_WhenCalled_ReturnViewResult()
+        {
+            // Act
+            var actual = accountController.RegisterOTPNotification(sessionService.Username);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<ViewResult>(actual);
             Assert.Equal("RegisterOTPNotification", viewResult.ViewName);
             Assert.Equal(sessionService.Username, viewResult.Model.ToString());
         }
 
+        #region ResetOtpDevice
+
         [Fact]
-        public void ResetOtpDevice_None_ReturnRedirectToActionResult()
+        public void ResetOtpDevice_WhenCalled_ReturnRedirectToActionResult()
         {
+            // Arrange
+            var token = "token";
+            userService.GenerateTokenOTPRegister(Arg.Any<string>()).Returns(token);
+
+            // Act
             var actual = accountController.ResetOtpDevice();
-            Assert.IsType<RedirectToActionResult>(actual);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Account", viewResult.ControllerName);
+            Assert.Equal("SetupOtpAfterReset", viewResult.ActionName);
+            Assert.Collection(
+                viewResult.RouteValues,
+                kvp => { Assert.Equal("token", kvp.Key); Assert.Equal(token, kvp.Value); }
+            );
         }
+
+        #endregion ResetOtpDevice
+
+        #region SetupOtp
 
         [Fact]
         public void SetupOtp_EmptyOtp_RedirectToLogin()
         {
-            // Arrage
-            var user = userService.GetUserByUsername(sessionService.Username);
-            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
-
-            // Test
+            // Act
             var actual = accountController.SetupOtp(string.Empty);
 
             // Assert
-            Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Auth", viewResult.ControllerName);
+            Assert.Equal("Login", viewResult.ActionName);
         }
 
         [Fact]
-        public void SetupOtp_OtpInputed_RedirectToView()
+        public void SetupOtp_UserIsNotExisted_RedirectToLogin()
         {
             // Arrage
-            var user = userService.GetUserByUsername(sessionService.Username);
-            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+            userService.GetUserByTokenOTPRegister(Arg.Any<string>()).Returns(x => null);
+
+            // Act
+            var actual = accountController.SetupOtp("token");
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Auth", viewResult.ControllerName);
+            Assert.Equal("Login", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void SetupOtp_UserIsExisted_ReturnAsExpectedViewResult()
+        {
+            // Arrage
+            var user = new User { Username = "tim.trinh" };
+            userService.GetUserByTokenOTPRegister(Arg.Any<string>()).Returns(user);
 
             // Test
             var actual = accountController.SetupOtp("test");
-            var viewModel = ((ViewResult)actual).Model;
 
             // Assert
-            Assert.IsType<ViewResult>(actual);
-            Assert.Equal("SetupOtp", ((ViewResult)actual).ViewName);
-            Assert.NotNull(viewModel);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Equal("SetupOtp", viewResult.ViewName);
+            Assert.NotNull(viewResult.Model);
         }
 
-        [Fact]
-        public void SetupOtpAfterReset_NullUser_RedirectToLogin()
-        {
-            // Arrange
-            var user = userService.GetUserByUsername(sessionService.Username);
-            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+        #endregion SetupOtp
 
-            // Test
+        #region SetupOtpAfterReset
+
+        [Fact]
+        public void SetupOtpAfterReset_EmptyToken_RedirectToLogin()
+        {
+            // Act
             var actual = accountController.SetupOtpAfterReset(string.Empty);
 
             // Assert
-            Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Login", ((RedirectToActionResult)actual).ActionName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Auth", viewResult.ControllerName);
+            Assert.Equal("Login", viewResult.ActionName);
         }
 
         [Fact]
-        public void SetupOtpAfterReset_ValidUser_ReturnIndex()
+        public void SetupOtpAfterReset_UserIsNotExisted_RedirectToLogin()
         {
             // Arrange
-            var user = userService.GetUserByUsername(sessionService.Username);
-            baseService.GetDataEntity<User>(Arg.Any<ICriteria>()).Returns(user);
+            userService.GetUserByTokenOTPRegister(Arg.Any<string>()).Returns(x => null);
 
-            // Test
-            var actual = accountController.SetupOtpAfterReset("sampletoken");
+            // Act
+            var actual = accountController.SetupOtpAfterReset("token");
 
             // Assert
-            Assert.IsType<ViewResult>(actual);
-            Assert.Equal("Index", ((ViewResult)actual).ViewName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Auth", viewResult.ControllerName);
+            Assert.Equal("Login", viewResult.ActionName);
         }
+
+        [Fact]
+        public void SetupOtpAfterReset_UserIsExisted_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var user = new User { Username = "tim.trinh" };
+            userService.GetUserByTokenOTPRegister(Arg.Any<string>()).Returns(user);
+
+            // Act
+            var actual = accountController.SetupOtpAfterReset("token");
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Equal("Index", viewResult.ViewName);
+            Assert.NotNull(viewResult.Model);
+        }
+
+        #endregion SetupOtpAfterReset
 
         [Fact]
         public void UpdateProfile_InvalidModel_ReturnErrors()
@@ -359,6 +418,7 @@
         [Fact]
         public void UpdateProfile_ValidModel_ReturnSuccessfully()
         {
+            // Arrange
             var model = new UserProfileViewModel();
             baseService.ExecuteNonQuery(Arg.Any<UpdateUserProfileCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
@@ -377,7 +437,7 @@
             sessionService.Username = "test";
             accountController = FakeAccountController(true);
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP();
 
             // Assert
@@ -392,7 +452,7 @@
             sessionService.Username = null;
             accountController = FakeAccountController(false);
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP();
 
             // Assert
@@ -407,7 +467,7 @@
             sessionService.Username = "hunter.tran.hrp";
             accountController = FakeAccountController(false);
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP();
 
             // Assert
@@ -422,7 +482,7 @@
             sessionService.Username = "test";
             accountController = FakeAccountController(true);
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel()).Result;
 
             // Assert
@@ -438,7 +498,7 @@
             accountController = FakeAccountController(false);
             userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel()).Result;
 
             // Assert
@@ -454,7 +514,7 @@
             accountController = FakeAccountController(false);
             var viewModel = new TwoFactorAuthenticatorViewModel { OTPCode = SkipOtpCheck };
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP(viewModel).Result;
 
             // Assert
@@ -470,7 +530,7 @@
             accountController = FakeAccountController(false);
             var viewModel = new TwoFactorAuthenticatorViewModel { OTPCode = "test" };
 
-            // Test
+            // Act
             var actual = accountController.VerifyOTP(viewModel).Result;
 
             // Assert
@@ -486,7 +546,7 @@
             accountController = FakeAccountController(false);
             userService.GetUserByUsername(Arg.Any<string>()).Returns(null as Func<CallInfo, User>);
 
-            // Test
+            // Act
             var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
 
             // Assert
@@ -502,7 +562,7 @@
             accountController = FakeAccountController(false);
             var viewModel = new SetupOtpViewModel { Otp = SkipOtpCheck };
 
-            // Test
+            // Act
             var actual = accountController.VerifySetupOTP(viewModel);
 
             // Assert
@@ -517,7 +577,7 @@
             accountController = FakeAccountController(false);
             var viewModel = new SetupOtpViewModel { Otp = "test" };
 
-            // Test
+            // Act
             var actual = accountController.VerifySetupOTP(viewModel);
 
             // Assert

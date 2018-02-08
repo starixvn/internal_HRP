@@ -42,6 +42,30 @@ namespace HRP.Website.Controllers
         }
 
         [HRPAuthorize]
+        public IActionResult Index(AccountTab tab = AccountTab.Profile)
+        {
+            var user = userService.GetUserByUsername(sessionService.Username);
+
+            var userProfile = new UserProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
+            var accountViewModel = new AccountViewModel
+            {
+                ActivePanel = tab,
+                IsOTPRegistered = user.IsOTPRegistered,
+                UserProfileViewModel = userProfile
+            };
+
+            ViewData["Username"] = sessionService.Username;
+
+            return View(accountViewModel);
+        }
+
+        [HRPAuthorize]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel viewModel)
         {
@@ -81,30 +105,6 @@ namespace HRP.Website.Controllers
             return result.IsSuccessful;
         }
 
-        [HRPAuthorize]
-        public IActionResult Index(AccountTab tab = AccountTab.Profile)
-        {
-            var user = userService.GetUserByUsername(sessionService.Username);
-
-            var userProfile = new UserProfileViewModel
-            {
-                FullName = user.FullName,
-                Email = user.Email,
-                Phone = user.Phone
-            };
-
-            var accountViewModel = new AccountViewModel
-            {
-                ActivePanel = tab,
-                IsOTPRegistered = user.IsOTPRegistered,
-                UserProfileViewModel = userProfile
-            };
-
-            ViewData["Username"] = sessionService.Username;
-
-            return View(accountViewModel);
-        }
-
         [AllowAnonymous]
         public IActionResult RegisterOTPNotification(string name)
         {
@@ -120,22 +120,20 @@ namespace HRP.Website.Controllers
             // step 2: Reset OTP token
             var otpRegisterToken = userService.GenerateTokenOTPRegister(sessionService.Username);
 
-            // step 3: Sign user out
-            ////await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-
-            // step 4: Show SetupOtp screen
-            return RedirectToAction(
-                "SetupOtpAfterReset",
-                "Account",
-                new { token = otpRegisterToken });
+            // step 3: Show SetupOtp screen
+            return RedirectToAction( "SetupOtpAfterReset", "Account", new { token = otpRegisterToken });
         }
 
         [AllowAnonymous]
         public IActionResult SetupOtp(string token)
         {
-            var user = GetUserByTokenOTPRegister(token);
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
-            if (string.IsNullOrEmpty(token) || user == null)
+            User user = userService.GetUserByTokenOTPRegister(token);
+            if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
             }
@@ -152,9 +150,13 @@ namespace HRP.Website.Controllers
         [HRPAuthorize]
         public IActionResult SetupOtpAfterReset(string token)
         {
-            var user = GetUserByTokenOTPRegister(token);
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
-            if (string.IsNullOrEmpty(token) || user == null)
+            User user = userService.GetUserByTokenOTPRegister(token);
+            if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
             }
@@ -207,9 +209,7 @@ namespace HRP.Website.Controllers
                 });
             }
 
-            var errors = from item in ModelState
-                         where item.Value.Errors.Any()
-                         select new { item.Key, item.Value.Errors.FirstOrDefault().ErrorMessage };
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -335,18 +335,6 @@ namespace HRP.Website.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             await DoCheckin(user);
-        }
-
-        private User GetUserByTokenOTPRegister(string token)
-        {
-            var criteria = new GetUserByTokenOTPRegisterCriteria
-            {
-                TokenOTPRegister = token
-            };
-
-            var user = baseService.GetDataEntity<User>(criteria);
-
-            return user;
         }
 
         private async Task DoCheckin(User user)

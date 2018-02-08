@@ -6,6 +6,8 @@ namespace HRP.Services
     {
         User GetUserByUsername(string username);
 
+        User GetUserByTokenOTPRegister(string token);
+
         void ResetUserPassword(string username);
 
         bool UpdateSecretKey(string username, string secretKey);

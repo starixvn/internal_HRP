@@ -48,9 +48,17 @@ namespace HRP.Services
                 Username = username
             };
 
-            var user = baseService.GetDataEntity<User>(criteria);
+            return baseService.GetDataEntity<User>(criteria);
+        }
 
-            return user;
+        public User GetUserByTokenOTPRegister(string token)
+        {
+            var criteria = new GetUserByTokenOTPRegisterCriteria
+            {
+                TokenOTPRegister = token
+            };
+
+            return baseService.GetDataEntity<User>(criteria);
         }
 
         public bool IsCorrectPassword(string password, string hashedPassword) => BCrypt.Verify(password, hashedPassword);

@@ -59,14 +59,30 @@ namespace HRP.Services.UnitTests
         public void GetUserByUsername_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
+            var expected = new User();
             var userService = GetUserService();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(expected);
 
             // Act
-            var user = userService.GetUserByUsername(Arg.Any<string>());
+            var actual = userService.GetUserByUsername(Arg.Any<string>());
 
             // Assert
-            Assert.IsType<User>(user);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetUserByTokenOTPRegister_WhenCalled_ReturnExpectedUser()
+        {
+            // Arrange
+            var expected = new User();
+            var userService = GetUserService();
+            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(expected);
+
+            // Act
+            var actual = userService.GetUserByTokenOTPRegister(Arg.Any<string>());
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
