@@ -491,6 +491,11 @@ table.dataTable thead .sorting_desc:after {
   width: 370px;
 }
 
+.modal .modal-dialog .list-button .button {
+  float: right;
+  margin-left: 10px;
+}
+
 .table .input {
   -webkit-border-radius: 0;
   -khtml-border-radius: 0;

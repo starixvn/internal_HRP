@@ -491,6 +491,11 @@ table.dataTable thead .sorting_desc:after {
   width: 370px;
 }
 
+.modal .modal-dialog .list-button .button {
+  float: right;
+  margin-left: 10px;
+}
+
 .select2-container--default .select2-selection--single {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -589,6 +594,21 @@ table.dataTable thead .sorting_desc:after {
   padding-left: 0;
   line-height: 30px;
   color: #333;
+}
+
+select[readonly].select2-hidden-accessible + .select2-container {
+  pointer-events: none;
+  touch-action: none;
+}
+
+select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+  background: #eee;
+  box-shadow: none;
+}
+
+select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow,
+select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+  display: none;
 }
 
 .table .dropdown-menu .icon-permission {
