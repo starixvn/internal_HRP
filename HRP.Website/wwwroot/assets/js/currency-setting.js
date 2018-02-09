@@ -15,7 +15,7 @@
                     var value = round(target.inputmask('unmaskedvalue'));
 
                     if (toCurrency === baseCurrency) {
-                        if (value === 0) {
+                        if (Number(value) === 0) {
                             $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val('');
                             $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val('');
                             return;
@@ -23,7 +23,7 @@
 
                         $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val(function () {
                             var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
-                            if (toCurrencyOnBaseCurrency === '' || toCurrencyOnBaseCurrency === 0)
+                            if (toCurrencyOnBaseCurrency === '' || Number(toCurrencyOnBaseCurrency) === 0)
                                 return;
 
                             return round(value / toCurrencyOnBaseCurrency);
@@ -31,7 +31,7 @@
 
                         $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val(function () {
                             var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
-                            if (fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === 0)
+                            if (fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0)
                                 return;
 
                             return round(fromCurrencyOnBaseCurrency / value);
@@ -40,7 +40,7 @@
                         $('.rate:enabled[data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
                             var $element = $(element);
                             var elementValue = $element.inputmask('unmaskedvalue');
-                            if (elementValue === '' || elementValue === 0)
+                            if (elementValue === '' || Number(elementValue) === 0)
                                 return;
 
                             $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(round(value / elementValue));
@@ -49,7 +49,7 @@
                         var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
                         var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
 
-                        if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || fromCurrencyOnBaseCurrency === 0) {
+                        if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0) {
                             $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val('');
                             $('.rate:disabled[data-from-currency="' + toCurrency + '"]').val('');
                             return;
