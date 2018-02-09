@@ -2,6 +2,7 @@
     var domElement = {
         TableItems: '#tableItems',
         FilterFieldForm: '#filterFieldForm',
+        SelectedField: '#selectedField',
         CompanyId: '.js-companyId',
         DivisionId: '.js-divisionId',
         DepartmentId: '.js-departmentId',
@@ -48,7 +49,7 @@
         $(domElement.FilterFieldForm).on('submit', function (e) {
             e.preventDefault();
             var $fieldType = $('#fieldType');
-            var $selectedField = $('#selectedField');
+            var $selectedField = $(domElement.SelectedField);
             var fieldId = $fieldType.val();
             var getAllUrl = $fieldType.find(':selected').data('url-get-all');
             $selectedField.val(fieldId);
@@ -56,6 +57,7 @@
             $.ajax({
                 type: 'GET',
                 dataType: 'html',
+                data: { "fieldId": fieldId },
                 url: commonFunctions.rootURL + getAllUrl,
                 success: onGetSuccess,
                 error: commonFunctions.handleAjaxError
@@ -83,12 +85,16 @@
 
     function registerEventClickIconEditItem() {
         $('.js-iconEditItem').off('click').on('click', function () {
+            var fieldId = $(domElement.SelectedField).val();
             var itemId = $(this).data('item-id');
             $.ajax({
                 type: 'GET',
                 url: commonFunctions.rootURL + $(this).data('url-update'),
                 dataType: 'html',
-                data: { "id": itemId },
+                data: {
+                    "fieldId": fieldId, 
+                    "id": itemId
+                },
                 success: function (data) {
                     // ref
                     $('#editItemModalContent').html(data);
@@ -104,10 +110,12 @@
 
     function registerEventClickCreateNewItem() {
         $('.js-createNewItem').on('click', function () {
+            var fieldId = $(domElement.SelectedField).val();
             $.ajax({
                 type: 'GET',
                 url: commonFunctions.rootURL + $(this).data('url-create'),
                 dataType: 'html',
+                data: { "fieldId": fieldId },
                 success: function (data) {
                     // ref
                     $('#createItemModalContent').html(data);
@@ -267,7 +275,7 @@
 
     function reloadTableListItem() {
         var $fieldType = $('#fieldType');
-        var $selectedField = $('#selectedField');
+        var $selectedField = $(domElement.SelectedField);
 
         $fieldType.val($selectedField.val());
         $(domElement.FilterFieldForm).trigger('submit'); ////ref

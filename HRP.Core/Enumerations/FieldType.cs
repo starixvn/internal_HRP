@@ -22,6 +22,9 @@ namespace HRP.Core.Enumerations
         [Display(Name = "No of Children")]
         NoOfChildren = 6,
 
+        [Display(Name = "Job Title Local")]
+        JobTitleLocal = 7,
+
         [Display(Name = "Division")]
         Division = 18,
 

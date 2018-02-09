@@ -51,5 +51,9 @@
         public const string CreateOffice = DataConfiguration + "/CreateOffice";
         public const string UpdateOffice = DataConfiguration + "/UpdateOffice";
         public const string GetAllOffice = DataConfiguration + "/GetAllOffice";
+
+        public const string CreateRefResource = DataConfiguration + "/CreateRefResourceItem";
+        public const string UpdateRefResource = DataConfiguration + "/UpdateRefResourceItem";
+        public const string GetAllRefResource = DataConfiguration + "/GetAllRefResourceItem";
     }
 }

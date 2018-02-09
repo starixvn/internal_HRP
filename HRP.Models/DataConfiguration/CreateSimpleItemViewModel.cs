@@ -11,6 +11,8 @@
 
         public string FieldName { get; set; }
 
+        public int FieldId { get; set; }
+
         public string LinkCreateItem { get; set; }
     }
 }

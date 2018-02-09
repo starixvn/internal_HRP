@@ -12,6 +12,6 @@
 
         public string LinkUpdateItem { get; set; }
 
-        public bool IsRefResource { get; set; }
+        public string RefName { get; set; }
     }
 }

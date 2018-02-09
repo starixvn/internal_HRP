@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -38,90 +36,7 @@
 
         public IEnumerable<Field> GetDataForIndexPage()
         {
-            var fieldList = new List<Field>
-            {
-                new Field
-                {
-                    FieldId = (int)FieldType.CompanyBVI,
-                    FieldName = ViewLang.CompanyBVI,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyBVI
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.Division,
-                    FieldName = ViewLang.Division,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllDivision
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.Department,
-                    FieldName = ViewLang.Department,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllDepartment
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.CostCenter,
-                    FieldName = ViewLang.CostCenter,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCostCenter
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.JobCategory,
-                    FieldName = ViewLang.JobCategory,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllJobCategory
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.GradeLevel,
-                    FieldName = ViewLang.GradeLevel,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllGradeLevel
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.JobGrade,
-                    FieldName = ViewLang.JobGrade,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllJobGrade
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.Country,
-                    FieldName = ViewLang.Country,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCountry
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.City,
-                    FieldName = ViewLang.City,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCity
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.Office,
-                    FieldName = ViewLang.Office,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllOffice
-                },
-
-                new Field
-                {
-                    FieldId = (int)FieldType.CompanyLocal,
-                    FieldName = ViewLang.CompanyLocal,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCompanyLocal,
-                    LinkCreateItem = string.Empty,
-                    LinkUpdateItem = string.Empty,
-                    IsRefResource = true
-                },
-            };
-
-            return fieldList.OrderBy(x => x.FieldName);
+            return FieldsDictionary.Fields.Values.OrderBy(x => x.FieldName);
         }
 
         #region CompanyBVI

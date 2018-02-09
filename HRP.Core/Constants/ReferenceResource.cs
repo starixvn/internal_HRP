@@ -16,9 +16,8 @@
         public const string BankType = "BankType";
         public const string BankAccountType = "BankAccountType";
         public const string GroupDateReasons = "GroupDateReasons";
-        public const string PayrollSalaryChangeReason = "PayrollSalaryChangeReason";
+        public const string BasicSalaryChangeReason = "BasicSalaryChangeReason";
         public const string CashAccount = "CashAccount";
         public const string ContraCoAccount = "ContraCoAccount";
-
     }
 }

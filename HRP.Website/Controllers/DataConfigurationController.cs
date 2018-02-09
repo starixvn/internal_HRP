@@ -1138,30 +1138,33 @@
 
         #endregion Office
 
-        #region Company Local
+        #region RefResource Item
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
-        public async Task<IActionResult> GetAllCompanyLocal()
+        public async Task<IActionResult> GetAllRefResourceItem(int fieldId)
         {
-            var companies = await dataConfigurationService.GetAllRefResourceItemAsync(ReferenceResource.LocalCompany);
+            var field = FieldsDictionary.Fields[fieldId];
+            var items = await dataConfigurationService.GetAllRefResourceItemAsync(field.RefName);
             var viewModel = new SimpleItemTableViewModel
             {
-                Items = companies,
-                FieldName = ViewLang.CompanyLocal,
-                LinkCreateItem = DataConfigurationActionLink.CreateCompanyLocal,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyLocal
+                Items = items,
+                FieldName = field.FieldName,
+                LinkCreateItem = field.LinkCreateItem,
+                LinkUpdateItem = field.LinkUpdateItem
             };
 
             return PartialView("_SimpleItemTable", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public IActionResult CreateCompanyLocal()
+        public IActionResult CreateRefResourceItem(int fieldId)
         {
+            var field = FieldsDictionary.Fields[fieldId];
             var viewModel = new CreateSimpleItemViewModel
             {
-                FieldName = ViewLang.CompanyLocal,
-                LinkCreateItem = DataConfigurationActionLink.CreateCompanyLocal
+                FieldId = field.FieldId,
+                FieldName = field.FieldName,
+                LinkCreateItem = field.LinkCreateItem
             };
 
             return PartialView("_CreateSimpleItem", viewModel);
@@ -1169,9 +1172,10 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateCompanyLocal(SimpleItem item)
+        public async Task<IActionResult> CreateRefResourceItem(int fieldId, SimpleItem item)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+            var field = FieldsDictionary.Fields[fieldId];
+            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(field.RefName, item);
 
             if (isExistedItem)
             {
@@ -1181,7 +1185,7 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = await dataConfigurationService.CreateRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+                var commandResult = await dataConfigurationService.CreateRefResourceItemAsync(field.RefName, item);
 
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
@@ -1192,17 +1196,19 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateCompanyLocal(int id)
+        public async Task<IActionResult> UpdateRefResourceItem(int fieldId, int id)
         {
-            var company = await dataConfigurationService.GetRefResourceByNameAndIdAsync(ReferenceResource.LocalCompany, id);
+            var field = FieldsDictionary.Fields[fieldId];
+            var item = await dataConfigurationService.GetRefResourceByNameAndIdAsync(field.RefName, id);
 
-            if (company != null)
+            if (item != null)
             {
                 var viewModel = new UpdateSimpleItemViewModel
                 {
-                    FieldName = ViewLang.CompanyLocal,
-                    Item = company,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyLocal
+                    FieldId = field.FieldId,
+                    FieldName = field.FieldName,
+                    Item = item,
+                    LinkUpdateItem = field.LinkUpdateItem
                 };
 
                 return PartialView("_UpdateSimpleItem", viewModel);
@@ -1213,9 +1219,10 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateCompanyLocal(SimpleItem item)
+        public async Task<IActionResult> UpdateRefResourceItem(int fieldId, SimpleItem item)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+            var field = FieldsDictionary.Fields[fieldId];
+            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(field.RefName, item);
 
             if (isExistedItem)
             {
@@ -1225,7 +1232,7 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = await dataConfigurationService.UpdateRefResourceItemAsync(ReferenceResource.LocalCompany, item);
+                var commandResult = await dataConfigurationService.UpdateRefResourceItemAsync(field.RefName, item);
 
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
             }
@@ -1235,7 +1242,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        #endregion Company Local
+        #endregion RefResource Item
 
         #region Commons
 
