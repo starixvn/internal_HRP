@@ -8,7 +8,7 @@
     <h4 class="modal-title">@Message.EditItem</h4>
 </div>
 <div class="modal-body form-information">
-    <form id="editItemForm" action="@Model.LinkUpdateItem" method="post" asp-antiforgery="true"
+    <form id="editItemForm" action="@Model.Field.LinkUpdateItem" method="post" asp-antiforgery="true"
           data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onUpdateItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
         <div class="list-message-error hidden">
             <span class="message" asp-validation-for="City.Code"></span>
@@ -27,11 +27,11 @@
             </select>
         </div>
 
-        <label class="text -has-required">@Model.FieldName</label>
+        <label class="text -has-required">@Model.Field.FieldName</label>
         <div class="group-control">
             <input class="control" type="text" asp-for="City.Code"
-                   data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
-                   data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />
+                   data-val-required="@string.Format(Message.ItemNameRequired, Model.Field.FieldName)"
+                   data-val-length="@string.Format(Message.ItemNameMaxLength, Model.Field.FieldName, 50)" />
         </div>
 
         <label class="text">@ViewLang.Description</label>

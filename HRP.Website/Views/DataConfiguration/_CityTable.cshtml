@@ -5,12 +5,12 @@
     var rowNumber = 1;
 }
 
-@Html.Partial("_TopHeaderTable", Model.LinkCreateItem)
+@Html.Partial("_TopHeaderTable", Model.Field.LinkCreateItem)
 <table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
             <th class="col-number">@ViewLang.SymbolCount</th>
-            <th>@Model.FieldName</th>
+            <th>@Model.Field.FieldName</th>
             <th>@ViewLang.Description</th>
             <th>@ViewLang.Country</th>
             <th class="col-active">@ViewLang.Active</th>
@@ -32,7 +32,7 @@
                     }
                 </td>
                 <td class="text-center has-icon">
-                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.LinkUpdateItem" data-item-id="@item.CityId"></span>
+                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.Field.LinkUpdateItem" data-item-id="@item.CityId"></span>
                 </td>
             </tr>
 

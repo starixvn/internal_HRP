@@ -4,9 +4,7 @@
 
     public class UpdateCityViewModel
     {
-        public string FieldName { get; set; }
-
-        public string LinkUpdateItem { get; set; }
+        public Field Field { get; set; }
 
         public City City { get; set; }
     }

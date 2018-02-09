@@ -65,9 +65,9 @@
             var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_SimpleItemTable", viewResult.ViewName);
             Assert.Equal(items, viewModel.Items);
-            Assert.Equal(ViewLang.CompanyBVI, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCompanyBVI, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateCompanyBVI, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.CompanyBVI, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCompanyBVI, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCompanyBVI, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -83,8 +83,8 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
-            Assert.Equal(ViewLang.CompanyBVI, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCompanyBVI, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.CompanyBVI, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCompanyBVI, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -142,8 +142,8 @@
             Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal(item, viewModel.Item);
-            Assert.Equal(ViewLang.CompanyBVI, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateCompanyBVI, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.CompanyBVI, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCompanyBVI, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -221,9 +221,9 @@
             var viewModel = Assert.IsAssignableFrom<DivisionTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_DivisionTable", viewResult.ViewName);
             Assert.Equal(divisions, viewModel.Divisions);
-            Assert.Equal(ViewLang.Division, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateDivision, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateDivision, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Division, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateDivision, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateDivision, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -242,8 +242,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateDivisionViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateDivision", viewResult.ViewName);
             Assert.Equal(companySelectList, viewModel.CompanyList);
-            Assert.Equal(ViewLang.Division, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateDivision, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.Division, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateDivision, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -301,8 +301,8 @@
             Assert.Equal("_UpdateDivision", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateDivisionViewModel>(viewResult.ViewData.Model);
             Assert.Equal(division, viewModel.Division);
-            Assert.Equal(ViewLang.Division, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateDivision, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Division, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateDivision, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -380,9 +380,9 @@
             var viewModel = Assert.IsAssignableFrom<DepartmentTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_DepartmentTable", viewResult.ViewName);
             Assert.Equal(departments, viewModel.Departments);
-            Assert.Equal(ViewLang.Department, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateDepartment, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateDepartment, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Department, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateDepartment, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateDepartment, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -401,8 +401,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateDepartmentViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateDepartment", viewResult.ViewName);
             Assert.Equal(companySelectList, viewModel.CompanyList);
-            Assert.Equal(ViewLang.Department, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateDepartment, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.Department, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateDepartment, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -460,8 +460,8 @@
             Assert.Equal("_UpdateDepartment", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateDepartmentViewModel>(viewResult.ViewData.Model);
             Assert.Equal(department, viewModel.Department);
-            Assert.Equal(ViewLang.Department, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateDepartment, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Department, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateDepartment, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -539,9 +539,9 @@
             var viewModel = Assert.IsAssignableFrom<CostCenterTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CostCenterTable", viewResult.ViewName);
             Assert.Equal(costCenters, viewModel.CostCenters);
-            Assert.Equal(ViewLang.CostCenter, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCostCenter, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateCostCenter, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.CostCenter, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCostCenter, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCostCenter, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -560,8 +560,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateCostCenterViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateCostCenter", viewResult.ViewName);
             Assert.Equal(companySelectList, viewModel.CompanyList);
-            Assert.Equal(ViewLang.CostCenter, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCostCenter, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.CostCenter, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCostCenter, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -619,8 +619,8 @@
             Assert.Equal("_UpdateCostCenter", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateCostCenterViewModel>(viewResult.ViewData.Model);
             Assert.Equal(costCenter, viewModel.CostCenter);
-            Assert.Equal(ViewLang.CostCenter, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateCostCenter, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.CostCenter, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCostCenter, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -698,9 +698,9 @@
             var viewModel = Assert.IsAssignableFrom<SectionTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_SectionTable", viewResult.ViewName);
             Assert.Equal(sections, viewModel.Sections);
-            Assert.Equal(ViewLang.Section, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateSection, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateSection, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Section, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateSection, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateSection, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -719,8 +719,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateSectionViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateSection", viewResult.ViewName);
             Assert.Equal(companySelectList, viewModel.CompanyList);
-            Assert.Equal(ViewLang.Section, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateSection, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.Section, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateSection, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -778,8 +778,8 @@
             Assert.Equal("_UpdateSection", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateSectionViewModel>(viewResult.ViewData.Model);
             Assert.Equal(section, viewModel.Section);
-            Assert.Equal(ViewLang.Section, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateSection, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Section, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateSection, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -857,9 +857,9 @@
             var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_SimpleItemTable", viewResult.ViewName);
             Assert.Equal(items, viewModel.Items);
-            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.JobCategory, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -875,8 +875,8 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
-            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.JobCategory, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobCategory, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -934,8 +934,8 @@
             Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal(item, viewModel.Item);
-            Assert.Equal(ViewLang.JobCategory, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.JobCategory, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobCategory, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1013,9 +1013,9 @@
             var viewModel = Assert.IsAssignableFrom<GradeLevelTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_GradeLevelTable", viewResult.ViewName);
             Assert.Equal(gradeLevelList, viewModel.GradeLevelList);
-            Assert.Equal(ViewLang.GradeLevel, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateGradeLevel, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateGradeLevel, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.GradeLevel, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateGradeLevel, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateGradeLevel, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1034,8 +1034,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateGradeLevelViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateGradeLevel", viewResult.ViewName);
             Assert.Equal(jobCategorySelectList, viewModel.JobCategoryList);
-            Assert.Equal(ViewLang.GradeLevel, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateGradeLevel, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.GradeLevel, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateGradeLevel, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -1093,8 +1093,8 @@
             Assert.Equal("_UpdateGradeLevel", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateGradeLevelViewModel>(viewResult.ViewData.Model);
             Assert.Equal(gradeLevel, viewModel.GradeLevel);
-            Assert.Equal(ViewLang.GradeLevel, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateGradeLevel, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.GradeLevel, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateGradeLevel, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1172,9 +1172,9 @@
             var viewModel = Assert.IsAssignableFrom<JobGradeTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_JobGradeTable", viewResult.ViewName);
             Assert.Equal(jobGradeList, viewModel.JobGradeList);
-            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.JobGrade, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1193,8 +1193,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateJobGradeViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateJobGrade", viewResult.ViewName);
             Assert.Equal(jobCategorySelectList, viewModel.JobCategoryList);
-            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.JobGrade, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateJobGrade, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -1252,8 +1252,8 @@
             Assert.Equal("_UpdateJobGrade", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateJobGradeViewModel>(viewResult.ViewData.Model);
             Assert.Equal(jobGrade, viewModel.JobGrade);
-            Assert.Equal(ViewLang.JobGrade, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.JobGrade, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateJobGrade, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1331,9 +1331,9 @@
             var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_SimpleItemTable", viewResult.ViewName);
             Assert.Equal(items, viewModel.Items);
-            Assert.Equal(ViewLang.Country, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Country, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1349,8 +1349,8 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
-            Assert.Equal(ViewLang.Country, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.Country, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCountry, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -1408,8 +1408,8 @@
             Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
             Assert.Equal(item, viewModel.Item);
-            Assert.Equal(ViewLang.Country, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Country, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCountry, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1487,9 +1487,9 @@
             var viewModel = Assert.IsAssignableFrom<CityTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CityTable", viewResult.ViewName);
             Assert.Equal(cities, viewModel.Cities);
-            Assert.Equal(ViewLang.City, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.City, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1508,8 +1508,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateCityViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateCity", viewResult.ViewName);
             Assert.Equal(countrySelectList, viewModel.CountryList);
-            Assert.Equal(ViewLang.City, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.City, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCity, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -1567,8 +1567,8 @@
             Assert.Equal("_UpdateCity", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateCityViewModel>(viewResult.ViewData.Model);
             Assert.Equal(city, viewModel.City);
-            Assert.Equal(ViewLang.City, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.City, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCity, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1646,9 +1646,9 @@
             var viewModel = Assert.IsAssignableFrom<OfficeTableViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_OfficeTable", viewResult.ViewName);
             Assert.Equal(offices, viewModel.Offices);
-            Assert.Equal(ViewLang.Office, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.LinkCreateItem);
-            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Office, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]
@@ -1667,8 +1667,8 @@
             var viewModel = Assert.IsAssignableFrom<CreateOfficeViewModel>(viewResult.ViewData.Model);
             Assert.Equal("_CreateOffice", viewResult.ViewName);
             Assert.Equal(countrySelectList, viewModel.CountryList);
-            Assert.Equal(ViewLang.Office, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.LinkCreateItem);
+            Assert.Equal(ViewLang.Office, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateOffice, viewModel.Field.LinkCreateItem);
         }
 
         [Fact]
@@ -1726,8 +1726,8 @@
             Assert.Equal("_UpdateOffice", viewResult.ViewName);
             var viewModel = Assert.IsAssignableFrom<UpdateOfficeViewModel>(viewResult.ViewData.Model);
             Assert.Equal(office, viewModel.Office);
-            Assert.Equal(ViewLang.Office, viewModel.FieldName);
-            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.LinkUpdateItem);
+            Assert.Equal(ViewLang.Office, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateOffice, viewModel.Field.LinkUpdateItem);
         }
 
         [Fact]

@@ -4,9 +4,7 @@
 
     public class UpdateDepartmentViewModel
     {
-        public string FieldName { get; set; }
-
-        public string LinkUpdateItem { get; set; }
+        public Field Field { get; set; }
 
         public Department Department { get; set; }
     }

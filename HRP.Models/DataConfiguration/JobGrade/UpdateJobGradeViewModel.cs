@@ -4,9 +4,7 @@
 
     public class UpdateJobGradeViewModel
     {
-        public string FieldName { get; set; }
-
-        public string LinkUpdateItem { get; set; }
+        public Field Field { get; set; }
 
         public JobGrade JobGrade { get; set; }
     }

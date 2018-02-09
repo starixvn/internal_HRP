@@ -4,9 +4,7 @@
 
     public class UpdateGradeLevelViewModel
     {
-        public string FieldName { get; set; }
-
-        public string LinkUpdateItem { get; set; }
+        public Field Field { get; set; }
 
         public GradeLevel GradeLevel { get; set; }
     }

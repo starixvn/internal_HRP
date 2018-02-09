@@ -50,9 +50,12 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 Items = companies,
-                FieldName = ViewLang.CompanyBVI,
-                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
+                Field = new Field
+                {
+                    FieldName = ViewLang.CompanyBVI,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
+                }
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -63,8 +66,11 @@
         {
             var viewModel = new CreateSimpleItemViewModel
             {
-                FieldName = ViewLang.CompanyBVI,
-                LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI
+                Field = new Field
+                {
+                    FieldName = ViewLang.CompanyBVI,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI
+                }
             };
 
             return PartialView("_CreateSimpleItem", viewModel);
@@ -103,9 +109,12 @@
             {
                 var viewModel = new UpdateSimpleItemViewModel
                 {
-                    FieldName = ViewLang.CompanyBVI,
                     Item = company,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.CompanyBVI,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
+                    }
                 };
 
                 return PartialView("_UpdateSimpleItem", viewModel);
@@ -149,9 +158,12 @@
             var viewModel = new DivisionTableViewModel
             {
                 Divisions = divisions,
-                FieldName = ViewLang.Division,
-                LinkCreateItem = DataConfigurationActionLink.CreateDivision,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
+                Field = new Field
+                {
+                    FieldName = ViewLang.Division,
+                    LinkCreateItem = DataConfigurationActionLink.CreateDivision,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
+                }
             };
 
             return PartialView("_DivisionTable", viewModel);
@@ -163,8 +175,11 @@
             var viewModel = new CreateDivisionViewModel
             {
                 CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
-                FieldName = ViewLang.Division,
-                LinkCreateItem = DataConfigurationActionLink.CreateDivision
+                Field = new Field
+                {
+                    FieldName = ViewLang.Division,
+                    LinkCreateItem = DataConfigurationActionLink.CreateDivision
+                }
             };
 
             return PartialView("_CreateDivision", viewModel);
@@ -203,9 +218,12 @@
             {
                 var viewModel = new UpdateDivisionViewModel
                 {
-                    FieldName = ViewLang.Division,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateDivision,
-                    Division = division
+                    Division = division,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Division,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateDivision,
+                    }
                 };
 
                 return PartialView("_UpdateDivision", viewModel);
@@ -249,9 +267,12 @@
             var viewModel = new DepartmentTableViewModel
             {
                 Departments = departments,
-                FieldName = ViewLang.Department,
-                LinkCreateItem = DataConfigurationActionLink.CreateDepartment,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment
+                Field = new Field
+                {
+                    FieldName = ViewLang.Department,
+                    LinkCreateItem = DataConfigurationActionLink.CreateDepartment,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment
+                }
             };
 
             return PartialView("_DepartmentTable", viewModel);
@@ -263,8 +284,11 @@
             var viewModel = new CreateDepartmentViewModel
             {
                 CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
-                FieldName = ViewLang.Department,
-                LinkCreateItem = DataConfigurationActionLink.CreateDepartment
+                Field = new Field
+                {
+                    FieldName = ViewLang.Department,
+                    LinkCreateItem = DataConfigurationActionLink.CreateDepartment
+                }
             };
 
             return PartialView("_CreateDepartment", viewModel);
@@ -303,9 +327,12 @@
             {
                 var viewModel = new UpdateDepartmentViewModel
                 {
-                    FieldName = ViewLang.Department,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment,
-                    Department = department
+                    Department = department,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Department,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment
+                    }
                 };
 
                 return PartialView("_UpdateDepartment", viewModel);
@@ -349,9 +376,12 @@
             var viewModel = new CostCenterTableViewModel
             {
                 CostCenters = costCenters,
-                FieldName = ViewLang.CostCenter,
-                LinkCreateItem = DataConfigurationActionLink.CreateCostCenter,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter
+                Field = new Field
+                {
+                    FieldName = ViewLang.CostCenter,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCostCenter,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter
+                }
             };
 
             return PartialView("_CostCenterTable", viewModel);
@@ -363,8 +393,11 @@
             var viewModel = new CreateCostCenterViewModel
             {
                 CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
-                FieldName = ViewLang.CostCenter,
-                LinkCreateItem = DataConfigurationActionLink.CreateCostCenter
+                Field = new Field
+                {
+                    FieldName = ViewLang.CostCenter,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCostCenter
+                }
             };
 
             return PartialView("_CreateCostCenter", viewModel);
@@ -403,9 +436,12 @@
             {
                 var viewModel = new UpdateCostCenterViewModel
                 {
-                    FieldName = ViewLang.CostCenter,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter,
-                    CostCenter = costCenter
+                    CostCenter = costCenter,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.CostCenter,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter,
+                    }
                 };
 
                 return PartialView("_UpdateCostCenter", viewModel);
@@ -449,9 +485,12 @@
             var viewModel = new SectionTableViewModel
             {
                 Sections = sections,
-                FieldName = ViewLang.Section,
-                LinkCreateItem = DataConfigurationActionLink.CreateSection,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateSection
+                Field = new Field
+                {
+                    FieldName = ViewLang.Section,
+                    LinkCreateItem = DataConfigurationActionLink.CreateSection,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateSection
+                }
             };
 
             return PartialView("_SectionTable", viewModel);
@@ -463,8 +502,11 @@
             var viewModel = new CreateSectionViewModel
             {
                 CompanyList = await dataConfigurationService.GetCompanyBVISelectListAsync(),
-                FieldName = ViewLang.Section,
-                LinkCreateItem = DataConfigurationActionLink.CreateSection
+                Field = new Field
+                {
+                    FieldName = ViewLang.Section,
+                    LinkCreateItem = DataConfigurationActionLink.CreateSection
+                }
             };
 
             return PartialView("_CreateSection", viewModel);
@@ -503,9 +545,12 @@
             {
                 var viewModel = new UpdateSectionViewModel
                 {
-                    FieldName = ViewLang.Section,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateSection,
-                    Section = section
+                    Section = section,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Section,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateSection,
+                    }
                 };
 
                 return PartialView("_UpdateSection", viewModel);
@@ -549,9 +594,12 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 Items = jobCategories,
-                FieldName = ViewLang.JobCategory,
-                LinkCreateItem = DataConfigurationActionLink.CreateJobCategory,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+                Field = new Field
+                {
+                    FieldName = ViewLang.JobCategory,
+                    LinkCreateItem = DataConfigurationActionLink.CreateJobCategory,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+                }
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -562,8 +610,11 @@
         {
             var viewModel = new CreateSimpleItemViewModel
             {
-                FieldName = ViewLang.JobCategory,
-                LinkCreateItem = DataConfigurationActionLink.CreateJobCategory
+                Field = new Field
+                {
+                    FieldName = ViewLang.JobCategory,
+                    LinkCreateItem = DataConfigurationActionLink.CreateJobCategory
+                }
             };
 
             return PartialView("_CreateSimpleItem", viewModel);
@@ -602,9 +653,12 @@
             {
                 var viewModel = new UpdateSimpleItemViewModel
                 {
-                    FieldName = ViewLang.JobCategory,
                     Item = jobCategory,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.JobCategory,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
+                    }
                 };
 
                 return PartialView("_UpdateSimpleItem", viewModel);
@@ -648,9 +702,12 @@
             var viewModel = new GradeLevelTableViewModel
             {
                 GradeLevelList = gradeLevelList,
-                FieldName = ViewLang.GradeLevel,
-                LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel
+                Field = new Field
+                {
+                    FieldName = ViewLang.GradeLevel,
+                    LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel
+                }
             };
 
             return PartialView("_GradeLevelTable", viewModel);
@@ -662,8 +719,11 @@
             var viewModel = new CreateGradeLevelViewModel
             {
                 JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
-                FieldName = ViewLang.GradeLevel,
-                LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel
+                Field = new Field
+                {
+                    FieldName = ViewLang.GradeLevel,
+                    LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel
+                }
             };
 
             return PartialView("_CreateGradeLevel", viewModel);
@@ -702,9 +762,12 @@
             {
                 var viewModel = new UpdateGradeLevelViewModel
                 {
-                    FieldName = ViewLang.GradeLevel,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel,
-                    GradeLevel = gradeLevel
+                    GradeLevel = gradeLevel,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.GradeLevel,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel,
+                    }
                 };
 
                 return PartialView("_UpdateGradeLevel", viewModel);
@@ -748,9 +811,12 @@
             var viewModel = new JobGradeTableViewModel
             {
                 JobGradeList = jobGradeList,
-                FieldName = ViewLang.JobGrade,
-                LinkCreateItem = DataConfigurationActionLink.CreateJobGrade,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade
+                Field = new Field
+                {
+                    FieldName = ViewLang.JobGrade,
+                    LinkCreateItem = DataConfigurationActionLink.CreateJobGrade,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade
+                }
             };
 
             return PartialView("_JobGradeTable", viewModel);
@@ -762,8 +828,11 @@
             var viewModel = new CreateJobGradeViewModel
             {
                 JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
-                FieldName = ViewLang.JobGrade,
-                LinkCreateItem = DataConfigurationActionLink.CreateJobGrade
+                Field = new Field
+                {
+                    FieldName = ViewLang.JobGrade,
+                    LinkCreateItem = DataConfigurationActionLink.CreateJobGrade
+                }
             };
 
             return PartialView("_CreateJobGrade", viewModel);
@@ -802,9 +871,12 @@
             {
                 var viewModel = new UpdateJobGradeViewModel
                 {
-                    FieldName = ViewLang.JobGrade,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade,
-                    JobGrade = jobGrade
+                    JobGrade = jobGrade,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.JobGrade,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade,
+                    }
                 };
 
                 return PartialView("_UpdateJobGrade", viewModel);
@@ -848,9 +920,12 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 Items = countries,
-                FieldName = ViewLang.Country,
-                LinkCreateItem = DataConfigurationActionLink.CreateCountry,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+                Field = new Field
+                {
+                    FieldName = ViewLang.Country,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCountry,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+                }
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -861,8 +936,11 @@
         {
             var viewModel = new CreateSimpleItemViewModel
             {
-                FieldName = ViewLang.Country,
-                LinkCreateItem = DataConfigurationActionLink.CreateCountry
+                Field = new Field
+                {
+                    FieldName = ViewLang.Country,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCountry
+                }
             };
 
             return PartialView("_CreateSimpleItem", viewModel);
@@ -901,9 +979,12 @@
             {
                 var viewModel = new UpdateSimpleItemViewModel
                 {
-                    FieldName = ViewLang.Country,
                     Item = country,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Country,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
+                    }
                 };
 
                 return PartialView("_UpdateSimpleItem", viewModel);
@@ -947,9 +1028,12 @@
             var viewModel = new CityTableViewModel
             {
                 Cities = cities,
-                FieldName = ViewLang.City,
-                LinkCreateItem = DataConfigurationActionLink.CreateCity,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateCity
+                Field = new Field
+                {
+                    FieldName = ViewLang.City,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCity,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCity
+                }
             };
 
             return PartialView("_CityTable", viewModel);
@@ -961,8 +1045,11 @@
             var viewModel = new CreateCityViewModel
             {
                 CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
-                FieldName = ViewLang.City,
-                LinkCreateItem = DataConfigurationActionLink.CreateCity
+                Field = new Field
+                {
+                    FieldName = ViewLang.City,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCity
+                }
             };
 
             return PartialView("_CreateCity", viewModel);
@@ -1001,9 +1088,12 @@
             {
                 var viewModel = new UpdateCityViewModel
                 {
-                    FieldName = ViewLang.City,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateCity,
-                    City = city
+                    City = city,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.City,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateCity,
+                    }
                 };
 
                 return PartialView("_UpdateCity", viewModel);
@@ -1047,9 +1137,12 @@
             var viewModel = new OfficeTableViewModel
             {
                 Offices = offices,
-                FieldName = ViewLang.Office,
-                LinkCreateItem = DataConfigurationActionLink.CreateOffice,
-                LinkUpdateItem = DataConfigurationActionLink.UpdateOffice
+                Field = new Field
+                {
+                    FieldName = ViewLang.Office,
+                    LinkCreateItem = DataConfigurationActionLink.CreateOffice,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateOffice
+                }
             };
 
             return PartialView("_OfficeTable", viewModel);
@@ -1061,8 +1154,11 @@
             var viewModel = new CreateOfficeViewModel
             {
                 CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
-                FieldName = ViewLang.Office,
-                LinkCreateItem = DataConfigurationActionLink.CreateOffice
+                Field = new Field
+                {
+                    FieldName = ViewLang.Office,
+                    LinkCreateItem = DataConfigurationActionLink.CreateOffice
+                }
             };
 
             return PartialView("_CreateOffice", viewModel);
@@ -1101,9 +1197,12 @@
             {
                 var viewModel = new UpdateOfficeViewModel
                 {
-                    FieldName = ViewLang.Office,
-                    LinkUpdateItem = DataConfigurationActionLink.UpdateOffice,
-                    Office = office
+                    Office = office,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Office,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateOffice,
+                    }
                 };
 
                 return PartialView("_UpdateOffice", viewModel);
@@ -1148,9 +1247,7 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 Items = items,
-                FieldName = field.FieldName,
-                LinkCreateItem = field.LinkCreateItem,
-                LinkUpdateItem = field.LinkUpdateItem
+                Field = field
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -1162,9 +1259,7 @@
             var field = FieldsDictionary.Fields[fieldId];
             var viewModel = new CreateSimpleItemViewModel
             {
-                FieldId = field.FieldId,
-                FieldName = field.FieldName,
-                LinkCreateItem = field.LinkCreateItem
+                Field = field
             };
 
             return PartialView("_CreateSimpleItem", viewModel);
@@ -1205,10 +1300,8 @@
             {
                 var viewModel = new UpdateSimpleItemViewModel
                 {
-                    FieldId = field.FieldId,
-                    FieldName = field.FieldName,
                     Item = item,
-                    LinkUpdateItem = field.LinkUpdateItem
+                    Field = field
                 };
 
                 return PartialView("_UpdateSimpleItem", viewModel);

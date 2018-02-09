@@ -7,10 +7,6 @@
     {
         public IEnumerable<Section> Sections { get; set; }
 
-        public string FieldName { get; set; }
-
-        public string LinkCreateItem { get; set; }
-
-        public string LinkUpdateItem { get; set; }
+        public Field Field { get; set; }
     }
 }

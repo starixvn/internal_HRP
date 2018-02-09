@@ -5,10 +5,10 @@
 
 <div class="modal-header">
     <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-    <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.FieldName)</h4>
+    <h4 class="modal-title" id="myModalLabel">@string.Format(Message.NewItemOf, Model.Field.FieldName)</h4>
 </div>
 <div class="modal-body form-information">
-    <form id="createItemForm" action="@Model.LinkCreateItem" method="post" asp-antiforgery="true"
+    <form id="createItemForm" action="@Model.Field.LinkCreateItem" method="post" asp-antiforgery="true"
           data-ajax-method="post" data-ajax="true" data-ajax-success="dataConfiguration.onCreateNewItemSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
         <div class="list-message-error hidden">
             <span class="message" asp-validation-for="Item.ItemName"></span>
@@ -17,13 +17,13 @@
 
         <div class="-has-icon msg-error hidden" id="create-item-error-alert">
         </div>
-        <input type="hidden" asp-for="FieldId" />
+        <input type="hidden" asp-for="Field.FieldId" />
 
-        <label class="text -has-required">@Model.FieldName</label>
+        <label class="text -has-required">@Model.Field.FieldName</label>
         <div class="group-control">
             <input class="control js-itemName" type="text" asp-for="Item.ItemName"
-                   data-val-required="@string.Format(Message.ItemNameRequired, Model.FieldName)"
-                   data-val-length="@string.Format(Message.ItemNameMaxLength, Model.FieldName, 50)" />
+                   data-val-required="@string.Format(Message.ItemNameRequired, Model.Field.FieldName)"
+                   data-val-length="@string.Format(Message.ItemNameMaxLength, Model.Field.FieldName, 50)" />
         </div>
 
         <label class="text">@ViewLang.Description</label>
