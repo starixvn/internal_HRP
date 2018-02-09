@@ -113,7 +113,7 @@
             ////    filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
             ////}
 
-            return filteredBankAccounts.OrderBy(x => x.AccountName);
+            return filteredBankAccounts;
         }
     }
 }
