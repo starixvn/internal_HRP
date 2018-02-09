@@ -78,7 +78,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'CurrencySetting/Save',
+                    url: commonFunctions.rootURL + 'CurrencySetting/Edit',
                     data: {
                         selectedTime: $("#SelectedTime").val(),
                         exchangeRates: data,

@@ -50,7 +50,7 @@
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 <input type="hidden" id="create-bank-account-in-payroll-url" value="@Url.Action("CreateBankAccountInPayroll","BankAccount")"/>
 <input type="hidden" id="greater-than-zero-message" value="@Message.GreaterThanZero" />
-<form class="payroll form-information" method="post" id="payroll-form" asp-action="SavePayroll"
+<form class="payroll form-information" method="post" id="payroll-form" asp-action="EditPayroll"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="employeePayroll.onSaveBegin" data-ajax-failure="commonFunctions.handleAjaxError"
       data-ajax-success="employeePayroll.onSaveSuccess" data-ajax-complete="employeePayroll.onSaveComplete">
     <input type="hidden" asp-for="EmployeeId" />

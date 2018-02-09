@@ -305,7 +305,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
-        public IActionResult SavePayroll(EmployeePayrollViewModel model)
+        public IActionResult EditPayroll(EmployeePayrollViewModel model)
         {
             if (ModelState.IsValid)
             {

@@ -41,7 +41,7 @@
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
 <input type="hidden" asp-for="CanUpdate" />
 
-<form id="currency-form" asp-action="Save">
+<form id="currency-form" asp-action="Edit">
     <table id="currency-table" class="table table-bordered table-hover table-responsive">
         <thead>
             <tr>

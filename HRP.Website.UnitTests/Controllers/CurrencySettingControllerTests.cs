@@ -46,7 +46,7 @@
         }
 
         [Fact]
-        public void Save_WhenCalled_ReturnExpectedCommandResult()
+        public void Edit_WhenCalled_ReturnExpectedCommandResult()
         {
             var exchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -62,7 +62,7 @@
             baseService.ExecuteNonQuery(Arg.Any<UpdateExchangeRatesCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             // Act
-            var actual = controller.Save(DateTime.Today, exchangeRates);
+            var actual = controller.Edit(DateTime.Today, exchangeRates);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

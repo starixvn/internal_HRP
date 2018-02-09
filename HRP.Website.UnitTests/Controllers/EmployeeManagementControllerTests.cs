@@ -684,7 +684,7 @@
         }
 
         [Fact]
-        public void SavePayroll_ValidModel_ReturnExpectedCommandResult()
+        public void EditPayroll_ValidModel_ReturnExpectedCommandResult()
         {
             // Arrange
             var employeeId = 1;
@@ -702,7 +702,7 @@
             payrollService.UpdatePayroll(model, sessionService.UserId).Returns(expected);
 
             // Act
-            var actual = employeeController.SavePayroll(model);
+            var actual = employeeController.EditPayroll(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -712,7 +712,7 @@
         }
 
         [Fact]
-        public void SavePayroll_InValidModel_ReturnErrors()
+        public void EditPayroll_InValidModel_ReturnErrors()
         {
             // Arrange
             var model = new EmployeePayrollViewModel();
@@ -720,7 +720,7 @@
             employeeController.ModelState.AddModelError("employee", "error");
 
             // Act
-            var actual = employeeController.SavePayroll(model);
+            var actual = employeeController.EditPayroll(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
