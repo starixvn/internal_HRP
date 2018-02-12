@@ -2,6 +2,18 @@ var bankAccountForm = {
     init: function () {
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
+        bankAccountForm.assignRevalidate();
+    },
+
+    assignRevalidate: function() {
+        $("select").on("change",
+            function () {
+                $(this).valid();
+                $(".revalidate").each(function () {
+                    $(this).removeData("previousValue");
+                    $(this).valid();
+                });
+            });
     },
 
     config: { attributes: true, childList: true },

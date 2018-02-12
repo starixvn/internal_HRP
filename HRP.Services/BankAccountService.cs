@@ -96,15 +96,15 @@
 
         public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)
         {
-            var filteredBankAccounts = bankAccounts.ToList();
+            var filteredBankAccounts = bankAccounts;
             if (isActive != null)
             {
-                filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive == isActive.Value).ToList();
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive == isActive.Value);
             }
 
             if (bankType != 0)
             {
-                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType).ToList();
+                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType);
             }
 
             //// Left here just in case spec change to multiple banktypes selection
