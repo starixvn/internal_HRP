@@ -1,32 +1,33 @@
-﻿-- =============================================
--- Author:		Hunter.Tran
--- Create date: 2018-01-10
--- Description:	Create new bank account
--- Update:
----- 2018-01-25: Add @Id
----- 2018-02-05: Check if Account name and Account number is already exist
----- 2018-02-05: Add Error Code and Error Message
----- 2018-02-07: Allow Swift code to be null
--- =============================================
-CREATE PROCEDURE [dbo].[BankAccount_CreateBankAccount]
-	@Id int = 0,
-	@EmployeeId int,
-	@BankType int = 1,
-	@BankName nvarchar(70),
-	@BankBranch nvarchar(70),
-	@BankAddress nvarchar(500),
-	@BankSwiftCode varchar(15) = NULL,
-	@AccountName nvarchar(30),
-	@AccountNumber varchar(30),
-	@AccountType int = 1,
-	@BeneficiaryName nvarchar(70),
+﻿CREATE PROCEDURE [dbo].[BankAccount_CreateBankAccount]
+	@Id INT = 0,
+	@EmployeeId INT,
+	@BankType INT = 1,
+	@BankName NVARCHAR(70),
+	@BankBranch NVARCHAR(70),
+	@BankAddress NVARCHAR(500),
+	@BankSwiftCode VARCHAR(15) = NULL,
+	@AccountName NVARCHAR(30),
+	@AccountNumber VARCHAR(30),
+	@AccountType INT = 1,
+	@BeneficiaryName NVARCHAR(70),
 	@IsActive bit = 1,
 	@ErrCode INT = 0 OUTPUT,
 	@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
+/*
+Created: 20180110@Hunter.Tran
+Task: Create new bank account
+DB: bodb_HRP
+Original:
+Revisions:
+---- 20180125: Add @Id
+---- 20180205: Check if Account name and Account number is already exist
+---- 20180205: Add Error Code and Error Message
+---- 20180207: Allow Swift code to be null
+---- 20180208: Account Number can be duplicate for different bank types
+Param's Explanation:
+*/
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
 	IF EXISTS (
@@ -47,10 +48,11 @@ BEGIN
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
 			WHERE [AccountNumber] = @AccountNumber
 			AND [EmployeeId] = @EmployeeId
+			AND [BankType] = @BankType
 			)
 	BEGIN
 		SET @ErrCode = 2
-		SET @ErrMsg = N'Account Number must be unique for an Employee'
+		SET @ErrMsg = N'Account Number must be unique in each Bank Type for an Employee'
 
 		RETURN
 	END

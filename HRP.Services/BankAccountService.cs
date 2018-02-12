@@ -30,7 +30,8 @@
             {
                 Id = bankAccount.Id,
                 AccountName = bankAccount.AccountName,
-                EmployeeId = bankAccount.EmployeeId
+                EmployeeId = bankAccount.EmployeeId,
+                BankType = bankAccount.BankType
             };
 
             if (criteria.IsValid())

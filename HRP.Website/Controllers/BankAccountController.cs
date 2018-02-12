@@ -124,20 +124,6 @@
             return isExisted ? Json(data: BankAccountError.AccountNumberExisted.GetDisplayName()) : Json(data: true);
         }
 
-        [AcceptVerbs("Get", "Post")]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CheckAccountNumberExistedOnBankType(BankAccount bankAccount)
-        {
-            var isExisted = false;
-
-            if (!string.IsNullOrEmpty(bankAccount.AccountNumber) && !string.IsNullOrEmpty(bankAccount.AccountName))
-            {
-                isExisted = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
-            }
-
-            return isExisted ? Json(data: BankAccountError.AccountNumberExisted.GetDisplayName()) : Json(data: true);
-        }
-
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)

@@ -5,13 +5,15 @@ var bankAccountForm = {
         bankAccountForm.assignRevalidate();
     },
 
-    assignRevalidate: function() {
-        $("select").on("change",
+    assignRevalidate: function () {
+        $(".check-validate").on("change",
             function () {
-                $(this).valid();
                 $(".revalidate").each(function () {
-                    $(this).removeData("previousValue");
-                    $(this).valid();
+                    var attr = $(this).attr("aria-invalid");
+                    if (attr !== undefined) {
+                        $(this).removeData("previousValue");
+                        $(this).valid();
+                    }
                 });
             });
     },
@@ -61,11 +63,11 @@ var bankAccountForm = {
         }
     },
 
-    onSaveBegin: function() {
+    onSaveBegin: function () {
         $(".bank-account-form").find(":submit").button("loading");
     },
 
-    onSaveComplete: function() {
+    onSaveComplete: function () {
         $(".bank-account-form").find(":submit").button("reset");
     },
 
@@ -112,11 +114,11 @@ var bankAccountForm = {
         }
     },
 
-    onAjaxFailure: function() {
+    onAjaxFailure: function () {
 
     },
 
-    countdown: function() {
+    countdown: function () {
         bankAccountForm.countTimeInSeconds = bankAccountForm.countTimeInSeconds - 1;
         if (bankAccountForm.countTimeInSeconds <= 0) {
             clearInterval(bankAccountForm.countdown);
@@ -127,7 +129,7 @@ var bankAccountForm = {
         $(".bank-account-form .count-down-remaining").text(bankAccountForm.countTimeInSeconds);
     },
 
-    disableForm: function() {
+    disableForm: function () {
         $(".bank-account-form :input").attr("disabled", true).addClass("disabled");
         $(".bank-account-form button").attr("disabled", true).addClass("disabled");
         $(".bank-account-form .button").attr("disabled", true).addClass("disabled");

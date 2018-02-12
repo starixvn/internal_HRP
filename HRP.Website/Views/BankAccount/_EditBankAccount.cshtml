@@ -44,11 +44,11 @@
         <div class="group-control">
             @if (Model.BankTypes.Count() == 1)
             {
-                <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" readonly="readonly"></select>
+                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" readonly="readonly"></select>
             }
             else
             {
-                <select class="control" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
+                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
             }
             @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
         </div>
@@ -103,7 +103,7 @@
 </div>
 <div class="group-control">
     <label>
-        <input asp-for="BankAccount.IsActive" />
+        <input asp-for="BankAccount.IsActive" class="check-validate" />
         <span>@ViewLang.Active</span>
     </label>
 </div>

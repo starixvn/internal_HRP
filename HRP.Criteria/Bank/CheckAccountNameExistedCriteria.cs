@@ -10,11 +10,18 @@
 
         public int EmployeeId { get; set; }
 
+        public int BankType { get; set; }
+
         public override string GetSettingKey() => "BankAccount_CheckNameExisted";
 
         public override bool IsValid()
         {
             if (EmployeeId == 0)
+            {
+                return false;
+            }
+
+            if (BankType == 0)
             {
                 return false;
             }
