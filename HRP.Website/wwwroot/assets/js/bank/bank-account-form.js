@@ -9,8 +9,7 @@ var bankAccountForm = {
         $(".check-validate").on("change",
             function () {
                 $(".revalidate").each(function () {
-                    var attr = $(this).attr("aria-invalid");
-                    if (attr !== undefined) {
+                    if ($(this).hasClass("valid") || $(this).hasClass("input-validation-error") || $(this).val() !== "") {
                         $(this).removeData("previousValue");
                         $(this).valid();
                     }
