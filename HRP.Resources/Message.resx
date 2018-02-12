@@ -684,4 +684,7 @@
   <data name="EditBankAccount" xml:space="preserve">
     <value>Edit Bank Account</value>
   </data>
+  <data name="BankAccountLimitReached" xml:space="preserve">
+    <value>This employee has reached the limit of number bank accounts. You cannot create more bank account.</value>
+  </data>
 </root>

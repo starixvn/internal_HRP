@@ -573,9 +573,6 @@
   <data name="BeneficiaryName" xml:space="preserve">
     <value>Beneficiary Name</value>
   </data>
-  <data name="BankAccount_IsActive" xml:space="preserve">
-    <value>Active</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -716,9 +713,6 @@
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
-  </data>
-  <data name="BankAccountLimitReached" xml:space="preserve">
-    <value>This employee has reached the limit of number bank accounts. You cannot create more bank account.</value>
   </data>
   <data name="NewBankingAccount" xml:space="preserve">
     <value>New Banking Account</value>

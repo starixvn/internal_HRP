@@ -66,7 +66,7 @@
 
         int EmployeeId { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BankAccount_IsActive")]
+        [Display(ResourceType = typeof(ViewLang), Name = "Active")]
         bool IsActive { get; set; }
     }
 }

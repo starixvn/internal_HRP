@@ -70,6 +70,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
+        /// </summary>
+        public static string BankAccountLimitReached {
+            get {
+                return ResourceManager.GetString("BankAccountLimitReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BVI Company Change Date is required!.
         /// </summary>
         public static string BVICompanyChangeDateRequired {
