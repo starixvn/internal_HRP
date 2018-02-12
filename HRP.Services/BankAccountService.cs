@@ -5,7 +5,6 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Bank;
-    using Fanex.Data;
     using Interfaces;
     using Models.Bank;
 
@@ -60,27 +59,16 @@
             return true;
         }
 
-        public EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId)
+        public IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int bankTypeId, bool? isActive)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
             {
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
+                BankTypeId = bankTypeId,
+                IsActive = isActive
             };
 
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                using (var results = db.QueryMultiple(criteria))
-                {
-                    var viewModel = new EmployeeBankAccounts
-                    {
-                        BankAccounts = results.Read<BankAccount>().ToList(),
-                        CompanyId = results.ReadSingle<int>(),
-                        EmployeeName = results.ReadSingle<string>()
-                    };
-
-                    return viewModel;
-                }
-            }
+            return baseService.GetData<BankAccount>(criteria).ToList();
         }
 
         public BankAccount GetBankAccountById(int bankAccountId)

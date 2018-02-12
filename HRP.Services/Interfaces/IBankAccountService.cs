@@ -8,7 +8,7 @@
     {
         CommandResult CreateBankAccount(IBankAccount bankAccount);
 
-        EmployeeBankAccounts GetBankAccountsByEmployeeId(int employeeId);
+        IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int bankTypeId, bool? isActive);
 
         CommandResult UpdateBankAccount(IBankAccount bankAccount);
 

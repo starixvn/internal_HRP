@@ -1,11 +1,10 @@
 ﻿@using HRP.Resources
+@using HRP.Models.Bank
+@using HRP.Models
 @model HRP.Models.Bank.EmployeeBankAccountsViewModel
 
 @{
-    ViewBag.Title = string.Format(Model.HaveCreatePermission
-        ? ViewLang.EditBankDetailsOfEmployee
-        : ViewLang.ViewBankDetailsOfEmployee, Model.EmployeeName);
-
+    ViewBag.Title = string.Format(Model.HaveHostPermission ? Message.EditBankAccountTitle : Message.ViewBankAccountTitle, Model.EmployeeName);
     Layout = "_Layout";
 }
 
@@ -17,7 +16,6 @@
 }
 
 @section Scripts {
-    @*<script src="~/lib/fanex-multiselect/fanex.multiSelect.js" type="text/javascript"></script>*@
     <script type="text/javascript" src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
     <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
@@ -26,11 +24,10 @@
 }
 
 <ol class="breadcrumb">
-    <li class="like-link">Employee Management</li>
+    <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li class="active">@ViewBag.Title</li>
 </ol>
-
 
 @*Filter form*@
 <form asp-action="EmployeeBankAccounts"
@@ -41,11 +38,11 @@
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">@ViewLang.BankType</label>
-        <select asp-for="SelectedBankType" asp-items="@Model.BankTypes"></select>
+        <select asp-for="BankTypeId" asp-items="@Model.BankTypes"></select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.Active</label>
-        <select class="control" asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
+        <select class="control" asp-for="IsActiveBankAccount" asp-items="@CommonSelectList.IsActive"></select>
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
@@ -57,25 +54,12 @@
 
 <div class="top-header">
     <div class="pull-left">
-        @if (Model.HaveCreatePermission)
+        @if (Model.HaveHostPermission)
         {
-            if (Model.CanCreate)
-            {
-                <a class="button -add create-user"
-                   asp-action="CreateBankAccount"
-                   asp-controller="BankAccount"
-                   asp-route-employeeId="@Model.EmployeeId">
-                    <span class="icon-add"></span>
-                    @ViewLang.CreateNewBankAccount
-                </a>
-            }
-            else
-            {
-                <button class="button -add create-user" data-toggle="modal" data-target="#reach-limit-modal">
-                    <span class="icon-add"></span>
-                    @ViewLang.CreateNewBankAccount
-                </button>
-            }
+        <a class="button -add create-user" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
+            <span class="icon-add"></span>
+            @ViewLang.CreateNewBankAccount
+        </a>
         }
     </div>
 
@@ -91,52 +75,52 @@
             <th class="col-number">#</th>
             <th>@ViewLang.BankType</th>
             <th>@ViewLang.AccountName</th>
-            <th>@ViewLang.AccountNumber</th>
+            <th>@ViewLang.AccountNo</th>
             <th>@ViewLang.BeneficiaryName</th>
             <th>@ViewLang.BankName</th>
             <th>@ViewLang.BankBranch</th>
             <th>@ViewLang.TypeOfAccount</th>
             <th>@ViewLang.SwiftCode</th>
             <th>@ViewLang.Active</th>
-            @if (Model.CanEdit)
+            @if (Model.HaveHostPermission)
             {
                 <th>@ViewLang.Edit</th>
             }
         </tr>
     </thead>
     <tbody>
-        @for (var index = 0; index < Model.BankAccounts.Count; index++)
+        @if (Model != null && Model.BankAccounts != null && Model.BankAccounts.Any())
         {
-            <tr>
-                <td class="text-center">@(index + 1)</td>
-                @{
-                    var bankType = Model.BankTypes.First(x => x.Value == Model.BankAccounts[index].BankType.ToString()).Text;
-                    var bankAccountType = Model.BankAccountTypes.First(x => x.Id == Model.BankAccounts[index].AccountType).Name;
-                }
-                <td>@bankType</td>
-                <td>@Model.BankAccounts[index].AccountName</td>
-                <td>@Model.BankAccounts[index].AccountNumber</td>
-                <td>@Model.BankAccounts[index].BeneficiaryName</td>
-                <td>@Model.BankAccounts[index].BankName</td>
-                <td>@Model.BankAccounts[index].BankBranch</td>
-                <td>@bankAccountType</td>
-                <td>@Model.BankAccounts[index].BankSwiftCode</td>
-                <td class="text-center has-icon">
-                    @if (Model.BankAccounts[index].IsActive)
-                    {
-                        <span class="icon-active"></span>
-                    }
-                </td>
-                @if (Model.CanEdit)
-                {
+            var index = 0;
+            @foreach (BankAccount bankAccount in Model.BankAccounts)
+            {
+                index++;
+                <tr>
+                    <td class="text-center">@(index + 1)</td>
+                    <td>@bankAccount.BankTypeName</td>
+                    <td>@bankAccount.AccountName</td>
+                    <td>@bankAccount.AccountNumber</td>
+                    <td>@bankAccount.BeneficiaryName</td>
+                    <td>@bankAccount.BankName</td>
+                    <td>@bankAccount.BankBranch</td>
+                    <td>@bankAccount.AccountTypeName</td>
+                    <td>@bankAccount.BankSwiftCode</td>
                     <td class="text-center has-icon">
-                        <a class="icon-edit"
-                           asp-action="EditBankAccount"
-                           asp-controller="BankAccount"
-                           asp-route-bankAccountId="@Model.BankAccounts[index].Id"></a>
+                        @if (bankAccount.IsActive)
+                        {
+                            <span class="icon-active"></span>
+                        }
                     </td>
-                }
-            </tr>
+                    @if (Model.HaveHostPermission)
+                    {
+                        <td class="text-center has-icon">
+                            <a class="icon-edit" asp-action="EditBankAccount" asp-controller="BankAccount" asp-route-bankAccountId="@bankAccount.Id"></a>
+                        </td>
+                    }
+                </tr>
+            }
+
         }
+
     </tbody>
 </table>

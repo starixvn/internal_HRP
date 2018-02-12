@@ -3,11 +3,14 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Core.Model;
+    using HRP.Models;
     using Microsoft.AspNetCore.Http;
     using Models.EmployeeManagement;
 
     public interface IEmployeeManagementService
     {
+        Employee GetEmployeeBasicInfoById(int employeeId);
+
         EmployeeManagementViewModel GetDataFilterForIndexPage(string departmentIds, string employmentStatusIds);
 
         Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel);

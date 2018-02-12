@@ -41,6 +41,16 @@
             this.employeeRepository = employeeRepository ?? new EmployeeManagementRepository();
         }
 
+        public Employee GetEmployeeBasicInfoById(int employeeId)
+        {
+            var criteria = new GetEmployeeBasicInfoByIdCriteria
+            {
+                EmployeeId = employeeId
+            };
+
+            return baseService.GetDataEntity<Employee>(criteria);
+        }
+
         public EmployeeManagementViewModel GetDataFilterForIndexPage(string departmentIds, string employmentStatusIds)
         {
             var criteria = new GetDataFilterForIndexPageCriteria

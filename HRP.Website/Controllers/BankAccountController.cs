@@ -8,14 +8,15 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Bank;
+    using HRP.Models;
     using Microsoft.AspNetCore.Mvc;
     using Models.Bank;
     using Services.Interfaces;
-    using BankType = Models.Bank.BankType;
 
     [HRPAuthorize]
     public class BankAccountController : BaseController
     {
+        private readonly IEmployeeManagementService employeeService;
         private readonly IBankAccountService bankAccountService;
         private readonly IRefResourceService refResourceService;
         private const int MAX_BANK_ACCOUNT_PER_TYPE = 3;
@@ -23,16 +24,17 @@
         private readonly string[] refNames =
         {
             ReferenceResource.BankType,
-            ReferenceResource.BankAccountType,
-            ReferenceResource.ContraCoAccount
+            ReferenceResource.BankAccountType
         };
 
         public BankAccountController(
             IBaseService baseService,
+            IEmployeeManagementService employeeService,
             IBankAccountService bankAccountService,
             IRefResourceService refResourceService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
+            this.employeeService = employeeService;
             this.bankAccountService = bankAccountService;
             this.refResourceService = refResourceService;
         }
@@ -41,45 +43,18 @@
         [IgnoreAntiforgeryToken]
         public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
+            viewModel.CompanyId = employee.CompanyId;
+            viewModel.EmployeeName = employee.NickName;
 
-            var bankTypes = refResourceService
-                .FilterReferenceResources(refResources, ReferenceResource.BankType)
-                .Select(x => new BankType(x));
+            viewModel.BankTypeResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType);
 
-            var bankAccountTypes = refResourceService
-                .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
-                .Select(x => new BankAccountType(x));
+            viewModel.BankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
 
-            var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
-
-            viewModel.BankAccounts = data.BankAccounts;
-            viewModel.EmployeeName = data.EmployeeName;
-
-            viewModel.Initialize(bankTypes, bankAccountTypes);
-
-            viewModel.CompanyId = data.CompanyId;
-
-            viewModel.HaveCreatePermission = sessionService.HasPermissionOnCompany(
-                viewModel.CompanyId,
+            viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(
+                employee.CompanyId,
                 FunctionKey.EmployeeBankDetails,
                 Policy.Host);
-
-            viewModel.CanEdit = viewModel.HaveCreatePermission;
-            viewModel.CanCreate = viewModel.HaveCreatePermission;
-
-            // Check maximum account per type
-            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
-            if (bankTypes.Count() <= disabledBankTypes.Count)
-            {
-                viewModel.CanCreate = false;
-            }
-
-            viewModel.BankAccounts = bankAccountService.FilterBankAccounts(
-                    viewModel.BankAccounts,
-                    viewModel.SelectedBankType,
-                    viewModel.IsActiveBankAccount)
-                .ToList();
 
             return View(viewModel);
         }
@@ -147,9 +122,11 @@
 
         private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel, int selectedBankType = 0)
         {
+            Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
+
             var data = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId);
 
-            viewModel.EmployeeName = data.EmployeeName;
+            viewModel.EmployeeName = employee.NickName;
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
 
@@ -161,7 +138,7 @@
                 .FilterReferenceResources(refResources, ReferenceResource.BankAccountType)
                 .Select(x => new BankAccountType(x));
 
-            var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
+            //var disabledBankTypes = GetDisabledBankTypes(data, bankTypes);
 
             if (selectedBankType != 0)
             {
@@ -175,17 +152,22 @@
                 }
 
                 viewModel.HaveCreatePermission = sessionService.HasPermissionOnCompany(
-                    data.CompanyId,
+                    employee.CompanyId,
                     FunctionKey.EmployeeBankDetails,
                     Policy.Host);
 
                 viewModel.CanCreate = viewModel.HaveCreatePermission;
 
-                if (bankTypes.Count() <= disabledBankTypes.Count)
-                {
-                    viewModel.CanCreate = false;
-                }
+                //if (bankTypes.Count() <= disabledBankTypes.Count)
+                //{
+                //    viewModel.CanCreate = false;
+                //}
             }
+
+            viewModel.HaveCreatePermission = sessionService.HasPermissionOnCompany(
+                    employee.CompanyId,
+                    FunctionKey.EmployeeBankDetails,
+                    Policy.Host);
 
             viewModel.Initialize(bankTypes, bankAccountTypes, disabledBankTypes);
         }
@@ -266,7 +248,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
-            if (bankTypeId == (int)Core.Enumerations.BankType.ContraCoAccount)
+            if (bankTypeId == (int)BankTypes.ContraCoAccount)
             {
                 var refResources = refResourceService.GetReferenceResourcesByNames(new[] { ReferenceResource.ContraCoAccount });
                 return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));

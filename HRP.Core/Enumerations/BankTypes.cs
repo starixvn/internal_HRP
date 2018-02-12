@@ -2,7 +2,7 @@
 
 namespace HRP.Core.Enumerations
 {
-    public enum BankType
+    public enum BankTypes
     {
         [Display(Name = "e-Banking" )]
         Ebanking = 1,

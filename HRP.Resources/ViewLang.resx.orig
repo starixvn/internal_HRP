@@ -544,7 +544,7 @@
     <value>Personal Detail</value>
   </data>
   <data name="EditEmployeePayroll" xml:space="preserve">
-    <value>Edit Employee Payroll</value>
+    <value>Edit Payroll of Employee</value>
   </data>
   <data name="BankName" xml:space="preserve">
     <value>Bank Name</value>
@@ -572,6 +572,9 @@
   </data>
   <data name="BeneficiaryName" xml:space="preserve">
     <value>Beneficiary Name</value>
+  </data>
+  <data name="BankAccount_IsActive" xml:space="preserve">
+    <value>Active</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
@@ -696,13 +699,13 @@
   <data name="WorkingDays" xml:space="preserve">
     <value>Working Days</value>
   </data>
+<<<<<<< cfd52e63d85e68eed90e983db8715bbcc0baf33b
   <data name="PaymentProcess" xml:space="preserve">
     <value>Payment Process</value>
   </data>
   <data name="SelectWorkingMonthCompany" xml:space="preserve">
     <value>Select Working Month &amp; Company</value>
   </data>
-<<<<<<< HEAD
   <data name="CreateNewBankAccount" xml:space="preserve">
     <value>Create New Bank Account</value>
   </data>
@@ -717,7 +720,7 @@
   </data>
   <data name="NewBankingAccount" xml:space="preserve">
     <value>New Banking Account</value>
-=======
+  </data>
   <data name="BankAccountType" xml:space="preserve">
     <value>Bank Account Type</value>
   </data>
@@ -768,6 +771,12 @@
   </data>
   <data name="WorkPermitType2" xml:space="preserve">
     <value>Work Permit Type 2</value>
->>>>>>> #90129 - Create Update refResource Item 2
+=======
+  <data name="CreateNewBankAccount" xml:space="preserve">
+    <value>Create New Bank Account</value>
+  </data>
+  <data name="AccountNo" xml:space="preserve">
+    <value>Account No.</value>
+>>>>>>> #000 - refactor code of BankAccount
   </data>
 </root>

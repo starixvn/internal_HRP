@@ -279,7 +279,7 @@
 
             refResourceService.GetReferenceResourcesByNames(refNames).Returns(new List<ReferenceResourceModel>());
 
-            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankType.ContraCoAccount, 1);
+            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankTypes.ContraCoAccount, 1);
 
             baseService.DidNotReceive().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
             refResourceService.Received().GetReferenceResourcesByNames(Arg.Any<string[]>());
@@ -293,7 +293,7 @@
 
             baseService.GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
 
-            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankType.Ebanking, 1);
+            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankTypes.Ebanking, 1);
 
             baseService.Received().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
             refResourceService.DidNotReceive().GetReferenceResourcesByNames(Arg.Any<string[]>());
@@ -307,12 +307,12 @@
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = (int) Core.Enumerations.BankType.Ebanking
+                        ResourceId = (int) Core.Enumerations.BankTypes.Ebanking
                     },
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = (int) Core.Enumerations.BankType.DirectBanking
+                        ResourceId = (int) Core.Enumerations.BankTypes.DirectBanking
                     },
                     new ReferenceResourceModel
                     {

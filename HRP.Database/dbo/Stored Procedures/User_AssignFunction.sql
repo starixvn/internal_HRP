@@ -53,7 +53,7 @@ BEGIN
 		,IsHost BIT
 		)
 
-	EXEC sp_xml_preparedocument @idoc OUTPUT
+	EXEC [dbo].[sp_xml_preparedocument] @idoc OUTPUT
 		,@Value
 
 	INSERT INTO #tblFunctionPolicy (

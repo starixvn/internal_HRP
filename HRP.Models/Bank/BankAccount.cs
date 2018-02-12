@@ -13,7 +13,13 @@
 
         public int EmployeeId { get; set; }
 
+        public string FullName { get; set; }
+
+        public int CompanyId { get; set; }
+
         public int BankType { get; set; }
+
+        public string BankTypeName { get; set; }
 
         public string BankName { get; set; }
 
@@ -28,6 +34,8 @@
         public string AccountNumber { get; set; }
 
         public int AccountType { get; set; }
+
+        public string AccountTypeName { get; set; }
 
         public string BeneficiaryName { get; set; }
 

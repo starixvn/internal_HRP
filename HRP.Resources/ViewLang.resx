@@ -771,4 +771,10 @@
   <data name="WorkPermitType2" xml:space="preserve">
     <value>Work Permit Type 2</value>
   </data>
+  <data name="CreateNewBankAccount" xml:space="preserve">
+    <value>Create New Bank Account</value>
+  </data>
+  <data name="AccountNo" xml:space="preserve">
+    <value>Account No.</value>
+  </data>
 </root>

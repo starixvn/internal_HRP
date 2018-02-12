@@ -5,6 +5,8 @@
 
     public interface IRefResourceService
     {
+        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName);
+
         IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names);
 
         IEnumerable<ReferenceResourceModel> FilterReferenceResources(

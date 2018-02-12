@@ -16,6 +16,18 @@
             this.baseService = baseService;
         }
 
+        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName)
+        {
+            var criteria = new GetRefResourceByNamesCriteria
+            {
+                RefNames = resourceName
+            };
+
+            var refResources = baseService.GetData<ReferenceResourceModel>(criteria);
+
+            return refResources;
+        }
+
         public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names)
         {
             IEnumerable<ReferenceResourceModel> refResources = new List<ReferenceResourceModel>();

@@ -70,6 +70,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account No..
+        /// </summary>
+        public static string AccountNo {
+            get {
+                return ResourceManager.GetString("AccountNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         public static string AccountNumber {
