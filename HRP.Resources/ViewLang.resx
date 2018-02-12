@@ -705,4 +705,22 @@
   <data name="SelectWorkingMonthCompany" xml:space="preserve">
     <value>Select Working Month &amp; Company</value>
   </data>
+  <data name="CreateNewBankAccount" xml:space="preserve">
+    <value>Create New Bank Account</value>
+  </data>
+  <data name="EditBankDetailsOfEmployee" xml:space="preserve">
+    <value>Edit Bank Details of Employee '{0}'</value>
+  </data>
+  <data name="ViewBankDetailsOfEmployee" xml:space="preserve">
+    <value>View Bank Details of Employee '{0}'</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="BankAccountLimitReached" xml:space="preserve">
+    <value>This employee has reached the limit of number bank accounts. You cannot create more bank account.</value>
+  </data>
+  <data name="NewBankingAccount" xml:space="preserve">
+    <value>New Banking Account</value>
+  </data>
 </root>

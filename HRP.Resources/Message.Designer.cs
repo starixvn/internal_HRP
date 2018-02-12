@@ -205,6 +205,42 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Bank Account.
+        /// </summary>
+        public static string CreateBankAccount {
+            get {
+                return ResourceManager.GetString("CreateBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  seconds..
+        /// </summary>
+        public static string CreateBankAccountSuccessedDimissTime {
+            get {
+                return ResourceManager.GetString("CreateBankAccountSuccessedDimissTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Account has been successfully updated! Popup will be dismissed in .
+        /// </summary>
+        public static string CreateBankAccountSuccessedForModal {
+            get {
+                return ResourceManager.GetString("CreateBankAccountSuccessedForModal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Account has been successfully updated! You will be redirected in .
+        /// </summary>
+        public static string CreateBankAccountSuccessedForPage {
+            get {
+                return ResourceManager.GetString("CreateBankAccountSuccessedForPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee has been created..
         /// </summary>
         public static string CreateEmployeeSuccessful {
@@ -372,6 +408,15 @@ namespace HRP.Resources {
         public static string ECTelephoneNoRequired {
             get {
                 return ResourceManager.GetString("ECTelephoneNoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Bank Account.
+        /// </summary>
+        public static string EditBankAccount {
+            get {
+                return ResourceManager.GetString("EditBankAccount", resourceCulture);
             }
         }
         

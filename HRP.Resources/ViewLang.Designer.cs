@@ -178,6 +178,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
+        /// </summary>
+        public static string BankAccountLimitReached {
+            get {
+                return ResourceManager.GetString("BankAccountLimitReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string BankAddress {
@@ -322,6 +331,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company.
         /// </summary>
         public static string Company {
@@ -399,6 +417,15 @@ namespace HRP.Resources {
         public static string CreatedDate {
             get {
                 return ResourceManager.GetString("CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Bank Account.
+        /// </summary>
+        public static string CreateNewBankAccount {
+            get {
+                return ResourceManager.GetString("CreateNewBankAccount", resourceCulture);
             }
         }
         
@@ -615,6 +642,15 @@ namespace HRP.Resources {
         public static string EditbankDetails {
             get {
                 return ResourceManager.GetString("EditbankDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Bank Details of Employee &apos;{0}&apos;.
+        /// </summary>
+        public static string EditBankDetailsOfEmployee {
+            get {
+                return ResourceManager.GetString("EditBankDetailsOfEmployee", resourceCulture);
             }
         }
         
@@ -1146,6 +1182,15 @@ namespace HRP.Resources {
         public static string Nationality {
             get {
                 return ResourceManager.GetString("Nationality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Banking Account.
+        /// </summary>
+        public static string NewBankingAccount {
+            get {
+                return ResourceManager.GetString("NewBankingAccount", resourceCulture);
             }
         }
         
@@ -1758,6 +1803,15 @@ namespace HRP.Resources {
         public static string ViewBankDetails {
             get {
                 return ResourceManager.GetString("ViewBankDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Bank Details of Employee &apos;{0}&apos;.
+        /// </summary>
+        public static string ViewBankDetailsOfEmployee {
+            get {
+                return ResourceManager.GetString("ViewBankDetailsOfEmployee", resourceCulture);
             }
         }
         

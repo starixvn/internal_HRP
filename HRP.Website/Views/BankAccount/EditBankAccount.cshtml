@@ -2,7 +2,7 @@
 @model HRP.Models.Bank.EditBankAccountViewModel
 
 @{
-    ViewBag.Title = "Edit Bank Account";
+    ViewBag.Title = Message.EditBankAccount;
     Layout = "_Layout";
 }
 
@@ -22,12 +22,14 @@
 }
 
 <ol class="breadcrumb">
-    <li class="like-link">Employee Management</li>
-    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee List</a></li>
+    <li class="like-link">@ViewLang.EmployeeManagement</li>
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li>
         <a asp-action="EmployeeBankAccounts"
            asp-controller="BankAccount"
-           asp-route-EmployeeId="@Model.EmployeeId">Edit Bank Details of Employee '@Model.EmployeeName'</a>
+           asp-route-EmployeeId="@Model.EmployeeId">
+            @string.Format(ViewLang.EditBankDetailsOfEmployee, Model.EmployeeName)
+        </a>
     </li>
     <li class="active">@ViewBag.Title</li>
 </ol>
@@ -54,6 +56,8 @@
            asp-route-Id="@Model.EmployeeId">Cancel</a>
         <button class="button -primary"
                 data-loading-text="@ViewLang.Saving ..."
-                type="submit">Save</button>
+                type="submit">
+            @ViewLang.Save
+        </button>
     </div>
 </form>

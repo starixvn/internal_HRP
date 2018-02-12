@@ -22,16 +22,15 @@
 <div class="-has-icon msg-success hidden">
     @if (Model.TypeOfForm == FormType.Page)
     {
-        <span>Bank Account has been successfully updated! </span>
-        <span>You will be redirected in </span>
+        <span>@Message.CreateBankAccountSuccessedForPage</span>
         <span class="count-down-remaining">5</span>
-        <span> seconds.</span>
+        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
     }
     else
     {
-        <span>Bank Account has been successfully updated! Popup will be dismissed in </span>
+        <span>@Message.CreateBankAccountSuccessedForModal</span>
         <span class="count-down-remaining">5</span>
-        <span> seconds.</span>
+        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
     }
 </div>
 
@@ -107,13 +106,3 @@
         <span>@ViewLang.Active</span>
     </label>
 </div>
-
-@*<div class="list-button">
-    <a class="button -second back"
-       asp-action="EmployeeBankAccounts"
-       asp-controller="BankAccount"
-       asp-route-Id="@Model.EmployeeId">Cancel</a>
-    <button class="button -primary"
-            data-loading-text="@ViewLang.Saving ..."
-            type="submit">Save</button>
-</div>*@

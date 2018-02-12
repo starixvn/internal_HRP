@@ -669,4 +669,19 @@
   <data name="UpdatePersonalDetailsSuccessfully" xml:space="preserve">
     <value>Personal Details has been successfully updated!</value>
   </data>
+  <data name="CreateBankAccountSuccessedForPage" xml:space="preserve">
+    <value>Bank Account has been successfully updated! You will be redirected in </value>
+  </data>
+  <data name="CreateBankAccountSuccessedForModal" xml:space="preserve">
+    <value>Bank Account has been successfully updated! Popup will be dismissed in </value>
+  </data>
+  <data name="CreateBankAccountSuccessedDimissTime" xml:space="preserve">
+    <value> seconds.</value>
+  </data>
+  <data name="CreateBankAccount" xml:space="preserve">
+    <value>Create Bank Account</value>
+  </data>
+  <data name="EditBankAccount" xml:space="preserve">
+    <value>Edit Bank Account</value>
+  </data>
 </root>

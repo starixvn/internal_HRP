@@ -1,14 +1,10 @@
-﻿@model HRP.Models.Bank.EmployeeBankAccountsViewModel
+﻿@using HRP.Resources
+@model HRP.Models.Bank.EmployeeBankAccountsViewModel
 
 @{
-    if (Model.HaveCreatePermission)
-    {
-        ViewBag.Title = "Edit Bank Details of Employee '" + Model.EmployeeName + "'";
-    }
-    else
-    {
-        ViewBag.Title = "View Bank Details of Employee '" + Model.EmployeeName + "'";
-    }
+    ViewBag.Title = string.Format(Model.HaveCreatePermission
+        ? ViewLang.EditBankDetailsOfEmployee
+        : ViewLang.ViewBankDetailsOfEmployee, Model.EmployeeName);
 
     Layout = "_Layout";
 }
@@ -31,7 +27,7 @@
 
 <ol class="breadcrumb">
     <li class="like-link">Employee Management</li>
-    <li><a asp-action="Index" asp-controller="EmployeeManagement">Employee List</a></li>
+    <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li class="active">@ViewBag.Title</li>
 </ol>
 
@@ -44,15 +40,15 @@
       class="search-form">
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
-        <label class="text">Bank Type</label>
+        <label class="text">@ViewLang.BankType</label>
         <select asp-for="SelectedBankType" asp-items="@Model.BankTypes"></select>
     </div>
     <div class="group">
-        <label class="text">Active</label>
+        <label class="text">@ViewLang.Active</label>
         <select class="control" asp-for="IsActiveBankAccount" asp-items="@Model.BankAccountActive"></select>
     </div>
     <div class="group">
-        <button type="submit" class="button -primary">Submit</button>
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
     </div>
 </form>
 
@@ -70,14 +66,14 @@
                    asp-controller="BankAccount"
                    asp-route-employeeId="@Model.EmployeeId">
                     <span class="icon-add"></span>
-                    Create New Bank Account
+                    @ViewLang.CreateNewBankAccount
                 </a>
             }
             else
             {
                 <button class="button -add create-user" data-toggle="modal" data-target="#reach-limit-modal">
                     <span class="icon-add"></span>
-                    Create New Bank Account
+                    @ViewLang.CreateNewBankAccount
                 </button>
             }
         }
@@ -93,18 +89,18 @@
     <thead>
         <tr>
             <th class="col-number">#</th>
-            <th>Bank Type</th>
-            <th>Account Name</th>
-            <th>Account No.</th>
-            <th>Beneficiary Name</th>
-            <th>Bank Name</th>
-            <th>Branch</th>
-            <th>Type of Account</th>
-            <th>SWIFT Code</th>
-            <th>Active</th>
+            <th>@ViewLang.BankType</th>
+            <th>@ViewLang.AccountName</th>
+            <th>@ViewLang.AccountNumber</th>
+            <th>@ViewLang.BeneficiaryName</th>
+            <th>@ViewLang.BankName</th>
+            <th>@ViewLang.BankBranch</th>
+            <th>@ViewLang.TypeOfAccount</th>
+            <th>@ViewLang.SwiftCode</th>
+            <th>@ViewLang.Active</th>
             @if (Model.CanEdit)
             {
-                <th>Edit</th>
+                <th>@ViewLang.Edit</th>
             }
         </tr>
     </thead>

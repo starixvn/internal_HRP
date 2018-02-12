@@ -22,17 +22,17 @@
                           data-ajax-failure="bankAccountForm.onAjaxFailure">
                         <div class="modal-header">
                             <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                            <h4 class="modal-title">New Banking Account</h4>
+                            <h4 class="modal-title">@HRP.Resources.ViewLang.NewBankingAccount</h4>
                         </div>
                         <div class="modal-body">
                             @Html.Partial("_EditBankAccount", Model)
-                            <div class="list-button">                                
+                            <div class="list-button">
                                 <button class="button -primary"
                                         data-loading-text="@ViewLang.Saving ..."
                                         type="submit">
-                                    Save
+                                    @HRP.Resources.ViewLang.Save
                                 </button>
-                                <button type="button" class="button -second" data-dismiss="modal">Close</button>
+                                <button type="button" class="button -second" data-dismiss="modal">@HRP.Resources.ViewLang.Close</button>
                             </div>
                         </div>
                     </form>
