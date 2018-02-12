@@ -2,14 +2,14 @@ namespace HRP.Website.Controllers
 {
     using System.Threading.Tasks;
     using BCrypt.Net;
+    using Core.Criteria;
     using Core.Services;
-    using HRP.Core.Criteria;
-    using HRP.Criteria;
-    using HRP.Models;
-    using HRP.Models.Account;
+    using Criteria;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Models.Account;
     using Resources;
     using Services;
 
@@ -47,7 +47,9 @@ namespace HRP.Website.Controllers
                     return AfterLoginSuccessful(user);
                 }
 
-                errorMsg = (user != null && userService.IsCorrectPassword(password, user.Password) && !user.IsActive) ? Message.AccountInactive : Message.LoginInvalid;
+                errorMsg = (user != null && userService.IsCorrectPassword(password, user.Password) && !user.IsActive)
+                    ? Message.AccountInactive
+                    : Message.LoginInvalid;
             }
 
             ModelState.AddModelError(string.Empty, errorMsg);
@@ -155,6 +157,7 @@ namespace HRP.Website.Controllers
                 IP = HttpContext.Connection.RemoteIpAddress.ToString(),
                 Platform = HttpContext.Request.Headers["User-Agent"].ToString()
             };
+
             await baseService.ExecuteNonQueryAsync(criteria);
 
             sessionService.ClearAll();

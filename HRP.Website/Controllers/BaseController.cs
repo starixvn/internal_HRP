@@ -1,11 +1,12 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using HRP.Core.Criteria;
-    using HRP.Core.Services;
+    using Core.Criteria;
+    using Core.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.AspNetCore.Mvc.Routing;
 
     public class BaseController : Controller
     {
@@ -40,10 +41,13 @@
                 IP = context.HttpContext.Connection.RemoteIpAddress.ToString(),
                 Platform = context.HttpContext.Request.Headers["User-Agent"].ToString()
             };
+
             baseService.ExecuteNonQuery(criteria);
 
             context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            context.HttpContext.Response.Redirect("/auth/login");
+
+            var urlHelper = new UrlHelper(context);
+            context.HttpContext.Response.Redirect(urlHelper.Action("Login", "Auth"));
         }
     }
 }
