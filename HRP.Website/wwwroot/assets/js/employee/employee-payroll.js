@@ -298,9 +298,9 @@
             $(this).click();
         });
 
-        if ($('#CanCreateBankAccount').val() !== 'True') {
-            $('.add-account').addClass('disabled');
-        }
+        ////if ($('#CanCreateBankAccount').val() !== 'True') {
+        ////    $('.add-account').addClass('hide');
+        ////}
 
         if ($('#CanUpdate').val() !== 'True') {
             $('select, input', '#payroll-form').attr('disabled', 'disabled');
