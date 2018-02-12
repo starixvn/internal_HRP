@@ -125,6 +125,158 @@
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.LocalJobTitle }
+            },
+            { (int)FieldType.JobTitleChangeReason, new Field   {
+                    FieldId = (int)FieldType.JobTitleChangeReason,
+                    FieldName = ViewLang.JobTitleChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.JobTitleChangeReason }
+            },
+            { (int)FieldType.DateCommencementChangeReasonOfGroup, new Field   {
+                    FieldId = (int)FieldType.DateCommencementChangeReasonOfGroup,
+                    FieldName = ViewLang.DateCommencementChangeReasonOfGroup,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DateCommencementChangeReasonOfGroup }
+            },
+            { (int)FieldType.CompanyIDChangeReason, new Field   {
+                    FieldId = (int)FieldType.CompanyIDChangeReason,
+                    FieldName = ViewLang.CompanyIDChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.CompanyIDChangeReason }
+            },
+            { (int)FieldType.EmploymentType, new Field   {
+                    FieldId = (int)FieldType.EmploymentType,
+                    FieldName = ViewLang.EmploymentType,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.EmploymentType }
+            },
+            { (int)FieldType.EmploymentStatus, new Field   {
+                    FieldId = (int)FieldType.EmploymentStatus,
+                    FieldName = ViewLang.EmploymentStatus,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.EmploymentStatus }
+            },
+            { (int)FieldType.JobCategoryChangeReason, new Field   {
+                    FieldId = (int)FieldType.JobCategoryChangeReason,
+                    FieldName = ViewLang.JobCategoryChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.JobCategoryChangeReason }
+            },
+            { (int)FieldType.JobGradeChangeReason, new Field   {
+                    FieldId = (int)FieldType.JobGradeChangeReason,
+                    FieldName = ViewLang.JobGradeChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.JobGradeChangeReason }
+            },
+            { (int)FieldType.DivisionChangeReason, new Field   {
+                    FieldId = (int)FieldType.DivisionChangeReason,
+                    FieldName = ViewLang.DivisionChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DivisionChangeReason }
+            },
+            { (int)FieldType.DepartmentChangeReason, new Field   {
+                    FieldId = (int)FieldType.DepartmentChangeReason,
+                    FieldName = ViewLang.DepartmentChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DepartmentChangeReason }
+            },
+            { (int)FieldType.SectionChangeReason, new Field   {
+                    FieldId = (int)FieldType.SectionChangeReason,
+                    FieldName = ViewLang.SectionChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.SectionChangeReason }
+            },
+            { (int)FieldType.CostCenterChangeReason, new Field   {
+                    FieldId = (int)FieldType.CostCenterChangeReason,
+                    FieldName = ViewLang.CostCenterChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.CostCenterChangeReason }
+            },
+            { (int)FieldType.WorkPermitType1, new Field   {
+                    FieldId = (int)FieldType.WorkPermitType1,
+                    FieldName = ViewLang.WorkPermitType1,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.WorkPermitType1 }
+            },
+            { (int)FieldType.WorkPermitType2, new Field   {
+                    FieldId = (int)FieldType.WorkPermitType2,
+                    FieldName = ViewLang.WorkPermitType2,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.WorkPermitType2 }
+            },
+            { (int)FieldType.BankAccountType, new Field   {
+                    FieldId = (int)FieldType.BankAccountType,
+                    FieldName = ViewLang.BankAccountType,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.BankAccountType }
+            },
+            { (int)FieldType.PaymentMethodCash, new Field   {
+                    FieldId = (int)FieldType.PaymentMethodCash,
+                    FieldName = ViewLang.PaymentMethodCash,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.PaymentMethodCash }
+            },
+            { (int)FieldType.ContraCoAccount, new Field   {
+                    FieldId = (int)FieldType.ContraCoAccount,
+                    FieldName = ViewLang.ContraCoAccount,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.ContraCoAccount }
+            },
+            { (int)FieldType.CompanyBVIChangeReason, new Field   {
+                    FieldId = (int)FieldType.CompanyBVIChangeReason,
+                    FieldName = ViewLang.CompanyBVIChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.CompanyBVIChangeReason }
+            },
+            { (int)FieldType.CompanyLocalChangeReason, new Field   {
+                    FieldId = (int)FieldType.CompanyLocalChangeReason,
+                    FieldName = ViewLang.CompanyLocalChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.CompanyLocalChangeReason }
+            },
+            { (int)FieldType.DateCommencementChangeReasonOfCompany, new Field   {
+                    FieldId = (int)FieldType.DateCommencementChangeReasonOfCompany,
+                    FieldName = ViewLang.DateCommencementChangeReasonOfCompany,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DateCommencementChangeReasonOfCompany }
             }
         };
 

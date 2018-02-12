@@ -17,7 +17,20 @@
         public const string BankAccountType = "BankAccountType";
         public const string GroupDateReasons = "GroupDateReasons";
         public const string BasicSalaryChangeReason = "BasicSalaryChangeReason";
-        public const string CashAccount = "CashAccount";
+        public const string PaymentMethodCash = "PaymentMethodCash";
         public const string ContraCoAccount = "ContraCoAccount";
+        public const string JobTitleChangeReason = "JobTitleChangeReason";
+        public const string DateCommencementChangeReasonOfGroup = "DateCommencementChangeReasonOfGroup";
+        public const string DateCommencementChangeReasonOfCompany = "DateCommencementChangeReasonOfCompany";
+        public const string CompanyIDChangeReason = "CompanyIDChangeReason";
+        public const string JobCategoryChangeReason = "JobCategoryChangeReason";
+        public const string JobGradeChangeReason = "JobGradeChangeReason";
+        public const string DivisionChangeReason = "DivisionChangeReason";
+        public const string DepartmentChangeReason = "DepartmentChangeReason";
+        public const string SectionChangeReason = "SectionChangeReason";
+        public const string CostCenterChangeReason = "CostCenterChangeReason";
+
+        public const string CompanyBVIChangeReason = "CompanyBVIChangeReason";
+        public const string CompanyLocalChangeReason = "CompanyLocalChangeReason";
     }
 }

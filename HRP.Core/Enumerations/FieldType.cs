@@ -25,26 +25,59 @@ namespace HRP.Core.Enumerations
         [Display(Name = "Job Title Local")]
         JobTitleLocal = 7,
 
-        [Display(Name = "Division")]
-        Division = 18,
+        [Display(Name = "Job Title Change Reason")]
+        JobTitleChangeReason = 8,
 
-        [Display(Name = "Department")]
-        Department = 20,
+        [Display(Name = "Date Commencement Change Reason - Group")]
+        DateCommencementChangeReasonOfGroup = 9,
 
-        [Display(Name = "Cost Center")]
-        CostCenter = 24,
+        [Display(Name = "Company ID Change Reason")]
+        CompanyIDChangeReason = 10,
 
-        [Display(Name = "Section")]
-        Section = 22,
+        [Display(Name = "Employment Type")]
+        EmploymentType = 11,
+
+        [Display(Name = "Employment Status")]
+        EmploymentStatus = 12,
 
         [Display(Name = "Job Category")]
         JobCategory = 13,
+
+        [Display(Name = "Job Category Change Reason")]
+        JobCategoryChangeReason = 14,
 
         [Display(Name = "Grade Level")]
         GradeLevel = 15,
 
         [Display(Name = "Job Grade")]
         JobGrade = 16,
+
+        [Display(Name = "Job Grade Change Reason")]
+        JobGradeChangeReason = 17,
+
+        [Display(Name = "Division")]
+        Division = 18,
+
+        [Display(Name = "Division Change Reason")]
+        DivisionChangeReason = 19,
+
+        [Display(Name = "Department")]
+        Department = 20,
+
+        [Display(Name = "Department Change Reason")]
+        DepartmentChangeReason = 21,
+
+        [Display(Name = "Section")]
+        Section = 22,
+
+        [Display(Name = "Section Change Reason")]
+        SectionChangeReason = 23,
+
+        [Display(Name = "Cost Center")]
+        CostCenter = 24,
+
+        [Display(Name = "Cost Center Change Reason")]
+        CostCenterChangeReason = 25,
 
         [Display(Name = "Country")]
         Country = 26,
@@ -53,6 +86,30 @@ namespace HRP.Core.Enumerations
         City = 27,
 
         [Display(Name = "Office")]
-        Office = 28
+        Office = 28,
+
+        [Display(Name = "Work Permit Type 1")]
+        WorkPermitType1 = 29,
+
+        [Display(Name = "Work Permit Type 2")]
+        WorkPermitType2 = 30,
+
+        [Display(Name = "Bank Account Type")]
+        BankAccountType = 31,
+
+        [Display(Name = "Payment Method - Cash")]
+        PaymentMethodCash = 32,
+
+        [Display(Name = "Contra Co. Account")]
+        ContraCoAccount = 33,
+
+        [Display(Name = "Company BVI Change Reason")]
+        CompanyBVIChangeReason = 34,
+
+        [Display(Name = "Company Local Change Reason")]
+        CompanyLocalChangeReason = 35,
+
+        [Display(Name = "Date Commencement Change Reason - Company")]
+        DateCommencementChangeReasonOfCompany = 36,
     }
 }

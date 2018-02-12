@@ -169,6 +169,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string BankAccount_IsActive {
+            get {
+                return ResourceManager.GetString("BankAccount_IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Account Type.
+        /// </summary>
+        public static string BankAccountType {
+            get {
+                return ResourceManager.GetString("BankAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string BankAddress {
@@ -340,11 +358,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company BVI Change Reason.
+        /// </summary>
+        public static string CompanyBVIChangeReason {
+            get {
+                return ResourceManager.GetString("CompanyBVIChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Code.
         /// </summary>
         public static string CompanyCode {
             get {
                 return ResourceManager.GetString("CompanyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company ID Change Reason.
+        /// </summary>
+        public static string CompanyIDChangeReason {
+            get {
+                return ResourceManager.GetString("CompanyIDChangeReason", resourceCulture);
             }
         }
         
@@ -358,11 +394,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company Local Change Reason.
+        /// </summary>
+        public static string CompanyLocalChangeReason {
+            get {
+                return ResourceManager.GetString("CompanyLocalChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contra Co. Account.
+        /// </summary>
+        public static string ContraCoAccount {
+            get {
+                return ResourceManager.GetString("ContraCoAccount", resourceCulture);
             }
         }
         
@@ -381,6 +435,15 @@ namespace HRP.Resources {
         public static string CostCenter {
             get {
                 return ResourceManager.GetString("CostCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cost Center Change Reason.
+        /// </summary>
+        public static string CostCenterChangeReason {
+            get {
+                return ResourceManager.GetString("CostCenterChangeReason", resourceCulture);
             }
         }
         
@@ -502,6 +565,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Commencement Change Reason - Company.
+        /// </summary>
+        public static string DateCommencementChangeReasonOfCompany {
+            get {
+                return ResourceManager.GetString("DateCommencementChangeReasonOfCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Commencement Change Reason - Group.
+        /// </summary>
+        public static string DateCommencementChangeReasonOfGroup {
+            get {
+                return ResourceManager.GetString("DateCommencementChangeReasonOfGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Issue.
         /// </summary>
         public static string DateIssue {
@@ -547,6 +628,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department Change Reason.
+        /// </summary>
+        public static string DepartmentChangeReason {
+            get {
+                return ResourceManager.GetString("DepartmentChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -579,6 +669,15 @@ namespace HRP.Resources {
         public static string Division {
             get {
                 return ResourceManager.GetString("Division", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Division Change Reason.
+        /// </summary>
+        public static string DivisionChangeReason {
+            get {
+                return ResourceManager.GetString("DivisionChangeReason", resourceCulture);
             }
         }
         
@@ -1024,6 +1123,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Category Change Reason.
+        /// </summary>
+        public static string JobCategoryChangeReason {
+            get {
+                return ResourceManager.GetString("JobCategoryChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Grade.
         /// </summary>
         public static string JobGrade {
@@ -1033,11 +1141,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Grade Change Reason.
+        /// </summary>
+        public static string JobGradeChangeReason {
+            get {
+                return ResourceManager.GetString("JobGradeChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Title.
         /// </summary>
         public static string JobTitle {
             get {
                 return ResourceManager.GetString("JobTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Title Change Reason.
+        /// </summary>
+        public static string JobTitleChangeReason {
+            get {
+                return ResourceManager.GetString("JobTitleChangeReason", resourceCulture);
             }
         }
         
@@ -1312,6 +1438,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment Method - Cash.
+        /// </summary>
+        public static string PaymentMethodCash {
+            get {
+                return ResourceManager.GetString("PaymentMethodCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment Process.
         /// </summary>
         public static string PaymentProcess {
@@ -1560,6 +1695,15 @@ namespace HRP.Resources {
         public static string Section {
             get {
                 return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section Change Reason.
+        /// </summary>
+        public static string SectionChangeReason {
+            get {
+                return ResourceManager.GetString("SectionChangeReason", resourceCulture);
             }
         }
         
@@ -1857,6 +2001,24 @@ namespace HRP.Resources {
         public static string WorkPermit {
             get {
                 return ResourceManager.GetString("WorkPermit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Permit Type 1.
+        /// </summary>
+        public static string WorkPermitType1 {
+            get {
+                return ResourceManager.GetString("WorkPermitType1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Permit Type 2.
+        /// </summary>
+        public static string WorkPermitType2 {
+            get {
+                return ResourceManager.GetString("WorkPermitType2", resourceCulture);
             }
         }
     }

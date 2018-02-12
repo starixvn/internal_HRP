@@ -573,6 +573,9 @@
   <data name="BeneficiaryName" xml:space="preserve">
     <value>Beneficiary Name</value>
   </data>
+  <data name="BankAccount_IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -716,5 +719,56 @@
   </data>
   <data name="NewBankingAccount" xml:space="preserve">
     <value>New Banking Account</value>
+  </data>
+  <data name="BankAccountType" xml:space="preserve">
+    <value>Bank Account Type</value>
+  </data>
+  <data name="CompanyBVIChangeReason" xml:space="preserve">
+    <value>Company BVI Change Reason</value>
+  </data>
+  <data name="CompanyIDChangeReason" xml:space="preserve">
+    <value>Company ID Change Reason</value>
+  </data>
+  <data name="CompanyLocalChangeReason" xml:space="preserve">
+    <value>Company Local Change Reason</value>
+  </data>
+  <data name="ContraCoAccount" xml:space="preserve">
+    <value>Contra Co. Account</value>
+  </data>
+  <data name="CostCenterChangeReason" xml:space="preserve">
+    <value>Cost Center Change Reason</value>
+  </data>
+  <data name="DateCommencementChangeReasonOfCompany" xml:space="preserve">
+    <value>Date Commencement Change Reason - Company</value>
+  </data>
+  <data name="DateCommencementChangeReasonOfGroup" xml:space="preserve">
+    <value>Date Commencement Change Reason - Group</value>
+  </data>
+  <data name="DepartmentChangeReason" xml:space="preserve">
+    <value>Department Change Reason</value>
+  </data>
+  <data name="DivisionChangeReason" xml:space="preserve">
+    <value>Division Change Reason</value>
+  </data>
+  <data name="JobCategoryChangeReason" xml:space="preserve">
+    <value>Job Category Change Reason</value>
+  </data>
+  <data name="JobGradeChangeReason" xml:space="preserve">
+    <value>Job Grade Change Reason</value>
+  </data>
+  <data name="JobTitleChangeReason" xml:space="preserve">
+    <value>Job Title Change Reason</value>
+  </data>
+  <data name="PaymentMethodCash" xml:space="preserve">
+    <value>Payment Method - Cash</value>
+  </data>
+  <data name="SectionChangeReason" xml:space="preserve">
+    <value>Section Change Reason</value>
+  </data>
+  <data name="WorkPermitType1" xml:space="preserve">
+    <value>Work Permit Type 1</value>
+  </data>
+  <data name="WorkPermitType2" xml:space="preserve">
+    <value>Work Permit Type 2</value>
   </data>
 </root>
