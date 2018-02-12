@@ -1,7 +1,7 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Mvc;
+    ////using Microsoft.AspNetCore.Mvc;
     using Resources;
 
     // For StringLengthAttribute source code:
@@ -15,19 +15,21 @@
         [Display(ResourceType = typeof(ViewLang), Name = "AccountName")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
-        [Remote(
-            action: "CheckAccountNameExisted",
-            controller: "BankAccount",
-            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
+        ////[Remote(
+        ////    action: "CheckAccountNameExisted",
+        ////    controller: "BankAccount",
+        ////    AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
+        //// Turn off client validation for instantly check Account Name
         string AccountName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "AccountNumber")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
-        [Remote(
-            action: "CheckAccountNumberExisted",
-            controller: "BankAccount",
-            AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
+        ////[Remote(
+        ////    action: "CheckAccountNumberExisted",
+        ////    controller: "BankAccount",
+        ////    AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
+        //// Turn off client validation for instantly check Account Number
         string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]

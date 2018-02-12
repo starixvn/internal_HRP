@@ -2,7 +2,7 @@ var bankAccountForm = {
     init: function () {
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
-        bankAccountForm.assignRevalidate();
+        ////bankAccountForm.assignRevalidate();
     },
 
     assignRevalidate: function () {
