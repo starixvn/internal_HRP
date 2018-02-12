@@ -1,9 +1,9 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using RefResource;
 
     public class CreateBankAccountViewModel
     {
@@ -56,21 +56,5 @@
                 nameof(BankAccountType.Id),
                 nameof(BankAccountType.Name));
         }
-    }
-
-    public enum BankAccountError
-    {
-        [Display(Name = "Account Name existed. Please enter another value")]
-        AccountNameExisted = 1,
-        [Display(Name = "Account Number existed. Please enter another value")]
-        AccountNumberExisted = 2,
-        [Display(Name = "This employee has reached the limit number of active bank accounts in selected type")]
-        MaximumAccountPerTypeReached = 3
-    }
-
-    public enum FormType
-    {
-        Modal,
-        Page
     }
 }
