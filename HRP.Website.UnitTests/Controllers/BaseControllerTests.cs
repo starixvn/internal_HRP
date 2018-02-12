@@ -4,16 +4,17 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using HRP.Core.Criteria;
-    using HRP.Core.Services;
-    using HRP.Website.Controllers;
+    using Core.Criteria;
+    using Core.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.AspNetCore.Mvc.Routing;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
+    using Website.Controllers;
     using Xunit;
 
     public class BaseControllerTests
@@ -32,6 +33,7 @@
             {
                 RequestServices = serviceProvider
             };
+
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
             var actionExecutingContext = new ActionExecutingContext(
                 actionContext,
@@ -39,6 +41,7 @@
                 new Dictionary<string, object>(),
                 Substitute.For<Controller>()
             );
+
             actionContext.HttpContext.Connection.RemoteIpAddress = IPAddress.Any;
             actionContext.HttpContext.Request.Headers["User-Agent"] = "12345";
             var controller = GetBaseController();

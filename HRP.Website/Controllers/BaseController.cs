@@ -45,9 +45,7 @@
             baseService.ExecuteNonQuery(criteria);
 
             context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var urlHelper = new UrlHelper(context);
-            context.HttpContext.Response.Redirect(urlHelper.Action("Login", "Auth"));
+            context.HttpContext.Response.Redirect("/auth/login");
         }
     }
 }
