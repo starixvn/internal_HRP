@@ -646,7 +646,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Employee Payroll.
+        ///   Looks up a localized string similar to Edit Payroll of Employee.
         /// </summary>
         public static string EditEmployeePayroll {
             get {

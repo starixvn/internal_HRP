@@ -544,7 +544,7 @@
     <value>Personal Detail</value>
   </data>
   <data name="EditEmployeePayroll" xml:space="preserve">
-    <value>Edit Employee Payroll</value>
+    <value>Edit Payroll of Employee</value>
   </data>
   <data name="BankName" xml:space="preserve">
     <value>Bank Name</value>
