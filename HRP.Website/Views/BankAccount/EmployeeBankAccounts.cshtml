@@ -1,7 +1,7 @@
 ﻿@using HRP.Resources
 @using HRP.Models.Bank
 @using HRP.Models
-@model HRP.Models.Bank.EmployeeBankAccountsViewModel
+@model EmployeeBankAccountsViewModel
 
 @{
     ViewBag.Title = string.Format(Model.HaveHostPermission ? Message.EditBankAccountTitle : Message.ViewBankAccountTitle, Model.EmployeeName);
@@ -50,16 +50,33 @@
 </form>
 
 <!--Cannot create more bank account modal-->
-@Html.Partial("_CannotCreateMoreBankAccountModal")
+<div id="reach-limit-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog -small" role="document">
+        <div class="modal-content -has-icon">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+            </div>
+            <div class="modal-body">
+                <div class="circle">
+                    <span class="icon-warning"></span>
+                </div>
+                <p>@Message.BankAccountLimitReached</p>
+            </div>
+            <div class="modal-footer only-button">
+                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="top-header">
     <div class="pull-left">
         @if (Model.HaveHostPermission)
         {
-        <a class="button -add create-user" asp-action="CreateBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
-            <span class="icon-add"></span>
-            @ViewLang.CreateNewBankAccount
-        </a>
+            <a class="button -add create-user" asp-action="CreateBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
+                <span class="icon-add"></span>
+                @ViewLang.CreateNewBankAccount
+            </a>
         }
     </div>
 
@@ -89,10 +106,10 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.BankAccounts != null && Model.BankAccounts.Any())
+        @if (Model?.BankAccounts != null && Model.BankAccounts.Any())
         {
             var index = 0;
-            @foreach (BankAccount bankAccount in Model.BankAccounts)
+            foreach (BankAccount bankAccount in Model.BankAccounts)
             {
                 index++;
                 <tr>
@@ -119,8 +136,6 @@
                     }
                 </tr>
             }
-
         }
-
     </tbody>
 </table>
