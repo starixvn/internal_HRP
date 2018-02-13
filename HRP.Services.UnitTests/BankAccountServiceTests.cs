@@ -1,10 +1,7 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using Core.Model;
     using Core.Services;
-    using Criteria.BankAccount;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Models.BankAccount;
@@ -43,116 +40,6 @@
         ////    // Assert
         ////    Assert.Equal(expected, actual);
         ////}
-
-        [Fact]
-        public void CheckIsAccountNameExisted_InValidEmployeeId_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount { EmployeeId = 0 };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(false);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNameExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsAccountNameExisted_InValidAccountName_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1
-            };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(false);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNameExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsAccountNameExisted_ValidCriteria_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1,
-                AccountName = "Test"
-            };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(true);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNameExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsAccountNumberExisted_InValidEmployeeId_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount { EmployeeId = 0 };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(false);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsAccountNumberExisted_InValidAccountNumber_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1
-            };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(false);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CheckIsAccountNumberExisted_ValidCriteria_ReturnTrue()
-        {
-            // Arrange
-            var bankAccountService = GetBankAccountService();
-            var bankAccount = new BankAccount
-            {
-                EmployeeId = 1,
-                AccountNumber = "Test"
-            };
-
-            baseService.GetDataEntity<bool>(Arg.Any<ICriteria>()).Returns(true);
-
-            // Act
-            var actual = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
-
-            // Assert
-            Assert.True(actual);
-        }
 
         [Fact]
         public void GetBankAccountById_WhenCalled_ReturnAsExpectedBankAccounts()
@@ -210,50 +97,6 @@
         ////    Assert.Equal(employeeName, actual.EmployeeName);
         ////    Assert.Equal(bankAccounts, actual.BankAccounts);
         ////}
-
-        [Theory]
-        [InlineData(0, true)]
-        [InlineData(0, false)]
-        [InlineData(1, true)]
-        [InlineData(1, false)]
-        [InlineData(2, true)]
-        [InlineData(2, false)]
-        public void FilterBankAccount_FilterDataNotNull_ReturnBankAccounts(int bankType, bool isActive)
-        {
-            // Arrange
-            var bankAccounts = FakeBankAccounts();
-            var bankAccountService = GetBankAccountService();
-            bool? nullableIsActive = isActive;
-
-            // Act
-            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankType, nullableIsActive);
-
-            var filteredCount = actual.Count(x => x.IsActive == isActive && bankType == x.BankType);
-            var expected = bankAccounts.Count(x => x.IsActive == isActive && bankType == x.BankType);
-
-            // Assert
-            Assert.Equal(expected, filteredCount);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        public void FilterBankAccount_IsActiveNull_ReturnBankAccounts(int bankType)
-        {
-            // Arrange
-            var bankAccounts = FakeBankAccounts();
-            var bankAccountService = GetBankAccountService();
-
-            // Act
-            var actual = bankAccountService.FilterBankAccounts(bankAccounts, bankType, null);
-
-            var filteredCount = actual.Count(x => bankType == x.BankType);
-            var expected = bankAccounts.Count(x => bankType == x.BankType);
-
-            // Assert
-            Assert.Equal(expected, filteredCount);
-        }
 
         #region Helpers
 

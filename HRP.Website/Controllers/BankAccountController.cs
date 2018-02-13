@@ -3,12 +3,11 @@
     using System.Linq;
     using Core.Constants;
     using Core.Enumerations;
-    using Core.Extensions;
     using Core.Filters;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
     using Models.BankAccount;
     using Services.Interfaces;
 
@@ -83,7 +82,7 @@
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
-                    message = ((BankAccountError)result.Code).GetDisplayName(),
+                    message = result.Message,
                     redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
                 });
             }
@@ -160,7 +159,7 @@
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
-                    message = ((BankAccountError)result.Code).GetDisplayName(),
+                    message = result.Message,
                     redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
                 });
             }

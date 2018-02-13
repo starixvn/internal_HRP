@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="RefResource\**" />
+    <EmbeddedResource Remove="RefResource\**" />
+    <None Remove="RefResource\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
@@ -30,10 +36,6 @@
 
   <ItemGroup>
     <Reference Include="System.Web" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="RefResource\" />
   </ItemGroup>
 
 </Project>

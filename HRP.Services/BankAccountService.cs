@@ -16,42 +16,6 @@
             this.baseService = baseService;
         }
 
-        public bool CheckIsAccountNameExisted(IBankAccount bankAccount)
-        {
-            var criteria = new CheckAccountNameExistedCriteria
-            {
-                Id = bankAccount.BankAccountId,
-                AccountName = bankAccount.AccountName,
-                EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankType
-            };
-
-            if (criteria.IsValid())
-            {
-                return baseService.GetDataEntity<bool>(criteria);
-            }
-
-            return true;
-        }
-
-        public bool CheckIsAccountNumberExisted(IBankAccount bankAccount)
-        {
-            var criteria = new CheckAccountNumberExistedCriteria
-            {
-                Id = bankAccount.BankAccountId,
-                AccountNumber = bankAccount.AccountNumber,
-                EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankType
-            };
-
-            if (criteria.IsValid())
-            {
-                return baseService.GetDataEntity<bool>(criteria);
-            }
-
-            return true;
-        }
-
         public IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int? bankTypeId, bool? isActive)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
@@ -68,28 +32,6 @@
         {
             var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
             return baseService.GetDataEntity<BankAccount>(criteria);
-        }
-
-        public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)
-        {
-            var filteredBankAccounts = bankAccounts;
-            if (isActive != null)
-            {
-                filteredBankAccounts = filteredBankAccounts.Where(x => x.IsActive == isActive.Value);
-            }
-
-            if (bankType != 0)
-            {
-                filteredBankAccounts = filteredBankAccounts.Where(x => x.BankType == bankType);
-            }
-
-            //// Left here just in case spec change to multiple banktypes selection
-            ////if (bankTypes != null && !bankTypes.Contains(0))
-            ////{
-            ////    filteredBankAccounts = filteredBankAccounts.Where(x => bankTypes.Contains(x.BankType));
-            ////}
-
-            return filteredBankAccounts;
         }
     }
 }

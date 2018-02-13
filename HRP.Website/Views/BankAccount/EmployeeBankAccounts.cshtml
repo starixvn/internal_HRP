@@ -45,23 +45,24 @@
     </div>
 </form>
 
-    @*<div class="modal-dialog -small" role="document">
-        <div class="modal-content -has-icon">
-            <div class="modal-header">
-                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-            </div>
-            <div class="modal-body">
-                <div class="circle">
-                    <span class="icon-warning"></span>
+@*<div class="modal-dialog -small" role="document">
+            <div class="modal-content -has-icon">
+                <div class="modal-header">
+                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
                 </div>
-                <p>@Message.BankAccountLimitReached</p>
-            </div>
-            <div class="modal-footer only-button">
-                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
+                <div class="modal-body">
+                    <div class="circle">
+                        <span class="icon-warning"></span>
+                    </div>
+                    <p>@Message.BankAccountLimitReached</p>
+                </div>
+                <div class="modal-footer only-button">
+                    <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
+                </div>
             </div>
         </div>
     </div>*@
-</div>
+
 <div class="top-header">
     <div class="pull-left">
         @if (Model.HaveHostPermission)

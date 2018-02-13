@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.BankAccount
 {
-    public class BankAccount : IBankAccount
+    public class BankAccount
     {
         public BankAccount()
         {
