@@ -70,6 +70,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Name existed. Please enter another value.
+        /// </summary>
+        public static string AccountNameExisted {
+            get {
+                return ResourceManager.GetString("AccountNameExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Number existed. Please enter another value.
+        /// </summary>
+        public static string AccountNumberExisted {
+            get {
+                return ResourceManager.GetString("AccountNumberExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
         /// </summary>
         public static string BankAccountLimitReached {
@@ -1146,6 +1164,15 @@ namespace HRP.Resources {
         public static string MaritalStatusRequired {
             get {
                 return ResourceManager.GetString("MaritalStatusRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This employee has reached the limit number of active bank accounts in selected type.
+        /// </summary>
+        public static string MaximumAccountPerTypeReached {
+            get {
+                return ResourceManager.GetString("MaximumAccountPerTypeReached", resourceCulture);
             }
         }
         

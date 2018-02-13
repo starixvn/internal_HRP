@@ -687,4 +687,13 @@
   <data name="BankAccountLimitReached" xml:space="preserve">
     <value>This employee has reached the limit of number bank accounts. You cannot create more bank account.</value>
   </data>
+  <data name="AccountNameExisted" xml:space="preserve">
+    <value>Account Name existed. Please enter another value</value>
+  </data>
+  <data name="AccountNumberExisted" xml:space="preserve">
+    <value>Account Number existed. Please enter another value</value>
+  </data>
+  <data name="MaximumAccountPerTypeReached" xml:space="preserve">
+    <value>This employee has reached the limit number of active bank accounts in selected type</value>
+  </data>
 </root>
