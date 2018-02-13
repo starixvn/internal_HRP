@@ -10,7 +10,5 @@
             BankAccountTypeResources = new List<ReferenceResourceModel>();
             IsActive = true;
         }
-
-        public FormType TypeOfForm { get; set; } = FormType.Page;
     }
 }

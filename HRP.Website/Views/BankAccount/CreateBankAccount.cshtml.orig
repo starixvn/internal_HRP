@@ -26,23 +26,17 @@
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li>
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
         <a asp-action="EmployeeBankAccounts" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">
-            @string.Format(ViewLang.EditBankDetailsOfEmployee, Model.EmployeeName)
-=======
-        <a asp-action="EmployeeBankAccounts"
-           asp-controller="BankAccount"
-           asp-route-EmployeeId="@Model.EmployeeId">
             @string.Format(ViewLang.EditBankDetailsOfEmployee, Model.NickName)
->>>>>>> #000 - refactor code of BankAccount
         </a>
     </li>
     <li class="active">@ViewBag.Title</li>
 </ol>
 
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
 <form class="form-information block bank-account-form" asp-action="CreateBankAccount" asp-controller="BankAccount" method="post">
 
+<<<<<<< 6f7f149892d800c76e556de21948dbb2587eb8c0
+    <div asp-validation-summary="ModelOnly"></div>
     <div class="list-message-error hidden">
         <span asp-validation-for="BankAccount.BankType" class="message"></span>
         <span asp-validation-for="BankAccount.AccountName" class="message"></span>
@@ -55,27 +49,8 @@
         <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
     </div>
 
-    <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
-
-    <div class="-has-icon msg-success hidden">
-        <span>@Message.CreateBankAccountSuccessedForPage</span>
-        <span class="count-down-remaining">5</span>
-        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
 =======
-<form class="form-information block bank-account-form"
-      asp-action="CreateBankAccount"
-      asp-controller="BankAccount"
-      method="post"
-      data-formstyle="@Model.TypeOfForm"
-      data-ajax="true"
-      data-ajax-method="post"
-      data-ajax-begin="bankAccountForm.onSaveBegin"
-      data-ajax-complete="bankAccountForm.onSaveComplete"
-      data-ajax-success="bankAccountForm.onSaveSuccess"
-      data-ajax-failure="bankAccountForm.onAjaxFailure">
-
-    <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
-
+>>>>>>> #000 - fix merge code
     @*TODO: can be replace with asp.net core asp-validation-summary*@
     @*<div asp-validation-summary="All"></div>*@
 
@@ -92,19 +67,9 @@
     </div>
 
     <div class="-has-icon msg-success hidden">
-        @if (Model.TypeOfForm == FormType.Page)
-        {
-            <span>@Message.CreateBankAccountSuccessedForPage</span>
-            <span class="count-down-remaining">5</span>
-            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-        }
-        else
-        {
-            <span>@Message.CreateBankAccountSuccessedForModal</span>
-            <span class="count-down-remaining">5</span>
-            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-        }
->>>>>>> #000 - refactor code of BankAccount
+        <span>@Message.CreateBankAccountSuccessedForPage</span>
+        <span class="count-down-remaining">5</span>
+        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
     </div>
 
     <div class="-has-icon msg-error hidden">
@@ -112,17 +77,6 @@
 
     <div class="layout-two-col">
         <div>
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
-            <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
-            <div class="group-control">
-                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
-            </div>
-        </div>
-        <div>
-            <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
-            <div class="group-control">
-                <input class="control revalidate" asp-for="BankAccount.AccountName" />
-=======
             <requiredlabel asp-for="BankTypeId"></requiredlabel>
             <div class="group-control">
                 <select class="control check-validate" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
@@ -134,36 +88,10 @@
             <div class="group-control">
                 <input class="control revalidate" asp-for="AccountName" />
                 @*<span class="text-danger" asp-validation-for="AccountName"></span>*@
->>>>>>> #000 - refactor code of BankAccount
             </div>
         </div>
     </div>
 
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
-    <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
-    <div class="group-control">
-        <input class="control revalidate" asp-for="BankAccount.AccountNumber" />
-    </div>
-
-
-    <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BeneficiaryName" />
-    </div>
-
-    <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankName" />
-    </div>
-    <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankBranch" />
-    </div>
-
-    <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
-    <div class="group-control">
-        <input class="control" asp-for="BankAccount.BankAddress" />
-=======
     <requiredlabel asp-for="AccountNumber"></requiredlabel>
     <div class="group-control">
         <input class="control revalidate" asp-for="AccountNumber" />
@@ -186,22 +114,10 @@
     <requiredlabel asp-for="BankAddress"></requiredlabel>
     <div class="group-control">
         <input class="control" asp-for="BankAddress" />
->>>>>>> #000 - refactor code of BankAccount
     </div>
 
     <div class="layout-two-col">
         <div>
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
-            <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
-            <div class="group-control">
-                <select class="control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes"></select>
-            </div>
-        </div>
-        <div>
-            <requiredlabel class="text" asp-for="BankAccount.BankSwiftCode"></requiredlabel>
-            <div class="group-control">
-                <input class="control" asp-for="BankAccount.BankSwiftCode" />
-=======
             <requiredlabel asp-for="AccountTypeId"></requiredlabel>
             <div class="group-control">
                 <select class="control" asp-for="AccountTypeId" asp-items="Model.BankAccountTypes"></select>
@@ -211,17 +127,12 @@
             <requiredlabel class="text" asp-for="BankSwiftCode"></requiredlabel>
             <div class="group-control">
                 <input class="control" asp-for="BankSwiftCode" />
->>>>>>> #000 - refactor code of BankAccount
             </div>
         </div>
     </div>
     <div class="group-control">
         <label>
-<<<<<<< b7b45f3afeb11a818df995e0af785f1ba3e99b3a
-            <input asp-for="BankAccount.IsActive" />
-=======
             <input asp-for="IsActive" />
->>>>>>> #000 - refactor code of BankAccount
             <span>@ViewLang.Active</span>
         </label>
     </div>

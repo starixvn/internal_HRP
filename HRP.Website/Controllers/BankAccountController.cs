@@ -101,15 +101,14 @@
                 return View(viewModel);
             }
 
-            viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
-            var criteria = PrepareCreateBankAccountCriteria(viewModel.BankAccount);
+            var criteria = PrepareCreateBankAccountCriteria(viewModel);
             var result = baseService.ExecuteNonQuery(criteria);
 
             if (result.IsSuccessful)
             {
                 var employeeBankAccountsViewModel = new EmployeeBankAccountsViewModel
                 {
-                    EmployeeId = viewModel.BankAccount.EmployeeId
+                    EmployeeId = viewModel.EmployeeId
                 };
 
                 return RedirectToAction("EmployeeBankAccounts", employeeBankAccountsViewModel);

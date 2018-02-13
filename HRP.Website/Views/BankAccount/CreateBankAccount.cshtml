@@ -36,18 +36,6 @@
 <form class="form-information block bank-account-form" asp-action="CreateBankAccount" asp-controller="BankAccount" method="post">
 
     <div asp-validation-summary="ModelOnly"></div>
-    <div class="list-message-error hidden">
-        <span asp-validation-for="BankAccount.BankType" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountName" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
-        <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
-        <span asp-validation-for="BankAccount.BankName" class="message"></span>
-        <span asp-validation-for="BankAccount.BankBranch" class="message"></span>
-        <span asp-validation-for="BankAccount.BankAddress" class="message"></span>
-        <span asp-validation-for="BankAccount.AccountType" class="message"></span>
-        <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
-    </div>
-
     @*TODO: can be replace with asp.net core asp-validation-summary*@
     @*<div asp-validation-summary="All"></div>*@
 
@@ -64,18 +52,9 @@
     </div>
 
     <div class="-has-icon msg-success hidden">
-        @if (Model.TypeOfForm == FormType.Page)
-        {
-            <span>@Message.CreateBankAccountSuccessedForPage</span>
-            <span class="count-down-remaining">5</span>
-            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-        }
-        else
-        {
-            <span>@Message.CreateBankAccountSuccessedForModal</span>
-            <span class="count-down-remaining">5</span>
-            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-        }
+        <span>@Message.CreateBankAccountSuccessedForPage</span>
+        <span class="count-down-remaining">5</span>
+        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
     </div>
 
     <div class="-has-icon msg-error hidden">
