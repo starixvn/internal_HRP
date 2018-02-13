@@ -75,8 +75,17 @@ var bankAccountForm = {
             $(".bank-account-form .msg-error").text("").addClass("hidden");
             $(".bank-account-form .msg-success").removeClass("hidden");
 
-            if ($(".bank-account-form").data("formstyle") === "Page") {
+            if ($(".bank-account-form").parent().hasClass("modal-content")) {
+                // Disable form
+                bankAccountForm.disableForm();
 
+                setInterval(bankAccountForm.countdown, 1000);
+
+                setTimeout(function() {
+                        $(".bank-account-form").closest(".modal").modal("hide");
+                    },
+                    bankAccountForm.waitTime);
+            } else {
                 //// Reload page
                 //location.reload();
 
@@ -88,17 +97,6 @@ var bankAccountForm = {
                 setTimeout(function () {
                     window.location.href = response.redirectTo;
                     //$(".bank-account-form .msg-success").text("").addClass("hidden");
-                }, bankAccountForm.waitTime);
-            }
-
-            if ($(".bank-account-form").data("formstyle") === "Modal") {
-                // Disable form
-                bankAccountForm.disableForm();
-
-                setInterval(bankAccountForm.countdown, 1000);
-
-                setTimeout(function () {
-                    $(".bank-account-form").closest(".modal").modal("hide");
                 }, bankAccountForm.waitTime);
             }
         } else {

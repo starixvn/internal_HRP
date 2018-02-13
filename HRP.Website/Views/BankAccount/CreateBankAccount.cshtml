@@ -38,14 +38,97 @@
       asp-action="CreateBankAccount"
       asp-controller="BankAccount"
       method="post"
-      data-formstyle="@Model.TypeOfForm"
       data-ajax="true"
       data-ajax-method="post"
       data-ajax-begin="bankAccountForm.onSaveBegin"
       data-ajax-complete="bankAccountForm.onSaveComplete"
       data-ajax-success="bankAccountForm.onSaveSuccess"
       data-ajax-failure="bankAccountForm.onAjaxFailure">
-    @Html.Partial("_EditBankAccount", Model)
+    <input type="hidden" asp-for="BankAccount.EmployeeId" value="@Model.EmployeeId" />
+
+    <div class="list-message-error hidden">
+        <span asp-validation-for="BankAccount.BankType" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountName" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountNumber" class="message"></span>
+        <span asp-validation-for="BankAccount.BeneficiaryName" class="message"></span>
+        <span asp-validation-for="BankAccount.BankName" class="message"></span>
+        <span asp-validation-for="BankAccount.BankBranch" class="message"></span>
+        <span asp-validation-for="BankAccount.BankAddress" class="message"></span>
+        <span asp-validation-for="BankAccount.AccountType" class="message"></span>
+        <span asp-validation-for="BankAccount.BankSwiftCode" class="message"></span>
+    </div>
+
+    <div class="-has-icon msg-success hidden">
+        <span>@Message.CreateBankAccountSuccessedForPage</span>
+        <span class="count-down-remaining">5</span>
+        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
+    </div>
+
+    <div class="-has-icon msg-error hidden">
+    </div>
+
+    <div class="layout-two-col">
+        <div>
+            <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
+            <div class="group-control">
+                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
+                @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
+            </div>
+        </div>
+        <div>
+            <requiredlabel asp-for="BankAccount.AccountName"></requiredlabel>
+            <div class="group-control">
+                <input class="control revalidate" asp-for="BankAccount.AccountName" />
+                @*<span class="text-danger" asp-validation-for="BankAccount.AccountName"></span>*@
+            </div>
+        </div>
+    </div>
+
+    <requiredlabel asp-for="BankAccount.AccountNumber"></requiredlabel>
+    <div class="group-control">
+        <input class="control revalidate" asp-for="BankAccount.AccountNumber" />
+    </div>
+
+
+    <requiredlabel asp-for="BankAccount.BeneficiaryName"></requiredlabel>
+    <div class="group-control">
+        <input class="control" asp-for="BankAccount.BeneficiaryName" />
+    </div>
+
+    <requiredlabel asp-for="BankAccount.BankName"></requiredlabel>
+    <div class="group-control">
+        <input class="control" asp-for="BankAccount.BankName" />
+    </div>
+    <requiredlabel asp-for="BankAccount.BankBranch"></requiredlabel>
+    <div class="group-control">
+        <input class="control" asp-for="BankAccount.BankBranch" />
+    </div>
+
+    <requiredlabel asp-for="BankAccount.BankAddress"></requiredlabel>
+    <div class="group-control">
+        <input class="control" asp-for="BankAccount.BankAddress" />
+    </div>
+
+    <div class="layout-two-col">
+        <div>
+            <requiredlabel asp-for="BankAccount.AccountType"></requiredlabel>
+            <div class="group-control">
+                <select class="control" asp-for="BankAccount.AccountType" asp-items="Model.BankAccountTypes"></select>
+            </div>
+        </div>
+        <div>
+            <requiredlabel class="text" asp-for="BankAccount.BankSwiftCode"></requiredlabel>
+            <div class="group-control">
+                <input class="control" asp-for="BankAccount.BankSwiftCode" />
+            </div>
+        </div>
+    </div>
+    <div class="group-control">
+        <label>
+            <input asp-for="BankAccount.IsActive" />
+            <span>@ViewLang.Active</span>
+        </label>
+    </div>
 
     <div class="list-button">
         <a class="button -second back"
@@ -56,6 +139,6 @@
                 data-loading-text="@ViewLang.Saving ..."
                 type="submit">
             @ViewLang.Save
-            </button>
-        </div>
-    </form>
+        </button>
+    </div>
+</form>

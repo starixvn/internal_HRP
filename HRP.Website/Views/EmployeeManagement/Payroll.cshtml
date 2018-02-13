@@ -1,5 +1,5 @@
 ﻿@using HRP.Resources;
-@using HRP.Core.Enumerations
+@using HRP.Models
 @using HRP.Models.EmployeeManagement.Payroll
 @model EmployeePayrollViewModel
 
@@ -19,7 +19,7 @@
 
 @{
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyCode), "CurrencyCode", "CurrencyCode");
-    var bankTypes = Html.GetEnumSelectList<BankType>().Where(x => int.Parse(x.Value) != (int)BankType.Ebanking);
+    var bankTypes = new SelectList(Model.BankTypes, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 }
 
 <!--Modals section-->
@@ -135,7 +135,7 @@
             <div class="payment-transaction">
                 <label class="bank-type">e-Banking</label>
                 <select class="control bank-type-select hidden">
-                    <option value="@((int)BankType.Ebanking)" selected></option>
+                    <option value="1" selected></option>
                 </select>
                 <select class="control select2-ajax basic-salary-ebanking bank-account-select" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.EbankingAccountId">@Model.BasicSalary.EbankingAccountName</option>

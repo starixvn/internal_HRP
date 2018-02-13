@@ -1,9 +1,7 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using RefResource;
 
     public class CreateBankAccountViewModel
     {
@@ -45,8 +43,6 @@
         }
 
         public BaseFormBankAccountViewModel BankAccount { get; set; }
-
-        public FormType TypeOfForm { get; set; } = FormType.Page;
 
         public bool HaveHostPermission { get; set; }
 

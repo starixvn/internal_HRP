@@ -69,8 +69,6 @@
 
             PrepareCreateBankAccountViewModel(viewModel, bankType);
 
-            viewModel.TypeOfForm = FormType.Modal;
-
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
