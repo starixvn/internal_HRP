@@ -1,18 +1,18 @@
-﻿namespace HRP.Criteria.Bank
+﻿namespace HRP.Criteria.BankAccount
 {
     using Fanex.Data.Repository;
 
-    public class CheckAccountNumberExistedCriteria : CriteriaBase
+    public class CheckAccountNameExistedCriteria : CriteriaBase
     {
         public int Id { get; set; }
 
-        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
 
         public int EmployeeId { get; set; }
 
         public int BankType { get; set; }
 
-        public override string GetSettingKey() => "BankAccount_CheckNumberExisted";
+        public override string GetSettingKey() => "BankAccount_CheckNameExisted";
 
         public override bool IsValid()
         {
@@ -26,7 +26,7 @@
                 return false;
             }
 
-            if (string.IsNullOrEmpty(AccountNumber) || string.IsNullOrWhiteSpace(AccountNumber))
+            if (string.IsNullOrEmpty(AccountName) || string.IsNullOrWhiteSpace(AccountName))
             {
                 return false;
             }

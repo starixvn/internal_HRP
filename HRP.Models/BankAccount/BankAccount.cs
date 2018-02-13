@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.Bank
+﻿namespace HRP.Models.BankAccount
 {
     public class BankAccount : IBankAccount
     {
@@ -9,11 +9,11 @@
             IsActive = true;
         }
 
-        public int Id { get; set; }
+        public int BankAccountId { get; set; }
 
         public int EmployeeId { get; set; }
 
-        public string FullName { get; set; }
+        public string NickName { get; set; }
 
         public int CompanyId { get; set; }
 

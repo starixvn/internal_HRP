@@ -1,8 +1,8 @@
-﻿namespace HRP.Models.Bank
+﻿namespace HRP.Models.BankAccount
 {
     public interface IBankAccount
     {
-        int Id { get; set; }
+        int BankAccountId { get; set; }
 
         string AccountName { get; set; }
 

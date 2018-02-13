@@ -1,39 +1,28 @@
-﻿namespace HRP.Models.Bank
+﻿namespace HRP.Models.BankAccount
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
     public class BaseFormBankAccountViewModel
     {
-        public BaseFormBankAccountViewModel()
-        {
-            IsActive = true;
-        }
+        public int EmployeeId { get; set; }
 
-        public int Id { get; set; }
+        public string NickName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "AccountName")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
-        ////[Remote(
-        ////    action: "CheckAccountNameExisted",
-        ////    controller: "BankAccount",
-        ////    AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
-        //// Turn off client validation for instantly check Account Name
         public string AccountName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "AccountNumber")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
-        ////[Remote(
-        ////    action: "CheckAccountNumberExisted",
-        ////    controller: "BankAccount",
-        ////    AdditionalFields = nameof(Id) + "," + nameof(EmployeeId) + "," + nameof(BankType))]
-        //// Turn off client validation for instantly check Account Number
         public string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]
-        public int AccountType { get; set; }
+        public int AccountTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "BankAddress")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
@@ -51,22 +40,51 @@
         public string BankName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "SwiftCode")]
-        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
         public string BankSwiftCode { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "BankType")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        public int BankType { get; set; }
+        public int BankTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = "BeneficiaryName")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
         [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
         public string BeneficiaryName { get; set; }
 
-        public int EmployeeId { get; set; }
-
         [Display(ResourceType = typeof(ViewLang), Name = "Active")]
         public bool IsActive { get; set; }
+
+        public SelectList BankTypes
+        {
+            get
+            {
+                var bankTypes = new SelectList(
+                    BankTypeResources,
+                    nameof(ReferenceResourceModel.ResourceId),
+                    nameof(ReferenceResourceModel.Value));
+
+                return bankTypes;
+            }
+        }
+
+        public SelectList BankAccountTypes
+        {
+            get
+            {
+                var bankTypes = new SelectList(
+                    BankAccountTypeResources,
+                    nameof(ReferenceResourceModel.ResourceId),
+                    nameof(ReferenceResourceModel.Value));
+
+                return bankTypes;
+            }
+        }
+
+        public bool HaveHostPermission { get; set; }
+
+        public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; }
+
+        public IEnumerable<ReferenceResourceModel> BankAccountTypeResources { get; set; }
     }
 }

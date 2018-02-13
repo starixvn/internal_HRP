@@ -2,11 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Model;
     using Core.Services;
-    using Criteria.Bank;
+    using Criteria.BankAccount;
     using Interfaces;
-    using Models.Bank;
+    using Models.BankAccount;
 
     public class BankAccountService : IBankAccountService
     {
@@ -21,7 +20,7 @@
         {
             var criteria = new CheckAccountNameExistedCriteria
             {
-                Id = bankAccount.Id,
+                Id = bankAccount.BankAccountId,
                 AccountName = bankAccount.AccountName,
                 EmployeeId = bankAccount.EmployeeId,
                 BankType = bankAccount.BankType
@@ -39,7 +38,7 @@
         {
             var criteria = new CheckAccountNumberExistedCriteria
             {
-                Id = bankAccount.Id,
+                Id = bankAccount.BankAccountId,
                 AccountNumber = bankAccount.AccountNumber,
                 EmployeeId = bankAccount.EmployeeId,
                 BankType = bankAccount.BankType

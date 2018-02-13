@@ -6,10 +6,10 @@
     using Core.Extensions;
     using Core.Filters;
     using Core.Services;
-    using Criteria.Bank;
+    using Criteria.BankAccount;
     using HRP.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Bank;
+    using Models.BankAccount;
     using Services.Interfaces;
 
     [HRPAuthorize]
@@ -68,7 +68,6 @@
             var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
 
             PrepareCreateBankAccountViewModel(viewModel, bankType);
-
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
@@ -78,8 +77,7 @@
         {
             if (ModelState.IsValid)
             {
-                viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
-                var criteria = PrepareCreateBankAccountCriteria(viewModel.BankAccount);
+                var criteria = PrepareCreateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
                 return Json(new
@@ -123,7 +121,6 @@
 
             return View(viewModel);
         }
-
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult EditBankAccount(int bankAccountId)
         {
@@ -132,22 +129,18 @@
             var viewModel = new EditBankAccountViewModel
             {
                 EmployeeId = bankAccount.EmployeeId,
-                EmployeeName = bankAccount.FullName,
-                BankAccount = new BaseFormBankAccountViewModel
-                {
-                    Id = bankAccount.Id,
-                    AccountName = bankAccount.AccountName,
-                    AccountNumber = bankAccount.AccountNumber,
-                    AccountType = bankAccount.AccountType,
-                    BankAddress = bankAccount.BankAddress,
-                    BankBranch = bankAccount.BankBranch,
-                    BankName = bankAccount.BankName,
-                    BankSwiftCode = bankAccount.BankSwiftCode,
-                    BankType = bankAccount.BankType,
-                    BeneficiaryName = bankAccount.BeneficiaryName,
-                    EmployeeId = bankAccount.EmployeeId,
-                    IsActive = bankAccount.IsActive
-                }
+                NickName = bankAccount.NickName,
+                BankAccountId = bankAccount.BankAccountId,
+                AccountName = bankAccount.AccountName,
+                AccountNumber = bankAccount.AccountNumber,
+                AccountTypeId = bankAccount.AccountType,
+                BankAddress = bankAccount.BankAddress,
+                BankBranch = bankAccount.BankBranch,
+                BankName = bankAccount.BankName,
+                BankSwiftCode = bankAccount.BankSwiftCode,
+                BankTypeId = bankAccount.BankType,
+                BeneficiaryName = bankAccount.BeneficiaryName,
+                IsActive = bankAccount.IsActive
             };
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
@@ -162,14 +155,14 @@
         {
             if (ModelState.IsValid)
             {
-                var criteria = PrepareUpdateBankAccountCriteria(viewModel.BankAccount);
+                var criteria = PrepareUpdateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
                     message = ((BankAccountError)result.Code).GetDisplayName(),
-                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.BankAccount.EmployeeId })
+                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
                 });
             }
 
@@ -190,24 +183,24 @@
             else
             {
                 var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
-                return Json(result.Where(x => x.IsActive).Select(x => new { id = x.Id, text = x.AccountName }));
+                return Json(result.Where(x => x.IsActive).Select(x => new { id = x.BankAccountId, text = x.AccountName }));
             }
         }
 
-        private UpdateBankAccountCriteria PrepareUpdateBankAccountCriteria(BaseFormBankAccountViewModel bankAccount)
+        private UpdateBankAccountCriteria PrepareUpdateBankAccountCriteria(EditBankAccountViewModel bankAccount)
         {
             var criteria = new UpdateBankAccountCriteria
             {
-                Id = bankAccount.Id,
+                Id = bankAccount.BankAccountId,
                 EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankType,
+                BankType = bankAccount.BankTypeId,
                 BankName = bankAccount.BankName,
                 BankBranch = bankAccount.BankBranch,
                 BankAddress = bankAccount.BankAddress,
                 BankSwiftCode = bankAccount.BankSwiftCode,
                 AccountName = bankAccount.AccountName,
                 AccountNumber = bankAccount.AccountNumber,
-                AccountType = bankAccount.AccountType,
+                AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive
             };
@@ -215,19 +208,19 @@
             return criteria;
         }
 
-        private CreateBankAccountCriteria PrepareCreateBankAccountCriteria(BaseFormBankAccountViewModel bankAccount)
+        private CreateBankAccountCriteria PrepareCreateBankAccountCriteria(CreateBankAccountViewModel bankAccount)
         {
             var criteria = new CreateBankAccountCriteria
             {
                 EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankType,
+                BankType = bankAccount.BankTypeId,
                 BankName = bankAccount.BankName,
                 BankBranch = bankAccount.BankBranch,
                 BankAddress = bankAccount.BankAddress,
                 BankSwiftCode = bankAccount.BankSwiftCode,
                 AccountName = bankAccount.AccountName,
                 AccountNumber = bankAccount.AccountNumber,
-                AccountType = bankAccount.AccountType,
+                AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive
             };
@@ -239,8 +232,8 @@
         {
             Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
 
-            viewModel.EmployeeName = employee.NickName;
-            viewModel.BankAccount.BankType = selectedBankType;
+            viewModel.NickName = employee.NickName;
+            viewModel.BankTypeId = selectedBankType;
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);

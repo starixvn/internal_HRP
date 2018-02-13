@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria.Bank
+﻿namespace HRP.Criteria.BankAccount
 {
     using Fanex.Data.Repository;
 

@@ -1,8 +1,7 @@
 ﻿namespace HRP.Services.Interfaces
 {
     using System.Collections.Generic;
-    using Core.Model;
-    using Models.Bank;
+    using HRP.Models.BankAccount;
 
     public interface IBankAccountService
     {

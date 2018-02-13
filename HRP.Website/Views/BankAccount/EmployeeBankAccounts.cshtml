@@ -1,5 +1,5 @@
 ﻿@using HRP.Resources
-@using HRP.Models.Bank
+@using HRP.Models.BankAccount
 @using HRP.Models
 @model EmployeeBankAccountsViewModel
 
@@ -45,8 +45,6 @@
     </div>
 </form>
 
-<!--Cannot create more bank account modal-->
-<div id="reach-limit-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog -small" role="document">
         <div class="modal-content -has-icon">
             <div class="modal-header">
@@ -64,7 +62,6 @@
         </div>
     </div>
 </div>
-
 <div class="top-header">
     <div class="pull-left">
         @if (Model.HaveHostPermission)
@@ -127,7 +124,7 @@
                     @if (Model.HaveHostPermission)
                     {
                         <td class="text-center has-icon">
-                            <a class="icon-edit" asp-action="EditBankAccount" asp-controller="BankAccount" asp-route-bankAccountId="@bankAccount.Id"></a>
+                            <a class="icon-edit" asp-action="EditBankAccount" asp-controller="BankAccount" asp-route-bankAccountId="@bankAccount.BankAccountId"></a>
                         </td>
                     }
                 </tr>

@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.Bank
+﻿namespace HRP.Models.BankAccount
 {
     using System.ComponentModel.DataAnnotations;
     using Resources;

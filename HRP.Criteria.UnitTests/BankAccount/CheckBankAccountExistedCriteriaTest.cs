@@ -1,7 +1,7 @@
-﻿namespace HRP.Criteria.UnitTests.Bank
+﻿namespace HRP.Criteria.UnitTests.BankAccount
 {
     using System.Collections.Generic;
-    using Criteria.Bank;
+    using Criteria.BankAccount;
     using Xunit;
 
     public class CheckAccountNameExistedCriteriaTest

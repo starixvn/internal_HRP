@@ -1,8 +1,8 @@
-﻿namespace HRP.Criteria.UnitTests.Bank
+﻿namespace HRP.Criteria.UnitTests.BankAccount
 {
     using System.Collections.Generic;
-    using Criteria.Bank;
-    using Models.Bank;
+    using Criteria.BankAccount;
+    using Models.BankAccount;
     using Xunit;
 
     public class UpdateBankAccountCriteriaTest

@@ -4,10 +4,10 @@
     using System.Linq;
     using Core.Model;
     using Core.Services;
-    using Criteria.Bank;
+    using Criteria.BankAccount;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using Models.Bank;
+    using Models.BankAccount;
     using NSubstitute;
     using Xunit;
 
@@ -158,7 +158,7 @@
         public void GetBankAccountById_WhenCalled_ReturnAsExpectedBankAccounts()
         {
             // Arrange
-            var expected = new BankAccount { Id = 1, EmployeeId = 1, BankType = 1 };
+            var expected = new BankAccount { BankAccountId = 1, EmployeeId = 1, BankType = 1 };
             var bankAccountService = GetBankAccountService();
             baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
 

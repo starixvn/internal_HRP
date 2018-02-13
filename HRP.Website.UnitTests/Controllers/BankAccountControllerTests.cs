@@ -7,10 +7,10 @@
     using Core.Extensions;
     using Core.Model;
     using Core.Services;
-    using Criteria.Bank;
+    using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
     using Models;
-    using Models.Bank;
+    using Models.BankAccount;
     using NSubstitute;
     using Services.Interfaces;
     using Website.Controllers;
