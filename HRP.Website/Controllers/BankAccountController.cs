@@ -117,7 +117,9 @@
                 return RedirectToAction("EmployeeBankAccounts", employeeBankAccountsViewModel);
             }
 
-            ModelState.AddModelError("", ((BankAccountError)result.Code).GetDisplayName());
+            ModelState.AddModelError(string.Empty, result.Message);
+
+            PrepareCreateBankAccountViewModel(viewModel);
 
             return View(viewModel);
         }

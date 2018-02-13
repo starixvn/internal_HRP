@@ -34,6 +34,7 @@
 
 <form class="form-information block bank-account-form" asp-action="CreateBankAccount" asp-controller="BankAccount" method="post">
 
+    <div asp-validation-summary="ModelOnly"></div>
     <div class="list-message-error hidden">
         <span asp-validation-for="BankAccount.BankType" class="message"></span>
         <span asp-validation-for="BankAccount.AccountName" class="message"></span>
