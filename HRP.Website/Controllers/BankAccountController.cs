@@ -95,28 +95,22 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(viewModel);
-            }
+                var criteria = PrepareCreateBankAccountCriteria(viewModel);
+                var result = baseService.ExecuteNonQuery(criteria);
 
-            var criteria = PrepareCreateBankAccountCriteria(viewModel);
-            var result = baseService.ExecuteNonQuery(criteria);
-
-            if (result.IsSuccessful)
-            {
-                var employeeBankAccountsViewModel = new EmployeeBankAccountsViewModel
+                if (result.IsSuccessful)
                 {
-                    EmployeeId = viewModel.EmployeeId
-                };
-
-                return RedirectToAction("EmployeeBankAccounts", employeeBankAccountsViewModel);
+                    viewModel.IsSuccessful = true;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
             }
-
-            ModelState.AddModelError(string.Empty, result.Message);
 
             PrepareCreateBankAccountViewModel(viewModel);
-
             return View(viewModel);
         }
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]

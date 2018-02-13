@@ -1,8 +1,21 @@
 var bankAccountForm = {
     init: function () {
+        bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
-        ////bankAccountForm.assignRevalidate();
+    },
+
+    handleFormSuccessed: function() {
+        var isSuccessful = $("#is-successful").val();
+        if (isSuccessful) {
+            bankAccountForm.disableForm();
+
+            setInterval(bankAccountForm.countdown, 1000);
+
+            setTimeout(function () {
+                window.location.href = $("#index-link").prop("href");
+            }, bankAccountForm.waitTime);
+        }
     },
 
     assignRevalidate: function () {

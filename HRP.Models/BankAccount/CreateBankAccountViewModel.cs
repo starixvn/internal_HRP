@@ -9,6 +9,9 @@
             BankTypeResources = new List<ReferenceResourceModel>();
             BankAccountTypeResources = new List<ReferenceResourceModel>();
             IsActive = true;
+            IsSuccessful = false;
         }
+
+        public bool IsSuccessful { get; set; }
     }
 }

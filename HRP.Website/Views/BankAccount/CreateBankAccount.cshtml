@@ -26,7 +26,7 @@
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
     <li>
-        <a asp-action="EmployeeBankAccounts" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">
+        <a id="index-link" asp-action="EmployeeBankAccounts" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">
             @string.Format(ViewLang.EditBankDetailsOfEmployee, Model.NickName)
         </a>
     </li>
@@ -36,8 +36,6 @@
 <form class="form-information block bank-account-form" asp-action="CreateBankAccount" asp-controller="BankAccount" method="post">
 
     <div asp-validation-summary="ModelOnly"></div>
-    @*TODO: can be replace with asp.net core asp-validation-summary*@
-    @*<div asp-validation-summary="All"></div>*@
 
     <div class="list-message-error hidden">
         <span asp-validation-for="BankTypeId" class="message"></span>
@@ -50,29 +48,34 @@
         <span asp-validation-for="AccountTypeId" class="message"></span>
         <span asp-validation-for="BankSwiftCode" class="message"></span>
     </div>
-
-    <div class="-has-icon msg-success hidden">
-        <span>@Message.CreateBankAccountSuccessedForPage</span>
-        <span class="count-down-remaining">5</span>
-        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-    </div>
+    
+    @if (Model.IsSuccessful)
+    {
+        <input type="hidden" asp-for="IsSuccessful" id="is-successful"/>
+        <a href="@Url.Action()"></a>
+        <div class="-has-icon msg-success">
+            <span>@Message.CreateBankAccountSuccessedForPage</span>
+            <span class="count-down-remaining">5</span>
+            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
+        </div>
+    }
 
     <div class="-has-icon msg-error hidden">
     </div>
+    
+    <input type="hidden" asp-for="EmployeeId"/>
 
     <div class="layout-two-col">
         <div>
             <requiredlabel asp-for="BankTypeId"></requiredlabel>
             <div class="group-control">
                 <select class="control check-validate" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
-                @*<span class="text-danger" asp-validation-for="BankType"></span>*@
             </div>
         </div>
         <div>
             <requiredlabel asp-for="AccountName"></requiredlabel>
             <div class="group-control">
                 <input class="control revalidate" asp-for="AccountName" />
-                @*<span class="text-danger" asp-validation-for="AccountName"></span>*@
             </div>
         </div>
     </div>
