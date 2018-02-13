@@ -52,7 +52,6 @@
     @if (Model.IsSuccessful)
     {
         <input type="hidden" asp-for="IsSuccessful" id="is-successful"/>
-        <a href="@Url.Action()"></a>
         <div class="-has-icon msg-success">
             <span>@Message.CreateBankAccountSuccessedForPage</span>
             <span class="count-down-remaining">5</span>
