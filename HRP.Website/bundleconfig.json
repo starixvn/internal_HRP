@@ -90,6 +90,7 @@
     "outputFileName": "wwwroot/assets/bundles/configuration/css/data-configuration.min.css",
     "inputFiles": [
       "wwwroot/lib/jquery-ui/jquery-ui.css",
+      "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
       "wwwroot/assets/styles/pages/configuration/data-configuration.css"
     ]
@@ -311,6 +312,10 @@
     "outputFileName": "wwwroot/assets/bundles/configuration/js/data-configuration.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-ui/jquery-ui.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
       "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
       "wwwroot/assets/js/configuration/data-configuration.js"

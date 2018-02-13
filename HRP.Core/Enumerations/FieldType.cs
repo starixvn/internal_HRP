@@ -110,6 +110,6 @@ namespace HRP.Core.Enumerations
         CompanyLocalChangeReason = 35,
 
         [Display(Name = "Date Commencement Change Reason - Company")]
-        DateCommencementChangeReasonOfCompany = 36,
+        DateCommencementChangeReasonOfCompany = 36
     }
 }

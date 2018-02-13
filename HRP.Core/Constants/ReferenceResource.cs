@@ -29,7 +29,6 @@
         public const string DepartmentChangeReason = "DepartmentChangeReason";
         public const string SectionChangeReason = "SectionChangeReason";
         public const string CostCenterChangeReason = "CostCenterChangeReason";
-
         public const string CompanyBVIChangeReason = "CompanyBVIChangeReason";
         public const string CompanyLocalChangeReason = "CompanyLocalChangeReason";
     }

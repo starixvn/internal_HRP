@@ -65,9 +65,41 @@
         });
     }
 
-    function initValidationForm(formElementId) {
-        var $form = $(formElementId);
-        $.validator.unobtrusive.parse(formElementId);
+    function initValidationForm($form) {
+        //var $form = $(formElementId);
+        $.validator.unobtrusive.parse($form);
+
+        //var $validator = $form.validate();
+        //$validator.settings.highlight = function (element, errorClass, validClass) {
+        //    var $element = $(element);
+        //    $element.addClass(errorClass).removeClass(validClass);
+
+        //    if ($element.hasClass('js-select2')) {
+        //        $element.next().find('.select2-selection')
+        //            .removeClass(errorClass).removeClass('control').removeClass(validClass)
+        //            .addClass(errorClass).addClass('control');
+        //    }
+        //};
+        //$validator.settings.unhighlight = function (element, errorClass, validClass) {
+        //    var $element = $(element);
+        //    $element.removeClass(errorClass).addClass(validClass);
+
+        //    if ($element.hasClass('js-select2')) {
+        //        $element.next().find('.select2-selection')
+        //            .removeClass(errorClass).removeClass('control').removeClass(validClass)
+        //            .addClass(validClass);
+        //    }
+        //};
+
+        $form.find('.js-select2').on('change', function () {
+            var $this = $(this);
+            var $select2 = $this.next().find('.select2-selection');
+
+            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('input-validation-error')) {
+                $select2.removeClass('input-validation-error').removeClass('control');
+                $this.valid();
+            }
+        });
 
         $form.on('change keyup click submit', function () {
             handleDisplayValidationSummary($(this));
@@ -92,14 +124,14 @@
                 url: commonFunctions.rootURL + $(this).data('url-update'),
                 dataType: 'html',
                 data: {
-                    "fieldId": fieldId, 
+                    "fieldId": fieldId,
                     "id": itemId
                 },
                 success: function (data) {
                     // ref
                     $('#editItemModalContent').html(data);
 
-                    initValidationForm('#editItemForm');
+                    initValidationForm($('#editItemForm'));
 
                     $('#editItemModal').modal('show');
                 },
@@ -128,8 +160,9 @@
                     registerEventChangeJobCategory();
                     registerEventChangeCountry();
 
-                    var createFormName = '#createItemForm';
-                    initValidationForm(createFormName);
+                    var $createForm = $('#createItemForm');
+                    initSelect2($createForm, '100px');
+                    initValidationForm($createForm);
 
                     $('#newItemModal').modal('show');
                 },
@@ -323,8 +356,16 @@
         registerEventClickIconEditItem();
     }
 
+    function initSelect2($form, width) {
+        $form.find('.js-search-suggestion').select2({
+            width: width,
+            placeholder: '--Please select--'
+        });
+    }
+
     function initModule() {
         registerEventShowListItem();
+        initSelect2($(domElement.FilterFieldForm), '250px');
     }
 
     return {

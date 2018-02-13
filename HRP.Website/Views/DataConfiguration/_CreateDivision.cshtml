@@ -20,7 +20,7 @@
 
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" asp-for="Division.CompanyId" asp-items="@Model.CompanyList"
+            <select class="control js-select2 js-search-suggestion" asp-for="Division.CompanyId" asp-items="@Model.CompanyList"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.CompanyBVI)">
                 <option value=""></option>
             </select>

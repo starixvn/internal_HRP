@@ -9,6 +9,7 @@
 <environment include="Development">
     @section Styles {
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/assets/styles/pages/configuration/data-configuration.css" asp-append-version="true" />
     }
@@ -27,7 +28,8 @@
 <form id="filterFieldForm" class="search-form">
     <div class="group">
         <label class="text">@ViewLang.Field</label>
-        <select class="control" id="fieldType">
+        <select class="control js-search-suggestion" id="fieldType">
+            <option value=""></option>
             @foreach (var field in Model)
             {
                 <option value="@field.FieldId" data-url-get-all="@field.LinkGetAllItem">@field.FieldName</option>
@@ -49,7 +51,7 @@
 </div>
 
 <!-- Create New Item -->
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="newItemModal">
+<div class="modal fade" role="dialog" aria-labelledby="myModalLabel" id="newItemModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content -has-title" id="createItemModalContent">
         </div>
@@ -57,7 +59,7 @@
 </div>
 
 <!-- Update Item -->
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalUpdateLabel" id="editItemModal">
+<div class="modal fade" role="dialog" aria-labelledby="modalUpdateLabel" id="editItemModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content -has-title" id="editItemModalContent">
         </div>
@@ -67,6 +69,7 @@
 <environment include="Development">
     @section Scripts {
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
