@@ -5,7 +5,7 @@
     [Serializable]
     public class ReferenceResourceModel
     {
-        public int ResourceId { get; set; }
+        public int? ResourceId { get; set; }
 
         public string RefName { get; set; }
 

@@ -19,7 +19,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EmployeeManagementService : IEmployeeManagementService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
@@ -27,7 +27,7 @@
         private readonly ICryptoService cryptoService;
         private readonly IEmployeeManagementRepository employeeRepository;
 
-        public EmployeeManagementService(
+        public EmployeeService(
             IHostingEnvironment hostingEnvironment,
             IBaseService baseService,
             ICryptoService cryptoService,

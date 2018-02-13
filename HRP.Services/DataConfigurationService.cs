@@ -903,7 +903,7 @@
             {
                 var result = items.Select(c => new SimpleItem
                 {
-                    ItemId = c.ResourceId,
+                    ItemId = c.ResourceId.Value,
                     ItemName = c.Value,
                     Description = c.Description,
                     IsActive = c.IsActive
@@ -963,7 +963,7 @@
             {
                 return new SimpleItem
                 {
-                    ItemId = item.ResourceId,
+                    ItemId = item.ResourceId.Value,
                     ItemName = item.Value,
                     Description = item.Description,
                     IsActive = item.IsActive

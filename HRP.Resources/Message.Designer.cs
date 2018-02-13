@@ -439,11 +439,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Bank Details of Employee {0}.
+        ///   Looks up a localized string similar to Edit Bank Account.
         /// </summary>
         public static string EditBankAccount {
             get {
                 return ResourceManager.GetString("EditBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Bank Details of Employee {0}.
+        /// </summary>
+        public static string EditBankAccountTitle {
+            get {
+                return ResourceManager.GetString("EditBankAccountTitle", resourceCulture);
             }
         }
         

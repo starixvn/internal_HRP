@@ -41,14 +41,7 @@
     <div>
         <requiredlabel asp-for="BankAccount.BankType"></requiredlabel>
         <div class="group-control">
-            @if (Model.BankTypes.Count() == 1)
-            {
-                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes" readonly="readonly"></select>
-            }
-            else
-            {
-                <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
-            }
+            <select class="control check-validate" asp-for="BankAccount.BankType" asp-items="Model.BankTypes"></select>
             @*<span class="text-danger" asp-validation-for="BankAccount.BankType"></span>*@
         </div>
     </div>

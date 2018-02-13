@@ -1,13 +1,14 @@
 ﻿namespace HRP.Criteria.Bank
 {
-    using Models.Bank;
+    using Fanex.Data.Repository;
 
-    public class CreateBankAccountCriteria : BankAccountCriteria
+    public class CreateBankAccountCriteria : BankAccountBaseCriteria, ICriteria
     {
-        public CreateBankAccountCriteria(IBankAccount bankAccount) : base(bankAccount)
-        {
-        }
-
         public override string GetSettingKey() => "BankAccount_CreateBankAccount";
+
+        public override bool IsValid()
+        {
+            return GetIsValidBase();
+        }
     }
 }

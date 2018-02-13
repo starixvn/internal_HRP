@@ -20,15 +20,15 @@
 
         public IList<BankAccount> BankAccounts { get; set; }
 
-        public int BankTypeId { get; set; }
+        public int? BankTypeId { get; set; }
 
-        public SelectList BankTypes { get {
-
+        public SelectList BankTypes
+        {
+            get
+            {
                 var bankTypesWithAllOption = BankTypeResources.ToList();
-
                 var allOption = new ReferenceResourceModel
                 {
-                    ResourceId = 0,
                     Value = "All"
                 };
 
@@ -40,7 +40,8 @@
                     nameof(ReferenceResourceModel.Value));
 
                 return bankTypes;
-            } }
+            }
+        }
 
         public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; }
 

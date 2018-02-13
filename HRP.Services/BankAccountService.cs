@@ -17,12 +17,6 @@
             this.baseService = baseService;
         }
 
-        public CommandResult CreateBankAccount(IBankAccount bankAccount)
-        {
-            var criteria = new CreateBankAccountCriteria(bankAccount);
-            return baseService.ExecuteNonQuery(criteria);
-        }
-
         public bool CheckIsAccountNameExisted(IBankAccount bankAccount)
         {
             var criteria = new CheckAccountNameExistedCriteria
@@ -59,7 +53,7 @@
             return true;
         }
 
-        public IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int bankTypeId, bool? isActive)
+        public IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int? bankTypeId, bool? isActive)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
             {
@@ -75,12 +69,6 @@
         {
             var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
             return baseService.GetDataEntity<BankAccount>(criteria);
-        }
-
-        public CommandResult UpdateBankAccount(IBankAccount bankAccount)
-        {
-            var criteria = new UpdateBankAccountCriteria(bankAccount);
-            return baseService.ExecuteNonQuery(criteria);
         }
 
         public IEnumerable<BankAccount> FilterBankAccounts(IEnumerable<BankAccount> bankAccounts, int bankType, bool? isActive)

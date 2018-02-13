@@ -1,60 +1,57 @@
 ﻿namespace HRP.Models.Bank
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using RefResource;
 
     public class CreateBankAccountViewModel
     {
-        public CreateBankAccountViewModel(
-            IEnumerable<BankType> bankTypes,
-            IEnumerable<BankAccountType> bankAccountTypes)
-        {
-            BankAccount = new BankAccount();
-            Initialize(bankTypes, bankAccountTypes);
-        }
-
         public CreateBankAccountViewModel()
         {
-            BankAccount = new BankAccount();
+            BankTypeResources = new List<ReferenceResourceModel>();
+            BankAccountTypeResources = new List<ReferenceResourceModel>();
+            BankAccount = new BaseFormBankAccountViewModel();
         }
 
         public int EmployeeId { get; set; }
 
         public string EmployeeName { get; set; }
 
-        public SelectList BankTypes { get; set; }
+        public SelectList BankTypes
+        {
+            get
+            {
+                var bankTypes = new SelectList(
+                    BankTypeResources,
+                    nameof(ReferenceResourceModel.ResourceId),
+                    nameof(ReferenceResourceModel.Value));
 
-        public SelectList BankAccountTypes { get; set; }
+                return bankTypes;
+            }
+        }
 
-        public IBankAccount BankAccount { get; set; }
+        public SelectList BankAccountTypes
+        {
+            get
+            {
+                var bankTypes = new SelectList(
+                    BankAccountTypeResources,
+                    nameof(ReferenceResourceModel.ResourceId),
+                    nameof(ReferenceResourceModel.Value));
+
+                return bankTypes;
+            }
+        }
+
+        public BaseFormBankAccountViewModel BankAccount { get; set; }
 
         public FormType TypeOfForm { get; set; } = FormType.Page;
 
-        public bool CanCreate { get; set; }
+        public bool HaveHostPermission { get; set; }
 
-        public bool HaveCreatePermission { get; set; }
+        public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; }
 
-        public void Initialize(
-            IEnumerable<BankType> bankTypes,
-            IEnumerable<BankAccountType> bankAccountTypes,
-            IEnumerable<BankType> disabledBankTypes = null)
-        {
-            BankTypes = disabledBankTypes != null
-                ? new SelectList(
-                    bankTypes.Except(disabledBankTypes, new RefResourceContructableComparer()),
-                    nameof(BankType.Id),
-                    nameof(BankType.Name))
-                : new SelectList(
-                    bankTypes,
-                    nameof(BankType.Id),
-                    nameof(BankType.Name));
-
-            BankAccountTypes = new SelectList(
-                bankAccountTypes,
-                nameof(BankAccountType.Id),
-                nameof(BankAccountType.Name));
-        }
+        public IEnumerable<ReferenceResourceModel> BankAccountTypeResources { get; set; }
     }
 }

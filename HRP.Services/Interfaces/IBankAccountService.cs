@@ -6,11 +6,8 @@
 
     public interface IBankAccountService
     {
-        CommandResult CreateBankAccount(IBankAccount bankAccount);
 
-        IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int bankTypeId, bool? isActive);
-
-        CommandResult UpdateBankAccount(IBankAccount bankAccount);
+        IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int? bankTypeId, bool? isActive);
 
         BankAccount GetBankAccountById(int bankAccountId);
 

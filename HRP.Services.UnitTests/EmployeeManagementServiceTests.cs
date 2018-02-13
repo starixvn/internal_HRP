@@ -582,14 +582,14 @@
             return Substitute.For<IEmployeeManagementRepository>();
         }
 
-        private EmployeeManagementService GetEmployeeManagementService()
+        private EmployeeService GetEmployeeManagementService()
         {
             var hostingEnviroment = FakeHostingEnvironment();
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             employeeRepository = FakeEmployeeRepository();
             cryptoService = FakeCryptoService();
-            var service = new EmployeeManagementService(hostingEnviroment, baseService, cryptoService, sessionService, employeeRepository);
+            var service = new EmployeeService(hostingEnviroment, baseService, cryptoService, sessionService, employeeRepository);
 
             return service;
         }

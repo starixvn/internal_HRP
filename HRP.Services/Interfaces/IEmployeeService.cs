@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Http;
     using Models.EmployeeManagement;
 
-    public interface IEmployeeManagementService
+    public interface IEmployeeService
     {
         Employee GetEmployeeBasicInfoById(int employeeId);
 

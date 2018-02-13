@@ -6,7 +6,7 @@
     {
         public int EmployeeId { get; set; }
 
-        public int BankTypeId { get; set; }
+        public int? BankTypeId { get; set; }
 
         public bool? IsActive { get; set; }
 

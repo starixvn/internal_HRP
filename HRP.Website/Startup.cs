@@ -92,7 +92,7 @@
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();
-            services.AddScoped<IEmployeeManagementService, EmployeeManagementService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
             services.AddScoped<IDataConfigurationService, DataConfigurationService>();

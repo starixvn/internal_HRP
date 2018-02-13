@@ -23,7 +23,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
-        private IEmployeeManagementService employeeManagementService;
+        private IEmployeeService employeeManagementService;
         private IEmployeePayrollService payrollService;
 
         [Fact]
@@ -744,9 +744,9 @@
             return service;
         }
 
-        private static IEmployeeManagementService FakeEmployeeManagementService()
+        private static IEmployeeService FakeEmployeeManagementService()
         {
-            var service = Substitute.For<IEmployeeManagementService>();
+            var service = Substitute.For<IEmployeeService>();
 
             return service;
         }

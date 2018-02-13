@@ -19,12 +19,12 @@
     [HRPAuthorize]
     public class EmployeeManagementController : BaseController
     {
-        private readonly IEmployeeManagementService employeeService;
+        private readonly IEmployeeService employeeService;
         private readonly IEmployeePayrollService payrollService;
 
         public EmployeeManagementController(
             IBaseService baseService,
-            IEmployeeManagementService employeeService,
+            IEmployeeService employeeService,
             IEmployeePayrollService payrollService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
