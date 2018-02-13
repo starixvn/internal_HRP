@@ -30,11 +30,7 @@
 </ol>
 
 @*Filter form*@
-<form asp-action="EmployeeBankAccounts"
-      asp-controller="BankAccount"
-      asp-antiforgery="false"
-      method="get"
-      class="search-form">
+<form asp-action="EmployeeBankAccounts" asp-controller="BankAccount" asp-antiforgery="false" method="get" class="search-form">
     <input asp-for="EmployeeId" type="hidden" />
     <div class="group">
         <label class="text">@ViewLang.BankType</label>

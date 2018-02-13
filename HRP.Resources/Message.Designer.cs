@@ -448,7 +448,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Bank Details of Employee {0}.
+        ///   Looks up a localized string similar to Edit Bank Details of Employee &apos;{0}&apos;.
         /// </summary>
         public static string EditBankAccountTitle {
             get {
@@ -1798,7 +1798,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Bank Details of Employee {0}.
+        ///   Looks up a localized string similar to View Bank Details of Employee &apos;{0}&apos;.
         /// </summary>
         public static string ViewBankAccountTitle {
             get {

@@ -655,10 +655,10 @@
     <value>{0} must be less than or equal to {1}.</value>
   </data>
   <data name="EditBankAccountTitle" xml:space="preserve">
-    <value>Edit Bank Details of Employee {0}</value>
+    <value>Edit Bank Details of Employee '{0}'</value>
   </data>
   <data name="ViewBankAccountTitle" xml:space="preserve">
-    <value>View Bank Details of Employee {0}</value>
+    <value>View Bank Details of Employee '{0}'</value>
   </data>
   <data name="CreateEmploymentSuccessfully" xml:space="preserve">
     <value>Employment has been successfully created!</value>

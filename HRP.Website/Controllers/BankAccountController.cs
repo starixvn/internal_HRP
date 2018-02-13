@@ -48,7 +48,7 @@
             viewModel.BankTypeResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType);
             viewModel.BankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-            
+
             return View(viewModel);
         }
 
@@ -72,27 +72,9 @@
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
-        [AcceptVerbs("Get", "Post")]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CheckAccountNameExisted(BankAccount bankAccount)
-        {
-            var isExisted = bankAccountService.CheckIsAccountNameExisted(bankAccount);
-
-            return isExisted ? Json(data: BankAccountError.AccountNameExisted.GetDisplayName()) : Json(data: true);
-        }
-
-        [AcceptVerbs("Get", "Post")]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CheckAccountNumberExisted(BankAccount bankAccount)
-        {
-            var isExisted = bankAccountService.CheckIsAccountNumberExisted(bankAccount);
-
-            return isExisted ? Json(data: BankAccountError.AccountNumberExisted.GetDisplayName()) : Json(data: true);
-        }
-
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
+        public IActionResult CreateBankAccountInPayroll(CreateBankAccountViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +94,33 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            viewModel.EmployeeId = viewModel.BankAccount.EmployeeId;
+            var criteria = PrepareCreateBankAccountCriteria(viewModel.BankAccount);
+            var result = baseService.ExecuteNonQuery(criteria);
+
+            if (result.IsSuccessful)
+            {
+                var employeeBankAccountsViewModel = new EmployeeBankAccountsViewModel
+                {
+                    EmployeeId = viewModel.BankAccount.EmployeeId
+                };
+
+                return RedirectToAction("EmployeeBankAccounts", employeeBankAccountsViewModel);
+            }
+
+            ModelState.AddModelError("", ((BankAccountError)result.Code).GetDisplayName());
+
+            return View(viewModel);
+        }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult EditBankAccount(int bankAccountId)

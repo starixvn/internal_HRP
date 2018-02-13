@@ -158,54 +158,6 @@
         ////    Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         ////}
 
-        [Fact]
-        public void CheckAccountNameExisted_AccountExisted_ReturnJsonWithMessage()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsAccountNameExisted(bankAccount).Returns(true);
-
-            var actual = controller.CheckAccountNameExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(BankAccountError.AccountNameExisted.GetDisplayName(), jsonResult.Value.ToString());
-        }
-
-        [Fact]
-        public void CheckAccountNameExisted_AccountNotExisted_ReturnJsonWithTrue()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsAccountNameExisted(bankAccount).Returns(false);
-
-            var actual = controller.CheckAccountNameExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value);
-        }
-
-        [Fact]
-        public void CheckAccountNumberExisted_AccountExisted_ReturnJsonWithMessage()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsAccountNumberExisted(bankAccount).Returns(true);
-
-            var actual = controller.CheckAccountNumberExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(BankAccountError.AccountNumberExisted.GetDisplayName(), jsonResult.Value.ToString());
-        }
-
-        [Fact]
-        public void CheckAccountNumberExisted_AccountNotExisted_ReturnJsonWithTrue()
-        {
-            var bankAccount = new BankAccount();
-            var controller = GetBankAccountController();
-            bankAccountService.CheckIsAccountNumberExisted(bankAccount).Returns(false);
-
-            var actual = controller.CheckAccountNumberExisted(bankAccount);
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.True((bool)jsonResult.Value);
-        }
-
         ////[Fact]
         ////public void EditBankAccount_ValidBankAccountId_ReturnJsonWithSuccess()
         ////{
