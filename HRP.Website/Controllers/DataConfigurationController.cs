@@ -55,7 +55,8 @@
                     FieldName = ViewLang.CompanyBVI,
                     LinkCreateItem = DataConfigurationActionLink.CreateCompanyBVI,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCompanyBVI
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -163,7 +164,8 @@
                     FieldName = ViewLang.Division,
                     LinkCreateItem = DataConfigurationActionLink.CreateDivision,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateDivision
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_DivisionTable", viewModel);
@@ -272,7 +274,8 @@
                     FieldName = ViewLang.Department,
                     LinkCreateItem = DataConfigurationActionLink.CreateDepartment,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateDepartment
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_DepartmentTable", viewModel);
@@ -381,7 +384,8 @@
                     FieldName = ViewLang.CostCenter,
                     LinkCreateItem = DataConfigurationActionLink.CreateCostCenter,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCostCenter
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_CostCenterTable", viewModel);
@@ -490,7 +494,8 @@
                     FieldName = ViewLang.Section,
                     LinkCreateItem = DataConfigurationActionLink.CreateSection,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateSection
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_SectionTable", viewModel);
@@ -599,7 +604,8 @@
                     FieldName = ViewLang.JobCategory,
                     LinkCreateItem = DataConfigurationActionLink.CreateJobCategory,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateJobCategory
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -707,7 +713,8 @@
                     FieldName = ViewLang.GradeLevel,
                     LinkCreateItem = DataConfigurationActionLink.CreateGradeLevel,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateGradeLevel
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_GradeLevelTable", viewModel);
@@ -816,7 +823,8 @@
                     FieldName = ViewLang.JobGrade,
                     LinkCreateItem = DataConfigurationActionLink.CreateJobGrade,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateJobGrade
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_JobGradeTable", viewModel);
@@ -925,7 +933,8 @@
                     FieldName = ViewLang.Country,
                     LinkCreateItem = DataConfigurationActionLink.CreateCountry,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCountry
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_SimpleItemTable", viewModel);
@@ -1033,7 +1042,8 @@
                     FieldName = ViewLang.City,
                     LinkCreateItem = DataConfigurationActionLink.CreateCity,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateCity
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_CityTable", viewModel);
@@ -1142,7 +1152,8 @@
                     FieldName = ViewLang.Office,
                     LinkCreateItem = DataConfigurationActionLink.CreateOffice,
                     LinkUpdateItem = DataConfigurationActionLink.UpdateOffice
-                }
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_OfficeTable", viewModel);
@@ -1247,7 +1258,8 @@
             var viewModel = new SimpleItemTableViewModel
             {
                 Items = items,
-                Field = field
+                Field = field,
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
             return PartialView("_SimpleItemTable", viewModel);

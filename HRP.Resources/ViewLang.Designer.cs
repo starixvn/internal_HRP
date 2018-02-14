@@ -412,6 +412,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -552,6 +561,15 @@ namespace HRP.Resources {
         public static string CurrencySetting {
             get {
                 return ResourceManager.GetString("CurrencySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Configuration.
+        /// </summary>
+        public static string DataConfiguration {
+            get {
+                return ResourceManager.GetString("DataConfiguration", resourceCulture);
             }
         }
         

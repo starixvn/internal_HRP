@@ -8,5 +8,7 @@
         public IEnumerable<JobGrade> JobGradeList { get; set; }
 
         public Field Field { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }

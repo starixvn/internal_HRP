@@ -8,5 +8,7 @@
         public IEnumerable<City> Cities { get; set; }
 
         public Field Field { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }

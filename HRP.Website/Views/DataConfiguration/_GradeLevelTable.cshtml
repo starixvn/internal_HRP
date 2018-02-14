@@ -5,7 +5,23 @@
     var rowNumber = 1;
 }
 
-@Html.Partial("_TopHeaderTable", Model.Field.LinkCreateItem)
+<div class="top-header">
+    <div class="pull-left">
+        @if (Model.IsHost)
+        {
+            <a class="button -add create-user js-createNewItem" data-url-create="@Model.Field.LinkCreateItem">
+                <span class="icon-add"></span>
+                @ViewLang.CreateNewItem
+            </a>
+
+        }
+    </div>
+    <div class="pull-right search-box">
+        <input id="quickSearch" type="search" class="control" placeholder="@ViewLang.Search" />
+        <span class="icon-search"></span>
+    </div>
+</div>
+
 <table id="tableItems" class="table table-bordered table-hover table-responsive table-striped">
     <thead>
         <tr>
@@ -14,7 +30,10 @@
             <th>@ViewLang.Description</th>
             <th>@ViewLang.JobCategory</th>
             <th class="col-active">@ViewLang.Active</th>
-            <th class="col-edit">@ViewLang.Edit</th>
+            @if (Model.IsHost)
+            {
+                <th class="col-edit">@ViewLang.Edit</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -31,9 +50,12 @@
                         <span class="icon-active"></span>
                     }
                 </td>
-                <td class="text-center has-icon">
-                    <span class="icon-edit js-iconEditItem" data-url-update="@Model.Field.LinkUpdateItem" data-item-id="@item.GradeLevelId"></span>
-                </td>
+                @if (Model.IsHost)
+                {
+                    <td class="text-center has-icon">
+                        <span class="icon-edit js-iconEditItem" data-url-update="@Model.Field.LinkUpdateItem" data-item-id="@item.GradeLevelId"></span>
+                    </td>
+                }
             </tr>
 
             rowNumber++;

@@ -8,5 +8,7 @@
         public IEnumerable<GradeLevel> GradeLevelList { get; set; }
 
         public Field Field { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }

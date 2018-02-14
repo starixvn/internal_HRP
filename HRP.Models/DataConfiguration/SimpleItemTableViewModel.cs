@@ -7,5 +7,7 @@
         public IEnumerable<SimpleItem> Items { get; set; }
 
         public Field Field { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }
