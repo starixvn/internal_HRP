@@ -464,6 +464,16 @@ table.dataTable thead .sorting_desc:after {
   color: #333;
 }
 
+.select2-container--default .select2-selection--single.select2-has-error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+}
+
 .select2-container--default .select2-selection--single .select2-selection__arrow {
   height: 30px;
 }

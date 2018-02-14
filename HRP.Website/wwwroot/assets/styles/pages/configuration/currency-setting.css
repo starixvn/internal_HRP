@@ -493,7 +493,11 @@ table.dataTable thead .sorting_desc:after {
 
 .modal .modal-dialog .list-button .button {
   float: right;
-  margin-left: 10px;
+  margin-right: 0;
+}
+
+.modal .modal-dialog .list-button .button:last-child {
+  margin-right: 10px;
 }
 
 .table .input {

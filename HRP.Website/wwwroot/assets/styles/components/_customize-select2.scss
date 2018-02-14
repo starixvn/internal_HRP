@@ -9,7 +9,12 @@
         padding-right: 10px;
         background-color: #fff;
         border: 1px solid $border-color;
-        color: $input-color;   
+        color: $input-color;
+
+        &.select2-has-error {
+            border-color: #ff4545;
+            @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
+        }
 
         .select2-selection__arrow {
             height: 30px;

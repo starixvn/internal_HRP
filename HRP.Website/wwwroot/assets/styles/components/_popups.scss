@@ -86,5 +86,9 @@
 
 .modal .modal-dialog .list-button .button {
     float: right;
-    margin-left: 10px;
+    margin-right: 0;
+
+    &:last-child {
+        margin-right: 10px;
+    }
 }

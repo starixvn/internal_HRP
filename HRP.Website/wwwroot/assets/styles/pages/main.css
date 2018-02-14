@@ -426,7 +426,11 @@ input[type="checkbox"]:disabled + span {
 
 .modal .modal-dialog .list-button .button {
   float: right;
-  margin-left: 10px;
+  margin-right: 0;
+}
+
+.modal .modal-dialog .list-button .button:last-child {
+  margin-right: 10px;
 }
 
 .msg-error.-has-icon, .text-danger.-has-icon, .msg-success.-has-icon, .msg-warning {
