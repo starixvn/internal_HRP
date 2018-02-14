@@ -19,28 +19,28 @@
         <input asp-for="Section.SectionId" type="hidden" />
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.Section.CompanyId">@Model.Section.CompanyCode</option>
             </select>
         </div>
 
         <label class="text -has-required">@ViewLang.Division</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.Section.DivisionId">@Model.Section.DivisionCode</option>
             </select>
         </div>
 
         <label class="text -has-required">@ViewLang.Department</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.Section.DepartmentId">@Model.Section.DepartmentCode</option>
             </select>
         </div>
 
         <label class="text -has-required">@ViewLang.CostCenter</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.Section.CostCenterId">@Model.Section.CostCenterCode</option>
             </select>
         </div>

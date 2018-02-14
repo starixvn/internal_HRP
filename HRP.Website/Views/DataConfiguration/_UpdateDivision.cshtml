@@ -19,7 +19,7 @@
         <input asp-for="Division.DivisionId" type="hidden" />
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.Division.CompanyId">@Model.Division.CompanyCode</option>
             </select>
         </div>

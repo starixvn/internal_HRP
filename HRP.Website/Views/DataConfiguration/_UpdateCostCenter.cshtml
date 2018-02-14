@@ -19,21 +19,21 @@
         <input asp-for="CostCenter.CostCenterId" type="hidden" />
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.CostCenter.CompanyId">@Model.CostCenter.CompanyCode</option>
             </select>
         </div>
 
         <label class="text -has-required">@ViewLang.Division</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.CostCenter.DivisionId">@Model.CostCenter.DivisionCode</option>
             </select>
         </div>
 
         <label class="text -has-required">@ViewLang.Department</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox" disabled>
+            <select class="control" disabled>
                 <option value="@Model.CostCenter.DepartmentId">@Model.CostCenter.DepartmentCode</option>
             </select>
         </div>

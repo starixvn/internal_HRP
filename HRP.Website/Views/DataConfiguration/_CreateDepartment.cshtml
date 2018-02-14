@@ -21,7 +21,7 @@
 
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
-            <select class="control js-companyId" asp-for="Department.CompanyId" asp-items="@Model.CompanyList"
+            <select class="control js-companyId js-select2 js-search-suggestion" asp-for="Department.CompanyId" asp-items="@Model.CompanyList"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.CompanyBVI)">
                 <option value=""></option>
             </select>
@@ -29,7 +29,7 @@
 
         <label class="text -has-required">@ViewLang.Division</label>
         <div class="group-control">
-            <select class="control js-divisionId" asp-for="Department.DivisionId"
+            <select class="control js-divisionId js-select2 js-search-suggestion" asp-for="Department.DivisionId"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.Division)">
                 <option value=""></option>
             </select>

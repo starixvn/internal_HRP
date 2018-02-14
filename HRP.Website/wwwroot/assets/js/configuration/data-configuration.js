@@ -66,37 +66,34 @@
     }
 
     function initValidationForm($form) {
-        //var $form = $(formElementId);
         $.validator.unobtrusive.parse($form);
 
-        //var $validator = $form.validate();
-        //$validator.settings.highlight = function (element, errorClass, validClass) {
-        //    var $element = $(element);
-        //    $element.addClass(errorClass).removeClass(validClass);
+        var $validator = $form.validate();
+        $validator.settings.highlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.addClass(errorClass).removeClass(validClass);
 
-        //    if ($element.hasClass('js-select2')) {
-        //        $element.next().find('.select2-selection')
-        //            .removeClass(errorClass).removeClass('control').removeClass(validClass)
-        //            .addClass(errorClass).addClass('control');
-        //    }
-        //};
-        //$validator.settings.unhighlight = function (element, errorClass, validClass) {
-        //    var $element = $(element);
-        //    $element.removeClass(errorClass).addClass(validClass);
+            if ($element.hasClass('js-select2')) {
+                $element.next().find('.select2-selection')
+                    .addClass('select2-has-error');
+            }
+        };
+        $validator.settings.unhighlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.removeClass(errorClass).addClass(validClass);
 
-        //    if ($element.hasClass('js-select2')) {
-        //        $element.next().find('.select2-selection')
-        //            .removeClass(errorClass).removeClass('control').removeClass(validClass)
-        //            .addClass(validClass);
-        //    }
-        //};
+            if ($element.hasClass('js-select2')) {
+                $element.next().find('.select2-selection')
+                    .removeClass('select2-has-error');
+            }
+        };
 
         $form.find('.js-select2').on('change', function () {
             var $this = $(this);
             var $select2 = $this.next().find('.select2-selection');
 
-            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('input-validation-error')) {
-                $select2.removeClass('input-validation-error').removeClass('control');
+            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('select2-has-error')) {
+                $select2.removeClass('select2-has-error');
                 $this.valid();
             }
         });
@@ -161,7 +158,7 @@
                     registerEventChangeCountry();
 
                     var $createForm = $('#createItemForm');
-                    initSelect2($createForm, '100px');
+                    initSelect2($createForm, '100%');
                     initValidationForm($createForm);
 
                     $('#newItemModal').modal('show');

@@ -21,7 +21,7 @@
 
         <label class="text -has-required">@ViewLang.Country</label>
         <div class="group-control">
-            <select class="control js-select2-hide-searchbox js-countryId" asp-for="Office.CountryId" asp-items="@Model.CountryList"
+            <select class="control js-countryId js-select2 js-search-suggestion" asp-for="Office.CountryId" asp-items="@Model.CountryList"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.Country)">
                 <option value=""></option>
             </select>
@@ -29,7 +29,7 @@
 
         <label class="text -has-required">@ViewLang.City</label>
         <div class="group-control">
-            <select class="control js-cityId" asp-for="Office.CityId"
+            <select class="control js-cityId js-select2 js-search-suggestion" asp-for="Office.CityId"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.City)">
                 <option value=""></option>
             </select>

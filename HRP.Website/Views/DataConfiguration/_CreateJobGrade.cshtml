@@ -21,7 +21,7 @@
 
         <label class="text -has-required">@ViewLang.JobCategory</label>
         <div class="group-control">
-            <select class="control js-jobCateogryId" asp-for="JobGrade.JobCategoryId" asp-items="@Model.JobCategoryList"
+            <select class="control js-jobCateogryId js-select2 js-search-suggestion" asp-for="JobGrade.JobCategoryId" asp-items="@Model.JobCategoryList"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.JobCategory)">
                 <option value=""></option>
             </select>
@@ -29,7 +29,7 @@
 
         <label class="text -has-required">@ViewLang.GradeLevel</label>
         <div class="group-control">
-            <select class="control js-gradeLevelId" asp-for="JobGrade.GradeLevelId"
+            <select class="control js-gradeLevelId js-select2 js-search-suggestion" asp-for="JobGrade.GradeLevelId"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.GradeLevel)">
                 <option value=""></option>
             </select>
