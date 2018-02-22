@@ -1971,6 +1971,164 @@
 
         #endregion RefResource Item
 
+        #region Currency
+
+        [Fact]
+        public async Task GetAllCurrency_ServiceGetSimpleItemList_ReturnPartialViewWithSimpleItemTableViewModel()
+        {
+            // Arrange
+            var items = new List<SimpleItem> { MockSimpleItem() };
+            var controller = GetDataConfigurationController();
+            sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host).Returns(true);
+            dataConfigurationService.GetAllCurrencyAsync().Returns(items);
+
+            // Act
+            var actual = await controller.GetAllCurrency();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_SimpleItemTable", viewResult.ViewName);
+            Assert.Equal(items, viewModel.Items);
+            Assert.Equal(ViewLang.Currency, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCurrency, viewModel.Field.LinkCreateItem);
+            Assert.Equal(DataConfigurationActionLink.UpdateCurrency, viewModel.Field.LinkUpdateItem);
+            Assert.True(viewModel.IsHost);
+        }
+
+        [Fact]
+        public void CreateCurrency_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel()
+        {
+            // Arrange
+            var controller = GetDataConfigurationController();
+
+            // Act
+            var actual = controller.CreateCurrency();
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
+            Assert.Equal(ViewLang.Currency, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.CreateCurrency, viewModel.Field.LinkCreateItem);
+        }
+
+        [Fact]
+        public async Task CreateCurrencyPost_CurrencyItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCurrencyAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateCurrency(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task CreateCurrencyPost_CurrencyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCurrencyAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.CreateCurrencyAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCurrency(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCurrency_ServiceGetCurrencyItem_ReturnPartialViewWithUpdateSimpleItemViewModel()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCurrencyByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateCurrency(11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(item, viewModel.Item);
+            Assert.Equal(ViewLang.Currency, viewModel.Field.FieldName);
+            Assert.Equal(DataConfigurationActionLink.UpdateCurrency, viewModel.Field.LinkUpdateItem);
+        }
+
+        [Fact]
+        public async Task UpdateCurrency_ServiceGetNullCurrencyItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            SimpleItem item = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetCurrencyByIdAsync(Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateCurrency(11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Fact]
+        public async Task UpdateCurrencyPost_CurrencyItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCurrencyAsync(Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateCurrency(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+        }
+
+        [Fact]
+        public async Task UpdateCurrencyPost_CurrencyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        {
+            // Arrange
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedCurrencyAsync(Arg.Any<SimpleItem>()).Returns(false);
+            dataConfigurationService.UpdateCurrencyAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCurrency(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion Currency
+
         #region Commons
 
         [Fact]
