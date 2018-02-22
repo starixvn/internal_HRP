@@ -11,7 +11,9 @@
         JobCategoryId: '.js-jobCateogryId',
         GradeLevelId: '.js-gradeLevelId',
         CountryId: '.js-countryId',
-        CityId: '.js-cityId'
+        CityId: '.js-cityId',
+        CreateItemModal: '#createItemModal',
+        CreateItemModalContent: '#createItemModalContent'
     };
     var htmlDefaultOption = '<option value=""></option>';
 
@@ -53,6 +55,9 @@
             var fieldId = $fieldType.val();
             var getAllUrl = $fieldType.find(':selected').data('url-get-all');
             $selectedField.val(fieldId);
+
+            //Clear html create item modal
+            $(domElement.CreateItemModalContent).empty();
 
             $.ajax({
                 type: 'GET',
@@ -139,32 +144,39 @@
 
     function registerEventClickCreateNewItem() {
         $('.js-createNewItem').on('click', function () {
-            var fieldId = $(domElement.SelectedField).val();
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + $(this).data('url-create'),
-                dataType: 'html',
-                data: { "fieldId": fieldId },
-                success: function (data) {
-                    // ref
-                    $('#createItemModalContent').html(data);
+            var $createItemModalContent = $(domElement.CreateItemModalContent);
 
-                    registerEventChangeCompanyBVI();
-                    registerEventChangeDivision();
-                    registerEventChangeDepartment();
-                    registerEventChangeCostCenter();
+            if (!$.trim($createItemModalContent.html())) {
+                var fieldId = $(domElement.SelectedField).val();
+                $.ajax({
+                    type: 'GET',
+                    url: commonFunctions.rootURL + $(this).data('url-create'),
+                    dataType: 'html',
+                    data: { "fieldId": fieldId },
+                    success: function (data) {
+                        // ref
+                        $createItemModalContent.html(data);
 
-                    registerEventChangeJobCategory();
-                    registerEventChangeCountry();
+                        registerEventChangeCompanyBVI();
+                        registerEventChangeDivision();
+                        registerEventChangeDepartment();
+                        registerEventChangeCostCenter();
 
-                    var $createForm = $('#createItemForm');
-                    initSelect2($createForm, '100%');
-                    initValidationForm($createForm);
+                        registerEventChangeJobCategory();
+                        registerEventChangeCountry();
 
-                    $('#newItemModal').modal('show');
-                },
-                error: commonFunctions.handleAjaxError
-            });
+                        var $createForm = $('#createItemForm');
+                        initSelect2($createForm, '100%');
+                        initValidationForm($createForm);
+
+                        $(domElement.CreateItemModal).modal('show');
+                    },
+                    error: commonFunctions.handleAjaxError
+                });
+            } else {
+                $(domElement.CreateItemModal).modal('show');
+            }
+
         });
     }
 
@@ -314,7 +326,7 @@
     function onCreateNewItemSuccess(response) {
         var $createItemForm = $('#createItemForm');
         if (response.isSuccessful) {
-            $("#newItemModal .close").trigger('click'); ////ref
+            $("#createItemModal .close").trigger('click'); ////ref
             $('.modal-backdrop').remove();
             commonFunctions.showSuccessMessage($('.msg-success'), response.message);////ref
             reloadTableListItem();
