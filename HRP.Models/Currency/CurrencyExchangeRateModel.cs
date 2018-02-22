@@ -2,9 +2,9 @@
 {
     public class CurrencyExchangeRateModel
     {
-        public string FromCurrency { get; set; }
+        public int FromCurrencyId { get; set; }
 
-        public string ToCurrency { get; set; }
+        public int ToCurrencyId { get; set; }
 
         public decimal ExchangeRate { get; set; }
     }

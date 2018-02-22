@@ -24,15 +24,15 @@
         {
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
-                new CurrencyExchangeRateModel { FromCurrency = "USD", ToCurrency = "VND", ExchangeRate = 22300 },
-                new CurrencyExchangeRateModel { FromCurrency = "SGD", ToCurrency = "VND", ExchangeRate = 19300 }
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 3, ExchangeRate = 22300 },
+                new CurrencyExchangeRateModel { FromCurrencyId = 2, ToCurrencyId = 3, ExchangeRate = 19300 }
             };
 
             var currencies = new List<CurrencyCodeModel>
             {
-                new CurrencyCodeModel { CurrencyCode = "USD" },
-                new CurrencyCodeModel { CurrencyCode = "SGD" },
-                new CurrencyCodeModel { CurrencyCode = "VND" },
+                new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" },
+                new CurrencyCodeModel { CurrencyId = 2, CurrencyCode = "SGD" },
+                new CurrencyCodeModel { CurrencyId = 3, CurrencyCode = "VND" },
             };
 
             var controller = GetController();
@@ -52,8 +52,8 @@
             {
                 new CurrencyExchangeRateModel
                 {
-                    FromCurrency = "USD",
-                    ToCurrency = "VND",
+                    FromCurrencyId = 1,
+                    ToCurrencyId = 3,
                     ExchangeRate = 22500
                 }
             };

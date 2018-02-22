@@ -64,8 +64,8 @@
             foreach (var rate in exchangeRates)
             {
                 var row = new XElement("Row");
-                row.SetAttributeValue(nameof(rate.FromCurrency), rate.FromCurrency);
-                row.SetAttributeValue(nameof(rate.ToCurrency), rate.ToCurrency);
+                row.SetAttributeValue(nameof(rate.FromCurrencyId), rate.FromCurrencyId);
+                row.SetAttributeValue(nameof(rate.ToCurrencyId), rate.ToCurrencyId);
                 row.SetAttributeValue(nameof(rate.ExchangeRate), rate.ExchangeRate);
                 xml.Add(row);
             }

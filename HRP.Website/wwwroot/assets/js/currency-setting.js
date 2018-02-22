@@ -4,7 +4,7 @@
     }
 
     function init() {
-        var baseCurrency = $('#base-currency').val();
+        var baseCurrency = Number($('#base-currency').val());
 
         if ($('#CanUpdate').val() === 'True') {
             $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]').inputmask()
@@ -70,8 +70,8 @@
                 $('.rate').each(function (index, e) {
                     var element = $(e);
                     data.push({
-                        fromCurrency: element.data('from-currency'),
-                        toCurrency: element.data('to-currency'),
+                        fromCurrencyId: element.data('from-currency'),
+                        toCurrencyId: element.data('to-currency'),
                         exchangeRate: element.val()
                     });
                 });

@@ -4,37 +4,37 @@
     {
         public int EmployeeId { get; set; }
 
-        public string CurrencyCode { get; set; }     
+        public string CurrencyId { get; set; }     
 
-        public string SubsistenceCurrencyCode { get; set; }
+        public string SubsistenceCurrencyId { get; set; }
 
         public string SubsistenceAmount { get; set; }
 
-        public string HomePassageCurrencyCode { get; set; }
+        public string HomePassageCurrencyId { get; set; }
 
         public string HomePassageAmount { get; set; }
 
-        public string HousingCurrencyCode { get; set; }
+        public string HousingCurrencyId { get; set; }
 
         public string HousingAmount { get; set; }
 
-        public string MobilePhoneCurrencyCode { get; set; }
+        public string MobilePhoneCurrencyId { get; set; }
 
         public string MobilePhoneAmount { get; set; }
 
-        public string HPICurrencyCode { get; set; }
+        public string HPICurrencyId { get; set; }
 
         public string HPIAmount { get; set; }
 
-        public string DutyMealCurrencyCode { get; set; }
+        public string DutyMealCurrencyId { get; set; }
 
         public string DutyMealAmount { get; set; }
 
-        public string SecondmentCurrencyCode { get; set; }
+        public string SecondmentCurrencyId { get; set; }
 
         public string SecondmentAmount { get; set; }
 
-        public string OthersCurrencyCode { get; set; }
+        public string OthersCurrencyId { get; set; }
 
         public string OthersAmount { get; set; }
     }

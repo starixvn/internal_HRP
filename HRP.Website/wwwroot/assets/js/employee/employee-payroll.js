@@ -6,14 +6,14 @@
     }
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === 'VND')
+        if (currency === '11')
             return this.div(1000).round().mul(1000);
 
         return this.round(dp);
     };
 
     BigNumber.prototype.toStringWithCurrency = function (currency) {
-        if (currency === 'VND')
+        if (currency === '11')
             return this.toString();
 
         return this.toFixed(2);
@@ -21,14 +21,14 @@
 
     function checkCurrencyAndAmountChange() {
         var $basicSalary = $('#BasicSalary_Salary');
-        var oldValue = $basicSalary.data('old-value');
-        var $currency = $('#BasicSalary_CurrencyCode');
-        var oldCurrency = $currency.data('old-value');
+        var oldValue = $('#BasicSalary_OldSalary').val();
+        var $currency = $('#BasicSalary_CurrencyId');
+        var oldCurrency = $('#BasicSalary_OldCurrencyId').val();
         return (oldValue !== '' && Number($basicSalary.val()) !== Number(oldValue)) || (oldCurrency !== '' && oldCurrency !== $currency.val());
     }
 
     function calculateBasicSalary() {
-        var totalAmountCurrency = $('#BasicSalary_CurrencyCode').val();
+        var totalAmountCurrency = $('#BasicSalary_CurrencyId').val();
         var $basicSalary = $('#BasicSalary_Salary');
 
         if (totalAmountCurrency === '' || isNaN($basicSalary.val()))
@@ -68,7 +68,7 @@
     }
 
     function calculateAmountForBanks() {
-        var totalAmountCurrency = $('#Allowance_CurrencyCode').val();
+        var totalAmountCurrency = $('#Allowance_CurrencyId').val();
         var totalAmount = new BigNumber($('#allowance-total-amount').val());
 
         if (totalAmountCurrency === '')
@@ -133,7 +133,7 @@
     }
 
     function calculateAllowances() {
-        var allowanceCurrency = $('#Allowance_CurrencyCode').val();
+        var allowanceCurrency = $('#Allowance_CurrencyId').val();
         if (allowanceCurrency === '') {
             return;
         }
@@ -237,8 +237,7 @@
         $('.bank-type-select').on('change', function (e) {
             $(this).siblings('.bank-account-select').val('').trigger('change.select2');
             validatedInvalidRelatedElements(e.target);
-
-            if (this.value === 2 || this.value === 1) {
+            if (this.value === '2' || this.value === '1') {
                 $(this).siblings('.add-account').removeClass('disabled');
             } else {
                 $(this).siblings('.add-account').addClass('disabled');
@@ -310,7 +309,7 @@
         $('.add-account:not(.disabled)').each(function (index, element) {
             var $element = $(element);
             var bankType = $element.siblings('.bank-type-select').val();
-            if (bankType === 3 || bankType === '') {
+            if (bankType === '3' || bankType === '') {
                 $element.addClass('disabled');
             }
         });
@@ -346,7 +345,7 @@
         $('.allowance-detail-calculate').on('change', function (e) {
             roundingAmount(e.target);
 
-            var allowanceCurrency = $('#Allowance_CurrencyCode').val();
+            var allowanceCurrency = $('#Allowance_CurrencyId').val();
             if (allowanceCurrency === '') {
                 return;
             }
@@ -359,8 +358,9 @@
             roundingAmount(e.target);
         });
 
-        $('#Allowance_CurrencyCode').on('change', function () {
-            $('.allowance-total-currency:disabled').val(this.value);
+        $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
+        $('#Allowance_CurrencyId').on('change', function () {
+            $('.allowance-total-currency').val(this.options[this.selectedIndex].text);
             calculateAllowances();
         });
 

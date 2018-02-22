@@ -38,7 +38,7 @@
 </div>
 <div class="msg-error -has-icon hidden"></div>
 
-<input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyCode" id="base-currency" />
+<input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyId" id="base-currency" />
 <input type="hidden" asp-for="CanUpdate" />
 
 <form id="currency-form" asp-action="Edit">
@@ -61,7 +61,7 @@
                     <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
                     @foreach (var toCurrency in Model.Currencies)
                     {
-                        var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrency == fromCurrency.CurrencyCode && x.ToCurrency == toCurrency.CurrencyCode);
+                        var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrency.CurrencyId && x.ToCurrencyId == toCurrency.CurrencyId);
                         if (Model.CanUpdate)
                         {
                             if (isDisabled || fromCurrency.CurrencyCode == "VND")
@@ -78,7 +78,7 @@
 
                         <td>
                             <input class="input rate" @disabled type="text" value="@rate?.ExchangeRate"
-                                   data-from-currency="@fromCurrency.CurrencyCode" data-to-currency="@toCurrency.CurrencyCode"
+                                   data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
                                    name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
                                    data-inputmask="'alias': 'numeric', 'groupSeparator': '', 'autoGroup': true, 'digits': 5, 'digitsOptional': false, 'placeholder': '', 'allowMinus': false">
                         </td>

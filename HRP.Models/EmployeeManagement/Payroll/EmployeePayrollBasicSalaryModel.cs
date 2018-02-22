@@ -13,21 +13,21 @@
 
         public string OldSalary { get; set; }
 
-        public string CurrencyCode { get; set; }
+        public string CurrencyId { get; set; }
 
-        public string OldCurrencyCode { get; set; }
+        public string OldCurrencyId { get; set; }
 
         public int WorkingDays { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollCurrencyRequried")]
-        public string EbankingCurrencyCode { get; set; }
+        public string EbankingCurrencyId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyCode), nameof(EbankingAccountId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollSettingAmountRequried")]
         public string EbankingAmount { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyCode), nameof(EbankingAmount) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAmount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
         public int? EbankingAccountId { get; set; }
 
