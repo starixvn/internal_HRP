@@ -55,31 +55,15 @@
         [Display(ResourceType = typeof(ViewLang), Name = "Active")]
         public bool IsActive { get; set; }
 
-        public SelectList BankTypes
-        {
-            get
-            {
-                var bankTypes = new SelectList(
-                    BankTypeResources,
-                    nameof(ReferenceResourceModel.ResourceId),
-                    nameof(ReferenceResourceModel.Value));
+        public SelectList BankTypes => new SelectList(
+            BankTypeResources,
+            nameof(ReferenceResourceModel.ResourceId),
+            nameof(ReferenceResourceModel.Value));
 
-                return bankTypes;
-            }
-        }
-
-        public SelectList BankAccountTypes
-        {
-            get
-            {
-                var bankTypes = new SelectList(
-                    BankAccountTypeResources,
-                    nameof(ReferenceResourceModel.ResourceId),
-                    nameof(ReferenceResourceModel.Value));
-
-                return bankTypes;
-            }
-        }
+        public SelectList BankAccountTypes => new SelectList(
+            BankAccountTypeResources,
+            nameof(ReferenceResourceModel.ResourceId),
+            nameof(ReferenceResourceModel.Value));
 
         public bool HaveHostPermission { get; set; }
 
