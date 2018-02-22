@@ -4,8 +4,6 @@
     using System.Linq;
     using Core.Constants;
     using Core.Enumerations;
-    using Core.Extensions;
-    using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
@@ -24,205 +22,40 @@
         private IRefResourceService refResourceService;
         private ISessionService sessionService;
 
-        ////[Fact]
-        ////public void EmployeeBankAccounts_NoExistingAccount_ReturnViewAndCanCreate()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var resources = GetResources();
-        ////    var viewModel = new EmployeeBankAccountsViewModel
-        ////    {
-        ////        EmployeeId = 1,
-        ////        CompanyId = 1,
-        ////    };
-        ////    var employeeBankAcount = new EmployeeBankAccounts
-        ////    {
-        ////        EmployeeId = viewModel.EmployeeId,
-        ////        CompanyId = viewModel.CompanyId,
-        ////        BankAccounts = new List<BankAccount>()
-        ////    };
+        [Fact]
+        public void EmployeeBankAccounts_WhenCalled_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
 
-        ////    bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId).Returns(employeeBankAcount);
-        ////    refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankAccountType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankAccountType));
+            var viewModel = new EmployeeBankAccountsViewModel
+            {
+                EmployeeId = 1,
+                CompanyId = 1,
+            };
 
-        ////    sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-        ////    sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-        ////    bankAccountService.FilterBankAccounts(Arg.Any<IEnumerable<BankAccount>>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(employeeBankAcount.BankAccounts);
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
 
-        ////    var actual = controller.EmployeeBankAccounts(viewModel);
-        ////    var viewResult = Assert.IsType<ViewResult>(actual);
-        ////    var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
-        ////    Assert.True(model.CanCreate);
-        ////}
+            employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
+            refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            bankAccountService.GetBankAccountsByEmployeeId(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            baseService.GetDataEntity<bool>(Arg.Any<CheckLimitReachedCriteria>()).Returns(true);
 
-        ////[Fact]
-        ////public void EmployeeBankAccounts_MaximumExistingAccount_ReturnViewAndCanNotCreate()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var resources = GetResources();
-        ////    var viewModel = new EmployeeBankAccountsViewModel
-        ////    {
-        ////        EmployeeId = 1,
-        ////        CompanyId = 1,
-        ////    };
-        ////    var employeeBankAcount = new EmployeeBankAccounts
-        ////    {
-        ////        EmployeeId = viewModel.EmployeeId,
-        ////        CompanyId = viewModel.CompanyId,
-        ////        BankAccounts = new List<BankAccount>
-        ////        {
-        ////            new BankAccount { BankType = 1, IsActive = true },
-        ////            new BankAccount { BankType = 1, IsActive = true },
-        ////            new BankAccount { BankType = 1, IsActive = true },
-        ////            new BankAccount { BankType = 2, IsActive = true },
-        ////            new BankAccount { BankType = 2, IsActive = true },
-        ////            new BankAccount { BankType = 2, IsActive = true },
-        ////        }
-        ////    };
+            // Test
+            var actual = controller.EmployeeBankAccounts(viewModel);
 
-        ////    bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId).Returns(employeeBankAcount);
-        ////    refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankAccountType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankAccountType));
-
-        ////    sessionService.HasPermissionOnFunction(FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-        ////    sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-        ////    bankAccountService.FilterBankAccounts(Arg.Any<IEnumerable<BankAccount>>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(employeeBankAcount.BankAccounts);
-
-        ////    var actual = controller.EmployeeBankAccounts(viewModel);
-        ////    var viewResult = Assert.IsType<ViewResult>(actual);
-        ////    var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
-        ////    Assert.False(model.CanCreate);
-        ////}
-
-        ////[Fact]
-        ////public void CreateBankAccount_ValidEmployeeId_ReturnView()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var resources = GetResources();
-        ////    var employeeId = 1;
-        ////    var employeeBankAcount = new EmployeeBankAccounts
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        CompanyId = 1,
-        ////        BankAccounts = new List<BankAccount>()
-        ////    };
-
-        ////    bankAccountService.GetBankAccountsByEmployeeId(employeeId).Returns(employeeBankAcount);
-        ////    refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankAccountType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankAccountType));
-
-        ////    var actual = controller.CreateBankAccount(employeeId);
-        ////    var viewResult = Assert.IsType<ViewResult>(actual);
-        ////    var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-        ////}
-
-        ////[Fact]
-        ////public void CreateBankAccount_ValidModel_ReturnJsonWithSuccess()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var employeeId = 1;
-        ////    var model = new CreateBankAccountViewModel
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        BankAccount = new BankAccount { EmployeeId = employeeId }
-        ////    };
-        ////    bankAccountService.CreateBankAccount(model.BankAccount).Returns(new CommandResult { Code = 0 });
-        ////    controller.Url = Substitute.For<IUrlHelper>();
-        ////    controller.Url.Action().ReturnsForAnyArgs("/EmployeeBankAccounts/BankAccount");
-
-        ////    var actual = controller.CreateBankAccount(model);
-
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////}
-
-        ////[Fact]
-        ////public void CreateBankAccount_InValidModel_ReturnJsonWithError()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var employeeId = 1;
-        ////    var model = new CreateBankAccountViewModel
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        BankAccount = new BankAccount { EmployeeId = employeeId }
-        ////    };
-
-        ////    controller.ModelState.AddModelError(nameof(model.BankAccount.AccountName), "Error");
-        ////    var actual = controller.CreateBankAccount(model);
-
-        ////    bankAccountService.DidNotReceive().CreateBankAccount(model.BankAccount);
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////}
-
-        ////[Fact]
-        ////public void EditBankAccount_ValidBankAccountId_ReturnJsonWithSuccess()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var resources = GetResources();
-        ////    var bankAccountId = 1;
-        ////    var employeeId = 1;
-        ////    var companyId = 1;
-        ////    var bankAccount = new BankAccount { Id = bankAccountId, EmployeeId = employeeId, IsActive = true, BankType = 1 };
-        ////    var employeeBankAcount = new EmployeeBankAccounts
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        CompanyId = companyId,
-        ////        BankAccounts = new List<BankAccount> { bankAccount }
-        ////    };
-
-        ////    bankAccountService.GetBankAccountById(bankAccountId).Returns(bankAccount);
-        ////    bankAccountService.GetBankAccountsByEmployeeId(bankAccount.EmployeeId).Returns(employeeBankAcount);
-        ////    refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
-        ////    refResourceService.FilterReferenceResources(resources, ReferenceResource.BankAccountType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankAccountType));
-
-        ////    var actual = controller.EditBankAccount(employeeId);
-        ////    var viewResult = Assert.IsType<ViewResult>(actual);
-        ////    var model = Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
-        ////}
-
-        ////[Fact]
-        ////public void EditBankAccount_ValidModel_ReturnJsonWithSuccess()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var employeeId = 1;
-        ////    var model = new EditBankAccountViewModel
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        BankAccount = new BankAccount { EmployeeId = employeeId }
-        ////    };
-        ////    bankAccountService.UpdateBankAccount(model.BankAccount).Returns(new CommandResult { Code = 0 });
-        ////    controller.Url = Substitute.For<IUrlHelper>();
-        ////    controller.Url.Action().ReturnsForAnyArgs("/EmployeeBankAccounts/BankAccount");
-
-        ////    var actual = controller.EditBankAccount(model);
-
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    Assert.True((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////}
-
-        ////[Fact]
-        ////public void EditBankAccount_InValidModel_ReturnJsonWithError()
-        ////{
-        ////    var controller = GetBankAccountController();
-        ////    var employeeId = 1;
-        ////    var model = new EditBankAccountViewModel
-        ////    {
-        ////        EmployeeId = employeeId,
-        ////        BankAccount = new BankAccount { EmployeeId = employeeId }
-        ////    };
-
-        ////    controller.ModelState.AddModelError(nameof(model.BankAccount.AccountName), "Error");
-        ////    var actual = controller.EditBankAccount(model);
-
-        ////    bankAccountService.DidNotReceive().UpdateBankAccount(model.BankAccount);
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////}
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
+            Assert.True(model.HaveHostPermission);
+            Assert.True(model.BankAccountsLimitReached);
+        }
 
         [Fact]
         public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
@@ -232,7 +65,7 @@
 
             refResourceService.GetReferenceResourcesByNames(refNames).Returns(new List<ReferenceResourceModel>());
 
-            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankTypes.ContraCoAccount, 1);
+            var actual = controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
 
             baseService.DidNotReceive().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
             refResourceService.Received().GetReferenceResourcesByNames(Arg.Any<string[]>());
@@ -246,26 +79,26 @@
 
             baseService.GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
 
-            var actual = controller.GetEmployeeBankAccounts((int)Core.Enumerations.BankTypes.Ebanking, 1);
+            var actual = controller.GetEmployeeBankAccounts((int)BankTypes.Ebanking, 1);
 
             baseService.Received().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
             refResourceService.DidNotReceive().GetReferenceResourcesByNames(Arg.Any<string[]>());
             Assert.IsType<JsonResult>(actual);
         }
 
-        private IEnumerable<ReferenceResourceModel> GetResources()
+        private static IEnumerable<ReferenceResourceModel> GetResources()
         {
             var resources = new List<ReferenceResourceModel>
                 {
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = (int) Core.Enumerations.BankTypes.Ebanking
+                        ResourceId = (int) BankTypes.Ebanking
                     },
                     new ReferenceResourceModel
                     {
                         RefName = ReferenceResource.BankType,
-                        ResourceId = (int) Core.Enumerations.BankTypes.DirectBanking
+                        ResourceId = (int) BankTypes.DirectBanking
                     },
                     new ReferenceResourceModel
                     {
