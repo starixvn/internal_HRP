@@ -36,9 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="App_Data\SPNames - Copy.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="App_Data\SPNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
