@@ -34,12 +34,10 @@
 
                 bankTypesWithAllOption.Insert(0, allOption);
 
-                var bankTypes = new SelectList(
+                return new SelectList(
                     bankTypesWithAllOption,
                     nameof(ReferenceResourceModel.ResourceId),
                     nameof(ReferenceResourceModel.Value));
-
-                return bankTypes;
             }
         }
 
@@ -48,5 +46,7 @@
         public bool? IsActive { get; set; }
 
         public bool HaveHostPermission { get; set; }
+
+        public bool BankAccountsLimitReached { get; set; }
     }
 }

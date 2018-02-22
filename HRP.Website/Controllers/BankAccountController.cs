@@ -113,6 +113,7 @@
             PrepareCreateBankAccountViewModel(viewModel);
             return View(viewModel);
         }
+
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public IActionResult EditBankAccount(int bankAccountId)
         {

@@ -39,6 +39,9 @@
 
                 var criteria = GetBaseCriteria();
                 criteria.EmployeeId = 0;
+                criteria.BankTypeId = null;
+                criteria.IsActive = null;
+
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 data.Add(TheoryDatum.Factory(GetBaseCriteria(), true));
