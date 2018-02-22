@@ -47,6 +47,8 @@
             viewModel.BankTypeResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType);
             viewModel.BankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+            viewModel.BankAccountsLimitReached =
+                baseService.GetDataEntity<bool>(new CheckLimitReachedCriteria { EmployeeId = employee.EmployeeId });
 
             return View(viewModel);
         }
