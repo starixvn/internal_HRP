@@ -1349,6 +1349,115 @@
 
         #endregion RefResource Item
 
+        #region Currency
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
+        public async Task<IActionResult> GetAllCurrency()
+        {
+            var currencies = await dataConfigurationService.GetAllCurrencyAsync();
+            var viewModel = new SimpleItemTableViewModel
+            {
+                Items = currencies,
+                Field = new Field
+                {
+                    FieldName = ViewLang.Currency,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCurrency,
+                    LinkUpdateItem = DataConfigurationActionLink.UpdateCurrency
+                },
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
+            };
+
+            return PartialView("_SimpleItemTable", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public IActionResult CreateCurrency()
+        {
+            var viewModel = new CreateSimpleItemViewModel
+            {
+                Field = new Field
+                {
+                    FieldName = ViewLang.Currency,
+                    LinkCreateItem = DataConfigurationActionLink.CreateCurrency
+                }
+            };
+
+            return PartialView("_CreateSimpleItem", viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateCurrency(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCurrencyAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.CreateCurrencyAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCurrency(int id)
+        {
+            var currency = await dataConfigurationService.GetCurrencyByIdAsync(id);
+
+            if (currency != null)
+            {
+                var viewModel = new UpdateSimpleItemViewModel
+                {
+                    Item = currency,
+                    Field = new Field
+                    {
+                        FieldName = ViewLang.Currency,
+                        LinkUpdateItem = DataConfigurationActionLink.UpdateCurrency
+                    }
+                };
+
+                return PartialView("_UpdateSimpleItem", viewModel);
+            }
+
+            return Content(Message.NotFoundError);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateCurrency(SimpleItem item)
+        {
+            var isExistedItem = await dataConfigurationService.IsExistedCurrencyAsync(item);
+
+            if (isExistedItem)
+            {
+                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = await dataConfigurationService.UpdateCurrencyAsync(item);
+
+                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        #endregion Currency
+
         #region Commons
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]

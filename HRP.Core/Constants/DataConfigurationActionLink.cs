@@ -55,5 +55,9 @@
         public const string CreateRefResource = DataConfiguration + "/CreateRefResourceItem";
         public const string UpdateRefResource = DataConfiguration + "/UpdateRefResourceItem";
         public const string GetAllRefResource = DataConfiguration + "/GetAllRefResourceItem";
+
+        public const string CreateCurrency = DataConfiguration + "/CreateCurrency";
+        public const string UpdateCurrency = DataConfiguration + "/UpdateCurrency";
+        public const string GetAllCurrency = DataConfiguration + "/GetAllCurrency";
     }
 }

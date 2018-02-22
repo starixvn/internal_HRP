@@ -90,6 +90,11 @@
     <Compile Include="Country\CreateCountryCriteriaTests.cs" />
     <Compile Include="Country\GetCountryByIdCriteriaTests.cs" />
     <Compile Include="Country\UpdateCountryCriteriaTests.cs" />
+    <Compile Include="Currency\CheckCurrencyExistsCriteriaTests.cs" />
+    <Compile Include="Currency\CreateCurrencyCriteriaTests.cs" />
+    <Compile Include="Currency\GetAllCurrencyCriteriaTests.cs" />
+    <Compile Include="Currency\GetCurrencyByIdCriteriaTests.cs" />
+    <Compile Include="Currency\UpdateCurrencyCriteriaTests.cs" />
     <Compile Include="Department\CheckDepartmentExistsCriteriaTests.cs" />
     <Compile Include="Department\CreateDepartmentCriteriaTests.cs" />
     <Compile Include="Department\GetDepartmentByIdCriteriaTests.cs" />

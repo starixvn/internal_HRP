@@ -277,6 +277,13 @@
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.DateCommencementChangeReasonOfCompany }
+            },
+            { (int)FieldType.Currency, new Field   {
+                    FieldId = (int)FieldType.Currency,
+                    FieldName = ViewLang.Currency,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllCurrency,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateCurrency,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateCurrency}
             }
         };
 

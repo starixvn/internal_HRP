@@ -9,6 +9,7 @@
     using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Country;
+    using HRP.Criteria.Currency;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobCategory;
@@ -17,6 +18,7 @@
     using HRP.Criteria.RefResource;
     using HRP.Criteria.Section;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -2047,6 +2049,185 @@
 
         #endregion RefResource Item
 
+        #region Currency
+
+        [Fact]
+        public async Task GetAllCurrencyAsync_BaseServiceGetCurrencyList_ReturnSimpleItemList()
+        {
+            // Arrange
+            var currencies = new List<Currency> { MockCurrency() };
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Currency>(Arg.Any<GetAllCurrencyCriteria>()).Returns(currencies);
+
+            // Act
+            var actual = (await dataConfigurationService.GetAllCurrencyAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(currencies.Count, actual.Count);
+            Assert.Equal(currencies[0].CurrencyId, actual[0].ItemId);
+            Assert.Equal(currencies[0].CurrencyCode, actual[0].ItemName);
+            Assert.Equal(currencies[0].CurrencyName, actual[0].Description);
+            Assert.Equal(currencies[0].IsActive, actual[0].IsActive);
+        }
+
+        [Fact]
+        public async Task GetAllCurrencyAsync_BaseServiceGetEmptyCurrencyList_ReturnEmptySimpleItemList()
+        {
+            // Arrange
+            var currencies = new List<Currency>();
+
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataAsync<Currency>(Arg.Any<GetAllCurrencyCriteria>()).Returns(currencies);
+            // Act
+            var actual = (await dataConfigurationService.GetAllCurrencyAsync()) as List<SimpleItem>;
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+            Assert.Equal(currencies.Count, actual.Count);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsExistedCurrencyAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CheckCurrencyExistsCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCurrencyExistsCriteria>(x => criteria = x)).Returns(isExisted);
+
+            // Act
+            var actual = await dataConfigurationService.IsExistedCurrencyAsync(item);
+
+            // Assert
+            Assert.Equal(isExisted, actual);
+            Assert.Equal(item.ItemId, criteria.CurrencyId);
+            Assert.Equal(item.ItemName, criteria.CurrencyCode);
+        }
+
+        [Fact]
+        public async Task CreateCurrencyAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new CreateCurrencyCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.CreateCurrencyAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.CurrencyCode), actual.Message);
+            Assert.Equal(item.ItemName, criteria.CurrencyCode);
+            Assert.Equal(item.Description, criteria.CurrencyName);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
+        [Fact]
+        public async Task CreateCurrencyAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new CreateCurrencyCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.CreateCurrencyAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        [Fact]
+        public async Task GetCurrencyByIdAsync_BaseServiceGetCurrencyInstance_ReturnSimpleItemInstance()
+        {
+            // Arrange
+            var id = 12;
+            var currency = MockCurrency();
+            var criteria = new GetCurrencyByIdCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.GetDataEntityAsync<Currency>(Arg.Do<GetCurrencyByIdCriteria>(x => criteria = x)).Returns(currency);
+
+            // Act
+            var actual = await dataConfigurationService.GetCurrencyByIdAsync(id);
+
+            // Assert
+            Assert.IsType<SimpleItem>(actual);
+            Assert.Equal(currency.CurrencyId, actual.ItemId);
+            Assert.Equal(currency.CurrencyCode, actual.ItemName);
+            Assert.Equal(currency.CurrencyName, actual.Description);
+            Assert.Equal(currency.IsActive, actual.IsActive);
+            Assert.Equal(id, criteria.CurrencyId);
+        }
+
+        [Fact]
+        public async Task GetCurrencyByIdAsync_BaseServiceGetNullCurrency_ReturnNull()
+        {
+            // Arrange
+            Currency currency = null;
+            var dataConfigurationService = GetDataConfigurationService();
+
+            baseService.GetDataEntityAsync<Currency>(Arg.Any<GetCurrencyByIdCriteria>()).Returns(currency);
+
+            // Act
+            var actual = await dataConfigurationService.GetCurrencyByIdAsync(11);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task UpdateCurrencyAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        {
+            // Arrange
+            var item = MockSimpleItem();
+            var criteria = new UpdateCurrencyCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCurrencyAsync(item);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(item.ItemId, criteria.CurrencyId);
+            Assert.Equal(item.ItemName, criteria.CurrencyCode);
+            Assert.Equal(item.Description, criteria.CurrencyName);
+            Assert.Equal(item.IsActive, criteria.IsActive);
+            Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
+        }
+
+        [Fact]
+        public async Task UpdateCurrencyAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
+        {
+            // Arrange
+            var criteria = new UpdateCurrencyCriteria();
+            var dataConfigurationService = GetDataConfigurationService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult());
+
+            // Act
+            var actual = await dataConfigurationService.UpdateCurrencyAsync(new SimpleItem());
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.False(criteria.IsValid());
+        }
+
+        #endregion Currency
+
         #region Common
 
         [Fact]
@@ -2436,6 +2617,17 @@
                 RefName = "ahihi",
                 Value = "val",
                 Description = "desne",
+                IsActive = true
+            };
+        }
+
+        private Currency MockCurrency()
+        {
+            return new Currency
+            {
+                CurrencyId = 12,
+                CurrencyCode = "usdt",
+                CurrencyName = "descC",
                 IsActive = true
             };
         }

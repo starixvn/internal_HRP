@@ -9,6 +9,7 @@
     using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
     using HRP.Criteria.Country;
+    using HRP.Criteria.Currency;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobCategory;
@@ -17,6 +18,7 @@
     using HRP.Criteria.RefResource;
     using HRP.Criteria.Section;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
     using HRP.Resources;
     using HRP.Services.Interfaces;
@@ -892,7 +894,7 @@
         #region RefResource Item
 
         /// <summary>
-        /// Company Local, Currency
+        /// Company Local
         /// </summary>
 
         public async Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName)
@@ -995,6 +997,99 @@
         }
 
         #endregion RefResource Item
+
+        #region Currency
+
+        public async Task<IEnumerable<SimpleItem>> GetAllCurrencyAsync()
+        {
+            var currencies = await baseService.GetDataAsync<Currency>(new GetAllCurrencyCriteria()).ConfigureAwait(false);
+
+            if (currencies.Any())
+            {
+                var result = currencies.Select(c => new SimpleItem
+                {
+                    ItemId = c.CurrencyId,
+                    ItemName = c.CurrencyCode,
+                    Description = c.CurrencyName,
+                    IsActive = c.IsActive
+                }).ToList();
+
+                return result;
+            }
+
+            return new List<SimpleItem>();
+        }
+
+        public async Task<bool> IsExistedCurrencyAsync(SimpleItem item)
+        {
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCurrencyExistsCriteria { CurrencyId = item.ItemId, CurrencyCode = item.ItemName }).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
+        public async Task<CommandResult> CreateCurrencyAsync(SimpleItem item)
+        {
+            var criteria = new CreateCurrencyCriteria
+            {
+                CurrencyCode = item.ItemName,
+                CurrencyName = item.Description,
+                IsActive = item.IsActive,
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.CurrencyCode);
+            }
+
+            return commandResult;
+        }
+
+        public async Task<SimpleItem> GetCurrencyByIdAsync(int id)
+        {
+            var criteria = new GetCurrencyByIdCriteria
+            {
+                CurrencyId = id
+            };
+
+            var currency = await baseService.GetDataEntityAsync<Currency>(criteria).ConfigureAwait(false);
+
+            if (currency != null)
+            {
+                return new SimpleItem
+                {
+                    ItemId = currency.CurrencyId,
+                    ItemName = currency.CurrencyCode,
+                    Description = currency.CurrencyName,
+                    IsActive = currency.IsActive
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<CommandResult> UpdateCurrencyAsync(SimpleItem item)
+        {
+            var criteria = new UpdateCurrencyCriteria
+            {
+                CurrencyId = item.ItemId,
+                CurrencyCode = item.ItemName,
+                CurrencyName = item.Description,
+                IsActive = item.IsActive,
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult.Message = Message.ItemUpdatedSuccessful;
+            }
+
+            return commandResult;
+        }
+
+        #endregion Currency
 
         #region Common
 

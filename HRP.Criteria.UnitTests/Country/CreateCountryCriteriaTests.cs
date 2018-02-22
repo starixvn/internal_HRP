@@ -43,13 +43,13 @@
         [InlineData(0, "asdasd")]
         [InlineData(1, " ")]
         [InlineData(0, " ")]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string name)
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int id, string code)
         {
             // Arrange
             var criteria = new CreateCountryCriteria
             {
                 CreatedBy = id,
-                Name = name
+                Code = code
             };
 
             // Act

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
@@ -1786,6 +1787,189 @@
         }
 
         #endregion Office
+
+        #region RefResource Item
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task GetAllRefResourceItem_ServiceGetSimpleItemList_ReturnPartialViewWithSimpleItemTableViewModel(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
+            var items = new List<SimpleItem> { MockSimpleItem() };
+            var controller = GetDataConfigurationController();
+            sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host).Returns(true);
+            dataConfigurationService.GetAllRefResourceItemAsync(Arg.Do<string>(x => refName = x)).Returns(items);
+
+            // Act
+            var actual = await controller.GetAllRefResourceItem(fieldId);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<SimpleItemTableViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_SimpleItemTable", viewResult.ViewName);
+            Assert.Equal(items, viewModel.Items);
+            Assert.Equal(field, viewModel.Field);
+            Assert.True(viewModel.IsHost);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public void CreateRefResourceItem_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var controller = GetDataConfigurationController();
+
+            // Act
+            var actual = controller.CreateRefResourceItem(fieldId);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<CreateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("_CreateSimpleItem", viewResult.ViewName);
+            Assert.Equal(field, viewModel.Field);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task CreateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.CreateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task CreateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(false);
+            dataConfigurationService.CreateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task UpdateRefResourceItem_ServiceGetRefResourceItem_ReturnPartialViewWithUpdateSimpleItemViewModel(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetRefResourceByNameAndIdAsync(Arg.Do<string>(x => refName = x), Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateRefResourceItem(fieldId, 11);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.Equal("_UpdateSimpleItem", viewResult.ViewName);
+            var viewModel = Assert.IsAssignableFrom<UpdateSimpleItemViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(item, viewModel.Item);
+            Assert.Equal(field, viewModel.Field);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Fact]
+        public async Task UpdateRefResourceItem_ServiceGetNullRefResourceItem_ReturnContentResultWithMessageNotFound()
+        {
+            // Arrange
+            SimpleItem item = null;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.GetRefResourceByNameAndIdAsync(Arg.Any<string>(), Arg.Any<int>()).Returns(item);
+
+            // Act
+            var actual = await controller.UpdateRefResourceItem(30, 11);
+
+            // Assert
+            var viewResult = Assert.IsType<ContentResult>(actual);
+            Assert.Equal(Message.NotFoundError, viewResult.Content);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task UpdateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Any<SimpleItem>()).Returns(true);
+
+            // Act
+            var actual = await controller.UpdateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(36)]
+        public async Task UpdateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var commandResult = MockSuccessfulCommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(false);
+            dataConfigurationService.UpdateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, returnValue["message"]);
+        }
+
+        #endregion RefResource Item
 
         #region Commons
 
