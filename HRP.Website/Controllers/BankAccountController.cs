@@ -172,11 +172,9 @@
                 var refResources = refResourceService.GetReferenceResourcesByNames(new[] { ReferenceResource.ContraCoAccount });
                 return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));
             }
-            else
-            {
-                var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
-                return Json(result.Where(x => x.IsActive).Select(x => new { id = x.BankAccountId, text = x.AccountName }));
-            }
+
+            var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
+            return Json(result.Where(x => x.IsActive).Select(x => new { id = x.BankAccountId, text = x.AccountName }));
         }
 
         private UpdateBankAccountCriteria PrepareUpdateBankAccountCriteria(EditBankAccountViewModel bankAccount)
@@ -220,7 +218,7 @@
             return criteria;
         }
 
-        private void PrepareCreateBankAccountViewModel(CreateBankAccountViewModel viewModel, int selectedBankType = 0)
+        private void PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 0)
         {
             Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
 

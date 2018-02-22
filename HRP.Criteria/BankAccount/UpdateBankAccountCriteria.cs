@@ -1,14 +1,17 @@
 ﻿namespace HRP.Criteria.BankAccount
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateBankAccountCriteria : BankAccountBaseCriteria, ICriteria
+    public class UpdateBankAccountCriteria : BankAccountBaseCriteria
     {
         public override string GetSettingKey() => "BankAccount_Update";
 
         public override bool IsValid()
         {
-            return GetIsValidBase();
+            if (Id == 0)
+            {
+                return false;
+            }
+
+            return base.IsValid();
         }
     }
 }

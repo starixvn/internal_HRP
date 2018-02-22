@@ -26,7 +26,7 @@
 
         public bool IsActive { get; set; }
 
-        public bool GetIsValidBase()
+        public override bool IsValid()
         {
             if (string.IsNullOrEmpty(BankName))
             {
