@@ -260,7 +260,7 @@
                  ReferenceResource.Nationality,
                  ReferenceResource.MaritalStatus,
                  ReferenceResource.NoOfChildren);
-            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames }).ConfigureAwait(false);
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames, IsActive = true }).ConfigureAwait(false);
             var listGender = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
             var listNational = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
             var listMaritalStatus = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));

@@ -77,6 +77,9 @@
         <script src="~/assets/js/configuration/data-configuration.js"></script>
     }
 </environment>
+
 <environment exclude="Development">
-    <script src="~/assets/bundles/configuration/js/data-configuration.min.js"></script>
+    @section Scripts {
+        <script src="~/assets/bundles/configuration/js/data-configuration.min.js"></script>
+    }
 </environment>
