@@ -299,7 +299,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            viewModel.CanCreateBankAccount = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+            viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
             return View(viewModel);
         }
 

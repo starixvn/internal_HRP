@@ -4,25 +4,21 @@
 
 @if (Model.HaveHostPermission)
 {
-    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal fade modal-bank-account-form" tabindex="-1" role="dialog" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content -has-title">
-                <form class="form-information bank-account-form"
-                      asp-action="CreateBankAccountInPayroll"
-                      asp-controller="BankAccount"
-                      method="post"
-                      data-ajax="true"
-                      data-ajax-method="post"
-                      data-ajax-begin="bankAccountForm.onSaveBegin"
-                      data-ajax-complete="bankAccountForm.onSaveComplete"
-                      data-ajax-success="bankAccountForm.onSaveSuccess"
-                      data-ajax-failure="bankAccountForm.onAjaxFailure">
+
+                <form class="form-information block bank-account-form" asp-action="CreateBankAccountInPayroll" asp-controller="BankAccount" method="post">
+
                     <div class="modal-header">
                         <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
                         <h4 class="modal-title">@ViewLang.NewBankingAccount</h4>
                     </div>
+
                     <div class="modal-body">
                         <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
+
+                        <div asp-validation-summary="ModelOnly"></div>
 
                         <div class="list-message-error hidden">
                             <span asp-validation-for="BankTypeId" class="message"></span>
@@ -36,14 +32,18 @@
                             <span asp-validation-for="BankSwiftCode" class="message"></span>
                         </div>
 
-                        <div class="-has-icon msg-success hidden">
-                            <span>@Message.CreateBankAccountSuccessedForModal</span>
-                            <span class="count-down-remaining">5</span>
-                            <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-                        </div>
+                        @if (Model.IsSuccessful)
+                        {
+                            <input type="hidden" asp-for="IsSuccessful" id="is-successful" />
+                            <div class="-has-icon msg-success hidden">
+                                <span>@Message.CreateBankAccountSuccessedForModal</span>
+                                <span class="count-down-remaining">5</span>
+                                <span>@Message.CreateBankAccountSuccessedDimissTime</span>
+                            </div>
+                        }
 
-                        <div class="-has-icon msg-error hidden">
-                        </div>
+                        @*<div class="-has-icon msg-error hidden">
+                            </div>*@
 
                         <div class="layout-two-col">
                             <div>
@@ -106,7 +106,7 @@
                             </label>
                         </div>
                         <div class="list-button">
-                            <button class="button -primary" data-loading-text="@ViewLang.Saving ..." type="submit">@ViewLang.Save</button>
+                            <button class="button -primary" type="submit" data-ismodal="true">@ViewLang.Save</button>
                             <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
                         </div>
                     </div>

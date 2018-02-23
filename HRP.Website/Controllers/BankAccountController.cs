@@ -48,7 +48,7 @@
             viewModel.BankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
             viewModel.BankAccountsLimitReached =
-                baseService.GetDataEntity<bool>(new CheckLimitReachedCriteria { EmployeeId = employee.EmployeeId });
+                baseService.GetDataEntity<bool>(new CheckBankAccountLimitReachedCriteria { EmployeeId = employee.EmployeeId });
 
             return View(viewModel);
         }
@@ -81,16 +81,18 @@
                 var criteria = PrepareCreateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                return Json(new
+                if (result.IsSuccessful)
                 {
-                    isSuccessful = result.IsSuccessful,
-                    message = result.Message,
-                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
-                });
+                    viewModel.IsSuccessful = true;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
-            return Json(new { isSuccessful = false, errors });
+            PrepareCreateBankAccountViewModel(viewModel);
+            return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
         [HttpPost]

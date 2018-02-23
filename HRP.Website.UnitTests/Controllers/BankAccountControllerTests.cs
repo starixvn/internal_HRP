@@ -45,7 +45,7 @@
             refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeId(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-            baseService.GetDataEntity<bool>(Arg.Any<CheckLimitReachedCriteria>()).Returns(true);
+            baseService.GetDataEntity<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
 
             // Test
             var actual = controller.EmployeeBankAccounts(viewModel);

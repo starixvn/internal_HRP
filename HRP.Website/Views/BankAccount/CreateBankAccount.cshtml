@@ -48,10 +48,10 @@
         <span asp-validation-for="AccountTypeId" class="message"></span>
         <span asp-validation-for="BankSwiftCode" class="message"></span>
     </div>
-    
+
     @if (Model.IsSuccessful)
     {
-        <input type="hidden" asp-for="IsSuccessful" id="is-successful"/>
+        <input type="hidden" asp-for="IsSuccessful" id="is-successful" data-ismodal="false" />
         <div class="-has-icon msg-success">
             <span>@Message.CreateBankAccountSuccessedForPage</span>
             <span class="count-down-remaining">5</span>
@@ -61,8 +61,8 @@
 
     <div class="-has-icon msg-error hidden">
     </div>
-    
-    <input type="hidden" asp-for="EmployeeId"/>
+
+    <input type="hidden" asp-for="EmployeeId" />
 
     <div class="layout-two-col">
         <div>

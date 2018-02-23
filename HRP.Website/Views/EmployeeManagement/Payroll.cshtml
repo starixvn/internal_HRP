@@ -58,7 +58,7 @@
     <input type="hidden" asp-for="BasicSalary.OldCurrencyId" />
     <input type="hidden" asp-for="Allowance.EmployeeId" />
     <input type="hidden" asp-for="CanUpdate" />
-    <input type="hidden" asp-for="CanCreateBankAccount" />
+    <input type="hidden" asp-for="HaveHostPermissionOnBankAccounts" />
     <input type="hidden" asp-for="BasicSalary.InitFirstTime" />
 
     <div class="list-message-error hidden" id="validation-summary">
@@ -140,7 +140,7 @@
                 <select class="control select2-ajax basic-salary-ebanking bank-account-select" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.EbankingAccountId">@Model.BasicSalary.EbankingAccountName</option>
                 </select>
-                @if (Model.CanCreateBankAccount)
+                @if (Model.HaveHostPermissionOnBankAccounts)
                 {
                     <span class="add-account"></span>
                 }
@@ -166,7 +166,7 @@
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.DirectBanking1AccountId">@Model.BasicSalary.DirectBanking1AccountName</option>
                 </select>
-                @if (Model.CanCreateBankAccount)
+                @if (Model.HaveHostPermissionOnBankAccounts)
                 {
                     <span class="add-account"></span>
                 }
@@ -192,7 +192,7 @@
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.DirectBanking2AccountId">@Model.BasicSalary.DirectBanking2AccountName</option>
                 </select>
-                @if (Model.CanCreateBankAccount)
+                @if (Model.HaveHostPermissionOnBankAccounts)
                 {
                     <span class="add-account"></span>
                 }
@@ -257,7 +257,7 @@
                 <select class="control select2-ajax bank-account-select allowance-directbanking1" asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                 </select>
-                @if (Model.CanCreateBankAccount)
+                @if (Model.HaveHostPermissionOnBankAccounts)
                 {
                     <span class="add-account"></span>
                 }
@@ -283,7 +283,7 @@
                 <select class="control select2-ajax bank-account-select allowance-directbanking2" asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>
                 </select>
-                @if (Model.CanCreateBankAccount)
+                @if (Model.HaveHostPermissionOnBankAccounts)
                 {
                     <span class="add-account"></span>
                 }

@@ -4,13 +4,13 @@
     using Criteria.BankAccount;
     using Xunit;
 
-    public class CheckLimitReachedCriteriaTest
+    public class CheckBankAccountLimitReachedCriteriaTest
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new CheckLimitReachedCriteria
+            var criteria = new CheckBankAccountLimitReachedCriteria
             {
                 EmployeeId = 1
             };
@@ -26,9 +26,9 @@
 
         [Theory]
         [MemberData(nameof(IsValidData))]
-        public void IsValid_WhenCalled_ReturnExpected(CheckLimitReachedCriteria checkLimitReachedCriteria, bool expectedResult)
+        public void IsValid_WhenCalled_ReturnExpected(CheckBankAccountLimitReachedCriteria checkBankAccountLimitReachedCriteria, bool expectedResult)
         {
-            Assert.True(checkLimitReachedCriteria.IsValid() == expectedResult);
+            Assert.True(checkBankAccountLimitReachedCriteria.IsValid() == expectedResult);
         }
 
         public static IEnumerable<object[]> IsValidData
@@ -47,9 +47,9 @@
             }
         }
 
-        private static CheckLimitReachedCriteria GetBaseCriteria()
+        private static CheckBankAccountLimitReachedCriteria GetBaseCriteria()
         {
-            return new CheckLimitReachedCriteria
+            return new CheckBankAccountLimitReachedCriteria
             {
                 EmployeeId = 1
             };

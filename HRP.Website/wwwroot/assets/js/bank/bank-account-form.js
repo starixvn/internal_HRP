@@ -1,19 +1,71 @@
 var bankAccountForm = {
     init: function () {
+        bankAccountForm.handleFormSubmittedInModal();
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
     },
 
-    handleFormSuccessed: function() {
+    handleFormSubmittedInModal: function () {
+
+        $("#dynamic-modals").on("hidden.bs.modal",
+            ".modal",
+            function () {
+                $(this).remove();
+                $(".modal-backdrop").remove();
+            });
+
+        var isModal = $(".bank-account-form :submit").data("ismodal") === true;
+        if (isModal) {
+            $(".modal-bank-account-form").on("submit", "form",
+                function (e) {
+                    e.preventDefault();
+
+                    $.validator.unobtrusive.parse($(this));
+                    $(this).validate();
+
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        method: $(this).attr("method"),
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            $(".modal-bank-account-form").modal("hide");
+                            $("#dynamic-modals").html(result);
+
+                            $("#dynamic-modals select").select2({
+                                width: "100%",
+                                minimumResultsForSearch: Infinity
+                            });
+
+                            bankAccountForm.init();
+
+                            var form = $("#dynamic-modals form")
+                                .removeData("validator") /* added by the raw jquery.validate plugin */
+                                .removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/
+
+                            $.validator.unobtrusive.parse(form);
+
+                            $(".modal-bank-account-form").modal();
+                        }
+                    });
+                });
+        }
+    },
+
+    handleFormSuccessed: function () {
         var isSuccessful = $("#is-successful").val();
+        var isModal = $(".bank-account-form :submit").data("ismodal") === true;
         if (isSuccessful) {
             bankAccountForm.disableForm();
 
             setInterval(bankAccountForm.countdown, 1000);
 
             setTimeout(function () {
-                window.location.href = $("#index-link").prop("href");
+                if (isModal) {
+                    $(".bank-account-form").closest(".modal").modal("hide");
+                } else {
+                    window.location.href = $("#index-link").prop("href");
+                }
             }, bankAccountForm.waitTime);
         }
     },
@@ -35,15 +87,6 @@ var bankAccountForm = {
     waitTime: 5000,
 
     countTimeInSeconds: 5,
-
-    callbank: function (mutationsList) {
-        // Callback function to execute when mutations are observed
-        mutationsList.forEach(function (object) {
-            if (object.type === "childList" || object.type === "attributes") {
-                bankAccountForm.checkFormError();
-            };
-        });
-    },
 
     mutationObserve: function () {
         var targetNode = $(".bank-account-form")[0];
@@ -75,14 +118,6 @@ var bankAccountForm = {
         }
     },
 
-    onSaveBegin: function () {
-        $(".bank-account-form").find(":submit").button("loading");
-    },
-
-    onSaveComplete: function () {
-        $(".bank-account-form").find(":submit").button("reset");
-    },
-
     onSaveSuccess: function (response, status) {
         if (response.isSuccessful) {
             $(".bank-account-form .msg-error").text("").addClass("hidden");
@@ -94,9 +129,9 @@ var bankAccountForm = {
 
                 setInterval(bankAccountForm.countdown, 1000);
 
-                setTimeout(function() {
-                        $(".bank-account-form").closest(".modal").modal("hide");
-                    },
+                setTimeout(function () {
+                    $(".bank-account-form").closest(".modal").modal("hide");
+                },
                     bankAccountForm.waitTime);
             } else {
                 //// Reload page
@@ -122,10 +157,6 @@ var bankAccountForm = {
                 ////}, bankAccountForm.waitTime);
             }
         }
-    },
-
-    onAjaxFailure: function () {
-
     },
 
     countdown: function () {

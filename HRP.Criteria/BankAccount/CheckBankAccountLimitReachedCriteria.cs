@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class CheckLimitReachedCriteria : CriteriaBase
+    public class CheckBankAccountLimitReachedCriteria : CriteriaBase
     {
         public int EmployeeId { get; set; }
 

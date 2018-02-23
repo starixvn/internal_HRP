@@ -237,7 +237,7 @@
         $('.bank-type-select').on('change', function (e) {
             $(this).siblings('.bank-account-select').val('').trigger('change.select2');
             validatedInvalidRelatedElements(e.target);
-            if (this.value === '2' || this.value === '1') {
+            if (this.value === "2" || this.value === "1") {
                 $(this).siblings('.add-account').removeClass('disabled');
             } else {
                 $(this).siblings('.add-account').addClass('disabled');

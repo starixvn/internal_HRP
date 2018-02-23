@@ -35,6 +35,6 @@
 
         public bool CanUpdate { get; set; }
 
-        public bool CanCreateBankAccount { get; set; }
+        public bool HaveHostPermissionOnBankAccounts { get; set; }
     }
 }
