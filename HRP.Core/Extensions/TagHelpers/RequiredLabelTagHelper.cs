@@ -1,6 +1,7 @@
 ﻿namespace HRP.Core.Extensions.TagHelpers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.TagHelpers;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,6 +10,7 @@
     // Source code for label tag helper: Mvc/src/Microsoft.AspNetCore.Mvc.TagHelpers/LabelTagHelper.cs
     // https://github.com/aspnet/Mvc/blob/dev/src/Microsoft.AspNetCore.Mvc.TagHelpers/LabelTagHelper.cs
 
+    [ExcludeFromCodeCoverage]
     [HtmlTargetElement("requiredlabel", Attributes = ForAttributeName)]
     public class RequiredLabelTagHelper : TagHelper
     {
