@@ -229,6 +229,9 @@
 
             viewModel.NickName = employee.NickName;
             viewModel.BankTypeId = selectedBankType;
+
+            // TODO: disable over limit bank types (or change spec)
+
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
