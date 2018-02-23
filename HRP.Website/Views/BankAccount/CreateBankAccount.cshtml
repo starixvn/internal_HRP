@@ -68,20 +68,20 @@
         <div>
             <requiredlabel asp-for="BankTypeId"></requiredlabel>
             <div class="group-control">
-                <select class="control check-validate" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
+                <select class="control" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
             </div>
         </div>
         <div>
             <requiredlabel asp-for="AccountName"></requiredlabel>
             <div class="group-control">
-                <input class="control revalidate" asp-for="AccountName" />
+                <input class="control" asp-for="AccountName" />
             </div>
         </div>
     </div>
 
     <requiredlabel asp-for="AccountNumber"></requiredlabel>
     <div class="group-control">
-        <input class="control revalidate" asp-for="AccountNumber" />
+        <input class="control" asp-for="AccountNumber" />
     </div>
 
     <requiredlabel asp-for="BeneficiaryName"></requiredlabel>

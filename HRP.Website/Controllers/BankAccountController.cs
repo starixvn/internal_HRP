@@ -234,6 +234,9 @@
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+
+            // Default bank type: e-Banking
+            viewModel.BankTypeId = 1;
         }
     }
 }
