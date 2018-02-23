@@ -63,7 +63,7 @@
     }     
 }
 
-.list-message-error {
+%list-errors {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -71,9 +71,9 @@
     padding: 8px 10px;
     margin: 0 0 12px 0;
     background-color: $msg-error-bg;
-    color: $msg-error; 
-    
-    .message {
+    color: $msg-error;
+
+    li, .message {
         line-height: 20px;
 
         &:before {
@@ -84,12 +84,20 @@
             content: "• ";
             color: $msg-error;
             font-size: 24px;
-        } 
+        }
     }
+}
+
+.validation-summary-errors {
+    @extend %list-errors;
+}
+
+.list-message-error {
+    @extend %list-errors;
 
     .field-validation-valid {
         display: none;
-    } 
+    }
 }
 
 .note {
