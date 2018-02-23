@@ -453,14 +453,14 @@
                 $element.addClass('input-validation-error').removeClass(validClass);
 
                 if ($element.hasClass('select2') || $element.hasClass('select2-ajax'))
-                    $element.next().find('.select2-selection').addClass('control input-validation-error');
+                    $element.next().find('.select2-selection').addClass('select2-has-error');
             },
             unhighlight: function (element, errorClass, validClass) {
                 var $element = $(element);
                 $element.removeClass('input-validation-error').addClass(validClass);
 
                 if ($element.hasClass('select2') || $element.hasClass('select2-ajax'))
-                    $element.next().find('.select2-selection').removeClass('input-validation-error control');
+                    $element.next().find('.select2-selection').removeClass('select2-has-error');
             },
             rules: {
                 'BasicSalary.ReasonId': {
@@ -475,6 +475,18 @@
                 }
             }
         });
+        var settings = validator.settings;
+        //settings._errorClass = settings.errorClass;
+        //Object.defineProperty(settings, 'errorClass', {
+        //    get: function () {
+        //        return settings._errorClass;
+        //    },
+
+        //    set: function (value) {
+        //        debugger; // sets breakpoint
+        //        settings._errorClass = value;
+        //    }
+        //});
     }
 
     return {

@@ -51,15 +51,15 @@
 <form class="payroll form-information" method="post" id="payroll-form" asp-action="EditPayroll"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="employeePayroll.onSaveBegin" data-ajax-failure="commonFunctions.handleAjaxError"
       data-ajax-success="employeePayroll.onSaveSuccess" data-ajax-complete="employeePayroll.onSaveComplete">
-    <input type="hidden" asp-for="EmployeeId" />
-    <input type="hidden" asp-for="CompanyId" />
-    <input type="hidden" asp-for="BasicSalary.EmployeeId" />
-    <input type="hidden" asp-for="BasicSalary.OldSalary" />
-    <input type="hidden" asp-for="BasicSalary.OldCurrencyId" />
-    <input type="hidden" asp-for="Allowance.EmployeeId" />
-    <input type="hidden" asp-for="CanUpdate" />
-    <input type="hidden" asp-for="HaveHostPermissionOnBankAccounts" />
-    <input type="hidden" asp-for="BasicSalary.InitFirstTime" />
+    <input type="hidden" data-val="false" asp-for="EmployeeId" />
+    <input type="hidden" data-val="false" asp-for="CompanyId" />
+    <input type="hidden" data-val="false" asp-for="BasicSalary.EmployeeId" />
+    <input type="hidden" data-val="false" asp-for="BasicSalary.OldSalary" />
+    <input type="hidden" data-val="false" asp-for="BasicSalary.OldCurrencyId" />
+    <input type="hidden" data-val="false" asp-for="Allowance.EmployeeId" />
+    <input type="hidden" data-val="false" asp-for="CanUpdate" />
+    <input type="hidden" data-val="false" asp-for="HaveHostPermissionOnBankAccounts" />
+    <input type="hidden" data-val="false" asp-for="BasicSalary.InitFirstTime" />
 
     <div class="list-message-error hidden" id="validation-summary">
     </div>
@@ -100,11 +100,11 @@
             <div class="padding-top-24">
                 <span>@ViewLang.StandardWorkingDays</span>
                 <label class="days">
-                    <input type="radio" value="22" asp-for="BasicSalary.WorkingDays">
+                    <input type="radio" data-val="false" value="22" asp-for="BasicSalary.WorkingDays">
                     <span>22</span>
                 </label>
                 <label class="days">
-                    <input type="radio" value="26" asp-for="BasicSalary.WorkingDays">
+                    <input type="radio" data-val="false" value="26" asp-for="BasicSalary.WorkingDays">
                     <span>26</span>
                 </label>
             </div>
@@ -134,7 +134,7 @@
             <div></div>
             <div class="payment-transaction">
                 <label class="bank-type">e-Banking</label>
-                <select class="control bank-type-select hidden">
+                <select class="control bank-type-select hidden" name="ebanking">
                     <option value="1" selected></option>
                 </select>
                 <select class="control select2-ajax basic-salary-ebanking bank-account-select" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">

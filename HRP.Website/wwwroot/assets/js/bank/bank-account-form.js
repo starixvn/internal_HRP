@@ -72,17 +72,18 @@ var bankAccountForm = {
         }
     },
 
-    config: { attributes: true, childList: true },
+    config: { attributes: true, childList: true, attributeFilter: ['class'] },
 
     waitTime: 5000,
 
     countTimeInSeconds: 5,
 
     mutationObserve: function() {
-        var targetNode = $(".bank-account-form")[0];
+        var targetNode = $(".bank-account-form .list-message-error")[0];
 
         // Callback function to execute when mutations are observed
         var callback = function(mutationsList) {
+            debugger;
             mutationsList.forEach(function(object) {
                 if (object.type === "childList" || object.type === "attributes") {
                     bankAccountForm.checkFormError();
@@ -127,5 +128,5 @@ var bankAccountForm = {
 };
 
 $(document).ready(function () {
-    bankAccountForm.init();
+    //bankAccountForm.init();
 });
