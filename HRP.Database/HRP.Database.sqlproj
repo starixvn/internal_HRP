@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{6a36a463-95a0-47ee-aa75-d1db3cfaf388}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -127,7 +127,6 @@
     <Build Include="dbo\Stored Procedures\Section_Create.sql" />
     <Build Include="dbo\Stored Procedures\Section_CheckExists.sql" />
     <Build Include="dbo\Stored Procedures\RefResource_GetByNames.sql" />
-    <Build Include="dbo\Stored Procedures\Offive_GetByCityId.sql" />
     <Build Include="dbo\Stored Procedures\Office_GetById.sql" />
     <Build Include="dbo\Stored Procedures\Office_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Office_Create.sql" />
@@ -203,8 +202,26 @@
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountsByEmpId.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountById.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_CreateBankAccount.sql" />
-    <Build Include="dbo\Stored Procedures\BankAccount_CheckNumberExisted.sql" />
-    <Build Include="dbo\Stored Procedures\BankAccount_CheckNameExisted.sql" />
     <Build Include="dbo\Stored Procedures\Office_Update.sql" />
+    <Build Include="dbo\Stored Procedures\RefResource_Update.sql" />
+    <Build Include="dbo\Stored Procedures\RefResource_GetByNameAndId.sql" />
+    <Build Include="dbo\Stored Procedures\RefResource_Create.sql" />
+    <Build Include="dbo\Stored Procedures\RefResource_CheckExists.sql" />
+    <Build Include="dbo\Stored Procedures\Office_GetByCityId.sql" />
+    <Build Include="dbo\Stored Procedures\JobCategory_Update.sql" />
+    <Build Include="dbo\Stored Procedures\JobCategory_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\JobCategory_Create.sql" />
+    <Build Include="dbo\Stored Procedures\JobCategory_CheckExists.sql" />
+    <Build Include="dbo\Stored Procedures\Employee_GetBasicInfoById.sql" />
+    <Build Include="dbo\Stored Procedures\Currency_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Currency_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\Currency_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\Currency_Create.sql" />
+    <Build Include="dbo\Stored Procedures\Currency_CheckExists.sql" />
+    <Build Include="dbo\Stored Procedures\Country_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Country_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\Country_Create.sql" />
+    <Build Include="dbo\Stored Procedures\Country_CheckExists.sql" />
+    <Build Include="dbo\Stored Procedures\BankAccount_CheckLimitReached.sql" />
   </ItemGroup>
 </Project>
