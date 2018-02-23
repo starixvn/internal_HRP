@@ -4,6 +4,7 @@
     using System.Linq;
     using Core.Constants;
     using Core.Enumerations;
+    using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,7 @@
             };
 
             employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
-            refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            refResourceService.GetReferenceResourcesByName(Arg.Any<string>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeId(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
             baseService.GetDataEntity<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
@@ -55,6 +56,240 @@
             var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
             Assert.True(model.HaveHostPermission);
             Assert.True(model.BankAccountsLimitReached);
+        }
+
+        [Fact]
+        public void CreateBankAccount_WhenCalled_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            // Test
+            var actual = controller.CreateBankAccount(1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.True(model.HaveHostPermission);
+        }
+
+        [Fact]
+        public void CreateBankAccountInPayroll_WhenCalled_ReturnPartialView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            // Test
+            var actual = controller.CreateBankAccountInPayroll(1, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.True(model.HaveHostPermission);
+        }
+
+        [Fact]
+        public void CreateBankAccountInPayroll_InValidModelState_ReturnPartialView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+            controller.ModelState.AddModelError("key", "message");
+
+            // Test
+            var actual = controller.CreateBankAccountInPayroll(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void CreateBankAccountInPayroll_ValidModelStateCreateError_ReturnPartialView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var result = new CommandResult
+            {
+                Code = 0,
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.CreateBankAccountInPayroll(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.True(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void CreateBankAccountInPayroll_ValidModelStateCreateSuccessful_ReturnPartialView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var result = new CommandResult
+            {
+                Code = 1,
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.CreateBankAccountInPayroll(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void CreateBankAccount_InValidModelState_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+            controller.ModelState.AddModelError("key", "message");
+
+            // Test
+            var actual = controller.CreateBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void CreateBankAccount_ValidModelStateCreateError_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var result = new CommandResult
+            {
+                Code = 0,
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.CreateBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.True(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void CreateBankAccount_ValidModelStateCreateSuccessful_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            var result = new CommandResult
+            {
+                Code = 1,
+            };
+
+            var viewModel = new CreateBankAccountViewModel();
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.CreateBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
         }
 
         [Fact]
@@ -84,6 +319,16 @@
             baseService.Received().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
             refResourceService.DidNotReceive().GetReferenceResourcesByNames(Arg.Any<string[]>());
             Assert.IsType<JsonResult>(actual);
+        }
+
+        private void ArrangeForCreateBankAccount(Employee employee, IEnumerable<ReferenceResourceModel> resources)
+        {
+            employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
+            refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
+            refResourceService
+                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
+                .Returns(new List<ReferenceResourceModel>());
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
         }
 
         private static IEnumerable<ReferenceResourceModel> GetResources()
