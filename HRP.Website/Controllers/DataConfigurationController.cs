@@ -36,9 +36,12 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public IActionResult Index()
         {
-            var fieldList = dataConfigurationService.GetDataForIndexPage();
+            var viewModel = new IndexViewModel
+            {
+                Fields = dataConfigurationService.GetDataForIndexPage()
+            };
 
-            return View(fieldList);
+            return View(viewModel);
         }
 
         #region CompanyBVI

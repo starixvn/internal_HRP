@@ -1,12 +1,14 @@
 ﻿var commonFunctions = (function ($) {
-    var rootURL,
+    var timer,
+        rootURL,
         pagerRanges = [20, 50, 100],
         noDataOnTableMsg = 'There is no data.';
 
     function showErrorMessage($element, message) {
         $element.text(message).removeClass('hidden');
 
-        setTimeout(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
             $element.text('').addClass('hidden');
         }, 5000);
     }
@@ -14,7 +16,8 @@
     function showSuccessMessage($element) {
         $element.removeClass('hidden');
 
-        setTimeout(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
             $element.addClass('hidden');
         }, 5000);
     }
@@ -22,7 +25,8 @@
     function showSuccessMessage($element, message) {
         $element.text(message).removeClass('hidden');
 
-        setTimeout(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
             $element.text('').addClass('hidden');
         }, 5000);
     }

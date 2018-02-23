@@ -1,7 +1,7 @@
 ﻿@using HRP.Models.DataConfiguration
 @using HRP.Resources
 
-@model IEnumerable<Field>
+@model IndexViewModel
 @{
     ViewData["Title"] = "Data Configuration";
 }
@@ -28,16 +28,15 @@
 <form id="filterFieldForm" class="search-form">
     <div class="group">
         <label class="text">@ViewLang.Field</label>
-        <select class="control js-search-suggestion" id="fieldType">
-            <option value=""></option>
-            @foreach (var field in Model)
+        <select class="control js-search-suggestion" id="FieldId">
+            @foreach (var field in Model.Fields)
             {
                 <option value="@field.FieldId" data-url-get-all="@field.LinkGetAllItem">@field.FieldName</option>
 
             }
         </select>
 
-        <input type="hidden" id="selectedField" value="@Model.FirstOrDefault().FieldId" />
+        <input type="hidden" id="selectedField" />
     </div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Submit</button>

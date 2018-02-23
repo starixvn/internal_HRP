@@ -1,5 +1,6 @@
 ﻿var dataConfiguration = (function ($) {
     var domElement = {
+        FieldId: '#FieldId',
         TableItems: '#tableItems',
         FilterFieldForm: '#filterFieldForm',
         SelectedField: '#selectedField',
@@ -50,10 +51,11 @@
     function registerEventShowListItem() {
         $(domElement.FilterFieldForm).on('submit', function (e) {
             e.preventDefault();
-            var $fieldType = $('#fieldType');
+
+            var $fieldId = $(domElement.FieldId);
             var $selectedField = $(domElement.SelectedField);
-            var fieldId = $fieldType.val();
-            var getAllUrl = $fieldType.find(':selected').data('url-get-all');
+            var fieldId = $fieldId.val();
+            var getAllUrl = $fieldId.find(':selected').data('url-get-all');
             $selectedField.val(fieldId);
 
             //Clear html create item modal
@@ -77,6 +79,7 @@
         $validator.settings.highlight = function (element, errorClass, validClass) {
             var $element = $(element);
             $element.addClass(errorClass).removeClass(validClass);
+            handleDisplayValidationSummary($form);
 
             if ($element.hasClass('js-select2')) {
                 $element.next().find('.select2-selection')
@@ -86,6 +89,7 @@
         $validator.settings.unhighlight = function (element, errorClass, validClass) {
             var $element = $(element);
             $element.removeClass(errorClass).addClass(validClass);
+            handleDisplayValidationSummary($form);
 
             if ($element.hasClass('js-select2')) {
                 $element.next().find('.select2-selection')
@@ -101,10 +105,6 @@
                 $select2.removeClass('select2-has-error');
                 $this.valid();
             }
-        });
-
-        $form.on('change keyup click submit', function () {
-            handleDisplayValidationSummary($(this));
         });
     }
 
@@ -130,11 +130,8 @@
                     "id": itemId
                 },
                 success: function (data) {
-                    // ref
                     $('#editItemModalContent').html(data);
-
                     initValidationForm($('#editItemForm'));
-
                     $('#editItemModal').modal('show');
                 },
                 error: commonFunctions.handleAjaxError
@@ -154,14 +151,12 @@
                     dataType: 'html',
                     data: { "fieldId": fieldId },
                     success: function (data) {
-                        // ref
                         $createItemModalContent.html(data);
 
                         registerEventChangeCompanyBVI();
                         registerEventChangeDivision();
                         registerEventChangeDepartment();
                         registerEventChangeCostCenter();
-
                         registerEventChangeJobCategory();
                         registerEventChangeCountry();
 
@@ -176,7 +171,6 @@
             } else {
                 $(domElement.CreateItemModal).modal('show');
             }
-
         });
     }
 
@@ -316,19 +310,19 @@
     }
 
     function reloadTableListItem() {
-        var $fieldType = $('#fieldType');
+        var $fieldId = $(domElement.FieldId);
         var $selectedField = $(domElement.SelectedField);
 
-        $fieldType.val($selectedField.val());
-        $(domElement.FilterFieldForm).trigger('submit'); ////ref
+        $fieldId.val($selectedField.val());
+        $(domElement.FilterFieldForm).trigger('submit');
     }
 
     function onCreateNewItemSuccess(response) {
         var $createItemForm = $('#createItemForm');
         if (response.isSuccessful) {
-            $("#createItemModal .close").trigger('click'); ////ref
+            $("#createItemModal .close").trigger('click');
             $('.modal-backdrop').remove();
-            commonFunctions.showSuccessMessage($('.msg-success'), response.message);////ref
+            commonFunctions.showSuccessMessage($('.msg-success'), response.message);
             reloadTableListItem();
         } else {
             if (response.errors) {
@@ -343,9 +337,9 @@
     function onUpdateItemSuccess(response) {
         var $editItemForm = $('#editItemForm');
         if (response.isSuccessful) {
-            $("#editItemModal .close").trigger('click'); ////ref
+            $("#editItemModal .close").trigger('click');
             $('.modal-backdrop').remove();
-            commonFunctions.showSuccessMessage($('.msg-success'), response.message);////ref
+            commonFunctions.showSuccessMessage($('.msg-success'), response.message);
             reloadTableListItem();
         } else {
             if (response.errors) {

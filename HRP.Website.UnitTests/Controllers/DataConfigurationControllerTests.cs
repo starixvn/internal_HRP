@@ -32,7 +32,7 @@
         private IDataConfigurationService dataConfigurationService;
 
         [Fact]
-        public void Index_ServiceGetFieldList_ReturnViewResultWithFieldList()
+        public void Index_ServiceGetFieldList_ReturnViewResultWithIndexViewModel()
         {
             // Arrange
             var fieldList = new List<Field> { MockField() };
@@ -44,8 +44,8 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<IEnumerable<Field>>(viewResult.ViewData.Model);
-            Assert.Equal(fieldList, viewModel);
+            var viewModel = Assert.IsAssignableFrom<IndexViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(fieldList, viewModel.Fields);
         }
 
         #region CompanyBVI

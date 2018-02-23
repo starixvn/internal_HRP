@@ -1,6 +1,9 @@
 ﻿namespace HRP.Models.DataConfiguration
 {
-    internal class IndexViewModel
+    using System.Collections.Generic;
+
+    public class IndexViewModel
     {
+        public IEnumerable<Field> Fields { get; set; }
     }
 }
