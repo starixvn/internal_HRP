@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Check Job Grade item existed
--- =============================================
-Create PROCEDURE [dbo].JobGrade_CheckExists
+﻿
+CREATE PROCEDURE [dbo].[JobGrade_CheckExists]
 	@JobGradeId SMALLINT = 0 
 	,@GradeLevelId SMALLINT = 0
 	,@Name NVARCHAR(50)
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Check Job Grade item existed
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

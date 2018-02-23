@@ -2,57 +2,57 @@
 CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@Salary VARCHAR(MAX) = NULL
 	,@IsSalaryChanged BIT
-	,@CurrencyCode VARCHAR(3) = NULL
+	,@CurrencyId INT = NULL
 	,@WorkingDays TINYINT
-	,@EbankingCurrencyCode VARCHAR(3) = NULL
+	,@EbankingCurrencyId INT = NULL
 	,@EbankingAmount VARCHAR(MAX) = NULL
 	,@EbankingAccountId INT = NULL
-	,@DirectBanking1CurrencyCode VARCHAR(3) = NULL
+	,@DirectBanking1CurrencyId INT = NULL
 	,@DirectBanking1Amount VARCHAR(MAX) = NULL
 	,@DirectBanking1AccountId INT = NULL
 	,@DirectBanking1BankTypeId INT = NULL
-	,@DirectBanking2CurrencyCode VARCHAR(3) = NULL
+	,@DirectBanking2CurrencyId INT = NULL
 	,@DirectBanking2Amount VARCHAR(MAX) = NULL
 	,@DirectBanking2AccountId INT = NULL
 	,@DirectBanking2BankTypeId INT = NULL
-	,@CashCurrencyCode VARCHAR(3) = NULL
+	,@CashCurrencyId INT = NULL
 	,@CashAmount VARCHAR(MAX) = NULL
 	,@CashAccountId INT = NULL
 	,@AutoCalculateOn VARCHAR(30) = NULL
 	,@EffectiveDate DATE = NULL
 	,@ReasonId INT = NULL
-	,@AllowanceCurrencyCode VARCHAR(3) = NULL
-	,@AllowanceDirectBanking1CurrencyCode VARCHAR(3) = NULL
+	,@AllowanceCurrencyId INT = NULL
+	,@AllowanceDirectBanking1CurrencyId INT = NULL
 	,@AllowanceDirectBanking1Amount VARCHAR(MAX) = NULL
 	,@AllowanceDirectBanking1AccountId INT = NULL
 	,@AllowanceDirectBanking1BankTypeId INT = NULL
-	,@AllowanceDirectBanking2CurrencyCode VARCHAR(3) = NULL
+	,@AllowanceDirectBanking2CurrencyId INT = NULL
 	,@AllowanceDirectBanking2Amount VARCHAR(MAX) = NULL
 	,@AllowanceDirectBanking2AccountId INT = NULL
 	,@AllowanceDirectBanking2BankTypeId INT = NULL
-	,@AllowanceCashCurrencyCode VARCHAR(3) = NULL
+	,@AllowanceCashCurrencyId INT = NULL
 	,@AllowanceCashAmount VARCHAR(MAX) = NULL
 	,@AllowanceCashAccountId INT = NULL
 	,@AllowanceAutoCalculateOn VARCHAR(30) = NULL
-	,@SubsistenceCurrencyCode VARCHAR(3) = NULL
+	,@SubsistenceCurrencyId INT = NULL
 	,@SubsistenceAmount VARCHAR(MAX) = NULL
-	,@HomePassageCurrencyCode VARCHAR(3) = NULL
+	,@HomePassageCurrencyId INT = NULL
 	,@HomePassageAmount VARCHAR(MAX) = NULL
-	,@HousingCurrencyCode VARCHAR(3) = NULL
+	,@HousingCurrencyId INT = NULL
 	,@HousingAmount VARCHAR(MAX) = NULL
-	,@MobilePhoneCurrencyCode VARCHAR(3) = NULL
+	,@MobilePhoneCurrencyId INT = NULL
 	,@MobilePhoneAmount VARCHAR(MAX) = NULL
-	,@HPICurrencyCode VARCHAR(3) = NULL
+	,@HPICurrencyId INT = NULL
 	,@HPIAmount VARCHAR(MAX) = NULL
-	,@DutyMealCurrencyCode VARCHAR(3) = NULL
+	,@DutyMealCurrencyId INT = NULL
 	,@DutyMealAmount VARCHAR(MAX) = NULL
-	,@SecondmentCurrencyCode VARCHAR(3) = NULL
+	,@SecondmentCurrencyId INT = NULL
 	,@SecondmentAmount VARCHAR(MAX) = NULL
-	,@OthersCurrencyCode VARCHAR(3) = NULL
+	,@OthersCurrencyId INT = NULL
 	,@OthersAmount VARCHAR(MAX) = NULL
-	,@RoomingChargesCurrencyCode VARCHAR(3) = NULL
+	,@RoomingChargesCurrencyId INT = NULL
 	,@RoomingChargesAmount VARCHAR(MAX) = NULL
-	,@FitnessFirstCurrencyCode VARCHAR(3) = NULL
+	,@FitnessFirstCurrencyId INT = NULL
 	,@FitnessFirstAmount VARCHAR(MAX) = NULL
 	,@UpdatedBy INT
 	,@ErrCode INT = 0 OUTPUT
@@ -103,58 +103,58 @@ BEGIN
 	BEGIN
 		SET @xml = (
 				SELECT epbs.EmployeeId AS '@ei'
-					,epbs.CurrencyCode AS '@epbscc'
+					,epbs.CurrencyId AS '@epbscc'
 					,epbs.Salary AS '@epbss'
 					,epbs.WorkingDays AS '@epbswd'
-					,epbs.EbankingCurrencyCode AS '@epbsecc'
+					,epbs.EbankingCurrencyId AS '@epbsecc'
 					,epbs.EbankingAmount AS '@epbsea'
 					,epbs.EbankingAccountId AS '@epbseai'
-					,epbs.DirectBanking1CurrencyCode AS '@epbsdb1cc'
+					,epbs.DirectBanking1CurrencyId AS '@epbsdb1cc'
 					,epbs.DirectBanking1Amount AS '@epbsdb1a'
 					,epbs.DirectBanking1AccountId AS '@epbsdb1ai'
 					,epbs.DirectBanking1BankTypeId AS '@epbsdb1bti'
-					,epbs.DirectBanking2CurrencyCode AS '@epbsdb2cc'
+					,epbs.DirectBanking2CurrencyId AS '@epbsdb2cc'
 					,epbs.DirectBanking2Amount AS '@epbsdb2a'
 					,epbs.DirectBanking2AccountId AS '@epbsdb2ai'
 					,epbs.DirectBanking2BankTypeId AS '@epbsdb2bti'
-					,epbs.CashCurrencyCode AS '@epbsccc'
+					,epbs.CashCurrencyId AS '@epbsccc'
 					,epbs.CashAmount AS '@epbsca'
 					,epbs.CashAccountId AS '@epbscai'
 					,epbs.AutoCalculateOn AS '@epbsaco'
 					,epbsh.EffectiveDate AS '@epbsed'
 					,epbsh.ReasonId AS '@epbsri'
-					,epa.CurrencyCode AS '@epacc'
-					,epa.DirectBanking1CurrencyCode AS '@epadb1cc'
+					,epa.CurrencyId AS '@epacc'
+					,epa.DirectBanking1CurrencyId AS '@epadb1cc'
 					,epa.DirectBanking1Amount AS '@epadb1a'
 					,epa.DirectBanking1AccountId AS '@epadb1ai'
 					,epa.DirectBanking1BankTypeId AS '@epadb1bti'
-					,epa.DirectBanking2CurrencyCode AS '@epadb2cc'
+					,epa.DirectBanking2CurrencyId AS '@epadb2cc'
 					,epa.DirectBanking2Amount AS '@epadb2a'
 					,epa.DirectBanking2AccountId AS '@epadb2ai'
 					,epa.DirectBanking2BankTypeId AS '@epadb2bti'
-					,epa.CashCurrencyCode AS '@epaccc'
+					,epa.CashCurrencyId AS '@epaccc'
 					,epa.CashAmount AS '@epaca'
 					,epa.CashAccountId AS '@epacai'
 					,epa.AutoCalculateOn AS '@epaaco'
-					,epa.SubsistenceCurrencyCode AS '@epasscc'
+					,epa.SubsistenceCurrencyId AS '@epasscc'
 					,epa.SubsistenceAmount AS '@epassa'
-					,epa.HomePassageCurrencyCode AS '@epahpcc'
+					,epa.HomePassageCurrencyId AS '@epahpcc'
 					,epa.HomePassageAmount AS '@epahpa'
-					,epa.HousingCurrencyCode AS '@epahcc'
+					,epa.HousingCurrencyId AS '@epahcc'
 					,epa.HousingAmount AS '@epaha'
-					,epa.MobilePhoneCurrencyCode AS '@epampcc'
+					,epa.MobilePhoneCurrencyId AS '@epampcc'
 					,epa.MobilePhoneAmount AS '@epampa'
-					,epa.HPICurrencyCode AS '@epahpicc'
+					,epa.HPICurrencyId AS '@epahpicc'
 					,epa.HPIAmount AS '@epahpia'
-					,epa.DutyMealCurrencyCode AS '@epadmcc'
+					,epa.DutyMealCurrencyId AS '@epadmcc'
 					,epa.DutyMealAmount AS '@epadma'
-					,epa.SecondmentCurrencyCode AS '@epascc'
+					,epa.SecondmentCurrencyId AS '@epascc'
 					,epa.SecondmentAmount AS '@epasa'
-					,epa.OthersCurrencyCode AS '@epaocc'
+					,epa.OthersCurrencyId AS '@epaocc'
 					,epa.OthersAmount AS '@epaoa'
-					,epd.RoomingChargesCurrencyCode AS '@epdrccc'
+					,epd.RoomingChargesCurrencyId AS '@epdrccc'
 					,epd.RoomingChargesAmount AS '@epdrca'
-					,epd.FitnessFirstCurrencyCode AS '@epdffcc'
+					,epd.FitnessFirstCurrencyId AS '@epdffcc'
 					,epd.FitnessFirstAmount AS '@epdffa'
 				FROM dbo.EmployeePayrollBasicSalary AS epbs WITH (NOLOCK)
 					INNER JOIN (
@@ -178,14 +178,14 @@ BEGIN
 			INSERT INTO [dbo].[EmployeePayrollBasicSalaryHistory] (
 				[EmployeeId]
 				,[Salary]
-				,[CurrencyCode]
+				,[CurrencyId]
 				,[EffectiveDate]
 				,[ReasonId]
 				)
 			VALUES (
 				@EmployeeId
 				,@Salary
-				,@CurrencyCode
+				,@CurrencyId
 				,@EffectiveDate
 				,@ReasonId
 				)
@@ -196,7 +196,7 @@ BEGIN
 			SET ReasonId = @ReasonId
 				,EffectiveDate = @EffectiveDate
 				,Salary = @Salary
-				,CurrencyCode = @CurrencyCode
+				,CurrencyId = @CurrencyId
 			WHERE EmployeeId = @EmployeeId
 				AND HistoryId = (
 					SELECT TOP 1 HistoryId
@@ -208,18 +208,18 @@ BEGIN
 
 		UPDATE [dbo].[EmployeePayrollBasicSalary] WITH (ROWLOCK, UPDLOCK)
 		SET [Salary] = @Salary
-			,[CurrencyCode] = @CurrencyCode
+			,[CurrencyId] = @CurrencyId
 			,[WorkingDays] = @WorkingDays
-			,[EbankingCurrencyCode] = @EbankingCurrencyCode
+			,[EbankingCurrencyId] = @EbankingCurrencyId
 			,[EbankingAmount] = @EbankingAmount
 			,[EbankingAccountId] = @EbankingAccountId
-			,[DirectBanking1CurrencyCode] = @DirectBanking1CurrencyCode
+			,[DirectBanking1CurrencyId] = @DirectBanking1CurrencyId
 			,[DirectBanking1Amount] = @DirectBanking1Amount
 			,[DirectBanking1AccountId] = @DirectBanking1AccountId
-			,[DirectBanking2CurrencyCode] = @DirectBanking2CurrencyCode
+			,[DirectBanking2CurrencyId] = @DirectBanking2CurrencyId
 			,[DirectBanking2Amount] = @DirectBanking2Amount
 			,[DirectBanking2AccountId] = @DirectBanking2AccountId
-			,[CashCurrencyCode] = @CashCurrencyCode
+			,[CashCurrencyId] = @CashCurrencyId
 			,[CashAmount] = @CashAmount
 			,[CashAccountId] = @CashAccountId
 			,[AutoCalculateOn] = @AutoCalculateOn
@@ -228,41 +228,41 @@ BEGIN
 		WHERE EmployeeId = @EmployeeId
 
 		UPDATE [dbo].[EmployeePayrollAllowance] WITH (ROWLOCK, UPDLOCK)
-		SET [CurrencyCode] = @AllowanceCurrencyCode
-			,[DirectBanking1CurrencyCode] = @AllowanceDirectBanking1CurrencyCode
+		SET [CurrencyId] = @AllowanceCurrencyId
+			,[DirectBanking1CurrencyId] = @AllowanceDirectBanking1CurrencyId
 			,[DirectBanking1Amount] = @AllowanceDirectBanking1Amount
 			,[DirectBanking1AccountId] = @AllowanceDirectBanking1AccountId
-			,[DirectBanking2CurrencyCode] = @AllowanceDirectBanking2CurrencyCode
+			,[DirectBanking2CurrencyId] = @AllowanceDirectBanking2CurrencyId
 			,[DirectBanking2Amount] = @AllowanceDirectBanking2Amount
 			,[DirectBanking2AccountId] = @AllowanceDirectBanking2AccountId
-			,[CashCurrencyCode] = @CashCurrencyCode
+			,[CashCurrencyId] = @CashCurrencyId
 			,[CashAmount] = @CashAmount
 			,[CashAccountId] = @CashAccountId
 			,[AutoCalculateOn] = @AllowanceAutoCalculateOn
-			,[SubsistenceCurrencyCode] = @SubsistenceCurrencyCode
+			,[SubsistenceCurrencyId] = @SubsistenceCurrencyId
 			,[SubsistenceAmount] = @SubsistenceAmount
-			,[HomePassageCurrencyCode] = @HomePassageCurrencyCode
+			,[HomePassageCurrencyId] = @HomePassageCurrencyId
 			,[HomePassageAmount] = @HomePassageAmount
-			,[HousingCurrencyCode] = @HousingCurrencyCode
+			,[HousingCurrencyId] = @HousingCurrencyId
 			,[HousingAmount] = @HousingAmount
-			,[MobilePhoneCurrencyCode] = @MobilePhoneCurrencyCode
+			,[MobilePhoneCurrencyId] = @MobilePhoneCurrencyId
 			,[MobilePhoneAmount] = @MobilePhoneAmount
-			,[HPICurrencyCode] = @HPICurrencyCode
+			,[HPICurrencyId] = @HPICurrencyId
 			,[HPIAmount] = @HPIAmount
-			,[DutyMealCurrencyCode] = @DutyMealCurrencyCode
+			,[DutyMealCurrencyId] = @DutyMealCurrencyId
 			,[DutyMealAmount] = @DutyMealAmount
-			,[SecondmentCurrencyCode] = @SecondmentCurrencyCode
+			,[SecondmentCurrencyId] = @SecondmentCurrencyId
 			,[SecondmentAmount] = @SecondmentAmount
-			,[OthersCurrencyCode] = @OthersCurrencyCode
+			,[OthersCurrencyId] = @OthersCurrencyId
 			,[OthersAmount] = @OthersAmount
 			,[DirectBanking1BankTypeId] = @AllowanceDirectBanking1BankTypeId
 			,[DirectBanking2BankTypeId] = @AllowanceDirectBanking2BankTypeId
 		WHERE EmployeeId = @EmployeeId
 
 		UPDATE [dbo].[EmployeePayrollDeduction] WITH (ROWLOCK, UPDLOCK)
-		SET [RoomingChargesCurrencyCode] = @RoomingChargesCurrencyCode
+		SET [RoomingChargesCurrencyId] = @RoomingChargesCurrencyId
 			,[RoomingChargesAmount] = @RoomingChargesAmount
-			,[FitnessFirstCurrencyCode] = @FitnessFirstCurrencyCode
+			,[FitnessFirstCurrencyId] = @FitnessFirstCurrencyId
 			,[FitnessFirstAmount] = @FitnessFirstAmount
 		WHERE EmployeeId = @EmployeeId
 	END
@@ -271,18 +271,18 @@ BEGIN
 		INSERT INTO [dbo].[EmployeePayrollBasicSalary] (
 			[EmployeeId]
 			,[Salary]
-			,[CurrencyCode]
+			,[CurrencyId]
 			,[WorkingDays]
-			,[EbankingCurrencyCode]
+			,[EbankingCurrencyId]
 			,[EbankingAmount]
 			,[EbankingAccountId]
-			,[DirectBanking1CurrencyCode]
+			,[DirectBanking1CurrencyId]
 			,[DirectBanking1Amount]
 			,[DirectBanking1AccountId]
-			,[DirectBanking2CurrencyCode]
+			,[DirectBanking2CurrencyId]
 			,[DirectBanking2Amount]
 			,[DirectBanking2AccountId]
-			,[CashCurrencyCode]
+			,[CashCurrencyId]
 			,[CashAmount]
 			,[CashAccountId]
 			,[AutoCalculateOn]
@@ -292,18 +292,18 @@ BEGIN
 		VALUES (
 			@EmployeeId
 			,@Salary
-			,@CurrencyCode
+			,@CurrencyId
 			,@WorkingDays
-			,@EbankingCurrencyCode
+			,@EbankingCurrencyId
 			,@EbankingAmount
 			,@EbankingAccountId
-			,@DirectBanking1CurrencyCode
+			,@DirectBanking1CurrencyId
 			,@DirectBanking1Amount
 			,@DirectBanking1AccountId
-			,@DirectBanking2CurrencyCode
+			,@DirectBanking2CurrencyId
 			,@DirectBanking2Amount
 			,@DirectBanking2AccountId
-			,@CashCurrencyCode
+			,@CashCurrencyId
 			,@CashAmount
 			,@CashAccountId
 			,@AutoCalculateOn
@@ -314,78 +314,78 @@ BEGIN
 		INSERT INTO [dbo].[EmployeePayrollBasicSalaryHistory] (
 			[EmployeeId]
 			,[Salary]
-			,[CurrencyCode]
+			,[CurrencyId]
 			,[EffectiveDate]
 			,[ReasonId]
 			)
 		VALUES (
 			@EmployeeId
 			,@Salary
-			,@CurrencyCode
+			,@CurrencyId
 			,@EffectiveDate
 			,@ReasonId
 			)
 
 		INSERT INTO [dbo].[EmployeePayrollAllowance] (
 			[EmployeeId]
-			,[CurrencyCode]
-			,[DirectBanking1CurrencyCode]
+			,[CurrencyId]
+			,[DirectBanking1CurrencyId]
 			,[DirectBanking1Amount]
 			,[DirectBanking1AccountId]
-			,[DirectBanking2CurrencyCode]
+			,[DirectBanking2CurrencyId]
 			,[DirectBanking2Amount]
 			,[DirectBanking2AccountId]
-			,[CashCurrencyCode]
+			,[CashCurrencyId]
 			,[CashAmount]
 			,[CashAccountId]
 			,[AutoCalculateOn]
-			,[SubsistenceCurrencyCode]
+			,[SubsistenceCurrencyId]
 			,[SubsistenceAmount]
-			,[HomePassageCurrencyCode]
+			,[HomePassageCurrencyId]
 			,[HomePassageAmount]
-			,[HousingCurrencyCode]
+			,[HousingCurrencyId]
 			,[HousingAmount]
-			,[MobilePhoneCurrencyCode]
+			,[MobilePhoneCurrencyId]
 			,[MobilePhoneAmount]
-			,[HPICurrencyCode]
+			,[HPICurrencyId]
 			,[HPIAmount]
-			,[DutyMealCurrencyCode]
+			,[DutyMealCurrencyId]
 			,[DutyMealAmount]
-			,[SecondmentCurrencyCode]
+			,[SecondmentCurrencyId]
 			,[SecondmentAmount]
-			,[OthersCurrencyCode]
+			,[OthersCurrencyId]
 			,[OthersAmount]
 			,[DirectBanking1BankTypeId]
 			,[DirectBanking2BankTypeId]
 			)
 		VALUES (
 			@EmployeeId
-			,@AllowanceCurrencyCode
-			,@AllowanceDirectBanking1CurrencyCode
+			,@AllowanceCurrencyId
+			,@AllowanceDirectBanking1CurrencyId
 			,@AllowanceDirectBanking1Amount
 			,@AllowanceDirectBanking1AccountId
-			,@AllowanceDirectBanking2CurrencyCode
+			,@AllowanceDirectBanking2CurrencyId
 			,@AllowanceDirectBanking2Amount
 			,@AllowanceDirectBanking2AccountId
-			,@AllowanceCashCurrencyCode
+			,@AllowanceCashCurrencyId
 			,@AllowanceCashAmount
 			,@AllowanceCashAccountId
 			,@AllowanceAutoCalculateOn
-			,@SubsistenceCurrencyCode
+			,@SubsistenceCurrencyId
 			,@SubsistenceAmount
-			,@HomePassageCurrencyCode
+			,@HomePassageCurrencyId
 			,@HomePassageAmount
-			,@HousingCurrencyCode
+			,@HousingCurrencyId
 			,@HousingAmount
-			,@MobilePhoneCurrencyCode
+			,@MobilePhoneCurrencyId
 			,@MobilePhoneAmount
-			,@HPICurrencyCode
+			,@HPICurrencyId
 			,@HPIAmount
-			,@DutyMealCurrencyCode
+			,@DutyMealCurrencyId
 			,@DutyMealAmount
-			,@SecondmentCurrencyCode
+			,@SecondmentCurrencyId
 			,@SecondmentAmount
-			,@OthersCurrencyCode
+			,@OthersCurrencyId
 			,@OthersAmount
 			,@AllowanceDirectBanking1BankTypeId
 			,@AllowanceDirectBanking2BankTypeId
@@ -393,74 +393,74 @@ BEGIN
 
 		INSERT INTO [dbo].[EmployeePayrollDeduction] (
 			[EmployeeId]
-			,[RoomingChargesCurrencyCode]
+			,[RoomingChargesCurrencyId]
 			,[RoomingChargesAmount]
-			,[FitnessFirstCurrencyCode]
+			,[FitnessFirstCurrencyId]
 			,[FitnessFirstAmount]
 			)
 		VALUES (
 			@EmployeeId
-			,@RoomingChargesCurrencyCode
+			,@RoomingChargesCurrencyId
 			,@RoomingChargesAmount
-			,@FitnessFirstCurrencyCode
+			,@FitnessFirstCurrencyId
 			,@FitnessFirstAmount
 			)
 	END
 
 	SET @xml = (
 			SELECT epbs.EmployeeId AS '@ei'
-				,epbs.CurrencyCode AS '@epbscc'
+				,epbs.CurrencyId AS '@epbscc'
 				,epbs.Salary AS '@epbss'
 				,epbs.WorkingDays AS '@epbswd'
-				,epbs.EbankingCurrencyCode AS '@epbsecc'
+				,epbs.EbankingCurrencyId AS '@epbsecc'
 				,epbs.EbankingAmount AS '@epbsea'
 				,epbs.EbankingAccountId AS '@epbseai'
-				,epbs.DirectBanking1CurrencyCode AS '@epbsdb1cc'
+				,epbs.DirectBanking1CurrencyId AS '@epbsdb1cc'
 				,epbs.DirectBanking1Amount AS '@epbsdb1a'
 				,epbs.DirectBanking1AccountId AS '@epbsdb1ai'
 				,epbs.DirectBanking1BankTypeId AS '@epbsdb1bti'
-				,epbs.DirectBanking2CurrencyCode AS '@epbsdb2cc'
+				,epbs.DirectBanking2CurrencyId AS '@epbsdb2cc'
 				,epbs.DirectBanking2Amount AS '@epbsdb2a'
 				,epbs.DirectBanking2AccountId AS '@epbsdb2ai'
 				,epbs.DirectBanking2BankTypeId AS '@epbsdb2bti'
-				,epbs.CashCurrencyCode AS '@epbsccc'
+				,epbs.CashCurrencyId AS '@epbsccc'
 				,epbs.CashAmount AS '@epbsca'
 				,epbs.CashAccountId AS '@epbscai'
 				,epbs.AutoCalculateOn AS '@epbsaco'
 				,epbsh.EffectiveDate AS '@epbsed'
 				,epbsh.ReasonId AS '@epbsri'
-				,epa.CurrencyCode AS '@epacc'
-				,epa.DirectBanking1CurrencyCode AS '@epadb1cc'
+				,epa.CurrencyId AS '@epacc'
+				,epa.DirectBanking1CurrencyId AS '@epadb1cc'
 				,epa.DirectBanking1Amount AS '@epadb1a'
 				,epa.DirectBanking1AccountId AS '@epadb1ai'
 				,epa.DirectBanking1BankTypeId AS '@epadb1bti'
-				,epa.DirectBanking2CurrencyCode AS '@epadb2cc'
+				,epa.DirectBanking2CurrencyId AS '@epadb2cc'
 				,epa.DirectBanking2Amount AS '@epadb2a'
 				,epa.DirectBanking2AccountId AS '@epadb2ai'
 				,epa.DirectBanking2BankTypeId AS '@epadb2bti'
-				,epa.CashCurrencyCode AS '@epaccc'
+				,epa.CashCurrencyId AS '@epaccc'
 				,epa.CashAmount AS '@epaca'
 				,epa.CashAccountId AS '@epacai'
 				,epa.AutoCalculateOn AS '@epaaco'
-				,epa.SubsistenceCurrencyCode AS '@epasscc'
+				,epa.SubsistenceCurrencyId AS '@epasscc'
 				,epa.SubsistenceAmount AS '@epassa'
-				,epa.HomePassageCurrencyCode AS '@epahpcc'
+				,epa.HomePassageCurrencyId AS '@epahpcc'
 				,epa.HomePassageAmount AS '@epahpa'
-				,epa.HousingCurrencyCode AS '@epahcc'
+				,epa.HousingCurrencyId AS '@epahcc'
 				,epa.HousingAmount AS '@epaha'
-				,epa.MobilePhoneCurrencyCode AS '@epampcc'
+				,epa.MobilePhoneCurrencyId AS '@epampcc'
 				,epa.MobilePhoneAmount AS '@epampa'
-				,epa.HPICurrencyCode AS '@epahpicc'
+				,epa.HPICurrencyId AS '@epahpicc'
 				,epa.HPIAmount AS '@epahpia'
-				,epa.DutyMealCurrencyCode AS '@epadmcc'
+				,epa.DutyMealCurrencyId AS '@epadmcc'
 				,epa.DutyMealAmount AS '@epadma'
-				,epa.SecondmentCurrencyCode AS '@epascc'
+				,epa.SecondmentCurrencyId AS '@epascc'
 				,epa.SecondmentAmount AS '@epasa'
-				,epa.OthersCurrencyCode AS '@epaocc'
+				,epa.OthersCurrencyId AS '@epaocc'
 				,epa.OthersAmount AS '@epaoa'
-				,epd.RoomingChargesCurrencyCode AS '@epdrccc'
+				,epd.RoomingChargesCurrencyId AS '@epdrccc'
 				,epd.RoomingChargesAmount AS '@epdrca'
-				,epd.FitnessFirstCurrencyCode AS '@epdffcc'
+				,epd.FitnessFirstCurrencyId AS '@epdffcc'
 				,epd.FitnessFirstAmount AS '@epdffa'
 			FROM dbo.EmployeePayrollBasicSalary AS epbs WITH (NOLOCK)
 				INNER JOIN (

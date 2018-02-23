@@ -1,10 +1,5 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Update Grade level
--- =============================================
-Create PROCEDURE [dbo].GradeLevel_Update @GradeLevelId SMALLINT
+CREATE PROCEDURE [dbo].[GradeLevel_Update] @GradeLevelId SMALLINT
 	,@Name NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -12,6 +7,15 @@ Create PROCEDURE [dbo].GradeLevel_Update @GradeLevelId SMALLINT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Update Grade level
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -35,10 +35,11 @@ BEGIN
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
 			WHERE [AccountName] = @AccountName
 			AND [EmployeeId] = @EmployeeId
+			AND [BankType] = @BankType
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name must be unique for an Employee'
+		SET @ErrMsg = N'Account Name already exists. Please enter another value.'
 
 		RETURN
 	END
@@ -52,7 +53,7 @@ BEGIN
 			)
 	BEGIN
 		SET @ErrCode = 2
-		SET @ErrMsg = N'Account Number must be unique in each Bank Type for an Employee'
+		SET @ErrMsg = N'Account Number already exists. Please enter another value.'
 
 		RETURN
 	END

@@ -12,7 +12,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT ba.Id, ba.AccountName, ba.IsActive
+	SELECT ba.Id AS BankAccountId, ba.AccountName, ba.IsActive
 	FROM BankAccount ba WITH (NOLOCK)
 	WHERE ba.EmployeeId = @EmployeeId AND ba.BankType = @BankTypeId
 END

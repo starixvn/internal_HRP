@@ -1,10 +1,6 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/30/2018
--- Description:	Create new item of Division
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Division_Create]
-	@Code VARCHAR(50)
+	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CompanyId SMALLINT
 	,@IsActive BIT  = 0
@@ -12,6 +8,15 @@ CREATE PROCEDURE [dbo].[Division_Create]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180131@Raymond.Le
+Task: Create new item of Division
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;

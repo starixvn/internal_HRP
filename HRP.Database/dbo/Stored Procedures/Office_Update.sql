@@ -1,17 +1,21 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/07/2018
--- Description:	Update Office
--- =============================================
-Create PROCEDURE [dbo].Office_Update @OfficeId SMALLINT
-	,@Code VARCHAR(50)
+CREATE PROCEDURE [dbo].[Office_Update] @OfficeId SMALLINT
+	,@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@UpdatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Update Office
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -28,7 +32,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Department
+	-- Check exists Office
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

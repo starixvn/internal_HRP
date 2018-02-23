@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Check Section item exists
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Section_CheckExists]
 	@SectionId SMALLINT = 0
 	,@CostCenterId SMALLINT = 0
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Check Section item exists
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

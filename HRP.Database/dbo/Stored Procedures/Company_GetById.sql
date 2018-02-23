@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/26/2018
--- Description:	Get company BVI by id
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Company_GetById] 
 	@CompanyId SMALLINT = NULL
 AS
+/*
+Created: 20180126@Raymond.Le
+Task: Get company BVI by id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

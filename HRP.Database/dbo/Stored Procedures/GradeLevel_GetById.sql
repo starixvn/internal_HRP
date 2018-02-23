@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Get grade level by GradeLevelId
--- =============================================
-Create PROCEDURE [dbo].GradeLevel_GetById @GradeLevelId SMALLINT
+CREATE PROCEDURE [dbo].[GradeLevel_GetById] @GradeLevelId SMALLINT
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Get grade level by GradeLevelId
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

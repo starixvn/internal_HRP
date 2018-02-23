@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Get JobGrade By Id
--- =============================================
-Create PROCEDURE [dbo].JobGrade_GetById @JobGradeId SMALLINT
+CREATE PROCEDURE [dbo].[JobGrade_GetById] @JobGradeId SMALLINT
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Get JobGrade By Id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

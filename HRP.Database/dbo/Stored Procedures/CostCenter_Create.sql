@@ -1,10 +1,6 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Create new item of CostCenter
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[CostCenter_Create]
-	@Code VARCHAR(50)
+	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@DepartmentId SMALLINT
 	,@IsActive BIT  = 0
@@ -12,6 +8,15 @@ CREATE PROCEDURE [dbo].[CostCenter_Create]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Create new item of CostCenter
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;

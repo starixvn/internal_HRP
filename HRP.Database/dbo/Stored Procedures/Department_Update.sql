@@ -1,17 +1,21 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 01/31/2018
--- Description:	Update Department
--- =============================================
-Create PROCEDURE [dbo].[Department_Update] @DepartmentId SMALLINT
-	,@Code VARCHAR(50)
+CREATE PROCEDURE [dbo].[Department_Update] @DepartmentId SMALLINT
+	,@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@UpdatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Update Department
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

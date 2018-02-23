@@ -1,17 +1,21 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 01/30/2018
--- Description:	Update Division
--- =============================================
 CREATE PROCEDURE [dbo].[Division_Update] @DivisionId SMALLINT
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@UpdatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180131@Raymond.Le
+Task: Update Division
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

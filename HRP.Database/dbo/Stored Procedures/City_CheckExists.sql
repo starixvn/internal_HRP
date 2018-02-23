@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Check City item existed
--- =============================================
-Create PROCEDURE [dbo].City_CheckExists
+﻿
+CREATE PROCEDURE [dbo].[City_CheckExists]
 	@CityId SMALLINT = 0
 	,@CountryId SMALLINT = 0 
 	,@Code NVARCHAR(50)
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Check City item existed
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

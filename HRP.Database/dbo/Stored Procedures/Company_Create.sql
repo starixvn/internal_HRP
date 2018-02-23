@@ -1,16 +1,21 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/22/2018
--- Description:	Create new item of Company BVI field
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Company_Create] 
-	@Code VARCHAR(50)
+	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@CreatedBy INT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180122@Raymond.Le
+Task: Create Company BVI
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -21,9 +26,20 @@ BEGIN
 		,@xml XML
 		,@CompanyId SMALLINT
 
+	CREATE TABLE #tblCheckExists (
+		[Count] SMALLINT
+	)
+
 	SET @startRun = GETDATE()
 
-	IF EXISTS (SELECT 1 FROM dbo.Company WHERE Code = @Code)
+	-- Check exists Company
+	INSERT INTO #tblCheckExists(
+		[Count]
+	)
+	EXEC dbo.Company_CheckExists @CompanyId = 0,
+								@Code = @Code
+									
+	IF EXISTS (SELECT 1 FROM #tblCheckExists)
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'The ' + @Code +' has already existed!'
@@ -63,5 +79,6 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-	 
+	
+	DROP TABLE #tblCheckExists 
 END

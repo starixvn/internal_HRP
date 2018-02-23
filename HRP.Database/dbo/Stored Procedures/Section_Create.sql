@@ -1,10 +1,6 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Create new item of Section
--- =============================================
-Create PROCEDURE [dbo].[Section_Create]
-	@Code VARCHAR(50)
+﻿
+CREATE PROCEDURE [dbo].[Section_Create]
+	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CostCenterId SMALLINT
 	,@IsActive BIT  = 0
@@ -12,6 +8,15 @@ Create PROCEDURE [dbo].[Section_Create]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Create new item of Section
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;
@@ -29,7 +34,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Cost Center
+	-- Check exists Section
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

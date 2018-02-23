@@ -1,8 +1,11 @@
 ﻿CREATE TABLE [dbo].[Currency] (
-    [CurrencyCode] VARCHAR (3)    NOT NULL,
-    [CurrencyName] NVARCHAR (200) NOT NULL,
+    [CurrencyCode] NVARCHAR (50)  NOT NULL,
+    [CurrencyName] NVARCHAR (200) NULL,
     [IsActive]     BIT            NOT NULL,
     [Order]        TINYINT        NULL,
-    CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED ([CurrencyCode] ASC)
+    [CurrencyId]   SMALLINT       IDENTITY (1, 1) NOT NULL,
+    CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED ([CurrencyId] ASC)
 );
+
+
 

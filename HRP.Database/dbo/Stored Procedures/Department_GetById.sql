@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 01/31/2018
--- Description:	Get Department by department id
--- =============================================
 CREATE PROCEDURE [dbo].[Department_GetById] @DepartmentId SMALLINT
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Get Department by department id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/07/2018
--- Description:	Get Office By Id 
--- =============================================
-Create PROCEDURE [dbo].Office_GetById @OfficeId SMALLINT
+CREATE PROCEDURE [dbo].[Office_GetById] @OfficeId SMALLINT
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Get Office By Id 
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

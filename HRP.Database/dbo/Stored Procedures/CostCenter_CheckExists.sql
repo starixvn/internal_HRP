@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Check cost center item exists
--- =============================================
-Create PROCEDURE [dbo].[CostCenter_CheckExists]
+﻿
+CREATE PROCEDURE [dbo].[CostCenter_CheckExists]
 	@CostCenterId SMALLINT = 0
 	,@DepartmentId SMALLINT = 0 
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Check cost center item exists
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 30/01/2018
--- Description:	Get division by divisionId
--- =============================================
 CREATE PROCEDURE [dbo].[Division_GetById] @DivisionId SMALLINT
 AS
+/*
+Created: 20180131@Raymond.Le
+Task: Get division by divisionId
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -15,8 +15,9 @@ BEGIN
 	SET NOCOUNT ON;
 
     SELECT 
-		ba.Id
+		ba.Id AS BankTypeId
 		, ba.EmployeeId
+		, e.Nickname
 		, ba.BankType
 		, ba.BankName
 		, ba.BankBranch
@@ -28,5 +29,6 @@ BEGIN
 		, ba.BeneficiaryName
 		, ba.IsActive
 	FROM [dbo].[BankAccount] AS ba WITH(NOLOCK)
+	INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON ba.EmployeeId = e.EmployeeId
 	WHERE Id = @Id
 END

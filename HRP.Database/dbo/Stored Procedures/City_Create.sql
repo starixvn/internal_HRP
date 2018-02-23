@@ -1,8 +1,4 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Create new item of City
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[City_Create]
 	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
@@ -12,6 +8,15 @@ CREATE PROCEDURE [dbo].[City_Create]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Create new item of City
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;
@@ -30,7 +35,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Department
+	-- Check exists City
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

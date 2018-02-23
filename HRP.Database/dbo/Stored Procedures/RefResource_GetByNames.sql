@@ -1,5 +1,6 @@
 ﻿
 CREATE PROCEDURE [dbo].[RefResource_GetByNames] @RefNames VARCHAR(4000)
+	,@IsActive BIT = NULL
 AS
 /*
 Created: 20171228@Tim.Trinh
@@ -8,7 +9,7 @@ DB: bodb_HRP
 Original:
 
 Revisions:
-Param's Explanation:
+- 02/08/2018@Raymond.Le: Order result by Value ASC, add IsActive
 */
 BEGIN
 	SET NOCOUNT ON;
@@ -26,8 +27,12 @@ BEGIN
 		,ref.RefName
 		,ref.Value
 		,ref.[Description]
+		,ref.IsActive
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
 		INNER JOIN #tblRefName AS tbl WITH (NOLOCK) ON ref.RefName = tbl.RefName
+	WHERE ISNULL(@IsActive, ref.IsActive) = ref.IsActive
+	ORDER BY ref.IsActive DESC
+			,ref.Value
 
 	DROP TABLE #tblRefName
 END

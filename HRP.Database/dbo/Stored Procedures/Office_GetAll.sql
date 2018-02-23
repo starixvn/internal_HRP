@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/07/2018
--- Description:	Get all Office
--- =============================================
-Create PROCEDURE [dbo].Office_GetAll
+﻿
+CREATE PROCEDURE [dbo].[Office_GetAll]
 	@IsActive BIT = NULL
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Get all Office 
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

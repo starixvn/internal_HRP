@@ -1,10 +1,6 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/07/2018
--- Description:	Create new item of Office
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Office_Create]
-	@Code VARCHAR(50)
+	@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CityId SMALLINT
 	,@IsActive BIT  = 0
@@ -12,6 +8,15 @@ CREATE PROCEDURE [dbo].[Office_Create]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Create new item of Office
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;
@@ -30,7 +35,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Department
+	-- Check exists Office
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

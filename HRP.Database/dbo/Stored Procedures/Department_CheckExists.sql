@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/31/2018
--- Description:	Check department item exists
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Department_CheckExists]
 	@DepartmentId SMALLINT = 0
 	,@DivisionId SMALLINT = 0 
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 AS
+/*
+Created: 20180131@Raymond.Le
+Task: Check department item exists
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

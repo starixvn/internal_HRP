@@ -1,6 +1,8 @@
 ﻿
 CREATE PROCEDURE [dbo].[BankAccount_GetBankAccountsByEmpId]
-	@EmployeeId int
+	@EmployeeId INT,
+	@BankTypeId INT = NULL,
+	@IsActive BIT = NULL
 AS
 /*
 Created: 20180111@Hunter.Tran
@@ -15,10 +17,8 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT
-	ba.Id
+	ba.Id AS BankAccountId
 	, ba.EmployeeId
-	, e.FullName
-	, emp.CompanyId
 	, ba.BankType
 	, rr.Value AS BankTypeName
 	, ba.BankName
@@ -37,13 +37,7 @@ BEGIN
 	INNER JOIN dbo.RefResource AS rr WITH (NOLOCK) ON rr.ResourceId = ba.BankType AND rr.RefName = 'BankType'
 	INNER JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON rr1.ResourceId = ba.AccountType AND rr1.RefName = 'BankAccountType'
 	WHERE ba.EmployeeId = @EmployeeId
+	AND (@BankTypeId IS NULL OR ba.BankType = @BankTypeId)
+	AND (@IsActive IS NULL OR ba.IsActive = @IsActive)
 	ORDER BY rr.Value
-
-	SELECT CompanyId
-	FROM [dbo].Employment WITH(NOLOCK)
-	WHERE EmployeeId = @EmployeeId
-
-	SELECT FullName
-	FROM [dbo].Employee WITH(NOLOCK)
-	WHERE EmployeeId = @EmployeeId
 END

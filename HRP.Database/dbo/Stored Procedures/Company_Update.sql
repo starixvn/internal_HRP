@@ -1,17 +1,21 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 01/26/2018
--- Description:	Update Company BVI
--- =============================================
 CREATE PROCEDURE [dbo].[Company_Update] @CompanyId SMALLINT
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@UpdatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180126@Raymond.Le
+Task: Update Company BVI
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -22,14 +26,20 @@ BEGIN
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
 
+	CREATE TABLE #tblCheckExists (
+		[Count] SMALLINT
+	)
+
 	SET @startRun = GETDATE()
 
-	IF EXISTS (
-			SELECT 1
-			FROM dbo.Company
-			WHERE Code = @Code
-				AND CompanyId <> @CompanyId
-			)
+	-- Check exists Company
+	INSERT INTO #tblCheckExists(
+		[Count]
+	)
+	EXEC dbo.Company_CheckExists @CompanyId = @CompanyId,
+								@Code = @Code
+									
+	IF EXISTS (SELECT 1 FROM #tblCheckExists)
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'The ' + @Code + ' has already existed!'
@@ -78,4 +88,6 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
+
+	DROP TABLE #tblCheckExists 
 END

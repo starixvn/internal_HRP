@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/31/2018
--- Description:	Get all Cost Centers
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[CostCenter_GetAll]
 		@IsActive BIT = NULL
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Get all Cost Centers
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -25,7 +25,7 @@ Revisions:
 ---- 20180205@Hunter.Tran: Add ErrCode and ErrMsg to parameters
 ---- 20180206@Hunter.Tran: Check if account changing banktype / status
 ---- 20180207@Hunter.Tran: Allow Swift code to be null
----- 20180208@Hunter.Tran: Account Number can be duplicate for different bank types
+---- 20180208@Hunter.Tran: Account Number and Account Name can be duplicate for different bank types
 Param's Explanation:
 */
 
@@ -37,11 +37,12 @@ BEGIN
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
 			WHERE [AccountName] = @AccountName
 			AND [EmployeeId] = @EmployeeId
+			AND [BankType] = @BankType
 			AND [Id] <> @Id
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name must be unique for an Employee'
+		SET @ErrMsg = N'Account Name already exists. Please enter another value.'
 
 		RETURN
 	END
@@ -56,7 +57,7 @@ BEGIN
 			)
 	BEGIN
 		SET @ErrCode = 2
-		SET @ErrMsg = N'Account Number must be unique in each Bank Type for an Employee'
+		SET @ErrMsg = N'Account Number already exists. Please enter another value.'
 
 		RETURN
 	END

@@ -1,9 +1,5 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Create new item of Grade Level
--- =============================================
-Create PROCEDURE [dbo].JobGrade_Create
+﻿
+CREATE PROCEDURE [dbo].[JobGrade_Create]
 	@Name NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@GradeLevelId SMALLINT
@@ -12,6 +8,15 @@ Create PROCEDURE [dbo].JobGrade_Create
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Create new item of Job Grade
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 
 	SET NOCOUNT ON;
@@ -30,7 +35,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Department
+	-- Check exists Job Grade
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

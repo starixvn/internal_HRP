@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Get City By city Id
--- =============================================
-Create PROCEDURE [dbo].City_GetById @CityId SMALLINT
+CREATE PROCEDURE [dbo].[City_GetById] @CityId SMALLINT
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Get City By city Id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

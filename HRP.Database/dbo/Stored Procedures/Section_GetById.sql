@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Get Section by section id
--- =============================================
-Create PROCEDURE [dbo].[Section_GetById] @SectionId SMALLINT
+CREATE PROCEDURE [dbo].[Section_GetById] @SectionId SMALLINT
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Get Section by section id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

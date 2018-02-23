@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Get all Section
--- =============================================
-Create PROCEDURE [dbo].[Section_GetAll]
+﻿
+CREATE PROCEDURE [dbo].[Section_GetAll]
 		@IsActive BIT = NULL
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Get all Section
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

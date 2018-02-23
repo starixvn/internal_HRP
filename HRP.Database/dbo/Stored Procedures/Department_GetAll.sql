@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 01/30/2018
--- Description:	Get all department
--- =============================================
 CREATE PROCEDURE [dbo].[Department_GetAll] @IsActive BIT = NULL
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Get all department
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

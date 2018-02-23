@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 01/29/2018
--- Description:	Get all division
--- =============================================
+﻿
 CREATE PROCEDURE [dbo].[Division_GetAll]
 	@IsActive BIT = NULL
 AS
+/*
+Created: 20180131@Raymond.Le
+Task: Get all division
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -36,24 +36,24 @@ BEGIN
 	WHERE e.EmployeeId = @EmployeeId
 
 	SELECT epbs.EmployeeId
-		,epbs.CurrencyCode
+		,epbs.CurrencyId
 		,epbs.Salary
 		,epbs.WorkingDays
-		,epbs.EbankingCurrencyCode
+		,epbs.EbankingCurrencyId
 		,epbs.EbankingAmount
 		,epbs.EbankingAccountId
 		,eba.AccountName AS 'EbankingAccountName'
-		,epbs.DirectBanking1CurrencyCode
+		,epbs.DirectBanking1CurrencyId
 		,epbs.DirectBanking1Amount
 		,epbs.DirectBanking1AccountId
 		,epbs.DirectBanking1BankTypeId
 		,ISNULL(dba1.AccountName, rr1.Value) AS 'DirectBanking1AccountName'
-		,epbs.DirectBanking2CurrencyCode
+		,epbs.DirectBanking2CurrencyId
 		,epbs.DirectBanking2Amount
 		,epbs.DirectBanking2AccountId
 		,epbs.DirectBanking2BankTypeId
 		,ISNULL(dba2.AccountName, rr2.Value) AS 'DirectBanking2AccountName'
-		,epbs.CashCurrencyCode
+		,epbs.CashCurrencyId
 		,epbs.CashAmount
 		,epbs.CashAccountId
 		,epbs.AutoCalculateOn
@@ -81,36 +81,36 @@ BEGIN
 		AND rr2.RefName = 'ContraCoAccount'
 
 	SELECT epba.EmployeeId
-		,epba.CurrencyCode
-		,epba.DirectBanking1CurrencyCode
+		,epba.CurrencyId
+		,epba.DirectBanking1CurrencyId
 		,epba.DirectBanking1Amount
 		,epba.DirectBanking1AccountId
 		,epba.DirectBanking1BankTypeId
 		,ISNULL(dba1.AccountName, rr1.Value) AS 'DirectBanking1AccountName'
-		,epba.DirectBanking2CurrencyCode
+		,epba.DirectBanking2CurrencyId
 		,epba.DirectBanking2Amount
 		,epba.DirectBanking2AccountId
 		,epba.DirectBanking2BankTypeId
 		,ISNULL(dba2.AccountName, rr2.Value) AS 'DirectBanking2AccountName'
-		,epba.CashCurrencyCode
+		,epba.CashCurrencyId
 		,epba.CashAmount
 		,epba.CashAccountId
 		,epba.AutoCalculateOn
-		,epba.SubsistenceCurrencyCode
+		,epba.SubsistenceCurrencyId
 		,epba.SubsistenceAmount
-		,epba.HomePassageCurrencyCode
+		,epba.HomePassageCurrencyId
 		,epba.HomePassageAmount
-		,epba.HousingCurrencyCode
+		,epba.HousingCurrencyId
 		,epba.HousingAmount
-		,epba.MobilePhoneCurrencyCode
+		,epba.MobilePhoneCurrencyId
 		,epba.MobilePhoneAmount
-		,epba.HPICurrencyCode
+		,epba.HPICurrencyId
 		,epba.HPIAmount
-		,epba.DutyMealCurrencyCode
+		,epba.DutyMealCurrencyId
 		,epba.DutyMealAmount
-		,epba.SecondmentCurrencyCode
+		,epba.SecondmentCurrencyId
 		,epba.SecondmentAmount
-		,epba.OthersCurrencyCode
+		,epba.OthersCurrencyId
 		,epba.OthersAmount
 	FROM dbo.EmployeePayrollAllowance AS epba WITH (NOLOCK)
 		LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON epba.DirectBanking1AccountId = dba1.Id
@@ -126,9 +126,9 @@ BEGIN
 	WHERE epba.EmployeeId = @EmployeeId
 
 	SELECT epd.EmployeeId
-		,epd.RoomingChargesCurrencyCode
+		,epd.RoomingChargesCurrencyId
 		,epd.RoomingChargesAmount
-		,epd.FitnessFirstCurrencyCode
+		,epd.FitnessFirstCurrencyId
 		,epd.FitnessFirstAmount
 	FROM dbo.EmployeePayrollDeduction AS epd WITH (NOLOCK)
 	WHERE epd.EmployeeId = @EmployeeId

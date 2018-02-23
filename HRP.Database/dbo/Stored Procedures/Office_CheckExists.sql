@@ -1,13 +1,18 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/07/2018
--- Description:	Check Office item exists
--- =============================================
-Create PROCEDURE [dbo].Office_CheckExists
+﻿
+CREATE PROCEDURE [dbo].[Office_CheckExists]
 	@OfficeId SMALLINT = 0
 	,@CityId SMALLINT = 0 
-	,@Code VARCHAR(50)
+	,@Code NVARCHAR(50)
 AS
+/*
+Created: 20180207@Raymond.Le
+Task: Check Office item exists 
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

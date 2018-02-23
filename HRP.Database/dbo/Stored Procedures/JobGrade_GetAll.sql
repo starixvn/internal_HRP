@@ -1,11 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Get all Job grade
--- =============================================
-Create PROCEDURE [dbo].JobGrade_GetAll
+﻿
+CREATE PROCEDURE [dbo].[JobGrade_GetAll]
 	@IsActive BIT = NULL
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Get all Job grade
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

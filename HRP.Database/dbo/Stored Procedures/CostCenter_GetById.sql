@@ -1,11 +1,15 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/01/2018
--- Description:	Get CostCenter by cost center id
--- =============================================
-Create PROCEDURE [dbo].[CostCenter_GetById] @CostCenterId SMALLINT
+CREATE PROCEDURE [dbo].[CostCenter_GetById] @CostCenterId SMALLINT
 AS
+/*
+Created: 20180201@Raymond.Le
+Task: Get CostCenter by cost center id
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

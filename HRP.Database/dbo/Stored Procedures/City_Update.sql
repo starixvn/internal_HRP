@@ -1,10 +1,5 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Update city
--- =============================================
-CREATE PROCEDURE [dbo].City_Update @CityId SMALLINT
+CREATE PROCEDURE [dbo].[City_Update] @CityId SMALLINT
 	,@Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -12,6 +7,15 @@ CREATE PROCEDURE [dbo].City_Update @CityId SMALLINT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Update city
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -28,7 +32,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Grade Level
+	-- Check exists City
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)

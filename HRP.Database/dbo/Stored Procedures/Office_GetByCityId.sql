@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Offive_GetByCityId] @CityId SMALLINT
+CREATE PROCEDURE [dbo].[Office_GetByCityId] @CityId SMALLINT
 	,@IsActive BIT = NULL
 AS
 /*

@@ -14,8 +14,8 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON
 
-	SELECT c.FromCurrency
-		,c.ToCurrency
+	SELECT c.FromCurrencyId
+		,c.ToCurrencyId
 		,c.ExchangeRate
 	FROM dbo.CurrencyExchangeRate AS c WITH (NOLOCK)
 	WHERE MONTH(c.ExchangeRateMonth) = @Month

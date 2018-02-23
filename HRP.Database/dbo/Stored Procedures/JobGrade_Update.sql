@@ -1,10 +1,5 @@
 ﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/06/2018
--- Description:	Update Grade level
--- =============================================
-Create PROCEDURE [dbo].JobGrade_Update @JobGradeId SMALLINT
+CREATE PROCEDURE [dbo].[JobGrade_Update] @JobGradeId SMALLINT
 	,@Name NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -12,6 +7,15 @@ Create PROCEDURE [dbo].JobGrade_Update @JobGradeId SMALLINT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180206@Raymond.Le
+Task: Update Job Grade
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -28,7 +32,7 @@ BEGIN
 
 	SET @startRun = GETDATE()
 
-	-- Check exists Grade Level
+	-- Check exists Job Grade
 	INSERT INTO #tblCheckExists(
 		[Count]
 	)
