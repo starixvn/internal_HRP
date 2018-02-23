@@ -223,7 +223,7 @@
             return criteria;
         }
 
-        private void PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 0)
+        private void PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 1)
         {
             Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
 
@@ -234,9 +234,6 @@
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-
-            // Default bank type: e-Banking
-            viewModel.BankTypeId = 1;
         }
     }
 }

@@ -10,6 +10,9 @@
             BankAccountTypeResources = new List<ReferenceResourceModel>();
             IsActive = true;
             IsSuccessful = false;
+
+            // Default bank type: savings
+            AccountTypeId = 1;
         }
 
         public bool IsSuccessful { get; set; }
