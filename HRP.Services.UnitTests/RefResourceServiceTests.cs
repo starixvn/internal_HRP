@@ -2,16 +2,48 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Core.Services;
     using Criteria.RefResource;
-    using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Models;
+    using Models;
     using NSubstitute;
     using Xunit;
 
     public class RefResourceServiceTests
     {
         private IBaseService baseService;
+
+        #region GetReferenceResourcesByName
+        [Fact]
+        public void GetReferenceResourcesByName_ParamIsNull_ReturnEmptyListReferenceResources()
+        {
+            // Arrange
+            var service = GetRefResourceService();
+
+            // Act
+            var actual = service.GetReferenceResourcesByName(null);
+
+            // Assert
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void GetReferenceResourcesByName_ParamIsNotNull_ReturnAsExpectedReferenceResources()
+        {
+            // Arrange
+            var refName = "BankType";
+            var expected = FakeRefResources().Where(x => x.RefName == refName);
+
+            var service = GetRefResourceService();
+            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
+
+            // Act
+            var actual = service.GetReferenceResourcesByName(refName);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
 
         #region GetReferenceResourcesByNames
 
@@ -32,16 +64,14 @@
         public void GetReferenceResourcesByNames_ParamIsNotNull_ReturnAsExpectedReferenceResources()
         {
             // Arrange
-            var expected = new List<ReferenceResourceModel>
-            {
-                new ReferenceResourceModel { ResourceId = 1, RefName = "BankType", Value = "1", Description = "DAR" },
-                new ReferenceResourceModel { ResourceId = 2, RefName = "LocalCompany", Value = "1", Description = "NEX" }
-            };
-            var refNames = new string[]
+            var expected = FakeRefResources();
+
+            var refNames = new[]
             {
                 "BankType",
                 "BankAccountType"
             };
+
             var service = GetRefResourceService();
             baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
@@ -88,11 +118,7 @@
         public void FilterReferenceResources_RefResourcesIsNotNullAndRefNameIsValid_ReturnExpectedReferenceResources()
         {
             // Arrange
-            var refResources = new List<ReferenceResourceModel>
-            {
-                new ReferenceResourceModel { ResourceId = 1, RefName = "BankType", Value = "1", Description = "DAR" },
-                new ReferenceResourceModel { ResourceId = 2, RefName = "LocalCompany", Value = "1", Description = "NEX" }
-            };
+            var refResources = FakeRefResources();
             var refName = "BankType";
             var service = GetRefResourceService();
 
@@ -104,9 +130,34 @@
             Assert.Equal(refResources.First(), actual.First());
         }
 
+
+
         #endregion FilterReferenceResources
 
         #region Helpers
+
+        private static List<ReferenceResourceModel> FakeRefResources()
+        {
+            return new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel
+                {
+                    ResourceId = 1,
+                    RefName = "BankType",
+                    Value = "1",
+                    Description = "DAR",
+                    IsActive = true
+                },
+                new ReferenceResourceModel
+                {
+                    ResourceId = 2,
+                    RefName = "LocalCompany",
+                    Value = "1",
+                    Description = "NEX",
+                    IsActive = true
+                }
+            };
+        }
 
         private static IBaseService FakeBaseService()
         {

@@ -5,12 +5,13 @@
 
     public interface IRefResourceService
     {
-        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName);
+        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName, bool? isActive = true);
 
-        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names);
+        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names, bool? isActive = true);
 
         IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string refName);
+            string refName,
+            bool? isActive = true);
     }
 }

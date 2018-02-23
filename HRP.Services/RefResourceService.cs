@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Core.Services;
-    using Criteria;
     using Criteria.RefResource;
     using Interfaces;
     using Models;
@@ -17,11 +16,12 @@
             this.baseService = baseService;
         }
 
-        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName)
+        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName, bool? isActive = true)
         {
             var criteria = new GetRefResourceByNamesCriteria
             {
-                RefNames = resourceName
+                RefNames = resourceName,
+                IsActive = isActive
             };
 
             var refResources = baseService.GetData<ReferenceResourceModel>(criteria);
@@ -29,7 +29,7 @@
             return refResources;
         }
 
-        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names)
+        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names, bool? isActive = true)
         {
             IEnumerable<ReferenceResourceModel> refResources = new List<ReferenceResourceModel>();
 
@@ -38,7 +38,8 @@
                 var refNames = string.Join(",", names);
                 var criteria = new GetRefResourceByNamesCriteria
                 {
-                    RefNames = refNames
+                    RefNames = refNames,
+                    IsActive = isActive
                 };
 
                 refResources = baseService.GetData<ReferenceResourceModel>(criteria);
@@ -49,7 +50,8 @@
 
         public IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string refName)
+            string refName,
+            bool? isActive = true)
         {
             IEnumerable<ReferenceResourceModel> referenceResources = new List<ReferenceResourceModel>();
 
