@@ -1,16 +1,16 @@
 var bankAccountForm = {
-    init: function() {
+    init: function () {
         bankAccountForm.handleFormSubmittedInModal();
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
     },
 
-    handleFormSubmittedInModal: function() {
+    handleFormSubmittedInModal: function () {
 
         $("#dynamic-modals").on("hidden.bs.modal",
             ".modal",
-            function() {
+            function () {
                 $(this).remove();
                 $(".modal-backdrop").remove();
             });
@@ -19,7 +19,7 @@ var bankAccountForm = {
         if (isModal) {
             $(".modal-bank-account-form").on("submit",
                 "form",
-                function(e) {
+                function (e) {
                     e.preventDefault();
 
                     $.validator.unobtrusive.parse($(this));
@@ -29,7 +29,7 @@ var bankAccountForm = {
                         url: $(this).attr("action"),
                         method: $(this).attr("method"),
                         data: $(this).serialize(),
-                        success: function(result) {
+                        success: function (result) {
                             $(".modal-bank-account-form").modal("hide");
                             $("#dynamic-modals").html(result);
 
@@ -53,7 +53,7 @@ var bankAccountForm = {
         }
     },
 
-    handleFormSuccessed: function() {
+    handleFormSuccessed: function () {
         var isSuccessful = $("#is-successful").val();
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
         if (isSuccessful) {
@@ -61,30 +61,29 @@ var bankAccountForm = {
 
             setInterval(bankAccountForm.countdown, 1000);
 
-            setTimeout(function() {
-                    if (isModal) {
-                        $(".bank-account-form").closest(".modal").modal("hide");
-                    } else {
-                        window.location.href = $("#index-link").prop("href");
-                    }
-                },
+            setTimeout(function () {
+                if (isModal) {
+                    $(".bank-account-form").closest(".modal").modal("hide");
+                } else {
+                    window.location.href = $("#index-link").prop("href");
+                }
+            },
                 bankAccountForm.waitTime);
         }
     },
 
-    config: { attributes: true, childList: true, attributeFilter: ['class'] },
+    config: { attributes: true, childList: true },
 
     waitTime: 5000,
 
     countTimeInSeconds: 5,
 
-    mutationObserve: function() {
-        var targetNode = $(".bank-account-form .list-message-error")[0];
+    mutationObserve: function () {
+        var targetNode = $(".bank-account-form")[0];
 
         // Callback function to execute when mutations are observed
-        var callback = function(mutationsList) {
-            debugger;
-            mutationsList.forEach(function(object) {
+        var callback = function (mutationsList) {
+            mutationsList.forEach(function (object) {
                 if (object.type === "childList" || object.type === "attributes") {
                     bankAccountForm.checkFormError();
                 }
@@ -100,7 +99,7 @@ var bankAccountForm = {
         }
     },
 
-    checkFormError: function() {
+    checkFormError: function () {
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
             $(".bank-account-form .list-message-error").addClass("hidden");
@@ -109,7 +108,7 @@ var bankAccountForm = {
         }
     },
 
-    countdown: function() {
+    countdown: function () {
         bankAccountForm.countTimeInSeconds = bankAccountForm.countTimeInSeconds - 1;
         if (bankAccountForm.countTimeInSeconds <= 0) {
             clearInterval(bankAccountForm.countdown);
@@ -120,7 +119,7 @@ var bankAccountForm = {
         $(".bank-account-form .count-down-remaining").text(bankAccountForm.countTimeInSeconds);
     },
 
-    disableForm: function() {
+    disableForm: function () {
         $(".bank-account-form :input").attr("disabled", true).addClass("disabled");
         $(".bank-account-form button").attr("disabled", true).addClass("disabled");
         $(".bank-account-form .button").attr("disabled", true).addClass("disabled");
@@ -128,5 +127,5 @@ var bankAccountForm = {
 };
 
 $(document).ready(function () {
-    //bankAccountForm.init();
+    bankAccountForm.init();
 });
