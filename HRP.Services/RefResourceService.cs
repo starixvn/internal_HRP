@@ -4,6 +4,7 @@
     using System.Linq;
     using Core.Services;
     using Criteria;
+    using Criteria.RefResource;
     using Interfaces;
     using Models;
 

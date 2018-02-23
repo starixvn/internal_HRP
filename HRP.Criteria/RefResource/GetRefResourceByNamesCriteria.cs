@@ -1,4 +1,4 @@
-﻿namespace HRP.Criteria
+﻿namespace HRP.Criteria.RefResource
 {
     using Fanex.Data.Repository;
 

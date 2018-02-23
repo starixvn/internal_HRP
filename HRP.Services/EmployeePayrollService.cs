@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services
 {
+    using Criteria.RefResource;
     using Fanex.Data;
     using HRP.Core.Constants;
     using HRP.Core.Model;

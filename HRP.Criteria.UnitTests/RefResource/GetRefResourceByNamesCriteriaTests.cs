@@ -1,5 +1,6 @@
-﻿namespace HRP.Criteria.UnitTests
+﻿namespace HRP.Criteria.UnitTests.RefResource
 {
+    using Criteria.RefResource;
     using Xunit;
 
     public class GetRefResourceByNamesCriteriaTests

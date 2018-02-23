@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Criteria.RefResource;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
