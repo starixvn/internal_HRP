@@ -19,6 +19,7 @@
     public class AuthControllerTests
     {
         private IBaseService baseService;
+        private ISessionService sessionService;
         private IUserService userService;
 
         private readonly User user = new User
@@ -38,18 +39,36 @@
             IsSystemAdmin = false,
         };
 
+        #region Login
+
         [Fact]
-        public void LoginGet_ValidModel_ReturnExpectedViewResult()
+        public void LoginGet_WhenCalled_ExpectedClearSession()
         {
-            //Arrange
+            // Arrange
             var authController = GetAuthController();
 
-            //Act
+            // Act
             var actual = authController.Login();
 
-            //Assert
+            // Assert
+            sessionService.Received().ClearAll();
+        }
+
+        [Fact]
+        public void LoginGet_WhenCalled_ReturnExpectedViewResult()
+        {
+            // Arrange
+            var authController = GetAuthController();
+
+            // Act
+            var actual = authController.Login();
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
+            var viewModel = Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Null(viewModel.Username);
+            Assert.Null(viewModel.Password);
         }
 
         [Fact]
@@ -138,17 +157,23 @@
             Assert.Equal(1, viewResult.ViewData.ModelState.ErrorCount);
         }
 
+        #endregion Login
+
+        #region ForgotPassword
+
         [Fact]
-        public void ForgotPassword_NoModel_ReturnExpectedViewResult()
+        public void ForgotPasswordGet_WhenCalled_ReturnExpectedViewResult()
         {
-            //Arrange
+            // Arrange
             var authController = GetAuthController();
 
-            //Act
+            // Act
             var actual = authController.ForgotPassword();
 
-            //Assert
-            Assert.IsType<ViewResult>(actual);
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+            Assert.Null(viewResult.ViewData.Model);
         }
 
         [Fact]
@@ -180,17 +205,21 @@
             Assert.Equal(1, viewResult.ViewData.ModelState.ErrorCount);
         }
 
+        #endregion ForgotPassword
+
         [Fact]
         public void ConfirmationEmailSent_ReturnExpectedViewResult()
         {
-            //Arrange
+            // Arrange
             var authController = GetAuthController();
 
-            //Act
+            // Act
             var actual = authController.ConfirmationEmailSent();
 
-            //Assert
-            Assert.IsType<ViewResult>(actual);
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+            Assert.Null(viewResult.ViewData.Model);
         }
 
         [Fact]
@@ -327,7 +356,7 @@
         private AuthController GetAuthController()
         {
             baseService = FakeBaseService();
-            var sessionService = FakeSessionService();
+            sessionService = FakeSessionService();
             userService = FakeUserService();
             var controller = new AuthController(userService, sessionService, baseService);
 
