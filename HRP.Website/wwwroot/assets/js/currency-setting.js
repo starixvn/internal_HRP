@@ -3,6 +3,16 @@
         return Number(Math.round(value + 'e5') + 'e-5').toFixed(5);
     }
 
+    function resizeTableWrapper() {
+        var $wrapper = $('.dataTables_wrapper');
+        var $currencyTable = $('#currency-table');
+        if ($wrapper.width() > $currencyTable.width() + 20) {
+            $wrapper.width($currencyTable.width() + 20);
+        } else {
+            $wrapper.width('100%');
+        }
+    }
+
     function initDataTable() {
         $('#currency-table').DataTable({
             info: false,
@@ -13,8 +23,11 @@
             paging: false,
             scrollX: true,
             fixedColumns: true,
-            responsive: true
+            responsive: true,
+            initComplete: resizeTableWrapper
         });
+
+        $(window).resize(resizeTableWrapper);
     }
 
     function initModule() {
