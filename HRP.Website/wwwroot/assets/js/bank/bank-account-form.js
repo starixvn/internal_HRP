@@ -67,7 +67,7 @@ var bankAccountForm = {
                     } else {
                         var redirectLink = $("#redirect-link").prop("href");
                         if (redirectLink.length > 0) {
-                            window.location.href = redirectLink;
+                            window.location.replace(redirectLink);
                         } else {
                             window.location.href = $("#index-link").prop("href");
                         }
