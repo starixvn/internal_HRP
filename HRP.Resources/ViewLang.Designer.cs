@@ -385,15 +385,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company ID Change Reason.
-        /// </summary>
-        public static string CompanyIDChangeReason {
-            get {
-                return ResourceManager.GetString("CompanyIDChangeReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Company Local.
         /// </summary>
         public static string CompanyLocal {
@@ -1101,6 +1092,15 @@ namespace HRP.Resources {
         public static string IDNo {
             get {
                 return ResourceManager.GetString("IDNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID No. Change Reason.
+        /// </summary>
+        public static string IDNoChangeReason {
+            get {
+                return ResourceManager.GetString("IDNoChangeReason", resourceCulture);
             }
         }
         
@@ -1897,7 +1897,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type1.
+        ///   Looks up a localized string similar to Type 1.
         /// </summary>
         public static string Type1 {
             get {
@@ -1906,7 +1906,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type2.
+        ///   Looks up a localized string similar to Type 2.
         /// </summary>
         public static string Type2 {
             get {

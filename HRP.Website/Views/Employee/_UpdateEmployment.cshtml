@@ -9,7 +9,7 @@
 }
 
 <form id="updateEmploymentForm" class="form-information" name="updateEmploymentForm"
-      asp-action="UpdateEmployment" asp-controller="EmployeeManagement" data-ajax-method="post" data-ajax="true"
+      asp-action="UpdateEmployment" asp-controller="Employee" data-ajax-method="post" data-ajax="true"
       data-ajax-success="updateEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
     @Html.Partial("_ValidationUpdateEmployment", Model)
     <div class="-has-icon msg-success hidden">
@@ -55,7 +55,7 @@
                 <div class="component">
                     <label class="text" asp-for="CompanyReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CompanyReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.CompanyChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="component">
                     <label class="text" asp-for="LocalCompanyReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="LocalCompanyReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.LocalCompanyChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -94,7 +94,7 @@
                 <div class="component">
                     <label class="text" asp-for="JobTitleReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobTitleReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.JobTitleChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -115,7 +115,7 @@
                 <div class="component">
                     <label class="text" asp-for="LocalJobTitleReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="LocalJobTitleReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.LocalJobTitleChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -137,7 +137,7 @@
                 <div class="component">
                     <label class="text" asp-for="GroupDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="GroupDateReasonId"
-                            asp-items="@(new SelectList(Model.GroupDateReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.GroupDateChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -157,7 +157,7 @@
                 <div class="component">
                     <label class="text" asp-for="CompanyDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CompanyDateReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.CompanyDateChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -193,7 +193,7 @@
                 <div class="component">
                     <label class="text" asp-for="IDNoReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="IDNoReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.IDNoChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -248,7 +248,7 @@
                 <div class="component">
                     <label class="text" asp-for="JobCategoryReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobCategoryReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.JobCategoryChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -278,7 +278,7 @@
                 <div class="component">
                     <label class="text" asp-for="JobGradeReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="JobGradeReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.JobGradeChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -301,7 +301,7 @@
                 <div class="component">
                     <label class="text" asp-for="DivisionReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DivisionReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.DivisionChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -324,7 +324,7 @@
                 <div class="component">
                     <label class="text" asp-for="DepartmentReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DepartmentReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.DepartmentChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -348,7 +348,7 @@
                 <div class="component">
                     <label class="text" asp-for="CostCenterReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CostCenterReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.CostCenterChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -371,7 +371,7 @@
                 <div class="component">
                     <label class="text" asp-for="SectionReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="SectionReasonId"
-                            asp-items="@(new SelectList(Model.CommonReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.SectionChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>

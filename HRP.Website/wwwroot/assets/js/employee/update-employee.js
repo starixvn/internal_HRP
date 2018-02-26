@@ -10,7 +10,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/Update/PersonalDetails',
+                    url: commonFunctions.rootURL + 'Employee/Update/PersonalDetails',
                     dataType: 'json',
                     contentType: false,
                     data: formData,

@@ -10,7 +10,7 @@ namespace HRP.Repositories
     using HRP.Repositories.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EmployeeManagementRepository : IEmployeeManagementRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         public CreateEmployeeViewModel GetPersonalDetails(ICriteria criteria)
         {
@@ -105,8 +105,19 @@ namespace HRP.Repositories
                         employment.EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus);
                         employment.WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1);
                         employment.WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2);
-                        employment.CommonReasons = GetRefResourceByName(refResources, ReferenceResource.CommonReasons);
-                        employment.GroupDateReasons = GetRefResourceByName(refResources, ReferenceResource.GroupDateReasons);
+                        employment.CompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyBVIChangeReason);
+                        employment.LocalCompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyLocalChangeReason);
+                        employment.JobTitleChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobTitleChangeReason);
+                        employment.LocalJobTitleChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobTitleLocalChangeReason);
+                        employment.GroupDateChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DateCommencementChangeReasonOfGroup);
+                        employment.CompanyDateChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DateCommencementChangeReasonOfCompany);
+                        employment.IDNoChangeReasons = GetRefResourceByName(refResources, ReferenceResource.IDNoChangeReason);
+                        employment.JobCategoryChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobCategoryChangeReason);
+                        employment.JobGradeChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobGradeChangeReason);
+                        employment.DivisionChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DivisionChangeReason);
+                        employment.DepartmentChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DepartmentChangeReason);
+                        employment.CostCenterChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CostCenterChangeReason);
+                        employment.SectionChangeReasons = GetRefResourceByName(refResources, ReferenceResource.SectionChangeReason);
 
                         return employment;
                     }

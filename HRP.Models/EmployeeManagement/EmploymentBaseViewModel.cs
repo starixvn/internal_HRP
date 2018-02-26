@@ -50,7 +50,7 @@
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(CompanyCode),
+        [Remote("CheckEmployeeCodeExisted", "Employee", AdditionalFields = nameof(CompanyCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public virtual string EmployeeCode { get; set; }
 

@@ -19,11 +19,11 @@
     using Services.Interfaces;
     using Xunit;
 
-    public class EmployeeManagementControllerTests
+    public class EmployeeControllerTests
     {
         private IBaseService baseService;
         private ISessionService sessionService;
-        private IEmployeeService employeeManagementService;
+        private IEmployeeService employeeService;
         private IEmployeePayrollService payrollService;
 
         [Fact]
@@ -53,10 +53,10 @@
                 DepartmentIds = "1,2",
                 EmploymentStatusIds = "1,2"
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            employeeManagementService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
-            employeeManagementService.GetEmployeesAsync(Arg.Any<EmployeeManagementViewModel>()).Returns(employees);
+            employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
+            employeeService.GetEmployeesAsync(Arg.Any<EmployeeManagementViewModel>()).Returns(employees);
 
             //Act
             var actual = await employeeController.Index();
@@ -81,8 +81,8 @@
         {
             // Arrange
             var viewName = "CreateEmployee";
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetDataToCreateEmployeeAsync().Returns(new CreateEmployeeViewModel());
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToCreateEmployeeAsync().Returns(new CreateEmployeeViewModel());
 
             // Act
             var actual = await employeeController.CreateEmployee();
@@ -99,8 +99,8 @@
             // Arrange
             var model = new CreateEmployeeViewModel();
             var commandResult = new CommandResult();
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
 
             // Act
             var actual = employeeController.CreatePersonalDetails(model);
@@ -121,8 +121,8 @@
             // Arrange
             var model = new CreateEmployeeViewModel();
             var commandResult = new CommandResult { Code = 0 };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
             employeeController.ModelState.AddModelError("nickname", "required");
 
             // Act
@@ -144,8 +144,8 @@
             // Arrange
             var model = new CreateEmployeeViewModel();
             var commandResult = new CommandResult { Code = 0 };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
 
             // Act
             var actual = employeeController.CreatePersonalDetails(model);
@@ -163,8 +163,8 @@
         public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetPersonalDetails(Arg.Any<int>()).Returns(x => null);
+            var employeeController = GetEmployeeController();
+            employeeService.GetPersonalDetails(Arg.Any<int>()).Returns(x => null);
 
             // Act
             var result = employeeController.UpdateEmployee(0);
@@ -180,8 +180,8 @@
         {
             // Arrange
             var expected = new CreateEmployeeViewModel();
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetPersonalDetails(Arg.Any<int>()).Returns(expected);
+            var employeeController = GetEmployeeController();
+            employeeService.GetPersonalDetails(Arg.Any<int>()).Returns(expected);
 
             // Act
             var result = employeeController.UpdateEmployee(99);
@@ -197,8 +197,8 @@
             // Arrange
             var model = new CreateEmployeeViewModel();
             var commandResult = new CommandResult();
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
 
             // Act
             var result = await employeeController.UpdatePersonalDetails(model);
@@ -220,8 +220,8 @@
             // Arrange
             var model = new CreateEmployeeViewModel();
             var commandResult = new CommandResult { Code = 0 };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
             employeeController.ModelState.AddModelError("nickname", "required");
 
             // Act
@@ -248,9 +248,9 @@
                 Message = "Successful."
             };
             var model = new CreateEmployeeViewModel();
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
-            employeeManagementService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
+            employeeService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
 
             // Act
             var result = await employeeController.UpdatePersonalDetails(model);
@@ -273,8 +273,8 @@
             //Arrange
             var viewName = "_CreateEmployment";
             var expected = new CreateEmploymentViewModel();
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetDataToCreateEmployment().Returns(new CreateEmploymentViewModel());
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToCreateEmployment().Returns(new CreateEmploymentViewModel());
 
             //Act
             var actual = employeeController.CreateEmployment();
@@ -290,7 +290,7 @@
         {
             // Arrange
             var model = new CreateEmploymentViewModel();
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             employeeController.ModelState.AddModelError("company", "required");
 
             // Act
@@ -315,8 +315,8 @@
             {
                 Code = 0
             };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.CreateEmployeeAsync(Arg.Any<CreateEmploymentViewModel>()).Returns(expected);
+            var employeeController = GetEmployeeController();
+            employeeService.CreateEmployeeAsync(Arg.Any<CreateEmploymentViewModel>()).Returns(expected);
 
             // Act
             var actual = await employeeController.CreateEmployment(model);
@@ -335,8 +335,8 @@
         {
             // Arrange
             var expected = "_UpdateEmployment";
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
             // Act
             var actual = employeeController.UpdateEmployment(1);
@@ -350,8 +350,8 @@
         public void UpdateEmployment_ViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(x => null);
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(x => null);
 
             // Act
             var result = employeeController.UpdateEmployment(1);
@@ -371,8 +371,8 @@
             {
                 EmployeeId = employeeId
             };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
 
             // Act
             var actual = employeeController.UpdateEmployment(employeeId);
@@ -387,7 +387,7 @@
         {
             // Arrange
             var model = new UpdateEmploymentViewModel();
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             employeeController.ModelState.AddModelError("company", "required");
 
             // Act
@@ -412,8 +412,8 @@
             {
                 Code = 0
             };
-            var employeeController = GetEmployeeManagementController();
-            employeeManagementService.UpdateEmploymentAsync(Arg.Any<UpdateEmploymentViewModel>()).Returns(expected);
+            var employeeController = GetEmployeeController();
+            employeeService.UpdateEmploymentAsync(Arg.Any<UpdateEmploymentViewModel>()).Returns(expected);
 
             // Act
             var actual = await employeeController.UpdateEmployment(model);
@@ -430,7 +430,7 @@
         {
             // Arrange
             var expected = true;
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataEntityAsync<bool>(Arg.Any<CheckEmpCodeExistedCriteria>()).Returns(expected);
 
             // Act
@@ -449,7 +449,7 @@
             {
                 new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(expected);
 
             // Act
@@ -468,7 +468,7 @@
             {
                 new Department { DepartmentId = 1, DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<Department>(Arg.Any<GetDepartmentByDivisionIdCriteria>()).Returns(expected);
 
             // Act
@@ -487,7 +487,7 @@
             {
                 new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<Section>(Arg.Any<GetSectionByCostCenterIdCriteria>()).Returns(expected);
 
             // Act
@@ -506,7 +506,7 @@
             {
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterDepartmentIdCriteria>()).Returns(expected);
 
             // Act
@@ -525,7 +525,7 @@
             {
                 new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
 
             // Act
@@ -544,7 +544,7 @@
             {
                 new GradeLevel { GradeLevelId = 1, Name = "SM", Description = "Senior Management", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<GradeLevel>(Arg.Any<GetGradeLevelByJobCategoryIdCriteria>()).Returns(expected);
 
             // Act
@@ -560,7 +560,7 @@
         {
             // Arrange
             var expected = new List<EmployeeSuggestionViewModel>();
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(expected);
 
             // Actual
@@ -579,7 +579,7 @@
             {
                 new JobGrade { JobGradeId = 1, Name = "A1", Description = "A1", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<JobGrade>(Arg.Any<GetJobGradeByGradeLevelIdCriteria>()).Returns(expected);
 
             // Act
@@ -598,7 +598,7 @@
             {
                 new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<City>(Arg.Any<GetCityByCountryIdCriteria>()).Returns(expected);
 
             // Act
@@ -617,7 +617,7 @@
             {
                 new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
             };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             baseService.GetDataAsync<Office>(Arg.Any<GetOfficeByCityIdCriteria>()).Returns(expected);
 
             // Act
@@ -633,11 +633,11 @@
         {
             // Arrange
             var employeeId = 0;
-            var employeeManagementController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(x => null);
 
             // Act
-            var actual = employeeManagementController.Payroll(employeeId);
+            var actual = employeeController.Payroll(employeeId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -650,7 +650,7 @@
         {
             // Arrange
             var employeeId = 1;
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             var viewModel = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
@@ -696,9 +696,9 @@
                 Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
             };
             var expected = new CommandResult { Code = 0 };
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             employeeController.Url = Substitute.For<IUrlHelper>();
-            employeeController.Url.Action().ReturnsForAnyArgs("/EmployeeManagement/Index");
+            employeeController.Url.Action().ReturnsForAnyArgs("/Employee/Index");
             payrollService.UpdatePayroll(model, sessionService.UserId).Returns(expected);
 
             // Act
@@ -708,7 +708,7 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected.IsSuccessful, jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Equal(expected.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
-            Assert.Equal("/EmployeeManagement/Index", jsonResult.Value.GetType().GetProperty("redirectTo").GetValue(jsonResult.Value));
+            Assert.Equal("/Employee/Index", jsonResult.Value.GetType().GetProperty("redirectTo").GetValue(jsonResult.Value));
         }
 
         [Fact]
@@ -716,7 +716,7 @@
         {
             // Arrange
             var model = new EmployeePayrollViewModel();
-            var employeeController = GetEmployeeManagementController();
+            var employeeController = GetEmployeeController();
             employeeController.ModelState.AddModelError("employee", "error");
 
             // Act
@@ -744,7 +744,7 @@
             return service;
         }
 
-        private static IEmployeeService FakeEmployeeManagementService()
+        private static IEmployeeService FakeEmployeeService()
         {
             var service = Substitute.For<IEmployeeService>();
 
@@ -758,14 +758,14 @@
             return service;
         }
 
-        private EmployeeManagementController GetEmployeeManagementController()
+        private EmployeeController GetEmployeeController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            employeeManagementService = FakeEmployeeManagementService();
+            employeeService = FakeEmployeeService();
             payrollService = FakeEmployeePayrollServicee();
 
-            var controller = new EmployeeManagementController(baseService, employeeManagementService, payrollService, sessionService);
+            var controller = new EmployeeController(baseService, employeeService, payrollService, sessionService);
 
             return controller;
         }

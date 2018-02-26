@@ -442,10 +442,10 @@
     <value>Tax ID No.</value>
   </data>
   <data name="Type1" xml:space="preserve">
-    <value>Type1</value>
+    <value>Type 1</value>
   </data>
   <data name="Type2" xml:space="preserve">
-    <value>Type2</value>
+    <value>Type 2</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Date</value>
@@ -726,8 +726,8 @@
   <data name="CompanyBVIChangeReason" xml:space="preserve">
     <value>Company BVI Change Reason</value>
   </data>
-  <data name="CompanyIDChangeReason" xml:space="preserve">
-    <value>Company ID Change Reason</value>
+  <data name="IDNoChangeReason" xml:space="preserve">
+    <value>ID No. Change Reason</value>
   </data>
   <data name="CompanyLocalChangeReason" xml:space="preserve">
     <value>Company Local Change Reason</value>

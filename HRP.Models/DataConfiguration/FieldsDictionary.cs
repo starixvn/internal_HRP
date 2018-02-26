@@ -142,13 +142,13 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.DateCommencementChangeReasonOfGroup }
             },
-            { (int)FieldType.CompanyIDChangeReason, new Field   {
-                    FieldId = (int)FieldType.CompanyIDChangeReason,
-                    FieldName = ViewLang.CompanyIDChangeReason,
+            { (int)FieldType.IDNoChangeReason, new Field   {
+                    FieldId = (int)FieldType.IDNoChangeReason,
+                    FieldName = ViewLang.IDNoChangeReason,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.CompanyIDChangeReason }
+                    RefName = ReferenceResource.IDNoChangeReason }
             },
             { (int)FieldType.EmploymentType, new Field   {
                     FieldId = (int)FieldType.EmploymentType,

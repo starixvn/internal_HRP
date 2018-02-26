@@ -8,7 +8,6 @@
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
@@ -19,12 +18,12 @@
     using NSubstitute;
     using Xunit;
 
-    public class EmployeeManagementServiceTests
+    public class EmployeeServiceTests
     {
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
-        private IEmployeeManagementRepository employeeRepository;
+        private IEmployeeRepository employeeRepository;
 
         #region GetDataFilterForIndexPage
 
@@ -34,7 +33,7 @@
         public void GetDataFilterForIndexPage_UserIdIsInvalid_ReturnDefaultViewModel(int userId)
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             sessionService.UserId = userId;
 
             // Act
@@ -63,7 +62,7 @@
                 IsHostCreateEmployee = true,
                 DepartmentIds = "1,2"
             };
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             employeeRepository.GetDataFilterForIndexPage(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
 
             // Act
@@ -99,7 +98,7 @@
                     EditProfilePolicy = Policy.Read
                 }
             };
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.GetDataAsync<EmployeeBasicInfo>(Arg.Any<GetAllEmployeeCriteria>()).Returns(employees);
 
             // Act
@@ -119,7 +118,7 @@
             // Arrange
             var expected = new CommandResult();
             var viewModel = new CreateEmploymentViewModel();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             cryptoService.Encrypt(Arg.Any<string>()).Returns("aa");
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
@@ -140,7 +139,7 @@
                 Message = "Successful!"
             };
             var viewModel = new CreateEmploymentViewModel { ProfilePicture = FakePictureProfile() };
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             cryptoService.Encrypt(Arg.Any<string>()).Returns("aa");
             baseService.ExecuteNonQueryAsync(Arg.Any<CreateEmployeeCriteria>()).Returns(expected);
 
@@ -165,7 +164,7 @@
                 Message = "Successful!"
             };
             var viewModel = new CreateEmployeeViewModel();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
             // Act
@@ -185,7 +184,7 @@
                 Message = "Successful!"
             };
             var viewModel = new CreateEmployeeViewModel { ProfilePicture = FakePictureProfile() };
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeeCriteria>()).Returns(expected);
 
             // Act
@@ -205,7 +204,7 @@
         public void GetPersonalDetails_EmployeeIdIsInvalid_ReturnNull(int employeeId)
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.GetPersonalDetails(employeeId);
@@ -219,7 +218,7 @@
         {
             // Arrange
             var expected = new CreateEmployeeViewModel();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             employeeRepository.GetPersonalDetails(Arg.Any<GetEmployeeByIdCriteria>()).Returns(expected);
 
             // Act
@@ -238,7 +237,7 @@
         {
             // Arrange
             var expected = new List<ReferenceResourceModel>();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
             // Act
@@ -291,7 +290,7 @@
         public void CheckValidPicture_NullParam_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.CheckValidPicture(null);
@@ -307,7 +306,7 @@
         {
             // Arrange
             var fileSize = (1024 * 1024) * 5;
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakePictureProfile(fileSize));
@@ -322,7 +321,7 @@
         public void CheckValidPicture_InvalidImageType_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakeTxtFile());
@@ -337,7 +336,7 @@
         public void CheckValidPicture_WithValidImage_ReturnExpectedCommandResult()
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.CheckValidPicture(FakePictureProfile());
@@ -357,7 +356,7 @@
         {
             // Arrange
             var expected = new CreateEmploymentViewModel();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             sessionService.UserId = -1;
 
             // Act
@@ -406,7 +405,7 @@
             {
                 Companies = new List<Company> { new Company { CompanyId = 1, Code = "SMS" } }
             };
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             employeeRepository.GetDataToCreateEmployment(Arg.Any<GetDataToCreateEmploymentCriteria>()).Returns(expected);
 
             // Act
@@ -455,7 +454,7 @@
         public void GetDataToUpdateEmployment_EmployeeIdIsInvalid_ReturnNull()
         {
             // Arrange
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
 
             // Act
             var actual = employeeService.GetDataToUpdateEmployment(-1);
@@ -471,7 +470,7 @@
             var pdfPassword = "1234";
             var isHost = true;
             var expected = new UpdateEmploymentViewModel();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             employeeRepository.GetDataToUpdateEmployment(Arg.Any<GetDataToUpdateEmploymentCriteria>()).Returns(expected);
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(isHost);
             cryptoService.Decrypt(Arg.Any<string>()).Returns(pdfPassword);
@@ -525,7 +524,7 @@
             // Arrange
             var model = new UpdateEmploymentViewModel();
             var expected = new CommandResult();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmploymentCriteria>()).Returns(expected);
 
             // Act
@@ -541,7 +540,7 @@
             // Arrange
             var model = new UpdateEmploymentViewModel();
             var expected = new CommandResult();
-            var employeeService = GetEmployeeManagementService();
+            var employeeService = GetEmployeeService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmploymentCriteria>()).Returns(expected);
 
             // Act
@@ -578,12 +577,12 @@
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private static IEmployeeManagementRepository FakeEmployeeRepository()
+        private static IEmployeeRepository FakeEmployeeRepository()
         {
-            return Substitute.For<IEmployeeManagementRepository>();
+            return Substitute.For<IEmployeeRepository>();
         }
 
-        private EmployeeService GetEmployeeManagementService()
+        private EmployeeService GetEmployeeService()
         {
             var hostingEnviroment = FakeHostingEnvironment();
             sessionService = FakeSessionService();

@@ -49,7 +49,7 @@ var employeeList = (function ($) {
                 var term = request.term;
 
                 $.ajax({
-                    url: commonFunctions.rootURL + 'EmployeeManagement/GetEmployeeSuggestionByName',
+                    url: commonFunctions.rootURL + 'Employee/GetEmployeeSuggestionByName',
                     dataType: 'json',
                     data: {
                         name: term

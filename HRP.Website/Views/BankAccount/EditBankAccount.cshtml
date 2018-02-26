@@ -23,7 +23,7 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
-    <li><a asp-action="Index" asp-controller="EmployeeManagement">@ViewLang.EmployeeList</a></li>
+    <li><a asp-action="Index" asp-controller="Employee">@ViewLang.EmployeeList</a></li>
     <li>
         <a id="index-link" asp-action="EmployeeBankAccounts" asp-controller="BankAccount" asp-route-EmployeeId="@Model.EmployeeId">
             @string.Format(ViewLang.EditBankDetailsOfEmployee, Model.NickName)

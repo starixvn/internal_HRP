@@ -78,7 +78,7 @@
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeRequired")]
         [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeMaxLength")]
-        [Remote("CheckEmployeeCodeExisted", "EmployeeManagement", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
+        [Remote("CheckEmployeeCodeExisted", "Employee", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeeCodeUnique")]
         public override string EmployeeCode { get; set; }
 
@@ -192,8 +192,30 @@
 
         public IEnumerable<CostCenter> CostCenters { get; set; } = new List<CostCenter>();
 
-        public IEnumerable<ReferenceResourceModel> CommonReasons { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<ReferenceResourceModel> CompanyChangeReasons { get; set; } = new List<ReferenceResourceModel>();
 
-        public IEnumerable<ReferenceResourceModel> GroupDateReasons { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<ReferenceResourceModel> LocalCompanyChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> JobTitleChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> LocalJobTitleChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> IDNoChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> GroupDateChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> CompanyDateChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> JobCategoryChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> JobGradeChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> DivisionChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> DepartmentChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> CostCenterChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+
+        public IEnumerable<ReferenceResourceModel> SectionChangeReasons { get; set; } = new List<ReferenceResourceModel>();
     }
 }

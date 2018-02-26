@@ -8,7 +8,6 @@
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
@@ -26,20 +25,20 @@
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
-        private readonly IEmployeeManagementRepository employeeRepository;
+        private readonly IEmployeeRepository employeeRepository;
 
         public EmployeeService(
             IHostingEnvironment hostingEnvironment,
             IBaseService baseService,
             ICryptoService cryptoService,
             ISessionService sessionService,
-            IEmployeeManagementRepository employeeRepository = null)
+            IEmployeeRepository employeeRepository = null)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;
             this.cryptoService = cryptoService;
             this.sessionService = sessionService;
-            this.employeeRepository = employeeRepository ?? new EmployeeManagementRepository();
+            this.employeeRepository = employeeRepository ?? new EmployeeRepository();
         }
 
         public Employee GetEmployeeBasicInfoById(int employeeId)

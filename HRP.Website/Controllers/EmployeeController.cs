@@ -17,12 +17,12 @@
     using Services.Interfaces;
 
     [HRPAuthorize]
-    public class EmployeeManagementController : BaseController
+    public class EmployeeController : BaseController
     {
         private readonly IEmployeeService employeeService;
         private readonly IEmployeePayrollService payrollService;
 
-        public EmployeeManagementController(
+        public EmployeeController(
             IBaseService baseService,
             IEmployeeService employeeService,
             IEmployeePayrollService payrollService,
@@ -70,7 +70,7 @@
             return View("CreateEmployee", viewModel);
         }
 
-        [Route("EmployeeManagement/Create/PersonalDetails")]
+        [Route("Employee/Create/PersonalDetails")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreatePersonalDetails(CreateEmployeeViewModel employee)
@@ -90,7 +90,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        [Route("EmployeeManagement/Create/Employment")]
+        [Route("Employee/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public IActionResult CreateEmployment()
@@ -100,7 +100,7 @@
             return PartialView("_CreateEmployment", viewModel);
         }
 
-        [Route("EmployeeManagement/Create/Employment")]
+        [Route("Employee/Create/Employment")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(CreateEmploymentViewModel viewModel)
@@ -129,7 +129,7 @@
             return View("UpdateEmployee", viewModel);
         }
 
-        [Route("EmployeeManagement/Update/PersonalDetails")]
+        [Route("Employee/Update/PersonalDetails")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdatePersonalDetails(CreateEmployeeViewModel employee)
@@ -153,7 +153,7 @@
             return Json(new { isSuccessful = false, errors });
         }
 
-        [Route("EmployeeManagement/Update/Employment")]
+        [Route("Employee/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
         public IActionResult UpdateEmployment(int employeeId)
@@ -168,7 +168,7 @@
             return PartialView("_UpdateEmployment", viewModel);
         }
 
-        [Route("EmployeeManagement/Update/Employment")]
+        [Route("Employee/Update/Employment")]
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateEmployment(UpdateEmploymentViewModel viewModel)

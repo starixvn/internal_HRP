@@ -21,7 +21,7 @@ var updateEmployment = (function ($) {
         var employeeId = $('#personalDetailsForm #EmployeeId').val();
         $.ajax({
             type: 'GET',
-            url: commonFunctions.rootURL + 'EmployeeManagement/Update/Employment',
+            url: commonFunctions.rootURL + 'Employee/Update/Employment',
             dataType: 'html',
             data: {
                 employeeId: employeeId

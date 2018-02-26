@@ -59,7 +59,7 @@ var createEmployment = (function ($) {
 
                 $.ajax({
                     type: 'POST',
-                    url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
+                    url: commonFunctions.rootURL + 'Employee/Create/Employment',
                     dataType: 'json',
                     contentType: false,
                     data: formData,
@@ -89,7 +89,7 @@ var createEmployment = (function ($) {
     function loadEmploymentForm() {
         $.ajax({
             type: 'GET',
-            url: commonFunctions.rootURL + 'EmployeeManagement/Create/Employment',
+            url: commonFunctions.rootURL + 'Employee/Create/Employment',
             dataType: 'html',
             success: function (data) {
                 $employmentContentTab.html(data);

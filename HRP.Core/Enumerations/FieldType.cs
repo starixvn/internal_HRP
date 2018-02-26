@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HRP.Core.Enumerations
+﻿namespace HRP.Core.Enumerations
 {
+    using System.ComponentModel.DataAnnotations;
+
     public enum FieldType
     {
         [Display(Name = "Company Local")]
@@ -31,8 +31,8 @@ namespace HRP.Core.Enumerations
         [Display(Name = "Date Commencement Change Reason - Group")]
         DateCommencementChangeReasonOfGroup = 9,
 
-        [Display(Name = "Company ID Change Reason")]
-        CompanyIDChangeReason = 10,
+        [Display(Name = "ID No. Change Reason")]
+        IDNoChangeReason = 10,
 
         [Display(Name = "Employment Type")]
         EmploymentType = 11,

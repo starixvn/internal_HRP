@@ -10,11 +10,11 @@
     using NSubstitute;
     using Xunit;
 
-    public class EmployeeManagementRepositoryTests
+    public class EmployeeRepositoryTests
     {
         private readonly IObjectDb objectDb;
 
-        public EmployeeManagementRepositoryTests()
+        public EmployeeRepositoryTests()
         {
             DbSettingProviderManager
             .StartTestingSession()
@@ -32,7 +32,7 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(x => null);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
@@ -49,7 +49,7 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             var employee = new CreateEmployeeViewModel();
             multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(employee);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
@@ -71,7 +71,7 @@
             };
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefault<CreateEmployeeViewModel>().Returns(employee);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
@@ -120,7 +120,7 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             var companies = GetCompanyForTest();
             var jobCategories = GetJobCategoryForTest();
             var countries = GetCountryForTest();
@@ -198,7 +198,7 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(x => null);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
@@ -215,7 +215,7 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             var employment = new UpdateEmploymentViewModel();
             multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(employment);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
@@ -240,7 +240,7 @@
             var companies = GetCompanyForTest();
             var jobCategories = GetJobCategoryForTest();
             var countries = GetCountryForTest();
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefault<UpdateEmploymentViewModel>().Returns(employment);
             multiResultReader.Read<Company>().Returns(companies);
             multiResultReader.Read<JobCategory>().Returns(jobCategories);
@@ -322,8 +322,19 @@
             Assert.Empty(actual.EmploymentStatuses);
             Assert.Empty(actual.WorkPermitType1s);
             Assert.Empty(actual.WorkPermitType2s);
-            Assert.Empty(actual.CommonReasons);
-            Assert.Empty(actual.GroupDateReasons);
+            Assert.Empty(actual.CompanyChangeReasons);
+            Assert.Empty(actual.LocalCompanyChangeReasons);
+            Assert.Empty(actual.JobTitleChangeReasons);
+            Assert.Empty(actual.LocalJobTitleChangeReasons);
+            Assert.Empty(actual.GroupDateChangeReasons);
+            Assert.Empty(actual.CompanyDateChangeReasons);
+            Assert.Empty(actual.IDNoChangeReasons);
+            Assert.Empty(actual.JobCategoryChangeReasons);
+            Assert.Empty(actual.JobGradeChangeReasons);
+            Assert.Empty(actual.DivisionChangeReasons);
+            Assert.Empty(actual.DepartmentChangeReasons);
+            Assert.Empty(actual.CostCenterChangeReasons);
+            Assert.Empty(actual.SectionChangeReasons);
         }
 
         #endregion GetDataToUpdateEmployment
@@ -342,7 +353,7 @@
             multiResultReader.ReadFirst<EmployeeManagementViewModel>().Returns(viewModel);
             multiResultReader.Read<MultiSelectViewModel>().Returns(multiSelects);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
-            var repository = new EmployeeManagementRepository();
+            var repository = new EmployeeRepository();
 
             // Act
             var actual = repository.GetDataFilterForIndexPage(criteria);

@@ -242,7 +242,7 @@
   <ItemGroup>
     <Compile Include="BankAccountServiceTests.cs" />
     <Compile Include="DataConfigurationServiceTests.cs" />
-    <Compile Include="EmployeeManagementServiceTests.cs" />
+    <Compile Include="EmployeeServiceTests.cs" />
     <Compile Include="EmployeePayrollServiceTests.cs" />
     <Compile Include="FunctionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

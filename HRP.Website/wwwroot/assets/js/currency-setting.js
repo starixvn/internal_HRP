@@ -3,7 +3,21 @@
         return Number(Math.round(value + 'e5') + 'e-5').toFixed(5);
     }
 
-    function init() {
+    function initDataTable() {
+        $('#currency-table').DataTable({
+            info: false,
+            ordering: false,
+            filter: false,
+            scrollY: '355px',
+            scrollCollapse: true,
+            paging: false,
+            scrollX: true,
+            fixedColumns: true,
+            responsive: true
+        });
+    }
+
+    function initModule() {
         var baseCurrency = Number($('#base-currency').val());
 
         if ($('#CanUpdate').val() === 'True') {
@@ -96,18 +110,6 @@
             });
         }
 
-        $('#currency-table').DataTable({
-            info: false,
-            ordering: false,
-            filter: false,
-            scrollY: '355px',
-            scrollCollapse: true,
-            paging: false,
-            scrollX: true,
-            fixedColumns: true,
-            responsive: true
-        });
-
         var calendar = $('.datetimepicker');
         calendar.datetimepicker({
             viewMode: 'months',
@@ -121,10 +123,15 @@
     }
 
     return {
-        init: init
+        initModule: initModule,
+        initDataTable: initDataTable
     };
 }(jQuery, commonFunctions));
 
 $(document).ready(function () {
-    currencySetting.init();
+    currencySetting.initModule();
 });
+
+if (document.readyState === 'loading') {
+    currencySetting.initDataTable();
+}

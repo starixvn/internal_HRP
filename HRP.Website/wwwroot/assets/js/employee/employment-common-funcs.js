@@ -19,7 +19,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetDivisionByCompanyId',
+                url: commonFunctions.rootURL + 'Employee/GetDivisionByCompanyId',
                 dataType: 'json',
                 data: {
                     companyId: companyId
@@ -53,7 +53,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetDepartmentByDivisionId',
+                url: commonFunctions.rootURL + 'Employee/GetDepartmentByDivisionId',
                 dataType: 'json',
                 data: {
                     divisionId: divisionId
@@ -86,7 +86,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetCostCenterDepartmentId',
+                url: commonFunctions.rootURL + 'Employee/GetCostCenterDepartmentId',
                 dataType: 'json',
                 data: {
                     departmentId: departmentId
@@ -118,7 +118,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetSectionByCostCenterId',
+                url: commonFunctions.rootURL + 'Employee/GetSectionByCostCenterId',
                 dataType: 'json',
                 data: {
                     costCenterId: costCenterId
@@ -148,7 +148,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetGradeLevelByJobCategoryId',
+                url: commonFunctions.rootURL + 'Employee/GetGradeLevelByJobCategoryId',
                 dataType: 'json',
                 data: {
                     jobCategoryId: jobCategoryId
@@ -180,7 +180,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetJobGradeByGradeLevelId',
+                url: commonFunctions.rootURL + 'Employee/GetJobGradeByGradeLevelId',
                 dataType: 'json',
                 data: {
                     gradeLevelId: gradeLevelId
@@ -210,7 +210,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetCityByCountryId',
+                url: commonFunctions.rootURL + 'Employee/GetCityByCountryId',
                 dataType: 'json',
                 data: {
                     countryId: countryId
@@ -242,7 +242,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'EmployeeManagement/GetOfficeByCityId',
+                url: commonFunctions.rootURL + 'Employee/GetOfficeByCityId',
                 dataType: 'json',
                 data: {
                     cityId: cityId
@@ -350,7 +350,7 @@ var employmentCommonFuncs = (function ($) {
                 }
 
                 $.ajax({
-                    url: commonFunctions.rootURL + 'EmployeeManagement/GetEmployeeSuggestion',
+                    url: commonFunctions.rootURL + 'Employee/GetEmployeeSuggestion',
                     dataType: 'json',
                     data: {
                         idNo: term
