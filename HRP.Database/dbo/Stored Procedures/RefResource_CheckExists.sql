@@ -1,13 +1,16 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/08/2018
--- Description:	Check RefResource item existed
--- =============================================
-CREATE PROCEDURE [dbo].[RefResource_CheckExists]
-	@ResourceId SMALLINT = 0
+﻿CREATE PROCEDURE [dbo].[RefResource_CheckExists] @ResourceId SMALLINT = 0
 	,@RefName VARCHAR(100)
 	,@Value NVARCHAR(50)
 AS
+/*
+Created: 20180208@Raymond.Le
+Task: Check RefResource item existed
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -1,12 +1,15 @@
-﻿-- =============================================
--- Author:		Raymond.Le
--- Create date: 02/08/2018
--- Description:	Get RefResource by id and Name
--- =============================================
-Create PROCEDURE [dbo].RefResource_GetByNameAndId 
-	@ResourceId SMALLINT = NULL
+﻿CREATE PROCEDURE [dbo].RefResource_GetByNameAndId @ResourceId SMALLINT = NULL
 	,@RefName VARCHAR(100)
 AS
+/*
+Created: 20180208@Raymond.Le
+Task: Get RefResource by id and Name
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
@@ -17,6 +20,5 @@ BEGIN
 		,IsActive
 	FROM dbo.RefResource WITH (NOLOCK)
 	WHERE RefName = @RefName
-	AND ResourceId = @ResourceId
-
+		AND ResourceId = @ResourceId
 END

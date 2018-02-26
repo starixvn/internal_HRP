@@ -1,10 +1,4 @@
-﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/08/2018
--- Description:	Update RefResource
--- =============================================
-CREATE PROCEDURE [dbo].[RefResource_Update] 
+﻿CREATE PROCEDURE [dbo].[RefResource_Update] 
 	@RefName VARCHAR(100)
 	,@ResourceId SMALLINT
 	,@Value NVARCHAR(50)
@@ -14,6 +8,15 @@ CREATE PROCEDURE [dbo].[RefResource_Update]
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180208@Raymond.Le
+Task: Update RefResource
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 

@@ -1,10 +1,4 @@
-﻿
--- =============================================
--- Author:		Raymond.Le
--- Create date: 02/08/2018
--- Description:	Create new item of RefResource
--- =============================================
-CREATE PROCEDURE [dbo].[RefResource_Create] @RefName VARCHAR(100)
+﻿CREATE PROCEDURE [dbo].[RefResource_Create] @RefName VARCHAR(100)
 	,@Value NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -12,6 +6,15 @@ CREATE PROCEDURE [dbo].[RefResource_Create] @RefName VARCHAR(100)
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
+/*
+Created: 20180208@Raymond.Le
+Task: Create new item of RefResource
+DB: bodb_HRP
+Original:
+
+Revisions:
+Param's Explanation:
+*/
 BEGIN
 	SET NOCOUNT ON;
 
