@@ -42,52 +42,55 @@
 <input type="hidden" asp-for="CanUpdate" />
 
 <form id="currency-form" asp-action="Edit">
-    <table id="currency-table" class="table table-bordered table-hover table-responsive">
-        <thead>
-            <tr>
-                <th>@ViewLang.Currency</th>
-                @foreach (var currency in Model.Currencies)
+    <div class="table-responsive">
+        <table id="currency-table" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>@ViewLang.Currency</th>
+                    @foreach (var currency in Model.Currencies)
                 {
                     <th>@currency.CurrencyCode</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var fromCurrency in Model.Currencies)
+            }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fromCurrency in Model.Currencies)
             {
                 var isDisabled = false;
                 var disabled = Model.CanUpdate ? string.Empty : "disabled";
                 <tr>
                     <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
                     @foreach (var toCurrency in Model.Currencies)
+                {
+                    var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrency.CurrencyId && x.ToCurrencyId == toCurrency.CurrencyId);
+                    if (Model.CanUpdate)
                     {
-                        var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrency.CurrencyId && x.ToCurrencyId == toCurrency.CurrencyId);
-                        if (Model.CanUpdate)
+                        if (isDisabled || fromCurrency.CurrencyCode == "VND")
                         {
-                            if (isDisabled || fromCurrency.CurrencyCode == "VND")
-                            {
-                                disabled = "disabled";
-                            }
-
-                            if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
-                            {
-                                disabled = string.Empty;
-                            }
-                            isDisabled = true;
+                            disabled = "disabled";
                         }
 
-                        <td>
-                            <input class="input rate" @disabled type="text" value="@rate?.ExchangeRate"
-                                   data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
-                                   name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
-                                   data-inputmask="'alias': 'numeric', 'groupSeparator': '', 'autoGroup': true, 'digits': 5, 'digitsOptional': false, 'placeholder': '', 'allowMinus': false">
-                        </td>
-
+                        if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
+                        {
+                            disabled = string.Empty;
+                        }
+                        isDisabled = true;
                     }
-                </tr>
+
+                    <td>
+                        <input class="input rate" @disabled type="text" value="@rate?.ExchangeRate"
+                               data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
+                               name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode"
+                               data-inputmask="'alias': 'numeric', 'groupSeparator': '', 'autoGroup': true, 'digits': 5, 'digitsOptional': false, 'placeholder': '', 'allowMinus': false">
+                    </td>
+
             }
-        </tbody>
-    </table>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+
 </form>
 
 @if (Model.CanUpdate)

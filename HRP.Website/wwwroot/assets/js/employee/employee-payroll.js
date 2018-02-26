@@ -475,18 +475,6 @@
                 }
             }
         });
-        var settings = validator.settings;
-        //settings._errorClass = settings.errorClass;
-        //Object.defineProperty(settings, 'errorClass', {
-        //    get: function () {
-        //        return settings._errorClass;
-        //    },
-
-        //    set: function (value) {
-        //        debugger; // sets breakpoint
-        //        settings._errorClass = value;
-        //    }
-        //});
     }
 
     return {
