@@ -21,34 +21,37 @@
     <div class="-has-icon msg-error hidden" id="create-user-error-alert">
     </div>
 
+    <div class="list-message-error hidden" id="validation-summary">
+        <span asp-validation-for="Username" class="message"></span>
+        <span asp-validation-for="Password" class="message"></span>
+        <span asp-validation-for="FullName" class="message"></span>
+        <span asp-validation-for="PhoneNumber" class="message"></span>
+        <span asp-validation-for="Email" class="message"></span>
+    </div>
+
     <label asp-for="Username" class="text -has-required"></label>
     <div class="group-control">
         <input type="text" class="control" asp-for="Username" />
-        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
 
     <label asp-for="Password" class="text -has-required"></label>
     <div class="group-control">
         <input type="password" class="control" asp-for="Password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <label asp-for="FullName" class="text"></label>
     <div class="group-control">
         <input type="text" class="control" asp-for="FullName" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
 
     <label asp-for="PhoneNumber" class="text"></label>
     <div class="group-control">
         <input type="text" class="control" asp-for="PhoneNumber" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
     <label asp-for="Email" class="text -has-required"></label>
     <div class="group-control">
         <input type="text" class="control" asp-for="Email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="group-control -option-check">
         <label asp-for="IsActive" class="text pull-left"></label>
@@ -68,9 +71,9 @@
     <div class="note">
         <p>@ViewLang.CreateUserNoteTitle</p>
         <ul class="list">
-            @{ 
+            @{
                 var notes = ViewLang.CreateUserNotes.Split(';');
-                foreach(var note in notes)
+                foreach (var note in notes)
                 {
                     <li>@note</li>
                 }

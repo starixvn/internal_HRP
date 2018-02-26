@@ -13,6 +13,19 @@
         });
 
         $form.reset();
+
+        var targetNode = document.getElementById('validation-summary');
+      
+        var callback = function (mutationsList) {
+            if ($('.field-validation-error', targetNode).length > 0) {
+                $(targetNode).removeClass('hidden');
+            } else {
+                $(targetNode).addClass('hidden');
+            }
+        };
+
+        var observer = new MutationObserver(callback);
+        observer.observe(targetNode, { childList: true, subtree: true });      
     });
 
     var displayValidationErrorMessages = function (errors) {
