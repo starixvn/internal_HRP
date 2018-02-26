@@ -20,8 +20,6 @@
                     success: onUpdateSuccess,
                     error: commonFunctions.handleAjaxError
                 });
-            } else {
-                commonFunctions.showValidationSummary($form);
             }
         });
     }
@@ -33,7 +31,6 @@
             $('#EmploymentHeaderTab').trigger('click');
         } else {
             $form.validate().showErrors(response.errors);
-            commonFunctions.showValidationSummary($form);
         }
     }
 

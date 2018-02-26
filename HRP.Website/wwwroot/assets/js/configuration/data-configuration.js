@@ -74,26 +74,23 @@
 
     function initValidationForm($form) {
         $.validator.unobtrusive.parse($form);
+        commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
 
         var $validator = $form.validate();
         $validator.settings.highlight = function (element, errorClass, validClass) {
             var $element = $(element);
             $element.addClass(errorClass).removeClass(validClass);
-            handleDisplayValidationSummary($form);
 
             if ($element.hasClass('js-select2')) {
-                $element.next().find('.select2-selection')
-                    .addClass('select2-has-error');
+                $element.next().find('.select2-selection').addClass('select2-has-error');
             }
         };
         $validator.settings.unhighlight = function (element, errorClass, validClass) {
             var $element = $(element);
             $element.removeClass(errorClass).addClass(validClass);
-            handleDisplayValidationSummary($form);
 
             if ($element.hasClass('js-select2')) {
-                $element.next().find('.select2-selection')
-                    .removeClass('select2-has-error');
+                $element.next().find('.select2-selection').removeClass('select2-has-error');
             }
         };
 
@@ -106,15 +103,6 @@
                 $this.valid();
             }
         });
-    }
-
-    function handleDisplayValidationSummary($form) {
-        var errorTotal = $form.find('.list-message-error .field-validation-error').length;
-        if (errorTotal === 0) {
-            commonFunctions.hideValidationSummary($form);
-        } else {
-            commonFunctions.showValidationSummary($form);
-        }
     }
 
     function registerEventClickIconEditItem() {
@@ -323,7 +311,6 @@
         } else {
             if (response.errors) {
                 $createItemForm.validate().showErrors(response.errors); //todo test here
-                commonFunctions.showValidationSummary($createItemForm);
             } else {
                 commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
@@ -340,7 +327,6 @@
         } else {
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here
-                commonFunctions.showValidationSummary($editItemForm);
             } else {
                 commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }

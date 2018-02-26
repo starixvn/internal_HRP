@@ -13,30 +13,36 @@
         }, 5000);
     }
 
-    function showSuccessMessage($element) {
-        $element.removeClass('hidden');
-
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            $element.addClass('hidden');
-        }, 5000);
-    }
-
     function showSuccessMessage($element, message) {
-        $element.text(message).removeClass('hidden');
-
         clearTimeout(timer);
-        timer = setTimeout(function () {
-            $element.text('').addClass('hidden');
-        }, 5000);
+
+        if (message) {
+            $element.text(message).removeClass('hidden');
+
+            timer = setTimeout(function () {
+                $element.text('').addClass('hidden');
+            }, 5000);
+        } else {
+            $element.removeClass('hidden');
+
+            timer = setTimeout(function () {
+                $element.addClass('hidden');
+            }, 5000);
+        }
     }
 
-    function showValidationSummary($form) {
-        $form.find('.list-message-error').removeClass('hidden');
-    }
+    function showHideValidationSummary(targetNode) {
+        var callback = function () {
+            if ($('.field-validation-error', targetNode).length > 0) {
+                $(targetNode).removeClass('hidden');
+            } else {
+                $(targetNode).addClass('hidden');
+            }
+        };
 
-    function hideValidationSummary($form) {
-        $form.find('.list-message-error').addClass('hidden');
+        var config = { childList: true, subtree: true };
+        var observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
     }
 
     function initDatetimepicker($form) {
@@ -118,8 +124,7 @@
         handleAjaxError: handleAjaxError,
         showErrorMessage: showErrorMessage,
         showSuccessMessage: showSuccessMessage,
-        showValidationSummary: showValidationSummary,
-        hideValidationSummary: hideValidationSummary,
+        showHideValidationSummary: showHideValidationSummary,
         initDatetimepicker: initDatetimepicker,
         getUrlParameter: getUrlParameter,
         registerEventGoBack: registerEventGoBack,

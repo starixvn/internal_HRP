@@ -9,8 +9,6 @@ var updateEmployment = (function ($) {
 
             if ($updateEmploymentForm.valid()) {
                 $updateEmploymentForm.submit();
-            } else {
-                commonFunctions.showValidationSummary($updateEmploymentForm);
             }
 
             $('.content-container').scrollTop(0);
@@ -71,7 +69,6 @@ var updateEmployment = (function ($) {
             } else {
                 if (response.errors) {
                     $updateEmploymentForm.validate().showErrors(response.errors);
-                    commonFunctions.showValidationSummary($updateEmploymentForm);
                 } else {
                     commonFunctions.showErrorMessage($updateEmploymentForm.find('.msg-error'), response.message);
                 }

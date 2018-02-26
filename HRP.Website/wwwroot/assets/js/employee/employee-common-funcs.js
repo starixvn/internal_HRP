@@ -60,17 +60,6 @@
         });
     }
 
-    function registerEventFormChange($form) {
-        $form.on('change keyup click', function () {
-            var errorTotal = $form.find('.list-message-error .field-validation-error').length;
-            if (errorTotal === 0) {
-                commonFunctions.hideValidationSummary($form);
-            } else {
-                commonFunctions.showValidationSummary($form);
-            }
-        });
-    }
-
     function initSelect2($form) {
         $form.find('.js-select2-hide-searchbox').select2({
             placeholder: '--Please select--',
@@ -113,7 +102,7 @@
 
     function initForm($form) {
         registerEventChangePicture($form);
-        registerEventFormChange($form);
+        commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         initSelect2($form);
         reparseform($form);
         commonFunctions.registerEventGoBack($form.find('.js-btnCancel'));

@@ -480,17 +480,6 @@ var employmentCommonFuncs = (function ($) {
         });
     }
 
-    function registerEventFormChange($form) {
-        $form.on('change keyup click', function () {
-            var errorTotal = $form.find('.list-message-error .field-validation-error').length;
-            if (errorTotal === 0) {
-                commonFunctions.hideValidationSummary($form);
-            } else {
-                commonFunctions.showValidationSummary($form);
-            }
-        });
-    }
-
     function initForm($form) {
         currentDate = $form.find('#CurrentDate').val();
         $groupStartDateElement = $form.find('#GroupStartDate');
@@ -538,7 +527,7 @@ var employmentCommonFuncs = (function ($) {
         initSearchAutocomplete($('#NoneOrIDNoBVIBonus'), $('#EPA_FullNameBVIBonus'), $('#EPA_NicknameBVIBonus'));
         initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NicknameLocalBonus'));
 
-        registerEventFormChange($form);
+        commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         commonFunctions.registerEventGoBack($btnCancel);
     }
 

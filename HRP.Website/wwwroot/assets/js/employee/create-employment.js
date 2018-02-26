@@ -49,8 +49,6 @@ var createEmployment = (function ($) {
             employmentCommonFuncs.initSelect2($createEmploymentForm);
 
             if ($(this).valid()) {
-                commonFunctions.hideValidationSummary($createEmploymentForm);
-
                 var formData = new FormData(document.forms['personalDetailsForm']);
                 var poData = jQuery(document.forms['createEmploymentForm']).serializeArray();
                 for (var i = 0; i < poData.length; i++) {
@@ -70,7 +68,6 @@ var createEmployment = (function ($) {
                         } else {
                             if (response.errors) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
-                                commonFunctions.showValidationSummary($createEmploymentForm);
                             } else {
                                 commonFunctions.showErrorMessage($createEmploymentForm.find('.msg-error'), response.message);
                             }
@@ -78,8 +75,6 @@ var createEmployment = (function ($) {
                     },
                     error: commonFunctions.handleAjaxError
                 });
-            } else {
-                commonFunctions.showValidationSummary($createEmploymentForm);
             }
 
             $('.content-container').scrollTop(0);

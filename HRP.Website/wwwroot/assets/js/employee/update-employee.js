@@ -18,8 +18,6 @@
                     success: onUpdateSuccess,
                     error: commonFunctions.handleAjaxError
                 });
-            } else {
-                commonFunctions.showValidationSummary($form);
             }
         });
     }
@@ -30,7 +28,6 @@
         } else {
             if (response.errors) {
                 $form.validate().showErrors(response.errors);
-                commonFunctions.showValidationSummary($form);
             } else {
                 commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
             }
