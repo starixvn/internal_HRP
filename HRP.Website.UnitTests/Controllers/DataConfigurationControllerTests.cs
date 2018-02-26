@@ -89,12 +89,12 @@
         }
 
         [Fact]
-        public async Task CreateCompanyBVIPost_CompanyItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateCompanyBVIPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
-            var item = MockSimpleItem();
+            var item = new SimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCompanyBVIAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.CreateCompanyBVI(item);
@@ -104,17 +104,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task CreateCompanyBVIPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateCompanyBVIPost_ModelStateIsValidAndCreateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCompanyBVIAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.CreateCompanyBVIAsync(item).Returns(commandResult);
 
             // Act
@@ -124,7 +123,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, item.ItemName), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateCompanyBVIPost_ModelStateIsValidAndCreateCompanyBVIUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateCompanyBVIAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCompanyBVI(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         [Fact]
@@ -164,12 +183,12 @@
         }
 
         [Fact]
-        public async Task UpdateCompanyBVIPost_CompanyItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateCompanyBVIPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
-            var item = MockSimpleItem();
+            var item = new SimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCompanyBVIAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.UpdateCompanyBVI(item);
@@ -179,17 +198,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task UpdateCompanyBVIPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateCompanyBVIPost_ModelStateIsValidAndUpdateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCompanyBVIAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.UpdateCompanyBVIAsync(item).Returns(commandResult);
 
             // Act
@@ -199,7 +217,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyBVIPos_ModelStateIsValidAndCreateCompanyBVIUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateCompanyBVIAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCompanyBVI(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         #endregion CompanyBVI
@@ -1792,7 +1830,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task GetAllRefResourceItem_ServiceGetSimpleItemList_ReturnPartialViewWithSimpleItemTableViewModel(int fieldId)
         {
             // Arrange
@@ -1818,7 +1856,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public void CreateRefResourceItem_WhenCalled_ReturnPartialViewWithCreateSimpleItemViewModel(int fieldId)
         {
             // Arrange
@@ -1837,7 +1875,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task CreateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
         {
             // Arrange
@@ -1861,7 +1899,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task CreateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
         {
             // Arrange
@@ -1884,7 +1922,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task UpdateRefResourceItem_ServiceGetRefResourceItem_ReturnPartialViewWithUpdateSimpleItemViewModel(int fieldId)
         {
             // Arrange
@@ -1924,7 +1962,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task UpdateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
         {
             // Arrange
@@ -1948,7 +1986,7 @@
 
         [Theory]
         [InlineData(35)]
-        [InlineData(36)]
+        [InlineData(34)]
         public async Task UpdateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
         {
             // Arrange
