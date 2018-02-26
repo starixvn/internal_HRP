@@ -726,8 +726,8 @@
   <data name="CompanyBVIChangeReason" xml:space="preserve">
     <value>Company BVI Change Reason</value>
   </data>
-  <data name="IDNoChangeReason" xml:space="preserve">
-    <value>ID No. Change Reason</value>
+  <data name="EmployeeIDChangeReason" xml:space="preserve">
+    <value>Employee ID Change Reason</value>
   </data>
   <data name="CompanyLocalChangeReason" xml:space="preserve">
     <value>Company Local Change Reason</value>
@@ -779,5 +779,11 @@
   </data>
   <data name="DataConfiguration" xml:space="preserve">
     <value>Data Configuration</value>
+  </data>
+  <data name="TypeOfBankAccount" xml:space="preserve">
+    <value>Type of Bank Account</value>
+  </data>
+  <data name="DateCommencementChangeReason" xml:space="preserve">
+    <value>Date Commencement Change Reason</value>
   </data>
 </root>

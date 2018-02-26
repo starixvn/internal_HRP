@@ -583,6 +583,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Commencement Change Reason.
+        /// </summary>
+        public static string DateCommencementChangeReason {
+            get {
+                return ResourceManager.GetString("DateCommencementChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Commencement Change Reason - Company.
         /// </summary>
         public static string DateCommencementChangeReasonOfCompany {
@@ -862,6 +871,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee ID Change Reason.
+        /// </summary>
+        public static string EmployeeIDChangeReason {
+            get {
+                return ResourceManager.GetString("EmployeeIDChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee List.
         /// </summary>
         public static string EmployeeList {
@@ -1092,15 +1110,6 @@ namespace HRP.Resources {
         public static string IDNo {
             get {
                 return ResourceManager.GetString("IDNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ID No. Change Reason.
-        /// </summary>
-        public static string IDNoChangeReason {
-            get {
-                return ResourceManager.GetString("IDNoChangeReason", resourceCulture);
             }
         }
         
@@ -1920,6 +1929,15 @@ namespace HRP.Resources {
         public static string TypeOfAccount {
             get {
                 return ResourceManager.GetString("TypeOfAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of Bank Account.
+        /// </summary>
+        public static string TypeOfBankAccount {
+            get {
+                return ResourceManager.GetString("TypeOfBankAccount", resourceCulture);
             }
         }
         

@@ -28,11 +28,11 @@
         [Display(Name = "Job Title Change Reason")]
         JobTitleChangeReason = 8,
 
-        [Display(Name = "Date Commencement Change Reason - Group")]
-        DateCommencementChangeReasonOfGroup = 9,
+        [Display(Name = "Date Commencement Change Reason")]
+        DateCommencementChangeReason = 9,
 
-        [Display(Name = "ID No. Change Reason")]
-        IDNoChangeReason = 10,
+        [Display(Name = "Employee ID Change Reason")]
+        EmployeeIDChangeReason = 10,
 
         [Display(Name = "Employment Type")]
         EmploymentType = 11,
@@ -94,8 +94,8 @@
         [Display(Name = "Work Permit Type 2")]
         WorkPermitType2 = 30,
 
-        [Display(Name = "Bank Account Type")]
-        BankAccountType = 31,
+        [Display(Name = "Type Of Bank Account")]
+        TypeOfBankAccount = 31,
 
         [Display(Name = "Payment Method - Cash")]
         PaymentMethodCash = 32,
@@ -107,9 +107,6 @@
         CompanyBVIChangeReason = 34,
 
         [Display(Name = "Company Local Change Reason")]
-        CompanyLocalChangeReason = 35,
-
-        [Display(Name = "Date Commencement Change Reason - Company")]
-        DateCommencementChangeReasonOfCompany = 36
+        CompanyLocalChangeReason = 35
     }
 }

@@ -389,20 +389,17 @@
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
                     <select class="control js-select2 js-search-suggestion" asp-for="CountryId"
-                            asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))">
-                    </select>
+                            asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))"></select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
                     <select class="control js-select2 js-search-suggestion" asp-for="CityId"
-                            asp-items="@(new SelectList(Model.Cities, "CityId", "Code"))">
-                    </select>
+                            asp-items="@(new SelectList(Model.Cities, "CityId", "Code"))"></select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
                     <select class="control js-select2 js-search-suggestion" asp-for="OfficeId"
-                            asp-items="@(new SelectList(Model.Offices, "OfficeId", "Code"))">
-                    </select>
+                            asp-items="@(new SelectList(Model.Offices, "OfficeId", "Code"))"></select>
                 </div>
             </div>
 

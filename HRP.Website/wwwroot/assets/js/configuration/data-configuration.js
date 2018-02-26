@@ -142,35 +142,31 @@
     function registerEventClickCreateNewItem() {
         $('.js-createNewItem').on('click', function () {
             var $createItemModalContent = $(domElement.CreateItemModalContent);
+            var fieldId = $(domElement.SelectedField).val();
 
-            if (!$.trim($createItemModalContent.html())) {
-                var fieldId = $(domElement.SelectedField).val();
-                $.ajax({
-                    type: 'GET',
-                    url: commonFunctions.rootURL + $(this).data('url-create'),
-                    dataType: 'html',
-                    data: { "fieldId": fieldId },
-                    success: function (data) {
-                        $createItemModalContent.html(data);
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + $(this).data('url-create'),
+                dataType: 'html',
+                data: { "fieldId": fieldId },
+                success: function (data) {
+                    $createItemModalContent.html(data);
 
-                        registerEventChangeCompanyBVI();
-                        registerEventChangeDivision();
-                        registerEventChangeDepartment();
-                        registerEventChangeCostCenter();
-                        registerEventChangeJobCategory();
-                        registerEventChangeCountry();
+                    registerEventChangeCompanyBVI();
+                    registerEventChangeDivision();
+                    registerEventChangeDepartment();
+                    registerEventChangeCostCenter();
+                    registerEventChangeJobCategory();
+                    registerEventChangeCountry();
 
-                        var $createForm = $('#createItemForm');
-                        initSelect2($createForm, '100%');
-                        initValidationForm($createForm);
+                    var $createForm = $('#createItemForm');
+                    initSelect2($createForm, '100%');
+                    initValidationForm($createForm);
 
-                        $(domElement.CreateItemModal).modal('show');
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
-            } else {
-                $(domElement.CreateItemModal).modal('show');
-            }
+                    $(domElement.CreateItemModal).modal('show');
+                },
+                error: commonFunctions.handleAjaxError
+            });
         });
     }
 

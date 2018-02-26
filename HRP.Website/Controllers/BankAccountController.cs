@@ -21,7 +21,7 @@
         private readonly string[] refNames =
         {
             ReferenceResource.BankType,
-            ReferenceResource.BankAccountType
+            ReferenceResource.TypeOfBankAccount
         };
 
         public BankAccountController(
@@ -142,7 +142,7 @@
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             return View(viewModel);
         }
@@ -168,7 +168,7 @@
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             return View(viewModel);
         }
@@ -246,7 +246,7 @@
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
+            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
         }

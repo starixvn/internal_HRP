@@ -134,21 +134,21 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.JobTitleChangeReason }
             },
-            { (int)FieldType.DateCommencementChangeReasonOfGroup, new Field   {
-                    FieldId = (int)FieldType.DateCommencementChangeReasonOfGroup,
-                    FieldName = ViewLang.DateCommencementChangeReasonOfGroup,
+            { (int)FieldType.DateCommencementChangeReason, new Field   {
+                    FieldId = (int)FieldType.DateCommencementChangeReason,
+                    FieldName = ViewLang.DateCommencementChangeReason,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.DateCommencementChangeReasonOfGroup }
+                    RefName = ReferenceResource.DateCommencementChangeReason }
             },
-            { (int)FieldType.IDNoChangeReason, new Field   {
-                    FieldId = (int)FieldType.IDNoChangeReason,
-                    FieldName = ViewLang.IDNoChangeReason,
+            { (int)FieldType.EmployeeIDChangeReason, new Field   {
+                    FieldId = (int)FieldType.EmployeeIDChangeReason,
+                    FieldName = ViewLang.EmployeeIDChangeReason,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.IDNoChangeReason }
+                    RefName = ReferenceResource.EmployeeIDChangeReason }
             },
             { (int)FieldType.EmploymentType, new Field   {
                     FieldId = (int)FieldType.EmploymentType,
@@ -230,13 +230,13 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.WorkPermitType2 }
             },
-            { (int)FieldType.BankAccountType, new Field   {
-                    FieldId = (int)FieldType.BankAccountType,
-                    FieldName = ViewLang.BankAccountType,
+            { (int)FieldType.TypeOfBankAccount, new Field   {
+                    FieldId = (int)FieldType.TypeOfBankAccount,
+                    FieldName = ViewLang.TypeOfBankAccount,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.BankAccountType }
+                    RefName = ReferenceResource.TypeOfBankAccount }
             },
             { (int)FieldType.PaymentMethodCash, new Field   {
                     FieldId = (int)FieldType.PaymentMethodCash,
@@ -269,14 +269,6 @@
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.CompanyLocalChangeReason }
-            },
-            { (int)FieldType.DateCommencementChangeReasonOfCompany, new Field   {
-                    FieldId = (int)FieldType.DateCommencementChangeReasonOfCompany,
-                    FieldName = ViewLang.DateCommencementChangeReasonOfCompany,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.DateCommencementChangeReasonOfCompany }
             },
             { (int)FieldType.Currency, new Field   {
                     FieldId = (int)FieldType.Currency,
