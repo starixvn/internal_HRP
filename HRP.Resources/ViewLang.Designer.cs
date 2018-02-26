@@ -1429,6 +1429,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP.
+        /// </summary>
+        public static string Otp {
+            get {
+                return ResourceManager.GetString("Otp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overseas No..
         /// </summary>
         public static string OverseasNo {

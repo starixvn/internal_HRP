@@ -6,13 +6,13 @@
     {
         var menuGroups = Model.Where(x => !x.ParentId.HasValue).OrderBy(x => x.DisplayOrder);
 
-        @foreach (var parent in menuGroups)
+        foreach (var parent in menuGroups)
         {
             var childMenus = Model.Where(x => x.ParentId == parent.MenuId).OrderBy(x => x.DisplayOrder);
 
             <li class="menu">
                 <a href="@parent.Link" class="link"><span class="@parent.Description"></span>@parent.Name</a>
-                @if (childMenus != null && childMenus.Any())
+                @if (childMenus.Any())
                 {
                     <ul class="submenu">
                         @foreach (var child in childMenus)
@@ -51,7 +51,7 @@
             </li>
             <li>
                 <a asp-action="Index" asp-controller="Account" asp-route-tab="Otp">
-                    <span class="icon-otp"></span>OTP
+                    <span class="icon-otp"></span>@ViewLang.Otp
                 </a>
             </li>
             <li>

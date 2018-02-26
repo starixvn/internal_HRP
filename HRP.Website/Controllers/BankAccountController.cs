@@ -81,11 +81,9 @@
                 var criteria = PrepareCreateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                if (result.IsSuccessful)
-                {
-                    viewModel.IsSuccessful = true;
-                }
-                else
+                viewModel.IsSuccessful = result.IsSuccessful;
+
+                if (!viewModel.IsSuccessful)
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
                 }
@@ -104,11 +102,9 @@
                 var criteria = PrepareCreateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                if (result.IsSuccessful)
-                {
-                    viewModel.IsSuccessful = true;
-                }
-                else
+                viewModel.IsSuccessful = result.IsSuccessful;
+
+                if (!viewModel.IsSuccessful)
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
                 }
@@ -156,11 +152,9 @@
                 UpdateBankAccountCriteria criteria = PrepareUpdateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                if (result.IsSuccessful)
-                {
-                    viewModel.IsSuccessful = true;
-                }
-                else
+                viewModel.IsSuccessful = result.IsSuccessful;
+
+                if (!viewModel.IsSuccessful)
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
                 }
