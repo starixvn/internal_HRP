@@ -179,12 +179,19 @@
         {
             if (bankTypeId == (int)BankTypes.ContraCoAccount)
             {
-                var refResources = refResourceService.GetReferenceResourcesByNames(new[] { ReferenceResource.ContraCoAccount });
+                var refResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount);
                 return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));
             }
 
-            var result = baseService.GetData<BankAccount>(new SearchBankAccountCriteria { EmployeeId = employeeId, BankTypeId = bankTypeId });
-            return Json(result.Where(x => x.IsActive).Select(x => new { id = x.BankAccountId, text = x.AccountName }));
+            var criteria = new SearchBankAccountCriteria
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankTypeId,
+                IsActive = true
+            };
+
+            var result = baseService.GetData<BankAccount>(criteria);
+            return Json(result.Select(x => new { id = x.BankAccountId, text = x.AccountName }));
         }
 
         private UpdateBankAccountCriteria PrepareUpdateBankAccountCriteria(EditBankAccountViewModel bankAccount)

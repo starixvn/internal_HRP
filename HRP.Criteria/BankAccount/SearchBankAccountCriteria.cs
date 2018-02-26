@@ -8,6 +8,8 @@
 
         public int BankTypeId { get; set; }
 
+        public bool? IsActive { get; set; }
+
         public override string GetSettingKey() => "BankAccount_Search";
 
         public override bool IsValid() => EmployeeId > 0 && BankTypeId > 0;

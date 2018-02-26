@@ -407,29 +407,31 @@
         [Fact]
         public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
         {
+            // Arrange
             var controller = GetBankAccountController();
-            var refNames = new[] { ReferenceResource.ContraCoAccount };
 
-            refResourceService.GetReferenceResourcesByNames(refNames).Returns(new List<ReferenceResourceModel>());
+            refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount)
+                .Returns(new List<ReferenceResourceModel>());
 
+            // Test
             var actual = controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
 
-            baseService.DidNotReceive().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
-            refResourceService.Received().GetReferenceResourcesByNames(Arg.Any<string[]>());
+            // Assert
             Assert.IsType<JsonResult>(actual);
         }
 
         [Fact]
         public void GetEmployeeBankAccounts_NotContraCoAccountType_ReturnEmployeeBankAccounts()
         {
+            //Arrange
             var controller = GetBankAccountController();
 
             baseService.GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
 
+            // Test
             var actual = controller.GetEmployeeBankAccounts((int)BankTypes.Ebanking, 1);
 
-            baseService.Received().GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>());
-            refResourceService.DidNotReceive().GetReferenceResourcesByNames(Arg.Any<string[]>());
+            // Assert
             Assert.IsType<JsonResult>(actual);
         }
 
