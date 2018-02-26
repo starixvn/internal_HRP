@@ -325,9 +325,7 @@
             Assert.Empty(actual.CompanyChangeReasons);
             Assert.Empty(actual.LocalCompanyChangeReasons);
             Assert.Empty(actual.JobTitleChangeReasons);
-            Assert.Empty(actual.LocalJobTitleChangeReasons);
-            Assert.Empty(actual.GroupDateChangeReasons);
-            Assert.Empty(actual.CompanyDateChangeReasons);
+            Assert.Empty(actual.DateCommencementChangeReasons);
             Assert.Empty(actual.IDNoChangeReasons);
             Assert.Empty(actual.JobCategoryChangeReasons);
             Assert.Empty(actual.JobGradeChangeReasons);

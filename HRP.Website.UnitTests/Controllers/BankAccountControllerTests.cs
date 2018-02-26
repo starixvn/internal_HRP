@@ -474,12 +474,12 @@
                 },
                 new ReferenceResourceModel
                 {
-                    RefName = ReferenceResource.BankAccountType,
+                    RefName = ReferenceResource.TypeOfBankAccount,
                     ResourceId = 1
                 },
                 new ReferenceResourceModel
                 {
-                    RefName = ReferenceResource.BankAccountType,
+                    RefName = ReferenceResource.TypeOfBankAccount,
                     ResourceId = 2
                 },
                 new ReferenceResourceModel

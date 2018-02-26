@@ -198,13 +198,9 @@
 
         public IEnumerable<ReferenceResourceModel> JobTitleChangeReasons { get; set; } = new List<ReferenceResourceModel>();
 
-        public IEnumerable<ReferenceResourceModel> LocalJobTitleChangeReasons { get; set; } = new List<ReferenceResourceModel>();
-
         public IEnumerable<ReferenceResourceModel> IDNoChangeReasons { get; set; } = new List<ReferenceResourceModel>();
 
-        public IEnumerable<ReferenceResourceModel> GroupDateChangeReasons { get; set; } = new List<ReferenceResourceModel>();
-
-        public IEnumerable<ReferenceResourceModel> CompanyDateChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public IEnumerable<ReferenceResourceModel> DateCommencementChangeReasons { get; set; } = new List<ReferenceResourceModel>();
 
         public IEnumerable<ReferenceResourceModel> JobCategoryChangeReasons { get; set; } = new List<ReferenceResourceModel>();
 

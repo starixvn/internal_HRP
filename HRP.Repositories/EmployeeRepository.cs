@@ -108,6 +108,7 @@ namespace HRP.Repositories
                         employment.CompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyBVIChangeReason);
                         employment.LocalCompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyLocalChangeReason);
                         employment.JobTitleChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobTitleChangeReason);
+                        employment.DateCommencementChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DateCommencementChangeReason);
                         employment.IDNoChangeReasons = GetRefResourceByName(refResources, ReferenceResource.EmployeeIDChangeReason);
                         employment.JobCategoryChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobCategoryChangeReason);
                         employment.JobGradeChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobGradeChangeReason);

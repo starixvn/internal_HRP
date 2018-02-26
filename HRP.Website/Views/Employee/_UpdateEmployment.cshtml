@@ -115,7 +115,7 @@
                 <div class="component">
                     <label class="text" asp-for="LocalJobTitleReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="LocalJobTitleReasonId"
-                            asp-items="@(new SelectList(Model.LocalJobTitleChangeReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.JobTitleChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -137,7 +137,7 @@
                 <div class="component">
                     <label class="text" asp-for="GroupDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="GroupDateReasonId"
-                            asp-items="@(new SelectList(Model.GroupDateChangeReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.DateCommencementChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
@@ -157,7 +157,7 @@
                 <div class="component">
                     <label class="text" asp-for="CompanyDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="CompanyDateReasonId"
-                            asp-items="@(new SelectList(Model.CompanyDateChangeReasons, "ResourceId", "Value"))">
+                            asp-items="@(new SelectList(Model.DateCommencementChangeReasons, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
