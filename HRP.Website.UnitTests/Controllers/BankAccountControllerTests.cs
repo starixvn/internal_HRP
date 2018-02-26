@@ -58,29 +58,7 @@
             Assert.True(model.BankAccountsLimitReached);
         }
 
-        [Fact]
-        public void CreateBankAccount_WhenCalled_ReturnView()
-        {
-            // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
-
-            var employee = new Employee
-            {
-                CompanyId = 1,
-                NickName = "hunter.tran"
-            };
-
-            ArrangeForCreateBankAccount(employee, resources);
-
-            // Test
-            var actual = controller.CreateBankAccount(1);
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.True(model.HaveHostPermission);
-        }
+        #region Create Bank Account in Payroll
 
         [Fact]
         public void CreateBankAccountInPayroll_WhenCalled_ReturnPartialView()
@@ -199,6 +177,34 @@
             Assert.False(viewModel.IsSuccessful);
         }
 
+        #endregion
+
+        #region Create Bank Account
+
+        [Fact]
+        public void CreateBankAccount_WhenCalled_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var employee = new Employee
+            {
+                CompanyId = 1,
+                NickName = "hunter.tran"
+            };
+
+            ArrangeForCreateBankAccount(employee, resources);
+
+            // Test
+            var actual = controller.CreateBankAccount(1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.True(model.HaveHostPermission);
+        }
+
         [Fact]
         public void CreateBankAccount_InValidModelState_ReturnView()
         {
@@ -292,6 +298,112 @@
             Assert.False(viewModel.IsSuccessful);
         }
 
+        #endregion
+
+        #region Edit Bank Account
+
+        [Fact]
+        public void EditBankAccount_WhenCalled_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var bankAccount = new BankAccount();
+
+            ArrangeForEditBankAccount(bankAccount, resources);
+
+            // Test
+            var actual = controller.EditBankAccount(1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void EditBankAccount_InValidModelState_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var bankAccount = new BankAccount();
+
+            ArrangeForEditBankAccount(bankAccount, resources);
+
+            var viewModel = new EditBankAccountViewModel();
+            controller.ModelState.AddModelError("key", "message");
+
+            // Test
+            var actual = controller.EditBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void EditBankAccount_ValidModelStateEditSuccessful_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var bankAccount = new BankAccount();
+
+            var result = new CommandResult
+            {
+                Code = 0,
+            };
+
+            var viewModel = new EditBankAccountViewModel();
+
+            ArrangeForEditBankAccount(bankAccount, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.EditBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+            Assert.True(viewModel.IsSuccessful);
+        }
+
+        [Fact]
+        public void EditBankAccount_ValidModelStateEditError_ReturnView()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetResources();
+
+            var bankAccount = new BankAccount();
+
+            var result = new CommandResult
+            {
+                Code = 1,
+            };
+
+            var viewModel = new EditBankAccountViewModel();
+
+            ArrangeForEditBankAccount(bankAccount, resources);
+
+            baseService.ExecuteNonQuery(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+
+            // Test
+            var actual = controller.EditBankAccount(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+            Assert.False(viewModel.IsSuccessful);
+        }
+
+        #endregion
+
         [Fact]
         public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
         {
@@ -321,9 +433,12 @@
             Assert.IsType<JsonResult>(actual);
         }
 
+        #region Helpers
+
         private void ArrangeForCreateBankAccount(Employee employee, IEnumerable<ReferenceResourceModel> resources)
         {
             employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
+
             refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
             refResourceService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
@@ -331,36 +446,46 @@
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
         }
 
+        private void ArrangeForEditBankAccount(BankAccount bankAccount, IEnumerable<ReferenceResourceModel> resources)
+        {
+            bankAccountService.GetBankAccountById(Arg.Any<int>()).Returns(bankAccount);
+
+            refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
+            refResourceService
+                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
+                .Returns(new List<ReferenceResourceModel>());
+        }
+
         private static IEnumerable<ReferenceResourceModel> GetResources()
         {
             var resources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel
                 {
-                    new ReferenceResourceModel
-                    {
-                        RefName = ReferenceResource.BankType,
-                        ResourceId = (int) BankTypes.Ebanking
-                    },
-                    new ReferenceResourceModel
-                    {
-                        RefName = ReferenceResource.BankType,
-                        ResourceId = (int) BankTypes.DirectBanking
-                    },
-                    new ReferenceResourceModel
-                    {
-                        RefName = ReferenceResource.BankAccountType,
-                        ResourceId = 1
-                    },
-                    new ReferenceResourceModel
-                    {
-                        RefName = ReferenceResource.BankAccountType,
-                        ResourceId = 2
-                    },
-                    new ReferenceResourceModel
-                    {
-                        RefName = ReferenceResource.ContraCoAccount,
-                        ResourceId = 1
-                    }
-                };
+                    RefName = ReferenceResource.BankType,
+                    ResourceId = (int)BankTypes.Ebanking
+                },
+                new ReferenceResourceModel
+                {
+                    RefName = ReferenceResource.BankType,
+                    ResourceId = (int)BankTypes.DirectBanking
+                },
+                new ReferenceResourceModel
+                {
+                    RefName = ReferenceResource.BankAccountType,
+                    ResourceId = 1
+                },
+                new ReferenceResourceModel
+                {
+                    RefName = ReferenceResource.BankAccountType,
+                    ResourceId = 2
+                },
+                new ReferenceResourceModel
+                {
+                    RefName = ReferenceResource.ContraCoAccount,
+                    ResourceId = 1
+                }
+            };
 
             return resources;
         }
@@ -400,5 +525,7 @@
         {
             refResourceService = Substitute.For<IRefResourceService>();
         }
+
+        #endregion
     }
 }

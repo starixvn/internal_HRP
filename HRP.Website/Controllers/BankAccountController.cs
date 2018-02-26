@@ -139,6 +139,7 @@
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive
             };
+
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
@@ -152,20 +153,24 @@
         {
             if (ModelState.IsValid)
             {
-                var criteria = PrepareUpdateBankAccountCriteria(viewModel);
+                UpdateBankAccountCriteria criteria = PrepareUpdateBankAccountCriteria(viewModel);
                 var result = baseService.ExecuteNonQuery(criteria);
 
-                return Json(new
+                if (result.IsSuccessful)
                 {
-                    isSuccessful = result.IsSuccessful,
-                    message = result.Message,
-                    redirectTo = Url.Action("EmployeeBankAccounts", "BankAccount", new { viewModel.EmployeeId })
-                });
+                    viewModel.IsSuccessful = true;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
+            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankAccountType);
 
-            return Json(new { isSuccessful = false, errors });
+            return View(viewModel);
         }
 
         [HttpGet]
