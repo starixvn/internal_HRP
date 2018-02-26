@@ -242,7 +242,7 @@ input[type="text"][readonly] {
   color: #ff7a04;
 }
 
-.list-message-error {
+.validation-summary-errors, .list-message-error {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -253,11 +253,11 @@ input[type="text"][readonly] {
   color: #fe0000;
 }
 
-.list-message-error .message {
+.validation-summary-errors li, .list-message-error li, .validation-summary-errors .message, .list-message-error .message {
   line-height: 20px;
 }
 
-.list-message-error .message:before {
+.validation-summary-errors li:before, .list-message-error li:before, .validation-summary-errors .message:before, .list-message-error .message:before {
   position: relative;
   top: 4px;
   line-height: 0;

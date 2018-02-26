@@ -629,6 +629,10 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   width: 94px;
 }
 
+.icon-edit {
+  cursor: pointer;
+}
+
 .modal .modal-dialog {
   width: 370px;
 }
