@@ -1,22 +1,27 @@
 ﻿var userManagement = (function ($) {
     function initDataTable() {
         $('#user-table').dataTable({
-            'ordering': false,
-            'lengthMenu': [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
-            'dom': 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
-            'info': false,
-            'language': {
-                'lengthMenu': 'Page size _MENU_',
-                'search': '',
-                'paginate': {
-                    'first': 'First',
-                    'last': 'Last',
-                    'next': '<i class="icon-next"></i>',
-                    'previous': '<i class="icon-back"></i>'
+            ordering: false,
+            lengthMenu: [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
+            dom: 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
+            info: false,
+            language: {
+                lengthMenu: 'Page size _MENU_',
+                search: '',
+                paginate: {
+                    first: 'First',
+                    last: 'Last',
+                    next: '<i class="icon-next"></i>',
+                    previous: '<i class="icon-back"></i>'
                 },
-                'zeroRecords': commonFunctions.noDataOnTableMsg,
-                'sZeroRecords': commonFunctions.noDataOnTableMsg
-            }
+                zeroRecords: commonFunctions.noDataOnTableMsg,
+                sZeroRecords: commonFunctions.noDataOnTableMsg
+            },
+            columnDefs: [
+                { className: 'width-42', targets: 0 },
+                { className: 'width-58', targets: 7 },
+                { className: 'width-62', targets: 8 }
+            ]
         });
 
         $('#user-table_length select').select2({

@@ -638,6 +638,18 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   width: 577px;
 }
 
+.table .width-42 {
+  width: 42px;
+}
+
+.table .width-58 {
+  width: 58px;
+}
+
+.table .width-62 {
+  width: 62px;
+}
+
 .assign-permission .level-first {
   color: #1973b2;
 }
@@ -674,4 +686,3 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   float: left;
   margin-left: 30px;
 }
-/*# sourceMappingURL=user-management.css.map */
