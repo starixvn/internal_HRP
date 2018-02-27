@@ -35,7 +35,7 @@
                         @if (Model.IsSuccessful)
                         {
                             <input type="hidden" asp-for="IsSuccessful" id="is-successful" />
-                            <div class="-has-icon msg-success hidden">
+                            <div class="-has-icon msg-success">
                                 <span>@Message.CreateBankAccountSuccessedForModal</span>
                                 <span class="count-down-remaining">5</span>
                                 <span>@Message.CreateBankAccountSuccessedDimissTime</span>

@@ -3,7 +3,9 @@
         $(".back").on("click",
             function (e) {
                 e.preventDefault();
-                window.history.back();
+                if (!$(this).hasClass("disabled")) {
+                    window.history.back();
+                }
             });
     }
 }

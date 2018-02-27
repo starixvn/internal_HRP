@@ -320,7 +320,9 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+            var model = Assert.IsType<EditBankAccountViewModel>(viewResult.Model);
+            Assert.IsType<SelectList>(model.BankTypes);
+            Assert.IsType<SelectList>(model.BankAccountTypes);
         }
 
         [Fact]
