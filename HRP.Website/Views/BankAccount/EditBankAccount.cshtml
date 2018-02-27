@@ -34,7 +34,6 @@
 
 <form class="form-information block bank-account-form" asp-action="EditBankAccount" asp-controller="BankAccount" method="post">
 
-    <a class="hidden" id="redirect-link" asp-action="EditBankAccount" asp-controller="BankAccount" asp-route-bankAccountId="@Model.BankAccountId"></a>
     <input type="hidden" asp-for="BankAccountId" />
     <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
 
