@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Country_Create] 
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Country_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@CreatedBy INT
@@ -26,38 +25,34 @@ BEGIN
 		,@xml XML
 		,@CountryId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Country
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Country_CheckExists @CountryId = 0,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Country WITH (NOLOCK)
+			WHERE Code = @Code
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].Country(
+	INSERT INTO [dbo].Country (
 		Code
 		,Name
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@IsActive
-	)
+		)
 
 	SET @CountryId = SCOPE_IDENTITY()
-		--Write Log
+	--Write Log
 	SET @xml = (
 			SELECT CountryId AS '@cid'
 				,Code AS '@c'
@@ -79,6 +74,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-	
-	DROP TABLE #tblCheckExists 
 END

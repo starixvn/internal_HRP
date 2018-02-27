@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[Department_Create]
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Department_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@DivisionId SMALLINT
-	,@IsActive BIT  = 0
+	,@IsActive BIT = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
 /*
 Created: 20180207@Raymond.Le
@@ -18,7 +17,6 @@ Revisions:
 Param's Explanation:
 */
 BEGIN
-
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -28,41 +26,36 @@ BEGIN
 		,@xml XML
 		,@DepartmentId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
-
 	SET @startRun = GETDATE()
 
-	-- Check exists Department
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Department_CheckExists @DivisionId = @DivisionId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	-- Check exists Department									
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Department WITH (NOLOCK)
+			WHERE Code = @Code
+				AND DivisionId = @DivisionId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ''' + @Code +''' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].Department(
+	INSERT INTO [dbo].Department (
 		Code
 		,Name
 		,DivisionId
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@DivisionId
 		,@IsActive
-	)
+		)
 
 	SET @DepartmentId = SCOPE_IDENTITY()
-
 	--Write Log
 	SET @xml = (
 			SELECT DepartmentId AS '@deid'

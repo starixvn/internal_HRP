@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[RefResource_Create] @RefName VARCHAR(100)
+﻿
+CREATE PROCEDURE [dbo].[RefResource_Create] @RefName VARCHAR(100)
 	,@Value NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -25,23 +26,18 @@ BEGIN
 		,@xml XML
 		,@RefResourceId SMALLINT
 
-	CREATE TABLE #tblCheckExists ([Count] SMALLINT)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists RefResource
-	INSERT INTO #tblCheckExists ([Count])
-	EXEC dbo.RefResource_CheckExists @RefName = @RefName
-		,@ResourceId = 0
-		,@Value = @Value
-
 	IF EXISTS (
 			SELECT 1
-			FROM #tblCheckExists
+			FROM dbo.RefResource WITH (NOLOCK)
+			WHERE RefName = @RefName
+				AND Value = @Value
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Value + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Value + ''' has already existed!'
 
 		RETURN
 	END
@@ -90,6 +86,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

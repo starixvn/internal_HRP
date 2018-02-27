@@ -229,7 +229,7 @@ BEGIN
 	--Update Profile picture link.
 	IF (@PictureExtension IS NOT NULL)
 	BEGIN
-		UPDATE dbo.Employee
+		UPDATE dbo.Employee WITH (UPDLOCK, ROWLOCK)
 		SET ProfilePic = CAST(@EmployeeId AS VARCHAR(194)) + @PictureExtension
 		WHERE EmployeeId = @EmployeeId
 	END

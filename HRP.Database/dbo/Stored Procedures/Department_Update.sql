@@ -25,21 +25,22 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
-
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
+		,@DivisionId SMALLINT
 
 	SET @startRun = GETDATE()
 
 	-- Check exists Department
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Department_CheckExists @DepartmentId = @DepartmentId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	SELECT TOP 1 @DivisionId = DivisionId
+	FROM dbo.Department WITH (NOLOCK)
+	WHERE DepartmentId = @DepartmentId
+
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Department WITH (NOLOCK)
+			WHERE Code = @Code
+				AND DivisionId = @DivisionId
+				AND DepartmentId <> @DepartmentId
+			)
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
@@ -58,10 +59,9 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].Department WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].Department	WITH (ROWLOCK,UPDLOCK)
 	SET Code = @Code
 		,Name = @Name
 		,IsActive = @IsActive
@@ -79,7 +79,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -91,6 +90,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

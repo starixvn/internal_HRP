@@ -25,24 +25,25 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
-
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
+		,@CityId SMALLINT
 
 	SET @startRun = GETDATE()
 
 	-- Check exists Office
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Office_CheckExists @OfficeId = @OfficeId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	SELECT TOP 1 @CityId = CityId
+	FROM dbo.Office WITH (NOLOCK)
+	WHERE OfficeId = @OfficeId
+
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Office WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CityId = @CityId
+				AND OfficeId <> @OfficeId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
 
 		RETURN
 	END
@@ -58,10 +59,9 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].Office WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].Office	WITH (ROWLOCK,UPDLOCK)
 	SET Code = @Code
 		,Name = @Name
 		,IsActive = @IsActive
@@ -79,7 +79,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -91,6 +90,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

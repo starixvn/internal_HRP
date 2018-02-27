@@ -25,24 +25,25 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
-
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
+		,@CountryId SMALLINT
 
 	SET @startRun = GETDATE()
 
 	-- Check exists City
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.City_CheckExists @CityId = @CityId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	SELECT TOP 1 @CountryId = CountryId
+	FROM dbo.City WITH (NOLOCK)
+	WHERE CityId = @CityId
+
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.City WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CountryId = @CountryId
+				AND CityId <> @CityId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
 
 		RETURN
 	END
@@ -60,12 +61,16 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].City WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].City
+	WITH (
+			ROWLOCK
+			,UPDLOCK
+			)
+
 	SET Code = @Code
 		,Name = @Name
 		,IsActive = @IsActive
 	WHERE CityId = @CityId
-
 	--Write Log
 	SET @xml = (
 			SELECT CityId AS '@ciid'
@@ -78,7 +83,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -91,5 +95,4 @@ BEGIN
 		,@OldData = @oldLogData
 		,@Duration = @Duration
 
-	DROP TABLE #tblCheckExists
 END

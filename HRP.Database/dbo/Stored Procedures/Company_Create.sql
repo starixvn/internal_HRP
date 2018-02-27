@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Company_Create] 
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Company_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@CreatedBy INT
@@ -26,38 +25,34 @@ BEGIN
 		,@xml XML
 		,@CompanyId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Company
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Company_CheckExists @CompanyId = 0,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Company WITH (NOLOCK)
+			WHERE Code = @Code
+			)
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
 	INSERT INTO [dbo].Company (
 		Code
 		,Name
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@IsActive
-	)
+		)
 
 	SET @CompanyId = SCOPE_IDENTITY()
-		--Write Log
+	--Write Log
 	SET @xml = (
 			SELECT c.CompanyId AS '@cid'
 				,c.Code AS '@c'
@@ -79,6 +74,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-	
-	DROP TABLE #tblCheckExists 
 END

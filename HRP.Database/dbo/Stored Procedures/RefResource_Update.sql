@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[RefResource_Update] 
-	@RefName VARCHAR(100)
+﻿
+CREATE PROCEDURE [dbo].[RefResource_Update] @RefName VARCHAR(100)
 	,@ResourceId SMALLINT
 	,@Value NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
@@ -28,24 +28,19 @@ BEGIN
 		,@xml XML
 		,@RefResourceId INT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists RefResource
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.RefResource_CheckExists @RefName = @RefName
-		,@ResourceId = @ResourceId
-		,@Value = @Value
-
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.RefResource WITH (NOLOCK)
+			WHERE RefName = @RefName
+				AND Value = @Value
+				AND ResourceId <> @ResourceId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Value + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Value + ''' has already existed!'
 
 		RETURN
 	END
@@ -65,7 +60,7 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].RefResource WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].RefResource WITH (	ROWLOCK,UPDLOCK	)
 	SET Value = @Value
 		,[Description] = @Description
 		,IsActive = @IsActive
@@ -87,7 +82,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -99,6 +93,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists 
 END

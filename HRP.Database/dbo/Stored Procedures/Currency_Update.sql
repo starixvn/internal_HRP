@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].Currency_Update @CurrencyId SMALLINT
+CREATE PROCEDURE [dbo].[Currency_Update] @CurrencyId SMALLINT
 	,@CurrencyCode NVARCHAR(50)
 	,@CurrencyName NVARCHAR(200) = ''
 	,@IsActive BIT = 0
@@ -26,23 +26,18 @@ BEGIN
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Currency
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Currency_CheckExists @CurrencyId = @CurrencyId,
-								@CurrencyCode = @CurrencyCode
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Currency WITH (NOLOCK)
+			WHERE CurrencyCode = @CurrencyCode
+				AND CurrencyId <> @CurrencyId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @CurrencyCode + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @CurrencyCode + ''' has already existed!'
 
 		RETURN
 	END
@@ -59,7 +54,8 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].Currency WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].Currency
+	WITH (ROWLOCK,UPDLOCK)
 	SET CurrencyCode = @CurrencyCode
 		,CurrencyName = @CurrencyName
 		,IsActive = @IsActive
@@ -76,7 +72,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -88,6 +83,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists 
 END

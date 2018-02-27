@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[Office_Create]
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Office_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CityId SMALLINT
-	,@IsActive BIT  = 0
+	,@IsActive BIT = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
 /*
 Created: 20180207@Raymond.Le
@@ -18,7 +17,6 @@ Revisions:
 Param's Explanation:
 */
 BEGIN
-
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -28,38 +26,34 @@ BEGIN
 		,@xml XML
 		,@OfficeId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Office
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Office_CheckExists @CityId = @CityId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Office WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CityId = @CityId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].Office(
+	INSERT INTO [dbo].Office (
 		Code
 		,Name
 		,CityId
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@CityId
 		,@IsActive
-	)
+		)
 
 	SET @OfficeId = SCOPE_IDENTITY()
 

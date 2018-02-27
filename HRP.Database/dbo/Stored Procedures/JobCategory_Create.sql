@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[JobCategory_Create] 
-	@Name NVARCHAR(50)
+CREATE PROCEDURE [dbo].[JobCategory_Create] @Name NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@CreatedBy INT
@@ -26,39 +25,35 @@ BEGIN
 		,@xml XML
 		,@JobCategoryId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
-	-- Check exists JobCategory
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.JobCategory_CheckExists @JobCategoryId = 0,
-								@Name = @Name
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	-- Check exists JobCategory						
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.JobCategory WITH (NOLOCK)
+			WHERE Name = @Name
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Name +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Name + ''' has already existed!'
+
 		RETURN
 	END
 
 	INSERT INTO [dbo].JobCategory (
 		Name
 		,[Description]
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Name
 		,@Description
 		,@IsActive
-	)
+		)
 
 	SET @JobCategoryId = SCOPE_IDENTITY()
 
-		--Write Log
+	--Write Log
 	SET @xml = (
 			SELECT JobCategoryId AS '@jid'
 				,Name AS '@n'
@@ -80,6 +75,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

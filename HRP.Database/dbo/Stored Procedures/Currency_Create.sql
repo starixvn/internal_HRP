@@ -1,6 +1,5 @@
 ﻿
-Create PROCEDURE [dbo].Currency_Create
-	@CurrencyCode NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Currency_Create] @CurrencyCode NVARCHAR(50)
 	,@CurrencyName NVARCHAR(200) = ''
 	,@IsActive BIT = 0
 	,@CreatedBy INT
@@ -26,23 +25,18 @@ BEGIN
 		,@xml XML
 		,@CurrencyId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Currency
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Currency_CheckExists @CurrencyId = 0,
-								@CurrencyCode = @CurrencyCode
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Currency WITH (NOLOCK)
+			WHERE CurrencyCode = @CurrencyCode
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @CurrencyCode +' has already existed!'
+		SET @ErrMsg = 'The ''' + @CurrencyCode + ''' has already existed!'
+
 		RETURN
 	END
 
@@ -50,8 +44,9 @@ BEGIN
 		CurrencyCode
 		,CurrencyName
 		,IsActive
-		,[Order]	
-	)	VALUES (
+		,[Order]
+		)
+	VALUES (
 		@CurrencyCode
 		,@CurrencyName
 		,@IsActive
@@ -59,11 +54,10 @@ BEGIN
 				SELECT MAX(c.[Order])
 				FROM dbo.Currency AS c WITH (NOLOCK)
 				), 0) + 1
-	)
+		)
 
 	SET @CurrencyId = SCOPE_IDENTITY()
-
-		--Write Log
+	--Write Log
 	SET @xml = (
 			SELECT c.CurrencyId AS '@cid'
 				,c.CurrencyCode AS '@c'
@@ -85,6 +79,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-	
-	DROP TABLE #tblCheckExists 
 END

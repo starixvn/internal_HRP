@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[Section_Create]
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[Section_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CostCenterId SMALLINT
-	,@IsActive BIT  = 0
+	,@IsActive BIT = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
 /*
 Created: 20180201@Raymond.Le
@@ -18,7 +17,6 @@ Revisions:
 Param's Explanation:
 */
 BEGIN
-
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -28,40 +26,36 @@ BEGIN
 		,@xml XML
 		,@SectionId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
-	-- Check exists Section
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Section_CheckExists @CostCenterId = @CostCenterId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	-- Check exists Section									
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Section WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CostCenterId = @CostCenterId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].Section(
+	INSERT INTO [dbo].Section (
 		Code
 		,Name
 		,CostCenterId
-		,IsActive	
-	)	VALUES (
+		,IsActive
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@CostCenterId
 		,@IsActive
-	)
+		)
 
 	SET @SectionId = SCOPE_IDENTITY()
-
 	--Write Log
 	SET @xml = (
 			SELECT SectionId AS '@sid'

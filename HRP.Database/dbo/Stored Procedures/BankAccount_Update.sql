@@ -12,6 +12,7 @@ CREATE PROCEDURE [dbo].[BankAccount_Update]
 	@AccountType INT = 1,
 	@BeneficiaryName NVARCHAR(70),
 	@IsActive BIT = 1,
+	@UpdatedBy INT = 0,
 	@ErrCode INT = 0 OUTPUT,
 	@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
@@ -22,15 +23,21 @@ Task : Update bank account
 DB: bodb_HRP
 Original:
 Revisions:
----- 20180205@Hunter.Tran: Add ErrCode and ErrMsg to parameters
----- 20180206@Hunter.Tran: Check if account changing banktype / status
----- 20180207@Hunter.Tran: Allow Swift code to be null
----- 20180208@Hunter.Tran: Account Number and Account Name can be duplicate for different bank types
 Param's Explanation:
 */
 
 BEGIN
 	SET NOCOUNT ON;
+
+	-- For log
+	DECLARE @BankAccountId INT
+			,@xml XML
+			,@logData NVARCHAR(MAX)
+			,@startRun DATETIME
+			,@endRun DATETIME
+			,@duration INT
+
+	SET @startRun = GETDATE()
 
 	IF EXISTS (
 			SELECT 1
@@ -104,4 +111,34 @@ BEGIN
 		BeneficiaryName = @BeneficiaryName,
 		IsActive = @IsActive
 	WHERE Id = @Id
+
+	--Write Log
+	SET @xml = (
+			SELECT Id as '@id',
+				   EmployeeId as '@eid',
+				   BankType as '@bt',
+				   BankName as '@bn',
+				   BankBranch as '@bb',
+				   BankAddress as '@ba',
+				   BankSwiftCode as '@bs',
+				   AccountName as '@an',
+				   AccountNumber as '@anum',
+				   AccountType as '@at',
+				   BeneficiaryName as '@bene',
+				   IsActive as '@ia'
+			FROM [dbo].[BankAccount]
+			WHERE Id = @Id
+			FOR XML PATH('r'),TYPE
+			)
+	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
+	SET @endRun = GETDATE()
+	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
+
+	EXEC dbo.LogDetail_Insert @UserId = @UpdatedBy
+		,@SPName = 'BankAccount_Update'
+		,@ObjectId = @BankAccountId
+		,@ObjectTypeId = NULL
+		,@Data = @logData
+		,@OldData = NULL
+		,@Duration = @Duration
 END

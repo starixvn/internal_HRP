@@ -26,23 +26,18 @@ BEGIN
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
-	-- Check exists JobCategory
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.JobCategory_CheckExists @JobCategoryId = @JobCategoryId,
-								@Name = @Name
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	-- Check exists JobCategory						
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.JobCategory WITH (NOLOCK)
+			WHERE Name = @Name
+				AND JobCategoryId <> @JobCategoryId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Name + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Name + ''' has already existed!'
 
 		RETURN
 	END
@@ -57,15 +52,13 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].JobCategory WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].JobCategory	WITH (ROWLOCK,UPDLOCK)
 	SET Name = @Name
 		,[Description] = @Description
 		,IsActive = @IsActive
 	WHERE JobCategoryId = @JobCategoryId
-
 	--Write Log
 	SET @xml = (
 			SELECT JobCategoryId AS '@jid'
@@ -77,7 +70,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)

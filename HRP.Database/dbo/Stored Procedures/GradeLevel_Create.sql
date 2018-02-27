@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[GradeLevel_Create]
-	@Name NVARCHAR(50)
+CREATE PROCEDURE [dbo].[GradeLevel_Create] @Name NVARCHAR(50)
 	,@Description NVARCHAR(200) = ''
 	,@JobCategoryId SMALLINT
-	,@IsActive BIT  = 0
+	,@IsActive BIT = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
 /*
 Created: 20180201@Raymond.Le
@@ -18,7 +17,6 @@ Revisions:
 Param's Explanation:
 */
 BEGIN
-
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -28,41 +26,36 @@ BEGIN
 		,@xml XML
 		,@GradeLevelId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Grade Level
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.GradeLevel_CheckExists @JobCategoryId = @JobCategoryId,
-								@Name = @Name
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.GradeLevel WITH (NOLOCK)
+			WHERE Name = @Name
+				AND JobCategoryId = @JobCategoryId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Name +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Name + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].GradeLevel(		
+	INSERT INTO [dbo].GradeLevel (
 		Name
 		,[Description]
-		,IsActive	
+		,IsActive
 		,JobCategoryId
-	)	VALUES (
+		)
+	VALUES (
 		@Name
 		,@Description
 		,@IsActive
 		,@JobCategoryId
-	)
+		)
 
 	SET @GradeLevelId = SCOPE_IDENTITY()
-
 	--Write Log
 	SET @xml = (
 			SELECT GradeLevelId AS '@gid'
@@ -86,6 +79,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

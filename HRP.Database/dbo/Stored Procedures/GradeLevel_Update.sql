@@ -25,24 +25,25 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
-
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
+		,@JobCategoryId SMALLINT
 
 	SET @startRun = GETDATE()
 
 	-- Check exists Grade Level
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.GradeLevel_CheckExists @GradeLevelId = @GradeLevelId,
-								@Name = @Name
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	SELECT TOP 1 @JobCategoryId = JobCategoryId
+	FROM dbo.GradeLevel WITH (NOLOCK)
+	WHERE GradeLevelId = @GradeLevelId
+
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.GradeLevel WITH (NOLOCK)
+			WHERE Name = @Name
+				AND JobCategoryId = @JobCategoryId
+				AND GradeLevelId <> @GradeLevelId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Name + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Name + ''' has already existed!'
 
 		RETURN
 	END
@@ -60,7 +61,7 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].GradeLevel WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].GradeLevel	WITH (ROWLOCK,UPDLOCK)
 	SET Name = @Name
 		,[Description] = @Description
 		,IsActive = @IsActive
@@ -78,7 +79,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -90,6 +90,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END

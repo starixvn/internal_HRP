@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[BankAccount_CreateBankAccount]
+﻿CREATE PROCEDURE [dbo].[BankAccount_Create]
 	@Id INT = 0,
 	@EmployeeId INT,
 	@BankType INT = 1,
@@ -11,6 +11,7 @@
 	@AccountType INT = 1,
 	@BeneficiaryName NVARCHAR(70),
 	@IsActive bit = 1,
+	@CreatedBy INT = 0,
 	@ErrCode INT = 0 OUTPUT,
 	@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
@@ -20,15 +21,20 @@ Task: Create new bank account
 DB: bodb_HRP
 Original:
 Revisions:
----- 20180125: Add @Id
----- 20180205: Check if Account name and Account number is already exist
----- 20180205: Add Error Code and Error Message
----- 20180207: Allow Swift code to be null
----- 20180208: Account Number can be duplicate for different bank types
 Param's Explanation:
 */
 BEGIN
 	SET NOCOUNT ON;
+
+	-- For log
+	DECLARE @BankAccountId INT
+			,@xml XML
+			,@logData NVARCHAR(MAX)
+			,@startRun DATETIME
+			,@endRun DATETIME
+			,@duration INT
+
+	SET @startRun = GETDATE()
 
 	IF EXISTS (
 			SELECT 1
@@ -58,6 +64,22 @@ BEGIN
 		RETURN
 	END
 
+	DECLARE @totalActiveAccountInBankType INT = 0;
+
+	SELECT @totalActiveAccountInBankType = COUNT(Id)
+	FROM [dbo].[BankAccount] WITH (NOLOCK)
+	WHERE [EmployeeId] = @EmployeeId
+		AND [BankType] = @BankType
+		AND [IsActive] = 1
+
+	IF(@totalActiveAccountInBankType >= 3 and @IsActive = 1)
+	BEGIN
+		SET @ErrCode = 3
+		SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot create more bank account.'
+
+		RETURN
+	END
+
     INSERT INTO [dbo].[BankAccount]
            ([EmployeeId]
 		   ,[BankType]
@@ -82,4 +104,35 @@ BEGIN
            ,@AccountType
            ,@BeneficiaryName
            ,@IsActive)
+
+	--Write Log
+	SET @BankAccountId = SCOPE_IDENTITY()
+	SET @xml = (
+			SELECT Id as '@id',
+				   EmployeeId as '@eid',
+				   BankType as '@bt',
+				   BankName as '@bn',
+				   BankBranch as '@bb',
+				   BankAddress as '@ba',
+				   BankSwiftCode as '@bs',
+				   AccountName as '@an',
+				   AccountNumber as '@anum',
+				   AccountType as '@at',
+				   BeneficiaryName as '@bene',
+				   IsActive as '@ia'
+			FROM [dbo].[BankAccount]
+			WHERE Id = @BankAccountId
+			FOR XML PATH('r'),TYPE
+			)
+	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
+	SET @endRun = GETDATE()
+	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
+
+	EXEC dbo.LogDetail_Insert @UserId = @CreatedBy
+		,@SPName = 'BankAccount_Create'
+		,@ObjectId = @BankAccountId
+		,@ObjectTypeId = NULL
+		,@Data = @logData
+		,@OldData = NULL
+		,@Duration = @Duration
 END

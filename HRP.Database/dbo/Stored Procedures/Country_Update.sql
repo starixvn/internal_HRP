@@ -26,23 +26,18 @@ BEGIN
 		,@oldLogData NVARCHAR(MAX)
 		,@xml XML
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
 	SET @startRun = GETDATE()
 
 	-- Check exists Country
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.Country_CheckExists @CountryId = @CountryId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Country WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CountryId <> @CountryId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
 
 		RETURN
 	END
@@ -59,7 +54,8 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].Country WITH (ROWLOCK,UPDLOCK)
+	UPDATE [dbo].Country
+	WITH (ROWLOCK,UPDLOCK)
 	SET Code = @Code
 		,Name = @Name
 		,IsActive = @IsActive
@@ -76,7 +72,6 @@ BEGIN
 			FOR XML PATH('r')
 				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -88,6 +83,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = @oldLogData
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists 
 END

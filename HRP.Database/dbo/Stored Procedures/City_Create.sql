@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[City_Create]
-	@Code NVARCHAR(50)
+CREATE PROCEDURE [dbo].[City_Create] @Code NVARCHAR(50)
 	,@Name NVARCHAR(200) = ''
 	,@CountryId SMALLINT
-	,@IsActive BIT  = 0
+	,@IsActive BIT = 0
 	,@CreatedBy INT = 0
 	,@ErrCode INT = 0 OUTPUT
-	,@ErrMsg NVARCHAR(200) = '' OUTPUT	
+	,@ErrMsg NVARCHAR(200) = '' OUTPUT
 AS
 /*
 Created: 20180206@Raymond.Le
@@ -18,7 +17,6 @@ Revisions:
 Param's Explanation:
 */
 BEGIN
-
 	SET NOCOUNT ON;
 
 	DECLARE @startRun DATETIME
@@ -28,41 +26,36 @@ BEGIN
 		,@xml XML
 		,@CityId SMALLINT
 
-	CREATE TABLE #tblCheckExists (
-		[Count] SMALLINT
-	)
-
-
 	SET @startRun = GETDATE()
 
-	-- Check exists City
-	INSERT INTO #tblCheckExists(
-		[Count]
-	)
-	EXEC dbo.City_CheckExists @CountryId = @CountryId,
-								@Code = @Code
-									
-	IF EXISTS (SELECT 1 FROM #tblCheckExists)
+	-- Check exists City									
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.City WITH (NOLOCK)
+			WHERE Code = @Code
+				AND CountryId = @CountryId
+			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code +' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
+
 		RETURN
 	END
 
-	INSERT INTO [dbo].City(		
+	INSERT INTO [dbo].City (
 		Code
 		,Name
-		,IsActive	
+		,IsActive
 		,CountryId
-	)	VALUES (
+		)
+	VALUES (
 		@Code
 		,@Name
 		,@IsActive
 		,@CountryId
-	)
+		)
 
 	SET @CityId = SCOPE_IDENTITY()
-
 	--Write Log
 	SET @xml = (
 			SELECT CityId AS '@ciid'
@@ -86,6 +79,4 @@ BEGIN
 		,@Data = @logData
 		,@OldData = NULL
 		,@Duration = @Duration
-
-	DROP TABLE #tblCheckExists
 END
