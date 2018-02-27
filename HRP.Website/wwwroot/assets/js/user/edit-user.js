@@ -5,6 +5,8 @@
         $('form').submit(false);
     }
 
+    commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
+
     var displaySuccessMessage = function () {
         var alert = $('#edit-user-alert');
 
