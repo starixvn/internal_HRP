@@ -1,6 +1,6 @@
 ﻿
 CREATE PROCEDURE [dbo].[Employee_CheckEmpCodeExisted] @EmployeeId INT
-	,@CompanyCode VARCHAR(10)
+	,@CompanyCode NVARCHAR(50)
 	,@EmployeeCode VARCHAR(15)
 AS
 /*

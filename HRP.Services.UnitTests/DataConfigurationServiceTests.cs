@@ -305,64 +305,25 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedDepartmentAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var department = MockDepartment();
-            var criteria = new CheckDepartmentExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckDepartmentExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedDepartmentAsync(department);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(department.DepartmentId, criteria.DepartmentId);
-            Assert.Equal(department.Code, criteria.Code);
-            Assert.Equal(department.DivisionId, criteria.DivisionId);
-        }
-
         [Fact]
-        public async Task CreateDepartmentAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateDepartmentAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var department = MockDepartment();
             var criteria = new CreateDepartmentCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateDepartmentAsync(department);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(department.Code, criteria.Code);
             Assert.Equal(department.Name, criteria.Name);
             Assert.Equal(department.DivisionId, criteria.DivisionId);
             Assert.Equal(department.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateDepartmentAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateDepartmentCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateDepartmentAsync(new Department());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -407,21 +368,19 @@
         }
 
         [Fact]
-        public async Task UpdateDepartmentAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateDepartmentAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var department = MockDepartment();
             var criteria = new UpdateDepartmentCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateDepartmentAsync(department);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(department.DepartmentId, criteria.DepartmentId);
             Assert.Equal(department.Code, criteria.Code);
             Assert.Equal(department.Name, criteria.Name);

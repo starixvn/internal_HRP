@@ -196,60 +196,44 @@ BEGIN
 		,[Code]
 		,[Name]
 	FROM dbo.Division WITH (NOLOCK)
-	WHERE CompanyId = @companyId
-		AND IsActive = 1
-	
-	UNION
-	SELECT DivisionId
-		,[Code]
-		,[Name]
-	FROM dbo.Division WITH (NOLOCK)
-	WHERE DivisionId = @divisionId
+	WHERE (
+			CompanyId = @companyId
+			AND IsActive = 1
+			)
+		OR DivisionId = @divisionId
 
 	-- department
 	SELECT DepartmentId
 		,Code
 		,[Name]
 	FROM dbo.Department WITH (NOLOCK)
-	WHERE DivisionId = @divisionId
-		AND IsActive = 1
-	
-	UNION
-	SELECT DepartmentId
-		,Code
-		,[Name]
-	FROM dbo.Department WITH (NOLOCK)
-	WHERE DepartmentId = @departmentId
+	WHERE (
+			DivisionId = @divisionId
+			AND IsActive = 1
+			)
+		OR DepartmentId = @departmentId
 
 	-- cost center
 	SELECT CostCenterId
 		,Code
 		,[Name]
 	FROM dbo.CostCenter WITH (NOLOCK)
-	WHERE DepartmentId = @departmentId
-		AND IsActive = 1
-	
-	UNION
-	SELECT CostCenterId
-		,Code
-		,[Name]
-	FROM dbo.CostCenter WITH (NOLOCK)
-	WHERE CostCenterId = @costCenterId
+	WHERE (
+			DepartmentId = @departmentId
+			AND IsActive = 1
+			)
+		OR CostCenterId = @costCenterId
 
 	-- section
 	SELECT SectionId
 		,Code
 		,[Name]
 	FROM dbo.Section WITH (NOLOCK)
-	WHERE CostCenterId = @costCenterId
-		AND IsActive = 1
-	
-	UNION
-	SELECT SectionId
-		,Code
-		,[Name]
-	FROM dbo.Section WITH (NOLOCK)
-	WHERE SectionId = @sectionId
+	WHERE (
+			CostCenterId = @costCenterId
+			AND IsActive = 1
+			)
+		OR SectionId = @sectionId
 
 	-- job category
 	SELECT JobCategoryId
@@ -257,43 +241,29 @@ BEGIN
 		,[Description]
 	FROM dbo.JobCategory WITH (NOLOCK)
 	WHERE IsActive = 1
-	
-	UNION
-	SELECT JobCategoryId
-		,[Name]
-		,[Description]
-	FROM dbo.JobCategory WITH (NOLOCK)
-	WHERE JobCategoryId = @jobCategoryId
+		OR JobCategoryId = @jobCategoryId
 
 	-- grade level
 	SELECT GradeLevelId
 		,[Name]
 		,[Description]
 	FROM dbo.GradeLevel WITH (NOLOCK)
-	WHERE JobCategoryId = @jobCategoryId
-		AND IsActive = 1
-	
-	UNION
-	SELECT GradeLevelId
-		,[Name]
-		,[Description]
-	FROM dbo.GradeLevel WITH (NOLOCK)
-	WHERE GradeLevelId = @gradeLevelId
+	WHERE (
+			JobCategoryId = @jobCategoryId
+			AND IsActive = 1
+			)
+		OR GradeLevelId = @gradeLevelId
 
 	-- job grade
 	SELECT JobGradeId
 		,[Name]
 		,[Description]
 	FROM dbo.JobGrade WITH (NOLOCK)
-	WHERE GradeLevelId = @gradeLevelId
-		AND IsActive = 1
-	
-	UNION
-	SELECT JobGradeId
-		,[Name]
-		,[Description]
-	FROM dbo.JobGrade WITH (NOLOCK)
-	WHERE JobGradeId = @jobGradeId
+	WHERE (
+			GradeLevelId = @gradeLevelId
+			AND IsActive = 1
+			)
+		OR JobGradeId = @jobGradeId
 
 	-- country
 	SELECT CountryId
@@ -301,49 +271,191 @@ BEGIN
 		,[Name]
 	FROM dbo.Country WITH (NOLOCK)
 	WHERE IsActive = 1
-	
-	UNION
-	SELECT CountryId
-		,Code
-		,[Name]
-	FROM dbo.Country WITH (NOLOCK)
-	WHERE CountryId = @countryId
+		OR CountryId = @countryId
 
 	-- city
 	SELECT CityId
 		,Code
 		,[Name]
 	FROM dbo.City WITH (NOLOCK)
-	WHERE CountryId = @countryId
-		AND IsActive = 1
-	
-	UNION
-	SELECT CityId
-		,Code
-		,[Name]
-	FROM dbo.City WITH (NOLOCK)
-	WHERE CityId = @cityId
+	WHERE (
+			CountryId = @countryId
+			AND IsActive = 1
+			)
+		OR CityId = @cityId
 
 	-- office
 	SELECT OfficeId
 		,Code
 		,[Name]
 	FROM dbo.Office WITH (NOLOCK)
-	WHERE CityId = @cityId
-		AND IsActive = 1
-	
-	UNION
-	SELECT OfficeId
-		,Code
-		,[Name]
-	FROM dbo.Office WITH (NOLOCK)
-	WHERE OfficeId = @officeId
+	WHERE (
+			CityId = @cityId
+			AND IsActive = 1
+			)
+		OR OfficeId = @officeId
 
 	-- ref resource
-	SELECT RefName
-		,ResourceId
-		,Value
-		,[Description]
-	FROM dbo.RefResource WITH (NOLOCK)
-	WHERE RefName IN ('LocalCompany', 'LocalJobTitle', 'EmploymentType', 'EmploymentStatus', 'WorkPermitType1', 'WorkPermitType2', 'CommonReasons', 'GroupDateReasons')
+	SELECT ref.RefName
+		,ref.ResourceId
+		,ref.Value
+		,ref.[Description]
+	FROM dbo.RefResource AS ref WITH (NOLOCK)
+	WHERE (
+			ref.RefName IN ('LocalCompany', 'LocalJobTitle', 'EmploymentType', 'EmploymentStatus', 'WorkPermitType1', 'WorkPermitType2', 'CompanyBVIChangeReason', 'CompanyLocalChangeReason', 'JobTitleChangeReason', 'DateCommencementChangeReason', 'EmployeeIDChangeReason', 'JobCategoryChangeReason', 'JobGradeChangeReason', 'DivisionChangeReason', 'DepartmentChangeReason', 'CostCenterChangeReason', 'SectionChangeReason')
+			AND ref.IsActive = 1
+			)
+		OR (
+			ref.RefName = 'LocalCompany'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.Employment AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.LocalCompanyId
+				)
+			)
+		OR (
+			ref.RefName = 'LocalJobTitle'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.Employment AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.LocalJobTitleId
+				)
+			)
+		OR (
+			ref.RefName = 'EmploymentType'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.Employment AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.EmploymentType
+				)
+			)
+		OR (
+			ref.RefName = 'EmploymentStatus'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.Employment AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.EmploymentStatus
+				)
+			)
+		OR (
+			ref.RefName = 'WorkPermitType1'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentWorkPermit AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.Type1
+				)
+			)
+		OR (
+			ref.RefName = 'WorkPermitType2'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentWorkPermit AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.Type2
+				)
+			)
+		OR (
+			ref.RefName = 'CompanyBVIChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.CompanyReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'CompanyLocalChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.LocalCompanyReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'JobTitleChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId IN (e.JobTitleReasonId, e.LocalJobTitleReasonId)
+				)
+			)
+		OR (
+			ref.RefName = 'DateCommencementChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId IN (e.GroupDateReasonId, e.CompanyDateReasonId)
+				)
+			)
+		OR (
+			ref.RefName = 'EmployeeIDChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.IDNoReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'JobCategoryChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.JobCategoryReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'JobGradeChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.JobGradeReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'DivisionChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.DivisionReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'DepartmentChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.DepartmentReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'CostCenterChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.CostCenterReasonId
+				)
+			)
+		OR (
+			ref.RefName = 'SectionChangeReason'
+			AND EXISTS (
+				SELECT 1
+				FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+				WHERE e.EmployeeId = @EmployeeId
+					AND ref.ResourceId = e.SectionReasonId
+				)
+			)
 END

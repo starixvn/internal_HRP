@@ -39,7 +39,7 @@ CREATE PROCEDURE [dbo].[Employee_CreateEmployee] @EmployeeId INT OUTPUT
 	,@LocalJobTitleId SMALLINT
 	,@LocalJobTitleChangeDate DATE = NULL
 	,@LocalJobTitleReasonId TINYINT = NULL
-	,@CompanyCode VARCHAR(10)
+	,@CompanyCode NVARCHAR(50)
 	,@EmployeeCode VARCHAR(15)
 	,@IDNoChangeDate DATE = NULL
 	,@IDNoReasonId TINYINT = NULL

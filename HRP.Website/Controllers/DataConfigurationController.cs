@@ -300,19 +300,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateDepartment(Department department)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedDepartmentAsync(department);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, department.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateDepartmentAsync(department);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, department.Code) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -347,19 +346,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateDepartment(Department department)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedDepartmentAsync(department);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, department.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateDepartmentAsync(department);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(department), ".", nameof(department.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

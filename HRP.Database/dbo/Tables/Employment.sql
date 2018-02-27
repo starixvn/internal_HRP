@@ -4,7 +4,7 @@
     [LocalCompanyId]     SMALLINT       NOT NULL,
     [JobTitle]           NVARCHAR (50)  NOT NULL,
     [LocalJobTitleId]    SMALLINT       NOT NULL,
-    [CompanyCode]        VARCHAR (10)   NOT NULL,
+    [CompanyCode]        NVARCHAR (50)  NOT NULL,
     [EmployeeCode]       VARCHAR (15)   NOT NULL,
     [EmploymentType]     TINYINT        NOT NULL,
     [EmploymentStatus]   TINYINT        NOT NULL,
@@ -34,4 +34,6 @@
     [NicknamePFileAdmin] VARCHAR (30)   NULL,
     CONSTRAINT [PK_Employment] PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
 );
+
+
 

@@ -35,7 +35,7 @@ BEGIN
 	INNER JOIN [dbo].Employee AS e WITH (NOLOCK) ON ba.EmployeeId = e.EmployeeId
 	INNER JOIN [dbo].Employment AS emp WITH (NOLOCK) ON e.EmployeeId = emp.EmployeeId
 	INNER JOIN dbo.RefResource AS rr WITH (NOLOCK) ON rr.ResourceId = ba.BankType AND rr.RefName = 'BankType'
-	INNER JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON rr1.ResourceId = ba.AccountType AND rr1.RefName = 'BankAccountType'
+	INNER JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON rr1.ResourceId = ba.AccountType AND rr1.RefName = 'TypeOfBankAccount'
 	WHERE ba.EmployeeId = @EmployeeId
 	AND (@BankTypeId IS NULL OR ba.BankType = @BankTypeId)
 	AND (@IsActive IS NULL OR ba.IsActive = @IsActive)

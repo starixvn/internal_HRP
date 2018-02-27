@@ -29,8 +29,6 @@
 
         Task<IEnumerable<Department>> GetAllDepartmentAsync();
 
-        Task<bool> IsExistedDepartmentAsync(Department department);
-
         Task<CommandResult> CreateDepartmentAsync(Department department);
 
         Task<Department> GetDepartmentByIdAsync(int id);

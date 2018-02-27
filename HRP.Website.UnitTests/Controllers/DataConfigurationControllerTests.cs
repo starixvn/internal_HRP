@@ -483,12 +483,12 @@
         }
 
         [Fact]
-        public async Task CreateDepartmentPost_DepartmentItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateDepartmentPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var department = MockDepartment();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDepartmentAsync(Arg.Any<Department>()).Returns(true);
+            controller.ModelState.AddModelError("Department.Code", "Required");
 
             // Act
             var actual = await controller.CreateDepartment(department);
@@ -498,17 +498,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, department.Code), errors["Department.Code"]);
+            Assert.Equal("Required", errors["Department.Code"]);
         }
 
         [Fact]
-        public async Task CreateDepartmentPost_DepartmentItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateDepartmentPost_ModelStateIsValidAndCreateDepartmentSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var department = MockDepartment();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDepartmentAsync(Arg.Any<Department>()).Returns(false);
             dataConfigurationService.CreateDepartmentAsync(department).Returns(commandResult);
 
             // Act
@@ -518,7 +517,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, department.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateDepartmentPost_ModelStateIsValidAndCreateDepartmentUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var department = MockDepartment();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateDepartmentAsync(department).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateDepartment(department);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Department.Code"]);
         }
 
         [Fact]
@@ -558,12 +577,12 @@
         }
 
         [Fact]
-        public async Task UpdateDepartmentPost_DepartmentItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateDepartmentPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var department = MockDepartment();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDepartmentAsync(Arg.Any<Department>()).Returns(true);
+            controller.ModelState.AddModelError("Department.Code", "Required");
 
             // Act
             var actual = await controller.UpdateDepartment(department);
@@ -573,17 +592,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, department.Code), errors["Department.Code"]);
+            Assert.Equal("Required", errors["Department.Code"]);
         }
 
         [Fact]
-        public async Task UpdateDepartmentPost_DepartmentItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateDepartmentPost_ModelStateIsValidAndUpdateDepartmentSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var department = MockDepartment();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDepartmentAsync(Arg.Any<Department>()).Returns(false);
             dataConfigurationService.UpdateDepartmentAsync(department).Returns(commandResult);
 
             // Act
@@ -593,7 +611,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateDepartmentPost_ModelStateIsValidAndUpdateDepartmentUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var department = MockDepartment();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateDepartmentAsync(department).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateDepartment(department);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Department.Code"]);
         }
 
         #endregion Department

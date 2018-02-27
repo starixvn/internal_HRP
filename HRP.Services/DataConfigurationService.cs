@@ -178,20 +178,6 @@
             return departments;
         }
 
-        public async Task<bool> IsExistedDepartmentAsync(Department department)
-        {
-            var criteria = new CheckDepartmentExistsCriteria
-            {
-                DepartmentId = department.DepartmentId,
-                Code = department.Code,
-                DivisionId = department.DivisionId
-            };
-
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateDepartmentAsync(Department department)
         {
             var criteria = new CreateDepartmentCriteria
@@ -204,10 +190,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -231,10 +213,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

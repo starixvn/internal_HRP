@@ -3,16 +3,20 @@
  Task : Search bank accounts
  DB: bodb_HRP
  Updated: 
- ---- 2018-02-07: Include IsActive to filter on payroll page
+ ---- 20180207@Elton: Include IsActive to filter on payroll page
+ ---- 20180226@Hunter: IsActive in SP parameter to reduce complexity in Controller
  */
 CREATE PROCEDURE [dbo].[BankAccount_Search]
-	@EmployeeId INT,
-	@BankTypeId INT
+    @EmployeeId INT,
+    @BankTypeId INT,
+    @IsActive BIT = NULL
 AS
 BEGIN
-	SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
-	SELECT ba.Id AS BankAccountId, ba.AccountName, ba.IsActive
-	FROM BankAccount ba WITH (NOLOCK)
-	WHERE ba.EmployeeId = @EmployeeId AND ba.BankType = @BankTypeId
+    SELECT ba.Id AS BankAccountId, ba.AccountName
+    FROM BankAccount ba WITH (NOLOCK)
+    WHERE ba.EmployeeId = @EmployeeId
+        AND ba.BankType = @BankTypeId
+        AND (@IsActive IS NULL OR ba.IsActive = @IsActive)
 END

@@ -42,7 +42,7 @@ BEGIN
 	IF EXISTS (SELECT 1 FROM #tblCheckExists)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = 'The ' + @Code + ' has already existed!'
+		SET @ErrMsg = 'The ''' + @Code + ''' has already existed!'
 
 		RETURN
 	END

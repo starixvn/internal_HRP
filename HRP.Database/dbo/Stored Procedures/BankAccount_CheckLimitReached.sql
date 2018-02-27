@@ -14,12 +14,13 @@ BEGIN
 
 	declare @totalActiveAccountInBankType INT = 0;
 
-	SELECT TOP 1 @totalActiveAccountInBankType = COUNT(Id)
+	SELECT @totalActiveAccountInBankType = (
+	SELECT TOP 1 COUNT(Id) as IdNumbers
 	FROM [dbo].[BankAccount] WITH (NOLOCK)
 	WHERE [EmployeeId] = @EmployeeId
 		AND [IsActive] = 1
 	GROUP BY [BankType]
-	ORDER BY [BankType] DESC
+	ORDER BY IdNumbers ASC)
 
 	SELECT 1
 	WHERE @totalActiveAccountInBankType >= 3

@@ -46,4 +46,5 @@ BEGIN
 		,[Description]
 	FROM dbo.RefResource WITH (NOLOCK)
 	WHERE RefName IN ('LocalCompany', 'LocalJobTitle', 'EmploymentType', 'EmploymentStatus', 'WorkPermitType1', 'WorkPermitType2')
+		AND IsActive = 1
 END
