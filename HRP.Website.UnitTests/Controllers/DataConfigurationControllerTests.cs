@@ -221,7 +221,7 @@
         }
 
         [Fact]
-        public async Task UpdateCompanyBVIPos_ModelStateIsValidAndCreateCompanyBVIUnsuccessful_ReturnJsonResultWithErrors()
+        public async Task UpdateCompanyBVIPost_ModelStateIsValidAndUpdateCompanyBVIUnsuccessful_ReturnJsonResultWithErrors()
         {
             // Arrange
             var commandResult = new CommandResult();
@@ -286,12 +286,12 @@
         }
 
         [Fact]
-        public async Task CreateDivisionPost_DivisionItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateDivisionPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var division = MockDivision();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDivisionAsync(Arg.Any<Division>()).Returns(true);
+            controller.ModelState.AddModelError("Division.Code", "Required");
 
             // Act
             var actual = await controller.CreateDivision(division);
@@ -301,17 +301,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, division.Code), errors["Division.Code"]);
+            Assert.Equal("Required", errors["Division.Code"]);
         }
 
         [Fact]
-        public async Task CreateDivisionPost_DivisionItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateDivisionPost_ModelStateIsValidAndCreateDivisionSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var division = MockDivision();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDivisionAsync(Arg.Any<Division>()).Returns(false);
             dataConfigurationService.CreateDivisionAsync(division).Returns(commandResult);
 
             // Act
@@ -321,7 +320,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, division.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateDivisionPost_ModelStateIsValidAndCreateDivisionUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var division = MockDivision();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateDivisionAsync(division).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateDivision(division);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Division.Code"]);
         }
 
         [Fact]
@@ -361,12 +380,12 @@
         }
 
         [Fact]
-        public async Task UpdateDivisionPost_DivisionItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateDivisionPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var division = MockDivision();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDivisionAsync(Arg.Any<Division>()).Returns(true);
+            controller.ModelState.AddModelError("Division.Code", "Required");
 
             // Act
             var actual = await controller.UpdateDivision(division);
@@ -376,17 +395,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, division.Code), errors["Division.Code"]);
+            Assert.Equal("Required", errors["Division.Code"]);
         }
 
         [Fact]
-        public async Task UpdateDivisionPost_DivisionItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateDivisionPost_ModelStateIsValidAndUpdateDivisionSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var division = MockDivision();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedDivisionAsync(Arg.Any<Division>()).Returns(false);
             dataConfigurationService.UpdateDivisionAsync(division).Returns(commandResult);
 
             // Act
@@ -396,7 +414,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateDivisionPost_ModelStateIsValidAndUpdateDivisionUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var division = MockDivision();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateDivisionAsync(division).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateDivision(division);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Division.Code"]);
         }
 
         #endregion Division

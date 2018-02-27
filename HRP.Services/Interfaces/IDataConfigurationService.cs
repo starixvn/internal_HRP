@@ -13,8 +13,6 @@
 
         Task<IEnumerable<SimpleItem>> GetAllCompanyBVIAsync();
 
-        Task<bool> IsExistedCompanyBVIAsync(SimpleItem item);
-
         Task<SimpleItem> GetCompanyBVIByIdAsync(int id);
 
         Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item);
@@ -22,8 +20,6 @@
         Task<CommandResult> UpdateCompanyBVIAsync(SimpleItem item);
 
         Task<IEnumerable<Division>> GetAllDivisionAsync();
-
-        Task<bool> IsExistedDivisionAsync(Division division);
 
         Task<CommandResult> CreateDivisionAsync(Division division);
 

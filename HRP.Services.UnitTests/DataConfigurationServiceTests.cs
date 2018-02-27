@@ -83,26 +83,6 @@
             Assert.Equal(companies.Count, actual.Count);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedCompanyBVIAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var item = MockSimpleItem();
-            var criteria = new CheckCompanyExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCompanyExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCompanyBVIAsync(item);
-
-            // Assert
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(item.ItemId, criteria.CompanyId);
-            Assert.Equal(item.ItemName, criteria.Code);
-        }
-
         [Fact]
         public async Task CreateCompanyBVIAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
@@ -162,7 +142,7 @@
         }
 
         [Fact]
-        public async Task UpdateCompanyBVIAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateCompanyBVIAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var item = MockSimpleItem();
@@ -205,64 +185,25 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedDivisionAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var division = MockDivision();
-            var criteria = new CheckDivisionExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckDivisionExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedDivisionAsync(division);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(division.DivisionId, criteria.DivisionId);
-            Assert.Equal(division.Code, criteria.Code);
-            Assert.Equal(division.CompanyId, criteria.CompanyId);
-        }
-
         [Fact]
-        public async Task CreateDivisionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateDivisionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var division = MockDivision();
             var criteria = new CreateDivisionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateDivisionAsync(division);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(division.Code, criteria.Code);
             Assert.Equal(division.Name, criteria.Name);
             Assert.Equal(division.CompanyId, criteria.CompanyId);
             Assert.Equal(division.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateDivisionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateDivisionCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateDivisionAsync(new Division());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -305,21 +246,19 @@
         }
 
         [Fact]
-        public async Task UpdateDivisionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateDivisionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var division = MockDivision();
             var criteria = new UpdateDivisionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateDivisionAsync(division);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(division.DivisionId, criteria.DivisionId);
             Assert.Equal(division.Code, criteria.Code);
             Assert.Equal(division.Name, criteria.Name);

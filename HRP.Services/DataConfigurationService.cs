@@ -63,13 +63,6 @@
             return new List<SimpleItem>();
         }
 
-        public async Task<bool> IsExistedCompanyBVIAsync(SimpleItem item)
-        {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCompanyExistsCriteria { CompanyId = item.ItemId, Code = item.ItemName }).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateCompanyBVIAsync(SimpleItem item)
         {
             var criteria = new CreateCompanyCriteria
@@ -135,19 +128,6 @@
             return divisions;
         }
 
-        public async Task<bool> IsExistedDivisionAsync(Division division)
-        {
-            var criteria = new CheckDivisionExistsCriteria
-            {
-                DivisionId = division.DivisionId,
-                Code = division.Code,
-                CompanyId = division.CompanyId
-            };
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateDivisionAsync(Division division)
         {
             var criteria = new CreateDivisionCriteria
@@ -160,10 +140,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -187,10 +163,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }
