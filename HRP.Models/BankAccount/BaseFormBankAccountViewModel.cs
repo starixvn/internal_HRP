@@ -55,6 +55,8 @@
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.Active))]
         public bool IsActive { get; set; }
 
+        public bool IsSuccessful { get; set; }
+
         public SelectList BankTypes => new SelectList(
             BankTypeResources,
             nameof(ReferenceResourceModel.ResourceId),

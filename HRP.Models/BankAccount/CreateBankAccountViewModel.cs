@@ -14,7 +14,5 @@
             // Default bank type: savings
             AccountTypeId = 1;
         }
-
-        public bool IsSuccessful { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class CreateBankAccountCriteria : BankAccountBaseCriteria
     {
-        public override string GetSettingKey() => "BankAccount_CreateBankAccount";
+        public override string GetSettingKey() => "BankAccount_Create";
     }
 }

@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = GetBaseCriteria();
-            var expected = "BankAccount_CreateBankAccount";
+            var expected = "BankAccount_Create";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -42,7 +42,8 @@
                 AccountNumber = "Test",
                 AccountType = 1,
                 BeneficiaryName = "Test",
-                IsActive = true
+                IsActive = true,
+                CreatedBy = 1
             };
         }
 
@@ -78,6 +79,10 @@
 
                 criteria = GetBaseCriteria();
                 criteria.BeneficiaryName = string.Empty;
+                data.Add(TheoryDatum.Factory(criteria, false));
+
+                criteria = GetBaseCriteria();
+                criteria.CreatedBy = 0;
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = GetBaseCriteria();

@@ -202,7 +202,8 @@
                 AccountNumber = bankAccount.AccountNumber,
                 AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
-                IsActive = bankAccount.IsActive
+                IsActive = bankAccount.IsActive,
+                CreatedBy = sessionService.UserId
             };
 
             return criteria;
@@ -239,7 +240,8 @@
                 AccountNumber = bankAccount.AccountNumber,
                 AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
-                IsActive = bankAccount.IsActive
+                IsActive = bankAccount.IsActive,
+                CreatedBy = sessionService.UserId
             };
 
             return criteria;

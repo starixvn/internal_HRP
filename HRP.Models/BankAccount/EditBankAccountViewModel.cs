@@ -10,8 +10,6 @@
             BankAccountTypeResources = new List<ReferenceResourceModel>();
         }
 
-        public bool IsSuccessful { get; set; }
-
         public int BankAccountId { get; set; }
     }
 }

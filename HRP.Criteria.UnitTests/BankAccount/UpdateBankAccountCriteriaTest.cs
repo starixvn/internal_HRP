@@ -42,7 +42,8 @@
                 AccountNumber = "Test",
                 AccountType = 1,
                 BeneficiaryName = "Test",
-                IsActive = true
+                IsActive = true,
+                CreatedBy = 1
             };
         }
 
@@ -82,6 +83,10 @@
 
                 criteria = GetBaseCriteria();
                 criteria.Id = 0;
+                data.Add(TheoryDatum.Factory(criteria, false));
+
+                criteria = GetBaseCriteria();
+                criteria.CreatedBy = 0;
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = GetBaseCriteria();
