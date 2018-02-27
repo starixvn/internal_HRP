@@ -18,7 +18,7 @@
                 <span>Your Date & Time Setting on your device must be set to Automatic.</span>
             </p>
         </div>
-        @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"].ToString()))
+        @if (ViewData["ErrorMessage"] != null && !string.IsNullOrEmpty(ViewData["ErrorMessage"].ToString()))
         {
             <div class="msg-error -has-icon">
                 @ViewData["ErrorMessage"].ToString()
