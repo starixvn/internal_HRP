@@ -266,23 +266,6 @@
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
         }
 
-        [Fact]
-        public async Task UpdateDivisionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateDivisionCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateDivisionAsync(new Division());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
-        }
-
         #endregion Division
 
         #region Department
@@ -386,23 +369,6 @@
             Assert.Equal(department.Name, criteria.Name);
             Assert.Equal(department.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateDepartmentAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateDepartmentCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateDepartmentAsync(new Department());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion Department
@@ -512,23 +478,6 @@
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
         }
 
-        [Fact]
-        public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateCostCenterCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateCostCenterAsync(new CostCenter());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
-        }
-
         #endregion Cost Center
 
         #region Section
@@ -570,23 +519,6 @@
             Assert.Equal(section.CostCenterId, criteria.CostCenterId);
             Assert.Equal(section.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateSectionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateSectionCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateSectionAsync(new Section());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -655,23 +587,6 @@
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
         }
 
-        [Fact]
-        public async Task UpdateSectionAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateSectionCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateSectionAsync(new Section());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
-        }
-
         #endregion Section
 
         #region Job Category
@@ -734,23 +649,6 @@
         }
 
         [Fact]
-        public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateJobCategoryCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateJobCategoryAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
-        }
-
-        [Fact]
         public async Task GetJobCategoryByIdAsync_BaseServiceGetJobCategoryInstance_ReturnSimpleItemInstance()
         {
             // Arrange
@@ -808,23 +706,6 @@
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
         }
 
-        [Fact]
-        public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateJobCategoryCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateJobCategoryAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
-        }
-
         #endregion Job Category
 
         #region Grade Level
@@ -847,64 +728,25 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedGradeLevelAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var gradeLevel = MockGradeLevel();
-            var criteria = new CheckGradeLevelExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckGradeLevelExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
-            Assert.Equal(gradeLevel.Name, criteria.Name);
-            Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
-        }
-
         [Fact]
-        public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
             var criteria = new CreateGradeLevelCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Name), actual.Message);
             Assert.Equal(gradeLevel.Name, criteria.Name);
             Assert.Equal(gradeLevel.Description, criteria.Description);
             Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
             Assert.Equal(gradeLevel.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateGradeLevelCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateGradeLevelAsync(new GradeLevel());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -947,43 +789,24 @@
         }
 
         [Fact]
-        public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
             var criteria = new UpdateGradeLevelCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
             Assert.Equal(gradeLevel.Name, criteria.Name);
             Assert.Equal(gradeLevel.Description, criteria.Description);
             Assert.Equal(gradeLevel.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateGradeLevelCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateGradeLevelAsync(new GradeLevel());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion Grade Level

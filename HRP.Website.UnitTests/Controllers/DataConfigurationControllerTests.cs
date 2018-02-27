@@ -1268,12 +1268,12 @@
         }
 
         [Fact]
-        public async Task CreateGradeLevelPost_GradeLevelItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateGradeLevelPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedGradeLevelAsync(Arg.Any<GradeLevel>()).Returns(true);
+            controller.ModelState.AddModelError("GradeLevel.Name", "Required");
 
             // Act
             var actual = await controller.CreateGradeLevel(gradeLevel);
@@ -1283,17 +1283,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, gradeLevel.Name), errors["GradeLevel.Name"]);
+            Assert.Equal("Required", errors["GradeLevel.Name"]);
         }
 
         [Fact]
-        public async Task CreateGradeLevelPost_GradeLevelItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateGradeLevelPost_ModelStateIsValidAndCreateGradeLevelSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var gradeLevel = MockGradeLevel();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedGradeLevelAsync(Arg.Any<GradeLevel>()).Returns(false);
             dataConfigurationService.CreateGradeLevelAsync(gradeLevel).Returns(commandResult);
 
             // Act
@@ -1303,7 +1302,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, gradeLevel.Name), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateGradeLevelPost_ModelStateIsValidAndCreateGradeLevelUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var gradeLevel = MockGradeLevel();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateGradeLevelAsync(gradeLevel).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateGradeLevel(gradeLevel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["GradeLevel.Name"]);
         }
 
         [Fact]
@@ -1343,12 +1362,12 @@
         }
 
         [Fact]
-        public async Task UpdateGradeLevelPost_GradeLevelItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateGradeLevelPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var gradeLevel = MockGradeLevel();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedGradeLevelAsync(Arg.Any<GradeLevel>()).Returns(true);
+            controller.ModelState.AddModelError("GradeLevel.Name", "Required");
 
             // Act
             var actual = await controller.UpdateGradeLevel(gradeLevel);
@@ -1358,17 +1377,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, gradeLevel.Name), errors["GradeLevel.Name"]);
+            Assert.Equal("Required", errors["GradeLevel.Name"]);
         }
 
         [Fact]
-        public async Task UpdateGradeLevelPost_GradeLevelItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateGradeLevelPost_ModelStateIsValidAndUpdateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var gradeLevel = MockGradeLevel();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedGradeLevelAsync(Arg.Any<GradeLevel>()).Returns(false);
             dataConfigurationService.UpdateGradeLevelAsync(gradeLevel).Returns(commandResult);
 
             // Act
@@ -1378,7 +1396,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateGradeLevelPost_ModelStateIsValidAndUpdateGradeLevelUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var gradeLevel = MockGradeLevel();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateGradeLevelAsync(gradeLevel).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateGradeLevel(gradeLevel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["GradeLevel.Name"]);
         }
 
         #endregion Grade Level

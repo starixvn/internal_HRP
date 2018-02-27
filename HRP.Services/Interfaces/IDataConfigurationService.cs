@@ -61,8 +61,6 @@
 
         Task<IEnumerable<GradeLevel>> GetAllGradeLevelAsync();
 
-        Task<bool> IsExistedGradeLevelAsync(GradeLevel gradeLevel);
-
         Task<CommandResult> CreateGradeLevelAsync(GradeLevel gradeLevel);
 
         Task<GradeLevel> GetGradeLevelByIdAsync(int id);

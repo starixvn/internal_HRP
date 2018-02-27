@@ -731,19 +731,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateGradeLevel(GradeLevel gradeLevel)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, gradeLevel.Name));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, gradeLevel.Name) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -778,19 +777,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateGradeLevel(GradeLevel gradeLevel)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedGradeLevelAsync(gradeLevel);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, gradeLevel.Name));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(gradeLevel), ".", nameof(gradeLevel.Name));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
