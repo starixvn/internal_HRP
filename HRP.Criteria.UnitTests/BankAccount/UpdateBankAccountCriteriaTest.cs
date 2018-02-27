@@ -43,7 +43,7 @@
                 AccountType = 1,
                 BeneficiaryName = "Test",
                 IsActive = true,
-                CreatedBy = 1
+                UpdatedBy = 1
             };
         }
 
@@ -86,7 +86,7 @@
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = GetBaseCriteria();
-                criteria.CreatedBy = 0;
+                criteria.UpdatedBy = 0;
                 data.Add(TheoryDatum.Factory(criteria, false));
 
                 criteria = GetBaseCriteria();
