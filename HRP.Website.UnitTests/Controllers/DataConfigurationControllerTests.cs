@@ -877,12 +877,12 @@
         }
 
         [Fact]
-        public async Task CreateSectionPost_SectionItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateSectionPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var section = MockSection();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedSectionAsync(Arg.Any<Section>()).Returns(true);
+            controller.ModelState.AddModelError("Section.Code", "Required");
 
             // Act
             var actual = await controller.CreateSection(section);
@@ -892,17 +892,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, section.Code), errors["Section.Code"]);
+            Assert.Equal("Required", errors["Section.Code"]);
         }
 
         [Fact]
-        public async Task CreateSectionPost_SectionItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateSectionPost_ModelStateIsValidAndCreateSectionSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var section = MockSection();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedSectionAsync(Arg.Any<Section>()).Returns(false);
             dataConfigurationService.CreateSectionAsync(section).Returns(commandResult);
 
             // Act
@@ -912,7 +911,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, section.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateSectionPost_ModelStateIsValidAndCreateSectionUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var section = MockSection();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateSectionAsync(section).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateSection(section);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Section.Code"]);
         }
 
         [Fact]
@@ -952,12 +971,12 @@
         }
 
         [Fact]
-        public async Task UpdateSectionPost_SectionItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateSectionPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var section = MockSection();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedSectionAsync(Arg.Any<Section>()).Returns(true);
+            controller.ModelState.AddModelError("Section.Code", "Required");
 
             // Act
             var actual = await controller.UpdateSection(section);
@@ -967,17 +986,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, section.Code), errors["Section.Code"]);
+            Assert.Equal("Required", errors["Section.Code"]);
         }
 
         [Fact]
-        public async Task UpdateSectionPost_SectionItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateSectionPost_ModelStateIsValidAndUpdateSectionSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var section = MockSection();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedSectionAsync(Arg.Any<Section>()).Returns(false);
             dataConfigurationService.UpdateSectionAsync(section).Returns(commandResult);
 
             // Act
@@ -987,7 +1005,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateSectionPost_ModelStateIsValidAndUpdateSectionUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var section = MockSection();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateSectionAsync(section).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateSection(section);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Section.Code"]);
         }
 
         #endregion Section

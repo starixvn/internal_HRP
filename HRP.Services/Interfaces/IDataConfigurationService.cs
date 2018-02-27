@@ -45,8 +45,6 @@
 
         Task<IEnumerable<Section>> GetAllSectionAsync();
 
-        Task<bool> IsExistedSectionAsync(Section section);
-
         Task<CommandResult> CreateSectionAsync(Section section);
 
         Task<Section> GetSectionByIdAsync(int id);

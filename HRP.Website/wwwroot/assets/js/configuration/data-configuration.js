@@ -328,7 +328,7 @@
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here
             } else {
-                commonFunctions.showErrorMessage($('.msg-error'), 'Internal Error'');
+                commonFunctions.showErrorMessage($('.msg-error'), 'Internal Error');
             }
         }
     }

@@ -551,42 +551,20 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedSectionAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var section = MockSection();
-            var criteria = new CheckSectionExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckSectionExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedSectionAsync(section);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(section.SectionId, criteria.SectionId);
-            Assert.Equal(section.Code, criteria.Code);
-            Assert.Equal(section.CostCenterId, criteria.CostCenterId);
-        }
-
         [Fact]
-        public async Task CreateSectionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateSectionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var section = MockSection();
             var criteria = new CreateSectionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateSectionAsync(section);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(section.Code, criteria.Code);
             Assert.Equal(section.Name, criteria.Name);
             Assert.Equal(section.CostCenterId, criteria.CostCenterId);
@@ -657,7 +635,7 @@
         }
 
         [Fact]
-        public async Task UpdateSectionAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateSectionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var section = MockSection();
@@ -670,8 +648,6 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(section.SectionId, criteria.SectionId);
             Assert.Equal(section.Code, criteria.Code);
             Assert.Equal(section.Name, criteria.Name);
