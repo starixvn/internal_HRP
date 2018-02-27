@@ -839,19 +839,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateJobGrade(JobGrade jobGrade)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedJobGradeAsync(jobGrade);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, jobGrade.Name));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateJobGradeAsync(jobGrade);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, jobGrade.Name) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -886,19 +885,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateJobGrade(JobGrade jobGrade)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedJobGradeAsync(jobGrade);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, jobGrade.Name));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateJobGradeAsync(jobGrade);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(jobGrade), ".", nameof(jobGrade.Name));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

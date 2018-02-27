@@ -69,8 +69,6 @@
 
         Task<IEnumerable<JobGrade>> GetAllJobGradelAsync();
 
-        Task<bool> IsExistedJobGradeAsync(JobGrade jobGrade);
-
         Task<CommandResult> CreateJobGradeAsync(JobGrade jobGrade);
 
         Task<JobGrade> GetJobGradeByIdAsync(int id);

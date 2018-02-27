@@ -456,19 +456,6 @@
             return jobGradeList;
         }
 
-        public async Task<bool> IsExistedJobGradeAsync(JobGrade jobGrade)
-        {
-            var criteria = new CheckJobGradeExistsCriteria
-            {
-                JobGradeId = jobGrade.JobGradeId,
-                Name = jobGrade.Name,
-                GradeLevelId = jobGrade.GradeLevelId
-            };
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateJobGradeAsync(JobGrade jobGrade)
         {
             var criteria = new CreateJobGradeCriteria
@@ -481,10 +468,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Name);
-            }
 
             return commandResult;
         }
@@ -508,10 +491,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

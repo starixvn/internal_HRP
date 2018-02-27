@@ -1465,12 +1465,12 @@
         }
 
         [Fact]
-        public async Task CreateJobGradePost_JobGradeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateJobGradePost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var jobGrade = MockJobGrade();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(true);
+            controller.ModelState.AddModelError("JobGrade.Name", "Required");
 
             // Act
             var actual = await controller.CreateJobGrade(jobGrade);
@@ -1480,17 +1480,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, jobGrade.Name), errors["JobGrade.Name"]);
+            Assert.Equal("Required", errors["JobGrade.Name"]);
         }
 
         [Fact]
-        public async Task CreateJobGradePost_JobGradeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateJobGradePost_ModelStateIsValidAndCreateJobGradeSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var jobGrade = MockJobGrade();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(false);
             dataConfigurationService.CreateJobGradeAsync(jobGrade).Returns(commandResult);
 
             // Act
@@ -1500,7 +1499,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, jobGrade.Name), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateJobGradePost_ModelStateIsValidAndCreateJobGradeUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateJobGradeAsync(jobGrade).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["JobGrade.Name"]);
         }
 
         [Fact]
@@ -1540,12 +1559,12 @@
         }
 
         [Fact]
-        public async Task UpdateJobGradePost_JobGradeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateJobGradePost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var jobGrade = MockJobGrade();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(true);
+            controller.ModelState.AddModelError("JobGrade.Name", "Required");
 
             // Act
             var actual = await controller.UpdateJobGrade(jobGrade);
@@ -1555,17 +1574,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, jobGrade.Name), errors["JobGrade.Name"]);
+            Assert.Equal("Required", errors["JobGrade.Name"]);
         }
 
         [Fact]
-        public async Task UpdateJobGradePost_JobGradeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateJobGradePost_ModelStateIsValidAndUpdateJobGradeSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var jobGrade = MockJobGrade();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobGradeAsync(Arg.Any<JobGrade>()).Returns(false);
             dataConfigurationService.UpdateJobGradeAsync(jobGrade).Returns(commandResult);
 
             // Act
@@ -1575,7 +1593,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobGradePost_ModelStateIsValidAndUpdateJobGradeUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var jobGrade = MockJobGrade();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateJobGradeAsync(jobGrade).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateJobGrade(jobGrade);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["JobGrade.Name"]);
         }
 
         #endregion Job Grade
