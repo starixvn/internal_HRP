@@ -408,19 +408,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCostCenter(CostCenter costCenter)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, costCenter.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateCostCenterAsync(costCenter);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, costCenter.Code) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -455,19 +454,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateCostCenter(CostCenter costCenter)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, costCenter.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(costCenter), ".", nameof(costCenter.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

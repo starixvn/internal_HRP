@@ -427,64 +427,25 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedCostCenterAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var costCenter = MockCostCenter();
-            var criteria = new CheckCostCenterExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCostCenterExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCostCenterAsync(costCenter);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
-            Assert.Equal(costCenter.Code, criteria.Code);
-            Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
-        }
-
         [Fact]
-        public async Task CreateCostCenterAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateCostCenterAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var costCenter = MockCostCenter();
             var criteria = new CreateCostCenterCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateCostCenterAsync(costCenter);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(costCenter.Code, criteria.Code);
             Assert.Equal(costCenter.Name, criteria.Name);
             Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
             Assert.Equal(costCenter.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateCostCenterAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateCostCenterCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateCostCenterAsync(new CostCenter());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -531,21 +492,19 @@
         }
 
         [Fact]
-        public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var costCenter = MockCostCenter();
             var criteria = new UpdateCostCenterCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
             Assert.Equal(costCenter.Code, criteria.Code);
             Assert.Equal(costCenter.Name, criteria.Name);

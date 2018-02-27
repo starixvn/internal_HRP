@@ -680,12 +680,12 @@
         }
 
         [Fact]
-        public async Task CreateCostCenterPost_CostCenterItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateCostCenterPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var costCenter = MockCostCenter();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCostCenterAsync(Arg.Any<CostCenter>()).Returns(true);
+            controller.ModelState.AddModelError("CostCenter.Code", "Required");
 
             // Act
             var actual = await controller.CreateCostCenter(costCenter);
@@ -695,17 +695,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, costCenter.Code), errors["CostCenter.Code"]);
+            Assert.Equal("Required", errors["CostCenter.Code"]);
         }
 
         [Fact]
-        public async Task CreateCostCenterPost_CostCenterItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateCostCenterPost_ModelStateIsValidAndCreateCostCenterSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var costCenter = MockCostCenter();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCostCenterAsync(Arg.Any<CostCenter>()).Returns(false);
             dataConfigurationService.CreateCostCenterAsync(costCenter).Returns(commandResult);
 
             // Act
@@ -715,7 +714,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, costCenter.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateCostCenterPost_ModelStateIsValidAndCreateCostCenterUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var costCenter = MockCostCenter();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateCostCenterAsync(costCenter).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCostCenter(costCenter);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["CostCenter.Code"]);
         }
 
         [Fact]
@@ -755,12 +774,12 @@
         }
 
         [Fact]
-        public async Task UpdateCostCenterPost_CostCenterItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateCostCenterPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var costCenter = MockCostCenter();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCostCenterAsync(Arg.Any<CostCenter>()).Returns(true);
+            controller.ModelState.AddModelError("CostCenter.Code", "Required");
 
             // Act
             var actual = await controller.UpdateCostCenter(costCenter);
@@ -770,17 +789,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, costCenter.Code), errors["CostCenter.Code"]);
+            Assert.Equal("Required", errors["CostCenter.Code"]);
         }
 
         [Fact]
-        public async Task UpdateCostCenterPost_CostCenterItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateCostCenterPost_ModelStateIsValidAndUpdateCostCenterSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var costCenter = MockCostCenter();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCostCenterAsync(Arg.Any<CostCenter>()).Returns(false);
             dataConfigurationService.UpdateCostCenterAsync(costCenter).Returns(commandResult);
 
             // Act
@@ -790,7 +808,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCostCenterPost_ModelStateIsValidAndUpdateCostCenterUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var costCenter = MockCostCenter();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateCostCenterAsync(costCenter).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCostCenter(costCenter);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["CostCenter.Code"]);
         }
 
         #endregion Cost Center

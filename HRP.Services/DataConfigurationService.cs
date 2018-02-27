@@ -228,20 +228,6 @@
             return costCenters;
         }
 
-        public async Task<bool> IsExistedCostCenterAsync(CostCenter costCenter)
-        {
-            var criteria = new CheckCostCenterExistsCriteria
-            {
-                CostCenterId = costCenter.CostCenterId,
-                Code = costCenter.Code,
-                DepartmentId = costCenter.DepartmentId
-            };
-
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateCostCenterAsync(CostCenter costCenter)
         {
             var criteria = new CreateCostCenterCriteria
@@ -254,10 +240,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -281,10 +263,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

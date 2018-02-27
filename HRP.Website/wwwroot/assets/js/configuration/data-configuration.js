@@ -312,7 +312,7 @@
             if (response.errors) {
                 $createItemForm.validate().showErrors(response.errors); //todo test here
             } else {
-                commonFunctions.showErrorMessage($('.msg-error'), 'Something wrong!');
+                commonFunctions.showErrorMessage($('.msg-error'), 'Internal Error');
             }
         }
     }
@@ -328,7 +328,7 @@
             if (response.errors) {
                 $editItemForm.validate().showErrors(response.errors); //todo test here
             } else {
-                commonFunctions.showErrorMessage($('.msg-error'), 'Something wrong!');
+                commonFunctions.showErrorMessage($('.msg-error'), 'Internal Error'');
             }
         }
     }

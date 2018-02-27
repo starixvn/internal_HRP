@@ -37,8 +37,6 @@
 
         Task<IEnumerable<CostCenter>> GetAllCostCenterAsync();
 
-        Task<bool> IsExistedCostCenterAsync(CostCenter costCenter);
-
         Task<CommandResult> CreateCostCenterAsync(CostCenter costCenter);
 
         Task<CostCenter> GetCostCenterByIdAsync(int id);
