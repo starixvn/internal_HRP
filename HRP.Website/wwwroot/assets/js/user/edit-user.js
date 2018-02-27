@@ -1,13 +1,5 @@
 ﻿var editUser = (function ($) {
-    if ($('#CanEdit').val() === 'False') {
-        $('input[type="text"]').attr('readonly', 'readonly');
-        $('input[type="checkbox"]').attr('disabled', 'disabled');
-        $('form').submit(false);
-    }
-
-    commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
-
-    var displaySuccessMessage = function () {
+    function displaySuccessMessage() {
         var alert = $('#edit-user-alert');
 
         alert.removeClass('hidden');
@@ -15,13 +7,13 @@
         window.setTimeout(function () {
             alert.addClass('hidden');
         }, 2000);
-    };
+    }
 
-    var displayValidationErrorMessages = function (errors) {
+    function displayValidationErrorMessages(errors) {
         errors.forEach(function (error) {
             $('[data-valmsg-for="' + error.key + '"]').text(error.errorMessage);
         });
-    };
+    }
 
     return {
         onEditBegin: function () {
@@ -45,3 +37,13 @@
         }
     };
 }(jQuery));
+
+$(document).ready(function () {
+    if (!$('#CanEdit').prop('checked')) {
+        $('input[type="text"]').attr('readonly', 'readonly');
+        $('input[type="checkbox"]').attr('disabled', 'disabled');
+        $('form').submit(false);
+    }
+
+    commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
+});

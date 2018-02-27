@@ -20,7 +20,7 @@
       data-ajax-success="editUser.onEditSuccess" data-ajax-complete="editUser.onEditComplete">
 
     <input type="hidden" asp-for="UserId" />
-    <input type="hidden" asp-for="CanEdit" />
+    <input type="checkbox" hidden asp-for="CanEdit" />
 
     <div class="list-message-error hidden" id="validation-summary">
         <span asp-validation-for="FullName" class="message"></span>

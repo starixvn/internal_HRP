@@ -1,29 +1,11 @@
 ﻿var createUser = (function ($) {
-    $(function () {
-        var $form = $('#create-user-form')[0];
-        var settings = $.data($form, 'validator').settings;
-        settings.onkeyup = false;
-
-        $('#show-password').on('change', function () {
-            if ($(this).is(':checked')) {
-                $('#Password').attr('type', 'text');
-            } else {
-                $('#Password').attr('type', 'password');
-            }
-        });
-
-        $form.reset();
-
-        commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
-    });
-
-    var displayValidationErrorMessages = function (errors) {
+    function displayValidationErrorMessages(errors) {
         errors.forEach(function (error) {
             $('[data-valmsg-for="' + error.key + '"]').text(error.errorMessage);
         });
-    };
+    }
 
-    var displaySuccessMessage = function (username, redirectTo) {
+    function displaySuccessMessage(username, redirectTo) {
         var alert = $('#create-user-alert');
         var delay = 5;
         var textAlert = username + ' account has been created successfully. You will be redirected in ';
@@ -38,7 +20,7 @@
                 $('#alert-message', alert).text(textAlert + delay + ' seconds.');
             }
         }, 1000);
-    };
+    }
 
     return {
         onCreateBegin: function () {
@@ -62,3 +44,19 @@
         }
     };
 }(jQuery));
+
+$(document).ready(function () {
+    var $form = $('#create-user-form')[0];
+
+    $('#show-password').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#Password').attr('type', 'text');
+        } else {
+            $('#Password').attr('type', 'password');
+        }
+    });
+
+    $form.reset();
+
+    commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
+});
