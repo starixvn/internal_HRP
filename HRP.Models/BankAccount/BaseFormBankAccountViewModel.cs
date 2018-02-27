@@ -11,48 +11,48 @@
 
         public string NickName { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "AccountName")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(Name = nameof(ViewLang.AccountName), ResourceType = typeof(ViewLang))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string AccountName { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "AccountNumber")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.AccountNumber))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string AccountNumber { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "TypeOfAccount")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.TypeOfAccount))]
         public int AccountTypeId { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BankAddress")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankAddress))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankAddress { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BankBranch")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankBranch))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankBranch { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BankName")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankName))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         public string BankName { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "SwiftCode")]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SwiftCode))]
+        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankSwiftCode { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BankType")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankType))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         public int BankTypeId { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "BeneficiaryName")]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "RequiredErrorMessage")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "StringLengthMaxErrorMessage")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BeneficiaryName))]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BeneficiaryName { get; set; }
 
-        [Display(ResourceType = typeof(ViewLang), Name = "Active")]
+        [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.Active))]
         public bool IsActive { get; set; }
 
         public SelectList BankTypes => new SelectList(

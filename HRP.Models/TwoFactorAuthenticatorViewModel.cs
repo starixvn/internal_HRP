@@ -1,11 +1,12 @@
 namespace HRP.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using Resources;
 
     public class TwoFactorAuthenticatorViewModel
     {
         [Required]
-        [Display(Name = "OTP code")]
+        [Display(Name = nameof(ViewLang.OtpCode), ResourceType = typeof(ViewLang))]
         public string OTPCode { get; set; }
 
         // TODO: Remove when 2 factor completed

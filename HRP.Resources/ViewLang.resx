@@ -789,4 +789,7 @@
   <data name="Otp" xml:space="preserve">
     <value>OTP</value>
   </data>
+  <data name="OtpCode" xml:space="preserve">
+    <value>OTP code</value>
+  </data>
 </root>

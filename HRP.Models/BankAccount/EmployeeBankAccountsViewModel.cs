@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Resources;
 
     public class EmployeeBankAccountsViewModel
     {
@@ -29,7 +30,7 @@
                 var bankTypesWithAllOption = BankTypeResources.ToList();
                 var allOption = new ReferenceResourceModel
                 {
-                    Value = "All"
+                    Value = ViewLang.All
                 };
 
                 bankTypesWithAllOption.Insert(0, allOption);

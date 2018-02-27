@@ -1564,7 +1564,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is required.
+        ///   Looks up a localized string similar to {0} is required!.
         /// </summary>
         public static string RequiredErrorMessage {
             get {
