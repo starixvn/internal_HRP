@@ -573,7 +573,7 @@
             var section = MockSection();
             var criteria = new UpdateSectionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateSectionAsync(section);
@@ -955,7 +955,7 @@
             var item = MockSimpleItem();
             var criteria = new CreateCountryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateCountryAsync(item);
@@ -1145,28 +1145,8 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedOfficeAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var office = MockOffice();
-            var criteria = new CheckOfficeExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckOfficeExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedOfficeAsync(office);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(office.OfficeId, criteria.OfficeId);
-            Assert.Equal(office.Code, criteria.Code);
-            Assert.Equal(office.CityId, criteria.CityId);
-        }
-
         [Fact]
-        public async Task CreateOfficeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateOfficeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var office = MockOffice();
@@ -1179,30 +1159,11 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(office.Code, criteria.Code);
             Assert.Equal(office.Name, criteria.Name);
             Assert.Equal(office.CityId, criteria.CityId);
             Assert.Equal(office.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateOfficeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateOfficeCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateOfficeAsync(new Office());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -1240,7 +1201,7 @@
         }
 
         [Fact]
-        public async Task UpdateOfficeAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateOfficeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var office = MockOffice();
@@ -1253,30 +1214,11 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(office.OfficeId, criteria.OfficeId);
             Assert.Equal(office.Code, criteria.Code);
             Assert.Equal(office.Name, criteria.Name);
             Assert.Equal(office.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateOfficeAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateOfficeCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateOfficeAsync(new Office());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion Office
@@ -1323,30 +1265,8 @@
             Assert.Equal(items.Count, actual.Count);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedRefResourceItemAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var refName = "xxxzzz";
-            var item = MockSimpleItem();
-            var criteria = new CheckRefResourceExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckRefResourceExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedRefResourceItemAsync(refName, item);
-
-            // Assert
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(item.ItemId, criteria.ResourceId);
-            Assert.Equal(item.ItemName, criteria.Value);
-            Assert.Equal(refName, criteria.RefName);
-        }
-
         [Fact]
-        public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var refName = "xxxzzz";
@@ -1360,30 +1280,11 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Value), actual.Message);
             Assert.Equal(item.ItemName, criteria.Value);
             Assert.Equal(item.Description, criteria.Description);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
             Assert.Equal(refName, criteria.RefName);
-        }
-
-        [Fact]
-        public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateRefResourceCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateRefResourceCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateRefResourceItemAsync("aaba", new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -1427,7 +1328,7 @@
         }
 
         [Fact]
-        public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var refName = "xxxzzz";
@@ -1441,30 +1342,11 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(item.ItemId, criteria.ResourceId);
             Assert.Equal(item.ItemName, criteria.Value);
             Assert.Equal(item.Description, criteria.Description);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateRefResourceItemCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateRefResourceItemCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateRefResourceItemAsync("ss", new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion RefResource Item

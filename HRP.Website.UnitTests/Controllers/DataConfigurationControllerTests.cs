@@ -1184,7 +1184,7 @@
         }
 
         [Fact]
-        public async Task UpdateJobCategoryPost_ModelStateIsValidAndUpdateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateJobCategoryPost_ModelStateIsValidAndUpdateJobCategorySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
@@ -1381,7 +1381,7 @@
         }
 
         [Fact]
-        public async Task UpdateGradeLevelPost_ModelStateIsValidAndUpdateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateGradeLevelPost_ModelStateIsValidAndUpdateGradeLevelSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
@@ -2053,12 +2053,12 @@
         }
 
         [Fact]
-        public async Task CreateOfficePost_OfficeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateOfficePost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var office = MockOffice();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(true);
+            controller.ModelState.AddModelError("Office.Code", "Required");
 
             // Act
             var actual = await controller.CreateOffice(office);
@@ -2068,17 +2068,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, office.Code), errors["Office.Code"]);
+            Assert.Equal("Required", errors["Office.Code"]);
         }
 
         [Fact]
-        public async Task CreateOffice_OfficeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateOfficePost_ModelStateIsValidAndCreateOfficeSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var office = MockOffice();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(false);
             dataConfigurationService.CreateOfficeAsync(office).Returns(commandResult);
 
             // Act
@@ -2088,7 +2087,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, office.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateOfficePost_ModelStateIsValidAndCreateOfficeUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var office = MockOffice(); ;
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateOfficeAsync(office).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Office.Code"]);
         }
 
         [Fact]
@@ -2128,12 +2147,12 @@
         }
 
         [Fact]
-        public async Task UpdateOfficePost_OfficeItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateOfficePost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var office = MockOffice();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(true);
+            controller.ModelState.AddModelError("Office.Code", "Required");
 
             // Act
             var actual = await controller.UpdateOffice(office);
@@ -2143,17 +2162,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, office.Code), errors["Office.Code"]);
+            Assert.Equal("Required", errors["Office.Code"]);
         }
 
         [Fact]
-        public async Task UpdateOfficePost_OfficeItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateOfficePost_ModelStateIsValidAndUpdateOfficeSuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var office = MockOffice();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedOfficeAsync(Arg.Any<Office>()).Returns(false);
             dataConfigurationService.UpdateOfficeAsync(office).Returns(commandResult);
 
             // Act
@@ -2163,7 +2181,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateOfficePost_ModelStateIsValidAndUpdateOfficeUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var office = MockOffice();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateOfficeAsync(office).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateOffice(office);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Office.Code"]);
         }
 
         #endregion Office
@@ -2218,14 +2256,12 @@
         [Theory]
         [InlineData(35)]
         [InlineData(34)]
-        public async Task CreateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
+        public async Task CreateRefResourceItemPost_ModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
         {
             // Arrange
-            var field = FieldsDictionary.Fields[fieldId];
-            var refName = string.Empty;
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.CreateRefResourceItem(fieldId, item);
@@ -2235,22 +2271,21 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
-            Assert.Equal(field.RefName, refName);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Theory]
         [InlineData(35)]
         [InlineData(34)]
-        public async Task CreateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
+        public async Task CreateRefResourceItemPost_ModelStateIsValidAndCreateRefResourceItemSuccessful_ReturnJsonResultWithSuccessfulMessage(int fieldId)
         {
             // Arrange
             var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(false);
-            dataConfigurationService.CreateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+            dataConfigurationService.CreateRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Is(item)).Returns(commandResult);
 
             // Act
             var actual = await controller.CreateRefResourceItem(fieldId, item);
@@ -2259,7 +2294,31 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, item.ItemName), returnValue["message"]);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(34)]
+        public async Task CreateRefResourceItemPost_ModelStateIsValidAndCreateRefResourceItemUnsuccessful_ReturnJsonResultWithErrors(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         [Theory]
@@ -2305,14 +2364,13 @@
         [Theory]
         [InlineData(35)]
         [InlineData(34)]
-        public async Task UpdateRefResourceItemPost_RefResourceItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
+        public async Task UpdateRefResourceItemPost_ModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
         {
             // Arrange
             var field = FieldsDictionary.Fields[fieldId];
-            var refName = string.Empty;
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.UpdateRefResourceItem(fieldId, item);
@@ -2322,22 +2380,21 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
-            Assert.Equal(field.RefName, refName);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Theory]
         [InlineData(35)]
         [InlineData(34)]
-        public async Task UpdateRefResourceItemPost_RefResourceItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage(int fieldId)
+        public async Task UpdateRefResourceItemPost_ModelStateIsValidAndUpdateRefResourceItemSuccessful_ReturnJsonResultWithSuccessfulMessage(int fieldId)
         {
             // Arrange
             var field = FieldsDictionary.Fields[fieldId];
+            var refName = string.Empty;
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(false);
-            dataConfigurationService.UpdateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+            dataConfigurationService.UpdateRefResourceItemAsync(Arg.Do<string>(x => refName = x), Arg.Is(item)).Returns(commandResult);
 
             // Act
             var actual = await controller.UpdateRefResourceItem(fieldId, item);
@@ -2346,7 +2403,31 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+            Assert.Equal(field.RefName, refName);
+        }
+
+        [Theory]
+        [InlineData(35)]
+        [InlineData(34)]
+        public async Task UpdateRefResourceItemPost_ModelStateIsValidAndUpdateRefResourceItemUnsuccessful_ReturnJsonResultWithErrors(int fieldId)
+        {
+            // Arrange
+            var field = FieldsDictionary.Fields[fieldId];
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateRefResourceItemAsync(Arg.Is(field.RefName), Arg.Is(item)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateRefResourceItem(fieldId, item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         #endregion RefResource Item

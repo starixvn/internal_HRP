@@ -1162,19 +1162,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateOffice(Office office)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedOfficeAsync(office);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, office.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateOfficeAsync(office);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, office.Code) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -1209,19 +1208,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateOffice(Office office)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedOfficeAsync(office);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, office.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateOfficeAsync(office);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(office), ".", nameof(office.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -1265,19 +1263,19 @@
         public async Task<IActionResult> CreateRefResourceItem(int fieldId, SimpleItem item)
         {
             var field = FieldsDictionary.Fields[fieldId];
-            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(field.RefName, item);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
-            }
 
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateRefResourceItemAsync(field.RefName, item);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -1310,19 +1308,19 @@
         public async Task<IActionResult> UpdateRefResourceItem(int fieldId, SimpleItem item)
         {
             var field = FieldsDictionary.Fields[fieldId];
-            var isExistedItem = await dataConfigurationService.IsExistedRefResourceItemAsync(field.RefName, item);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
-            }
 
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateRefResourceItemAsync(field.RefName, item);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

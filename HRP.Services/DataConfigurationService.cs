@@ -634,19 +634,6 @@
             return offices;
         }
 
-        public async Task<bool> IsExistedOfficeAsync(Office office)
-        {
-            var criteria = new CheckOfficeExistsCriteria
-            {
-                OfficeId = office.OfficeId,
-                Code = office.Code,
-                CityId = office.CityId
-            };
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateOfficeAsync(Office office)
         {
             var criteria = new CreateOfficeCriteria
@@ -659,10 +646,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -686,10 +669,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }
@@ -697,10 +676,6 @@
         #endregion Office
 
         #region RefResource Item
-
-        /// <summary>
-        /// Company Local
-        /// </summary>
 
         public async Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName)
         {
@@ -722,20 +697,6 @@
             return new List<SimpleItem>();
         }
 
-        public async Task<bool> IsExistedRefResourceItemAsync(string refName, SimpleItem item)
-        {
-            var criteria = new CheckRefResourceExistsCriteria
-            {
-                RefName = refName,
-                ResourceId = item.ItemId,
-                Value = item.ItemName
-            };
-
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateRefResourceItemAsync(string refName, SimpleItem item)
         {
             var criteria = new CreateRefResourceCriteria
@@ -748,10 +709,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Value);
-            }
 
             return commandResult;
         }
@@ -793,10 +750,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

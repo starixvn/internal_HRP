@@ -93,8 +93,6 @@
 
         Task<IEnumerable<Office>> GetAllOfficeAsync();
 
-        Task<bool> IsExistedOfficeAsync(Office office);
-
         Task<CommandResult> CreateOfficeAsync(Office office);
 
         Task<Office> GetOfficeByIdAsync(int id);
@@ -102,8 +100,6 @@
         Task<CommandResult> UpdateOfficeAsync(Office office);
 
         Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName);
-
-        Task<bool> IsExistedRefResourceItemAsync(string refName, SimpleItem item);
 
         Task<CommandResult> CreateRefResourceItemAsync(string refName, SimpleItem item);
 
