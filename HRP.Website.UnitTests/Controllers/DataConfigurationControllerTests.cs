@@ -1071,12 +1071,12 @@
         }
 
         [Fact]
-        public async Task CreateJobCategoryPost_JobCategoryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateJobCategoryPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.CreateJobCategory(item);
@@ -1086,17 +1086,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task CreateJobCategoryPost_JobCategoryItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateJobCategoryPost_ModelStateIsValidAndCreateJobCategorySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.CreateJobCategoryAsync(item).Returns(commandResult);
 
             // Act
@@ -1106,7 +1105,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, item.ItemName), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateJobCategoryPost_ModelStateIsValidAndCreateJobCategoryUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateJobCategoryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         [Fact]
@@ -1146,12 +1165,12 @@
         }
 
         [Fact]
-        public async Task UpdateJobCategoryPost_JobCategoryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateJobCategoryPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.UpdateJobCategory(item);
@@ -1161,17 +1180,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task UpdateJobCategoryPost_JobCategoryItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateJobCategoryPost_ModelStateIsValidAndUpdateCompanyBVISuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedJobCategoryAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.UpdateJobCategoryAsync(item).Returns(commandResult);
 
             // Act
@@ -1181,7 +1199,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateJobCategoryPost_ModelStateIsValidAndUpdateJobCategoryUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateJobCategoryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateJobCategory(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         #endregion Job Category

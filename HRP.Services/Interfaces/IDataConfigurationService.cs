@@ -53,8 +53,6 @@
 
         Task<IEnumerable<SimpleItem>> GetAllJobCategoryAsync();
 
-        Task<bool> IsExistedJobCategoryAsync(SimpleItem item);
-
         Task<CommandResult> CreateJobCategoryAsync(SimpleItem item);
 
         Task<SimpleItem> GetJobCategoryByIdAsync(int id);

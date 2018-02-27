@@ -713,42 +713,20 @@
             Assert.Equal(jobCategories.Count, actual.Count);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedJobCategoryAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var item = MockSimpleItem();
-            var criteria = new CheckJobCategoryExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckJobCategoryExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedJobCategoryAsync(item);
-
-            // Assert
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(item.ItemId, criteria.JobCategoryId);
-            Assert.Equal(item.ItemName, criteria.Name);
-        }
-
         [Fact]
-        public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var item = MockSimpleItem();
             var criteria = new CreateJobCategoryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateJobCategoryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Name), actual.Message);
             Assert.Equal(item.ItemName, criteria.Name);
             Assert.Equal(item.Description, criteria.Description);
             Assert.Equal(item.IsActive, criteria.IsActive);
@@ -810,21 +788,19 @@
         }
 
         [Fact]
-        public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var item = MockSimpleItem();
             var criteria = new UpdateJobCategoryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateJobCategoryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(item.ItemId, criteria.JobCategoryId);
             Assert.Equal(item.ItemName, criteria.Name);
             Assert.Equal(item.Description, criteria.Description);

@@ -341,13 +341,6 @@
             return new List<SimpleItem>();
         }
 
-        public async Task<bool> IsExistedJobCategoryAsync(SimpleItem item)
-        {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckJobCategoryExistsCriteria { JobCategoryId = item.ItemId, Name = item.ItemName }).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateJobCategoryAsync(SimpleItem item)
         {
             var criteria = new CreateJobCategoryCriteria
@@ -359,10 +352,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Name);
-            }
 
             return commandResult;
         }
@@ -402,10 +391,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }
