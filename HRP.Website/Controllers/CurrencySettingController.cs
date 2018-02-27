@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Xml.Linq;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -28,7 +29,7 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
-        public IActionResult Index(DateTime? selectedTime)
+        public async Task<IActionResult> Index(DateTime? selectedTime)
         {
             var date = selectedTime ?? DateTime.Today;
 
@@ -42,8 +43,8 @@
             {
                 SelectedTime = date,
                 MinMonth = configuration.Value.LaunchMonth,
-                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(criteria),
-                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
+                CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria),
+                Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
                 CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && date.Month == DateTime.Today.Month
             };
 
@@ -52,27 +53,15 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Host)]
-        public IActionResult Edit(DateTime selectedTime, IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        public async Task<IActionResult> Edit(DateTime selectedTime, IEnumerable<CurrencyExchangeRateModel> exchangeRates)
         {
-            var criteria = new UpdateExchangeRatesCriteria
+            var criteria = new UpdateExchangeRatesCriteria(exchangeRates)
             {
                 ExchangeRateMonth = selectedTime,
                 UpdatedBy = sessionService.UserId
             };
-
-            var xml = new XElement("Root");
-            foreach (var rate in exchangeRates)
-            {
-                var row = new XElement("Row");
-                row.SetAttributeValue(nameof(rate.FromCurrencyId), rate.FromCurrencyId);
-                row.SetAttributeValue(nameof(rate.ToCurrencyId), rate.ToCurrencyId);
-                row.SetAttributeValue(nameof(rate.ExchangeRate), rate.ExchangeRate);
-                xml.Add(row);
-            }
-
-            criteria.ExchangeRates = xml.ToString();
-            var result = baseService.ExecuteNonQuery(criteria);
-
+           
+            var result = await baseService.ExecuteNonQueryAsync(criteria);
             return Json(result);
         }
     }

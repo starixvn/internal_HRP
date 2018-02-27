@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
@@ -20,7 +21,7 @@
         private ISessionService sessionService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnCurrentData()
+        public async Task Index_WhenCalled_ReturnCurrentData()
         {
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -36,17 +37,17 @@
             };
 
             var controller = GetController();
-            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
             sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host).Returns(true);
 
-            var actual = controller.Index(DateTime.Today);
+            var actual = await controller.Index(DateTime.Today);
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<CurrencySettingViewModel>(viewResult.Model);
         }
 
         [Fact]
-        public void Edit_WhenCalled_ReturnExpectedCommandResult()
+        public async Task Edit_WhenCalled_ReturnExpectedCommandResult()
         {
             var exchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -59,10 +60,10 @@
             };
 
             var controller = GetController();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateExchangeRatesCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateExchangeRatesCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             // Act
-            var actual = controller.Edit(DateTime.Today, exchangeRates);
+            var actual = await controller.Edit(DateTime.Today, exchangeRates);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
