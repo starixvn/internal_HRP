@@ -1048,64 +1048,25 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedCityAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var city = MockCity();
-            var criteria = new CheckCityExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCityExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCityAsync(city);
-
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(city.CityId, criteria.CityId);
-            Assert.Equal(city.Code, criteria.Code);
-            Assert.Equal(city.CountryId, criteria.CountryId);
-        }
-
         [Fact]
-        public async Task CreateCityAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateCityAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var city = MockCity();
             var criteria = new CreateCityCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCityCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.CreateCityAsync(city);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(city.Code, criteria.Code);
             Assert.Equal(city.Name, criteria.Name);
             Assert.Equal(city.CountryId, criteria.CountryId);
             Assert.Equal(city.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateCityAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateCityCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateCityAsync(new City());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -1143,43 +1104,24 @@
         }
 
         [Fact]
-        public async Task UpdateCityAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateCityAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var city = MockCity();
             var criteria = new UpdateCityCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCityCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
 
             // Act
             var actual = await dataConfigurationService.UpdateCityAsync(city);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(city.CityId, criteria.CityId);
             Assert.Equal(city.Code, criteria.Code);
             Assert.Equal(city.Name, criteria.Name);
             Assert.Equal(city.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateCityAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateCityCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateCityAsync(new City());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion City

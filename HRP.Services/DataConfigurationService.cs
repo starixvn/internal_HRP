@@ -584,19 +584,6 @@
             return cities;
         }
 
-        public async Task<bool> IsExistedCityAsync(City city)
-        {
-            var criteria = new CheckCityExistsCriteria
-            {
-                CityId = city.CityId,
-                Code = city.Code,
-                CountryId = city.CountryId
-            };
-            var isExisted = await baseService.GetDataEntityAsync<bool>(criteria).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateCityAsync(City city)
         {
             var criteria = new CreateCityCriteria
@@ -609,10 +596,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -636,10 +619,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

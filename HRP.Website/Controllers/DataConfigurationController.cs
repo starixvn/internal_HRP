@@ -1054,19 +1054,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCity(City city)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCityAsync(city);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, city.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateCityAsync(city);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, city.Code) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -1101,19 +1100,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateCity(City city)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCityAsync(city);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, city.Code));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateCityAsync(city);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(city), ".", nameof(city.Code));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

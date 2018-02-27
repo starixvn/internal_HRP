@@ -85,8 +85,6 @@
 
         Task<IEnumerable<City>> GetAllCityAsync();
 
-        Task<bool> IsExistedCityAsync(City city);
-
         Task<CommandResult> CreateCityAsync(City city);
 
         Task<City> GetCityByIdAsync(int id);

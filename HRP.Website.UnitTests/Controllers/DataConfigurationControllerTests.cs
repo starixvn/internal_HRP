@@ -1856,12 +1856,12 @@
         }
 
         [Fact]
-        public async Task CreateCityPost_CityItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateCityPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var city = MockCity();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(true);
+            controller.ModelState.AddModelError("City.Code", "Required");
 
             // Act
             var actual = await controller.CreateCity(city);
@@ -1871,17 +1871,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, city.Code), errors["City.Code"]);
+            Assert.Equal("Required", errors["City.Code"]);
         }
 
         [Fact]
-        public async Task CreateCityPost_CityItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateCityPost_ModelStateIsValidAndCreateCitySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var city = MockCity();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(false);
             dataConfigurationService.CreateCityAsync(city).Returns(commandResult);
 
             // Act
@@ -1891,7 +1890,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, city.Code), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateCityPost_ModelStateIsValidAndCreateCityUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateCityAsync(city).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["City.Code"]);
         }
 
         [Fact]
@@ -1931,12 +1950,12 @@
         }
 
         [Fact]
-        public async Task UpdateCityPost_CityItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateCityPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var city = MockCity();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(true);
+            controller.ModelState.AddModelError("City.Code", "Required");
 
             // Act
             var actual = await controller.UpdateCity(city);
@@ -1946,17 +1965,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, city.Code), errors["City.Code"]);
+            Assert.Equal("Required", errors["City.Code"]);
         }
 
         [Fact]
-        public async Task UpdateCityPost_CityItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateCityPost_ModelStateIsValidAndUpdateCitySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var city = MockCity();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCityAsync(Arg.Any<City>()).Returns(false);
             dataConfigurationService.UpdateCityAsync(city).Returns(commandResult);
 
             // Act
@@ -1966,7 +1984,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCityPost_ModelStateIsValidAndUpdateCityUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var city = MockCity();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateCityAsync(city).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCity(city);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["City.Code"]);
         }
 
         #endregion City
