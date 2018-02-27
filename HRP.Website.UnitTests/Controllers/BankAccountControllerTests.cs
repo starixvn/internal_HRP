@@ -8,6 +8,7 @@
     using Core.Services;
     using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.BankAccount;
     using NSubstitute;
@@ -56,6 +57,7 @@
             var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
             Assert.True(model.HaveHostPermission);
             Assert.True(model.BankAccountsLimitReached);
+            Assert.IsType<SelectList>(model.BankTypes);
         }
 
         #region Create Bank Account in Payroll
