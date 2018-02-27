@@ -20,7 +20,6 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
-    using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
@@ -87,16 +86,18 @@
         public async Task CreateCompanyBVIAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new CreateCompanyCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCompanyCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCompanyCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateCompanyBVIAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
             Assert.Equal(item.IsActive, criteria.IsActive);
@@ -145,16 +146,18 @@
         public async Task UpdateCompanyBVIAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new UpdateCompanyCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCompanyCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCompanyCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateCompanyBVIAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemId, criteria.CompanyId);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
@@ -189,16 +192,18 @@
         public async Task CreateDivisionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var division = MockDivision();
             var criteria = new CreateDivisionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDivisionCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateDivisionAsync(division);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(division.Code, criteria.Code);
             Assert.Equal(division.Name, criteria.Name);
             Assert.Equal(division.CompanyId, criteria.CompanyId);
@@ -249,16 +254,18 @@
         public async Task UpdateDivisionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var division = MockDivision();
             var criteria = new UpdateDivisionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDivisionCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDivisionCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateDivisionAsync(division);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(division.DivisionId, criteria.DivisionId);
             Assert.Equal(division.Code, criteria.Code);
             Assert.Equal(division.Name, criteria.Name);
@@ -292,16 +299,18 @@
         public async Task CreateDepartmentAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var department = MockDepartment();
             var criteria = new CreateDepartmentCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDepartmentCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateDepartmentAsync(department);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(department.Code, criteria.Code);
             Assert.Equal(department.Name, criteria.Name);
             Assert.Equal(department.DivisionId, criteria.DivisionId);
@@ -354,16 +363,18 @@
         public async Task UpdateDepartmentAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var department = MockDepartment();
             var criteria = new UpdateDepartmentCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDepartmentCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateDepartmentCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateDepartmentAsync(department);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(department.DepartmentId, criteria.DepartmentId);
             Assert.Equal(department.Code, criteria.Code);
             Assert.Equal(department.Name, criteria.Name);
@@ -397,16 +408,18 @@
         public async Task CreateCostCenterAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var costCenter = MockCostCenter();
             var criteria = new CreateCostCenterCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCostCenterCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateCostCenterAsync(costCenter);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(costCenter.Code, criteria.Code);
             Assert.Equal(costCenter.Name, criteria.Name);
             Assert.Equal(costCenter.DepartmentId, criteria.DepartmentId);
@@ -461,16 +474,18 @@
         public async Task UpdateCostCenterAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var costCenter = MockCostCenter();
             var criteria = new UpdateCostCenterCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCostCenterCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(costCenter.CostCenterId, criteria.CostCenterId);
             Assert.Equal(costCenter.Code, criteria.Code);
             Assert.Equal(costCenter.Name, criteria.Name);
@@ -504,16 +519,18 @@
         public async Task CreateSectionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var section = MockSection();
             var criteria = new CreateSectionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateSectionCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateSectionAsync(section);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(section.Code, criteria.Code);
             Assert.Equal(section.Name, criteria.Name);
             Assert.Equal(section.CostCenterId, criteria.CostCenterId);
@@ -570,16 +587,18 @@
         public async Task UpdateSectionAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var section = MockSection();
             var criteria = new UpdateSectionCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateSectionCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateSectionAsync(section);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(section.SectionId, criteria.SectionId);
             Assert.Equal(section.Code, criteria.Code);
             Assert.Equal(section.Name, criteria.Name);
@@ -632,16 +651,18 @@
         public async Task CreateJobCategoryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new CreateJobCategoryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobCategoryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateJobCategoryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemName, criteria.Name);
             Assert.Equal(item.Description, criteria.Description);
             Assert.Equal(item.IsActive, criteria.IsActive);
@@ -689,16 +710,18 @@
         public async Task UpdateJobCategoryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new UpdateJobCategoryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobCategoryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateJobCategoryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemId, criteria.JobCategoryId);
             Assert.Equal(item.ItemName, criteria.Name);
             Assert.Equal(item.Description, criteria.Description);
@@ -732,16 +755,18 @@
         public async Task CreateGradeLevelAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var gradeLevel = MockGradeLevel();
             var criteria = new CreateGradeLevelCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateGradeLevelCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(gradeLevel.Name, criteria.Name);
             Assert.Equal(gradeLevel.Description, criteria.Description);
             Assert.Equal(gradeLevel.JobCategoryId, criteria.JobCategoryId);
@@ -792,16 +817,18 @@
         public async Task UpdateGradeLevelAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var gradeLevel = MockGradeLevel();
             var criteria = new UpdateGradeLevelCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateGradeLevelCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(gradeLevel.GradeLevelId, criteria.GradeLevelId);
             Assert.Equal(gradeLevel.Name, criteria.Name);
             Assert.Equal(gradeLevel.Description, criteria.Description);
@@ -834,16 +861,18 @@
         public async Task CreateJobGradeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var jobGrade = MockJobGrade();
             var criteria = new CreateJobGradeCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateJobGradeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateJobGradeAsync(jobGrade);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(jobGrade.Name, criteria.Name);
             Assert.Equal(jobGrade.Description, criteria.Description);
             Assert.Equal(jobGrade.GradeLevelId, criteria.GradeLevelId);
@@ -889,16 +918,18 @@
         public async Task UpdateJobGradeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var jobGrade = MockJobGrade();
             var criteria = new UpdateJobGradeCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobGradeCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateJobGradeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateJobGradeAsync(jobGrade);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(jobGrade.JobGradeId, criteria.JobGradeId);
             Assert.Equal(jobGrade.Name, criteria.Name);
             Assert.Equal(jobGrade.Description, criteria.Description);
@@ -952,16 +983,18 @@
         public async Task CreateCountryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new CreateCountryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateCountryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
             Assert.Equal(item.IsActive, criteria.IsActive);
@@ -1010,16 +1043,18 @@
         public async Task UpdateCountryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new UpdateCountryCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCountryCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCountryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateCountryAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemId, criteria.CountryId);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
@@ -1052,16 +1087,18 @@
         public async Task CreateCityAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var city = MockCity();
             var criteria = new CreateCityCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCityCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateCityAsync(city);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(city.Code, criteria.Code);
             Assert.Equal(city.Name, criteria.Name);
             Assert.Equal(city.CountryId, criteria.CountryId);
@@ -1107,16 +1144,18 @@
         public async Task UpdateCityAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var city = MockCity();
             var criteria = new UpdateCityCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCityCriteria>(x => criteria = x)).Returns(new CommandResult());
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCityCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateCityAsync(city);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(city.CityId, criteria.CityId);
             Assert.Equal(city.Code, criteria.Code);
             Assert.Equal(city.Name, criteria.Name);
@@ -1149,16 +1188,18 @@
         public async Task CreateOfficeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var office = MockOffice();
             var criteria = new CreateOfficeCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateOfficeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateOfficeAsync(office);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(office.Code, criteria.Code);
             Assert.Equal(office.Name, criteria.Name);
             Assert.Equal(office.CityId, criteria.CityId);
@@ -1204,16 +1245,18 @@
         public async Task UpdateOfficeAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var office = MockOffice();
             var criteria = new UpdateOfficeCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateOfficeCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateOfficeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateOfficeAsync(office);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(office.OfficeId, criteria.OfficeId);
             Assert.Equal(office.Code, criteria.Code);
             Assert.Equal(office.Name, criteria.Name);
@@ -1269,17 +1312,19 @@
         public async Task CreateRefResourceItemAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var refName = "xxxzzz";
             var item = MockSimpleItem();
             var criteria = new CreateRefResourceCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateRefResourceCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateRefResourceCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateRefResourceItemAsync(refName, item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemName, criteria.Value);
             Assert.Equal(item.Description, criteria.Description);
             Assert.Equal(item.IsActive, criteria.IsActive);
@@ -1331,17 +1376,19 @@
         public async Task UpdateRefResourceItemAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var refName = "xxxzzz";
             var item = MockSimpleItem();
             var criteria = new UpdateRefResourceItemCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateRefResourceItemCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateRefResourceItemCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateRefResourceItemAsync(refName, item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemId, criteria.ResourceId);
             Assert.Equal(item.ItemName, criteria.Value);
             Assert.Equal(item.Description, criteria.Description);
@@ -1391,63 +1438,26 @@
             Assert.Equal(currencies.Count, actual.Count);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedCurrencyAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var item = MockSimpleItem();
-            var criteria = new CheckCurrencyExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCurrencyExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCurrencyAsync(item);
-
-            // Assert
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(item.ItemId, criteria.CurrencyId);
-            Assert.Equal(item.ItemName, criteria.CurrencyCode);
-        }
-
         [Fact]
-        public async Task CreateCurrencyAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateCurrencyAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new CreateCurrencyCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCurrencyCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.CreateCurrencyAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.CurrencyCode), actual.Message);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemName, criteria.CurrencyCode);
             Assert.Equal(item.Description, criteria.CurrencyName);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateCurrencyAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateCurrencyCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateCurrencyAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -1489,43 +1499,26 @@
         }
 
         [Fact]
-        public async Task UpdateCurrencyAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateCurrencyAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
+            var expected = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var criteria = new UpdateCurrencyCriteria();
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCurrencyCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await dataConfigurationService.UpdateCurrencyAsync(item);
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
+            Assert.Equal(expected, actual);
             Assert.Equal(item.ItemId, criteria.CurrencyId);
             Assert.Equal(item.ItemName, criteria.CurrencyCode);
             Assert.Equal(item.Description, criteria.CurrencyName);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateCurrencyAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateCurrencyCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCurrencyCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateCurrencyAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion Currency
@@ -1931,6 +1924,15 @@
                 CurrencyCode = "usdt",
                 CurrencyName = "descC",
                 IsActive = true
+            };
+        }
+
+        private CommandResult MockSuccessfulCommandResult()
+        {
+            return new CommandResult
+            {
+                Code = 0,
+                Message = "Successful!!!"
             };
         }
 

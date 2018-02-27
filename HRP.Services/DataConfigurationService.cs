@@ -20,7 +20,6 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
-    using HRP.Resources;
     using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -778,13 +777,6 @@
             return new List<SimpleItem>();
         }
 
-        public async Task<bool> IsExistedCurrencyAsync(SimpleItem item)
-        {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCurrencyExistsCriteria { CurrencyId = item.ItemId, CurrencyCode = item.ItemName }).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateCurrencyAsync(SimpleItem item)
         {
             var criteria = new CreateCurrencyCriteria
@@ -796,10 +788,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.CurrencyCode);
-            }
 
             return commandResult;
         }
@@ -839,10 +827,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }

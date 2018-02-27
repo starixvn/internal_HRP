@@ -109,8 +109,6 @@
 
         Task<IEnumerable<SimpleItem>> GetAllCurrencyAsync();
 
-        Task<bool> IsExistedCurrencyAsync(SimpleItem item);
-
         Task<CommandResult> CreateCurrencyAsync(SimpleItem item);
 
         Task<SimpleItem> GetCurrencyByIdAsync(int id);
