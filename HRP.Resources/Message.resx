@@ -702,4 +702,7 @@
   <data name="MaximumAccountPerTypeReached" xml:space="preserve">
     <value>This employee has reached the limit number of active bank accounts in selected type</value>
   </data>
+  <data name="OtpLimit" xml:space="preserve">
+    <value>OTP code must be 6 digits</value>
+  </data>
 </root>

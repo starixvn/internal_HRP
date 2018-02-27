@@ -1393,6 +1393,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP code must be 6 digits.
+        /// </summary>
+        public static string OtpLimit {
+            get {
+                return ResourceManager.GetString("OtpLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overseas phone No. must not over {1} characters long..
         /// </summary>
         public static string OverseasPhoneNoMaxLength {

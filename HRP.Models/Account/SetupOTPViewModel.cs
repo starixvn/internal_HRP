@@ -1,14 +1,15 @@
 ﻿namespace HRP.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using Resources;
 
     public class SetupOtpViewModel
     {
         public string TextCode { get; set; }
 
         [Required]
-        [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "OTP code must be 6 digits")]
-        [Display(Name = "OTP code")]
+        [RegularExpression(@"^[0-9]{6}$", ErrorMessageResourceName = nameof(Message.OtpLimit), ErrorMessageResourceType = typeof(Message))]
+        [Display(Name = nameof(ViewLang.OtpCode), ResourceType = typeof(ViewLang))]
         public string Otp { get; set; }
 
         public string Username { get; set; }
