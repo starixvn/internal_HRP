@@ -946,19 +946,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCountry(SimpleItem item)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCountryAsync(item);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.CreateCountryAsync(item);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
@@ -993,19 +992,18 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> UpdateCountry(SimpleItem item)
         {
-            var isExistedItem = await dataConfigurationService.IsExistedCountryAsync(item);
-
-            if (isExistedItem)
-            {
-                var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
-                ModelState.AddModelError(modelName, string.Format(Message.ItemNameExisted, item.ItemName));
-            }
-
             if (ModelState.IsValid)
             {
                 var commandResult = await dataConfigurationService.UpdateCountryAsync(item);
-
-                return Json(new { isSuccessful = commandResult.IsSuccessful, message = commandResult.Message });
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                }
+                else
+                {
+                    var modelName = string.Concat(nameof(item), ".", nameof(item.ItemName));
+                    ModelState.AddModelError(modelName, commandResult.Message);
+                }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);

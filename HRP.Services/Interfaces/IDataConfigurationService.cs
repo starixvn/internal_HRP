@@ -77,8 +77,6 @@
 
         Task<IEnumerable<SimpleItem>> GetAllCountryAsync();
 
-        Task<bool> IsExistedCountryAsync(SimpleItem item);
-
         Task<CommandResult> CreateCountryAsync(SimpleItem item);
 
         Task<SimpleItem> GetCountryByIdAsync(int id);

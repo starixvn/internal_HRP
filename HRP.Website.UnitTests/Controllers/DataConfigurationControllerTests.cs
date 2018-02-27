@@ -1659,12 +1659,12 @@
         }
 
         [Fact]
-        public async Task CreateCountryPost_CountryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task CreateCountryPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.CreateCountry(item);
@@ -1674,17 +1674,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task CreateCountryPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task CreateCountryPost_ModelStateIsValidAndCreateCountrySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.CreateCountryAsync(item).Returns(commandResult);
 
             // Act
@@ -1694,7 +1693,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, item.ItemName), returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task CreateCountryPost_ModelStateIsValidAndCreateCountryUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.CreateCountryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.CreateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         [Fact]
@@ -1734,12 +1753,12 @@
         }
 
         [Fact]
-        public async Task UpdateCountryPost_CountryItemIsExistedAndModelStateIsInvalid_ReturnJsonResultWithErrors()
+        public async Task UpdateCountryPost_ModelStateIsInvalid_ReturnJsonResultWithErrors()
         {
             // Arrange
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(true);
+            controller.ModelState.AddModelError("Item.ItemName", "Required");
 
             // Act
             var actual = await controller.UpdateCountry(item);
@@ -1749,17 +1768,16 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(string.Format(Message.ItemNameExisted, item.ItemName), errors["Item.ItemName"]);
+            Assert.Equal("Required", errors["Item.ItemName"]);
         }
 
         [Fact]
-        public async Task UpdateCountryPost_CompanyItemIsNonExistedAndModelStateIsValid_ReturnJsonResultWithSuccessfulMessage()
+        public async Task UpdateCountryPost_ModelStateIsValidAndUpdateCountrySuccessful_ReturnJsonResultWithSuccessfulMessage()
         {
             // Arrange
             var commandResult = MockSuccessfulCommandResult();
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
-            dataConfigurationService.IsExistedCountryAsync(Arg.Any<SimpleItem>()).Returns(false);
             dataConfigurationService.UpdateCountryAsync(item).Returns(commandResult);
 
             // Act
@@ -1769,7 +1787,27 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.True((bool)returnValue["isSuccessful"]);
-            Assert.Equal(commandResult.Message, returnValue["message"]);
+            Assert.Equal(Message.ItemUpdatedSuccessful, returnValue["message"]);
+        }
+
+        [Fact]
+        public async Task UpdateCountryPost_ModelStateIsValidAndUpdateCountryUnsuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var item = MockSimpleItem();
+            var controller = GetDataConfigurationController();
+            dataConfigurationService.UpdateCountryAsync(item).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UpdateCountry(item);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["Item.ItemName"]);
         }
 
         #endregion Country

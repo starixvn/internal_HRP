@@ -948,28 +948,8 @@
             Assert.Equal(countries.Count, actual.Count);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task IsExistedCountryAsync_BaseServiceGetBoolInstance_ReturnBoolInstance(bool isExisted)
-        {
-            // Arrange
-            var item = MockSimpleItem();
-            var criteria = new CheckCountryExistsCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckCountryExistsCriteria>(x => criteria = x)).Returns(isExisted);
-
-            // Act
-            var actual = await dataConfigurationService.IsExistedCountryAsync(item);
-
-            // Assert
-            Assert.Equal(isExisted, actual);
-            Assert.Equal(item.ItemId, criteria.CountryId);
-            Assert.Equal(item.ItemName, criteria.Code);
-        }
-
         [Fact]
-        public async Task CreateCountryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task CreateCountryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var item = MockSimpleItem();
@@ -982,29 +962,10 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(string.Format(Message.ItemCreatedSuccessful, criteria.Code), actual.Message);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        [Fact]
-        public async Task CreateCountryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new CreateCountryCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.CreateCountryAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         [Fact]
@@ -1046,7 +1007,7 @@
         }
 
         [Fact]
-        public async Task UpdateCountryAsync_BaseServiceExecuteNonQuerySuccessful_ReturnCommandResultSuccessfulWithSuccessfulMessage()
+        public async Task UpdateCountryAsync_BaseServiceExecuteNonQuery_ReturnCommandResult()
         {
             // Arrange
             var item = MockSimpleItem();
@@ -1059,30 +1020,11 @@
 
             // Assert
             Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(Message.ItemUpdatedSuccessful, actual.Message);
             Assert.Equal(item.ItemId, criteria.CountryId);
             Assert.Equal(item.ItemName, criteria.Code);
             Assert.Equal(item.Description, criteria.Name);
             Assert.Equal(item.IsActive, criteria.IsActive);
             Assert.Equal(sessionService.UserId, criteria.UpdatedBy);
-        }
-
-        [Fact]
-        public async Task UpdateCountryAsync_BaseServiceExecuteNonQueryNotSuccessful_ReturnCommandResultNotSuccessful()
-        {
-            // Arrange
-            var criteria = new UpdateCountryCriteria();
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateCountryCriteria>(x => criteria = x)).Returns(new CommandResult());
-
-            // Act
-            var actual = await dataConfigurationService.UpdateCountryAsync(new SimpleItem());
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.False(criteria.IsValid());
         }
 
         #endregion Country

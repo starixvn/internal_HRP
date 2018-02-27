@@ -519,13 +519,6 @@
             return new List<SimpleItem>();
         }
 
-        public async Task<bool> IsExistedCountryAsync(SimpleItem item)
-        {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckCountryExistsCriteria { CountryId = item.ItemId, Code = item.ItemName }).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<CommandResult> CreateCountryAsync(SimpleItem item)
         {
             var criteria = new CreateCountryCriteria
@@ -537,10 +530,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = string.Format(Message.ItemCreatedSuccessful, criteria.Code);
-            }
 
             return commandResult;
         }
@@ -580,10 +569,6 @@
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-            if (commandResult.IsSuccessful)
-            {
-                commandResult.Message = Message.ItemUpdatedSuccessful;
-            }
 
             return commandResult;
         }
