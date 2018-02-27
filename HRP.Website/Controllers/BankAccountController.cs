@@ -241,7 +241,7 @@
                 AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive,
-                CreatedBy = sessionService.UserId
+                UpdatedBy = sessionService.UserId
             };
 
             return criteria;

@@ -26,8 +26,6 @@
 
         public bool IsActive { get; set; }
 
-        public int CreatedBy { get; set; }
-
         public override bool IsValid()
         {
             if (string.IsNullOrEmpty(BankName))
@@ -56,11 +54,6 @@
             }
 
             if (string.IsNullOrEmpty(BeneficiaryName))
-            {
-                return false;
-            }
-
-            if (CreatedBy <= 0)
             {
                 return false;
             }
