@@ -98,7 +98,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
-        public IActionResult CreateUser(CreateUserViewModel viewModel)
+        public async Task<IActionResult> CreateUser(CreateUserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -113,7 +113,7 @@
                     CreatedBy = sessionService.UserId
                 };
 
-                var result = baseService.ExecuteNonQuery(criteria);
+                var result = await baseService.ExecuteNonQueryAsync(criteria);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
@@ -130,16 +130,16 @@
         }
 
         [HttpGet]
-        public IActionResult CheckUsernameExisted(string username)
+        public async Task<IActionResult> CheckUsernameExisted(string username)
         {
-            return Json(!baseService.GetData<int>(new CheckUsernameExistedCriteria { Username = username }).Any());
+            return Json(!(await baseService.GetDataAsync<int>(new CheckUsernameExistedCriteria { Username = username })).Any());
         }
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Read)]
-        public IActionResult EditUser(int id)
+        public async Task<IActionResult> EditUser(int id)
         {
-            var viewModel = baseService.GetDataEntity<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
+            var viewModel = await baseService.GetDataEntityAsync<EditUserViewModel>(new GetUserByIdCriteria { UserId = id });
             if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
@@ -153,7 +153,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.UserManagement, Policy = Policy.Host)]
-        public IActionResult EditUser(EditUserViewModel viewModel)
+        public async Task<IActionResult> EditUser(EditUserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -167,7 +167,7 @@
                     EditedBy = sessionService.UserId
                 };
 
-                CommandResult result = baseService.ExecuteNonQuery(criteria);
+                CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
                 return Json(result);
             }
 

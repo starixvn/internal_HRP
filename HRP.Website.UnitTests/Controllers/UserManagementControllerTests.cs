@@ -127,7 +127,7 @@
         }
 
         [Fact]
-        public void CreateUser_ModelStateIsInvalid_ReturnErrors()
+        public async Task CreateUser_ModelStateIsInvalid_ReturnErrors()
         {
             // Arrange
             var model = new CreateUserViewModel();
@@ -135,7 +135,7 @@
             userController.ModelState.AddModelError("", "Error");
 
             // Act
-            var actual = userController.CreateUser(model);
+            var actual = await userController.CreateUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -143,7 +143,7 @@
         }
 
         [Fact]
-        public void CreateUser_ModelStateIsValid_ReturnExpectedCommandResult()
+        public async Task CreateUser_ModelStateIsValid_ReturnExpectedCommandResult()
         {
             // Arrange
             var model = new CreateUserViewModel { Password = "Admin1234" };
@@ -152,12 +152,12 @@
                 Code = 0
             };
             var userController = GetUserManagementController();
-            baseService.ExecuteNonQuery(Arg.Any<CreateUserCriteria>()).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateUserCriteria>()).Returns(Task.FromResult(expected));
             userController.Url = Substitute.For<IUrlHelper>();
             userController.Url.Action().ReturnsForAnyArgs("/UserManagement/AssignPermissions");
 
             // Act
-            var actual = userController.CreateUser(model);
+            var actual = await userController.CreateUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -169,7 +169,7 @@
         #region EditUser
 
         [Fact]
-        public void EditUser_ModelStateIsInvalid_ReturnErrors()
+        public async Task EditUser_ModelStateIsInvalid_ReturnErrors()
         {
             // Arrange
             var model = new EditUserViewModel();
@@ -177,7 +177,7 @@
             userController.ModelState.AddModelError("", "Error");
 
             // Act
-            var actual = userController.EditUser(model);
+            var actual = await userController.EditUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -185,7 +185,7 @@
         }
 
         [Fact]
-        public void EditUser_ModelStateIsValid_ReturnExpectedCommandResult()
+        public async Task EditUser_ModelStateIsValid_ReturnExpectedCommandResult()
         {
             // Arrange
             var model = new EditUserViewModel();
@@ -194,10 +194,10 @@
                 Code = 0
             };
             var userController = GetUserManagementController();
-            baseService.ExecuteNonQuery(Arg.Any<EditUserCriteria>()).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditUserCriteria>()).Returns(Task.FromResult(expected));
 
             // Act
-            var actual = userController.EditUser(model);
+            var actual = await userController.EditUser(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -205,14 +205,14 @@
         }
 
         [Fact]
-        public void EditUser_ViewModelIsNull_ReturnRedirectToPageNotFound()
+        public async Task EditUser_ViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
             var userController = GetUserManagementController();
-            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(x => null);
+            baseService.GetDataEntityAsync<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(Task.FromResult<EditUserViewModel>(null));
 
             // Act
-            var result = userController.EditUser(1);
+            var result = await userController.EditUser(1);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -221,7 +221,7 @@
         }
 
         [Fact]
-        public void EditUser_ViewModelHasValue_ReturnExpectedViewModel()
+        public async Task EditUser_ViewModelHasValue_ReturnExpectedViewModel()
         {
             // Arrange
             var user = new EditUserViewModel { UserId = 1, Username = "Min", IsSystemAdmin = true };
@@ -238,11 +238,11 @@
                     )
                 }
             };
-            baseService.GetDataEntity<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(user);
+            baseService.GetDataEntityAsync<EditUserViewModel>(Arg.Any<GetUserByIdCriteria>()).Returns(Task.FromResult(user));
             sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host).Returns(true);
 
             // Act
-            var actual = userController.EditUser(1);
+            var actual = await userController.EditUser(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -253,7 +253,7 @@
         #endregion EditUser
 
         [Fact]
-        public void CheckUsernameExisted_ExistedUserName_ReturnFalse()
+        public async Task CheckUsernameExisted_ExistedUserName_ReturnFalse()
         {
             // Arrange
             var username = "admin";
@@ -261,7 +261,7 @@
             baseService.GetData<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
 
             // Act
-            var actual = userController.CheckUsernameExisted(username);
+            var actual = await userController.CheckUsernameExisted(username);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
