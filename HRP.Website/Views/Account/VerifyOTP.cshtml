@@ -18,10 +18,10 @@
                 <span>Your Date & Time Setting on your device must be set to Automatic.</span>
             </p>
         </div>
-        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"].ToString()))
         {
             <div class="msg-error -has-icon">
-                @ViewBag.ErrorMessage
+                @ViewData["ErrorMessage"].ToString()
             </div>
         }
         <div class="group">

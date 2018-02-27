@@ -107,7 +107,7 @@
         {
             if (ModelState.IsValid)
             {
-                var commandResult = await employeeService.CreateEmployeeAsync(viewModel);
+                CommandResult commandResult = await employeeService.CreateEmployeeAsync(viewModel);
 
                 return Json(commandResult);
             }

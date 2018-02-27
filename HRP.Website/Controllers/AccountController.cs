@@ -170,7 +170,7 @@ namespace HRP.Website.Controllers
                 Username = user.Username
             };
 
-            AccountViewModel accountViewModel = new AccountViewModel
+            var accountViewModel = new AccountViewModel
             {
                 ActivePanel = AccountTab.Otp,
                 IsOTPRegistered = false,
@@ -184,7 +184,7 @@ namespace HRP.Website.Controllers
 
         [HRPAuthorize]
         [HttpPost]
-        public IActionResult UpdateProfile(UserProfileViewModel viewModel)
+        public async Task<IActionResult> UpdateProfile(UserProfileViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -196,16 +196,12 @@ namespace HRP.Website.Controllers
                     Email = viewModel.Email
                 };
 
-                var result = baseService.ExecuteNonQuery(criteria);
+                CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
-                return Json(new
-                {
-                    isSuccessful = result.IsSuccessful,
-                    message = result.Message
-                });
+                return Json(commandResult);
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -234,7 +230,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Index", new { tab = AccountTab.Otp });
             }
 
-            var user = userService.GetUserByUsername(sessionService.Username);
+            User user = userService.GetUserByUsername(sessionService.Username);
 
             if (user == null)
             {
@@ -250,7 +246,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.ErrorMessage = Message.InvalidOTP;
+            ViewData["ErrorMessage"] = Message.InvalidOTP;
 
             return View("VerifyOTP");
         }
@@ -259,7 +255,7 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
         {
-            var user = userService.GetUserByUsername(viewModel.Username);
+            User user = userService.GetUserByUsername(viewModel.Username);
 
             if (user == null)
             {
