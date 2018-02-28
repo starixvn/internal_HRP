@@ -93,7 +93,7 @@
             var $this = $(this);
             var $select2 = $this.next().find('.select2-selection');
 
-            if (!$.isEmptyObject($validator.submitted) && $this.val() && $select2.hasClass('input-validation-error')) {
+            if ($this.val() && $select2.hasClass('input-validation-error')) {
                 $select2.removeClass('input-validation-error').removeClass('control');
                 $this.valid();
             }

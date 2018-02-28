@@ -705,4 +705,7 @@
   <data name="OtpLimit" xml:space="preserve">
     <value>OTP code must be 6 digits</value>
   </data>
+  <data name="IncorrectTemplate" xml:space="preserve">
+    <value>Incorrect template.</value>
+  </data>
 </root>

@@ -934,6 +934,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect template..
+        /// </summary>
+        public static string IncorrectTemplate {
+            get {
+                return ResourceManager.GetString("IncorrectTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid data..
         /// </summary>
         public static string InvalidData {
