@@ -36,9 +36,15 @@
             }
         });
 
+        // Register event click edit item
         var $table = $(domElement.TableItems);
         $table.on('draw.dt', function () {
             registerEventClickIconEditItem();
+        });
+
+        // Int select2 for page size
+        $("select[name=tableItems_length]").select2({
+            minimumResultsForSearch: Infinity
         });
     }
 
