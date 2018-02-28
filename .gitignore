@@ -254,4 +254,4 @@ _Pvt_Extensions
 *.ncrunchproject
 *.ncrunchsolution
 /HRP.Database/HRP.Database.jfm
-/HRP.Website/wwwroot/bundles/
+/HRP.Website/wwwroot/assets/bundles/
