@@ -62,7 +62,7 @@
 
         var $autoCalculatedElement = $('input.basic-salary-calculate[type="text"]', parent);
         $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
-        if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
+        if ($('#payroll-form').data('validator')) {
             $autoCalculatedElement.valid();
         }
     }
@@ -97,7 +97,7 @@
 
         var $autoCalculatedElement = $('input.allowance-calculate[type="text"]', parent);
         $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
-        if ($('#payroll-form').data('validator') && $autoCalculatedElement.hasClass('input-validation-error')) {
+        if ($('#payroll-form').data('validator')) {
             $autoCalculatedElement.valid();
         }
     }

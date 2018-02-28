@@ -135,7 +135,7 @@
             <div class="payment-transaction">
                 <label class="bank-type">e-Banking</label>
                 <select class="control bank-type-select hidden" name="ebanking">
-                    <option value="1" selected></option>
+                    <option value="@((int) BankTypes.Ebanking)" selected></option>
                 </select>
                 <select class="control select2-ajax basic-salary-ebanking bank-account-select" asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.EbankingAccountId">@Model.BasicSalary.EbankingAccountName</option>
