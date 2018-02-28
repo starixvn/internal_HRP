@@ -1,6 +1,8 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
+    using System.IO;
+    using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
@@ -8,22 +10,32 @@
     using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
+    [HRPAuthorize]
     public class PaymentProcessController : BaseController
     {
-        public PaymentProcessController(IBaseService baseService, ISessionService sessionService) : base(baseService, sessionService)
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public PaymentProcessController(
+            IBaseService baseService,
+            ISessionService sessionService,
+            IHostingEnvironment hostingEnvironment)
+            : base(baseService, sessionService)
         {
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public IActionResult Index()
         {
+            var companies = baseService.GetData<Company>(new GetAllCompanyCriteria { IsActive = true });
             var viewModel = new SelectWorkingMonthCompanyViewModel
             {
                 SelectedTime = DateTime.Today,
-                Companies = new SelectList(baseService.GetData<Company>(new GetAllCompanyCriteria { IsActive = true }), nameof(Company.CompanyId), nameof(Company.Code))
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
             };
 
             return View(viewModel);
@@ -49,6 +61,40 @@
 
             viewModel.Companies = new SelectList(baseService.GetData<Company>(new GetAllCompanyCriteria { IsActive = true }), nameof(Company.CompanyId), nameof(Company.Code));
             return View("Index", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> DownloadAttendance()
+        {
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
+            string sFileName = @"ExcelTemplates\\AttendanceTemplate.xlsx";
+            var path = Path.Combine(sWebRootFolder, sFileName);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+
+            memory.Position = 0;
+            return File(memory, MimeType.XLSX, Path.GetFileName(path));
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> DownloadDSTNetSalary()
+        {
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
+            string sFileName = @"ExcelTemplates\\DSTNetSalaryTemplate.xlsx";
+            var path = Path.Combine(sWebRootFolder, sFileName);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+
+            memory.Position = 0;
+            return File(memory, MimeType.XLSX, Path.GetFileName(path));
         }
     }
 }

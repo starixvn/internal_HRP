@@ -7,6 +7,7 @@
     using HRP.Models;
     using HRP.Models.PaymentProcess;
     using HRP.Website.Controllers;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -15,6 +16,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IHostingEnvironment hostingEnvironment;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -33,8 +35,9 @@
         {
             FakeSessionService();
             FakeBaseService();
+            FakeHostingEnvironment();
 
-            return new PaymentProcessController(baseService, sessionService);
+            return new PaymentProcessController(baseService, sessionService, hostingEnvironment);
         }
 
         private void FakeSessionService()
@@ -45,6 +48,11 @@
         private void FakeBaseService()
         {
             baseService = Substitute.For<IBaseService>();
+        }
+
+        private void FakeHostingEnvironment()
+        {
+            hostingEnvironment = Substitute.For<IHostingEnvironment>();
         }
     }
 }
