@@ -290,9 +290,9 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
-        public IActionResult Payroll(int id)
+        public async Task<IActionResult> Payroll(int id)
         {
-            EmployeePayrollViewModel viewModel = payrollService.GetEmployeePayroll(id, sessionService.UserId);
+            EmployeePayrollViewModel viewModel = await payrollService.GetEmployeePayroll(id, sessionService.UserId);
 
             if (viewModel == null)
             {
@@ -305,11 +305,11 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
-        public IActionResult EditPayroll(EmployeePayrollViewModel model)
+        public async Task<IActionResult> EditPayroll(EmployeePayrollViewModel model)
         {
             if (ModelState.IsValid)
             {
-                CommandResult result = payrollService.UpdatePayroll(model, sessionService.UserId);
+                CommandResult result = await payrollService.UpdatePayroll(model, sessionService.UserId);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,

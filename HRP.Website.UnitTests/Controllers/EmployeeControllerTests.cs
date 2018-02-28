@@ -629,15 +629,15 @@
         }
 
         [Fact]
-        public void Payroll_InvalidEmployeeId_RedirectToErrorPage()
+        public async Task Payroll_InvalidEmployeeId_RedirectToErrorPage()
         {
             // Arrange
             var employeeId = 0;
             var employeeController = GetEmployeeController();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(x => null);
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayrollViewModel>(null));
 
             // Act
-            var actual = employeeController.Payroll(employeeId);
+            var actual = await employeeController.Payroll(employeeId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -646,7 +646,7 @@
         }
 
         [Fact]
-        public void Payroll_ValidEmployeeId_ReturnView()
+        public async Task Payroll_ValidEmployeeId_ReturnView()
         {
             // Arrange
             var employeeId = 1;
@@ -675,7 +675,7 @@
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
 
             // Act
-            var actual = employeeController.Payroll(employeeId);
+            var actual = await employeeController.Payroll(employeeId);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -684,7 +684,7 @@
         }
 
         [Fact]
-        public void EditPayroll_ValidModel_ReturnExpectedCommandResult()
+        public async Task EditPayroll_ValidModel_ReturnExpectedCommandResult()
         {
             // Arrange
             var employeeId = 1;
@@ -702,7 +702,7 @@
             payrollService.UpdatePayroll(model, sessionService.UserId).Returns(expected);
 
             // Act
-            var actual = employeeController.EditPayroll(model);
+            var actual = await employeeController.EditPayroll(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -712,7 +712,7 @@
         }
 
         [Fact]
-        public void EditPayroll_InValidModel_ReturnErrors()
+        public async Task EditPayroll_InValidModel_ReturnErrors()
         {
             // Arrange
             var model = new EmployeePayrollViewModel();
@@ -720,7 +720,7 @@
             employeeController.ModelState.AddModelError("employee", "error");
 
             // Act
-            var actual = employeeController.EditPayroll(model);
+            var actual = await employeeController.EditPayroll(model);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

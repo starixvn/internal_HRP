@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services
 {
+    using System.Threading.Tasks;
     using Criteria.RefResource;
     using Fanex.Data;
     using HRP.Core.Constants;
@@ -23,12 +24,12 @@
             this.cryptoService = cryptoService;
         }
 
-        public EmployeePayrollViewModel GetEmployeePayroll(int employeeId, int userId)
+        public async Task<EmployeePayrollViewModel> GetEmployeePayroll(int employeeId, int userId)
         {
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId, UserId = userId };
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var viewModel = multi.ReadFirstOrDefault<EmployeePayrollViewModel>();
 
@@ -44,13 +45,17 @@
                         var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
 
                         viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>() ?? basicSalary;
+                        viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
                         viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowanceModel>() ?? allowance;
                         viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeduction>() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
                         viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
                         viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-                        viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.BasicSalaryChangeReason });
-                        viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash });
-                        viewModel.BankTypes = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.BankType });
+                        viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                        {
+                            RefNames = ReferenceResource.BasicSalaryChangeReason, IsActive = true
+                        });
+                        viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
+                        viewModel.BankTypes = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.BankType, IsActive = true });
 
                         DecryptData(viewModel);
                     }
@@ -60,7 +65,7 @@
             }
         }
 
-        public CommandResult UpdatePayroll(EmployeePayrollViewModel model, int userId)
+        public async Task<CommandResult> UpdatePayroll(EmployeePayrollViewModel model, int userId)
         {
             var isSalaryChanged = model.BasicSalary.OldSalary != model.BasicSalary.Salary || model.BasicSalary.OldCurrencyId != model.BasicSalary.CurrencyId;
 
@@ -124,7 +129,7 @@
                 UpdatedBy = userId
             };
 
-            return baseService.ExecuteNonQuery(criteria);
+            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
         private void DecryptData(EmployeePayrollViewModel viewModel)

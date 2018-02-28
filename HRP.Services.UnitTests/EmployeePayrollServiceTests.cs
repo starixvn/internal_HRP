@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Core.Model;
@@ -32,7 +33,7 @@
         #region GetEmployeePayroll
 
         [Fact]
-        public void GetEmployeePayroll_NotExistedEmployeePayroll_ReturnNull()
+        public async Task GetEmployeePayroll_NotExistedEmployeePayroll_ReturnNull()
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
@@ -49,7 +50,7 @@
         }
 
         [Fact]
-        public void GetEmployeePayroll_ExistedEmployeePayroll_ReturnAsExpectedModel()
+        public async Task GetEmployeePayroll_ExistedEmployeePayroll_ReturnAsExpectedModel()
         {
             // Arrange
             var plainText = "1234";
@@ -88,7 +89,7 @@
             cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
 
             // Act
-            var actual = service.GetEmployeePayroll(employeeId, 1);
+            var actual = await service.GetEmployeePayroll(employeeId, 1);
 
             // Assert
             Assert.NotNull(actual);
@@ -133,7 +134,7 @@
         #region UpdatePayroll
 
         [Fact]
-        public void UpdatePayroll_WhenCalled_ReturnAsExpectedCommandResult()
+        public async Task UpdatePayroll_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
             var model = new EmployeePayrollViewModel();
@@ -143,14 +144,14 @@
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
-            var actual = service.UpdatePayroll(model, 1);
+            var actual = await service.UpdatePayroll(model, 1);
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void UpdatePayroll_WhenCalled_ExpectedCallEncrypt()
+        public async Task UpdatePayroll_WhenCalled_ExpectedCallEncrypt()
         {
             // Arrange
             var model = new EmployeePayrollViewModel();
@@ -160,7 +161,7 @@
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
-            var actual = service.UpdatePayroll(model, 1);
+            var actual = await service.UpdatePayroll(model, 1);
 
             // Assert
             cryptoService.Received(18).Encrypt(Arg.Any<string>());

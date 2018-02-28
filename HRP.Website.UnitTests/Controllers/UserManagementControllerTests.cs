@@ -258,7 +258,7 @@
             // Arrange
             var username = "admin";
             var userController = GetUserManagementController();
-            baseService.GetData<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
+            baseService.GetDataAsync<int>(Arg.Any<CheckUsernameExistedCriteria>()).Returns(new List<int> { 1 });
 
             // Act
             var actual = await userController.CheckUsernameExisted(username);

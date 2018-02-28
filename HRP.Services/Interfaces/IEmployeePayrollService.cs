@@ -1,12 +1,12 @@
 ﻿namespace HRP.Services.Interfaces
 {
+    using System.Threading.Tasks;
     using HRP.Core.Model;
-    using Models.EmployeeManagement;
     using Models.EmployeeManagement.Payroll;
 
     public interface IEmployeePayrollService
     {
-        EmployeePayrollViewModel GetEmployeePayroll(int employeeId, int userId);
-        CommandResult UpdatePayroll(EmployeePayrollViewModel model, int userId);
+        Task<EmployeePayrollViewModel> GetEmployeePayroll(int employeeId, int userId);
+        Task<CommandResult> UpdatePayroll(EmployeePayrollViewModel model, int userId);
     }
 }
