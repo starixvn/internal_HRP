@@ -38,12 +38,12 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             multiResultReader.ReadFirstOrDefault<EmployeePayrollViewModel>().Returns(x => null);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();
 
             // Act
-            var actual = service.GetEmployeePayroll(1, 1);
+            var actual = await service.GetEmployeePayroll(1, 1);
 
             // Assert
             Assert.Null(actual);
@@ -80,7 +80,7 @@
             multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>().Returns(basicSalary);
             multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowanceModel>().Returns(allowance);
             multiResultReader.ReadFirstOrDefault<EmployeePayrollDeduction>().Returns(deduction);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<ICriteria>()).Returns(currencyExchangeRates);
@@ -140,7 +140,7 @@
             var model = new EmployeePayrollViewModel();
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
@@ -157,7 +157,7 @@
             var model = new EmployeePayrollViewModel();
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
