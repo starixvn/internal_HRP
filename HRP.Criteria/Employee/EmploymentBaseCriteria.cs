@@ -12,8 +12,6 @@
 
         public virtual int LocalJobTitleId { get; set; }
 
-        public virtual string CompanyCode { get; set; }
-
         public virtual string EmployeeCode { get; set; }
 
         public virtual int EmploymentType { get; set; }
@@ -148,7 +146,6 @@
             && WorkPermitCompanyId > 0
             && Type1 > 0
             && !string.IsNullOrWhiteSpace(JobTitle)
-            && !string.IsNullOrWhiteSpace(CompanyCode)
             && !string.IsNullOrWhiteSpace(EmployeeCode)
             && !string.IsNullOrWhiteSpace(Email)
             && !string.IsNullOrWhiteSpace(FullNameBVISalary)

@@ -8,76 +8,76 @@
     [Serializable]
     public class CreateEmploymentViewModel : EmploymentBaseViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameRequired")]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
-        public string FullName { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NicknameRequired")]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NicknameMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameRequired))]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameMaxLength))]
         public string Nickname { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "GenderRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameRequired))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameMaxLength))]
+        public string FullName { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.GenderRequired))]
         public int Gender { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateOfBirthRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DateOfBirthRequired))]
         public DateTime DateOfBirth { get; set; }
 
-        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PlaceOfBirthMaxLength")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PlaceOfBirthMaxLength))]
         public string PlaceOfBirth { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NationalityRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NationalityRequired))]
         public int Nationality { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoRequired")]
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NRICNoMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NRICNoRequired))]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NRICNoMaxLength))]
         public string NRICNo { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MaritalStatusRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.MaritalStatusRequired))]
         public int MaritalStatus { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "NoOfChildrenRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NoOfChildrenRequired))]
         public int NoOfChildren { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoRequired")]
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.OverseasPhoneNoRequired))]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.OverseasPhoneNoMaxLength))]
         public string OverseasPhoneNo { get; set; }
 
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalPhoneNoMaxLength")]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.LocalPhoneNoMaxLength))]
         public string LocalPhoneNo { get; set; }
 
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OtherPhoneNoMaxLength")]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.OtherPhoneNoMaxLength))]
         public string OtherPhoneNo { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoRequired")]
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PassportNoMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PassportNoRequired))]
+        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PassportNoMaxLength))]
         public string PassportNo { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "DateIssueRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DateIssueRequired))]
         public DateTime DateIssue { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ExpiredDateRequired")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ExpiredDateRequired))]
         public DateTime ExpiredDate { get; set; }
 
-        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PlaceOfIssueMaxLength")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PlaceOfIssueMaxLength))]
         public string PlaceOfIssue { get; set; }
 
-        [StringLength(32, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SkypeMaxLength")]
+        [StringLength(32, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.SkypeMaxLength))]
         public string Skype { get; set; }
 
-        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PersonalEmailMaxLength")]
-        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PersonalEmailInvalid")]
+        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PersonalEmailMaxLength))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PersonalEmailInvalid))]
         public string PersonalEmail { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PermanentAddressRequired")]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PermanentAddressMaxLength")]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.MailingAddressMaxLength))]
+        public string MailingAddress { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PermanentAddressRequired))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PermanentAddressMaxLength))]
         public string PermanentAddress { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ResidenceAddressRequired")]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "ResidenceAddressMaxLength")]
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ResidenceAddressRequired))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ResidenceAddressMaxLength))]
         public string ResidenceAddress { get; set; }
-
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "MailingAddressMaxLength")]
-        public string MailingAddress { get; set; }
 
         public EmergencyContact EmergencyContact { get; set; } = new EmergencyContact();
 

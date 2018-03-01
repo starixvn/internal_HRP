@@ -43,7 +43,6 @@
                 LocalCompanyId = 1,
                 JobTitle = "SM",
                 LocalJobTitleId = 1,
-                CompanyCode = "DAR",
                 EmployeeCode = "111",
                 EmploymentType = 1,
                 EmploymentStatus = 1,
