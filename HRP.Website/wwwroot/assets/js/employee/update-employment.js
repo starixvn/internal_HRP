@@ -34,6 +34,7 @@ var updateEmployment = (function ($) {
                     employmentCommonFuncs.initForm($updateEmploymentForm);
                     registerEventSubmitForm();
                 } else {
+                    $updateEmploymentForm.find('.js-select2').select2();
                     $updateEmploymentForm.find('input[type="text"]').attr('readonly', 'readonly');
                     $updateEmploymentForm.find('select').attr('disabled', 'disabled');
                     $updateEmploymentForm.submit(false);
