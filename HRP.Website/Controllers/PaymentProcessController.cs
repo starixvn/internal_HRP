@@ -64,10 +64,11 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
         public async Task<IActionResult> DownloadAttendance()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\\AttendanceTemplate.xlsx";
+            string sFileName = @"ExcelTemplates\\Template - Attendance (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
 
             var memory = new MemoryStream();
@@ -81,10 +82,11 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
         public async Task<IActionResult> DownloadDSTNetSalary()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\\DSTNetSalaryTemplate.xlsx";
+            string sFileName = @"ExcelTemplates\\Template - DST Salary (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
 
             var memory = new MemoryStream();

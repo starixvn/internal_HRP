@@ -792,4 +792,7 @@
   <data name="OtpCode" xml:space="preserve">
     <value>OTP code</value>
   </data>
+  <data name="DownloadTemplate" xml:space="preserve">
+    <value>Download Template</value>
+  </data>
 </root>
