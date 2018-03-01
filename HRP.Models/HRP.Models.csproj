@@ -37,10 +37,4 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
-  
-  <ItemGroup>    
-    <Compile Include=".\EmployeeManagement\Payroll\EmployeePayrollAllowanceModel.cs">
-      <SonarQubeExclude>true</SonarQubeExclude>
-    </Compile>
-  </ItemGroup>
 </Project>
