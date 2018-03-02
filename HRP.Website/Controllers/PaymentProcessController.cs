@@ -32,10 +32,10 @@
             this.paymentProcessService = paymentProcessService;
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public IActionResult Index()
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public async Task<IActionResult> Index()
         {
-            var companies = baseService.GetData<Company>(new GetAllCompanyCriteria { IsActive = true });
+            var companies = await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId });
             var viewModel = new SelectWorkingMonthCompanyViewModel
             {
                 SelectedTime = DateTime.Today,
@@ -45,14 +45,13 @@
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         [HttpPost]
         public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
         {
-            var completedDate = DateTime.Today.AddMonths(3);
             if (ModelState.IsValid)
             {
-                if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate)
+                if (viewModel.SelectedTime.Month == DateTime.Today.Month)
                 {
                     var process = new PaymentProcess
                     {
@@ -66,13 +65,15 @@
                     return RedirectToAction("UploadAttendanceAndSalary");
                 }
 
-                if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate)
+                if (viewModel.SelectedTime.Month < DateTime.Today.Month)
                 {
                     return RedirectToAction("EmployeeMonthlyPayroll");
                 }
             }
 
-            viewModel.Companies = new SelectList(baseService.GetData<Company>(new GetAllCompanyCriteria { IsActive = true }), nameof(Company.CompanyId), nameof(Company.Code));
+            viewModel.Companies = new SelectList(
+                await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }), 
+                nameof(Company.CompanyId), nameof(Company.Code));
             return View("Index", viewModel);
         }
 

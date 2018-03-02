@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
@@ -19,12 +20,12 @@
         private IHostingEnvironment hostingEnvironment;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
+        public async Task Index_WhenCalled_ReturnExpectedViewResult()
         {
             var controller = GetPaymentProcessController();
-            baseService.GetData<Company>(Arg.Any<GetAllCompanyCriteria>()).Returns(new List<Company>());
+            baseService.GetDataAsync<Company>(Arg.Any<GetCompaniesForPaymentProcessCriteria>()).Returns(new List<Company>());
 
-            var actual = controller.Index();
+            var actual = await controller.Index();
 
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.Model);

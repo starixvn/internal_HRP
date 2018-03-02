@@ -209,6 +209,8 @@
         calculateAllowances();
         assignAddBankAccountButton();
 
+        $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
+
         $('.tooltipster').tooltipster({
             content: $('#tooltip-content'),
             contentCloning: true,
@@ -358,7 +360,6 @@
             roundingAmount(e.target);
         });
 
-        $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
         $('#Allowance_CurrencyId').on('change', function () {
             $('.allowance-total-currency').val(this.options[this.selectedIndex].text);
             calculateAllowances();
