@@ -49,23 +49,24 @@
         [HttpPost]
         public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
         {
+            //Check company permission
+            //TODO
             if (ModelState.IsValid)
             {
-                if (viewModel.SelectedTime.Month == DateTime.Today.Month)
+                var process = new PaymentProcess
                 {
-                    var process = new PaymentProcess
-                    {
-                        CompanyId = viewModel.CompanyId,
-                        PaymentMonth = viewModel.SelectedTime,
-                        CurrentStep = (int)PaymentSteps.SelectWorkingMonthAndCompany
-                    };
+                    CompanyId = viewModel.CompanyId,
+                    PaymentMonth = viewModel.SelectedTime,
+                    CurrentStep = (int)PaymentSteps.SelectWorkingMonthAndCompany
+                };
+                bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
 
-                    await paymentProcessService.UpdatePaymentProcessAsync(process);
-
+                if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
+                {
                     return RedirectToAction("UploadAttendanceAndSalary");
                 }
 
-                if (viewModel.SelectedTime.Month < DateTime.Today.Month)
+                if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate || isPayrollGenerated)
                 {
                     return RedirectToAction("EmployeeMonthlyPayroll");
                 }

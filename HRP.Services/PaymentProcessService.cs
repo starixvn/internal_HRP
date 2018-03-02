@@ -18,6 +18,13 @@
             this.sessionService = sessionService;
         }
 
+        public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)
+        {
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, PaymentMonth = process.PaymentMonth }).ConfigureAwait(false);
+
+            return isExisted;
+        }
+
         public async Task<CommandResult> UpdatePaymentProcessAsync(PaymentProcess process)
         {
             var criteria = new UpdatePaymentProcessCriteria

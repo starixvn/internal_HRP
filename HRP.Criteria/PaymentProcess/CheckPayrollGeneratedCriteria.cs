@@ -1,0 +1,16 @@
+﻿namespace HRP.Criteria.PaymentProcess
+{
+    using System;
+    using Fanex.Data.Repository;
+
+    public class CheckPayrollGeneratedCriteria : CriteriaBase
+    {
+        public int CompanyId { get; set; }
+
+        public DateTime PaymentMonth { get; set; }
+
+        public override string GetSettingKey() => "PaymentProcess_CheckPayrollGenerated";
+
+        public override bool IsValid() => CompanyId >= 0;
+    }
+}
