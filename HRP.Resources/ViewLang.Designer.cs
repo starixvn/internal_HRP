@@ -1969,6 +1969,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload Files.
+        /// </summary>
+        public static string UploadFiles {
+            get {
+                return ResourceManager.GetString("UploadFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Management.
         /// </summary>
         public static string UserManagement {

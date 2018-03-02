@@ -1,0 +1,59 @@
+﻿@using HRP.Resources
+@using HRP.Models.PaymentProcess
+@model UploadAttendanceAndSalaryViewModel
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/select-month-company.css" rel="stylesheet" />
+    </environment>
+
+    <environment exclude="Development">
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.PaymentProcess</li>
+    <li class="active">@ViewLang.UploadFiles</li>
+</ol>
+
+<div>
+    <div class="group">
+        <label class="text">@ViewLang.MonthYear</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.Company</label>
+        <select class="control" disabled>
+            <option value="@Model.CompanyId">@Model.CompanyCode</option>
+        </select>
+    </div>
+</div>
+
+<form asp-action="DownloadAttendance" method="post">
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.DownloadTemplate</button>
+    </div>
+</form>
+
+<form asp-action="DownloadDSTNetSalary" method="post">
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.DownloadTemplate</button>
+    </div>
+</form>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}

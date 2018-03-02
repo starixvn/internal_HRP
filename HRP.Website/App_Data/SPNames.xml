@@ -146,6 +146,7 @@
     <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_UpdatePayroll" SpName="Employee_UpdatePayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
-  <Function Name="DataConfiguration">
+  <Function Name="PaymentProcess">
+    <Setting Key="PaymentProcess_Update" SpName="PaymentProcess_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

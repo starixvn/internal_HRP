@@ -795,4 +795,7 @@
   <data name="DownloadTemplate" xml:space="preserve">
     <value>Download Template</value>
   </data>
+  <data name="UploadFiles" xml:space="preserve">
+    <value>Upload Files</value>
+  </data>
 </root>

@@ -10,6 +10,7 @@
     using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
+    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,14 +19,17 @@
     public class PaymentProcessController : BaseController
     {
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IPaymentProcessService paymentProcessService;
 
         public PaymentProcessController(
             IBaseService baseService,
             ISessionService sessionService,
-            IHostingEnvironment hostingEnvironment)
+            IHostingEnvironment hostingEnvironment,
+            IPaymentProcessService paymentProcessService)
             : base(baseService, sessionService)
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.paymentProcessService = paymentProcessService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
@@ -43,13 +47,22 @@
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
-        public IActionResult SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
+        public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
         {
             var completedDate = DateTime.Today.AddMonths(3);
             if (ModelState.IsValid)
             {
                 if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate)
                 {
+                    var process = new PaymentProcess
+                    {
+                        CompanyId = viewModel.CompanyId,
+                        PaymentMonth = viewModel.SelectedTime,
+                        CurrentStep = (int)PaymentSteps.SelectWorkingMonthAndCompany
+                    };
+
+                    await paymentProcessService.UpdatePaymentProcessAsync(process);
+
                     return RedirectToAction("UploadAttendanceAndSalary");
                 }
 
@@ -97,6 +110,12 @@
 
             memory.Position = 0;
             return File(memory, MimeType.XLSX, Path.GetFileName(path));
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public IActionResult UploadAttendanceAndSalary()
+        {
+            return View(new UploadAttendanceAndSalaryViewModel());
         }
     }
 }
