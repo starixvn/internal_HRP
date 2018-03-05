@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
+    using Microsoft.AspNetCore.Http;
 
     public interface IPaymentProcessService
     {
@@ -11,6 +12,10 @@
 
         Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
 
-        Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentMonth);
+        Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentTime);
+
+        CommandResult CheckValidExcelFile(IFormFile file);
+
+        CommandResult InsertAttendanceAndSalaryUploading(UploadAttendanceAndSalaryViewModel viewModel);
     }
 }

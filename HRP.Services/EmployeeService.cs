@@ -287,7 +287,7 @@
                 else if (!file.ContentType.Contains("image"))
                 {
                     result.Code = 1;
-                    result.Message = Message.InvalidImageType;
+                    result.Message = Message.InvalidFileType;
                 }
                 else
                 {

@@ -646,6 +646,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file does not exist..
+        /// </summary>
+        public static string FileNotExists {
+            get {
+                return ResourceManager.GetString("FileNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The attachment size exceeds the allowable limits (2MB). Please use a smaller file size!.
         /// </summary>
         public static string FileTooLarge {
@@ -963,9 +972,9 @@ namespace HRP.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The file type is not supported. Please try again..
         /// </summary>
-        public static string InvalidImageType {
+        public static string InvalidFileType {
             get {
-                return ResourceManager.GetString("InvalidImageType", resourceCulture);
+                return ResourceManager.GetString("InvalidFileType", resourceCulture);
             }
         }
         

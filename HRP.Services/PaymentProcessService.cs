@@ -2,12 +2,15 @@
 {
     using System;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
+    using HRP.Resources;
+    using Microsoft.AspNetCore.Http;
 
     public class PaymentProcessService : IPaymentProcessService
     {
@@ -22,7 +25,7 @@
 
         public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)
         {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, PaymentMonth = process.PaymentMonth }).ConfigureAwait(false);
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, PaymentTime = process.PaymentTime }).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -32,7 +35,7 @@
             var criteria = new UpdatePaymentProcessCriteria
             {
                 CompanyId = process.CompanyId,
-                PaymentMonth = process.PaymentMonth,
+                PaymentTime = process.PaymentTime,
                 UpdatedBy = sessionService.UserId
             };
 
@@ -41,7 +44,7 @@
             return commandResult;
         }
 
-        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentMonth)
+        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentTime)
         {
             var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
 
@@ -49,10 +52,51 @@
             {
                 CompanyId = companyId,
                 CompanyCode = company.Code,
-                SelectedTime = paymentMonth
+                SelectedTime = paymentTime
             };
 
             return viewModel;
+        }
+
+        public CommandResult CheckValidExcelFile(IFormFile file)
+        {
+            var result = new CommandResult();
+
+            if (file != null)
+            {
+                if (file.Length / (1024 * 1024) > 5)
+                {
+                    result.Code = 1;
+                    result.Message = Message.FileTooLarge;
+                }
+                else if (!file.ContentType.Equals(MimeType.XLS) && !file.ContentType.Equals(MimeType.XLSX))
+                {
+                    result.Code = 1;
+                    result.Message = Message.InvalidFileType;
+                }
+                else
+                {
+                    result.Code = 0;
+                    result.Message = string.Empty;
+                }
+            }
+            else
+            {
+                result.Code = 0;
+                result.Message = string.Empty;
+            }
+
+            return result;
+        }
+
+        private void ReadAttendanceFromExcelFile(int companyId, DateTime paymentTime, IFormFile file)
+        {
+            return;
+        }
+
+        public CommandResult InsertAttendanceAndSalaryUploading(UploadAttendanceAndSalaryViewModel viewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

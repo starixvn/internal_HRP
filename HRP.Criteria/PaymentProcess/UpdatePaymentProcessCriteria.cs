@@ -6,7 +6,7 @@
     {
         public int CompanyId { get; set; }
 
-        public DateTime PaymentMonth { get; set; }
+        public DateTime PaymentTime { get; set; }
 
         public int CurrentStep { get; set; }
 

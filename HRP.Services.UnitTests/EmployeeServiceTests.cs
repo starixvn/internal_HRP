@@ -329,7 +329,7 @@
             // Assert
             Assert.IsType<CommandResult>(actual);
             Assert.Equal(1, actual.Code);
-            Assert.Equal(Message.InvalidImageType, actual.Message);
+            Assert.Equal(Message.InvalidFileType, actual.Message);
         }
 
         [Fact]

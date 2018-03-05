@@ -2,10 +2,12 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
@@ -56,13 +58,13 @@
                 var process = new PaymentProcess
                 {
                     CompanyId = viewModel.CompanyId,
-                    PaymentMonth = viewModel.SelectedTime
+                    PaymentTime = viewModel.SelectedTime
                 };
                 bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
                 var completedDate = DateTime.Today.AddMonths(3);
                 if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
                 {
-                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, paymentMonth = viewModel.SelectedTime });
+                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, paymentTime = viewModel.SelectedTime });
                 }
 
                 if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate || isPayrollGenerated)
@@ -114,18 +116,48 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime paymentMonth)
+        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime paymentTime)
         {
             var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
 
             if (isHost)
             {
-                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, paymentMonth);
+                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, paymentTime);
 
                 return View(viewModel);
             }
 
             return RedirectToAction("AccessDenied", "Error");
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
+        public IActionResult UploadAttendanceAndSalary(UploadAttendanceAndSalaryViewModel viewModel)
+        {
+            CommandResult validateAttendanceFile = paymentProcessService.CheckValidExcelFile(viewModel.AttendanceFile);
+            if (!validateAttendanceFile.IsSuccessful)
+            {
+                ModelState.AddModelError(nameof(viewModel.AttendanceFile), validateAttendanceFile.Message);
+            }
+
+            CommandResult validateDSTSalaryFile = paymentProcessService.CheckValidExcelFile(viewModel.DSTSalaryFile);
+            if (!validateDSTSalaryFile.IsSuccessful)
+            {
+                ModelState.AddModelError(nameof(viewModel.DSTSalaryFile), validateDSTSalaryFile.Message);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var commandResult = paymentProcessService.InsertAttendanceAndSalaryUploading(viewModel);
+
+                if (commandResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = true });
+                }
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
         }
     }
 }

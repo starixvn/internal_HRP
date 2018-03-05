@@ -288,7 +288,7 @@
   <data name="InvalidData" xml:space="preserve">
     <value>Invalid data.</value>
   </data>
-  <data name="InvalidImageType" xml:space="preserve">
+  <data name="InvalidFileType" xml:space="preserve">
     <value>The file type is not supported. Please try again.</value>
   </data>
   <data name="NicknameRequired" xml:space="preserve">
@@ -707,5 +707,8 @@
   </data>
   <data name="IncorrectTemplate" xml:space="preserve">
     <value>Incorrect template.</value>
+  </data>
+  <data name="FileNotExists" xml:space="preserve">
+    <value>The file does not exist.</value>
   </data>
 </root>
