@@ -11,6 +11,7 @@
             // Arrange
             var expected = "Employee_GetDataFilterForIndexPage";
             var criteria = new GetDataFilterForIndexPageCriteria();
+
             // Act
             var actual = criteria.GetSettingKey();
 
@@ -18,14 +19,13 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(1)]
-        public void IsValid_WithValidParams_ReturnTrue(int userId)
+        [Fact]
+        public void IsValid_UserIdIsValid_ReturnTrue()
         {
             // Arrange
             var criteria = new GetDataFilterForIndexPageCriteria
             {
-                UserId = userId
+                UserId = 1
             };
 
             // Act
@@ -38,7 +38,7 @@
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void IsValid_WithInValidParams_ReturnFalse(int userId)
+        public void IsValid_UserIdIsInvalid_ReturnFalse(int userId)
         {
             // Arrange
             var criteria = new GetDataFilterForIndexPageCriteria

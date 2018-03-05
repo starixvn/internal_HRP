@@ -151,4 +151,7 @@
     <Setting Key="PaymentProcess_Update" SpName="PaymentProcess_Update" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_CheckPayrollGenerated" SpName="PaymentProcess_CheckPayrollGenerated" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="Monthly Payroll">
+    <Setting Key="MonthlyPayroll_GetDataFilterForIndexPage" SpName="MonthlyPayroll_GetDataFilterForIndexPage" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
 </Functions>
