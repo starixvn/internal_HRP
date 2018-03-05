@@ -97,6 +97,7 @@ var createEmployment = (function ($) {
                 $btnCancel = $createEmploymentForm.find('.js-btnCancel');
 
                 employmentCommonFuncs.initForm($createEmploymentForm);
+                commonFunctions.registerEventGoBack($createEmploymentForm.find('.js-btnCancel'));
 
                 initEventChangeCompanyCode();
                 initEventChangeEmployeeCode();

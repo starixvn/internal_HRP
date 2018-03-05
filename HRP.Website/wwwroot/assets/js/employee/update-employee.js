@@ -37,6 +37,7 @@
     function initModule() {
         $form = $('#personalDetailsForm');
         commonFunctions.initDatetimepicker($form);
+        commonFunctions.registerEventGoBack($form.find('.js-btnCancel'));
 
         if ($form.find('#IsHost').prop('checked')) {
             employeeCommonFuncs.initForm($form);

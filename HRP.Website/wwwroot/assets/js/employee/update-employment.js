@@ -29,6 +29,7 @@ var updateEmployment = (function ($) {
 
                 $updateEmploymentForm = $('#updateEmploymentForm');
                 $btnSubmit = $updateEmploymentForm.find('.js-btnSubmit');
+                commonFunctions.registerEventGoBack($updateEmploymentForm.find('.js-btnCancel'));
 
                 if ($updateEmploymentForm.find('#IsHost').prop('checked')) {
                     employmentCommonFuncs.initForm($updateEmploymentForm);

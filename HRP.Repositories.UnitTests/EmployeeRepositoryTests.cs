@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models;
@@ -338,7 +339,7 @@
         #endregion GetDataToUpdateEmployment
 
         [Fact]
-        public void GetDataFilterForIndexPage_WhenCalled_ReturnAsExpectedModel()
+        public async Task GetDataFilterForIndexPageAsync_WhenCalled_ReturnAsExpectedModel()
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
@@ -354,7 +355,7 @@
             var repository = new EmployeeRepository();
 
             // Act
-            var actual = repository.GetDataFilterForIndexPage(criteria);
+            var actual = await repository.GetDataFilterForIndexPageAsync(criteria);
 
             // Assert
             Assert.IsType<EmployeeManagementViewModel>(actual);

@@ -39,7 +39,7 @@
             int? employeeId = null,
             string displayName = null)
         {
-            EmployeeManagementViewModel viewModel = employeeService.GetDataFilterForIndexPage(departmentIds, employmentStatusIds);
+            EmployeeManagementViewModel viewModel = await employeeService.GetDataFilterForIndexPageAsync(departmentIds, employmentStatusIds);
             viewModel.IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host);
             viewModel.DisplayName = displayName;
             viewModel.EmployeeId = employeeId;

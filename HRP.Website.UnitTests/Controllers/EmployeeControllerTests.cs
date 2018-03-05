@@ -55,7 +55,7 @@
             };
             var employeeController = GetEmployeeController();
             sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
+            employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
             employeeService.GetEmployeesAsync(Arg.Any<EmployeeManagementViewModel>()).Returns(employees);
 
             //Act

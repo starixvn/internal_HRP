@@ -4,7 +4,7 @@ var employmentCommonFuncs = (function ($) {
     var $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
         $countryElement, $cityElement, $officeElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
-        $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement, $btnCancel,
+        $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
         defaultOption = '<option value=""></option>',
         currentDate;
 
@@ -501,7 +501,6 @@ var employmentCommonFuncs = (function ($) {
         $countryElement = $form.find('#CountryId');
         $cityElement = $form.find('#CityId');
         $officeElement = $form.find('#OfficeId');
-        $btnCancel = $form.find('.js-btnCancel');
 
         reparseform($form);
         initSelect2($form);
@@ -528,7 +527,6 @@ var employmentCommonFuncs = (function ($) {
         initSearchAutocomplete($('#NoneOrIDNoLocalBonus'), $('#EPA_FullNameLocalBonus'), $('#EPA_NicknameLocalBonus'));
 
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
-        commonFunctions.registerEventGoBack($btnCancel);
     }
 
     return {

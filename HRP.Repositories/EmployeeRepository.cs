@@ -2,6 +2,7 @@ namespace HRP.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Core.Constants;
@@ -127,17 +128,17 @@ namespace HRP.Repositories
             }
         }
 
-        public EmployeeManagementViewModel GetDataFilterForIndexPage(ICriteria criteria)
+        public async Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = db.QueryMultiple(criteria))
                 {
-                    var viewModel = multi.ReadFirst<EmployeeManagementViewModel>();
-                    var companies = multi.Read<MultiSelectViewModel>();
-                    var divisions = multi.Read<MultiSelectViewModel>();
-                    var departments = multi.Read<MultiSelectViewModel>();
-                    var employmentStatuses = multi.Read<MultiSelectViewModel>();
+                    var viewModel = await multi.ReadFirstAsync<EmployeeManagementViewModel>().ConfigureAwait(false);
+                    var companies = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
+                    var divisions = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
+                    var departments = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
+                    var employmentStatuses = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
 
                     viewModel.HierarchyCompanies = companies.Select(company => new MultiSelectViewModel
                     {

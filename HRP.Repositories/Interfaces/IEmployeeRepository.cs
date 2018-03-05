@@ -1,5 +1,6 @@
 namespace HRP.Repositories.Interfaces
 {
+    using System.Threading.Tasks;
     using Fanex.Data.Repository;
     using HRP.Models.EmployeeManagement;
 
@@ -11,6 +12,6 @@ namespace HRP.Repositories.Interfaces
 
         UpdateEmploymentViewModel GetDataToUpdateEmployment(ICriteria criteria);
 
-        EmployeeManagementViewModel GetDataFilterForIndexPage(ICriteria criteria);
+        Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria);
     }
 }

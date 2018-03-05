@@ -5,10 +5,8 @@
 // --------------------------------------------------------------------------
 'use strict';
 (function ($) {
-
     //// Method expose for user use
-    var fanexMultiSelectMethods =
-    {
+    var fanexMultiSelectMethods = {
         createfanexMultiSelect: function (opts) {
             opts = $.extend({}, $.fn.fanexMultiSelect.defaults, opts);
             return this.each(function () {
@@ -55,14 +53,13 @@
     };
 
     //// Default Options
-    $.fn.fanexMultiSelect.defaults =
-    {
+    $.fn.fanexMultiSelect.defaults = {
         showHeader: true,
         showFooter: false,
         showTooltip: true,
         showFilter: false,
-        maxHeight: 400, 
-        minWidth: 200, 
+        maxHeight: 400,
+        minWidth: 200,
         checkAllText: 'Check All',
         noItemText: 'No item!',
         noItemFoundText: 'No item found!',
@@ -84,7 +81,7 @@
         customCheckAllText: 'All Checked',
         showParentSelectedText: false,
         onLeave: function () { },
-        onCheck: function () { }, 
+        onCheck: function () { },
         onOpen: function () { },
         onCheckAll: function () { },
         onFooterButtonClick: function () { }
@@ -104,8 +101,7 @@
         return me.$multiSelect;
     };
 
-    fanex.MultiSelect.prototype =
-    {
+    fanex.MultiSelect.prototype = {
         getjQueryInstance: function () {
             return this.$multiSelect;
         },
@@ -131,7 +127,7 @@
                 html.push(me.renderFooter());
             }
             html.push('</div>');
-           
+
             //add global variable
             me.$multiSelect = me.$multiSelect.after(html.join('')).next('a.fanex-multiselect');
             me.$options = me.$multiSelect.next('div.fanex-multiselect-options');
@@ -151,8 +147,8 @@
             me.$noDataText = me.$options.find('#no-data-text');
 
             me.$allCheckBoxInputs = me.$options.find('label')
-                            .not('.fanex-multiselect-state-disabled')
-                            .find('input');
+                .not('.fanex-multiselect-state-disabled')
+                .find('input');
             me.$allInputsExceptHeaderCheckBox = me.$labels.find('input').not("#" + id + "HeaderCheckBox");
             me.$multiSelectinput = me.$multiSelect.find('input');
             me.$headerCheckbox = me.$options.find("#" + id + "HeaderCheckBox");
@@ -173,7 +169,7 @@
                 me.$options.trigger('open', [false]);
             }
 
-            // update the number of selected elements when the page initially loads, and use that as the defaultValue.  
+            // update the number of selected elements when the page initially loads, and use that as the defaultValue.
             // necessary for form resets when options are pre-selected.
             me.$multiSelect.find('input')[0].defaultValue = me.updateSelected();
             me.updateCheckall();
@@ -289,7 +285,6 @@
                 divClasses = 'fanex-multiselect-div ',
                 groupIdAttr = 'fanex-multiselect-option-group-' + row.groupId;
 
-            
             row.hasChild = row.hasChild || false;
 
             if (value) {
@@ -316,7 +311,6 @@
                     if (!row.hasChild && me.isShowGroup) {
                         divClasses += !me.isShowGroup ? "" : (row.isLastChild ? ' rtBot' : ' rtMid');
                         tempHtml.push('<div class="' + divClasses + '">');
-
                     }
                     else {
                         tempHtml.push('<div class="' + divClasses + '" style="margin-left:10px;">');
@@ -363,6 +357,7 @@
 
                 tempHtml.push('</li>');
             }
+
             return tempHtml.join('');
         },
         renderFooter: function () {
@@ -429,7 +424,6 @@
                     else {
                         value = options.noneSelectedText;
                     }
-
                 }
             }
 
@@ -473,14 +467,14 @@
                 options = me.options;
             // build header links
             me.$headerCheckbox.click(function () {
-                    var $this = $(this);
-                    if ($this.prop('checked')) {
-                        me.$allCheckBoxInputs.filter('.show-item').prop('checked', true);
-                    }
-                    else {
-                        me.$allCheckBoxInputs.filter('.show-item').prop('checked', false);
-                    }
-                });
+                var $this = $(this);
+                if ($this.prop('checked')) {
+                    me.$allCheckBoxInputs.filter('.show-item').prop('checked', true);
+                }
+                else {
+                    me.$allCheckBoxInputs.filter('.show-item').prop('checked', false);
+                }
+            });
             //build footer link
             if (options.showFooter) {
                 me.$footer.find('a').click(function (e) {
@@ -521,7 +515,7 @@
                                 .removeClass('hide-item')
                                 .addClass('show-item')
                                 .attr('data-dont-hide-me', 'true');
-                            
+
                             dontHideElements.find('input').addClass('show-item');
                             if (dontHideElements.length > 0) {
                                 me.$noDataText.hide();
@@ -532,14 +526,13 @@
 
                                     var prevParent = dontHideElement.parent().prev();
                                     var grandParent = dontHideElement.parent().parent();
-                                    
+
                                     while (grandParent.hasClass('rtLI')) {
                                         grandParent.removeClass('hide-item')
                                             .addClass('show-item').attr('data-dont-hide-me', 'true');
                                         prevParent.find('input').addClass('show-item');
                                         prevParent = grandParent.parent().prev();
                                         grandParent = grandParent.parent().parent();
-                                        
                                     }
 
                                     dontHideElement
@@ -547,8 +540,7 @@
                                         .find('input').addClass('show-item');
                                 });
                             }
-                            else
-                            {
+                            else {
                                 me.$header.hide();
                                 me.$noDataText.show();
                             }
@@ -628,7 +620,6 @@
                     if (!me.$multiSelect.hasClass('fanex-multiselect-state-disabled')) {
                         $(this).addClass('fanex-multiselect-state-hover');
                     }
-
                 },
                 mouseleave: function () {
                     $(this).removeClass('fanex-multiselect-state-hover');
@@ -672,7 +663,6 @@
                             }
                             me.$allLabel.find('input').removeAttr('isCheck');
                             me.isOpenning = false;
-
                         }
                         me.updateSelected();
                         //$.fn.multiSelect.defaults.onLeave();
@@ -684,7 +674,6 @@
                     }
                 },
                 'open': function (e, closeOthers) {
-
                     // bail if this widget is disabled
                     if (me.$multiSelect.hasClass('fanex-multiselect-state-disabled')) {
                         return;
@@ -694,8 +683,8 @@
 
                     // use position() if inside ui-widget-content, because offset() won't cut it.
                     var offset = me.$multiSelect.position(),
-                            $container = me.$options.find('ul:last'),
-                            top, width;
+                        $container = me.$options.find('ul:last'),
+                        top, width;
 
                     // calling select is active
                     me.$multiSelect.addClass('fanex-multiselect-state-active');
@@ -714,7 +703,7 @@
                     } else {
                         top = (offset.top + me.$multiSelect.outerHeight());
                     }
-                    top += 3; // padding extra 3px to seperate options with multi select div 
+                    top += 3; // padding extra 3px to seperate options with multi select div
 
                     // calculate the width of the options menu
                     if (me.browser.msie) {
@@ -743,7 +732,6 @@
                     }
                     if (options.isRetrieveDataAfterClose) {
                         me.$allLabel.find('input').filter(':checked').attr("ischeck", "true");
-
                     }
                     me.isOpenning = true;
                     options.onOpen.call();
@@ -761,7 +749,6 @@
             // checkbox click event handle
             me.$listItem.each(function () {
                 var $this = $(this);
-
 
                 //handler chilren checkbox event
                 var childrenNodes = $this.find('li.show-item input[childgroupid="' + $this.attr("childgroupid") + '"]');
@@ -832,8 +819,7 @@
     };
 
     //// multiSelect Helper
-    fanex.MultiSelect.helper =
-    {
+    fanex.MultiSelect.helper = {
         detectBrowser: function () {
             //// multiSelect Scroller
             var matchedBrowser, browserDectect;
@@ -845,11 +831,11 @@
                 ua = ua.toLowerCase();
 
                 var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
-                /(webkit)[ \/]([\w.]+)/.exec(ua) ||
-                /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-                /(msie) ([\w.]+)/.exec(ua) ||
-                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
-                [];
+                    /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                    /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                    /(msie) ([\w.]+)/.exec(ua) ||
+                    ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                    [];
 
                 return {
                     browserDectect: match[1] || "",
@@ -879,9 +865,4 @@
     fanex.MultiSelect.list = fanex.MultiSelect.list || {};
 
     fanex.MultiSelect.constant = fanex.MultiSelect.constant || {};
-
-
 })(jQuery);
-
-
-

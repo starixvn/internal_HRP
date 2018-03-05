@@ -41,6 +41,7 @@
 
         commonFunctions.initDatetimepicker($form);
         employeeCommonFuncs.initForm($form);
+        commonFunctions.registerEventGoBack($form.find('.js-btnCancel'));
         registerEventSubmitForm();
     }
 

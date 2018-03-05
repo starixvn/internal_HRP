@@ -25,19 +25,19 @@
         private ICryptoService cryptoService;
         private IEmployeeRepository employeeRepository;
 
-        #region GetDataFilterForIndexPage
+        #region GetDataFilterForIndexPageAsync
 
         [Theory]
         [InlineData(-1)]
         [InlineData(0)]
-        public void GetDataFilterForIndexPage_UserIdIsInvalid_ReturnDefaultViewModel(int userId)
+        public async Task GetDataFilterForIndexPageAsync_UserIdIsInvalid_ReturnDefaultViewModel(int userId)
         {
             // Arrange
             var employeeService = GetEmployeeService();
             sessionService.UserId = userId;
 
             // Act
-            var actual = employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>());
+            var actual = await employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>());
 
             // Assert
             Assert.IsType<EmployeeManagementViewModel>(actual);
@@ -54,7 +54,7 @@
         }
 
         [Fact]
-        public void GetDataFilterForIndexPage_UserIdIsValid_ReturnAsExpectedViewModel()
+        public async Task GetDataFilterForIndexPageAsync_UserIdIsValid_ReturnAsExpectedViewModel()
         {
             // Arrange
             var viewModel = new EmployeeManagementViewModel
@@ -63,16 +63,16 @@
                 DepartmentIds = "1,2"
             };
             var employeeService = GetEmployeeService();
-            employeeRepository.GetDataFilterForIndexPage(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
+            employeeRepository.GetDataFilterForIndexPageAsync(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
 
             // Act
-            var actual = employeeService.GetDataFilterForIndexPage(Arg.Any<string>(), Arg.Any<string>());
+            var actual = await employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>());
 
             // Assert
             Assert.Equal(viewModel, actual);
         }
 
-        #endregion GetDataFilterForIndexPage
+        #endregion GetDataFilterForIndexPageAsync
 
         #region GetEmployeesAsync
 

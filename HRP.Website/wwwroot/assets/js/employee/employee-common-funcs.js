@@ -105,7 +105,6 @@
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         initSelect2($form);
         reparseform($form);
-        commonFunctions.registerEventGoBack($form.find('.js-btnCancel'));
     }
 
     return {

@@ -51,7 +51,7 @@
             return baseService.GetDataEntity<Employee>(criteria);
         }
 
-        public EmployeeManagementViewModel GetDataFilterForIndexPage(string departmentIds, string employmentStatusIds)
+        public async Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(string departmentIds, string employmentStatusIds)
         {
             var criteria = new GetDataFilterForIndexPageCriteria
             {
@@ -63,7 +63,7 @@
 
             if (criteria.IsValid())
             {
-                viewModel = employeeRepository.GetDataFilterForIndexPage(criteria);
+                viewModel = await employeeRepository.GetDataFilterForIndexPageAsync(criteria).ConfigureAwait(false);
             }
 
             return viewModel;
