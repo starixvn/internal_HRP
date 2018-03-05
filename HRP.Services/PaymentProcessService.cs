@@ -1,9 +1,12 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.PaymentProcess;
+    using HRP.Models;
     using HRP.Models.PaymentProcess;
     using HRP.Services.Interfaces;
 
@@ -31,13 +34,26 @@
             {
                 CompanyId = process.CompanyId,
                 PaymentMonth = process.PaymentMonth,
-                CurrentStep = process.CurrentStep,
                 UpdatedBy = sessionService.UserId
             };
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentMonth)
+        {
+            var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
+
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                CompanyId = companyId,
+                CompanyCode = company.Code,
+                SelectedTime = paymentMonth
+            };
+
+            return viewModel;
         }
     }
 }

@@ -8,8 +8,6 @@
 
         public DateTime PaymentMonth { get; set; }
 
-        public int CurrentStep { get; set; }
-
         public string AttendanceFileName { get; set; }
 
         public string DSTNetSalaryFileName { get; set; }

@@ -56,14 +56,13 @@
                 var process = new PaymentProcess
                 {
                     CompanyId = viewModel.CompanyId,
-                    PaymentMonth = viewModel.SelectedTime,
-                    CurrentStep = (int)PaymentSteps.SelectWorkingMonthAndCompany
+                    PaymentMonth = viewModel.SelectedTime
                 };
                 bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
-
+                var completedDate = DateTime.Today.AddMonths(3);
                 if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
                 {
-                    return RedirectToAction("UploadAttendanceAndSalary");
+                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, paymentMonth = viewModel.SelectedTime });
                 }
 
                 if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate || isPayrollGenerated)
@@ -73,7 +72,7 @@
             }
 
             viewModel.Companies = new SelectList(
-                await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }), 
+                await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }),
                 nameof(Company.CompanyId), nameof(Company.Code));
             return View("Index", viewModel);
         }
@@ -115,9 +114,18 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public IActionResult UploadAttendanceAndSalary()
+        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime paymentMonth)
         {
-            return View(new UploadAttendanceAndSalaryViewModel());
+            var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
+
+            if (isHost)
+            {
+                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, paymentMonth);
+
+                return View(viewModel);
+            }
+
+            return RedirectToAction("AccessDenied", "Error");
         }
     }
 }
