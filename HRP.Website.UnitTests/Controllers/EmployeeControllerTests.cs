@@ -16,7 +16,7 @@
     using Microsoft.AspNetCore.Routing;
     using Models.EmployeeManagement.Payroll;
     using NSubstitute;
-    using Services.Interfaces;
+    using Services;
     using Xunit;
 
     public class EmployeeControllerTests

@@ -10,7 +10,7 @@
     using HRP.Criteria;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
-    using HRP.Services.Interfaces;
+    using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;

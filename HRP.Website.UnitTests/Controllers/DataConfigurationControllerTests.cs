@@ -17,7 +17,7 @@
     using HRP.Models.DataConfiguration.Office;
     using HRP.Models.DataConfiguration.Section;
     using HRP.Resources;
-    using HRP.Services.Interfaces;
+    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;

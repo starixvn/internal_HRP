@@ -1,4 +1,4 @@
-namespace HRP.Repositories.Interfaces
+namespace HRP.Repositories
 {
     using System.Threading.Tasks;
     using Fanex.Data.Repository;

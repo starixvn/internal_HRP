@@ -17,7 +17,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
-    using Services.Interfaces;
 
     public class Startup
     {

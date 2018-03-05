@@ -4,7 +4,6 @@
     using System.Linq;
     using Core.Services;
     using Criteria.RefResource;
-    using Interfaces;
     using Models;
 
     public class RefResourceService : IRefResourceService

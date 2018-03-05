@@ -20,7 +20,6 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
-    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class DataConfigurationService : IDataConfigurationService

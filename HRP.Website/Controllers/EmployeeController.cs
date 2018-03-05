@@ -14,7 +14,7 @@
     using Models.EmployeeManagement;
     using Models.EmployeeManagement.Payroll;
     using Resources;
-    using Services.Interfaces;
+    using Services;
 
     [HRPAuthorize]
     public class EmployeeController : BaseController

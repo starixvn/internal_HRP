@@ -12,7 +12,7 @@
     using Models;
     using Models.BankAccount;
     using NSubstitute;
-    using Services.Interfaces;
+    using Services;
     using Website.Controllers;
     using Xunit;
 
@@ -179,7 +179,7 @@
             Assert.False(viewModel.IsSuccessful);
         }
 
-        #endregion
+        #endregion Create Bank Account in Payroll
 
         #region Create Bank Account
 
@@ -300,7 +300,7 @@
             Assert.False(viewModel.IsSuccessful);
         }
 
-        #endregion
+        #endregion Create Bank Account
 
         #region Edit Bank Account
 
@@ -406,7 +406,7 @@
             Assert.False(viewModel.IsSuccessful);
         }
 
-        #endregion
+        #endregion Edit Bank Account
 
         [Fact]
         public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
@@ -532,6 +532,6 @@
             refResourceService = Substitute.For<IRefResourceService>();
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

@@ -8,7 +8,6 @@
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
-    using HRP.Services.Interfaces;
 
     public class PaymentProcessService : IPaymentProcessService
     {

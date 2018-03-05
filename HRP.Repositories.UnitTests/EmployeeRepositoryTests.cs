@@ -349,8 +349,8 @@
             {
                 new MultiSelectViewModel { Value = "1", Text = "DAR", Checked = true }
             };
-            multiResultReader.ReadFirst<EmployeeManagementViewModel>().Returns(viewModel);
-            multiResultReader.Read<MultiSelectViewModel>().Returns(multiSelects);
+            multiResultReader.ReadFirstAsync<EmployeeManagementViewModel>().Returns(viewModel);
+            multiResultReader.ReadAsync<MultiSelectViewModel>().Returns(multiSelects);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new EmployeeRepository();
 

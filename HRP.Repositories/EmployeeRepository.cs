@@ -8,7 +8,6 @@ namespace HRP.Repositories
     using HRP.Core.Constants;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
-    using HRP.Repositories.Interfaces;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class EmployeeRepository : IEmployeeRepository

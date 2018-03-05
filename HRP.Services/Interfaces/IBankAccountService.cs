@@ -1,4 +1,4 @@
-﻿namespace HRP.Services.Interfaces
+﻿namespace HRP.Services
 {
     using System.Collections.Generic;
     using Models.BankAccount;

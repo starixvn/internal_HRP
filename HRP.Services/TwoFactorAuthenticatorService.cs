@@ -3,7 +3,6 @@ namespace HRP.Services
     using System;
     using Core.Model;
     using Google.Authenticator;
-    using Interfaces;
     using Microsoft.Extensions.Options;
 
     public class TwoFactorAuthenticatorService : ITwoFactorAuthenticatorService

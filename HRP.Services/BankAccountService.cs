@@ -4,7 +4,6 @@
     using System.Linq;
     using Core.Services;
     using Criteria.BankAccount;
-    using Interfaces;
     using Models.BankAccount;
 
     public class BankAccountService : IBankAccountService

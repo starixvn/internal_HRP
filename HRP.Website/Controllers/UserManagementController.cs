@@ -16,7 +16,7 @@
     using Models;
     using Models.UserManagement;
     using Models.UserPermisson;
-    using Services.Interfaces;
+    using Services;
 
     [HRPAuthorize]
     public class UserManagementController : BaseController

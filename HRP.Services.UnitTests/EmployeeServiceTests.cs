@@ -11,7 +11,7 @@
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
-    using HRP.Repositories.Interfaces;
+    using HRP.Repositories;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;

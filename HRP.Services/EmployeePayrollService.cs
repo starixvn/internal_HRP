@@ -10,7 +10,6 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
-    using Interfaces;
     using Models.EmployeeManagement.Payroll;
 
     public class EmployeePayrollService : IEmployeePayrollService
@@ -52,7 +51,8 @@
                         viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
                         viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
                         {
-                            RefNames = ReferenceResource.BasicSalaryChangeReason, IsActive = true
+                            RefNames = ReferenceResource.BasicSalaryChangeReason,
+                            IsActive = true
                         });
                         viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
                         viewModel.BankTypes = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.BankType, IsActive = true });

@@ -9,7 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.BankAccount;
-    using Services.Interfaces;
+    using Services;
 
     [HRPAuthorize]
     public class BankAccountController : BaseController

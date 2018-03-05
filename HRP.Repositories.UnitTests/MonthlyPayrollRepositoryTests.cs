@@ -1,0 +1,76 @@
+﻿namespace HRP.Repositories.UnitTests
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Fanex.Data;
+    using Fanex.Data.Repository;
+    using HRP.Models;
+    using NSubstitute;
+    using Xunit;
+
+    public class MonthlyPayrollRepositoryTests
+    {
+        private readonly IObjectDb objectDb;
+
+        public MonthlyPayrollRepositoryTests()
+        {
+            DbSettingProviderManager
+            .StartTestingSession()
+            .Run();
+
+            objectDb = Substitute.For<IObjectDb>();
+            ObjectDbFactory.Mock((key, time) => objectDb);
+        }
+
+        [Fact]
+        public async Task GetDataFilterForIndexPageAsync_WhenCalled_ReturnAsExpectedModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var viewModel = new EmployeeMonthlyPayrollViewModel();
+            var multiSelects = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "1", Text = "DAR", Checked = true }
+            };
+            multiResultReader.ReadFirstAsync<EmployeeMonthlyPayrollViewModel>().Returns(viewModel);
+            multiResultReader.ReadAsync<MultiSelectViewModel>().Returns(multiSelects);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new MonthlyPayrollRepository();
+
+            // Act
+            var actual = await repository.GetDataFilterForIndexPageAsync(criteria);
+
+            // Assert
+            Assert.IsType<EmployeeMonthlyPayrollViewModel>(actual);
+            Assert.Equal(viewModel.CostCenterIds, actual.CostCenterIds);
+            Assert.Equal(viewModel.EmployeeId, actual.EmployeeId);
+            Assert.Equal(viewModel.CompanyId, actual.CompanyId);
+            Assert.Equal(viewModel.Employees, actual.Employees);
+            Assert.Single(actual.HierarchyCompanies);
+            Assert.Equal(multiSelects.First().Value, actual.HierarchyCompanies.First().Value);
+            Assert.Equal(multiSelects.First().Text, actual.HierarchyCompanies.First().Text);
+            Assert.Equal(multiSelects.First().Checked, actual.HierarchyCompanies.First().Checked);
+            Assert.Equal(multiSelects.First().ParentId, actual.HierarchyCompanies.First().ParentId);
+            Assert.Empty(actual.HierarchyCompanies.First().Items);
+        }
+
+        #region Helpers
+
+        private static IMultiResultReader FakeMultipleResultReader()
+        {
+            return Substitute.For<IMultiResultReader>();
+        }
+
+        private static ICriteria FakeCriteia()
+        {
+            var criteria = Substitute.For<ICriteria>();
+            criteria.GetSettingKey().Returns("HRP_Test");
+
+            return criteria;
+        }
+
+        #endregion Helpers
+    }
+}

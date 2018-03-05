@@ -20,7 +20,7 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.DataConfiguration;
-    using HRP.Services.Interfaces;
+    using HRP.Services;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
