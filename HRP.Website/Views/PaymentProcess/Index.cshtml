@@ -6,7 +6,7 @@
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/select-month-company.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
     </environment>
 
     <environment exclude="Development">
@@ -17,6 +17,21 @@
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="active">@ViewLang.SelectWorkingMonthCompany</li>
 </ol>
+<!-- Steps -->
+<div class="steps large clearfix">
+    <div class="step active">
+        <label class="step-title select-working-date">Select Working <br> Month/Company</label>
+    </div>
+    <div class="step">
+        <label class="step-title upload">Upload Attendance <br> & DST Salary Files</label>
+    </div>
+    <div class="step">
+        <label class="step-title view-employee">View Employee <br> Adjust Basic Salary Allowances</label>
+    </div>
+    <div class="step">
+        <label class="step-title complete">Completed</label>
+    </div>
+</div>
 
 <form class="search-form" asp-action="SelectWorkingMonthAndCompany" method="post">
     <div class="group">
@@ -30,6 +45,12 @@
         <label class="text">@ViewLang.Company</label>
         <select class="control select2" asp-for="CompanyId" asp-items="@Model.Companies"></select>
     </div>
+    <div class="payment-duration">
+        <div class="date"><span class="required">*</span> The Payment Process Duration</div>
+        <div class="date">Start Date: <strong> 02/01/2018</strong></div>
+        <div class="date">Due Date: <strong>03/01/2018</strong></div>
+    </div>
+    <div class="w-100"></div>
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.Next</button>
     </div>

@@ -38,6 +38,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -405,12 +406,15 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .steps {
-  counter-reset: section;
-  list-style: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .steps .step {
-  float: left;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   font-size: 13px;
 }
 
@@ -419,11 +423,12 @@ table.dataTable thead .sorting_desc:after {
   content: "";
   height: 6px;
   width: 70px;
-  margin-left: -3px;
+  margin-left: 2px;
   background-color: #f3f3f3;
 }
 
 .steps .finished .step-title {
+  border: none;
   background-color: #f57d14;
   color: #fff;
 }
@@ -436,30 +441,91 @@ table.dataTable thead .sorting_desc:after {
 .steps .step.active .step-title {
   background-color: #fafafa;
   border-color: #1a87d3;
+  -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
+  box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
 }
 
 .steps .step-title {
   border: 1px solid #f3f3f3;
-  padding: 8px 20px 8px 8px;
-  border-radius: 20px;
-  background-color: #f3f3f3;
-  font-weight: bold;
   color: #333;
+  font-weight: bold;
+  background-color: #f3f3f3;
 }
 
 .steps .step-title:before {
   display: inline-block;
   border-radius: 50%;
-  height: 22px;
-  width: 22px;
   border: 1px solid #c0c0c0;
   background-color: #fafafa;
+}
+
+.steps.small {
+  counter-reset: section;
+}
+
+.steps.small .step-title {
+  padding: 8px 20px 8px 8px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.steps.small .step-title:before {
+  height: 22px;
+  width: 22px;
   margin-right: 8px;
   padding: 3px 6px;
   counter-increment: section;
   content: counter(section);
   color: #1973b2;
   font-size: 13px;
+}
+
+.steps.large .step-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 18px;
+  padding: 14px 20px 14px 56px;
+  border-radius: 40px;
+}
+
+.steps.large .step-title:before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 16px;
+  height: 30px;
+  width: 30px;
+  margin-right: 8px;
+  padding: 3px 6px;
+  font-family: 'hrp';
+  font-size: 16px;
+  color: #1973b2;
+}
+
+.steps.large .step-title:last-child {
+  height: 66px;
+}
+
+.steps.large .select-working-date:before {
+  content: "\e91e";
+}
+
+.steps.large .upload:before {
+  content: "\e91e";
+}
+
+.steps.large .view-employee:before {
+  content: "\e91e";
+}
+
+.steps.large .complete:before {
+  content: "\e91e";
 }
 
 .ui-widget.ui-widget-content {

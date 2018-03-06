@@ -1,0 +1,58 @@
+
+// Upload files
+.upload-files {
+
+    .group .text {
+        width: 490px;
+    }
+
+    .group .control {
+        display: flex;
+    }
+    
+    .icon-excel {
+        position: relative;
+        top: 4px;
+        line-height: 0;
+        font-size: 18px;
+        color: #00a659;
+    }    
+}
+
+.inputfile-box {
+    margin-right: 10px;
+
+    .inputfile {
+        display: none !important;
+    }
+    
+    .file {
+        display: grid;
+        grid-template-columns: 490px 80px;
+        grid-template-rows: 32px;
+        grid-gap: 10px;
+    }    
+}
+
+.file-box {
+    position: relative;
+    
+    .file-name {
+        width: 100%;
+        padding-right: 32px;
+    }
+
+    .icon-close {
+        position: absolute;
+        right: 10px;        
+        top: 7px;
+        font-size: 17px;
+        color: #bebebe;
+
+        &:hover {
+            color: #eb0e0e;
+            cursor: pointer;
+        }        
+    }
+}
+

@@ -1,4 +1,4 @@
-%message-has-icon {
+%message-special {
     position: relative;
     border-width: 1px;
     border-style: solid;
@@ -14,21 +14,17 @@
     }     
 }
 
-.msg-error, .text-danger {    
+.msg-error, .text-danger {
     display: block;
     line-height: 18px;
     color: $msg-error;
 
-    &.-has-icon {
-        @extend %message-has-icon;
+    &.-has-border {
+        @extend %message-special;
+        padding-left: 10px;
         border-color: $msg-error-border;
         background-color: $msg-error-bg;
-        color: $msg-error;        
-        
-        &:before {
-            content: "\e903";
-            color: $msg-error; 
-        }     
+        color: $msg-error;
     }
 }
 
@@ -38,7 +34,7 @@
     color: $msg-success;
 
     &.-has-icon {
-        @extend %message-has-icon;
+        @extend %message-special;
         border-color: $msg-success-border;
         background-color: $msg-success-bg;
         color: $msg-success;
@@ -51,7 +47,7 @@
 }
 
 .msg-warning {
-    @extend %message-has-icon;
+    @extend %message-special;
     border-color: $msg-warning-border;
     background-color: $msg-warning-bg;
     color: $msg-warning;

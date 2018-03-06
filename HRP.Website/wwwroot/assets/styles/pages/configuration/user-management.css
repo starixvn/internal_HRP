@@ -38,6 +38,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -686,3 +687,4 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   float: left;
   margin-left: 30px;
 }
+/*# sourceMappingURL=user-management.css.map */

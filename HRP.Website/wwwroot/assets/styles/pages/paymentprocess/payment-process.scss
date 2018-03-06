@@ -1,0 +1,27 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/customize-select2";
+@import "../../components/steps";
+
+.steps {
+    margin-bottom: 16px;
+}
+
+.payment-duration {
+    display: flex;
+    align-self: flex-start;
+    margin-top: 28px;
+
+    .date {
+        margin-right: 14px;
+    }
+
+    .required {
+        color: #ff0000;
+    }
+}
+
+.list-button .button {
+    margin-right: 10px;
+}

@@ -51,6 +51,24 @@
             background-color: $btn-back-bg-hover;
         }
     }
+
+    &.-browser {
+        background-color: $btn-browser-bg;
+        color: $btn-browser-color;
+
+        &:hover {
+            background-color: $btn-browser-bg-hover;
+        }
+    }
+
+    &.-delete {
+        background-color: $btn-delete-bg;
+        color: $btn-delete-color;
+
+        &:hover {
+            background-color: $btn-delete-bg-hover;
+        }
+    }
 }
 
 a.button, a.button:hover {

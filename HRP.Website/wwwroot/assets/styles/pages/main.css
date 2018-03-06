@@ -35,6 +35,10 @@ input, button {
   display: none;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 .button {
   -webkit-border-radius: 2px;
   -khtml-border-radius: 2px;
@@ -103,6 +107,24 @@ input, button {
 
 .button.-back:hover {
   background-color: #d2d2d2;
+}
+
+.button.-browser {
+  background-color: #7e95a9;
+  color: #fff;
+}
+
+.button.-browser:hover {
+  background-color: #6f889f;
+}
+
+.button.-delete {
+  background-color: #eb0e0e;
+  color: #fff;
+}
+
+.button.-delete:hover {
+  background-color: #d30d0d;
 }
 
 a.button, a.button:hover {
@@ -433,7 +455,7 @@ input[type="checkbox"]:disabled + span {
   margin-right: 10px;
 }
 
-.msg-error.-has-icon, .text-danger.-has-icon, .msg-success.-has-icon, .msg-warning {
+.msg-error.-has-border, .text-danger.-has-border, .msg-success.-has-icon, .msg-warning {
   position: relative;
   border-width: 1px;
   border-style: solid;
@@ -441,7 +463,7 @@ input[type="checkbox"]:disabled + span {
   margin-bottom: 12px;
 }
 
-.msg-error.-has-icon:before, .text-danger.-has-icon:before, .msg-success.-has-icon:before, .msg-warning:before {
+.msg-error.-has-border:before, .text-danger.-has-border:before, .msg-success.-has-icon:before, .msg-warning:before {
   position: absolute;
   left: 10px;
   top: 8px;
@@ -452,18 +474,14 @@ input[type="checkbox"]:disabled + span {
 .msg-error, .text-danger {
   display: block;
   line-height: 18px;
-  color: #fe0000;
+  color: #ff0101;
 }
 
-.msg-error.-has-icon, .text-danger.-has-icon {
+.msg-error.-has-border, .text-danger.-has-border {
+  padding-left: 10px;
   border-color: #ff0000;
   background-color: #ffebea;
-  color: #fe0000;
-}
-
-.msg-error.-has-icon:before, .text-danger.-has-icon:before {
-  content: "\e903";
-  color: #fe0000;
+  color: #ff0101;
 }
 
 .msg-success {
@@ -502,7 +520,7 @@ input[type="checkbox"]:disabled + span {
   padding: 8px 10px;
   margin: 0 0 12px 0;
   background-color: #ffebea;
-  color: #fe0000;
+  color: #ff0101;
 }
 
 .validation-summary-errors li, .list-message-error li, .validation-summary-errors .message, .list-message-error .message {
@@ -515,7 +533,7 @@ input[type="checkbox"]:disabled + span {
   line-height: 0;
   text-indent: -.7em;
   content: "• ";
-  color: #fe0000;
+  color: #ff0101;
   font-size: 24px;
 }
 

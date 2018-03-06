@@ -33,7 +33,15 @@ $btn-back-color: #333;
 $btn-back-border: #9d9d9d;
 $btn-back-bg-hover: darken($btn-back-bg, 5%);
 
-$msg-error: #fe0000; 
+$btn-browser-bg: #7e95a9;
+$btn-browser-color: #fff;
+$btn-browser-bg-hover: darken($btn-browser-bg, 5%);
+
+$btn-delete-bg: #eb0e0e;
+$btn-delete-color: #fff;
+$btn-delete-bg-hover: darken($btn-delete-bg, 5%);
+
+$msg-error: #ff0101; 
 $msg-error-border: #ff0000; 
 $msg-error-bg: #ffebea;
 
@@ -42,7 +50,7 @@ $msg-success-border: #329a37;
 $msg-success-bg: #e5ffeb;
 
 $msg-warning: #ff7a04; 
-$msg-warning-border: #ffac63; 
+$msg-warning-border: #ffac63;
 $msg-warning-bg: #ffedd3;
 
 $transition-common: all ease-in-out .3s;
