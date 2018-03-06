@@ -47,6 +47,7 @@
             Assert.Equal(viewModel.CostCenterIds, actual.CostCenterIds);
             Assert.Equal(viewModel.EmployeeId, actual.EmployeeId);
             Assert.Equal(viewModel.CompanyId, actual.CompanyId);
+            Assert.Equal(viewModel.CompanyCode, actual.CompanyCode);
             Assert.Equal(viewModel.Employees, actual.Employees);
             Assert.Single(actual.HierarchyCompanies);
             Assert.Equal(multiSelects.First().Value, actual.HierarchyCompanies.First().Value);

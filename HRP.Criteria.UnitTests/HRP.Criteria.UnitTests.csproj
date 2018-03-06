@@ -116,6 +116,8 @@
     <Compile Include="JobGrade\GetJobGradeByIdCriteriaTests.cs" />
     <Compile Include="JobGrade\UpdateJobGradeCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetDataFilterForIndexPageCriteriaTests.cs" />
+    <Compile Include="MonthlyPayroll\ResetMonthlySalaryCriteriaTests.cs" />
+    <Compile Include="MonthlyPayroll\UpdateMonthlySalaryCriteriaTests.cs" />
     <Compile Include="Office\CheckOfficeExistsCriteriaTests.cs" />
     <Compile Include="Office\CreateOfficeCriteriaTests.cs" />
     <Compile Include="Office\GetAllOfficeCriteriaTests.cs" />

@@ -12,6 +12,8 @@
 
         public int CompanyId { get; set; }
 
+        public string CompanyCode { get; set; }
+
         public int? EmployeeId { get; set; }
 
         public string CostCenterIds { get; set; }
