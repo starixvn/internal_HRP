@@ -18,6 +18,8 @@
     <li class="active"></li>
 </ol>
 
+@Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
+
 <form class="search-form">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>

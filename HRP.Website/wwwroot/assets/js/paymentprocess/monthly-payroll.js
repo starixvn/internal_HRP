@@ -29,7 +29,7 @@ var monthlyPayroll = (function ($) {
             }
         });
 
-        $('select[name=employee-table_length]').select2({
+        $('select[name=monthly-payroll-table_length]').select2({
             minimumResultsForSearch: Infinity
         });
     }
@@ -37,10 +37,12 @@ var monthlyPayroll = (function ($) {
     function initModule() {
         $btnBack = $('.js-btnBack');
         $table = $('#monthly-payroll-table');
+        initSelect2();
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        initDataTable: initDataTable
     };
 }(jQuery));
 
@@ -57,3 +59,7 @@ $(document).ready(function () {
         }
     });
 });
+
+if (document.readyState === 'loading') {
+    monthlyPayroll.initDataTable();
+}

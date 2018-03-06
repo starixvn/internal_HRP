@@ -810,4 +810,7 @@
   <data name="ViewBasicSalary" xml:space="preserve">
     <value>View Basic Salary</value>
   </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
 </root>

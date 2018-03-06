@@ -1,0 +1,21 @@
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
+@model int
+
+<div class="steps large clearfix">
+    <div class="step @(Model == (int)PaymentProcessStep.SelectMonthAndCompany ? "active" :
+            Model > (int)PaymentProcessStep.SelectMonthAndCompany ? "finished" : string.Empty)">
+        <label class="step-title select-working-date">Select Working <br> Month/Company</label>
+    </div>
+    <div class="step @(Model == (int)PaymentProcessStep.UploadFiles ? "active" :
+            Model > (int)PaymentProcessStep.UploadFiles ? "finished" : string.Empty)">
+        <label class="step-title upload">Upload Attendance <br> & DST Salary Files</label>
+    </div>
+    <div class="step @(Model == (int)PaymentProcessStep.MonthlyPayroll ? "active" :
+            Model > (int)PaymentProcessStep.MonthlyPayroll ? "finished" : string.Empty)">
+        <label class="step-title view-employee">View Employee <br> Adjust Basic Salary Allowances</label>
+    </div>
+    <div class="step @(Model == (int)PaymentProcessStep.Completed ? "active" : string.Empty)">
+        <label class="step-title complete">@ViewLang.Completed</label>
+    </div>
+</div>

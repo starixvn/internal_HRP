@@ -11,6 +11,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
@@ -159,5 +160,23 @@
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
+
+        #region Monthly Payroll
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public IActionResult EmployeeMonthlyPayroll(int companyId, DateTime month)
+        {
+            var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
+
+            if (!isRead)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            var viewModel = new EmployeeMonthlyPayrollViewModel();
+            return View("MonthlyPayroll", viewModel);
+        }
+
+        #endregion Monthly Payroll
     }
 }
