@@ -5,6 +5,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
 
     public class MonthlyPayrollRepository : IMonthlyPayrollRepository
     {

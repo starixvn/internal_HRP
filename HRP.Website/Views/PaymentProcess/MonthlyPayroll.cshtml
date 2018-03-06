@@ -1,0 +1,157 @@
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
+@using HRP.Models.MonthlyPayroll
+@model EmployeeMonthlyPayrollViewModel
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.PaymentProcess</li>
+    <li class="active"></li>
+</ol>
+
+<form class="search-form">
+    <div class="group">
+        <label class="text">@ViewLang.MonthYear</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker" />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.Company</label>
+        <select class="control" asp-for="CompanyId">
+            <option value="@Model.CompanyId">@Model.CompanyCode</option>
+        </select>
+    </div>
+    <div class="group">
+        <a class="button -second js-btnBack" href="javascript:;">@ViewLang.Back</a>
+        <button type="button" class="button -primary">@ViewLang.Next</button>
+    </div>
+</form>
+
+<form class="search-form form-filter">
+    <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
+    <input asp-for="CostCenterIds" hidden />
+    <input asp-for="EmployeeId" hidden>
+
+    <div class="group">
+        <label class="text">@ViewLang.IDNo</label>
+        <input type="text" class="control" placeholder="" />
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.Employee</label>
+        <input type="text" class="control" placeholder="Full name or Nickname" />
+    </div>
+    <div class="group">
+        <label class="text"></label>
+        <select class="control cost-center-multiselect width-200" id="CostCenterMultiSelect"></select>
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.WorkingDays</label>
+        <select class="control js-select2" asp-for="WorkingDays">
+            <option value="">@ViewLang.All</option>
+            <option value="22">22</option>
+            <option value="26">26</option>
+        </select>
+    </div>
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
+    </div>
+</form>
+<div class="top-header">
+    <div class="pull-right search-box">
+        <input type="search" id="quick-search" class="control" placeholder="Search" />
+        <span class="icon-search"></span>
+    </div>
+</div>
+<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>@ViewLang.IDNo</th>
+            <th>@ViewLang.FullName</th>
+            <th>@ViewLang.Nickname</th>
+            <th>@ViewLang.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Employees != null && Model.Employees.Any())
+        {
+            foreach (EmployeeMonthlyPayrollBasicInfo employee in Model.Employees)
+            {
+                var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
+                <tr>
+                    <td class="text-center"></td>
+                    <td>@employee.IDNo</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Nickname</td>
+                    <td class="text-center has-icon">
+                        <div class="dropdown config-action">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="icon-configuration"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="@dropdownId">
+                                @if (employee.EditSalaryPolicy != Policy.None)
+                                {
+                                    <li>
+                                        <a>
+                                            <span class="icon-user"></span>
+                                            @if (employee.EditSalaryPolicy == Policy.Host)
+                                            {
+                                                <span>@ViewLang.EditBasicSalary</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@ViewLang.ViewBasicSalary</span>
+                                            }
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (employee.EditAllowancePolicy != Policy.None)
+                                {
+                                    <li>
+                                        <a>
+                                            <span></span>
+                                            @if (employee.EditAllowancePolicy == Policy.Host)
+                                            {
+                                                <span>@ViewLang.EditAllowance</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@ViewLang.ViewAllowance</span>
+                                            }
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+        <script src="~/assets/js/paymentprocess/monthly-payroll.js"></script>
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}

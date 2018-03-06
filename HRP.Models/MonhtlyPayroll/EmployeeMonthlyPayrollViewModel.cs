@@ -1,5 +1,6 @@
-﻿namespace HRP.Models
+﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json;
@@ -10,6 +11,8 @@
         private readonly JsonSerializerSettings jsonSerializerSettings =
             new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
+        public DateTime Month { get; set; }
+
         public int CompanyId { get; set; }
 
         public string CompanyCode { get; set; }
@@ -17,6 +20,8 @@
         public int? EmployeeId { get; set; }
 
         public string CostCenterIds { get; set; }
+
+        public int? WorkingDays { get; set; }
 
         public IEnumerable<EmployeeMonthlyPayrollBasicInfo> Employees { get; set; } = new List<EmployeeMonthlyPayrollBasicInfo>();
 

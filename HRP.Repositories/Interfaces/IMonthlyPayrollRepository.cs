@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
-    using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
 
     public interface IMonthlyPayrollRepository
     {

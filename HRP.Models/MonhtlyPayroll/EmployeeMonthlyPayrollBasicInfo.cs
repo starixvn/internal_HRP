@@ -1,6 +1,7 @@
-﻿namespace HRP.Models
+﻿namespace HRP.Models.MonthlyPayroll
 {
     using System;
+    using HRP.Core.Enumerations;
 
     [Serializable]
     public class EmployeeMonthlyPayrollBasicInfo
@@ -18,5 +19,9 @@
         public string CostCenter { get; set; }
 
         public int WorkingDays { get; set; }
+
+        public Policy EditSalaryPolicy { get; set; }
+
+        public Policy EditAllowancePolicy { get; set; }
     }
 }

@@ -6,6 +6,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using NSubstitute;
     using Xunit;
 
@@ -44,11 +45,13 @@
 
             // Assert
             Assert.IsType<EmployeeMonthlyPayrollViewModel>(actual);
+            Assert.Equal(viewModel.Month, actual.Month);
             Assert.Equal(viewModel.CostCenterIds, actual.CostCenterIds);
             Assert.Equal(viewModel.EmployeeId, actual.EmployeeId);
             Assert.Equal(viewModel.CompanyId, actual.CompanyId);
             Assert.Equal(viewModel.CompanyCode, actual.CompanyCode);
             Assert.Equal(viewModel.Employees, actual.Employees);
+            Assert.Equal(viewModel.WorkingDays, actual.WorkingDays);
             Assert.Single(actual.HierarchyCompanies);
             Assert.Equal(multiSelects.First().Value, actual.HierarchyCompanies.First().Value);
             Assert.Equal(multiSelects.First().Text, actual.HierarchyCompanies.First().Text);

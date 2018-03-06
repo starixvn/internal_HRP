@@ -798,4 +798,16 @@
   <data name="UploadFiles" xml:space="preserve">
     <value>Upload Files</value>
   </data>
+  <data name="EditAllowance" xml:space="preserve">
+    <value>Edit Allowance</value>
+  </data>
+  <data name="EditBasicSalary" xml:space="preserve">
+    <value>Edit Basic Salary</value>
+  </data>
+  <data name="ViewAllowance" xml:space="preserve">
+    <value>View Allowance</value>
+  </data>
+  <data name="ViewBasicSalary" xml:space="preserve">
+    <value>View Basic Salary</value>
+  </data>
 </root>

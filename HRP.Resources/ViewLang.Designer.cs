@@ -754,6 +754,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Allowance.
+        /// </summary>
+        public static string EditAllowance {
+            get {
+                return ResourceManager.GetString("EditAllowance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Bank Details.
         /// </summary>
         public static string EditbankDetails {
@@ -768,6 +777,15 @@ namespace HRP.Resources {
         public static string EditBankDetailsOfEmployee {
             get {
                 return ResourceManager.GetString("EditBankDetailsOfEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Basic Salary.
+        /// </summary>
+        public static string EditBasicSalary {
+            get {
+                return ResourceManager.GetString("EditBasicSalary", resourceCulture);
             }
         }
         
@@ -2005,6 +2023,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Allowance.
+        /// </summary>
+        public static string ViewAllowance {
+            get {
+                return ResourceManager.GetString("ViewAllowance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Bank Details.
         /// </summary>
         public static string ViewBankDetails {
@@ -2019,6 +2046,15 @@ namespace HRP.Resources {
         public static string ViewBankDetailsOfEmployee {
             get {
                 return ResourceManager.GetString("ViewBankDetailsOfEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Basic Salary.
+        /// </summary>
+        public static string ViewBasicSalary {
+            get {
+                return ResourceManager.GetString("ViewBasicSalary", resourceCulture);
             }
         }
         

@@ -1,21 +1,25 @@
 ﻿namespace HRP.Services
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
-    using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
 
     public class MonthlyPayrollService
     {
         private readonly ISessionService sessionService;
+        private readonly IBaseService baseService;
         private readonly IMonthlyPayrollRepository monthlyPayrollRepository;
 
         public MonthlyPayrollService(
             ISessionService sessionService,
+            IBaseService baseService,
             IMonthlyPayrollRepository monthlyPayrollRepository = null)
         {
             this.sessionService = sessionService;
+            this.baseService = baseService;
             this.monthlyPayrollRepository = monthlyPayrollRepository ?? new MonthlyPayrollRepository();
         }
 
@@ -35,6 +39,22 @@
             }
 
             return viewModel;
+        }
+
+        public async Task<IEnumerable<EmployeeMonthlyPayrollBasicInfo>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
+        {
+            var criteria = new GetMonthlyPayrollCriteria
+            {
+                UserId = sessionService.UserId,
+                Month = viewModel.Month,
+                CompanyId = viewModel.CompanyId,
+                CostCenterIds = viewModel.CostCenterIds,
+                EmployeeId = viewModel.EmployeeId,
+                WorkingDays = viewModel.WorkingDays
+            };
+            var employees = await baseService.GetDataAsync<EmployeeMonthlyPayrollBasicInfo>(criteria).ConfigureAwait(false);
+
+            return employees;
         }
     }
 }
