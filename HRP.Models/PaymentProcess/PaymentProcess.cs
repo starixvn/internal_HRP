@@ -6,7 +6,7 @@
     {
         public int CompanyId { get; set; }
 
-        public DateTime PaymentTime { get; set; }
+        public DateTime Month { get; set; }
 
         public string AttendanceFileName { get; set; }
 

@@ -12,7 +12,7 @@
 
         Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
 
-        Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentTime);
+        Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month);
 
         CommandResult CheckValidExcelFile(IFormFile file);
 

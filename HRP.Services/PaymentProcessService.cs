@@ -25,7 +25,7 @@
 
         public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)
         {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, PaymentTime = process.PaymentTime }).ConfigureAwait(false);
+            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, Month = process.Month }).ConfigureAwait(false);
 
             return isExisted;
         }
@@ -35,7 +35,7 @@
             var criteria = new UpdatePaymentProcessCriteria
             {
                 CompanyId = process.CompanyId,
-                PaymentTime = process.PaymentTime,
+                Month = process.Month,
                 UpdatedBy = sessionService.UserId
             };
 
@@ -44,7 +44,7 @@
             return commandResult;
         }
 
-        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime paymentTime)
+        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month)
         {
             var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
 
@@ -52,7 +52,7 @@
             {
                 CompanyId = companyId,
                 CompanyCode = company.Code,
-                SelectedTime = paymentTime
+                SelectedTime = month
             };
 
             return viewModel;
@@ -89,7 +89,7 @@
             return result;
         }
 
-        private void ReadAttendanceFromExcelFile(int companyId, DateTime paymentTime, IFormFile file)
+        private void ReadAttendanceFromExcelFile(int companyId, DateTime month, IFormFile file)
         {
             return;
         }

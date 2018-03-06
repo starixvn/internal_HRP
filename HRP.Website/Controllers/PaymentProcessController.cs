@@ -58,13 +58,13 @@
                 var process = new PaymentProcess
                 {
                     CompanyId = viewModel.CompanyId,
-                    PaymentTime = viewModel.SelectedTime
+                    Month = viewModel.SelectedTime
                 };
                 bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
                 var completedDate = DateTime.Today.AddMonths(3);
                 if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
                 {
-                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, paymentTime = viewModel.SelectedTime });
+                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                 }
 
                 if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate || isPayrollGenerated)
@@ -116,13 +116,13 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime paymentTime)
+        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime month)
         {
             var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
 
             if (isHost)
             {
-                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, paymentTime);
+                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, month);
 
                 return View(viewModel);
             }

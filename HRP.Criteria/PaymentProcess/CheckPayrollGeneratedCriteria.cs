@@ -7,7 +7,7 @@
     {
         public int CompanyId { get; set; }
 
-        public DateTime PaymentTime { get; set; }
+        public DateTime Month { get; set; }
 
         public override string GetSettingKey() => "PaymentProcess_CheckPayrollGenerated";
 
