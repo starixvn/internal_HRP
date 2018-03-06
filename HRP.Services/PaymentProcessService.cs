@@ -1,6 +1,8 @@
 ﻿namespace HRP.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Model;
@@ -11,6 +13,7 @@
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
+    using NPOI.SS.UserModel;
 
     public class PaymentProcessService : IPaymentProcessService
     {
@@ -64,12 +67,13 @@
 
             if (file != null)
             {
+                var fileExt = Path.GetExtension(file.FileName);
                 if (file.Length / (1024 * 1024) > 5)
                 {
                     result.Code = 1;
                     result.Message = Message.FileTooLarge;
                 }
-                else if (!file.ContentType.Equals(MimeType.XLS) && !file.ContentType.Equals(MimeType.XLSX))
+                else if (!(fileExt.Equals(".xls") || fileExt.Equals(".xlsx")))
                 {
                     result.Code = 1;
                     result.Message = Message.InvalidFileType;
@@ -89,14 +93,19 @@
             return result;
         }
 
-        private void ReadAttendanceFromExcelFile(int companyId, DateTime month, IFormFile file)
+        private static IEnumerable<string> ReadAttendanceFromExcelFile(IFormFile file)
         {
-            return;
+            var reader = new AttendanceRecordReader(file.OpenReadStream());
+
+            return new List<string> { reader.IsValid.ToString() };
         }
 
         public CommandResult InsertAttendanceAndSalaryUploading(UploadAttendanceAndSalaryViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var result = new CommandResult();
+            result.Code = 0;
+            result.Message = ReadAttendanceFromExcelFile(viewModel.AttendanceFile).ToString();
+            return result;
         }
     }
 }

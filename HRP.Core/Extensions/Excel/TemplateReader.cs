@@ -31,7 +31,7 @@
             get { return _headers = _headers ?? GetHeaders(); }
         }
 
-        public virtual bool IsValidRow(int index, IRow row)
+        public virtual bool IsValidRow(IRow row)
         {
             return true;
         }
