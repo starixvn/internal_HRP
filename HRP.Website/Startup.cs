@@ -97,6 +97,7 @@
             services.AddScoped<IDataConfigurationService, DataConfigurationService>();
             services.AddScoped<IRefResourceService, RefResourceService>();
             services.AddScoped<IPaymentProcessService, PaymentProcessService>();
+            services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

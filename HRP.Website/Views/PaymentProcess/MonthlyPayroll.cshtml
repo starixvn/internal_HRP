@@ -40,8 +40,9 @@
     </div>
 </form>
 
-<form class="search-form form-filter">
+<form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
     <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
+    <input asp-for="CompanyId" hidden />
     <input asp-for="CostCenterIds" hidden />
     <input asp-for="EmployeeId" hidden>
 

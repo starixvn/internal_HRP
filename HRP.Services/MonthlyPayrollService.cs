@@ -7,7 +7,7 @@
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
 
-    public class MonthlyPayrollService
+    public class MonthlyPayrollService : IMonthlyPayrollService
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;

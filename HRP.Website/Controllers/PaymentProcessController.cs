@@ -23,16 +23,19 @@
     {
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IPaymentProcessService paymentProcessService;
+        private readonly IMonthlyPayrollService monthlyPayrollService;
 
         public PaymentProcessController(
             IBaseService baseService,
             ISessionService sessionService,
             IHostingEnvironment hostingEnvironment,
-            IPaymentProcessService paymentProcessService)
+            IPaymentProcessService paymentProcessService,
+            IMonthlyPayrollService monthlyPayrollService)
             : base(baseService, sessionService)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.paymentProcessService = paymentProcessService;
+            this.monthlyPayrollService = monthlyPayrollService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
@@ -164,7 +167,10 @@
         #region Monthly Payroll
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public IActionResult EmployeeMonthlyPayroll(int companyId, DateTime month)
+        public async Task<IActionResult> EmployeeMonthlyPayroll(
+            int companyId,
+            DateTime month,
+            string costCenterIds = null)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
 
@@ -173,7 +179,7 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var viewModel = new EmployeeMonthlyPayrollViewModel();
+            EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, costCenterIds);
             return View("MonthlyPayroll", viewModel);
         }
 

@@ -22,6 +22,7 @@
         private ISessionService sessionService;
         private IHostingEnvironment hostingEnvironment;
         private IPaymentProcessService paymentProcessService;
+        private IMonthlyPayrollService monthlyPayrollService;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
@@ -42,14 +43,14 @@
         #region EmployeeMonthlyPayroll
 
         [Fact]
-        public void EmployeeMonthlyPayroll_HasNotPermission_ReturnRedirectToAccessDenied()
+        public async Task EmployeeMonthlyPayroll_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
             // Act
-            var actual = controller.EmployeeMonthlyPayroll(Arg.Any<int>(), Arg.Any<DateTime>());
+            var actual = await controller.EmployeeMonthlyPayroll(Arg.Any<int>(), Arg.Any<DateTime>());
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -58,20 +59,23 @@
         }
 
         [Fact]
-        public void EmployeeMonthlyPayroll_HasPermission_ReturnAsExpectedViewResult()
+        public async Task EmployeeMonthlyPayroll_HasPermission_ReturnAsExpectedViewResult()
         {
             // Arrange
             int companyId = 1;
+            var model = new EmployeeMonthlyPayrollViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, Arg.Any<string>()).Returns(model);
 
             // Act
-            var actual = controller.EmployeeMonthlyPayroll(companyId, Arg.Any<DateTime>());
+            var actual = await controller.EmployeeMonthlyPayroll(companyId, Arg.Any<DateTime>());
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<EmployeeMonthlyPayrollViewModel>(viewResult.Model);
             Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal(model, viewModel);
         }
 
         #endregion EmployeeMonthlyPayroll
@@ -80,32 +84,44 @@
 
         private PaymentProcessController GetPaymentProcessController()
         {
-            FakeSessionService();
-            FakeBaseService();
-            FakeHostingEnvironment();
-            FakePaymentProcessService();
+            sessionService = FakeSessionService();
+            baseService = FakeBaseService();
+            hostingEnvironment = FakeHostingEnvironment();
+            paymentProcessService = FakePaymentProcessService();
+            monthlyPayrollService = FakeMonthlyPayrollService();
 
-            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, paymentProcessService);
+            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, paymentProcessService, monthlyPayrollService);
         }
 
-        private void FakeSessionService()
+        private ISessionService FakeSessionService()
         {
-            sessionService = Substitute.For<ISessionService>();
+            var service = Substitute.For<ISessionService>();
+            service.UserId = 1;
+
+            return service;
         }
 
-        private void FakeBaseService()
+        private IBaseService FakeBaseService()
         {
-            baseService = Substitute.For<IBaseService>();
+            var service = Substitute.For<IBaseService>();
+            return service;
         }
 
-        private void FakeHostingEnvironment()
+        private IHostingEnvironment FakeHostingEnvironment()
         {
-            hostingEnvironment = Substitute.For<IHostingEnvironment>();
+            return Substitute.For<IHostingEnvironment>();
         }
 
-        private void FakePaymentProcessService()
+        private IPaymentProcessService FakePaymentProcessService()
         {
-            paymentProcessService = Substitute.For<IPaymentProcessService>();
+            var service = Substitute.For<IPaymentProcessService>();
+            return service;
+        }
+
+        private IMonthlyPayrollService FakeMonthlyPayrollService()
+        {
+            var service = Substitute.For<IMonthlyPayrollService>();
+            return service;
         }
 
         #endregion Helpers
