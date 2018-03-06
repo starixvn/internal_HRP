@@ -11,7 +11,12 @@
         top: 8px;
         font-family: "hrp";
         font-size: 20px;
-    }     
+    }
+    
+    &.-no-border {
+        border: none;
+        padding: 0 8px 0 32px;
+    }
 }
 
 .msg-error, .text-danger {
@@ -29,34 +34,45 @@
 }
 
 .msg-success {
+    @extend %message-special;
     display: block;
     line-height: 18px;
     color: $msg-success;
 
-    &.-has-icon {
-        @extend %message-special;
+    &:before {
+        content: "\e913";
+        color: $msg-success-color; 
+    }
+
+    &.-has-icon {        
         border-color: $msg-success-border;
         background-color: $msg-success-bg;
-        color: $msg-success;
-        
-        &:before {
-            content: "\e913";
-            color: $msg-success; 
-        }     
+    }
+
+    &.-no-border:before {        
+        top: -1px;
+        font-size: 17px;
     }
 }
 
 .msg-warning {
-    @extend %message-special;
-    border-color: $msg-warning-border;
-    background-color: $msg-warning-bg;
+    @extend %message-special;   
     color: $msg-warning;
-    
-    
-    &:before {
-        content: "\e913";
+
+    &:before {        
+        content: "\e91c";
         color: $msg-warning; 
-    }     
+    }
+
+    &:has-border {
+        border-color: $msg-warning-border;
+        background-color: $msg-warning-bg;
+    }
+
+    &.-no-border:before {
+        top: -2px;
+        font-size: 15px;
+    }
 }
 
 %list-errors {

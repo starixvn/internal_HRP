@@ -247,6 +247,11 @@ input[type="checkbox"]:disabled + span {
   background-color: #095b94;
 }
 
+.table thead.thead-light th {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
 .table tbody tr:first-child td {
   border-top: none;
 }

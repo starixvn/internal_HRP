@@ -203,7 +203,7 @@ input[type="text"][readonly] {
   color: #777;
 }
 
-.msg-error.-has-border, .text-danger.-has-border, .msg-success.-has-icon, .msg-warning {
+.msg-error.-has-border, .text-danger.-has-border, .msg-success, .msg-warning {
   position: relative;
   border-width: 1px;
   border-style: solid;
@@ -211,12 +211,17 @@ input[type="text"][readonly] {
   margin-bottom: 12px;
 }
 
-.msg-error.-has-border:before, .text-danger.-has-border:before, .msg-success.-has-icon:before, .msg-warning:before {
+.msg-error.-has-border:before, .text-danger.-has-border:before, .msg-success:before, .msg-warning:before {
   position: absolute;
   left: 10px;
   top: 8px;
   font-family: "hrp";
   font-size: 20px;
+}
+
+.-no-border.msg-error.-has-border, .-no-border.text-danger.-has-border, .-no-border.msg-success, .-no-border.msg-warning {
+  border: none;
+  padding: 0 8px 0 32px;
 }
 
 .msg-error, .text-danger {
@@ -238,26 +243,38 @@ input[type="text"][readonly] {
   color: #18aa3a;
 }
 
+.msg-success:before {
+  content: "\e913";
+  color: #11892d;
+}
+
 .msg-success.-has-icon {
   border-color: #329a37;
   background-color: #e5ffeb;
-  color: #18aa3a;
 }
 
-.msg-success.-has-icon:before {
-  content: "\e913";
-  color: #18aa3a;
+.msg-success.-no-border:before {
+  top: -1px;
+  font-size: 17px;
 }
 
 .msg-warning {
-  border-color: #ffac63;
-  background-color: #ffedd3;
   color: #ff7a04;
 }
 
 .msg-warning:before {
-  content: "\e913";
+  content: "\e91c";
   color: #ff7a04;
+}
+
+.msg-warning:has-border {
+  border-color: #ffac63;
+  background-color: #ffedd3;
+}
+
+.msg-warning.-no-border:before {
+  top: -2px;
+  font-size: 15px;
 }
 
 .validation-summary-errors, .list-message-error {

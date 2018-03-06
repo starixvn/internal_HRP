@@ -58,6 +58,11 @@
       background-color: $table-sub-header-bg;
     }
   }
+
+  thead.thead-light th {
+    background-color: #f1f1f1;
+    color: $text-color;
+  }
   
   tbody {
     tr:first-child td {
