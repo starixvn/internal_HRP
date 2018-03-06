@@ -1,18 +1,21 @@
+@import "../../components/progress-bar";
 
 // Upload files
 .upload-files {
+    width: 645px;
 
-    .group .text {
+    .text {
         width: 490px;
     }
 
-    .group .control {
+    .group-control {
         display: flex;
     }
     
     .icon-excel {
         position: relative;
         top: 4px;
+        margin-right: -2px;
         line-height: 0;
         font-size: 18px;
         color: #00a659;
@@ -56,3 +59,36 @@
     }
 }
 
+// .progress {    
+//     height: 6px;
+//     width: 490px;
+//     border-radius: 0;
+//     background-color: #cee4a7;
+//     overflow: initial;
+
+//     .percent-value {        
+//         position: absolute;
+//         top: -26px;
+//         border-radius: 4px;
+//         padding: 0 4px;
+//         background: #84bc24;
+
+//         &:before {
+//             position: absolute;
+//             left: 50%;
+//             bottom: -8px;
+//             margin-left: -4px;
+//             border: 4px solid;
+//             border-color: #84bc24 transparent transparent transparent;
+//             content: "";
+            
+//         }
+//     }
+// }
+
+// .progress-bar-success {
+//     background-color: #53a116;
+//     background-size: 20px 20px;
+//     background-image: linear-gradient(-45deg,rgba(255,255,255,.15) 25%,transparent 25%,
+//                         transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+// }

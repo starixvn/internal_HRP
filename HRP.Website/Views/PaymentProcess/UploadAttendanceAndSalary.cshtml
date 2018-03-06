@@ -47,63 +47,67 @@
     The upload file size can not exceed 5MB. Please use a smaller size file!
 </div>
 
-<form class="search-form upload-files">
-    <div class="group">
-        <div class="text">
-            Update Attendance File (max: 5MB)
-            <div class="pull-right">
-                <span class="icon-excel"></span>
-                <a class="" href="#">Download Template</a>
-            </div>
-        </div>
-        <div class="control">
-            <div class="inputfile-box">
-                <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
-                <label for="file" class="file">
-                    <span id="file-name" class="file-box">
-                        <input class="file-name" type="text" placeholder="Choose file" value="Map_chart_sample.xlsx">
-                        <span class="icon-close"></span>
-                    </span>
-                    <span class="button -browser">Browse</span>
-                </label>
-            </div>
-            <button class="button -delete">Delete</button>
+<form class="form-information upload-files">    
+    <div class="text">
+        Update Attendance File (max: 5MB)
+        <div class="pull-right">
+            <span class="icon-excel"></span>
+            <a class="" href="#">Download Template</a>
         </div>
     </div>
-
-    <div class="w-100"></div>
-
-    <div class="group">
-        <div class="text">
-            Update DST NET Salary File (max: 5MB)
-            <div class="pull-right">
-                <span class="icon-excel"></span>
-                <a class="" href="#">Download Template</a>
-            </div>
+    <div class="group-control">
+        <div class="inputfile-box">
+            <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
+            <label for="file" class="file">
+                <span id="file-name" class="file-box">
+                    <input class="file-name" type="text" placeholder="Choose file" value="Map_chart_sample.xlsx">
+                    <span class="icon-close"></span>
+                </span>
+                <span class="button -browser">Browse</span>
+            </label>
         </div>
-        <div class="control">
-            <div class="inputfile-box">
-                <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
-                <label for="file" class="file">
-                    <span id="file-name" class="file-box">
-                        <input class="file-name" type="text" placeholder="Choose file">
-                        <span class="icon-close"></span>
-                    </span>
-                    <span class="button -browser">Browse</span>
-                </label>
-            </div>
-            <button class="button -delete">Delete</button>
-        </div>
+        <button class="button -delete">Delete</button>
     </div>
 
-    <div class="w-100"></div>
+    <div class="text">
+        Update DST NET Salary File (max: 5MB)
+        <div class="pull-right">
+            <span class="icon-excel"></span>
+            <a class="" href="#">Download Template</a>
+        </div>
+    </div>
+    <div class="group-control">
+        <div class="inputfile-box">
+            <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
+            <label for="file" class="file">
+                <span id="file-name" class="file-box">
+                    <input class="file-name" type="text" placeholder="Choose file">
+                    <span class="icon-close"></span>
+                </span>
+                <span class="button -browser">Browse</span>
+            </label>
+        </div>
+        <button class="button -delete">Delete</button>
+    </div>
 
-    <div class="group list-button">
+    <div class="">
+       <!-- CSS3 -->
+        <p style="width:60%" data-value="60">CSS3</p>
+		<progress max="100" value="60" class="upload-value">
+			<!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+			<div class="progress-bar">
+				<span style="width: 60%">60%</span>
+			</div>
+		</progress>
+    </div>
+
+    <div class="group-control list-button">
         <button type="submit" class="button -second">Back</button>
         <button type="submit" class="button -add">Upload</button>
         <button type="submit" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
+
 
 @section Scripts {
     <environment include="Development">
@@ -112,6 +116,7 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/progress-bar/progress-polyfill.min.js"></script>
     </environment>
     <environment exclude="Development">
     </environment>
