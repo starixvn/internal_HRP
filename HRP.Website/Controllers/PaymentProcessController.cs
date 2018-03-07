@@ -136,7 +136,7 @@
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
-        public IActionResult UploadAttendanceAndSalary(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<IActionResult> UploadAttendanceAndSalary(UploadAttendanceAndSalaryViewModel viewModel)
         {
             CommandResult validateAttendanceFile = paymentProcessService.CheckValidExcelFile(viewModel.AttendanceFile);
             if (!validateAttendanceFile.IsSuccessful)
@@ -152,7 +152,7 @@
 
             if (ModelState.IsValid)
             {
-                var commandResult = paymentProcessService.InsertAttendanceAndSalaryUploading(viewModel);
+                var commandResult = await paymentProcessService.InsertAttendanceAndSalaryUploadingAsync(viewModel);
 
                 if (commandResult.IsSuccessful)
                 {

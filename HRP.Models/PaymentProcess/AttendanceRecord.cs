@@ -4,7 +4,7 @@
     {
         public string EmployeeCode { get; set; }
 
-        public int ActualWorkingDay { get; set; }
+        public double ActualWorkingDay { get; set; }
 
         public double LeaveTaken { get; set; }
 

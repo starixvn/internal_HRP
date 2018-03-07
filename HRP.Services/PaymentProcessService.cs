@@ -4,16 +4,15 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
-    using NPOI.SS.UserModel;
 
     public class PaymentProcessService : IPaymentProcessService
     {
@@ -93,18 +92,21 @@
             return result;
         }
 
-        private static IEnumerable<string> ReadAttendanceFromExcelFile(IFormFile file)
+        private static string ReadAttendanceFromExcelFile(IFormFile file, IEnumerable<string> employeeCodeList, string companyName)
         {
             var reader = new AttendanceRecordReader(file.OpenReadStream());
 
-            return new List<string> { reader.IsValid.ToString() };
+            reader.ValidateAttendanceRecords(employeeCodeList, companyName);
+
+            return reader.ValidationErrors.ToString();
         }
 
-        public CommandResult InsertAttendanceAndSalaryUploading(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<CommandResult> InsertAttendanceAndSalaryUploadingAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
             var result = new CommandResult();
-            result.Code = 0;
-            result.Message = ReadAttendanceFromExcelFile(viewModel.AttendanceFile).ToString();
+            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
+
+            result.Message = ReadAttendanceFromExcelFile(viewModel.AttendanceFile, employeeCodeList, viewModel.CompanyCode);
             return result;
         }
     }

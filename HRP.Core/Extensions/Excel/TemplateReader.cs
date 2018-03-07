@@ -1,5 +1,6 @@
 ﻿namespace HRP.Core.Extensions
 {
+    using HRP.Core.Model;
     using HRP.Resources;
     using NPOI.SS.UserModel;
     using System;
@@ -20,16 +21,18 @@
 
         protected ISheet Sheet { get; private set; }
 
+        protected ILookup<string, int> Headers
+        {
+            get { return _headers = _headers ?? GetHeaders(); }
+        }
+
+        public IList<ValidationResult> ValidationErrors { get; protected set; }
+
         public abstract bool IsValid { get; }
 
         public abstract int StartRow { get; }
 
         public abstract int HeaderRow { get; }
-
-        protected ILookup<string, int> Headers
-        {
-            get { return _headers = _headers ?? GetHeaders(); }
-        }
 
         public virtual bool IsValidRow(IRow row)
         {

@@ -934,6 +934,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ID Number does not exist in {0}.
+        /// </summary>
+        public static string IDNoNotExistIn {
+            get {
+                return ResourceManager.GetString("IDNoNotExistIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID No. Reason is required!.
         /// </summary>
         public static string IDNoReasonRequired {
@@ -1821,6 +1830,33 @@ namespace HRP.Resources {
         public static string UsernameUnique {
             get {
                 return ResourceManager.GetString("UsernameUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing {0}.
+        /// </summary>
+        public static string ValueMissing {
+            get {
+                return ResourceManager.GetString("ValueMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} must be a number.
+        /// </summary>
+        public static string ValueMustBeANumber {
+            get {
+                return ResourceManager.GetString("ValueMustBeANumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} must be greater than or equal to 0 and cannot exceed {1}.
+        /// </summary>
+        public static string ValueMustBeGreaterAndNotExceed {
+            get {
+                return ResourceManager.GetString("ValueMustBeGreaterAndNotExceed", resourceCulture);
             }
         }
         

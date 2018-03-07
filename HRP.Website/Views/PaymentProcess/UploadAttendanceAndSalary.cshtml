@@ -47,7 +47,7 @@
     The upload file size can not exceed 5MB. Please use a smaller size file!
 </div>
 
-<form class="form-information upload-files">    
+<form class="form-information upload-files">
     <div class="text width-660">
         Update Attendance File (max: 5MB)
         <div class="download-template">
@@ -128,8 +128,42 @@
         <button type="submit" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
+<form enctype="multipart/form-data" id="uploadFilesForm" asp-action="UploadAttendanceAndSalary">
+    <div class="list-message-error hidden">
+        <span asp-validation-for="AttendanceFile" class="message"></span>
+        <span asp-validation-for="DSTSalaryFile" class="message"></span>
+        <span asp-validation-for="CommonError" class="message"></span>
+    </div>
+    <input type="hidden" asp-for="CommonError" />
+    <div>
+        <div class="group">
+            <label class="text">@ViewLang.MonthYear</label>
+            <div class="calendar">
+                <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
+                <span class="icon-calendar"></span>
+            </div>
+        </div>
+        <div class="group">
+            <label class="text">@ViewLang.Company</label>
+            <select class="control" asp-for="CompanyId" disabled>
+                <option value="@Model.CompanyId">@Model.CompanyCode</option>
+            </select>
+        </div>
+    </div>
 
+    <div class="group">
+        <button type="button" class="button -primary">@ViewLang.DownloadTemplate</button>
+    </div>
 
+    <div class="group">
+        <button type="button" class="button -primary">@ViewLang.DownloadTemplate</button>
+    </div>
+
+    <div>Attendance: <input asp-for="AttendanceFile" type="file"></div>
+    <div>DSTSalary: <input asp-for="DSTSalaryFile" type="file"></div>
+
+    <button type="submit" class="button -primary" id="uploadFiles">Upload</button>
+</form>
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
