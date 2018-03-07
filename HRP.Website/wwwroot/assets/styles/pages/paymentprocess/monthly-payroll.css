@@ -66,6 +66,10 @@
   background-color: #095b94;
 }
 
+.table thead th.no-border-top {
+  border-top-width: 0;
+}
+
 .table thead.thead-light th {
   background-color: #f1f1f1;
   color: #333;
@@ -270,5 +274,160 @@ table.dataTable thead .sorting_desc:after {
 .pagination > li:last-child > span {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
+}
+
+.fanex-multiselect-widget {
+  font-size: 13px;
+  font-family: Roboto, Arial, Tahoma, sans-serif;
+}
+
+.fanex-multiselect-widget input[type="text"][readonly] {
+  background-color: transparent;
+  color: #333;
+}
+
+.fanex-multiselect-widget input[type='text'] {
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.fanex-multiselect {
+  position: relative;
+  border-color: #d9d9d9;
+}
+
+.fanex-multiselect.validation-error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+}
+
+.fanex-multiselect span {
+  margin-top: initial;
+  position: absolute;
+  right: 2px;
+  top: 6px;
+}
+
+.fanex-multiselect input[type='text']:focus {
+  border: 1px solid #1a87d3 !important;
+}
+
+.fanex-multiselect-helper-reset {
+  margin-bottom: 6px;
+}
+
+.fanex-multiselect-treeview {
+  border: 1px solid #2a9ded;
+  padding: 10px;
+  color: #333;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-check-all {
+  color: #333;
+}
+
+.fanex-multiselect-treeview input[type="checkbox"] {
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 6px;
+}
+
+.fanex-multiselect-treeview .show-item {
+  padding: 4px 0;
+}
+
+.fanex-multiselect-treeview .custom-ui-widget-header {
+  border-color: #d9d9d9 !important;
+}
+
+.fanex-multiselect-treeview .rtMinus, .fanex-multiselect-treeview .rtPlus, .fanex-multiselect-treeview .fanex-multiselect-icon-dropdown {
+  background: none;
+  font-family: "hrp";
+}
+
+.fanex-multiselect-treeview .rtMinus:before, .fanex-multiselect-treeview .rtPlus:before, .fanex-multiselect-treeview .fanex-multiselect-icon-dropdown:before {
+  position: relative;
+  display: inline-block;
+}
+
+.fanex-multiselect-treeview .rtMinus, .fanex-multiselect-treeview .rtPlus {
+  margin-right: 4px;
+  font-size: 11px;
+  color: #838383;
+}
+
+.fanex-multiselect-treeview .rtPlus:before {
+  content: "\e926";
+  top: -5px;
+}
+
+.fanex-multiselect-treeview .rtMinus:before {
+  content: "\e922";
+  top: -7px;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown {
+  color: #666;
+  font-size: 12px;
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown.fanex-multiselect-icon-collapse:before {
+  content: "\e917";
+}
+
+.fanex-multiselect-treeview .fanex-multiselect-icon-dropdown.fanex-multiselect-icon-expand:before {
+  content: "\e924";
+}
+
+.fanex-multiselect-treeview label.fanex-multiselect-group-mark:hover {
+  font-weight: bold !important;
+}
+
+.fanex-multiselect-shadow {
+  -webkit-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -khtml-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+}
+
+.fanex-multiselect-div label:hover {
+  font-weight: normal !important;
+  color: #f57d14;
+}
+
+.DTFC_ScrollWrapper {
+  margin-bottom: 8px;
+}
+
+.status-done, .status-incorrect, .status-default {
+  font-family: "hrp";
+  font-size: 16px;
+  line-height: 0;
+}
+
+.status-done:before {
+  content: "\e913";
+  color: #18aa3a;
+}
+
+.status-incorrect:before {
+  position: relative;
+  top: -1px;
+  font-size: 14px;
+  color: #ff6000;
+  content: "\e91c";
+}
+
+.status-default:before {
+  content: "\e913";
+  color: #bebebe;
 }
 /*# sourceMappingURL=monthly-payroll.css.map */

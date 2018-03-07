@@ -1,3 +1,44 @@
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
 @import "../../components/tables";
+@import "../../components/customize-fanex-multiSelect";
+
+.DTFC_ScrollWrapper {
+    margin-bottom: 8px;
+}
+
+%icon-status {
+    font-family: "hrp";
+    font-size: 16px;
+    line-height: 0;
+}
+
+.status-done {
+    @extend %icon-status;
+
+    &:before {
+        content: "\e913";
+        color: #18aa3a;
+    }
+}
+
+.status-incorrect {
+    @extend %icon-status;
+
+    &:before {
+        position: relative;
+        top: -1px;        
+        font-size: 14px;
+        color: #ff6000;
+        content: "\e91c";
+    }
+}
+
+.status-default {
+    @extend %icon-status;
+
+    &:before {
+        content: "\e913";
+        color: #bebebe;
+    }
+}

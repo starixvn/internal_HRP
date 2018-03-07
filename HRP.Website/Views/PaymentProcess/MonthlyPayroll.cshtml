@@ -9,6 +9,8 @@
         <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/monthly-payroll.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
     </environment>
@@ -35,9 +37,10 @@
             <option value="@Model.CompanyId">@Model.CompanyCode</option>
         </select>
     </div>
-    <div class="group">
-        <a class="button -second js-btnBack" href="javascript:;">@ViewLang.Back</a>
-        <button type="button" class="button -primary">@ViewLang.Next</button>
+    <div class="payment-duration">
+        <div class="date"><span class="required">*</span> The Payment Process Duration</div>
+        <div class="date">Start Date: <strong> 02/01/2018</strong></div>
+        <div class="date">Due Date: <strong>03/01/2018</strong></div>
     </div>
 </form>
 
@@ -56,7 +59,7 @@
         <input type="text" class="control" placeholder="Full name or Nickname" />
     </div>
     <div class="group">
-        <label class="text"></label>
+        <label class="text">Div/Dept/Cost Center</label>
         <select class="control cost-center-multiselect width-200" id="CostCenterMultiSelect"></select>
     </div>
     <div class="group">
@@ -71,13 +74,13 @@
         <button type="submit" class="button -primary">@ViewLang.Submit</button>
     </div>
 </form>
-<div class="top-header">
+<div class="top-header -only-search-box">
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="Search" />
         <span class="icon-search"></span>
     </div>
 </div>
-<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" cellspacing="0" width="100%">
+<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" width="100%">
     <thead>
         <tr>
             <th rowspan="3"></th>
@@ -91,29 +94,29 @@
             <th rowspan="3">@ViewLang.Action</th>
         </tr>
         <tr>
-            <th colspan="2">@ViewLang.EBanking</th>
-            <th colspan="2">@ViewLang.DirectBanking1</th>
-            <th colspan="2">@ViewLang.DirectBanking2</th>
-            <th colspan="2">@ViewLang.Cash</th>
-            <th colspan="2">@ViewLang.DirectBanking1</th>
-            <th colspan="2">@ViewLang.DirectBanking2</th>
-            <th colspan="2">@ViewLang.Cash</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.EBanking</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.DirectBanking1</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.DirectBanking2</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.Cash</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.DirectBanking1</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.DirectBanking2</th>
+            <th colspan="2" class="sub-header no-border-top">@ViewLang.Cash</th>
         </tr>
         <tr>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
-            <th>@ViewLang.Currency</th>
-            <th>@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
+            <th class="no-border-top">@ViewLang.Currency</th>
+            <th class="no-border-top">@ViewLang.Amount</th>
         </tr>
     </thead>
     <tbody>
@@ -123,7 +126,7 @@
             {
                 var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
                 <tr>
-                    <td class="text-center"></td>
+                    <td class="text-center has-icon"><span class="status-done"></span></td>
                     <td>@employee.IDNo</td>
                     <td>@employee.FullName</td>
                     <td>@employee.Nickname</td>

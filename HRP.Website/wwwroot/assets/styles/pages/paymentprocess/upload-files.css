@@ -101,6 +101,10 @@
   background-color: #095b94;
 }
 
+.table thead th.no-border-top {
+  border-top-width: 0;
+}
+
 .table thead.thead-light th {
   background-color: #f1f1f1;
   color: #333;

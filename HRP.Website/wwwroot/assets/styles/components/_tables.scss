@@ -61,6 +61,10 @@
     &.sub-header {
       background-color: $table-sub-header-bg;
     }
+
+    &.no-border-top {
+      border-top-width: 0;
+    }
   }
 
   thead.thead-light th {
