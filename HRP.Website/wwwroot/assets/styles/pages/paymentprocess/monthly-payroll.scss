@@ -27,7 +27,7 @@
 
     &:before {
         position: relative;
-        top: -1px;        
+        top: -1px;
         font-size: 14px;
         color: #ff6000;
         content: "\e91c";
@@ -41,4 +41,28 @@
         content: "\e913";
         color: #bebebe;
     }
+}
+
+.col-width-50 {
+    width: 50px;
+}
+
+.col-width-58 {
+    width: 58px;
+}
+
+.col-width-60 {
+    width: 60px;
+}
+
+.col-width-76 {
+    width: 76px;
+}
+
+select.width-92 {
+    width: 92px;
+}
+
+select.width-200 {
+    width: 200px;
 }

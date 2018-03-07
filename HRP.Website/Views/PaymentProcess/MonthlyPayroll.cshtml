@@ -27,13 +27,13 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" />
+            <input type="text" class="control datetimepicker" readonly />
             <span class="icon-calendar"></span>
         </div>
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control" asp-for="CompanyId">
+        <select class="control" asp-for="CompanyId" disabled>
             <option value="@Model.CompanyId">@Model.CompanyCode</option>
         </select>
     </div>
@@ -47,6 +47,7 @@
 <form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
     <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
     <input asp-for="CompanyId" hidden />
+    <input asp-for="Month" hidden />
     <input asp-for="CostCenterIds" hidden />
     <input asp-for="EmployeeId" hidden>
 
@@ -64,7 +65,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control js-select2" asp-for="WorkingDays">
+        <select class="control js-select2 width-92" asp-for="WorkingDays">
             <option value="">@ViewLang.All</option>
             <option value="22">22</option>
             <option value="26">26</option>
