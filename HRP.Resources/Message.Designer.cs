@@ -934,6 +934,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ID Number is duplicated.
+        /// </summary>
+        public static string IDNoIsDuplicated {
+            get {
+                return ResourceManager.GetString("IDNoIsDuplicated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The ID Number does not exist in {0}.
         /// </summary>
         public static string IDNoNotExistIn {

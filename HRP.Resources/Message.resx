@@ -723,4 +723,7 @@
   <data name="IDNoNotExistIn" xml:space="preserve">
     <value>The ID Number does not exist in {0}</value>
   </data>
+  <data name="IDNoIsDuplicated" xml:space="preserve">
+    <value>The ID Number is duplicated</value>
+  </data>
 </root>

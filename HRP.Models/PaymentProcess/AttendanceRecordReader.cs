@@ -15,7 +15,10 @@
         public AttendanceRecordReader(Stream file) : base(file)
         {
             ValidationErrors = new List<ValidationResult>();
+            AttendanceRecordUploading = new List<AttendanceRecordUploading>();
         }
+
+        public IList<AttendanceRecordUploading> AttendanceRecordUploading { get; private set; }
 
         public override bool IsValid
         {
@@ -50,20 +53,20 @@
 
         public override int HeaderRow => 5;
 
-        public Result<IEnumerable<AttendanceRecordUploading>> ValidateAttendanceRecords(IEnumerable<string> employeeCodeList, string companyName)
+        public Result<IEnumerable<AttendanceRecordUploading>> ReadAttendanceRecords(IEnumerable<string> employeeCodeList, string companyName)
         {
             if (IsValid)
             {
-                var records = new List<AttendanceRecordUploading>();
                 for (var i = StartRow; i <= Sheet.LastRowNum; i++)
                 {
                     var row = Sheet.GetRow(i);
 
                     if (IsValidRow(row))
                     {
+                        var currentRowNumber = row.RowNum + 1;
                         var record = new AttendanceRecordUploading
                         {
-                            RowNumber = row.RowNum,
+                            RowNumber = currentRowNumber,
                             EmployeeCode = GetStringValueAtCell(AttendanceRecordColumn.IDNo, row),
                             ActualWorkingDay = GetStringValueAtCell(AttendanceRecordColumn.ActualWorkingDay, row),
                             LeaveTaken = GetStringValueAtCell(AttendanceRecordColumn.LeaveTaken, row),
@@ -72,18 +75,18 @@
                             EarlyOutMinute = GetStringValueAtCell(AttendanceRecordColumn.EarlyOutMinute, row)
                         };
 
-                        CheckEmployeeCode(record.EmployeeCode, row.RowNum, employeeCodeList, companyName);
-                        CheckActualWorkingDay(record.ActualWorkingDay, row.RowNum);
-                        CheckLeaveTaken(record.LeaveTaken, row.RowNum);
-                        CheckUnpaidLeave(record.UnpaidLeave, row.RowNum);
-                        CheckLateInMinute(record.LateInMinute, row.RowNum, 26);
-                        CheckEarlyOutMinute(record.EarlyOutMinute, row.RowNum, 26);
+                        CheckEmployeeCode(record.EmployeeCode, currentRowNumber, employeeCodeList, companyName);
+                        CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
+                        CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
+                        CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
+                        CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
+                        CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
 
-                        records.Add(record);
+                        AttendanceRecordUploading.Add(record);
                     }
                 }
 
-                return new Success<IEnumerable<AttendanceRecordUploading>>(records);
+                return new Success<IEnumerable<AttendanceRecordUploading>>(AttendanceRecordUploading);
             }
 
             return new Failure<IEnumerable<AttendanceRecordUploading>>(Message.IncorrectTemplate);
@@ -115,6 +118,11 @@
             {
                 result.ResultType = 2;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
+            }
+            else if (AttendanceRecordUploading.Any(s => s.EmployeeCode.Equals(value)))
+            {
+                result.ResultType = 2;
+                result.Message = Message.IDNoIsDuplicated;
             }
             else
             {

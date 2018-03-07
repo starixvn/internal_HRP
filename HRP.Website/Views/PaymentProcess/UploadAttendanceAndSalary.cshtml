@@ -135,6 +135,7 @@
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
     <input type="hidden" asp-for="CommonError" />
+    <input type="hidden" asp-for="CompanyId" />
     <div>
         <div class="group">
             <label class="text">@ViewLang.MonthYear</label>
@@ -145,7 +146,7 @@
         </div>
         <div class="group">
             <label class="text">@ViewLang.Company</label>
-            <select class="control" asp-for="CompanyId" disabled>
+            <select class="control" disabled>
                 <option value="@Model.CompanyId">@Model.CompanyCode</option>
             </select>
         </div>

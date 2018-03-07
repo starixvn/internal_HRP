@@ -8,8 +8,6 @@
 
     public interface IPaymentProcessService
     {
-        Task<CommandResult> UpdatePaymentProcessAsync(PaymentProcess process);
-
         Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
 
         Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month);

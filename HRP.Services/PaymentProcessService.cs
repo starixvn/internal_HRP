@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -30,20 +31,6 @@
             var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, Month = process.Month }).ConfigureAwait(false);
 
             return isExisted;
-        }
-
-        public async Task<CommandResult> UpdatePaymentProcessAsync(PaymentProcess process)
-        {
-            var criteria = new UpdatePaymentProcessCriteria
-            {
-                CompanyId = process.CompanyId,
-                Month = process.Month,
-                UpdatedBy = sessionService.UserId
-            };
-
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
         }
 
         public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month)
@@ -92,22 +79,54 @@
             return result;
         }
 
-        private static string ReadAttendanceFromExcelFile(IFormFile file, IEnumerable<string> employeeCodeList, string companyName)
-        {
-            var reader = new AttendanceRecordReader(file.OpenReadStream());
-
-            reader.ValidateAttendanceRecords(employeeCodeList, companyName);
-
-            return reader.ValidationErrors.ToString();
-        }
-
         public async Task<CommandResult> InsertAttendanceAndSalaryUploadingAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
-            var result = new CommandResult();
-            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
+            var process = new PaymentProcess
+            {
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.SelectedTime,
+                AttendanceFileName = viewModel.AttendanceFile.FileName
+            };
 
-            result.Message = ReadAttendanceFromExcelFile(viewModel.AttendanceFile, employeeCodeList, viewModel.CompanyCode);
+            var result = await ReadAttendanceFromExcelFileAsync(viewModel.AttendanceFile, process).ConfigureAwait(false);
             return result;
+        }
+
+        private async Task<CommandResult> ReadAttendanceFromExcelFileAsync(IFormFile file, PaymentProcess process)
+        {
+            var commandResult = new CommandResult();
+
+            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = process.CompanyId }).ConfigureAwait(false);
+            var reader = new AttendanceRecordReader(file.OpenReadStream());
+            var readResult = reader.ReadAttendanceRecords(employeeCodeList, process.CompanyCode);
+            if (readResult is Success<IEnumerable<AttendanceRecordUploading>> success)
+            {
+                commandResult = await CreateAttendanceRecordUploadingAsync(success.Value, process).ConfigureAwait(false);
+
+                return commandResult;
+            }
+
+            var failure = (Failure<IEnumerable<AttendanceRecordUploading>>)readResult;
+            commandResult.Code = 1;
+            commandResult.Message = failure.Message;
+            return commandResult;
+        }
+
+        private async Task<CommandResult> CreateAttendanceRecordUploadingAsync(IEnumerable<AttendanceRecordUploading> records, PaymentProcess process)
+        {
+            var criteria = new CreateAttendanceRecordUploadingCriteria
+            {
+                SessionId = Guid.NewGuid().ToString(),
+                CompanyId = process.CompanyId,
+                Month = process.Month,
+                FileName = process.AttendanceFileName,
+                XMLDocument = records.ToXML().ToString(),
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
         }
     }
 }
