@@ -38,7 +38,11 @@
         font-size: 16px;
         color: #888;
       }
-  }  
+  }
+  
+  &.-only-search-box {
+    justify-content: flex-end;
+  }
 }
 
 .table {

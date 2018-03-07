@@ -228,6 +228,10 @@ input[type="checkbox"]:disabled + span {
   color: #888;
 }
 
+.top-header.-only-search-box {
+  justify-content: flex-end;
+}
+
 .table {
   margin-bottom: 12px;
 }
