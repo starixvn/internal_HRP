@@ -813,4 +813,10 @@
   <data name="Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="EBanking" xml:space="preserve">
+    <value>e-Banking</value>
+  </data>
 </root>

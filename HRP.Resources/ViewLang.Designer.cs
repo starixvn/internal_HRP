@@ -151,6 +151,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        public static string Amount {
+            get {
+                return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assign Permission.
         /// </summary>
         public static string AssignPermission {
@@ -750,6 +759,15 @@ namespace HRP.Resources {
         public static string DutyMeal {
             get {
                 return ResourceManager.GetString("DutyMeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e-Banking.
+        /// </summary>
+        public static string EBanking {
+            get {
+                return ResourceManager.GetString("EBanking", resourceCulture);
             }
         }
         

@@ -26,6 +26,11 @@ var monthlyPayroll = (function ($) {
                 },
                 zeroRecords: commonFunctions.noDataOnTableMsg,
                 sZeroRecords: commonFunctions.noDataOnTableMsg
+            },
+            scrollX: true,
+            fixedColumns: {
+                leftColumns: 5,
+                rightColumns: 2
             }
         });
 

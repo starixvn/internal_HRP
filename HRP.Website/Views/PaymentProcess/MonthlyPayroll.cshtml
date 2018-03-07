@@ -6,6 +6,7 @@
 @section Styles {
     <environment include="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
     </environment>
@@ -76,14 +77,43 @@
         <span class="icon-search"></span>
     </div>
 </div>
-<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable">
+<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th></th>
-            <th>@ViewLang.IDNo</th>
-            <th>@ViewLang.FullName</th>
-            <th>@ViewLang.Nickname</th>
-            <th>@ViewLang.Action</th>
+            <th rowspan="3"></th>
+            <th rowspan="3">@ViewLang.IDNo</th>
+            <th rowspan="3">@ViewLang.FullName</th>
+            <th rowspan="3">@ViewLang.Nickname</th>
+            <th rowspan="3">@ViewLang.CostCenter</th>
+            <th colspan="8">@ViewLang.BasicSalary</th>
+            <th colspan="6">@ViewLang.Allowances</th>
+            <th rowspan="3">@ViewLang.WorkingDays</th>
+            <th rowspan="3">@ViewLang.Action</th>
+        </tr>
+        <tr>
+            <th colspan="2">@ViewLang.EBanking</th>
+            <th colspan="2">@ViewLang.DirectBanking1</th>
+            <th colspan="2">@ViewLang.DirectBanking2</th>
+            <th colspan="2">@ViewLang.Cash</th>
+            <th colspan="2">@ViewLang.DirectBanking1</th>
+            <th colspan="2">@ViewLang.DirectBanking2</th>
+            <th colspan="2">@ViewLang.Cash</th>
+        </tr>
+        <tr>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
+            <th>@ViewLang.Currency</th>
+            <th>@ViewLang.Amount</th>
         </tr>
     </thead>
     <tbody>
@@ -97,6 +127,22 @@
                     <td>@employee.IDNo</td>
                     <td>@employee.FullName</td>
                     <td>@employee.Nickname</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td class="text-center has-icon">
                         <div class="dropdown config-action">
                             <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
@@ -152,6 +198,7 @@
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
         <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
         <script src="~/assets/js/paymentprocess/monthly-payroll.js"></script>
     </environment>
