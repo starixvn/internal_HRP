@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.MonthlyPayroll;
@@ -55,6 +56,22 @@
             var employees = await baseService.GetDataAsync<EmployeeMonthlyPayrollBasicInfo>(criteria).ConfigureAwait(false);
 
             return employees;
+        }
+
+        public async Task<CommandResult> ResetMonthlySalaryAsync()
+        {
+            var criteria = new ResetMonthlySalaryCriteria();
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
+        public async Task<CommandResult> UpdateMonthlySalaryAsync()
+        {
+            var criteria = new UpdateMonthlySalaryCriteria();
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
         }
     }
 }

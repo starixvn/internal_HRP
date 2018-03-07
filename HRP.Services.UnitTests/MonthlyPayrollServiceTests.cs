@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.MonthlyPayroll;
@@ -86,6 +87,44 @@
         }
 
         #endregion GetMonthlyPayrollAsync
+
+        #region ResetMonthlySalaryAsync
+
+        [Fact]
+        public async Task ResetMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<ResetMonthlySalaryCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await monthlyPayrollService.ResetMonthlySalaryAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion ResetMonthlySalaryAsync
+
+        #region UpdateMonthlySalaryAsync
+
+        [Fact]
+        public async Task UpdateMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateMonthlySalaryCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await monthlyPayrollService.UpdateMonthlySalaryAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion UpdateMonthlySalaryAsync
 
         #region Helper
 

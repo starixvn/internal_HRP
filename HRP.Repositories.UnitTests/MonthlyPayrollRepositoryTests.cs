@@ -60,6 +60,61 @@
             Assert.Empty(actual.HierarchyCompanies.First().Items);
         }
 
+        #region GetMonthlySalaryToUpdateAsync
+
+        [Fact]
+        public async Task GetMonthlySalaryToUpdateAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            UpdateMonthlySalaryViewModel expected = null;
+            multiResultReader.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().Returns(expected);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new MonthlyPayrollRepository();
+
+            // Act
+            var actual = await repository.GetMonthlySalaryToUpdateAsync(criteria);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetMonthlySalaryToUpdateAsync_ExistedMonthlySalary_ReturnAsExpectedViewModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var viewModel = new UpdateMonthlySalaryViewModel();
+            var monthlyBasicSalary = new MonthlyBasicSalaryViewModel();
+            var monthlySalary = new MonthlySalaryViewModel();
+            var additions = new List<MonthlySalaryAdditionViewModel>();
+            var deductions = new List<MonthlySalaryDeductionViewModel>();
+            multiResultReader.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().Returns(viewModel);
+            multiResultReader.ReadFirstAsync<MonthlyBasicSalaryViewModel>().Returns(monthlyBasicSalary);
+            multiResultReader.ReadFirstAsync<MonthlySalaryViewModel>().Returns(monthlySalary);
+            multiResultReader.ReadAsync<MonthlySalaryAdditionViewModel>().Returns(additions);
+            multiResultReader.ReadAsync<MonthlySalaryDeductionViewModel>().Returns(deductions);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new MonthlyPayrollRepository();
+
+            // Act
+            var actual = await repository.GetMonthlySalaryToUpdateAsync(criteria);
+
+            // Assert
+            Assert.Equal(viewModel.PayrollId, actual.PayrollId);
+            Assert.Equal(viewModel.Month, actual.Month);
+            Assert.Equal(viewModel.CompanyId, actual.CompanyId);
+            Assert.Equal(viewModel.CompanyCode, actual.CompanyCode);
+            Assert.Equal(monthlyBasicSalary, actual.MonthlyBasicSalary);
+            Assert.Equal(monthlySalary, actual.MonthlySalary);
+            Assert.Equal(additions, actual.Additions);
+            Assert.Equal(deductions, actual.Deductions);
+        }
+
+        #endregion GetMonthlySalaryToUpdateAsync
+
         #region Helpers
 
         private static IMultiResultReader FakeMultipleResultReader()

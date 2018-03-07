@@ -43,5 +43,26 @@
                 }
             }
         }
+
+        public async Task<UpdateMonthlySalaryViewModel> GetMonthlySalaryToUpdateAsync(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                {
+                    var viewModel = await multi.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().ConfigureAwait(false);
+
+                    if (viewModel != null)
+                    {
+                        viewModel.MonthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryViewModel>().ConfigureAwait(false);
+                        viewModel.MonthlySalary = await multi.ReadFirstAsync<MonthlySalaryViewModel>().ConfigureAwait(false);
+                        viewModel.Additions = await multi.ReadAsync<MonthlySalaryAdditionViewModel>().ConfigureAwait(false);
+                        viewModel.Deductions = await multi.ReadAsync<MonthlySalaryDeductionViewModel>().ConfigureAwait(false);
+                    }
+
+                    return viewModel;
+                }
+            }
+        }
     }
 }

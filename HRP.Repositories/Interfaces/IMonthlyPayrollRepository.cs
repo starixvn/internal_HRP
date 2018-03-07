@@ -7,5 +7,7 @@
     public interface IMonthlyPayrollRepository
     {
         Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria);
+
+        Task<UpdateMonthlySalaryViewModel> GetMonthlySalaryToUpdateAsync(ICriteria criteria);
     }
 }

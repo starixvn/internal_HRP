@@ -154,6 +154,7 @@
   <Function Name="Monthly Payroll">
     <Setting Key="MonthlyPayroll_GetDataFilterForIndexPage" SpName="MonthlyPayroll_GetDataFilterForIndexPage" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_Get" SpName="MonthlyPayroll_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetSalaryToUpdate" SpName="MonthlyPayroll_GetSalaryToUpdate" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_ResetSalary" SpName="MonthlyPayroll_ResetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_UpdateSalary" SpName="MonthlyPayroll_UpdateSalary" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
