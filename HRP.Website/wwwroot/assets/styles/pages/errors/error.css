@@ -126,6 +126,11 @@ input, button {
   background-color: #d30d0d;
 }
 
+button[disabled],
+input[type="button"][disabled] {
+  opacity: 0.5;
+}
+
 a.button, a.button:hover {
   text-decoration: none;
 }

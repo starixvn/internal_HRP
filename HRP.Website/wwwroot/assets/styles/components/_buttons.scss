@@ -71,6 +71,11 @@
     }
 }
 
+button[disabled],
+input[type="button"][disabled] {
+    opacity: 0.5;
+}
+
 a.button, a.button:hover {
     text-decoration: none;
 }
@@ -78,3 +83,4 @@ a.button, a.button:hover {
 .button:not(:disabled) {
     cursor: pointer;
 }
+

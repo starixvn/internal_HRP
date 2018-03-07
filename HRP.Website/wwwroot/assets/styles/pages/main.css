@@ -127,6 +127,11 @@ input, button {
   background-color: #d30d0d;
 }
 
+button[disabled],
+input[type="button"][disabled] {
+  opacity: 0.5;
+}
+
 a.button, a.button:hover {
   text-decoration: none;
 }
@@ -473,7 +478,7 @@ input[type="checkbox"]:disabled + span {
 
 .-no-border.msg-error.-has-border, .-no-border.text-danger.-has-border, .-no-border.msg-success, .-no-border.msg-warning {
   border: none;
-  padding: 0 8px 0 32px;
+  padding: 0 8px 0 22px;
 }
 
 .msg-error, .text-danger {
@@ -507,6 +512,7 @@ input[type="checkbox"]:disabled + span {
 
 .msg-success.-no-border:before {
   top: -1px;
+  left: 0;
   font-size: 17px;
 }
 
@@ -526,6 +532,7 @@ input[type="checkbox"]:disabled + span {
 
 .msg-warning.-no-border:before {
   top: -2px;
+  left: 0;
   font-size: 15px;
 }
 

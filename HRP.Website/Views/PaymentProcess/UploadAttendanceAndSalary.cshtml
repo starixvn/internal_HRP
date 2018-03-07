@@ -50,7 +50,7 @@
 <form class="form-information upload-files">    
     <div class="text width-660">
         Update Attendance File (max: 5MB)
-        <div class="pull-right">
+        <div class="download-template">
             <span class="icon-excel"></span>
             <a class="" href="#">Download Template</a>
         </div>
@@ -60,18 +60,18 @@
             <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
             <label for="file" class="file">
                 <span id="file-name" class="file-box">
-                    <input class="file-name" type="text" placeholder="Choose file" value="Map_chart_sample.xlsx">
-                    <span class="icon-close"></span>
+                    <span class="file-name">Map_chart_sample.xlsx</span>
+                    <span class="icon-successful"></span>
                 </span>
                 <span class="button -browser">Browse</span>
             </label>
         </div>
-        <button class="button -delete">Delete</button>
+        <button class="button -delete" disabled>Delete</button>
     </div>
 
     <div class="text width-660">
         Update DST NET Salary File (max: 5MB)
-        <div class="pull-right">
+        <div class="download-template">
             <span class="icon-excel"></span>
             <a class="" href="#">Download Template</a>
         </div>
@@ -80,8 +80,8 @@
         <div class="inputfile-box">
             <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
             <label for="file" class="file">
-                <span id="file-name" class="file-box">
-                    <input class="file-name" type="text" placeholder="Choose file">
+                <span class="file-box">
+                    <span id="file-name" class="file-name no-file">Choose file</span>
                     <span class="icon-close"></span>
                 </span>
                 <span class="button -browser">Browse</span>
@@ -124,7 +124,7 @@
 
     <div class="group-control list-button">
         <button type="submit" class="button -second">Back</button>
-        <button type="submit" class="button -add">Upload</button>
+        <button type="submit" class="button -add" disabled>Upload</button>
         <button type="submit" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
@@ -141,9 +141,3 @@
     <environment exclude="Development">
     </environment>
 }
-
-<script>
-    function uploadFile(target) {
-        document.getElementById("file-name").innerHTML = target.files[0].name;
-    }
-</script>

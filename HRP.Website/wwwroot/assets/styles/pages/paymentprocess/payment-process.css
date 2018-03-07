@@ -364,7 +364,8 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   margin-right: 8px;
   padding: 3px 6px;
   font-family: 'hrp';
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 18px;
   color: #1973b2;
 }
 
@@ -373,19 +374,20 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 }
 
 .steps.large .select-working-date:before {
-  content: "\e91e";
+  content: "\e928";
 }
 
 .steps.large .upload:before {
-  content: "\e91e";
+  content: "\e929";
 }
 
 .steps.large .view-employee:before {
-  content: "\e91e";
+  content: "\e92a";
+  font-size: 22px;
 }
 
 .steps.large .complete:before {
-  content: "\e91e";
+  content: "\e92b";
 }
 
 .steps {

@@ -15,7 +15,7 @@
     
     &.-no-border {
         border: none;
-        padding: 0 8px 0 32px;
+        padding: 0 8px 0 22px;
     }
 }
 
@@ -51,6 +51,7 @@
 
     &.-no-border:before {        
         top: -1px;
+        left: 0;
         font-size: 17px;
     }
 }
@@ -71,6 +72,7 @@
 
     &.-no-border:before {
         top: -2px;
+        left: 0;
         font-size: 15px;
     }
 }
