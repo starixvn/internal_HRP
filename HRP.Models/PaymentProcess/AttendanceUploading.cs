@@ -3,7 +3,7 @@
     using HRP.Core.Extensions;
 
     [XMLName("Row")]
-    public class AttendanceRecordUploading
+    public class AttendanceUploading
     {
         public int RowNumber { get; set; }
 

@@ -79,7 +79,7 @@
             return result;
         }
 
-        public async Task<CommandResult> UploadAttendanceRecordFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<CommandResult> UploadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
             var process = new PaymentProcess
             {
@@ -106,24 +106,24 @@
         {
             var commandResult = new CommandResult();
             var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = process.CompanyId }).ConfigureAwait(false);
-            var reader = new AttendanceRecordReader(file.OpenReadStream());
-            var readResult = reader.ReadAttendanceRecords(employeeCodeList, process.CompanyCode);
-            if (readResult is Success<IEnumerable<AttendanceRecordUploading>> success)
+            var reader = new AttendanceReader(file.OpenReadStream());
+            var readResult = reader.ReadAttendances(employeeCodeList, process.CompanyCode);
+            if (readResult is Success<IEnumerable<AttendanceUploading>> success)
             {
-                commandResult = await CreateAttendanceRecordUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
+                commandResult = await CreateAttendanceUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
 
                 return commandResult;
             }
 
-            var failure = (Failure<IEnumerable<AttendanceRecordUploading>>)readResult;
+            var failure = (Failure<IEnumerable<AttendanceUploading>>)readResult;
             commandResult.Code = 1;
             commandResult.Message = failure.Message;
             return commandResult;
         }
 
-        private async Task<CommandResult> CreateAttendanceRecordUploadingAsync(IEnumerable<AttendanceRecordUploading> records, IEnumerable<ValidationResult> results, PaymentProcess process)
+        private async Task<CommandResult> CreateAttendanceUploadingAsync(IEnumerable<AttendanceUploading> records, IEnumerable<ValidationResult> results, PaymentProcess process)
         {
-            var criteria = new CreateAttendanceRecordUploadingCriteria
+            var criteria = new CreateAttendanceUploadingCriteria
             {
                 SessionId = Guid.NewGuid().ToString(),
                 CompanyId = process.CompanyId,

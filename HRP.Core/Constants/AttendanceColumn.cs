@@ -1,6 +1,6 @@
 ﻿namespace HRP.Core.Constants
 {
-    public static class AttendanceRecordColumn
+    public static class AttendanceColumn
     {
         public const string IDNo = "ID No";
 

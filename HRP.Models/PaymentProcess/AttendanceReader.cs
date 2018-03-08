@@ -10,15 +10,15 @@
     using HRP.Resources;
     using NPOI.SS.UserModel;
 
-    public class AttendanceRecordReader : TemplateReader
+    public class AttendanceReader : TemplateReader
     {
-        public AttendanceRecordReader(Stream file) : base(file)
+        public AttendanceReader(Stream file) : base(file)
         {
             ValidationResults = new List<ValidationResult>();
-            AttendanceRecordUploading = new List<AttendanceRecordUploading>();
+            AttendanceUploading = new List<AttendanceUploading>();
         }
 
-        private IList<AttendanceRecordUploading> AttendanceRecordUploading { get; set; }
+        private IList<AttendanceUploading> AttendanceUploading { get; set; }
 
         public override bool IsValid
         {
@@ -26,12 +26,12 @@
             {
                 return
 #pragma warning disable S1067 // Expressions should not be too complex
-                    Headers.Contains(AttendanceRecordColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
-                    Headers.Contains(AttendanceRecordColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture)) &&
-                    Headers.Contains(AttendanceRecordColumn.LeaveTaken.ToLower(CultureInfo.InvariantCulture)) &&
-                    Headers.Contains(AttendanceRecordColumn.UnpaidLeave.ToLower(CultureInfo.InvariantCulture)) &&
-                    Headers.Contains(AttendanceRecordColumn.LateInMinute.ToLower(CultureInfo.InvariantCulture)) &&
-                    Headers.Contains(AttendanceRecordColumn.EarlyOutMinute.ToLower(CultureInfo.InvariantCulture));
+                    Headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
+                    Headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture)) &&
+                    Headers.Contains(AttendanceColumn.LeaveTaken.ToLower(CultureInfo.InvariantCulture)) &&
+                    Headers.Contains(AttendanceColumn.UnpaidLeave.ToLower(CultureInfo.InvariantCulture)) &&
+                    Headers.Contains(AttendanceColumn.LateInMinute.ToLower(CultureInfo.InvariantCulture)) &&
+                    Headers.Contains(AttendanceColumn.EarlyOutMinute.ToLower(CultureInfo.InvariantCulture));
 #pragma warning restore S1067 // Expressions should not be too complex
             }
         }
@@ -53,7 +53,7 @@
 
         public override int HeaderRow => 5;
 
-        public Result<IEnumerable<AttendanceRecordUploading>> ReadAttendanceRecords(IEnumerable<string> employeeCodeList, string companyName)
+        public Result<IEnumerable<AttendanceUploading>> ReadAttendances(IEnumerable<string> employeeCodeList, string companyName)
         {
             if (IsValid)
             {
@@ -64,15 +64,15 @@
                     if (IsValidRow(row))
                     {
                         var currentRowNumber = row.RowNum + 1;
-                        var record = new AttendanceRecordUploading
+                        var record = new AttendanceUploading
                         {
                             RowNumber = currentRowNumber,
-                            EmployeeCode = GetStringValueAtCell(AttendanceRecordColumn.IDNo, row),
-                            ActualWorkingDay = GetStringValueAtCell(AttendanceRecordColumn.ActualWorkingDay, row),
-                            LeaveTaken = GetStringValueAtCell(AttendanceRecordColumn.LeaveTaken, row),
-                            UnpaidLeave = GetStringValueAtCell(AttendanceRecordColumn.UnpaidLeave, row),
-                            LateInMinute = GetStringValueAtCell(AttendanceRecordColumn.LateInMinute, row),
-                            EarlyOutMinute = GetStringValueAtCell(AttendanceRecordColumn.EarlyOutMinute, row)
+                            EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, row),
+                            ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, row),
+                            LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, row),
+                            UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, row),
+                            LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, row),
+                            EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, row)
                         };
 
                         CheckEmployeeCode(record.EmployeeCode, currentRowNumber, employeeCodeList, companyName);
@@ -82,14 +82,14 @@
                         CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
                         CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
 
-                        AttendanceRecordUploading.Add(record);
+                        AttendanceUploading.Add(record);
                     }
                 }
 
-                return new Success<IEnumerable<AttendanceRecordUploading>>(AttendanceRecordUploading);
+                return new Success<IEnumerable<AttendanceUploading>>(AttendanceUploading);
             }
 
-            return new Failure<IEnumerable<AttendanceRecordUploading>>(Message.IncorrectTemplate);
+            return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
         }
 
         private string GetStringValueAtCell(string columnName, IRow row)
@@ -103,7 +103,7 @@
 
         private void CheckEmployeeCode(string value, int rowNumber, IEnumerable<string> employeeCodeList, string companyName)
         {
-            var columnName = AttendanceRecordColumn.IDNo;
+            var columnName = AttendanceColumn.IDNo;
             var result = new ValidationResult
             {
                 RowNumber = rowNumber
@@ -119,7 +119,7 @@
                 result.ResultType = 2;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
             }
-            else if (AttendanceRecordUploading.Any(s => s.EmployeeCode.Equals(value)))
+            else if (AttendanceUploading.Any(s => s.EmployeeCode.Equals(value)))
             {
                 result.ResultType = 2;
                 result.Message = Message.IDNoIsDuplicated;
@@ -137,7 +137,7 @@
 
         private void CheckActualWorkingDay(string value, int rowNumber)
         {
-            var columnName = AttendanceRecordColumn.ActualWorkingDay;
+            var columnName = AttendanceColumn.ActualWorkingDay;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
@@ -147,7 +147,7 @@
 
         private void CheckLeaveTaken(string value, int rowNumber)
         {
-            var columnName = AttendanceRecordColumn.LeaveTaken;
+            var columnName = AttendanceColumn.LeaveTaken;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
@@ -157,7 +157,7 @@
 
         private void CheckUnpaidLeave(string value, int rowNumber)
         {
-            var columnName = AttendanceRecordColumn.UnpaidLeave;
+            var columnName = AttendanceColumn.UnpaidLeave;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
@@ -167,7 +167,7 @@
 
         private void CheckLateInMinute(string value, int rowNumber, double maxValue)
         {
-            var columnName = AttendanceRecordColumn.LateInMinute;
+            var columnName = AttendanceColumn.LateInMinute;
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
             if (!result.IsValid)
             {
@@ -177,7 +177,7 @@
 
         private void CheckEarlyOutMinute(string value, int rowNumber, double maxValue)
         {
-            var columnName = AttendanceRecordColumn.EarlyOutMinute;
+            var columnName = AttendanceColumn.EarlyOutMinute;
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
             if (!result.IsValid)
             {

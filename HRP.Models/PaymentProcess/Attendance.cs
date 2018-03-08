@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.PaymentProcess
 {
-    public class AttendanceRecord
+    public class Attendance
     {
         public string EmployeeCode { get; set; }
 

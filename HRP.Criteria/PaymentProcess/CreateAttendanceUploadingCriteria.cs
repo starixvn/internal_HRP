@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class CreateAttendanceRecordUploadingCriteria : CommandBaseCriteria
+    public class CreateAttendanceUploadingCriteria : CommandBaseCriteria
     {
         public string SessionId { get; set; }
 
@@ -18,7 +18,7 @@
 
         public int CreatedBy { get; set; }
 
-        public override string GetSettingKey() => "PaymentProcess_CreateAttendanceRecordUploading";
+        public override string GetSettingKey() => "PaymentProcess_CreateAttendanceUploading";
 
         public override bool IsValid() => CompanyId > 0 && CreatedBy > 0
             && !string.IsNullOrWhiteSpace(UploadingXMLDoc)

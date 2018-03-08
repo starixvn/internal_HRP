@@ -15,7 +15,7 @@
 
         CommandResult CheckValidExcelFile(IFormFile file);
 
-        Task<CommandResult> UploadAttendanceRecordFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<CommandResult> UploadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
 
         IEnumerable<ValidationResult> GetAttendanceUploadingResult(int companyId, DateTime month);
 

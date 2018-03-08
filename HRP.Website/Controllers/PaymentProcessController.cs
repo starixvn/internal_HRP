@@ -159,7 +159,7 @@
 
             if (ModelState.IsValid)
             {
-                var attendanceResult = await paymentProcessService.UploadAttendanceRecordFileAsync(viewModel);
+                var attendanceResult = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
                 var salaryResult = paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
 
                 if (attendanceResult.IsSuccessful && salaryResult.IsSuccessful)
