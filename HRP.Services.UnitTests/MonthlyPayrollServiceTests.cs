@@ -7,6 +7,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
+    using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
     using NSubstitute;
@@ -133,6 +134,24 @@
         }
 
         #endregion GetMonthlyPayrollAsync
+
+        [Fact]
+        public async Task GetEmployeeSuggestionByNameAsync_WhenCalled_ReturnExpectedEmployees()
+        {
+            // Arrange
+            var expected = new List<EmployeeSuggestionViewModel>
+            {
+                new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await monthlyPayrollService.GetEmployeeSuggestionByNameAsync(1, "tim");
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
 
         #region ResetMonthlySalaryAsync
 

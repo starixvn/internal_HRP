@@ -1,6 +1,7 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -187,6 +188,14 @@
 
             EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, costCenterIds);
             return View("MonthlyPayroll", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public async Task<IActionResult> GetEmployeeSuggestionByName(int companyId, string name)
+        {
+            IEnumerable<EmployeeSuggestionViewModel> employees = await monthlyPayrollService.GetEmployeeSuggestionByNameAsync(companyId, name);
+
+            return Json(employees);
         }
 
         #endregion Monthly Payroll

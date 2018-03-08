@@ -5,6 +5,7 @@
 
 @section Styles {
     <environment include="Development">
+        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
@@ -33,8 +34,8 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control" asp-for="CompanyId" disabled>
-            <option value="@Model.CompanyId">@Model.CompanyCode</option>
+        <select class="control" disabled>
+            <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
     <div class="payment-duration">
@@ -53,7 +54,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control" placeholder="Full name or Nickname" />
+        <input type="text" class="control" placeholder="Full name or Nickname" id="SearchEmployee" />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
@@ -86,7 +87,7 @@
 <table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" width="100%">
     <thead>
         <tr>
-            <th rowspan="3"></th>
+            <th rowspan="3">@ViewLang.Check</th>
             <th rowspan="3">@ViewLang.IDNo</th>
             <th rowspan="3">@ViewLang.FullName</th>
             <th rowspan="3">@ViewLang.Nickname</th>
@@ -133,22 +134,22 @@
                     <td>@employee.IDNo</td>
                     <td>@employee.FullName</td>
                     <td>@employee.Nickname</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>@employee.CostCenter</td>
+                    <td>@employee.BasicSalary.EbankingCurrencyCode</td>
+                    <td>@employee.BasicSalary.EBankingAmount</td>
+                    <td>@employee.BasicSalary.DirectBanking1CurrencyCode</td>
+                    <td>@employee.BasicSalary.DirectBanking1Amount</td>
+                    <td>@employee.BasicSalary.DirectBanking2CurrencyCode</td>
+                    <td>@employee.BasicSalary.DirectBanking2Amount</td>
+                    <td>@employee.BasicSalary.CashCurrencyCode</td>
+                    <td>@employee.BasicSalary.CashAmount</td>
+                    <td>@employee.Allowance.DirectBanking1CurrencyCode</td>
+                    <td>@employee.Allowance.DirectBanking1Amount</td>
+                    <td>@employee.Allowance.DirectBanking2CurrencyCode</td>
+                    <td>@employee.Allowance.DirectBanking2Amount</td>
+                    <td>@employee.Allowance.CashCurrencyCode</td>
+                    <td>@employee.Allowance.CashAmount</td>
+                    <td>@employee.WorkingDays</td>
                     <td class="text-center has-icon">
                         <div class="dropdown config-action">
                             <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
@@ -201,6 +202,7 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>

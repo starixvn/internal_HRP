@@ -80,6 +80,25 @@
 
         #endregion EmployeeMonthlyPayroll
 
+        [Fact]
+        public async Task GetEmployeeSuggestion_WhenCalled_ReturnExpectedEmployees()
+        {
+            // Arrange
+            var expected = new List<EmployeeSuggestionViewModel>
+            {
+                new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
+            };
+            var controller = GetPaymentProcessController();
+            monthlyPayrollService.GetEmployeeSuggestionByNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(expected);
+
+            // Act
+            var actual = await controller.GetEmployeeSuggestionByName(1, "tim");
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
+        }
+
         #region Helpers
 
         private PaymentProcessController GetPaymentProcessController()

@@ -5,6 +5,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
+    using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
 
@@ -67,6 +68,18 @@
             return monthlyPayrolls;
         }
 
+        public Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name)
+        {
+            var criteria = new GetEmployeeSuggestionByNameCriteria
+            {
+                UserId = sessionService.UserId,
+                CompanyId = companyId,
+                Name = name
+            };
+
+            return baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
+        }
+
         public async Task<CommandResult> ResetMonthlySalaryAsync()
         {
             var criteria = new ResetMonthlySalaryCriteria();
@@ -85,7 +98,7 @@
 
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
         {
-            foreach(var monthlyPayroll in monthlyPayrolls)
+            foreach (var monthlyPayroll in monthlyPayrolls)
             {
                 monthlyPayroll.BasicSalary.EBankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EBankingAmount);
                 monthlyPayroll.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking1Amount);

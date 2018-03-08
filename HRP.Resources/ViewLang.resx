@@ -825,4 +825,7 @@
   <data name="ThePaymentProcessDuration" xml:space="preserve">
     <value>The Payment Process Duration</value>
   </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
 </root>
