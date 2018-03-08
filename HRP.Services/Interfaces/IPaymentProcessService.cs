@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
@@ -15,5 +16,9 @@
         CommandResult CheckValidExcelFile(IFormFile file);
 
         Task<CommandResult> UploadAttendanceRecordFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+
+        IEnumerable<ValidationResult> GetAttendanceUploadingResult(int companyId, DateTime month);
+
+        CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
     }
 }

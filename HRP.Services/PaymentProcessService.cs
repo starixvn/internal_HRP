@@ -92,6 +92,16 @@
             return result;
         }
 
+        public IEnumerable<ValidationResult> GetAttendanceUploadingResult(int companyId, DateTime month)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        {
+            return new CommandResult { Code = 0 };
+        }
+
         private async Task<CommandResult> ReadAttendanceFromExcelFileAsync(IFormFile file, PaymentProcess process)
         {
             var commandResult = new CommandResult();

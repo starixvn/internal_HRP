@@ -99,28 +99,33 @@
         </div>
     </div>
 
-    <div class="info-list">
-        <div class="msg-success -no-border">Attendance File: There is no failed record in the total of 5 record(s).</div>
-        <div class="msg-warning -no-border">DST NET Salary File: Number of error(s): 4</div>
-        <table class="table table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th class="row-no">Row No</th>
-                    <th class="error-desc">Error Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center">3</td>
-                    <td>The ID Name doesn't match to the name in the system</td>
-                </tr>
-                <tr>
-                    <td class="text-center">9</td>
-                    <td>The full name doesn't exist in the system</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="info-list" id="attendanceValidation">
     </div>
+
+    <div class="info-list" id="dstNetSalaryValidation">
+    </div>
+    @*<div class="info-list">
+            <div class="msg-success -no-border">Attendance File: There is no failed record in the total of 5 record(s).</div>
+            <div class="msg-warning -no-border">DST NET Salary File: Number of error(s): 4</div>
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="row-no">Row No</th>
+                        <th class="error-desc">Error Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">3</td>
+                        <td>The ID Name doesn't match to the name in the system</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">9</td>
+                        <td>The full name doesn't exist in the system</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>*@
 
     <div class="group-control list-button">
         <button type="submit" class="button -second">Back</button>
@@ -131,7 +136,7 @@
 <form enctype="multipart/form-data" id="uploadFilesForm" asp-action="UploadAttendanceAndSalary">
     <div class="list-message-error hidden">
         <span asp-validation-for="AttendanceFile" class="message"></span>
-        <span asp-validation-for="DSTSalaryFile" class="message"></span>
+        <span asp-validation-for="DSTNetSalaryFile" class="message"></span>
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
     <input type="hidden" asp-for="CommonError" />
@@ -161,7 +166,7 @@
     </div>
 
     <div>Attendance: <input asp-for="AttendanceFile" type="file"></div>
-    <div>DSTSalary: <input asp-for="DSTSalaryFile" type="file"></div>
+    <div>DSTSalary: <input asp-for="DSTNetSalaryFile" type="file"></div>
 
     <button type="submit" class="button -primary" id="uploadFiles">Upload</button>
 </form>
@@ -172,6 +177,7 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/paymentprocess/upload-attendance-salary.js"></script>
     </environment>
     <environment exclude="Development">
     </environment>

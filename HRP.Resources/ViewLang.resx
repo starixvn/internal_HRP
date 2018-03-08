@@ -827,5 +827,11 @@
   </data>
   <data name="Check" xml:space="preserve">
     <value>Check</value>
+    </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Error Description</value>
+  </data>
+  <data name="RowNo" xml:space="preserve">
+    <value>Row No</value>
   </data>
 </root>

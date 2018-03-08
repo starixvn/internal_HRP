@@ -146,29 +146,52 @@
                 ModelState.AddModelError(nameof(viewModel.AttendanceFile), validateAttendanceFile.Message);
             }
 
-            CommandResult validateDSTSalaryFile = paymentProcessService.CheckValidExcelFile(viewModel.DSTSalaryFile);
+            CommandResult validateDSTSalaryFile = paymentProcessService.CheckValidExcelFile(viewModel.DSTNetSalaryFile);
             if (!validateDSTSalaryFile.IsSuccessful)
             {
-                ModelState.AddModelError(nameof(viewModel.DSTSalaryFile), validateDSTSalaryFile.Message);
+                ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), validateDSTSalaryFile.Message);
             }
 
-            if (viewModel.AttendanceFile == null && viewModel.DSTSalaryFile == null)
+            if (viewModel.AttendanceFile == null && viewModel.DSTNetSalaryFile == null)
             {
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PleaseSelectFile);
             }
 
             if (ModelState.IsValid)
             {
-                var commandResult = await paymentProcessService.UploadAttendanceRecordFileAsync(viewModel);
+                var attendanceResult = await paymentProcessService.UploadAttendanceRecordFileAsync(viewModel);
+                var salaryResult = paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
 
-                if (commandResult.IsSuccessful)
+                if (attendanceResult.IsSuccessful && salaryResult.IsSuccessful)
                 {
                     return Json(new { isSuccessful = true });
+                }
+
+                if (!attendanceResult.IsSuccessful)
+                {
+                    ModelState.AddModelError(nameof(viewModel.AttendanceFile), attendanceResult.Message);
+                }
+
+                if (!salaryResult.IsSuccessful)
+                {
+                    ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), salaryResult.Message);
                 }
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public IActionResult AttendanceValidationResult(int companyId, DateTime month)
+        {
+            var errors = paymentProcessService.GetAttendanceUploadingResult(companyId, month);
+            var viewModel = new ValidationFileResultViewModel
+            {
+                ValidationErrors = errors
+            };
+
+            return PartialView("_AttendanceValidationResult", viewModel);
         }
 
         #region Monthly Payroll

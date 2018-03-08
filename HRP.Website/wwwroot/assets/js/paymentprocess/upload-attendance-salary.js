@@ -3,7 +3,7 @@
         UploadFilesForm: '#uploadFilesForm',
         SelectedTime: '#SelectedTime',
         AttendanceFile: '#AttendanceFile',
-        DSTSalaryFile: '#DSTSalaryFile'
+        DSTNetSalaryFile: '#DSTNetSalaryFile'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -77,8 +77,8 @@
             }
         });
 
-        $(domElement.DSTSalaryFile).on('change', function () {
-            var isValid = validateFileExcel($form, "DSTSalaryFile", this.files[0]);
+        $(domElement.DSTNetSalaryFile).on('change', function () {
+            var isValid = validateFileExcel($form, "DSTNetSalaryFile", this.files[0]);
             if (!isValid) {
                 $(this).val('');
             }

@@ -88,6 +88,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance File: There is no failed record in the total of {0} record(s)..
+        /// </summary>
+        public static string AttendanceFileUploadSuccess {
+            get {
+                return ResourceManager.GetString("AttendanceFileUploadSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance File: Number of error(s): {0}.
+        /// </summary>
+        public static string AttendanceFileUploadWarning {
+            get {
+                return ResourceManager.GetString("AttendanceFileUploadWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
         /// </summary>
         public static string BankAccountLimitReached {
@@ -363,6 +381,24 @@ namespace HRP.Resources {
         public static string DivisionRequired {
             get {
                 return ResourceManager.GetString("DivisionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DST NET Salary File: There is no failed record in the total of {0} record(s)..
+        /// </summary>
+        public static string DSTNetSalaryFileUploadSuccess {
+            get {
+                return ResourceManager.GetString("DSTNetSalaryFileUploadSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DST NET Salary File: Number of error(s): {0}.
+        /// </summary>
+        public static string DSTNetSalaryFileUploadWarning {
+            get {
+                return ResourceManager.GetString("DSTNetSalaryFileUploadWarning", resourceCulture);
             }
         }
         

@@ -16,7 +16,7 @@
 
         public IFormFile AttendanceFile { get; set; }
 
-        public IFormFile DSTSalaryFile { get; set; }
+        public IFormFile DSTNetSalaryFile { get; set; }
 
         public string CommonError { get; set; }
     }

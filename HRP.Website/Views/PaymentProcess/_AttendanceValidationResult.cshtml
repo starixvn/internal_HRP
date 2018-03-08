@@ -1,0 +1,30 @@
+﻿@using HRP.Models.PaymentProcess
+@using HRP.Resources
+@model ValidationFileResultViewModel
+
+@if (Model.ValidationErrors.Any())
+{
+    <div class="msg-warning -no-border">@string.Format(Message.AttendanceFileUploadWarning, Model.ValidationErrors.Count())</div>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th class="row-no">@ViewLang.RowNo</th>
+                <th class="error-desc">@ViewLang.ErrorDescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.ValidationErrors)
+            {
+                <tr>
+                    <td class="text-center">@row.RowNumber</td>
+                    <td>@row.Message</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="msg-success -no-border">@string.Format(Message.AttendanceFileUploadSuccess, Model.TotalRow)</div>
+}

@@ -1015,6 +1015,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error Description.
+        /// </summary>
+        public static string ErrorDescription {
+            get {
+                return ResourceManager.GetString("ErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluator.
         /// </summary>
         public static string Evaluator {
@@ -1776,6 +1785,15 @@ namespace HRP.Resources {
         public static string RommingCharges {
             get {
                 return ResourceManager.GetString("RommingCharges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row No.
+        /// </summary>
+        public static string RowNo {
+            get {
+                return ResourceManager.GetString("RowNo", resourceCulture);
             }
         }
         

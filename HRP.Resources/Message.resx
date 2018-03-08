@@ -729,4 +729,16 @@
   <data name="PleaseSelectFile" xml:space="preserve">
     <value>Please select at least one file to upload.</value>
   </data>
+  <data name="AttendanceFileUploadSuccess" xml:space="preserve">
+    <value>Attendance File: There is no failed record in the total of {0} record(s).</value>
+  </data>
+  <data name="AttendanceFileUploadWarning" xml:space="preserve">
+    <value>Attendance File: Number of error(s): {0}</value>
+  </data>
+  <data name="DSTNetSalaryFileUploadSuccess" xml:space="preserve">
+    <value>DST NET Salary File: There is no failed record in the total of {0} record(s).</value>
+  </data>
+  <data name="DSTNetSalaryFileUploadWarning" xml:space="preserve">
+    <value>DST NET Salary File: Number of error(s): {0}</value>
+  </data>
 </root>

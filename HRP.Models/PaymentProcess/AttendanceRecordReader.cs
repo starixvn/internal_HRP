@@ -18,7 +18,7 @@
             AttendanceRecordUploading = new List<AttendanceRecordUploading>();
         }
 
-        public IList<AttendanceRecordUploading> AttendanceRecordUploading { get; private set; }
+        private IList<AttendanceRecordUploading> AttendanceRecordUploading { get; set; }
 
         public override bool IsValid
         {
