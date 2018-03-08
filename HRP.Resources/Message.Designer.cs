@@ -1591,6 +1591,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select at least one file to upload..
+        /// </summary>
+        public static string PleaseSelectFile {
+            get {
+                return ResourceManager.GetString("PleaseSelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your profile has been successfully updated..
         /// </summary>
         public static string ProfileUpdateSuccessful {

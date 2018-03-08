@@ -1,5 +1,8 @@
 ﻿namespace HRP.Models.PaymentProcess
 {
+    using HRP.Core.Extensions;
+
+    [XMLName("Row")]
     public class AttendanceRecordUploading
     {
         public int RowNumber { get; set; }

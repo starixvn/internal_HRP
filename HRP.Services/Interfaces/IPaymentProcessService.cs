@@ -14,6 +14,6 @@
 
         CommandResult CheckValidExcelFile(IFormFile file);
 
-        Task<CommandResult> InsertAttendanceAndSalaryUploadingAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<CommandResult> UploadAttendanceRecordFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
     }
 }

@@ -14,7 +14,7 @@
     {
         public AttendanceRecordReader(Stream file) : base(file)
         {
-            ValidationErrors = new List<ValidationResult>();
+            ValidationResults = new List<ValidationResult>();
             AttendanceRecordUploading = new List<AttendanceRecordUploading>();
         }
 
@@ -131,7 +131,7 @@
 
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 
@@ -141,7 +141,7 @@
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 
@@ -151,7 +151,7 @@
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 
@@ -161,7 +161,7 @@
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 
@@ -171,7 +171,7 @@
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 
@@ -181,7 +181,7 @@
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
             if (!result.IsValid)
             {
-                ValidationErrors.Add(result);
+                ValidationResults.Add(result);
             }
         }
 

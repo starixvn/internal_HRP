@@ -26,7 +26,7 @@
             get { return _headers = _headers ?? GetHeaders(); }
         }
 
-        public IList<ValidationResult> ValidationErrors { get; protected set; }
+        public IList<ValidationResult> ValidationResults { get; protected set; }
 
         public abstract bool IsValid { get; }
 

@@ -12,12 +12,16 @@
 
         public string FileName { get; set; }
 
-        public string XMLDocument { get; set; }
+        public string UploadingXMLDoc { get; set; }
+
+        public string ResultXMLDoc { get; set; }
 
         public int CreatedBy { get; set; }
 
         public override string GetSettingKey() => "PaymentProcess_CreateAttendanceRecordUploading";
 
-        public override bool IsValid() => CompanyId > 0 && CreatedBy > 0 && string.IsNullOrWhiteSpace(XMLDocument);
+        public override bool IsValid() => CompanyId > 0 && CreatedBy > 0
+            && !string.IsNullOrWhiteSpace(UploadingXMLDoc)
+            && !string.IsNullOrWhiteSpace(ResultXMLDoc);
     }
 }

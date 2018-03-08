@@ -79,7 +79,7 @@
             return result;
         }
 
-        public async Task<CommandResult> InsertAttendanceAndSalaryUploadingAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<CommandResult> UploadAttendanceRecordFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
             var process = new PaymentProcess
             {
@@ -95,13 +95,12 @@
         private async Task<CommandResult> ReadAttendanceFromExcelFileAsync(IFormFile file, PaymentProcess process)
         {
             var commandResult = new CommandResult();
-
             var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = process.CompanyId }).ConfigureAwait(false);
             var reader = new AttendanceRecordReader(file.OpenReadStream());
             var readResult = reader.ReadAttendanceRecords(employeeCodeList, process.CompanyCode);
             if (readResult is Success<IEnumerable<AttendanceRecordUploading>> success)
             {
-                commandResult = await CreateAttendanceRecordUploadingAsync(success.Value, process).ConfigureAwait(false);
+                commandResult = await CreateAttendanceRecordUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
 
                 return commandResult;
             }
@@ -112,7 +111,7 @@
             return commandResult;
         }
 
-        private async Task<CommandResult> CreateAttendanceRecordUploadingAsync(IEnumerable<AttendanceRecordUploading> records, PaymentProcess process)
+        private async Task<CommandResult> CreateAttendanceRecordUploadingAsync(IEnumerable<AttendanceRecordUploading> records, IEnumerable<ValidationResult> results, PaymentProcess process)
         {
             var criteria = new CreateAttendanceRecordUploadingCriteria
             {
@@ -120,7 +119,8 @@
                 CompanyId = process.CompanyId,
                 Month = process.Month,
                 FileName = process.AttendanceFileName,
-                XMLDocument = records.ToXML().ToString(),
+                UploadingXMLDoc = records.ToXML().ToString(),
+                ResultXMLDoc = results.ToXML().ToString(),
                 CreatedBy = sessionService.UserId
             };
 

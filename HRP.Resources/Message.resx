@@ -726,4 +726,7 @@
   <data name="IDNoIsDuplicated" xml:space="preserve">
     <value>The ID Number is duplicated</value>
   </data>
+  <data name="PleaseSelectFile" xml:space="preserve">
+    <value>Please select at least one file to upload.</value>
+  </data>
 </root>

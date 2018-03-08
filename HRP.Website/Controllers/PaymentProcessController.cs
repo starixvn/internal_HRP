@@ -13,6 +13,7 @@
     using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
+    using HRP.Resources;
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -150,9 +151,14 @@
                 ModelState.AddModelError(nameof(viewModel.DSTSalaryFile), validateDSTSalaryFile.Message);
             }
 
+            if (viewModel.AttendanceFile == null && viewModel.DSTSalaryFile == null)
+            {
+                ModelState.AddModelError(nameof(viewModel.CommonError), Message.PleaseSelectFile);
+            }
+
             if (ModelState.IsValid)
             {
-                var commandResult = await paymentProcessService.InsertAttendanceAndSalaryUploadingAsync(viewModel);
+                var commandResult = await paymentProcessService.UploadAttendanceRecordFileAsync(viewModel);
 
                 if (commandResult.IsSuccessful)
                 {
