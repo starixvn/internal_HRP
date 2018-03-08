@@ -2,7 +2,7 @@
 @using HRP.Resources
 @model int
 
-<div class="steps large clearfix">
+<div class="steps payment-process clearfix">
     <div class="step @(Model == (int)PaymentProcessStep.SelectMonthAndCompany ? "active" :
             Model > (int)PaymentProcessStep.SelectMonthAndCompany ? "finished" : string.Empty)">
         <label class="step-title select-working-date">Select Working <br> Month/Company</label>

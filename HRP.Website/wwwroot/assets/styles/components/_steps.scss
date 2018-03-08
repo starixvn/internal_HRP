@@ -12,7 +12,7 @@
         &:not(:last-child):after {
             display: inline-block;
             content: "";
-            height: 6px;
+            height: 4px;
             width: 70px;
             margin-left: 2px;
             background-color: #f3f3f3;        
@@ -75,13 +75,14 @@
         }
     }
 
-    &.large {
+    &.payment-process {
         .step-title {
             position: relative;
             display: flex;
             align-items: center;
-            line-height: 18px;
-            padding: 14px 20px 14px 56px;
+            height: 46px;
+            line-height: 16px;
+            padding: 8px 20px 8px 48px;
             border-radius: 40px;
     
             &:before {
@@ -89,19 +90,15 @@
                 align-items: center;
                 justify-content: center;
                 position: absolute;
-                left: 16px;
-                height: 30px;
-                width: 30px;
+                left: 12px;
+                height: 28px;
+                width: 28px;
                 margin-right: 8px;
                 padding: 3px 6px;
                 font-family: 'hrp';
                 font-weight: normal;
                 font-size: 18px;
                 color: $primary-color;
-            }
-            
-            &:last-child {
-                height: 66px;
             }
         }        
         

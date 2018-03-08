@@ -281,7 +281,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 .steps .step:not(:last-child):after {
   display: inline-block;
   content: "";
-  height: 6px;
+  height: 4px;
   width: 70px;
   margin-left: 2px;
   background-color: #f3f3f3;
@@ -344,23 +344,24 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   font-size: 13px;
 }
 
-.steps.large .step-title {
+.steps.payment-process .step-title {
   position: relative;
   display: flex;
   align-items: center;
-  line-height: 18px;
-  padding: 14px 20px 14px 56px;
+  height: 46px;
+  line-height: 16px;
+  padding: 8px 20px 8px 48px;
   border-radius: 40px;
 }
 
-.steps.large .step-title:before {
+.steps.payment-process .step-title:before {
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  left: 16px;
-  height: 30px;
-  width: 30px;
+  left: 12px;
+  height: 28px;
+  width: 28px;
   margin-right: 8px;
   padding: 3px 6px;
   font-family: 'hrp';
@@ -369,24 +370,20 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   color: #1973b2;
 }
 
-.steps.large .step-title:last-child {
-  height: 66px;
-}
-
-.steps.large .select-working-date:before {
+.steps.payment-process .select-working-date:before {
   content: "\e928";
 }
 
-.steps.large .upload:before {
+.steps.payment-process .upload:before {
   content: "\e929";
 }
 
-.steps.large .view-employee:before {
+.steps.payment-process .view-employee:before {
   content: "\e92a";
   font-size: 22px;
 }
 
-.steps.large .complete:before {
+.steps.payment-process .complete:before {
   content: "\e92b";
 }
 
