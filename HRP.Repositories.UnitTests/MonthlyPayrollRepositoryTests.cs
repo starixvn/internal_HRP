@@ -44,7 +44,6 @@
             var actual = await repository.GetDataFilterForIndexPageAsync(criteria);
 
             // Assert
-            Assert.IsType<EmployeeMonthlyPayrollViewModel>(actual);
             Assert.Equal(viewModel.Month, actual.Month);
             Assert.Equal(viewModel.CostCenterIds, actual.CostCenterIds);
             Assert.Equal(viewModel.EmployeeId, actual.EmployeeId);
@@ -58,6 +57,43 @@
             Assert.Equal(multiSelects.First().Checked, actual.HierarchyCompanies.First().Checked);
             Assert.Equal(multiSelects.First().ParentId, actual.HierarchyCompanies.First().ParentId);
             Assert.Empty(actual.HierarchyCompanies.First().Items);
+        }
+
+        [Fact]
+        public async Task GetMonthlyPayrollAsync_WhenCalled_ReturnAsExpectedViewModel()
+        {
+            // Arrange
+            var multiResultReader = FakeMultipleResultReader();
+            var criteria = FakeCriteia();
+            var viewModel = new List<MonthlyPayrollEmployeeInfoViewModel>
+            {
+                new MonthlyPayrollEmployeeInfoViewModel { PayrollId = 1 }
+            };
+            var basicSalaries = new List<MonthlyPayrollBasicSalaryViewModel>
+            {
+                new MonthlyPayrollBasicSalaryViewModel { PayrollId = 1 }
+            };
+            multiResultReader.ReadAsync<MonthlyPayrollEmployeeInfoViewModel>().Returns(viewModel);
+            multiResultReader.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().Returns(basicSalaries);
+            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new MonthlyPayrollRepository();
+
+            // Act
+            var actual = await repository.GetMonthlyPayrollAsync(criteria);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(viewModel.First().PayrollId, actual.First().PayrollId);
+            Assert.Equal(viewModel.First().EmployeeId, actual.First().EmployeeId);
+            Assert.Equal(viewModel.First().IDNo, actual.First().IDNo);
+            Assert.Equal(viewModel.First().Nickname, actual.First().Nickname);
+            Assert.Equal(viewModel.First().FullName, actual.First().FullName);
+            Assert.Equal(viewModel.First().CostCenter, actual.First().CostCenter);
+            Assert.Equal(basicSalaries.First(), actual.First().BasicSalary);
+            Assert.Equal(basicSalaries.First(), actual.First().Allowance);
+            Assert.Equal(viewModel.First().WorkingDays, actual.First().WorkingDays);
+            Assert.Equal(viewModel.First().EditSalaryPolicy, actual.First().EditSalaryPolicy);
+            Assert.Equal(viewModel.First().EditAllowancePolicy, actual.First().EditAllowancePolicy);
         }
 
         #region GetMonthlySalaryToUpdateAsync

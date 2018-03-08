@@ -27,7 +27,7 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" readonly />
+            <input type="text" class="control datetimepicker" value="@Html.DisplayFor(x => x.Month)" readonly />
             <span class="icon-calendar"></span>
         </div>
     </div>
@@ -38,18 +38,14 @@
         </select>
     </div>
     <div class="payment-duration">
-        <div class="date"><span class="required">*</span> The Payment Process Duration</div>
-        <div class="date">Start Date: <strong> 02/01/2018</strong></div>
-        <div class="date">Due Date: <strong>03/01/2018</strong></div>
+        <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
+        <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
+        <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
     </div>
 </form>
 
-<form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
+<div class="search-form form-filter">
     <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
-    <input asp-for="CompanyId" hidden />
-    <input asp-for="Month" hidden />
-    <input asp-for="CostCenterIds" hidden />
-    <input asp-for="EmployeeId" hidden>
 
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
@@ -63,18 +59,24 @@
         <label class="text">Div/Dept/Cost Center</label>
         <select class="control cost-center-multiselect width-200" id="CostCenterMultiSelect"></select>
     </div>
-    <div class="group">
-        <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control js-select2 width-92" asp-for="WorkingDays">
-            <option value="">@ViewLang.All</option>
-            <option value="22">22</option>
-            <option value="26">26</option>
-        </select>
-    </div>
-    <div class="group">
-        <button type="submit" class="button -primary">@ViewLang.Submit</button>
-    </div>
-</form>
+    <form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
+        <input asp-for="CompanyId" hidden />
+        <input asp-for="Month" hidden />
+        <input asp-for="CostCenterIds" hidden />
+        <input asp-for="EmployeeId" hidden>
+        <div class="group">
+            <label class="text">@ViewLang.WorkingDays</label>
+            <select class="control js-select2 width-92" asp-for="WorkingDays">
+                <option value="">@ViewLang.All</option>
+                <option value="22">22</option>
+                <option value="26">26</option>
+            </select>
+        </div>
+        <div class="group">
+            <button type="submit" class="button -primary">@ViewLang.Submit</button>
+        </div>
+    </form>
+</div>
 <div class="top-header -only-search-box">
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="Search" />
@@ -123,7 +125,7 @@
     <tbody>
         @if (Model.Employees != null && Model.Employees.Any())
         {
-            foreach (EmployeeMonthlyPayrollBasicInfo employee in Model.Employees)
+            foreach (MonthlyPayrollEmployeeInfoViewModel employee in Model.Employees)
             {
                 var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
                 <tr>

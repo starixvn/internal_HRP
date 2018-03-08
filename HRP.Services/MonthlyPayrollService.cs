@@ -12,15 +12,18 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly ICryptoService cryptoService;
         private readonly IMonthlyPayrollRepository monthlyPayrollRepository;
 
         public MonthlyPayrollService(
             ISessionService sessionService,
             IBaseService baseService,
+            ICryptoService cryptoService,
             IMonthlyPayrollRepository monthlyPayrollRepository = null)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.cryptoService = cryptoService;
             this.monthlyPayrollRepository = monthlyPayrollRepository ?? new MonthlyPayrollRepository();
         }
 
@@ -42,8 +45,9 @@
             return viewModel;
         }
 
-        public async Task<IEnumerable<EmployeeMonthlyPayrollBasicInfo>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
+        public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
         {
+            IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>();
             var criteria = new GetMonthlyPayrollCriteria
             {
                 UserId = sessionService.UserId,
@@ -53,9 +57,14 @@
                 EmployeeId = viewModel.EmployeeId,
                 WorkingDays = viewModel.WorkingDays
             };
-            var employees = await baseService.GetDataAsync<EmployeeMonthlyPayrollBasicInfo>(criteria).ConfigureAwait(false);
 
-            return employees;
+            if (criteria.IsValid())
+            {
+                monthlyPayrolls = await monthlyPayrollRepository.GetMonthlyPayrollAsync(criteria).ConfigureAwait(false);
+                DecryptMonthlyPayroll(monthlyPayrolls);
+            }
+
+            return monthlyPayrolls;
         }
 
         public async Task<CommandResult> ResetMonthlySalaryAsync()
@@ -72,6 +81,21 @@
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
+        {
+            foreach(var monthlyPayroll in monthlyPayrolls)
+            {
+                monthlyPayroll.BasicSalary.EBankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EBankingAmount);
+                monthlyPayroll.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking1Amount);
+                monthlyPayroll.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking2Amount);
+                monthlyPayroll.BasicSalary.CashAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.CashAmount);
+
+                monthlyPayroll.Allowance.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking1Amount);
+                monthlyPayroll.Allowance.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking2Amount);
+                monthlyPayroll.Allowance.CashAmount = cryptoService.Decrypt(monthlyPayroll.Allowance.CashAmount);
+            }
         }
     }
 }

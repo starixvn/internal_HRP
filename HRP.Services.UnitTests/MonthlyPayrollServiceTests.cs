@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -15,6 +16,7 @@
     {
         private ISessionService sessionService;
         private IBaseService baseService;
+        private ICryptoService cryptoService;
         private IMonthlyPayrollRepository monthlyPayrollRepository;
 
         #region GetDataFilterForIndexPageAsync
@@ -68,22 +70,66 @@
         #region GetMonthlyPayrollAsync
 
         [Fact]
-        public async Task GetMonthlyPayrollAsync_WhenCalled_ReturnAsExpectedData()
+        public async Task GetMonthlyPayrollAsync_CriteriaIsInvalid_ReturnEmptyList()
         {
             // Arrange
-            var viewModel = new EmployeeMonthlyPayrollViewModel
-            {
-                CostCenterIds = "1,2"
-            };
-            IEnumerable<EmployeeMonthlyPayrollBasicInfo> employees = new List<EmployeeMonthlyPayrollBasicInfo>();
+            var viewModel = new EmployeeMonthlyPayrollViewModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
-            baseService.GetDataAsync<EmployeeMonthlyPayrollBasicInfo>(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(employees);
 
             // Act
             var actual = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
 
             // Assert
-            Assert.Equal(employees, actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task GetMonthlyPayrollAsync_CriteriaIsValid_ReturnAsExpectedViewModel()
+        {
+            // Arrange
+            var plainText = "1234";
+            var viewModel = new EmployeeMonthlyPayrollViewModel
+            {
+                CompanyId = 1
+            };
+            var employeePayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>
+            {
+                new MonthlyPayrollEmployeeInfoViewModel { }
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
+            monthlyPayrollRepository.GetMonthlyPayrollAsync(Arg.Any<GetMonthlyPayrollCriteria>()).Returns(employeePayrolls);
+
+            // Act
+            var actual = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(employeePayrolls.First().PayrollId, actual.First().PayrollId);
+            Assert.Equal(employeePayrolls.First().EmployeeId, actual.First().EmployeeId);
+            Assert.Equal(employeePayrolls.First().IDNo, actual.First().IDNo);
+            Assert.Equal(employeePayrolls.First().Nickname, actual.First().Nickname);
+            Assert.Equal(employeePayrolls.First().FullName, actual.First().FullName);
+            Assert.Equal(employeePayrolls.First().CostCenter, actual.First().CostCenter);
+            Assert.Equal(employeePayrolls.First().WorkingDays, actual.First().WorkingDays);
+            Assert.Equal(employeePayrolls.First().EditSalaryPolicy, actual.First().EditSalaryPolicy);
+            Assert.Equal(employeePayrolls.First().EditAllowancePolicy, actual.First().EditAllowancePolicy);
+
+            Assert.Equal(employeePayrolls.First().BasicSalary.EbankingCurrencyCode, actual.First().BasicSalary.EbankingCurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.EBankingAmount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking1CurrencyCode, actual.First().BasicSalary.DirectBanking1CurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking2CurrencyCode, actual.First().BasicSalary.DirectBanking2CurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.CashCurrencyCode, actual.First().BasicSalary.CashCurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
+
+            Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking1CurrencyCode, actual.First().BasicSalary.DirectBanking1CurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking2CurrencyCode, actual.First().BasicSalary.DirectBanking2CurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.CashCurrencyCode, actual.First().BasicSalary.CashCurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
         }
 
         #endregion GetMonthlyPayrollAsync
@@ -141,6 +187,11 @@
             return Substitute.For<IBaseService>();
         }
 
+        private static ICryptoService FakeCryptoService()
+        {
+            return Substitute.For<ICryptoService>();
+        }
+
         private static IMonthlyPayrollRepository FakeMonthlyPayrollRepository()
         {
             return Substitute.For<IMonthlyPayrollRepository>();
@@ -150,8 +201,9 @@
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
+            cryptoService = FakeCryptoService();
             monthlyPayrollRepository = FakeMonthlyPayrollRepository();
-            var service = new MonthlyPayrollService(sessionService, baseService, monthlyPayrollRepository);
+            var service = new MonthlyPayrollService(sessionService, baseService, cryptoService, monthlyPayrollRepository);
 
             return service;
         }

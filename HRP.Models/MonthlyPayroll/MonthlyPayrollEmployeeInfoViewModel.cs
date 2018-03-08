@@ -4,7 +4,7 @@
     using HRP.Core.Enumerations;
 
     [Serializable]
-    public class EmployeeMonthlyPayrollBasicInfo
+    public class MonthlyPayrollEmployeeInfoViewModel
     {
         public long PayrollId { get; set; }
 
@@ -17,6 +17,10 @@
         public string FullName { get; set; }
 
         public string CostCenter { get; set; }
+
+        public MonthlyPayrollBasicSalaryViewModel BasicSalary { get; set; } = new MonthlyPayrollBasicSalaryViewModel();
+
+        public MonthlyPayrollBasicSalaryViewModel Allowance { get; set; } = new MonthlyPayrollBasicSalaryViewModel();
 
         public int WorkingDays { get; set; }
 

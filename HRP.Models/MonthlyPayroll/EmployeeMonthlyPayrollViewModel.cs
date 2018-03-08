@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
@@ -11,7 +12,14 @@
         private readonly JsonSerializerSettings jsonSerializerSettings =
             new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
+        [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime DueDate { get; set; }
 
         public int CompanyId { get; set; }
 
@@ -23,7 +31,7 @@
 
         public int? WorkingDays { get; set; }
 
-        public IEnumerable<EmployeeMonthlyPayrollBasicInfo> Employees { get; set; } = new List<EmployeeMonthlyPayrollBasicInfo>();
+        public IEnumerable<MonthlyPayrollEmployeeInfoViewModel> Employees { get; set; } = new List<MonthlyPayrollEmployeeInfoViewModel>();
 
         public IEnumerable<MultiSelectViewModel> HierarchyCompanies { get; set; } = new List<MultiSelectViewModel>();
 

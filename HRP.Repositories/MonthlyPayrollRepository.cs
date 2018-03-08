@@ -1,5 +1,6 @@
 ﻿namespace HRP.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Fanex.Data;
@@ -40,6 +41,27 @@
                     });
 
                     return viewModel;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                {
+                    var monhtlyPayrolls = await multi.ReadAsync<MonthlyPayrollEmployeeInfoViewModel>().ConfigureAwait(false);
+                    var basicSalaries = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
+                    var allowances = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
+
+                    foreach (var monhtlyPayroll in monhtlyPayrolls)
+                    {
+                        monhtlyPayroll.BasicSalary = basicSalaries.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
+                        monhtlyPayroll.Allowance = allowances.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
+                    }
+
+                    return monhtlyPayrolls;
                 }
             }
         }

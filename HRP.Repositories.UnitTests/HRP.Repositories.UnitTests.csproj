@@ -92,6 +92,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj">
+      <Project>{4215E3C1-C316-400C-95A6-AE408B1D0016}</Project>
+      <Name>HRP.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj">
       <Project>{fb14dd5e-fe8c-433d-be71-1dcb5542a975}</Project>
       <Name>HRP.Models</Name>

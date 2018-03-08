@@ -754,6 +754,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Due Date.
+        /// </summary>
+        public static string DueDate {
+            get {
+                return ResourceManager.GetString("DueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duty Meal.
         /// </summary>
         public static string DutyMeal {
@@ -1974,6 +1983,15 @@ namespace HRP.Resources {
         public static string TelephoneNo {
             get {
                 return ResourceManager.GetString("TelephoneNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Payment Process Duration.
+        /// </summary>
+        public static string ThePaymentProcessDuration {
+            get {
+                return ResourceManager.GetString("ThePaymentProcessDuration", resourceCulture);
             }
         }
         

@@ -819,4 +819,10 @@
   <data name="EBanking" xml:space="preserve">
     <value>e-Banking</value>
   </data>
+  <data name="DueDate" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="ThePaymentProcessDuration" xml:space="preserve">
+    <value>The Payment Process Duration</value>
+  </data>
 </root>
