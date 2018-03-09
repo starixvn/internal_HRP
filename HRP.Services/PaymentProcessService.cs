@@ -53,7 +53,7 @@
 
         public CommandResult CheckValidExcelFile(IFormFile file)
         {
-            var result = new CommandResult();
+            var result = new CommandResult { Code = 0 };
 
             if (file != null)
             {
@@ -74,26 +74,44 @@
                     result.Message = string.Empty;
                 }
             }
-            else
-            {
-                result.Code = 0;
-                result.Message = string.Empty;
-            }
 
             return result;
         }
 
         public async Task<CommandResult> UploadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
-            var process = new PaymentProcess
+            var commandResult = new CommandResult { Code = 0 };
+            if (viewModel.AttendanceFile != null)
             {
-                CompanyId = viewModel.CompanyId,
-                Month = viewModel.SelectedTime,
-                AttendanceFileName = viewModel.AttendanceFile.FileName
-            };
+                var reader = new AttendanceReader(viewModel.AttendanceFile.OpenReadStream());
+                var employeeCodeList = await GetDataForReadAttendanceFileAsync(viewModel.CompanyId).ConfigureAwait(false);
+                var readResult = reader.ReadAttendances(employeeCodeList, viewModel.CompanyCode);
+                if (readResult is Success<IEnumerable<AttendanceUploading>> success)
+                {
+                    var process = new PaymentProcess
+                    {
+                        CompanyId = viewModel.CompanyId,
+                        Month = viewModel.SelectedTime,
+                        AttendanceFileName = viewModel.AttendanceFile.FileName
+                    };
+                    commandResult = await CreateAttendanceUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
 
-            var result = await ReadAttendanceFromExcelFileAsync(viewModel.AttendanceFile, process).ConfigureAwait(false);
-            return result;
+                    return commandResult;
+                }
+
+                var failure = (Failure<IEnumerable<AttendanceUploading>>)readResult;
+                commandResult.Code = 1;
+                commandResult.Message = failure.Message;
+            }
+
+            return commandResult;
+        }
+
+        private async Task<IEnumerable<string>> GetDataForReadAttendanceFileAsync(int companyId)
+        {
+            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
+
+            return employeeCodeList;
         }
 
         public async Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month)
@@ -116,25 +134,6 @@
         public CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
             return new CommandResult { Code = 0 };
-        }
-
-        private async Task<CommandResult> ReadAttendanceFromExcelFileAsync(IFormFile file, PaymentProcess process)
-        {
-            var commandResult = new CommandResult();
-            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = process.CompanyId }).ConfigureAwait(false);
-            var reader = new AttendanceReader(file.OpenReadStream());
-            var readResult = reader.ReadAttendances(employeeCodeList, process.CompanyCode);
-            if (readResult is Success<IEnumerable<AttendanceUploading>> success)
-            {
-                commandResult = await CreateAttendanceUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
-
-                return commandResult;
-            }
-
-            var failure = (Failure<IEnumerable<AttendanceUploading>>)readResult;
-            commandResult.Code = 1;
-            commandResult.Message = failure.Message;
-            return commandResult;
         }
 
         private async Task<CommandResult> CreateAttendanceUploadingAsync(IEnumerable<AttendanceUploading> records, IEnumerable<ValidationResult> results, PaymentProcess process)

@@ -268,6 +268,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BVI.
         /// </summary>
         public static string BVI {
@@ -345,6 +354,15 @@ namespace HRP.Resources {
         public static string Check {
             get {
                 return ResourceManager.GetString("Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose file.
+        /// </summary>
+        public static string ChooseFile {
+            get {
+                return ResourceManager.GetString("ChooseFile", resourceCulture);
             }
         }
         
@@ -669,6 +687,15 @@ namespace HRP.Resources {
         public static string Deductions {
             get {
                 return ResourceManager.GetString("Deductions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -2055,6 +2082,33 @@ namespace HRP.Resources {
         public static string TypeOfBankAccount {
             get {
                 return ResourceManager.GetString("TypeOfBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        public static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Attendance File (Max: 5MB).
+        /// </summary>
+        public static string UploadAttendanceFile {
+            get {
+                return ResourceManager.GetString("UploadAttendanceFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload DST NET Salary File (Max: 5MB).
+        /// </summary>
+        public static string UploadDSTNetSalaryFile {
+            get {
+                return ResourceManager.GetString("UploadDSTNetSalaryFile", resourceCulture);
             }
         }
         

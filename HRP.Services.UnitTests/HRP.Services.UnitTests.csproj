@@ -246,6 +246,7 @@
     <Compile Include="EmployeeServiceTests.cs" />
     <Compile Include="EmployeePayrollServiceTests.cs" />
     <Compile Include="FunctionServiceTests.cs" />
+    <Compile Include="PaymentProcessServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefResourceServiceTests.cs" />
     <Compile Include="TwoFactorAuthenticationServiceTests.cs" />

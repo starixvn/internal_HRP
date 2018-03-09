@@ -26,7 +26,7 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
+            <input type="text" class="control datetimepicker" disabled value="@Model.SelectedTime.ToString("MM-yyyy")" />
             <span class="icon-calendar"></span>
         </div>
     </div>
@@ -43,51 +43,58 @@
     </div>
 </div>
 
-<div class="msg-error -has-border">
-    The upload file size can not exceed 5MB. Please use a smaller size file!
-</div>
+<form class="form-information upload-files" id="uploadFilesForm" enctype="multipart/form-data" asp-action="UploadAttendanceAndSalary">
+    <div class="list-message-error hidden">
+        <span asp-validation-for="CompanyId" class="message"></span>
+        <span asp-validation-for="SelectedTime" class="message"></span>
+        <span asp-validation-for="AttendanceFile" class="message"></span>
+        <span asp-validation-for="DSTNetSalaryFile" class="message"></span>
+        <span asp-validation-for="CommonError" class="message"></span>
+    </div>
 
-<form class="form-information upload-files">
+    <input type="hidden" asp-for="CommonError" />
+    <input type="hidden" asp-for="CompanyId" />
+    <input type="hidden" asp-for="SelectedTime" />
+    <input type="file" asp-for="AttendanceFile" class="hidden" />
+    <input type="file" asp-for="DSTNetSalaryFile" class="hidden" />
+
     <div class="text width-660">
-        Update Attendance File (max: 5MB)
+        @ViewLang.UploadAttendanceFile
         <div class="download-template">
             <span class="icon-excel"></span>
-            <a class="" href="#">Download Template</a>
+            <a class="" href="#">@ViewLang.DownloadTemplate</a>
         </div>
     </div>
     <div class="group-control width-660">
         <div class="inputfile-box">
-            <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
             <label for="file" class="file">
                 <span id="file-name" class="file-box">
-                    <span class="file-name">Map_chart_sample.xlsx</span>
+                    <span class="file-name js-attendanceFileName">Map_chart_sample.xlsx</span>
                     <span class="icon-successful"></span>
                 </span>
-                <span class="button -browser">Browse</span>
+                <span class="button -browser js-browseAttendance">@ViewLang.Browse</span>
             </label>
         </div>
-        <button class="button -delete" disabled>Delete</button>
+        <button type="button" class="button -delete" disabled>@ViewLang.Delete</button>
     </div>
-
     <div class="text width-660">
-        Update DST NET Salary File (max: 5MB)
+        @ViewLang.UploadDSTNetSalaryFile
         <div class="download-template">
             <span class="icon-excel"></span>
-            <a class="" href="#">Download Template</a>
+            <a class="" href="#">@ViewLang.DownloadTemplate</a>
         </div>
     </div>
     <div class="group-control width-660">
         <div class="inputfile-box">
-            <input type="file" id="file" class="inputfile" onchange='uploadFile(this)'>
             <label for="file" class="file">
                 <span class="file-box">
-                    <span id="file-name" class="file-name no-file">Choose file</span>
+                    <span id="file-name" class="file-name no-file js-dstNetSalaryFileName">@ViewLang.ChooseFile</span>
                     <span class="icon-close"></span>
                 </span>
-                <span class="button -browser">Browse</span>
+                <span class="button -browser js-browseDSTNetSalary">@ViewLang.Browse</span>
             </label>
         </div>
-        <button class="button -delete">Delete</button>
+        <button type="button" class="button -delete">@ViewLang.Delete</button>
     </div>
 
     <div class="text percent-validation-text">Percent Completed Validation Rules</div>
@@ -102,72 +109,13 @@
     <div class="info-list" id="validationFilesResult">
     </div>
 
-    @*<div class="info-list">
-            <div class="msg-success -no-border">Attendance File: There is no failed record in the total of 5 record(s).</div>
-            <div class="msg-warning -no-border">DST NET Salary File: Number of error(s): 4</div>
-            <table class="table table-bordered">
-                <thead class="thead-light">
-                    <tr>
-                        <th class="row-no">Row No</th>
-                        <th class="error-desc">Error Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">3</td>
-                        <td>The ID Name doesn't match to the name in the system</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">9</td>
-                        <td>The full name doesn't exist in the system</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>*@
-
     <div class="group-control list-button">
-        <button type="submit" class="button -second">Back</button>
-        <button type="submit" class="button -add" disabled>Upload</button>
-        <button type="submit" class="button -primary">@ViewLang.Next</button>
+        <button type="button" class="button -second">@ViewLang.Back</button>
+        <button type="submit" class="button -add" id="uploadFiles">@ViewLang.Upload</button>
+        <button type="button" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
-<form enctype="multipart/form-data" id="uploadFilesForm" asp-action="UploadAttendanceAndSalary">
-    <div class="list-message-error hidden">
-        <span asp-validation-for="AttendanceFile" class="message"></span>
-        <span asp-validation-for="DSTNetSalaryFile" class="message"></span>
-        <span asp-validation-for="CommonError" class="message"></span>
-    </div>
-    <input type="hidden" asp-for="CommonError" />
-    <input type="hidden" asp-for="CompanyId" />
-    <div>
-        <div class="group">
-            <label class="text">@ViewLang.MonthYear</label>
-            <div class="calendar">
-                <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
-                <span class="icon-calendar"></span>
-            </div>
-        </div>
-        <div class="group">
-            <label class="text">@ViewLang.Company</label>
-            <select class="control" disabled>
-                <option value="@Model.CompanyId">@Model.CompanyCode</option>
-            </select>
-        </div>
-    </div>
 
-    <div class="group">
-        <button type="button" class="button -primary">@ViewLang.DownloadTemplate</button>
-    </div>
-
-    <div class="group">
-        <button type="button" class="button -primary">@ViewLang.DownloadTemplate</button>
-    </div>
-
-    <div>Attendance: <input asp-for="AttendanceFile" type="file"></div>
-    <div>DSTSalary: <input asp-for="DSTNetSalaryFile" type="file"></div>
-
-    <button type="submit" class="button -primary" id="uploadFiles">Upload</button>
-</form>
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>

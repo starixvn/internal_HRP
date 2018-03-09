@@ -5,7 +5,11 @@
         SelectedTime: '#SelectedTime',
         AttendanceFile: '#AttendanceFile',
         DSTNetSalaryFile: '#DSTNetSalaryFile',
-        ValidationFilesResult: '#validationFilesResult'
+        ValidationFilesResult: '#validationFilesResult',
+        BrowseAttendance: '.js-browseAttendance',
+        BrowseDSTNetSalary: '.js-browseDSTNetSalary',
+        AttendanceFileName: '.js-attendanceFileName',
+        DSTNetSalaryFileName: '.js-dstNetSalaryFileName'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -92,23 +96,36 @@
 
     function registerEventChangeFileExcel($form) {
         $(domElement.AttendanceFile).on('change', function () {
-            var isValid = validateFileExcel($form, "AttendanceFile", this.files[0]);
-            if (!isValid) {
-                $(this).val('');
-            }
+            var file = this.files[0];
+            var isValid = validateFileExcel($form, "AttendanceFile", file);
+            if (isValid) {
+                $(domElement.AttendanceFileName).text(file.name);
+            } 
         });
 
         $(domElement.DSTNetSalaryFile).on('change', function () {
-            var isValid = validateFileExcel($form, "DSTNetSalaryFile", this.files[0]);
-            if (!isValid) {
-                $(this).val('');
-            }
+            var file = this.files[0];
+            var isValid = validateFileExcel($form, "DSTNetSalaryFile", file);
+            if (isValid) {
+                $(domElement.DSTNetSalaryFileName).text(file.name);
+            } 
+        });
+    }
+
+    function registerEventBrowseFileExcel() {
+        $(domElement.BrowseAttendance).on('click', function () {
+            $(domElement.AttendanceFile).trigger('click');
+        });
+
+        $(domElement.BrowseDSTNetSalary).on('click', function () {
+            $(domElement.DSTNetSalaryFile).trigger('click');
         });
     }
 
     function init() {
         var $form = $(domElement.UploadFilesForm);
         registerEventChangeFileExcel($form);
+        registerEventBrowseFileExcel();
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         registerEventSubmitForm($form);
     }

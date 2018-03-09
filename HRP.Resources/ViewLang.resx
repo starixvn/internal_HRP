@@ -827,11 +827,29 @@
   </data>
   <data name="Check" xml:space="preserve">
     <value>Check</value>
-    </data>
+  </data>
   <data name="ErrorDescription" xml:space="preserve">
     <value>Error Description</value>
   </data>
   <data name="RowNo" xml:space="preserve">
     <value>Row No</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="ChooseFile" xml:space="preserve">
+    <value>Choose file</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="UploadAttendanceFile" xml:space="preserve">
+    <value>Upload Attendance File (Max: 5MB)</value>
+  </data>
+  <data name="UploadDSTNetSalaryFile" xml:space="preserve">
+    <value>Upload DST NET Salary File (Max: 5MB)</value>
   </data>
 </root>
