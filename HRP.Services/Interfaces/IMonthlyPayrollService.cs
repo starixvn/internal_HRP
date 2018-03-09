@@ -17,5 +17,7 @@
         Task<CommandResult> ResetMonthlySalaryAsync();
 
         Task<CommandResult> EditMonthlySalaryAsync();
+
+        Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(long payrollId);
     }
 }

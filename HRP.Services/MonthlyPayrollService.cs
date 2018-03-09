@@ -1,7 +1,9 @@
 ﻿namespace HRP.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
@@ -96,6 +98,29 @@
             return commandResult;
         }
 
+        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(long payrollId)
+        {
+            var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (var multiResults = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                {
+                    var model = new MonthlyAllowancesViewModel
+                    {
+                        Allowance = multiResults.Read<MonthlyAllowanceModel>().FirstOrDefault(),
+                        Additions = multiResults.Read<MonthlyAllowanceAdditionModel>(),
+                        Deductions = multiResults.Read<MonthlyAllowanceDeductionModel>()
+                    };
+
+                    DecryptMonthlyAllowance(model.Allowance);
+                    DecryptMonthlyAllowanceAdditions(model.Additions);
+                    DecryptMonthlyAllowanceDeductions(model.Deductions);
+
+                    return model;
+                }
+            }
+        }
+
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
         {
             foreach (var monthlyPayroll in monthlyPayrolls)
@@ -108,6 +133,31 @@
                 monthlyPayroll.Allowance.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking1Amount);
                 monthlyPayroll.Allowance.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking2Amount);
                 monthlyPayroll.Allowance.CashAmount = cryptoService.Decrypt(monthlyPayroll.Allowance.CashAmount);
+            }
+        }
+
+        private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
+        {
+            allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
+            allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
+            allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
+        }
+
+        private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)
+        {
+            foreach (var addition in additions)
+            {
+                addition.NetAllowance = cryptoService.Decrypt(addition.NetAllowance);
+                addition.TotalAmount = cryptoService.Decrypt(addition.TotalAmount);
+            }
+        }
+
+        private void DecryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
+        {
+            foreach (var deduction in deductions)
+            {
+                deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
+                deduction.TotalAmount = cryptoService.Decrypt(deduction.TotalAmount);
             }
         }
     }

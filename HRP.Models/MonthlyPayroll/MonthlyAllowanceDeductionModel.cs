@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
-    public class MonthlyAllowanceDeduction
+    public class MonthlyAllowanceDeductionModel
     {
         public long PayrollId { get; set; }
 
