@@ -183,15 +183,11 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public IActionResult AttendanceValidationResult(int companyId, DateTime month)
+        public async Task<IActionResult> ValidationFilesResult(int companyId, DateTime month)
         {
-            var errors = paymentProcessService.GetAttendanceUploadingResult(companyId, month);
-            var viewModel = new ValidationFileResultViewModel
-            {
-                ValidationErrors = errors
-            };
+            var viewModel = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
 
-            return PartialView("_AttendanceValidationResult", viewModel);
+            return PartialView("_ValidationFilesResult", viewModel);
         }
 
         #region Monthly Payroll

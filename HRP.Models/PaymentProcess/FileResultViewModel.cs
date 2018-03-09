@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using HRP.Core.Model;
 
-    public class ValidationFileResultViewModel
+    public class FileResultViewModel
     {
         public int TotalRow { get; set; }
 

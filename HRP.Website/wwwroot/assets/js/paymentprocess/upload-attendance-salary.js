@@ -1,9 +1,11 @@
 ﻿var uploadAttendanceAndSalary = (function ($) {
     var domElement = {
         UploadFilesForm: '#uploadFilesForm',
+        CompanyId: '#CompanyId',
         SelectedTime: '#SelectedTime',
         AttendanceFile: '#AttendanceFile',
-        DSTNetSalaryFile: '#DSTNetSalaryFile'
+        DSTNetSalaryFile: '#DSTNetSalaryFile',
+        ValidationFilesResult: '#validationFilesResult'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -42,10 +44,29 @@
 
     function onUploadSuccess(response) {
         if (response.isSuccessful) {
-            alert('success!');
+            renderValidationResult();
         } else {
             $(domElement.UploadFilesForm).validate().showErrors(response.errors);
         }
+    }
+
+    function renderValidationResult() {
+        var $companyId = $(domElement.CompanyId),
+            $selectedTime = $(domElement.SelectedTime);
+
+        $.ajax({
+            type: 'GET',
+            url: commonFunctions.rootURL + 'PaymentProcess/ValidationFilesResult',
+            dataType: 'html',
+            data: {
+                "companyId": $companyId.val(),
+                "month": $selectedTime.val()
+            },
+            success: function (response) {
+                $(domElement.ValidationFilesResult).html(response);
+            },
+            error: commonFunctions.handleAjaxError
+        });
     }
 
     function registerEventSubmitForm($form) {

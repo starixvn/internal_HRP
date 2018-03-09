@@ -1,0 +1,14 @@
+﻿@using HRP.Models.PaymentProcess
+@model ValidationFilesResultViewModel
+
+@if (Model.AttendanceFile != null)
+{
+    @Html.Partial("_AttendanceValidationResult", Model.AttendanceFile)
+
+}
+
+@if (Model.DSTNetSalaryFile != null)
+{
+    @Html.Partial("_DSTNetSalaryValidationResult", Model.DSTNetSalaryFile)
+
+}

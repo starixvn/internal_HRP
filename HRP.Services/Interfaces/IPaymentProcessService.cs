@@ -17,7 +17,7 @@
 
         Task<CommandResult> UploadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
 
-        IEnumerable<ValidationResult> GetAttendanceUploadingResult(int companyId, DateTime month);
+        Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month);
 
         CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
     }

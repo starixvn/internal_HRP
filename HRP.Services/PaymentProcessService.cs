@@ -12,6 +12,8 @@
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.PaymentProcess;
+    using HRP.Repositories;
+    using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
 
@@ -19,11 +21,13 @@
     {
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
+        private readonly IPaymentProcessRepository paymentProcessRepository;
 
-        public PaymentProcessService(IBaseService baseService, ISessionService sessionService)
+        public PaymentProcessService(IBaseService baseService, ISessionService sessionService, IPaymentProcessRepository paymentProcessRepository = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
+            this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
         }
 
         public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)
@@ -92,9 +96,21 @@
             return result;
         }
 
-        public IEnumerable<ValidationResult> GetAttendanceUploadingResult(int companyId, DateTime month)
+        public async Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month)
         {
-            throw new NotImplementedException();
+            var criteria = new GetValidationFilesResultCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            ValidationFilesResultViewModel result = null;
+            if (criteria.IsValid())
+            {
+                result = await paymentProcessRepository.GetValidationFilesResultAsync(criteria).ConfigureAwait(false);
+            }
+
+            return result;
         }
 
         public CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)

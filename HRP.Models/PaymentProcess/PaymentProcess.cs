@@ -12,6 +12,10 @@
 
         public string AttendanceFileName { get; set; }
 
+        public int AttendanceTotalRow { get; set; }
+
         public string DSTNetSalaryFileName { get; set; }
+
+        public int DSTNetSalaryTotalRow { get; set; }
     }
 }
