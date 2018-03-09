@@ -1,14 +1,9 @@
 ﻿namespace HRP.Models.BankAccount
 {
+    using HRP.Core.Enumerations;
+
     public class BankAccount
     {
-        public BankAccount()
-        {
-            BankType = 1;
-            AccountType = 1;
-            IsActive = true;
-        }
-
         public int BankAccountId { get; set; }
 
         public int EmployeeId { get; set; }
@@ -17,7 +12,7 @@
 
         public int CompanyId { get; set; }
 
-        public int BankType { get; set; }
+        public int BankType { get; set; } = (int)BankTypes.Ebanking;
 
         public string BankTypeName { get; set; }
 
@@ -33,12 +28,12 @@
 
         public string AccountNumber { get; set; }
 
-        public int AccountType { get; set; }
+        public int AccountType { get; set; } = (int)BankAccountType.Savings;
 
         public string AccountTypeName { get; set; }
 
         public string BeneficiaryName { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

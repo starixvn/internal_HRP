@@ -4,7 +4,7 @@
     using Criteria.BankAccount;
     using Xunit;
 
-    public class UpdateBankAccountCriteriaTest
+    public class EditBankAccountCriteriaTest
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
@@ -27,9 +27,9 @@
             Assert.True(createBankAccountCriteria.IsValid() == expectedResult);
         }
 
-        private static UpdateBankAccountCriteria GetBaseCriteria()
+        private static EditBankAccountCriteria GetBaseCriteria()
         {
-            return new UpdateBankAccountCriteria
+            return new EditBankAccountCriteria
             {
                 Id = 1,
                 EmployeeId = 1,

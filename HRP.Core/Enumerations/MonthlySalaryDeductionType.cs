@@ -1,6 +1,6 @@
 namespace HRP.Core.Enumerations
 {
-    public enum MonhtlySalaryDeductionType
+    public enum MonthlySalaryDeductionType
     {
         Absenteeism = 1,
         Tardiness,

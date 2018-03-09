@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.BankAccount
 {
-    public class UpdateBankAccountCriteria : BankAccountBaseCriteria
+    public class EditBankAccountCriteria : BankAccountBaseCriteria
     {
         public int UpdatedBy { get; set; }
 

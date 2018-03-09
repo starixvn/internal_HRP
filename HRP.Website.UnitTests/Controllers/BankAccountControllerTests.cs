@@ -129,7 +129,7 @@
             };
             var viewModel = new CreateBankAccountViewModel();
             ArrangeForCreateBankAccount(employee, resources);
-            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.CreateBankAccountInPayroll(viewModel);
@@ -157,7 +157,7 @@
             };
             var viewModel = new CreateBankAccountViewModel();
             ArrangeForCreateBankAccount(employee, resources);
-            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.CreateBankAccountInPayroll(viewModel);
@@ -178,13 +178,11 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             ArrangeForCreateBankAccount(employee, resources);
 
             // Test
@@ -202,15 +200,12 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
             ArrangeForCreateBankAccount(employee, resources);
             controller.ModelState.AddModelError("key", "message");
 
@@ -240,7 +235,7 @@
             };
             var viewModel = new CreateBankAccountViewModel();
             ArrangeForCreateBankAccount(employee, resources);
-            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.CreateBankAccount(viewModel);
@@ -268,7 +263,7 @@
             };
             var viewModel = new CreateBankAccountViewModel();
             ArrangeForCreateBankAccount(employee, resources);
-            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.CreateBankAccount(viewModel);
@@ -333,19 +328,14 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var bankAccount = new BankAccount();
-
             var result = new CommandResult
             {
                 Code = 0,
             };
-
             var viewModel = new EditBankAccountViewModel();
-
             ArrangeForEditBankAccount(bankAccount, resources);
-
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+            bankAccountService.EditBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.EditBankAccount(viewModel);
@@ -362,19 +352,14 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var bankAccount = new BankAccount();
-
             var result = new CommandResult
             {
                 Code = 1,
             };
-
             var viewModel = new EditBankAccountViewModel();
-
             ArrangeForEditBankAccount(bankAccount, resources);
-
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+            bankAccountService.EditBankAccountAsync(viewModel).Returns(result);
 
             // Test
             var actual = await controller.EditBankAccount(viewModel);

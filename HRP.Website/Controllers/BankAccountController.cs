@@ -7,6 +7,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.BankAccount;
+    using HRP.Core.Model;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.BankAccount;
@@ -91,14 +92,12 @@
         {
             if (ModelState.IsValid)
             {
-                var criteria = PrepareCreateBankAccountCriteria(viewModel);
-                var result = await baseService.ExecuteNonQueryAsync(criteria);
-
-                viewModel.IsSuccessful = result.IsSuccessful;
+                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(viewModel);
+                viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    ModelState.AddModelError(string.Empty, commandResult.Message);
                 }
             }
 
@@ -112,14 +111,12 @@
         {
             if (ModelState.IsValid)
             {
-                var criteria = PrepareCreateBankAccountCriteria(viewModel);
-                var result = await baseService.ExecuteNonQueryAsync(criteria);
-
-                viewModel.IsSuccessful = result.IsSuccessful;
+                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(viewModel);
+                viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    ModelState.AddModelError(string.Empty, commandResult.Message);
                 }
             }
 
@@ -139,7 +136,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> EditBankAccount(int bankAccountId)
         {
-            var bankAccount = await bankAccountService.GetBankAccountByIdAsync(bankAccountId);
+            BankAccount bankAccount = await bankAccountService.GetBankAccountByIdAsync(bankAccountId);
 
             var viewModel = new EditBankAccountViewModel
             {
@@ -171,9 +168,7 @@
         {
             if (ModelState.IsValid)
             {
-                UpdateBankAccountCriteria criteria = PrepareUpdateBankAccountCriteria(viewModel);
-                var result = await baseService.ExecuteNonQueryAsync(criteria);
-
+                CommandResult result = await bankAccountService.EditBankAccountAsync(viewModel);
                 viewModel.IsSuccessful = result.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)
@@ -189,27 +184,6 @@
             return View(viewModel);
         }
 
-        private CreateBankAccountCriteria PrepareCreateBankAccountCriteria(CreateBankAccountViewModel bankAccount)
-        {
-            var criteria = new CreateBankAccountCriteria
-            {
-                EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankTypeId,
-                BankName = bankAccount.BankName,
-                BankBranch = bankAccount.BankBranch,
-                BankAddress = bankAccount.BankAddress,
-                BankSwiftCode = bankAccount.BankSwiftCode,
-                AccountName = bankAccount.AccountName,
-                AccountNumber = bankAccount.AccountNumber,
-                AccountType = bankAccount.AccountTypeId,
-                BeneficiaryName = bankAccount.BeneficiaryName,
-                IsActive = bankAccount.IsActive,
-                CreatedBy = sessionService.UserId
-            };
-
-            return criteria;
-        }
-
         private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 1)
         {
             Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
@@ -222,30 +196,7 @@
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
-
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-        }
-
-        private UpdateBankAccountCriteria PrepareUpdateBankAccountCriteria(EditBankAccountViewModel bankAccount)
-        {
-            var criteria = new UpdateBankAccountCriteria
-            {
-                Id = bankAccount.BankAccountId,
-                EmployeeId = bankAccount.EmployeeId,
-                BankType = bankAccount.BankTypeId,
-                BankName = bankAccount.BankName,
-                BankBranch = bankAccount.BankBranch,
-                BankAddress = bankAccount.BankAddress,
-                BankSwiftCode = bankAccount.BankSwiftCode,
-                AccountName = bankAccount.AccountName,
-                AccountNumber = bankAccount.AccountNumber,
-                AccountType = bankAccount.AccountTypeId,
-                BeneficiaryName = bankAccount.BeneficiaryName,
-                IsActive = bankAccount.IsActive,
-                UpdatedBy = sessionService.UserId
-            };
-
-            return criteria;
         }
     }
 }
