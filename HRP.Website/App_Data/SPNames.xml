@@ -161,5 +161,6 @@
     <Setting Key="MonthlyPayroll_GetSalaryToUpdate" SpName="MonthlyPayroll_GetSalaryToUpdate" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_ResetSalary" SpName="MonthlyPayroll_ResetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_UpdateSalary" SpName="MonthlyPayroll_UpdateSalary" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetAllowances" SpName="MonthlyPayroll_GetAllowances" DbName="bodb_HRP" Plain="0"></Setting>   
   </Function>
 </Functions>
