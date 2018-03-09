@@ -9,5 +9,7 @@
         public IEnumerable<MonthlyAllowanceAdditionModel> Additions { get; set; }
 
         public IEnumerable<MonthlyAllowanceDeductionModel> Deductions { get; set; }
+
+        public bool CanEdit { get; set; }
     }
 }

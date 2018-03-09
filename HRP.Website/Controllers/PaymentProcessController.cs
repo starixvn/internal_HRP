@@ -244,6 +244,14 @@
             return Json(employees);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EditAllowances, Policy = Policy.Read)]
+        public async Task<IActionResult> EditAllowances(long payrollId,int companyId)
+        {
+            var viewModel  = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId);
+            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Host);
+
+            return View(viewModel);
+        }
         #endregion Monthly Payroll
     }
 }
