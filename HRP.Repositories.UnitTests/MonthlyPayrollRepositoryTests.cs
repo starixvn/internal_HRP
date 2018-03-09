@@ -96,38 +96,38 @@
             Assert.Equal(viewModel.First().EditAllowancePolicy, actual.First().EditAllowancePolicy);
         }
 
-        #region GetMonthlySalaryToUpdateAsync
+        #region GetMonthlySalaryToEditAsync
 
         [Fact]
-        public async Task GetMonthlySalaryToUpdateAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
+        public async Task GetMonthlySalaryToEditAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            UpdateMonthlySalaryViewModel expected = null;
-            multiResultReader.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().Returns(expected);
+            EditMonthlySalaryViewModel expected = null;
+            multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(expected);
             objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
             // Act
-            var actual = await repository.GetMonthlySalaryToUpdateAsync(criteria);
+            var actual = await repository.GetMonthlySalaryToEditAsync(criteria);
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public async Task GetMonthlySalaryToUpdateAsync_ExistedMonthlySalary_ReturnAsExpectedViewModel()
+        public async Task GetMonthlySalaryToEditAsync_ExistedMonthlySalary_ReturnAsExpectedViewModel()
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var viewModel = new UpdateMonthlySalaryViewModel();
+            var viewModel = new EditMonthlySalaryViewModel();
             var monthlyBasicSalary = new MonthlyBasicSalaryViewModel();
             var monthlySalary = new MonthlySalaryViewModel();
             var additions = new List<MonthlySalaryAdditionViewModel>();
             var deductions = new List<MonthlySalaryDeductionViewModel>();
-            multiResultReader.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().Returns(viewModel);
+            multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(viewModel);
             multiResultReader.ReadFirstAsync<MonthlyBasicSalaryViewModel>().Returns(monthlyBasicSalary);
             multiResultReader.ReadFirstAsync<MonthlySalaryViewModel>().Returns(monthlySalary);
             multiResultReader.ReadAsync<MonthlySalaryAdditionViewModel>().Returns(additions);
@@ -136,7 +136,7 @@
             var repository = new MonthlyPayrollRepository();
 
             // Act
-            var actual = await repository.GetMonthlySalaryToUpdateAsync(criteria);
+            var actual = await repository.GetMonthlySalaryToEditAsync(criteria);
 
             // Assert
             Assert.Equal(viewModel.PayrollId, actual.PayrollId);
@@ -149,7 +149,7 @@
             Assert.Equal(deductions, actual.Deductions);
         }
 
-        #endregion GetMonthlySalaryToUpdateAsync
+        #endregion GetMonthlySalaryToEditAsync
 
         #region Helpers
 

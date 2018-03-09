@@ -16,6 +16,6 @@
 
         Task<CommandResult> ResetMonthlySalaryAsync();
 
-        Task<CommandResult> UpdateMonthlySalaryAsync();
+        Task<CommandResult> EditMonthlySalaryAsync();
     }
 }

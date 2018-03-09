@@ -66,13 +66,13 @@
             }
         }
 
-        public async Task<UpdateMonthlySalaryViewModel> GetMonthlySalaryToUpdateAsync(ICriteria criteria)
+        public async Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = db.QueryMultiple(criteria))
                 {
-                    var viewModel = await multi.ReadFirstOrDefaultAsync<UpdateMonthlySalaryViewModel>().ConfigureAwait(false);
+                    var viewModel = await multi.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().ConfigureAwait(false);
 
                     if (viewModel != null)
                     {

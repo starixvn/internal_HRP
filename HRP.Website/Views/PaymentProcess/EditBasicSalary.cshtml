@@ -1,0 +1,68 @@
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
+@using HRP.Models.MonthlyPayroll
+@model EditMonthlySalaryViewModel
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/monthly-payroll.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.PaymentProcess</li>
+    <li class="active"></li>
+</ol>
+
+@Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
+
+<form class="search-form">
+    <div class="group">
+        <label class="text">@ViewLang.MonthYear</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker" value="@Html.DisplayFor(x => x.Month)" readonly />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.Company</label>
+        <select class="control" disabled>
+            <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
+        </select>
+    </div>
+</form>
+
+<div class="search-form form-filter">
+    <input asp-for="CompanyId" hidden />
+    <input type="text" asp-for="Month" hidden />
+    <div class="group">
+        <label class="text">@ViewLang.IDNo</label>
+        <input type="text" class="control" placeholder="" readonly />
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.Employee</label>
+        <input type="text" class="control" placeholder="Full name or Nickname" readonly />
+    </div>
+    <div class="group">
+        <label class="text">Div/Dept/Cost Center</label>
+        <select class="control width-200" disabled></select>
+    </div>
+    <div class="group">
+        <label class="text">@ViewLang.WorkingDays</label>
+        <select class="control width-92" asp-for="WorkingDays" disabled>
+            <option value="">@ViewLang.All</option>
+            <option value="22">22</option>
+            <option value="26">26</option>
+        </select>
+    </div>
+</div>
+
+@section Scripts {
+    <environment include="Development">
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}

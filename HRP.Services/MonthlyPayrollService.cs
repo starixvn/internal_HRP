@@ -88,9 +88,9 @@
             return commandResult;
         }
 
-        public async Task<CommandResult> UpdateMonthlySalaryAsync()
+        public async Task<CommandResult> EditMonthlySalaryAsync()
         {
-            var criteria = new UpdateMonthlySalaryCriteria();
+            var criteria = new EditMonthlySalaryCriteria();
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;

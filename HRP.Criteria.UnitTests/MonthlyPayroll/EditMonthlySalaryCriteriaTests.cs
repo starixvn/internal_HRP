@@ -3,13 +3,13 @@
     using HRP.Criteria.MonthlyPayroll;
     using Xunit;
 
-    public class UpdateMonthlySalaryCriteriaTests
+    public class EditMonthlySalaryCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new UpdateMonthlySalaryCriteria();
+            var criteria = new EditMonthlySalaryCriteria();
             var expected = "MonthlyPayroll_UpdateSalary";
 
             // Act

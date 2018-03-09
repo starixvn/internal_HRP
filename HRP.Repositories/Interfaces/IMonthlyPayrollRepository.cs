@@ -11,6 +11,6 @@
 
         Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(ICriteria criteria);
 
-        Task<UpdateMonthlySalaryViewModel> GetMonthlySalaryToUpdateAsync(ICriteria criteria);
+        Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(ICriteria criteria);
     }
 }

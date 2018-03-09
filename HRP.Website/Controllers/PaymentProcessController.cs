@@ -200,7 +200,10 @@
         public async Task<IActionResult> EmployeeMonthlyPayroll(
             int companyId,
             DateTime month,
-            string costCenterIds = null)
+            int? employeeId = null,
+            string employee = null,
+            string costCenterIds = null,
+            string idNo = null)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
 
@@ -210,7 +213,31 @@
             }
 
             EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, costCenterIds);
+            viewModel.Month = month;
+            viewModel.EmployeeId = employeeId;
+            viewModel.Employee = employee;
+            viewModel.IDNo = idNo;
+            viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
+
             return View("MonthlyPayroll", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public IActionResult EditBasicSalary(
+            int payrollId,
+            int companyId,
+            DateTime month)
+        {
+            var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
+
+            if (!isRead)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            var viewModel = new EditMonthlySalaryViewModel();
+
+            return View(viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]

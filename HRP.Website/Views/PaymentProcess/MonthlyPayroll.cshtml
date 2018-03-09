@@ -58,13 +58,15 @@
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control cost-center-multiselect width-200" id="CostCenterMultiSelect"></select>
+        <select class="control width-200" id="CostCenterMultiSelect"></select>
     </div>
     <form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
         <input asp-for="CompanyId" hidden />
-        <input asp-for="Month" hidden />
+        <input type="text" asp-for="Month" hidden />
         <input asp-for="CostCenterIds" hidden />
         <input asp-for="EmployeeId" hidden>
+        <input asp-for="Employee" hidden>
+        <input asp-for="IDNo" hidden>
         <div class="group">
             <label class="text">@ViewLang.WorkingDays</label>
             <select class="control js-select2 width-92" asp-for="WorkingDays">

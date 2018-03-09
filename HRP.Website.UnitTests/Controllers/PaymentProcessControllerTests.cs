@@ -62,23 +62,78 @@
         public async Task EmployeeMonthlyPayroll_HasPermission_ReturnAsExpectedViewResult()
         {
             // Arrange
-            int companyId = 1;
+            var companyId = 1;
+            var employeeId = 31;
+            var month = DateTime.Now;
             var model = new EmployeeMonthlyPayrollViewModel();
+            var employeePayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>
+            {
+                new MonthlyPayrollEmployeeInfoViewModel { }
+            };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, Arg.Any<string>()).Returns(model);
+            monthlyPayrollService.GetMonthlyPayrollAsync(model).Returns(employeePayrolls);
 
             // Act
-            var actual = await controller.EmployeeMonthlyPayroll(companyId, Arg.Any<DateTime>());
+            var actual = await controller.EmployeeMonthlyPayroll(companyId, month, employeeId, null, null, null);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<EmployeeMonthlyPayrollViewModel>(viewResult.Model);
             Assert.Equal("MonthlyPayroll", viewResult.ViewName);
-            Assert.Equal(model, viewModel);
+            Assert.Equal(model.CompanyId, viewModel.CompanyId);
+            Assert.Equal(model.CompanyCode, viewModel.CompanyCode);
+            Assert.Equal(month, viewModel.Month);
+            Assert.Equal(employeeId, viewModel.EmployeeId);
+            Assert.Null(viewModel.Employee);
+            Assert.Null(viewModel.IDNo);
+            Assert.Equal(employeePayrolls, viewModel.Employees);
+            Assert.Equal(model.StartDate, viewModel.StartDate);
+            Assert.Equal(model.DueDate, viewModel.DueDate);
+            Assert.Equal(model.WorkingDays, viewModel.WorkingDays);
         }
 
         #endregion EmployeeMonthlyPayroll
+
+        #region EditBasicSalary
+
+        [Fact]
+        public void EditBasicSalary_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+
+            // Act
+            var actual = controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public void EditBasicSalary_HasPermission_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var companyId = 1;
+            var payrollId = 1;
+            var month = DateTime.Now;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+
+            // Act
+            var actual = controller.EditBasicSalary(payrollId, companyId, month);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<EditMonthlySalaryViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+        }
+
+        #endregion EditBasicSalary
 
         [Fact]
         public async Task GetEmployeeSuggestion_WhenCalled_ReturnExpectedEmployees()

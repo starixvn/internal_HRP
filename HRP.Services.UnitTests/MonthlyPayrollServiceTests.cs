@@ -172,24 +172,24 @@
 
         #endregion ResetMonthlySalaryAsync
 
-        #region UpdateMonthlySalaryAsync
+        #region EditMonthlySalaryAsync
 
         [Fact]
-        public async Task UpdateMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
+        public async Task EditMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
             var expected = new CommandResult();
             var monthlyPayrollService = GetMonthlyPayrollService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateMonthlySalaryCriteria>()).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlySalaryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await monthlyPayrollService.UpdateMonthlySalaryAsync();
+            var actual = await monthlyPayrollService.EditMonthlySalaryAsync();
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
-        #endregion UpdateMonthlySalaryAsync
+        #endregion EditMonthlySalaryAsync
 
         #region Helper
 
