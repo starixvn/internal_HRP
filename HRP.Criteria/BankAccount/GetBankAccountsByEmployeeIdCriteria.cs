@@ -12,9 +12,6 @@
 
         public override string GetSettingKey() => "BankAccount_GetBankAccountsByEmpId";
 
-        public override bool IsValid()
-        {
-            return EmployeeId > 0;
-        }
+        public override bool IsValid() => EmployeeId > 0;
     }
 }

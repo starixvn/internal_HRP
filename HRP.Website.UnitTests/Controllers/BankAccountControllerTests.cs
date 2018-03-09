@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Model;
@@ -25,32 +26,30 @@
         private ISessionService sessionService;
 
         [Fact]
-        public void EmployeeBankAccounts_WhenCalled_ReturnAsExpectedViewResult()
+        public async Task EmployeeBankAccounts_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var viewModel = new EmployeeBankAccountsViewModel
             {
                 EmployeeId = 1,
                 CompanyId = 1,
             };
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
 
-            employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
             refResourceService.GetReferenceResourcesByName(Arg.Any<string>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
-            bankAccountService.GetBankAccountsByEmployeeId(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
+            bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-            baseService.GetDataEntity<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
+            baseService.GetDataEntityAsync<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
 
             // Test
-            var actual = controller.EmployeeBankAccounts(viewModel);
+            var actual = await controller.EmployeeBankAccounts(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -63,7 +62,7 @@
         #region Create Bank Account in Payroll
 
         [Fact]
-        public void CreateBankAccountInPayroll_WhenCalled_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_WhenCalled_ReturnPartialView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -78,7 +77,7 @@
             ArrangeForCreateBankAccount(employee, resources);
 
             // Test
-            var actual = controller.CreateBankAccountInPayroll(1, 1);
+            var actual = await controller.CreateBankAccountInPayroll(1, 1);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -87,7 +86,7 @@
         }
 
         [Fact]
-        public void CreateBankAccountInPayroll_InValidModelState_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_InValidModelState_ReturnPartialView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -105,7 +104,7 @@
             controller.ModelState.AddModelError("key", "message");
 
             // Test
-            var actual = controller.CreateBankAccountInPayroll(viewModel);
+            var actual = await controller.CreateBankAccountInPayroll(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -114,31 +113,26 @@
         }
 
         [Fact]
-        public void CreateBankAccountInPayroll_ValidModelStateCreateError_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_ValidModelStateCreateError_ReturnPartialView()
         {
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             var result = new CommandResult
             {
                 Code = 0,
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
             ArrangeForCreateBankAccount(employee, resources);
-
-            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.CreateBankAccountInPayroll(viewModel);
+            var actual = await controller.CreateBankAccountInPayroll(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -147,31 +141,26 @@
         }
 
         [Fact]
-        public void CreateBankAccountInPayroll_ValidModelStateCreateSuccessful_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_ValidModelStateCreateSuccessful_ReturnPartialView()
         {
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             var result = new CommandResult
             {
                 Code = 1,
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
             ArrangeForCreateBankAccount(employee, resources);
-
-            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.CreateBankAccountInPayroll(viewModel);
+            var actual = await controller.CreateBankAccountInPayroll(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -184,7 +173,7 @@
         #region Create Bank Account
 
         [Fact]
-        public void CreateBankAccount_WhenCalled_ReturnView()
+        public async Task CreateBankAccount_WhenCalled_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -199,7 +188,7 @@
             ArrangeForCreateBankAccount(employee, resources);
 
             // Test
-            var actual = controller.CreateBankAccount(1);
+            var actual = await controller.CreateBankAccount(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -208,7 +197,7 @@
         }
 
         [Fact]
-        public void CreateBankAccount_InValidModelState_ReturnView()
+        public async Task CreateBankAccount_InValidModelState_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -226,7 +215,7 @@
             controller.ModelState.AddModelError("key", "message");
 
             // Test
-            var actual = controller.CreateBankAccount(viewModel);
+            var actual = await controller.CreateBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -235,31 +224,26 @@
         }
 
         [Fact]
-        public void CreateBankAccount_ValidModelStateCreateError_ReturnView()
+        public async Task CreateBankAccount_ValidModelStateCreateError_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             var result = new CommandResult
             {
                 Code = 0,
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
             ArrangeForCreateBankAccount(employee, resources);
-
-            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.CreateBankAccount(viewModel);
+            var actual = await controller.CreateBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -268,31 +252,26 @@
         }
 
         [Fact]
-        public void CreateBankAccount_ValidModelStateCreateSuccessful_ReturnView()
+        public async Task CreateBankAccount_ValidModelStateCreateSuccessful_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-
             var employee = new Employee
             {
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             var result = new CommandResult
             {
                 Code = 1,
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
             ArrangeForCreateBankAccount(employee, resources);
-
-            baseService.ExecuteNonQuery(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<CreateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.CreateBankAccount(viewModel);
+            var actual = await controller.CreateBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -305,7 +284,7 @@
         #region Edit Bank Account
 
         [Fact]
-        public void EditBankAccount_WhenCalled_ReturnView()
+        public async Task EditBankAccount_WhenCalled_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -316,7 +295,7 @@
             ArrangeForEditBankAccount(bankAccount, resources);
 
             // Test
-            var actual = controller.EditBankAccount(1);
+            var actual = await controller.EditBankAccount(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -326,7 +305,7 @@
         }
 
         [Fact]
-        public void EditBankAccount_InValidModelState_ReturnView()
+        public async Task EditBankAccount_InValidModelState_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -340,7 +319,7 @@
             controller.ModelState.AddModelError("key", "message");
 
             // Test
-            var actual = controller.EditBankAccount(viewModel);
+            var actual = await controller.EditBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -349,7 +328,7 @@
         }
 
         [Fact]
-        public void EditBankAccount_ValidModelStateEditSuccessful_ReturnView()
+        public async Task EditBankAccount_ValidModelStateEditSuccessful_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -366,10 +345,10 @@
 
             ArrangeForEditBankAccount(bankAccount, resources);
 
-            baseService.ExecuteNonQuery(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.EditBankAccount(viewModel);
+            var actual = await controller.EditBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -378,7 +357,7 @@
         }
 
         [Fact]
-        public void EditBankAccount_ValidModelStateEditError_ReturnView()
+        public async Task EditBankAccount_ValidModelStateEditError_ReturnView()
         {
             // Arrange
             var controller = GetBankAccountController();
@@ -395,10 +374,10 @@
 
             ArrangeForEditBankAccount(bankAccount, resources);
 
-            baseService.ExecuteNonQuery(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateBankAccountCriteria>()).Returns(result);
 
             // Test
-            var actual = controller.EditBankAccount(viewModel);
+            var actual = await controller.EditBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -408,42 +387,43 @@
 
         #endregion Edit Bank Account
 
+        #region GetEmployeeBankAccounts
+
         [Fact]
-        public void GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
+        public async Task GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
         {
             // Arrange
             var controller = GetBankAccountController();
-
-            refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount)
-                .Returns(new List<ReferenceResourceModel>());
+            refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount).Returns(new List<ReferenceResourceModel>());
 
             // Test
-            var actual = controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
+            var actual = await controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
 
             // Assert
             Assert.IsType<JsonResult>(actual);
         }
 
         [Fact]
-        public void GetEmployeeBankAccounts_NotContraCoAccountType_ReturnEmployeeBankAccounts()
+        public async Task GetEmployeeBankAccounts_NotContraCoAccountType_ReturnEmployeeBankAccounts()
         {
             //Arrange
             var controller = GetBankAccountController();
-
-            baseService.GetData<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
+            baseService.GetDataAsync<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
 
             // Test
-            var actual = controller.GetEmployeeBankAccounts((int)BankTypes.Ebanking, 1);
+            var actual = await controller.GetEmployeeBankAccounts((int)BankTypes.Ebanking, 1);
 
             // Assert
             Assert.IsType<JsonResult>(actual);
         }
+
+        #endregion GetEmployeeBankAccounts
 
         #region Helpers
 
         private void ArrangeForCreateBankAccount(Employee employee, IEnumerable<ReferenceResourceModel> resources)
         {
-            employeeService.GetEmployeeBasicInfoById(Arg.Any<int>()).Returns(employee);
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
 
             refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
             refResourceService
@@ -454,7 +434,7 @@
 
         private void ArrangeForEditBankAccount(BankAccount bankAccount, IEnumerable<ReferenceResourceModel> resources)
         {
-            bankAccountService.GetBankAccountById(Arg.Any<int>()).Returns(bankAccount);
+            bankAccountService.GetBankAccountByIdAsync(Arg.Any<int>()).Returns(bankAccount);
 
             refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
             refResourceService

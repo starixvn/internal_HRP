@@ -9,7 +9,7 @@
 
     public interface IEmployeeService
     {
-        Employee GetEmployeeBasicInfoById(int employeeId);
+        Task<Employee> GetEmployeeBasicInfoByIdAsync(int employeeId);
 
         Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(string departmentIds, string employmentStatusIds);
 

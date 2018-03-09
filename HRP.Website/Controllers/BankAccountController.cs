@@ -1,6 +1,7 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
@@ -38,24 +39,24 @@
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         [IgnoreAntiforgeryToken]
-        public IActionResult EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
+        public async Task<IActionResult> EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
+            Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
             viewModel.CompanyId = employee.CompanyId;
             viewModel.EmployeeName = employee.NickName;
 
             viewModel.BankTypeResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType);
-            viewModel.BankAccounts = bankAccountService.GetBankAccountsByEmployeeId(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
+            viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
             viewModel.BankAccountsLimitReached =
-                baseService.GetDataEntity<bool>(new CheckBankAccountLimitReachedCriteria { EmployeeId = employee.EmployeeId });
+                await baseService.GetDataEntityAsync<bool>(new CheckBankAccountLimitReachedCriteria { EmployeeId = employee.EmployeeId });
 
             return View(viewModel);
         }
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult GetEmployeeBankAccounts(int bankTypeId, int employeeId)
+        public async Task<IActionResult> GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
             if (bankTypeId == (int)BankTypes.ContraCoAccount)
             {
@@ -70,28 +71,28 @@
                 IsActive = true
             };
 
-            var result = baseService.GetData<BankAccount>(criteria);
+            var result = await baseService.GetDataAsync<BankAccount>(criteria);
             return Json(result.Select(x => new { id = x.BankAccountId, text = x.AccountName }));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccount(int employeeId)
+        public async Task<IActionResult> CreateBankAccount(int employeeId)
         {
             var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
 
-            PrepareCreateBankAccountViewModel(viewModel);
+            await PrepareCreateBankAccountViewModel(viewModel);
 
             return View(viewModel);
         }
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
+        public async Task<IActionResult> CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 var criteria = PrepareCreateBankAccountCriteria(viewModel);
-                var result = baseService.ExecuteNonQuery(criteria);
+                var result = await baseService.ExecuteNonQueryAsync(criteria);
 
                 viewModel.IsSuccessful = result.IsSuccessful;
 
@@ -101,18 +102,18 @@
                 }
             }
 
-            PrepareCreateBankAccountViewModel(viewModel);
+            await PrepareCreateBankAccountViewModel(viewModel);
             return View(viewModel);
         }
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccountInPayroll(CreateBankAccountViewModel viewModel)
+        public async Task<IActionResult> CreateBankAccountInPayroll(CreateBankAccountViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 var criteria = PrepareCreateBankAccountCriteria(viewModel);
-                var result = baseService.ExecuteNonQuery(criteria);
+                var result = await baseService.ExecuteNonQueryAsync(criteria);
 
                 viewModel.IsSuccessful = result.IsSuccessful;
 
@@ -122,23 +123,23 @@
                 }
             }
 
-            PrepareCreateBankAccountViewModel(viewModel);
+            await PrepareCreateBankAccountViewModel(viewModel);
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult CreateBankAccountInPayroll(int employeeId, int bankType)
+        public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, int bankType)
         {
             var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
 
-            PrepareCreateBankAccountViewModel(viewModel, bankType);
+            await PrepareCreateBankAccountViewModel(viewModel, bankType);
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult EditBankAccount(int bankAccountId)
+        public async Task<IActionResult> EditBankAccount(int bankAccountId)
         {
-            var bankAccount = bankAccountService.GetBankAccountById(bankAccountId);
+            var bankAccount = await bankAccountService.GetBankAccountByIdAsync(bankAccountId);
 
             var viewModel = new EditBankAccountViewModel
             {
@@ -166,12 +167,12 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public IActionResult EditBankAccount(EditBankAccountViewModel viewModel)
+        public async Task<IActionResult> EditBankAccount(EditBankAccountViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 UpdateBankAccountCriteria criteria = PrepareUpdateBankAccountCriteria(viewModel);
-                var result = baseService.ExecuteNonQuery(criteria);
+                var result = await baseService.ExecuteNonQueryAsync(criteria);
 
                 viewModel.IsSuccessful = result.IsSuccessful;
 
@@ -209,9 +210,9 @@
             return criteria;
         }
 
-        private void PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 1)
+        private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 1)
         {
-            Employee employee = employeeService.GetEmployeeBasicInfoById(viewModel.EmployeeId);
+            Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
 
             viewModel.NickName = employee.NickName;
             viewModel.BankTypeId = selectedBankType;

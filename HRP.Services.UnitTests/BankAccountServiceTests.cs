@@ -1,8 +1,8 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Core.Services;
-    using Fanex.Data;
     using Fanex.Data.Repository;
     using Models.BankAccount;
     using NSubstitute;
@@ -10,21 +10,10 @@
 
     public class BankAccountServiceTests
     {
-        private readonly IObjectDb mockObjectDb;
         private IBaseService baseService;
 
-        public BankAccountServiceTests()
-        {
-            DbSettingProviderManager
-                .StartTestingSession()
-                .Run();
-
-            mockObjectDb = Substitute.For<IObjectDb>();
-            ObjectDbFactory.Mock((key, time) => mockObjectDb);
-        }
-
         [Fact]
-        public void GetBankAccountById_WhenCalled_ReturnAsExpectedBankAccounts()
+        public async Task GetBankAccountById_WhenCalled_ReturnAsExpectedBankAccounts()
         {
             // Arrange
             var nickName = "test";
@@ -40,10 +29,10 @@
             };
 
             var bankAccountService = GetBankAccountService();
-            baseService.GetDataEntity<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
 
             // Act
-            var actual = bankAccountService.GetBankAccountById(1);
+            var actual = await bankAccountService.GetBankAccountByIdAsync(1);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -52,7 +41,7 @@
         }
 
         [Fact]
-        public void GetBankAccountByEmployeeId_WhenCalled_ReturnAsExpectedBankAccounts()
+        public async Task GetBankAccountByEmployeeId_WhenCalled_ReturnAsExpectedBankAccounts()
         {
             // Arrange
             var expected = new List<BankAccount>
@@ -66,10 +55,10 @@
             };
 
             var bankAccountService = GetBankAccountService();
-            baseService.GetData<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
+            baseService.GetDataAsync<BankAccount>(Arg.Any<ICriteria>()).Returns(expected);
 
             // Act
-            var actual = bankAccountService.GetBankAccountsByEmployeeId(1, 1, true);
+            var actual = await bankAccountService.GetBankAccountsByEmployeeIdAsync(1, 1, true);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -88,6 +77,6 @@
             return Substitute.For<IBaseService>();
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

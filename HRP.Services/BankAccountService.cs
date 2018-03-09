@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Services;
     using Criteria.BankAccount;
     using Models.BankAccount;
@@ -15,7 +16,7 @@
             this.baseService = baseService;
         }
 
-        public IList<BankAccount> GetBankAccountsByEmployeeId(int employeeId, int? bankTypeId, bool? isActive)
+        public async Task<IList<BankAccount>> GetBankAccountsByEmployeeIdAsync(int employeeId, int? bankTypeId, bool? isActive)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
             {
@@ -24,13 +25,13 @@
                 IsActive = isActive
             };
 
-            return baseService.GetData<BankAccount>(criteria).ToList();
+            return (await baseService.GetDataAsync<BankAccount>(criteria).ConfigureAwait(false)).ToList();
         }
 
-        public BankAccount GetBankAccountById(int bankAccountId)
+        public async Task<BankAccount> GetBankAccountByIdAsync(int bankAccountId)
         {
             var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
-            return baseService.GetDataEntity<BankAccount>(criteria);
+            return await baseService.GetDataEntityAsync<BankAccount>(criteria).ConfigureAwait(false);
         }
     }
 }
