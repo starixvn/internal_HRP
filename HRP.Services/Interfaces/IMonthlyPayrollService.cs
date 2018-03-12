@@ -18,6 +18,6 @@
 
         Task<CommandResult> EditMonthlySalaryAsync();
 
-        Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(long payrollId);
+        Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId);
     }
 }

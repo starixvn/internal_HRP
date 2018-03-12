@@ -98,7 +98,7 @@
             return commandResult;
         }
 
-        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(long payrollId)
+        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
             var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria).ConfigureAwait(false);

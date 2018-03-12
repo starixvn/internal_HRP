@@ -2,7 +2,7 @@
 {
     public class MonthlyAllowanceAdditionModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
 
         public int Type { get; set; }
 

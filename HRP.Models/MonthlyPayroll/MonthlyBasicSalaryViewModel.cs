@@ -2,7 +2,7 @@
 {
     public class MonthlyBasicSalaryViewModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
         public string CurrencyCode { get; set; }
         public string Salary { get; set; }
         public int WorkingDays { get; set; }

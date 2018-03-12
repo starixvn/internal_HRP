@@ -4,7 +4,7 @@
 
     public class GetMonthlyAllowanceCriteria :CriteriaBase
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
 
         public override string GetSettingKey() => "MonthlyPayroll_GetAllowances";
 

@@ -6,7 +6,7 @@
     {
         public int UserId { get; set; }
 
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
 
         public override string GetSettingKey() => "MonthlyPayroll_GetSalaryToUpdate";
 

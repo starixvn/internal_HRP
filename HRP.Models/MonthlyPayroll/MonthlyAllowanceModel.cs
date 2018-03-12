@@ -2,7 +2,7 @@
 {
     public class MonthlyAllowanceModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
 
         public string CurrencyId { get; set; }
 

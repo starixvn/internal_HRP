@@ -5,7 +5,7 @@
 
     public class EditMonthlySalaryViewModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
         public DateTime Month { get; set; }
         public int CompanyId { get; set; }
         public string CompanyCode { get; set; }

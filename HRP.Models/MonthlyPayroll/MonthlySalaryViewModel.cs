@@ -2,7 +2,7 @@
 {
     public class MonthlySalaryViewModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
         public string CurrencyId { get; set; }
         public string Salary { get; set; }
         public int EBankingCurrencyId { get; set; }

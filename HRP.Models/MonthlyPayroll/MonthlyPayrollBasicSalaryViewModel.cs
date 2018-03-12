@@ -2,7 +2,7 @@
 {
     public class MonthlyPayrollBasicSalaryViewModel
     {
-        public long PayrollId { get; set; }
+        public int PayrollId { get; set; }
         public string EbankingCurrencyCode { get; set; }
         public string EBankingAmount { get; set; }
         public string DirectBanking1CurrencyCode { get; set; }
