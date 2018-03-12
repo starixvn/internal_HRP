@@ -94,7 +94,6 @@
             {
                 using (var multiResults = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-
                     var allowance = multiResults.ReadFirstOrDefault<MonthlyAllowanceModel>();
                     var additions = multiResults.Read<MonthlyAllowanceAdditionModel>();
                     var deductions = multiResults.Read<MonthlyAllowanceDeductionModel>();

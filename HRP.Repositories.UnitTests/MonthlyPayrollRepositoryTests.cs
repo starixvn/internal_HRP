@@ -151,6 +151,53 @@
 
         #endregion GetMonthlySalaryToEditAsync
 
+        [Fact]
+        public async Task GetMonthlyAllowancesAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
+        {
+            var additions = new List<MonthlyAllowanceAdditionModel>
+            {
+                new MonthlyAllowanceAdditionModel
+                {
+                    PayrollId = 1,
+                    NoOfDays = 20,
+                    Type = 1,
+                    NetAllowance = string.Empty,
+                    TotalAmount = string .Empty,
+                    UnitAmount = string.Empty
+                }
+            };
+            var deductions = new List<MonthlyAllowanceDeductionModel>
+            {
+                new MonthlyAllowanceDeductionModel
+                {
+                    PayrollId = 1,
+                    NoOfDays = 20,
+                    Type = 1,
+                    NetAllowance = string.Empty,
+                    TotalAmount = string .Empty,
+                    UnitAmount = string.Empty
+                }
+            };
+
+            var allowance = new MonthlyAllowanceModel();
+
+            var multiResultReader = FakeMultipleResultReader();
+            multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
+
+            multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
+            multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
+
+            var criteria = FakeCriteia();
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            var repository = new MonthlyPayrollRepository();
+
+            var actual = await repository.GetMonthlyAllowancesAsync(criteria);
+
+            Assert.NotNull(actual.Item1);
+            Assert.NotEmpty(actual.Item2);
+            Assert.NotEmpty(actual.Item3);
+        }
+
         #region Helpers
 
         private static IMultiResultReader FakeMultipleResultReader()
