@@ -7,19 +7,13 @@
 
     public class EmployeeBankAccountsViewModel
     {
-        public EmployeeBankAccountsViewModel()
-        {
-            BankTypeResources = new List<ReferenceResourceModel>();
-            BankAccounts = new List<BankAccount>();
-        }
-
         public int EmployeeId { get; set; }
 
         public int CompanyId { get; set; }
 
         public string EmployeeName { get; set; }
 
-        public IList<BankAccount> BankAccounts { get; set; }
+        public IList<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 
         public int? BankTypeId { get; set; }
 
@@ -42,7 +36,7 @@
             }
         }
 
-        public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; }
+        public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; } = new List<ReferenceResourceModel>();
 
         public bool? IsActive { get; set; }
 

@@ -6,7 +6,7 @@
 @section Styles {
     <environment include="Development">
         <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/monthly-payroll.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/edit-basic-salary.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
     </environment>
@@ -44,7 +44,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control" placeholder="Full name or Nickname" readonly />
+        <input type="text" class="control" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
@@ -59,9 +59,99 @@
         </select>
     </div>
 </div>
+<div class="group-complex">
+    <div>
+        <label class="actual">@ViewLang.BasicSalary</label>
+    </div>
+    <div class="currency-amount">
+        <select class="control" disabled>
+            <option></option>
+        </select>
+        <input type="text" class="control" placeholder="" readonly />
+    </div>
+</div>
+
+<div class="group-complex">
+    <label class="bank-type">
+        <input type="radio" value="Ebanking" />
+        <span>@ViewLang.EBanking</span>
+    </label>
+    <div class="currency-amount">
+        <select class="control">
+            <option></option>
+        </select>
+        <input type="text" class="control" />
+    </div>
+    <div></div>
+    <div class="payment-transaction">
+        <label class="bank-type">@ViewLang.EBanking</label>
+        <select class="control" name="ebanking">
+            <option value="@((int) BankTypes.Ebanking)" selected></option>
+        </select>
+        <select class="control"></select>
+    </div>
+</div>
+<div class="group-complex">
+    <label class="bank-type">
+        <input type="radio" />
+        <span>@ViewLang.DirectBanking1</span>
+    </label>
+    <div class="currency-amount">
+        <select class="control">
+            <option></option>
+        </select>
+        <input type="text" class="control" />
+    </div>
+    <div></div>
+    <div class="payment-transaction">
+        <select class="control">
+            <option></option>
+        </select>
+        <select class="control"></select>
+    </div>
+</div>
+<div class="group-complex">
+    <label class="bank-type">
+        <input type="radio" />
+        <span>@ViewLang.DirectBanking2</span>
+    </label>
+    <div class="currency-amount">
+        <select class="control">
+            <option></option>
+        </select>
+        <input type="text" class="control" />
+    </div>
+    <div></div>
+    <div class="payment-transaction">
+        <select class="control">
+            <option></option>
+        </select>
+        <select class="control"></select>
+    </div>
+</div>
+<div class="group-complex">
+    <label class="bank-type">
+        <input type="radio" />
+        <span>@ViewLang.Cash</span>
+    </label>
+    <div class="currency-amount">
+        <select class="control">
+            <option></option>
+        </select>
+        <input type="text" class="control" />
+    </div>
+    <div></div>
+    <div class="payment-transaction">
+        <label class="bank-type">@ViewLang.Cash</label>
+        <select class="control">
+            <option></option>
+        </select>
+    </div>
+</div>
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/assets/js/paymentprocess/edit-basic-salary.js"></script>
     </environment>
     <environment exclude="Development">
     </environment>

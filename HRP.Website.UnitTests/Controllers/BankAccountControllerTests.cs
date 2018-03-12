@@ -41,7 +41,6 @@
                 CompanyId = 1,
                 NickName = "hunter.tran"
             };
-
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
             refResourceService.GetReferenceResourcesByName(Arg.Any<string>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
@@ -53,10 +52,11 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var model = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
-            Assert.True(model.HaveHostPermission);
-            Assert.True(model.BankAccountsLimitReached);
-            Assert.IsType<SelectList>(model.BankTypes);
+            var viewModelResult = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.True(viewModelResult.HaveHostPermission);
+            Assert.True(viewModelResult.BankAccountsLimitReached);
+            Assert.IsType<SelectList>(viewModelResult.BankTypes);
         }
 
         #region Create Bank Account in Payroll
