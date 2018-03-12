@@ -11,6 +11,6 @@
 
         public override string GetSettingKey() => "PaymentProcess_GetValidationFilesResult";
 
-        public override bool IsValid() => CompanyId >= 0;
+        public override bool IsValid() => CompanyId > 0;
     }
 }

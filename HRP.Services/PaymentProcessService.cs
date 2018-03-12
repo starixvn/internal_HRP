@@ -23,16 +23,19 @@
         private readonly ISessionService sessionService;
         private readonly IPaymentProcessRepository paymentProcessRepository;
         private readonly IObjectStream fileStream;
+        private readonly ITemplateReader templateReader;
 
         public PaymentProcessService(IBaseService baseService,
             ISessionService sessionService,
             IPaymentProcessRepository paymentProcessRepository = null,
-            IObjectStream fileStream = null)
+            IObjectStream fileStream = null,
+            ITemplateReader templateReader = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
             this.fileStream = fileStream ?? new ObjectStream();
+            this.templateReader = templateReader ?? new TemplateReader();
         }
 
         public async Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath)
@@ -101,9 +104,9 @@
             var commandResult = new CommandResult { Code = 0 };
             if (viewModel.AttendanceFile != null)
             {
-                var reader = new AttendanceReader(viewModel.AttendanceFile.OpenReadStream());
                 var employeeCodeList = await GetDataForReadAttendanceFileAsync(viewModel.CompanyId).ConfigureAwait(false);
-                var readResult = reader.ReadAttendances(employeeCodeList, viewModel.CompanyCode);
+                var sheet = templateReader.CreateSheet(viewModel.AttendanceFile.OpenReadStream());
+                var readResult = templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode);
                 if (readResult is Success<IEnumerable<AttendanceUploading>> success)
                 {
                     var process = new PaymentProcess
@@ -112,7 +115,7 @@
                         Month = viewModel.SelectedTime,
                         AttendanceFileName = viewModel.AttendanceFile.FileName
                     };
-                    commandResult = await CreateAttendanceUploadingAsync(success.Value, reader.ValidationResults, process).ConfigureAwait(false);
+                    commandResult = await CreateAttendanceUploadingAsync(success.Value, templateReader.ValidationResults, process).ConfigureAwait(false);
 
                     return commandResult;
                 }
@@ -146,7 +149,7 @@
                 result = await paymentProcessRepository.GetValidationFilesResultAsync(criteria).ConfigureAwait(false);
             }
 
-            return result;
+            return result ?? new ValidationFilesResultViewModel();
         }
 
         public CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)

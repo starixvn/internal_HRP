@@ -1,15 +1,20 @@
 ﻿namespace HRP.Services.UnitTests
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models.PaymentProcess;
+    using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
+    using NPOI.SS.UserModel;
     using NSubstitute;
     using Xunit;
 
@@ -17,7 +22,9 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
+        private ITemplateReader templateReader;
 
         [Fact]
         public async Task CopyFileToMemoryStreamAsync_WhenCalled_ReturnMemoryStream()
@@ -134,7 +141,109 @@
             Assert.True(actual.IsSuccessful);
         }
 
+        [Fact]
+        public async Task UploadAttendanceFileAsync_ReadAttendanceFileFailure_ReturnErrorCommandResult()
+        {
+            // Arrange
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var employeeCodeList = MockListString();
+            var mockReadResult = MockFailureResultAttendanceUploading();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
+            var stream = Substitute.For<Stream>();
+            var sheet = Substitute.For<ISheet>();
+            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
+            templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode).Returns(mockReadResult);
+
+            // Act
+            var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.Equal(actual.Message, mockReadResult.Message);
+        }
+
+        [Fact]
+        public async Task UploadAttendanceFileAsync_ReadAttendanceFileSuccess_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var expected = MockSuccessfulCommandResult();
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var employeeCodeList = MockListString();
+            var mockReadResult = MockSuccessResultAttendanceUploading();
+            var validationResult = MockListValidationResult();
+            var criteria = new CreateAttendanceUploadingCriteria();
+
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateAttendanceUploadingCriteria>(x => criteria = x)).Returns(expected);
+            var stream = Substitute.For<Stream>();
+            var sheet = Substitute.For<ISheet>();
+            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
+            templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode).Returns(mockReadResult);
+            templateReader.ValidationResults.Returns(validationResult);
+
+            // Act
+            var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(actual, expected);
+            Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
+            Assert.Equal(viewModel.SelectedTime, criteria.Month);
+            Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
+            Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
+            Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
+        }
+
         #endregion UploadAttendanceFileAsync
+
+        #region GetValidationFilesResultAsync
+
+        [Fact]
+        public async Task GetValidationFilesResultAsync_CriteriaIsInvalid_ReturnEmptyValidationFilesResultViewModel()
+        {
+            // Arrange
+            var companyId = 0;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+
+            // Act
+            var actual = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<ValidationFilesResultViewModel>(actual);
+            Assert.Null(actual.Attendance);
+            Assert.Null(actual.DSTNetSalary);
+        }
+
+        [Fact]
+        public async Task GetValidationFilesResultAsync_CriteriaIsValid_ReturnExpectedValidationFilesResultViewModel()
+        {
+            // Arrange
+            var expected = new ValidationFilesResultViewModel
+            {
+                Attendance = new FileResultViewModel { TotalRow = 2 },
+                DSTNetSalary = new FileResultViewModel { TotalRow = 4 }
+            };
+            var companyId = 2;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetValidationFilesResultAsync(Arg.Is<GetValidationFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<ValidationFilesResultViewModel>(actual);
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion GetValidationFilesResultAsync
 
         #region Initialization
 
@@ -143,7 +252,9 @@
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
             fileStream = FakeFileStream();
-            var service = new PaymentProcessService(baseService, sessionService, null, fileStream);
+            templateReader = FakeTemplateReader();
+            paymentProcessRepository = FakePaymentProcessRepository();
+            var service = new PaymentProcessService(baseService, sessionService, paymentProcessRepository, fileStream, templateReader);
 
             return service;
         }
@@ -155,14 +266,25 @@
 
         private ISessionService FakeSessionService()
         {
-            return Substitute.For<ISessionService>();
+            var service = Substitute.For<ISessionService>();
+            service.UserId.Returns(99);
+
+            return service;
+        }
+
+        private IPaymentProcessRepository FakePaymentProcessRepository()
+        {
+            return Substitute.For<IPaymentProcessRepository>();
         }
 
         private IObjectStream FakeFileStream()
         {
-            var stream = Substitute.For<IObjectStream>();
+            return Substitute.For<IObjectStream>();
+        }
 
-            return stream;
+        private ITemplateReader FakeTemplateReader()
+        {
+            return Substitute.For<ITemplateReader>();
         }
 
         private PaymentProcess MockPaymentProcess()
@@ -181,7 +303,7 @@
             return new CommandResult
             {
                 Code = 0,
-                Message = string.Empty
+                Message = "successful"
             };
         }
 
@@ -210,6 +332,57 @@
             file.Length.Returns(1024);
 
             return file;
+        }
+
+        private IEnumerable<string> MockListString()
+        {
+            return new List<string>()
+            {
+                "ahihi",
+                "dbbc"
+            };
+        }
+
+        private UploadAttendanceAndSalaryViewModel MockUploadAttendanceAndSalaryViewModel()
+        {
+            return new UploadAttendanceAndSalaryViewModel
+            {
+                AttendanceFile = MockExcelFile(),
+                CompanyCode = "Nex",
+                CompanyId = 2,
+                SelectedTime = DateTime.Now
+            };
+        }
+
+        private Success<IEnumerable<AttendanceUploading>> MockSuccessResultAttendanceUploading()
+        {
+            var list = new List<AttendanceUploading>()
+            {
+                new AttendanceUploading {
+                    RowNumber = 20,
+                    EmployeeCode = "111",
+                    ActualWorkingDay = "20",
+                    LeaveTaken = "3",
+                    UnpaidLeave =  "1",
+                    LateInMinute = "2",
+                    EarlyOutMinute =  "0"
+                }
+            };
+
+            return new Success<IEnumerable<AttendanceUploading>>(list);
+        }
+
+        private Failure<IEnumerable<AttendanceUploading>> MockFailureResultAttendanceUploading()
+        {
+            return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+        }
+
+        private IEnumerable<ValidationResult> MockListValidationResult()
+        {
+            return new List<ValidationResult>()
+            {
+                new ValidationResult {RowNumber = 7, ResultType = 2, Message = "error"}
+            };
         }
 
         #endregion Initialization
