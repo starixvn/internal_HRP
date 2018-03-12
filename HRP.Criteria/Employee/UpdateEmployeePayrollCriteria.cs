@@ -1,6 +1,7 @@
 ﻿namespace HRP.Criteria
 {
     using System;
+    using HRP.Core.Enumerations;
 
     public class UpdateEmployeePayrollCriteria : CommandBaseCriteria
     {
@@ -42,7 +43,7 @@
 
         public int? CashAccountId { get; set; }
 
-        public string AutoCalculateOn { get; set; }
+        public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         public DateTime? EffectiveDate { get; set; }
 
@@ -72,7 +73,7 @@
 
         public int? AllowanceCashAccountId { get; set; }
 
-        public string AllowanceAutoCalculateOn { get; set; }
+        public PayrollAutoCalculateOn AllowanceAutoCalculateOn { get; set; }
 
         public string SubsistenceCurrencyId { get; set; }
 

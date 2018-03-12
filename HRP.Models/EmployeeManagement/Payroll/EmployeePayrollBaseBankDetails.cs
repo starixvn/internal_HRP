@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.EmployeeManagement
 {
     using HRP.Core.CustomValidations;
+    using HRP.Core.Enumerations;
     using HRP.Resources;
 
     public class EmployeePayrollBaseBankDetails
@@ -53,6 +54,6 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
         public int? CashAccountId { get; set; }
 
-        public string AutoCalculateOn { get; set; }
+        public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
     }
 }

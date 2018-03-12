@@ -121,7 +121,7 @@
 
         <div class="group-complex -payroll-layout1">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Ebanking" />
+                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.Ebanking" />
                 <span>e-Banking</span>
             </label>
             <div class="currency-amount">
@@ -148,7 +148,7 @@
         </div>
         <div class="group-complex -payroll-layout1">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="DirectBanking1" />
+                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" />
                 <span>@ViewLang.DirectBanking1</span>
             </label>
             <div class="currency-amount">
@@ -174,7 +174,7 @@
         </div>
         <div class="group-complex -payroll-layout1">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="DirectBanking2" />
+                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" />
                 <span>@ViewLang.DirectBanking2</span>
             </label>
             <div class="currency-amount">
@@ -200,7 +200,7 @@
         </div>
         <div class="group-complex -payroll-layout1">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="Cash" />
+                <input type="radio" asp-for="BasicSalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.Cash" />
                 <span>@ViewLang.Cash</span>
             </label>
             <div class="currency-amount">
@@ -239,7 +239,7 @@
         </div>
         <div class="group-complex -payroll-layout3">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking1" />
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" />
                 <span>@ViewLang.DirectBanking1</span>
             </label>
             <div></div>
@@ -265,7 +265,7 @@
         </div>
         <div class="group-complex -payroll-layout3">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="DirectBanking2" />
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" />
                 <span>@ViewLang.DirectBanking2</span>
             </label>
             <div></div>
@@ -291,7 +291,7 @@
         </div>
         <div class="group-complex -payroll-layout3">
             <label class="bank-type tooltipster">
-                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="Cash" />
+                <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.Cash" />
                 <span>@ViewLang.Cash</span>
             </label>
             <div></div>

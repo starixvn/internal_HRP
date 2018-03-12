@@ -4,6 +4,7 @@
     using Criteria.RefResource;
     using Fanex.Data;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -38,10 +39,10 @@
                         {
                             EmployeeId = employeeId,
                             WorkingDays = 22,
-                            AutoCalculateOn = "Cash",
+                            AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                             InitFirstTime = true
                         };
-                        var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = "Cash" };
+                        var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
 
                         viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>() ?? basicSalary;
                         viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
