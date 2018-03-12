@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -152,6 +153,35 @@
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Equal(expected, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task EditAllowances_NotHavePermission_RederiectToAccessDenied()
+        {
+            var companyId = 1;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Read).Returns(false);
+
+            var actual = await controller.EditAllowances(1, companyId);
+
+            var result = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", result.ControllerName);
+            Assert.Equal("AccessDenied", result.ActionName);
+        }
+
+        [Fact]
+        public async Task EditAllowances_HavePermission_ReturnView()
+        {
+            var companyId = 1;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Read).Returns(true);
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Host).Returns(true);
+            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<long>()).Returns(new MonthlyAllowancesViewModel());
+
+            var actual = await controller.EditAllowances(1, companyId);
+
+            var result = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<MonthlyAllowancesViewModel>(result.Model);
         }
 
         #region Helpers

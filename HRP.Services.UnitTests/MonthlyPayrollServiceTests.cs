@@ -191,6 +191,22 @@
 
         #endregion EditMonthlySalaryAsync
 
+        [Fact]
+        public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
+            monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>
+                (new MonthlyAllowanceModel(), new List<MonthlyAllowanceAdditionModel>(), new List<MonthlyAllowanceDeductionModel>()));
+
+            var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1);
+            Assert.NotNull(actual);
+            Assert.NotNull(actual.Allowance);
+            Assert.NotNull(actual.Additions);
+            Assert.NotNull(actual.Deductions);
+        }
+
         #region Helper
 
         private static ISessionService FakeSessionService()

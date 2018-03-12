@@ -101,24 +101,19 @@
         public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(long payrollId)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria).ConfigureAwait(false);
+            var model = new MonthlyAllowancesViewModel
             {
-                using (var multiResults = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
-                {
-                    var model = new MonthlyAllowancesViewModel
-                    {
-                        Allowance = multiResults.Read<MonthlyAllowanceModel>().FirstOrDefault(),
-                        Additions = multiResults.Read<MonthlyAllowanceAdditionModel>(),
-                        Deductions = multiResults.Read<MonthlyAllowanceDeductionModel>()
-                    };
+                Allowance = result.Item1,
+                Additions = result.Item2,
+                Deductions = result.Item3
+            };
 
-                    DecryptMonthlyAllowance(model.Allowance);
-                    DecryptMonthlyAllowanceAdditions(model.Additions);
-                    DecryptMonthlyAllowanceDeductions(model.Deductions);
+            DecryptMonthlyAllowance(model.Allowance);
+            DecryptMonthlyAllowanceAdditions(model.Additions);
+            DecryptMonthlyAllowanceDeductions(model.Deductions);
 
-                    return model;
-                }
-            }
+            return model;
         }
 
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)

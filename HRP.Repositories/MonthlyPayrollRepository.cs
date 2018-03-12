@@ -1,5 +1,6 @@
 ﻿namespace HRP.Repositories
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -83,6 +84,23 @@
                     }
 
                     return viewModel;
+                }
+            }
+        }
+
+        public async Task<Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>> GetMonthlyAllowancesAsync(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (var multiResults = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                {
+
+                    var allowance = multiResults.ReadFirstOrDefault<MonthlyAllowanceModel>();
+                    var additions = multiResults.Read<MonthlyAllowanceAdditionModel>();
+                    var deductions = multiResults.Read<MonthlyAllowanceDeductionModel>();
+                    var tuple = new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>(allowance, additions, deductions);
+
+                    return tuple;
                 }
             }
         }
