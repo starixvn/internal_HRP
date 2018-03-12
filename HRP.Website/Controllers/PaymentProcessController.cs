@@ -40,6 +40,8 @@
             this.monthlyPayrollService = monthlyPayrollService;
         }
 
+        #region UploadAttendanceAndDSTSalary
+
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
@@ -90,17 +92,11 @@
         public async Task<IActionResult> DownloadAttendance()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\\Template - Attendance (Expat).xlsx";
+            string sFileName = @"ExcelTemplates\Template - Attendance (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
+            var stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-
-            memory.Position = 0;
-            return File(memory, MimeType.XLSX, Path.GetFileName(path));
+            return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
@@ -108,17 +104,11 @@
         public async Task<IActionResult> DownloadDSTNetSalary()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\\Template - DST Salary (Expat).xlsx";
+            string sFileName = @"ExcelTemplates\Template - DST Salary (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
+            var stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-
-            memory.Position = 0;
-            return File(memory, MimeType.XLSX, Path.GetFileName(path));
+            return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
@@ -190,6 +180,8 @@
             return PartialView("_ValidationFilesResult", viewModel);
         }
 
+        #endregion UploadAttendanceAndDSTSalary
+
         #region Monthly Payroll
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
@@ -252,11 +244,12 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var viewModel  = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId);
+            var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId);
             viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Host);
 
             return View(viewModel);
         }
+
         #endregion Monthly Payroll
     }
 }

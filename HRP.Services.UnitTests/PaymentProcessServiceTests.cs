@@ -17,6 +17,22 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private IObjectStream fileStream;
+
+        [Fact]
+        public async Task CopyFileToMemoryStreamAsync_WhenCalled_ReturnMemoryStream()
+        {
+            // Arrange
+            var stream = Substitute.For<Stream>();
+            var paymentProcessService = GetPaymentProcessService();
+            fileStream.CreateInstance(Arg.Any<string>()).Returns(stream);
+
+            // Act
+            var actual = await paymentProcessService.CopyFileToMemoryStreamAsync("ahihi");
+
+            // Assert
+            Assert.IsType<MemoryStream>(actual);
+        }
 
         [Fact]
         public async Task IsPayrollGeneratedAsync_BaseServiceGetBoolInstance_ReturnBoolInstance()
@@ -126,7 +142,8 @@
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            var service = new PaymentProcessService(baseService, sessionService);
+            fileStream = FakeFileStream();
+            var service = new PaymentProcessService(baseService, sessionService, null, fileStream);
 
             return service;
         }
@@ -139,6 +156,13 @@
         private ISessionService FakeSessionService()
         {
             return Substitute.For<ISessionService>();
+        }
+
+        private IObjectStream FakeFileStream()
+        {
+            var stream = Substitute.For<IObjectStream>();
+
+            return stream;
         }
 
         private PaymentProcess MockPaymentProcess()

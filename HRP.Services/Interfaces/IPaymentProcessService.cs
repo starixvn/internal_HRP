@@ -1,7 +1,7 @@
 ﻿namespace HRP.Services
 {
     using System;
-    using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
@@ -9,6 +9,8 @@
 
     public interface IPaymentProcessService
     {
+        Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath);
+
         Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
 
         Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month);

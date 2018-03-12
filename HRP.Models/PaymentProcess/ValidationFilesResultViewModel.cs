@@ -2,8 +2,8 @@
 {
     public class ValidationFilesResultViewModel
     {
-        public FileResultViewModel AttendanceFile { get; set; }
+        public FileResultViewModel Attendance { get; set; }
 
-        public FileResultViewModel DSTNetSalaryFile { get; set; }
+        public FileResultViewModel DSTNetSalary { get; set; }
     }
 }

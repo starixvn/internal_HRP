@@ -22,12 +22,30 @@
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly IPaymentProcessRepository paymentProcessRepository;
+        private readonly IObjectStream fileStream;
 
-        public PaymentProcessService(IBaseService baseService, ISessionService sessionService, IPaymentProcessRepository paymentProcessRepository = null)
+        public PaymentProcessService(IBaseService baseService,
+            ISessionService sessionService,
+            IPaymentProcessRepository paymentProcessRepository = null,
+            IObjectStream fileStream = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
+            this.fileStream = fileStream ?? new ObjectStream();
+        }
+
+        public async Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath)
+        {
+            var memory = new MemoryStream();
+            using (var stream = fileStream.CreateInstance(filePath))
+            {
+                await stream.CopyToAsync(memory).ConfigureAwait(false);
+            }
+
+            memory.Position = 0;
+
+            return memory;
         }
 
         public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)

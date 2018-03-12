@@ -25,7 +25,7 @@
                     {
                         if (paymentProcess.AttendanceFileName != null)
                         {
-                            result.AttendanceFile = new FileResultViewModel
+                            result.Attendance = new FileResultViewModel
                             {
                                 TotalRow = paymentProcess.AttendanceTotalRow,
                                 ValidationErrors = attendanceErrors
@@ -34,7 +34,7 @@
 
                         if (paymentProcess.DSTNetSalaryFileName != null)
                         {
-                            result.DSTNetSalaryFile = new FileResultViewModel
+                            result.DSTNetSalary = new FileResultViewModel
                             {
                                 TotalRow = paymentProcess.DSTNetSalaryTotalRow,
                                 ValidationErrors = dstNetSalaryErrors

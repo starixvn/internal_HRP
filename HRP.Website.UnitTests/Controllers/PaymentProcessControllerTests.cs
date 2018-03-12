@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -24,6 +25,7 @@
         private IHostingEnvironment hostingEnvironment;
         private IPaymentProcessService paymentProcessService;
         private IMonthlyPayrollService monthlyPayrollService;
+        private IObjectStream fileStream;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
@@ -40,6 +42,66 @@
             var viewModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.Model);
             Assert.Equal(DateTime.Today, viewModel.SelectedTime);
         }
+
+        #region UploadAttendanceAndDSTSalary
+
+        [Fact]
+        public async Task DownloadAttendance_WhenCalled_ReturnExcelTemplateFile()
+        {
+            // Arrange
+            var filePath = string.Empty;
+            var controller = GetPaymentProcessController();
+            hostingEnvironment.WebRootPath.Returns(string.Empty);
+            paymentProcessService.CopyFileToMemoryStreamAsync(Arg.Do<string>(x => filePath = x)).Returns(new MemoryStream());
+
+            // Act
+            var actual = await controller.DownloadAttendance();
+
+            // Assert
+            var fileStream = Assert.IsType<FileStreamResult>(actual);
+            Assert.Equal(@"ExcelTemplates\Template - Attendance (Expat).xlsx", filePath);
+            Assert.Equal(MimeType.XLSX, fileStream.ContentType);
+            Assert.Equal("Template - Attendance (Expat).xlsx", fileStream.FileDownloadName);
+        }
+
+        [Fact]
+        public async Task DownloadDSTNetSalary_WhenCalled_ReturnExcelTemplateFile()
+        {
+            // Arrange
+            var filePath = string.Empty;
+            var controller = GetPaymentProcessController();
+            hostingEnvironment.WebRootPath.Returns(string.Empty);
+            paymentProcessService.CopyFileToMemoryStreamAsync(Arg.Do<string>(x => filePath = x)).Returns(new MemoryStream());
+
+            // Act
+            var actual = await controller.DownloadDSTNetSalary();
+
+            // Assert
+            var fileStream = Assert.IsType<FileStreamResult>(actual);
+            Assert.Equal(@"ExcelTemplates\Template - DST Salary (Expat).xlsx", filePath);
+            Assert.Equal(MimeType.XLSX, fileStream.ContentType);
+            Assert.Equal("Template - DST Salary (Expat).xlsx", fileStream.FileDownloadName);
+        }
+
+        [Fact]
+        public async Task ValidationFilesResult_WhenCalled_ReturnPartialViewWithValidationFilesResultViewModel()
+        {
+            // Arrange
+            var companyId = 9;
+            DateTime month = DateTime.Now;
+            var controller = GetPaymentProcessController();
+            paymentProcessService.GetValidationFilesResultAsync(companyId, month).Returns(new ValidationFilesResultViewModel());
+
+            // Act
+            var actual = await controller.ValidationFilesResult(companyId, month);
+
+            // Assert
+            var viewResult = Assert.IsType<PartialViewResult>(actual);
+            var model = Assert.IsAssignableFrom<ValidationFilesResultViewModel>(viewResult.Model);
+            Assert.Equal("_ValidationFilesResult", viewResult.ViewName);
+        }
+
+        #endregion UploadAttendanceAndDSTSalary
 
         #region EmployeeMonthlyPayroll
 
