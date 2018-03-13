@@ -276,6 +276,28 @@
             return View(viewModel);
         }
 
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.EditAllowances, Policy = Policy.Read)]
+        public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel)
+        {
+            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EditAllowances, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var result = await monthlyPayrollService.UpdateMonthlyAllowancesAsync(viewModel, sessionService.UserId);
+
+                if (!result.IsSuccessful)
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
+            }
+
+            return View(viewModel);
+        }
+
         #endregion Monthly Payroll
     }
 }

@@ -4,6 +4,8 @@
 
     public class MonthlyAllowancesViewModel
     {
+        public int CompanyId { get; set; }
+
         public MonthlyAllowanceModel Allowance { get; set; }
 
         public IEnumerable<MonthlyAllowanceAdditionModel> Additions { get; set; }
