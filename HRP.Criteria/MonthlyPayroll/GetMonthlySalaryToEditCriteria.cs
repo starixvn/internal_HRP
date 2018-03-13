@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetMonthlySalaryToUpdateCriteria : CriteriaBase
+    public class GetMonthlySalaryToEditCriteria : CriteriaBase
     {
         public int UserId { get; set; }
 

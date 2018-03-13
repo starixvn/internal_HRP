@@ -194,7 +194,6 @@
             string idNo = null)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
-
             if (!isRead)
             {
                 return RedirectToAction("AccessDenied", "Error");
@@ -211,24 +210,29 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public IActionResult EditBasicSalary(
+        public async Task<IActionResult> EditBasicSalary(
             int payrollId,
             int companyId,
             DateTime month)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
-
             if (!isRead)
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var viewModel = new EditMonthlySalaryViewModel();
+            var viewModel = await monthlyPayrollService.GetMonthlySalaryToEditAsync(payrollId);
+            if (viewModel == null)
+            {
+                return RedirectToAction("PageNotFound", "Error");
+            }
+
+            viewModel.Month = month;
 
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> EditBasicSalary(EditMonthlySalaryViewModel viewModel)
         {

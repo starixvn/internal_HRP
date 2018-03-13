@@ -9,7 +9,7 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetMonthlySalaryToUpdateCriteria();
+            var criteria = new GetMonthlySalaryToEditCriteria();
             var expected = "MonthlyPayroll_GetSalaryToUpdate";
 
             // Act
@@ -26,7 +26,7 @@
         public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, int payrollId)
         {
             // Arrange
-            var criteria = new GetMonthlySalaryToUpdateCriteria
+            var criteria = new GetMonthlySalaryToEditCriteria
             {
                 UserId = userId,
                 PayrollId = payrollId
@@ -43,7 +43,7 @@
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetMonthlySalaryToUpdateCriteria
+            var criteria = new GetMonthlySalaryToEditCriteria
             {
                 UserId = 1,
                 PayrollId = 1

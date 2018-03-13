@@ -161,14 +161,14 @@
         #region EditBasicSalary
 
         [Fact]
-        public void EditBasicSalary_HasNotPermission_ReturnRedirectToAccessDenied()
+        public async Task EditBasicSalary_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
             // Act
-            var actual = controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
+            var actual = await controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -177,22 +177,46 @@
         }
 
         [Fact]
-        public void EditBasicSalary_HasPermission_ReturnAsExpectedViewResult()
+        public async Task EditBasicSalary_MonthlyPayrollIsNotExisted_ReturnRedirectToPageNotFound()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(x => Task.FromResult<EditMonthlySalaryViewModel>(null));
+
+            // Act
+            var actual = await controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task EditBasicSalary_MonthlyPayrollIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
             var companyId = 1;
             var payrollId = 1;
             var month = DateTime.Now;
+            var viewModel = new EditMonthlySalaryViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(viewModel);
 
             // Act
-            var actual = controller.EditBasicSalary(payrollId, companyId, month);
+            var actual = await controller.EditBasicSalary(payrollId, companyId, month);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<EditMonthlySalaryViewModel>(viewResult.Model);
+            var viewModelResult = Assert.IsAssignableFrom<EditMonthlySalaryViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
+            Assert.Equal(month, viewModelResult.Month);
+            Assert.Equal(viewModel.MonthlyBasicSalary, viewModelResult.MonthlyBasicSalary);
+            Assert.Equal(viewModel.MonthlySalary, viewModelResult.MonthlySalary);
+            Assert.Equal(viewModel.Additions, viewModelResult.Additions);
+            Assert.Equal(viewModel.Deductions, viewModelResult.Deductions);
         }
 
         [Fact]

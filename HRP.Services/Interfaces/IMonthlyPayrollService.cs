@@ -14,6 +14,8 @@
 
         Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name);
 
+        Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(int payrollId);
+
         Task<CommandResult> ResetMonthlySalaryAsync(int payrollId, int companyId);
 
         Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel);

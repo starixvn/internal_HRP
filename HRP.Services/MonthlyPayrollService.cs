@@ -70,6 +70,28 @@
             return monthlyPayrolls;
         }
 
+        public async Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(int payrollId)
+        {
+            EditMonthlySalaryViewModel viewModel = null;
+            var criteria = new GetMonthlySalaryToEditCriteria
+            {
+                PayrollId = payrollId,
+                UserId = sessionService.UserId
+            };
+
+            if (criteria.IsValid())
+            {
+                viewModel = await monthlyPayrollRepository.GetMonthlySalaryToEditAsync(criteria).ConfigureAwait(false);
+
+                if (viewModel != null)
+                {
+                    DecryptMonthlySalary(viewModel);
+                }
+            }
+
+            return viewModel;
+        }
+
         public Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name)
         {
             var criteria = new GetEmployeeSuggestionByNameCriteria
@@ -275,6 +297,31 @@
             }
 
             return xml.ToString();
+        }
+
+        private void DecryptMonthlySalary(EditMonthlySalaryViewModel viewModel)
+        {
+            viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
+            viewModel.MonthlyBasicSalary.EBankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EBankingAmount);
+            viewModel.MonthlyBasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking1Amount);
+            viewModel.MonthlyBasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking2Amount);
+            viewModel.MonthlyBasicSalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.CashAmount);
+
+            viewModel.MonthlySalary.Salary = cryptoService.Decrypt(viewModel.MonthlySalary.Salary);
+            viewModel.MonthlySalary.EBankingAmount = cryptoService.Decrypt(viewModel.MonthlySalary.EBankingAmount);
+            viewModel.MonthlySalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking1Amount);
+            viewModel.MonthlySalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking2Amount);
+            viewModel.MonthlySalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlySalary.CashAmount);
+
+            foreach (MonthlySalaryAdditionModel addition in viewModel.Additions)
+            {
+                addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
+            }
+
+            foreach (MonthlySalaryDeductionModel deduction in viewModel.Deductions)
+            {
+                deduction.NetSalary = cryptoService.Decrypt(deduction.NetSalary);
+            }
         }
     }
 }
