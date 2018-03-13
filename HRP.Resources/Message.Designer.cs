@@ -304,6 +304,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Currency does not exist.
+        /// </summary>
+        public static string CurrencyNotExists {
+            get {
+                return ResourceManager.GetString("CurrencyNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Issue is required!.
         /// </summary>
         public static string DateIssueRequired {

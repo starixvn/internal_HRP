@@ -741,4 +741,7 @@
   <data name="DSTNetSalaryFileUploadWarning" xml:space="preserve">
     <value>DST NET Salary File: Number of error(s): {0}</value>
   </data>
+  <data name="CurrencyNotExists" xml:space="preserve">
+    <value>The Currency does not exist</value>
+  </data>
 </root>

@@ -21,6 +21,6 @@
 
         Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month);
 
-        CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<CommandResult> UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
     }
 }

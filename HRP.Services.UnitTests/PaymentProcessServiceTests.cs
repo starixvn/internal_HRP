@@ -8,8 +8,10 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
+    using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
@@ -150,10 +152,10 @@
             var mockReadResult = MockFailureResultAttendanceUploading();
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
-            var stream = Substitute.For<Stream>();
             var sheet = Substitute.For<ISheet>();
             templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
-            templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode).Returns(mockReadResult);
+            templateReader.ReadAttendance(Arg.Is<AttendanceTemplate>(x => x.Sheet == sheet && x.EmployeeCodeList == employeeCodeList && x.CompanyCode == viewModel.CompanyCode))
+                .Returns(mockReadResult);
 
             // Act
             var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
@@ -178,11 +180,11 @@
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
             baseService.ExecuteNonQueryAsync(Arg.Do<CreateAttendanceUploadingCriteria>(x => criteria = x)).Returns(expected);
-            var stream = Substitute.For<Stream>();
             var sheet = Substitute.For<ISheet>();
             templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
-            templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode).Returns(mockReadResult);
-            templateReader.ValidationResults.Returns(validationResult);
+            templateReader.ReadAttendance(Arg.Is<AttendanceTemplate>(x => x.Sheet == sheet && x.EmployeeCodeList == employeeCodeList && x.CompanyCode == viewModel.CompanyCode))
+                .Returns(mockReadResult);
+            templateReader.AttendanceValidationResults.Returns(validationResult);
 
             // Act
             var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
@@ -200,6 +202,93 @@
         }
 
         #endregion UploadAttendanceFileAsync
+
+        #region UploadDSTNetSalaryFileAsync
+
+        [Fact]
+        public async Task UploadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNull_ReturnSuccessfulCommandResult()
+        {
+            // Arrange
+            var paymentProcessService = GetPaymentProcessService();
+
+            // Act
+            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(new UploadAttendanceAndSalaryViewModel { });
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+        }
+
+        [Fact]
+        public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileFailure_ReturnErrorCommandResult()
+        {
+            // Arrange
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var employeeCodeList = MockListString();
+            var currencies = MockCurrencies();
+            var mockReadResult = MockFailureResultDSTNetSalaryUploading();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
+            baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
+            var sheet = Substitute.For<ISheet>();
+            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
+            templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
+                                        && x.EmployeeCodeList == employeeCodeList
+                                        && x.CompanyCode == viewModel.CompanyCode
+                                        && x.Currencies == currencies))
+                                       .Returns(mockReadResult);
+
+            // Act
+            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.Equal(actual.Message, mockReadResult.Message);
+        }
+
+        [Fact]
+        public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileSuccess_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var expected = MockSuccessfulCommandResult();
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var employeeCodeList = MockListString();
+            var currencies = MockCurrencies();
+            var mockReadResult = MockSuccessResultDSTNetSalaryUploading();
+            var validationResult = MockListValidationResult();
+            var criteria = new CreateDSTNetSalaryUploadingCriteria();
+
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
+            baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDSTNetSalaryUploadingCriteria>(x => criteria = x)).Returns(expected);
+
+            var sheet = Substitute.For<ISheet>();
+            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
+            templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
+                                        && x.EmployeeCodeList == employeeCodeList
+                                        && x.CompanyCode == viewModel.CompanyCode
+                                        && x.Currencies == currencies))
+                                       .Returns(mockReadResult);
+            templateReader.DSTNetSalaryValidationResults.Returns(validationResult);
+
+            // Act
+            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.True(actual.IsSuccessful);
+            Assert.Equal(actual, expected);
+            Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
+            Assert.Equal(viewModel.SelectedTime, criteria.Month);
+            Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
+            Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
+            Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
+            Assert.Equal(sessionService.UserId, criteria.CreatedBy); ;
+        }
+
+        #endregion UploadDSTNetSalaryFileAsync
 
         #region GetValidationFilesResultAsync
 
@@ -348,6 +437,7 @@
             return new UploadAttendanceAndSalaryViewModel
             {
                 AttendanceFile = MockExcelFile(),
+                DSTNetSalaryFile = MockExcelFile(),
                 CompanyCode = "Nex",
                 CompanyId = 2,
                 SelectedTime = DateTime.Now
@@ -377,12 +467,41 @@
             return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
         }
 
+        private Failure<IEnumerable<DSTNetSalaryUploading>> MockFailureResultDSTNetSalaryUploading()
+        {
+            return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+        }
+
+        private Success<IEnumerable<DSTNetSalaryUploading>> MockSuccessResultDSTNetSalaryUploading()
+        {
+            var list = new List<DSTNetSalaryUploading>()
+            {
+                new DSTNetSalaryUploading {
+                    RowNumber = 8,
+                    EmployeeCode = "111",
+                    Currency = "VND",
+                    NetSalaryReceived = "99999999"
+                }
+            };
+
+            return new Success<IEnumerable<DSTNetSalaryUploading>>(list);
+        }
+
         private IEnumerable<ValidationResult> MockListValidationResult()
         {
             return new List<ValidationResult>()
             {
                 new ValidationResult {RowNumber = 7, ResultType = 2, Message = "error"},
                 new ValidationResult {RowNumber = 8, ResultType = 2, Message = "error2"}
+            };
+        }
+
+        private IEnumerable<Currency> MockCurrencies()
+        {
+            return new List<Currency>
+            {
+                new Currency {CurrencyCode = "USD"},
+                new Currency {CurrencyCode = "VND"}
             };
         }
 

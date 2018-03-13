@@ -7,7 +7,7 @@
     using System.Linq;
     using HRP.Core.Constants;
     using HRP.Core.Extensions;
-    using HRP.Core.Model;
+    using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
     using NPOI.SS.UserModel;
@@ -16,14 +16,21 @@
     {
         private readonly DataFormatter formatter;
         private readonly IList<AttendanceUploading> attendanceUploading;
-        private readonly IList<ValidationResult> _validationResults;
-        private const int StartRow = 6;
-        private const int HeaderRow = 5;
+        private readonly IList<ValidationResult> _attendanceValidationResults;
+        private const int AttendanceStartRow = 6;
+        private const int AttendanceHeaderRow = 5;
+
+        private readonly IList<DSTNetSalaryUploading> dstNetSalaryUploading;
+        private readonly IList<ValidationResult> _dstNetSalaryValidationResults;
+        private const int DSTNetSalaryStartRow = 5;
+        private const int DSTNetSalaryHeaderRow = 4;
 
         public TemplateReader(DataFormatter formatter = null)
         {
             attendanceUploading = new List<AttendanceUploading>();
-            _validationResults = new List<ValidationResult>();
+            _attendanceValidationResults = new List<ValidationResult>();
+            dstNetSalaryUploading = new List<DSTNetSalaryUploading>();
+            _dstNetSalaryValidationResults = new List<ValidationResult>();
             this.formatter = formatter ?? new DataFormatter();
         }
 
@@ -32,9 +39,10 @@
             return WorkbookFactory.Create(file).GetSheetAt(0);
         }
 
-        public static bool IsValidSheet(ISheet sheet)
+        #region ReadAttendance
+
+        public static bool IsValidAttendanceSheet(ILookup<string, int> headers)
         {
-            var headers = GetHeaders(sheet);
             return
 #pragma warning disable S1067 // Expressions should not be too complex
                     headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
@@ -46,31 +54,19 @@
 #pragma warning restore S1067 // Expressions should not be too complex
         }
 
-        public static bool IsValidRow(IRow row)
+        public IList<ValidationResult> AttendanceValidationResults
         {
-            return !IsEmptyRow(row);
+            get => _attendanceValidationResults;
         }
 
-        private static bool IsEmptyRow(IRow row)
+        public Result<IEnumerable<AttendanceUploading>> ReadAttendance(AttendanceTemplate template)
         {
-            return
-                row == null
-                || row.Cells.Count == 0
-                || row.Cells.TrueForAll(c => c.CellType == CellType.Blank || (c.CellType == CellType.String && string.IsNullOrWhiteSpace(c.StringCellValue)));
-        }
-
-        public IList<ValidationResult> ValidationResults
-        {
-            get => _validationResults;
-        }
-
-        public Result<IEnumerable<AttendanceUploading>> ReadAttendance(ISheet sheet, IEnumerable<string> employeeCodeList, string companyName)
-        {
-            if (IsValidSheet(sheet))
+            var headers = GetHeaders(template.Sheet, AttendanceHeaderRow);
+            if (IsValidAttendanceSheet(headers))
             {
-                for (var i = StartRow; i <= sheet.LastRowNum; i++)
+                for (var i = AttendanceStartRow; i <= template.Sheet.LastRowNum; i++)
                 {
-                    var row = sheet.GetRow(i);
+                    var row = template.Sheet.GetRow(i);
 
                     if (IsValidRow(row))
                     {
@@ -78,20 +74,27 @@
                         var record = new AttendanceUploading
                         {
                             RowNumber = currentRowNumber,
-                            EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, sheet, row),
-                            ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, sheet, row),
-                            LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, sheet, row),
-                            UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, sheet, row),
-                            LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, sheet, row),
-                            EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, sheet, row)
+                            EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
+                            ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row),
+                            LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, headers, row),
+                            UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, headers, row),
+                            LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, headers, row),
+                            EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, headers, row)
                         };
 
-                        CheckEmployeeCode(record.EmployeeCode, currentRowNumber, employeeCodeList, companyName);
-                        CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
-                        CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
-                        CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
-                        CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
-                        CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
+                        var checkEmployeeCode = CheckEmployeeCodeInAttendance(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
+                        var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
+                        var checkLeaveTaken = CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
+                        var checkUnpaidLeave = CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
+                        var checkLateInMinute = CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
+                        var checkEarlyOutMinute = CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
+
+                        AddToAttendanceValidationResults(checkEmployeeCode);
+                        AddToAttendanceValidationResults(checkActualWorkingDay);
+                        AddToAttendanceValidationResults(checkLeaveTaken);
+                        AddToAttendanceValidationResults(checkUnpaidLeave);
+                        AddToAttendanceValidationResults(checkLateInMinute);
+                        AddToAttendanceValidationResults(checkEarlyOutMinute);
 
                         attendanceUploading.Add(record);
                     }
@@ -103,16 +106,108 @@
             return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
         }
 
-        private string GetStringValueAtCell(string columnName, ISheet sheet, IRow row)
+        private void AddToAttendanceValidationResults(ValidationResult result)
         {
-            var value = (string)GetPropValue(columnName, sheet, row, typeof(string));
-
-            return value;
+            if (!result.IsValid)
+            {
+                _attendanceValidationResults.Add(result);
+            }
         }
+
+        #endregion ReadAttendance
+
+        #region ReadDSTNetSalary
+
+        public static bool IsValidDSTNetSalarySheet(ILookup<string, int> headers)
+        {
+            return
+                    headers.Contains(DSTNetSalaryColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
+                headers.Contains(DSTNetSalaryColumn.Currency.ToLower(CultureInfo.InvariantCulture)) &&
+                headers.Contains(DSTNetSalaryColumn.NetSalaryReceived.ToLower(CultureInfo.InvariantCulture));
+        }
+
+        public IList<ValidationResult> DSTNetSalaryValidationResults
+        {
+            get => _dstNetSalaryValidationResults;
+        }
+
+        public Result<IEnumerable<DSTNetSalaryUploading>> ReadDSTNetSalary(DSTNetSalaryTemplate template)
+        {
+            var headers = GetHeaders(template.Sheet, DSTNetSalaryHeaderRow);
+            if (IsValidDSTNetSalarySheet(headers))
+            {
+                for (var i = DSTNetSalaryStartRow; i <= template.Sheet.LastRowNum; i++)
+                {
+                    var row = template.Sheet.GetRow(i);
+
+                    if (IsValidRow(row))
+                    {
+                        var currentRowNumber = row.RowNum + 1;
+                        var record = new DSTNetSalaryUploading
+                        {
+                            RowNumber = currentRowNumber,
+                            EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
+                            Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
+                            NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
+                        };
+
+                        var checkEmployeeCode = CheckEmployeeCodeInDSTNetSalary(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
+                        var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
+
+                        AddToDSTNetSalaryValidationResults(checkEmployeeCode);
+                        AddToDSTNetSalaryValidationResults(checkCurrency);
+
+                        dstNetSalaryUploading.Add(record);
+                    }
+                }
+
+                return new Success<IEnumerable<DSTNetSalaryUploading>>(dstNetSalaryUploading);
+            }
+
+            return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+        }
+
+        private void AddToDSTNetSalaryValidationResults(ValidationResult result)
+        {
+            if (!result.IsValid)
+            {
+                _dstNetSalaryValidationResults.Add(result);
+            }
+        }
+
+        #endregion ReadDSTNetSalary
 
         #region Validation
 
-        private void CheckEmployeeCode(string value, int rowNumber, IEnumerable<string> employeeCodeList, string companyName)
+        private ValidationResult CheckCurrency(string value, int rowNumber, IEnumerable<Currency> currencies)
+        {
+            var columnName = DSTNetSalaryColumn.Currency;
+            var result = new ValidationResult
+            {
+                RowNumber = rowNumber
+            };
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMissing, columnName);
+            }
+            else if (!currencies.Any(s => s.Equals(value)))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.CurrencyNotExists);
+            }
+            else
+            {
+                result.ResultType = 1;
+            }
+
+            return result;
+        }
+
+        private ValidationResult CheckEmployeeCodeInAttendance(string value, int rowNumber, string companyName,
+                                                            IEnumerable<string> employeeCodeList,
+                                                            IEnumerable<AttendanceUploading> recordsUploading)
         {
             var columnName = AttendanceColumn.IDNo;
             var result = new ValidationResult
@@ -130,7 +225,7 @@
                 result.ResultType = 2;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
             }
-            else if (attendanceUploading.Any(s => s.EmployeeCode.Equals(value)))
+            else if (recordsUploading.Any(s => s.EmployeeCode.Equals(value)))
             {
                 result.ResultType = 2;
                 result.Message = Message.IDNoIsDuplicated;
@@ -140,60 +235,80 @@
                 result.ResultType = 1;
             }
 
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+            return result;
         }
 
-        private void CheckActualWorkingDay(string value, int rowNumber)
+        private ValidationResult CheckEmployeeCodeInDSTNetSalary(string value, int rowNumber, string companyName,
+                                                                IEnumerable<string> employeeCodeList,
+                                                                IEnumerable<DSTNetSalaryUploading> recordsUploading)
+        {
+            var columnName = DSTNetSalaryColumn.IDNo;
+            var result = new ValidationResult
+            {
+                RowNumber = rowNumber
+            };
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMissing, columnName);
+            }
+            else if (!employeeCodeList.Any(s => s.Equals(value)))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.IDNoNotExistIn, companyName);
+            }
+            else if (recordsUploading.Any(s => s.EmployeeCode.Equals(value)))
+            {
+                result.ResultType = 2;
+                result.Message = Message.IDNoIsDuplicated;
+            }
+            else
+            {
+                result.ResultType = 1;
+            }
+
+            return result;
+        }
+
+        private ValidationResult CheckActualWorkingDay(string value, int rowNumber)
         {
             var columnName = AttendanceColumn.ActualWorkingDay;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+
+            return result;
         }
 
-        private void CheckLeaveTaken(string value, int rowNumber)
+        private ValidationResult CheckLeaveTaken(string value, int rowNumber)
         {
             var columnName = AttendanceColumn.LeaveTaken;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+
+            return result;
         }
 
-        private void CheckUnpaidLeave(string value, int rowNumber)
+        private ValidationResult CheckUnpaidLeave(string value, int rowNumber)
         {
             var columnName = AttendanceColumn.UnpaidLeave;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+
+            return result;
         }
 
-        private void CheckLateInMinute(string value, int rowNumber, double maxValue)
+        private ValidationResult CheckLateInMinute(string value, int rowNumber, double maxValue)
         {
             var columnName = AttendanceColumn.LateInMinute;
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+
+            return result;
         }
 
-        private void CheckEarlyOutMinute(string value, int rowNumber, double maxValue)
+        private ValidationResult CheckEarlyOutMinute(string value, int rowNumber, double maxValue)
         {
             var columnName = AttendanceColumn.EarlyOutMinute;
             var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
-            if (!result.IsValid)
-            {
-                _validationResults.Add(result);
-            }
+
+            return result;
         }
 
         private ValidationResult CheckValidNumber(string value, string columnName, int rowNumber, double maxValue)
@@ -228,6 +343,29 @@
 
         #endregion Validation
 
+        #region Helper
+
+        private static ILookup<string, int> GetHeaders(ISheet sheet, int headerRow)
+        {
+            return sheet
+                .GetRow(headerRow)
+                .Cells
+                .ToLookup(cell => cell.StringCellValue.ToLower(CultureInfo.InvariantCulture), cell => cell.ColumnIndex);
+        }
+
+        public static bool IsValidRow(IRow row)
+        {
+            return !IsEmptyRow(row);
+        }
+
+        private static bool IsEmptyRow(IRow row)
+        {
+            return
+                row == null
+                || row.Cells.Count == 0
+                || row.Cells.TrueForAll(c => c.CellType == CellType.Blank || (c.CellType == CellType.String && string.IsNullOrWhiteSpace(c.StringCellValue)));
+        }
+
         public virtual Type GetBasicType(Type t)
         {
             var tmp = t;
@@ -240,11 +378,9 @@
             return tmp;
         }
 
-        public object GetPropValue(string column, ISheet sheet, IRow row, Type rowType)
+        public object GetPropValue(string column, ILookup<string, int> headers, IRow row, Type rowType)
         {
             var t = GetBasicType(rowType);
-
-            var headers = GetHeaders(sheet);
             var values = headers[column.ToLower(CultureInfo.InvariantCulture)].Select(idx => CellReader(row, idx, t));
 
             if (rowType.IsGenericType)
@@ -324,12 +460,13 @@
             return cell.DateCellValue;
         }
 
-        private static ILookup<string, int> GetHeaders(ISheet sheet)
+        private string GetStringValueAtCell(string columnName, ILookup<string, int> headers, IRow row)
         {
-            return sheet
-                .GetRow(HeaderRow)
-                .Cells
-                .ToLookup(cell => cell.StringCellValue.ToLower(CultureInfo.InvariantCulture), cell => cell.ColumnIndex);
+            var value = (string)GetPropValue(columnName, headers, row, typeof(string));
+
+            return value;
         }
+
+        #endregion Helper
     }
 }

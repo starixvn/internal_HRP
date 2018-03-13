@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.Model
+﻿namespace HRP.Models.PaymentProcess
 {
     using System.Xml.Serialization;
     using HRP.Core.Extensions;

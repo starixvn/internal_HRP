@@ -100,7 +100,7 @@
             var isValid = validateFileExcel($form, "AttendanceFile", file);
             if (isValid) {
                 $(domElement.AttendanceFileName).text(file.name);
-            } 
+            }
         });
 
         $(domElement.DSTNetSalaryFile).on('change', function () {
@@ -108,7 +108,7 @@
             var isValid = validateFileExcel($form, "DSTNetSalaryFile", file);
             if (isValid) {
                 $(domElement.DSTNetSalaryFileName).text(file.name);
-            } 
+            }
         });
     }
 

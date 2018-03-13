@@ -8,9 +8,11 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories;
     using HRP.Repositories.Interfaces;
@@ -104,18 +106,24 @@
             var commandResult = new CommandResult { Code = 0 };
             if (viewModel.AttendanceFile != null)
             {
-                var employeeCodeList = await GetDataForReadAttendanceFileAsync(viewModel.CompanyId).ConfigureAwait(false);
+                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId).ConfigureAwait(false);
                 var sheet = templateReader.CreateSheet(viewModel.AttendanceFile.OpenReadStream());
-                var readResult = templateReader.ReadAttendance(sheet, employeeCodeList, viewModel.CompanyCode);
+                var template = new AttendanceTemplate
+                {
+                    CompanyId = viewModel.CompanyId,
+                    CompanyCode = viewModel.CompanyCode,
+                    Month = viewModel.SelectedTime,
+                    FileName = viewModel.AttendanceFile.FileName,
+                    Sheet = sheet,
+                    EmployeeCodeList = employeeCodeList
+                };
+
+                var readResult = templateReader.ReadAttendance(template);
                 if (readResult is Success<IEnumerable<AttendanceUploading>> success)
                 {
-                    var process = new PaymentProcess
-                    {
-                        CompanyId = viewModel.CompanyId,
-                        Month = viewModel.SelectedTime,
-                        AttendanceFileName = viewModel.AttendanceFile.FileName
-                    };
-                    commandResult = await CreateAttendanceUploadingAsync(success.Value, templateReader.ValidationResults, process).ConfigureAwait(false);
+                    template.Records = success.Value;
+                    template.ValidationResults = templateReader.AttendanceValidationResults;
+                    commandResult = await CreateAttendanceUploadingAsync(template).ConfigureAwait(false);
 
                     return commandResult;
                 }
@@ -128,11 +136,41 @@
             return commandResult;
         }
 
-        private async Task<IEnumerable<string>> GetDataForReadAttendanceFileAsync(int companyId)
+        public async Task<CommandResult> UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
         {
-            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
+            var commandResult = new CommandResult { Code = 0 };
+            if (viewModel.DSTNetSalaryFile != null)
+            {
+                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId).ConfigureAwait(false);
+                var currencies = await GetAllActiveCurrencyAsync().ConfigureAwait(false);
+                var sheet = templateReader.CreateSheet(viewModel.DSTNetSalaryFile.OpenReadStream());
+                var template = new DSTNetSalaryTemplate
+                {
+                    CompanyId = viewModel.CompanyId,
+                    CompanyCode = viewModel.CompanyCode,
+                    Month = viewModel.SelectedTime,
+                    FileName = viewModel.DSTNetSalaryFile.FileName,
+                    Sheet = sheet,
+                    EmployeeCodeList = employeeCodeList,
+                    Currencies = currencies
+                };
 
-            return employeeCodeList;
+                var readResult = templateReader.ReadDSTNetSalary(template);
+                if (readResult is Success<IEnumerable<DSTNetSalaryUploading>> success)
+                {
+                    template.Records = success.Value;
+                    template.ValidationResults = templateReader.DSTNetSalaryValidationResults;
+                    commandResult = await CreateDSTNetSalaryUploadingAsync(template).ConfigureAwait(false);
+
+                    return commandResult;
+                }
+
+                var failure = (Failure<IEnumerable<DSTNetSalaryUploading>>)readResult;
+                commandResult.Code = 1;
+                commandResult.Message = failure.Message;
+            }
+
+            return commandResult;
         }
 
         public async Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month)
@@ -152,21 +190,48 @@
             return result ?? new ValidationFilesResultViewModel();
         }
 
-        public CommandResult UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        private async Task<IEnumerable<string>> GetAllEmployeeCodeByCompanyIdAsync(int companyId)
         {
-            return new CommandResult { Code = 0 };
+            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
+
+            return employeeCodeList;
         }
 
-        private async Task<CommandResult> CreateAttendanceUploadingAsync(IEnumerable<AttendanceUploading> records, IEnumerable<ValidationResult> results, PaymentProcess process)
+        private async Task<IEnumerable<Currency>> GetAllActiveCurrencyAsync()
+        {
+            var currencies = await baseService.GetDataAsync<Currency>(new GetAllCurrencyCriteria { IsActive = true }).ConfigureAwait(false);
+
+            return currencies;
+        }
+
+        private async Task<CommandResult> CreateAttendanceUploadingAsync(AttendanceTemplate template)
         {
             var criteria = new CreateAttendanceUploadingCriteria
             {
                 SessionId = Guid.NewGuid().ToString(),
-                CompanyId = process.CompanyId,
-                Month = process.Month,
-                FileName = process.AttendanceFileName,
-                UploadingXMLDoc = records.ToXML().ToString(),
-                ResultXMLDoc = results.ToXML().ToString(),
+                CompanyId = template.CompanyId,
+                Month = template.Month,
+                FileName = template.FileName,
+                UploadingXMLDoc = template.Records.ToXML().ToString(),
+                ResultXMLDoc = template.ValidationResults.ToXML().ToString(),
+                CreatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
+        public async Task<CommandResult> CreateDSTNetSalaryUploadingAsync(DSTNetSalaryTemplate template)
+        {
+            var criteria = new CreateDSTNetSalaryUploadingCriteria
+            {
+                SessionId = Guid.NewGuid().ToString(),
+                CompanyId = template.CompanyId,
+                Month = template.Month,
+                FileName = template.FileName,
+                UploadingXMLDoc = template.Records.ToXML().ToString(),
+                ResultXMLDoc = template.ValidationResults.ToXML().ToString(),
                 CreatedBy = sessionService.UserId
             };
 
