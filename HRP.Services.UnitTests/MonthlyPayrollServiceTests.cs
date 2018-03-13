@@ -207,6 +207,45 @@
             Assert.NotNull(actual.Deductions);
         }
 
+        [Fact]
+        public async Task UpdateMonthlyAllowancesAsync_ValidModel_ReturnCommandResult()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
+            var viewModel = new MonthlyAllowancesViewModel
+            {
+                Allowance = new MonthlyAllowanceModel(),
+                Additions = new List<MonthlyAllowanceAdditionModel>
+                {
+                    new MonthlyAllowanceAdditionModel
+                    {
+                        PayrollId = 1,
+                        NoOfDays = 20,
+                        Type = 1,
+                        NetAllowance = string.Empty,
+                        TotalAmount = string .Empty,
+                        UnitAmount = string.Empty
+                    }
+                },
+                Deductions = new List<MonthlyAllowanceDeductionModel>
+                {
+                    new MonthlyAllowanceDeductionModel
+                    {
+                        PayrollId = 1,
+                        NoOfDays = 20,
+                        Type = 1,
+                        NetAllowance = string.Empty,
+                        TotalAmount = string .Empty,
+                        UnitAmount = string.Empty
+                    }
+                }
+            };
+
+            var actual = await monthlyPayrollService.UpdateMonthlyAllowancesAsync(viewModel, 1);
+            Assert.True(actual.IsSuccessful);
+        }
+
         #region Helper
 
         private static ISessionService FakeSessionService()

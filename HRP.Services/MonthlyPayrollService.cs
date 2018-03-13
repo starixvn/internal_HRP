@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using Fanex.Data;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -116,6 +117,35 @@
             return model;
         }
 
+        public async Task<CommandResult> UpdateMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId)
+        {
+            var allowanceAdditionXml = ConvertAllowanceAdditionToXml(viewModel.Additions);
+            var allowanceDeductionXml = ConvertAllowanceAdditionToXml(viewModel.Deductions);
+
+            var criteria = new UpdateMonthlyAllowancesCriteria
+            {
+                PayrollId = viewModel.Allowance.PayrollId,
+                CurrencyId = viewModel.Allowance.CurrencyId,
+                DirectBanking1CurrencyId = viewModel.Allowance.DirectBanking1CurrencyId,
+                DirectBanking1Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking1Amount),
+                DirectBanking1AccountId = viewModel.Allowance.DirectBanking1AccountId,
+                DirectBanking1BankTypeId = viewModel.Allowance.DirectBanking1BankTypeId,
+                DirectBanking2CurrencyId = viewModel.Allowance.DirectBanking2CurrencyId,
+                DirectBanking2Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking2Amount),
+                DirectBanking2AccountId = viewModel.Allowance.DirectBanking2AccountId,
+                DirectBanking2BankTypeId = viewModel.Allowance.DirectBanking2BankTypeId,
+                CashCurrencyId = viewModel.Allowance.CashCurrencyId,
+                CashAmount = cryptoService.Encrypt(viewModel.Allowance.CashAmount),
+                CashAccountId = viewModel.Allowance.CashAccountId,
+                AutoCalculateOn = viewModel.Allowance.AutoCalculateOn,
+                AllowanceAddition = allowanceAdditionXml,
+                AllowanceDeduction = allowanceDeductionXml,
+                UserId = userId
+            };
+
+            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+        }
+
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
         {
             foreach (var monthlyPayroll in monthlyPayrolls)
@@ -142,6 +172,7 @@
         {
             foreach (var addition in additions)
             {
+                addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
                 addition.NetAllowance = cryptoService.Decrypt(addition.NetAllowance);
                 addition.TotalAmount = cryptoService.Decrypt(addition.TotalAmount);
             }
@@ -151,9 +182,50 @@
         {
             foreach (var deduction in deductions)
             {
+                deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
                 deduction.TotalAmount = cryptoService.Decrypt(deduction.TotalAmount);
             }
+        }
+
+        private string ConvertAllowanceAdditionToXml(IEnumerable<MonthlyAllowanceAdditionModel> additions)
+        {
+            var xml = new XElement("Root");
+
+            foreach (var addition in additions)
+            {
+                var row = new XElement("Row");
+                row.SetAttributeValue(nameof(addition.PayrollId), addition.PayrollId);
+                row.SetAttributeValue(nameof(addition.Type), addition.Type);
+                row.SetAttributeValue(nameof(addition.NoOfDays), addition.NoOfDays);
+                row.SetAttributeValue(nameof(addition.UnitAmount), cryptoService.Encrypt(addition.UnitAmount));
+                row.SetAttributeValue(nameof(addition.TotalAmount), cryptoService.Encrypt(addition.TotalAmount));
+                row.SetAttributeValue(nameof(addition.NetAllowance), cryptoService.Encrypt(addition.NetAllowance));
+
+                xml.Add(row);
+            }
+
+            return xml.ToString();
+        }
+
+        private string ConvertAllowanceAdditionToXml(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
+        {
+            var xml = new XElement("Root");
+
+            foreach (var deduction in deductions)
+            {
+                var row = new XElement("Row");
+                row.SetAttributeValue(nameof(deduction.PayrollId), deduction.PayrollId);
+                row.SetAttributeValue(nameof(deduction.Type), deduction.Type);
+                row.SetAttributeValue(nameof(deduction.NoOfDays), deduction.NoOfDays);
+                row.SetAttributeValue(nameof(deduction.UnitAmount), cryptoService.Encrypt(deduction.UnitAmount));
+                row.SetAttributeValue(nameof(deduction.TotalAmount), cryptoService.Encrypt(deduction.TotalAmount));
+                row.SetAttributeValue(nameof(deduction.NetAllowance), cryptoService.Encrypt(deduction.NetAllowance));
+
+                xml.Add(row);
+            }
+
+            return xml.ToString();
         }
     }
 }

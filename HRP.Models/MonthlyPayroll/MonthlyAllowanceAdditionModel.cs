@@ -6,7 +6,7 @@
 
         public int Type { get; set; }
 
-        public decimal NoOfDays { get; set; }
+        public decimal? NoOfDays { get; set; }
 
         public string UnitAmount { get; set; }
 

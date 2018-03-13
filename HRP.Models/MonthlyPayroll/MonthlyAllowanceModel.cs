@@ -1,5 +1,7 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using HRP.Core.Enumerations;
+
     public class MonthlyAllowanceModel
     {
         public int PayrollId { get; set; }
@@ -32,6 +34,6 @@
 
         public int? CashAccountId { get; set; }
 
-        public string AutoCalculateOn { get; set; }
+        public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
     }
 }

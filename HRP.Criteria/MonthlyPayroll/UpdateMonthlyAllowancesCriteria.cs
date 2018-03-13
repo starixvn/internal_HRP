@@ -1,0 +1,49 @@
+﻿namespace HRP.Criteria.MonthlyPayroll
+{
+    using HRP.Core.Enumerations;
+
+    public class UpdateMonthlyAllowancesCriteria : CommandBaseCriteria
+    {
+        public int PayrollId { get; set; }
+
+        public string CurrencyId { get; set; }
+
+        public string DirectBanking1CurrencyId { get; set; }
+
+        public string DirectBanking1Amount { get; set; }
+
+        public int? DirectBanking1AccountId { get; set; }
+
+        public int? DirectBanking1BankTypeId { get; set; }
+
+        public string DirectBanking1AccountName { get; set; }
+
+        public string DirectBanking2CurrencyId { get; set; }
+
+        public string DirectBanking2Amount { get; set; }
+
+        public int? DirectBanking2AccountId { get; set; }
+
+        public int? DirectBanking2BankTypeId { get; set; }
+
+        public string DirectBanking2AccountName { get; set; }
+
+        public string CashCurrencyId { get; set; }
+
+        public string CashAmount { get; set; }
+
+        public int? CashAccountId { get; set; }
+
+        public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
+
+        public string AllowanceAddition { get; set; }
+
+        public string AllowanceDeduction { get; set; }
+
+        public int UserId { get; set; }
+
+        public override string GetSettingKey() => "MonthlyPayroll_UpdateAllowances";
+
+        public override bool IsValid() => PayrollId > 0 && UserId > 0;
+    }
+}

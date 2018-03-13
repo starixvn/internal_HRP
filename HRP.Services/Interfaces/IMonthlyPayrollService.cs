@@ -19,5 +19,7 @@
         Task<CommandResult> EditMonthlySalaryAsync();
 
         Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId);
+
+        Task<CommandResult> UpdateMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
     }
 }
