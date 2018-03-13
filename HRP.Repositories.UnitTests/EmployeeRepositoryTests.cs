@@ -351,7 +351,7 @@
             };
             multiResultReader.ReadFirstAsync<EmployeeManagementViewModel>().Returns(viewModel);
             multiResultReader.ReadAsync<MultiSelectViewModel>().Returns(multiSelects);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new EmployeeRepository();
 
             // Act

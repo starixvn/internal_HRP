@@ -19,11 +19,41 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
+        [Theory]
+        [InlineData(1, 1, 0)]
+        [InlineData(1, 0, 1)]
+        [InlineData(1, 0, 0)]
+        [InlineData(0, 1, 1)]
+        [InlineData(0, 1, 0)]
+        [InlineData(0, 0, 1)]
+        [InlineData(0, 0, 0)]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int payrollId, int companyId, int userId)
         {
             // Arrange
-            var criteria = new EditMonthlySalaryCriteria();
+            var criteria = new EditMonthlySalaryCriteria
+            {
+                PayrollId = payrollId,
+                CompanyId = companyId,
+                UserId = userId
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new EditMonthlySalaryCriteria
+            {
+                PayrollId = 1,
+                CompanyId = 1,
+                UserId = 1
+            };
 
             // Act
             var actual = criteria.IsValid();

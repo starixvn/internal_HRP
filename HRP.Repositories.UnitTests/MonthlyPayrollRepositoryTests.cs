@@ -37,7 +37,7 @@
             };
             multiResultReader.ReadFirstAsync<EmployeeMonthlyPayrollViewModel>().Returns(viewModel);
             multiResultReader.ReadAsync<MultiSelectViewModel>().Returns(multiSelects);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
             // Act
@@ -75,7 +75,7 @@
             };
             multiResultReader.ReadAsync<MonthlyPayrollEmployeeInfoViewModel>().Returns(viewModel);
             multiResultReader.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().Returns(basicSalaries);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
             // Act
@@ -106,7 +106,7 @@
             var criteria = FakeCriteia();
             EditMonthlySalaryViewModel expected = null;
             multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(expected);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
             // Act
@@ -123,16 +123,16 @@
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
             var viewModel = new EditMonthlySalaryViewModel();
-            var monthlyBasicSalary = new MonthlyBasicSalaryViewModel();
-            var monthlySalary = new MonthlySalaryViewModel();
-            var additions = new List<MonthlySalaryAdditionViewModel>();
-            var deductions = new List<MonthlySalaryDeductionViewModel>();
+            var monthlyBasicSalary = new MonthlyBasicSalaryModel();
+            var monthlySalary = new MonthlySalaryModel();
+            var additions = new List<MonthlySalaryAdditionModel>();
+            var deductions = new List<MonthlySalaryDeductionModel>();
             multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(viewModel);
-            multiResultReader.ReadFirstAsync<MonthlyBasicSalaryViewModel>().Returns(monthlyBasicSalary);
-            multiResultReader.ReadFirstAsync<MonthlySalaryViewModel>().Returns(monthlySalary);
-            multiResultReader.ReadAsync<MonthlySalaryAdditionViewModel>().Returns(additions);
-            multiResultReader.ReadAsync<MonthlySalaryDeductionViewModel>().Returns(deductions);
-            objectDb.QueryMultiple(Arg.Any<ICriteria>()).Returns(multiResultReader);
+            multiResultReader.ReadFirstAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
+            multiResultReader.ReadFirstAsync<MonthlySalaryModel>().Returns(monthlySalary);
+            multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(additions);
+            multiResultReader.ReadAsync<MonthlySalaryDeductionModel>().Returns(deductions);
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
             // Act

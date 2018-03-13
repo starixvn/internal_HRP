@@ -164,7 +164,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Any<ResetMonthlySalaryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await monthlyPayrollService.ResetMonthlySalaryAsync();
+            var actual = await monthlyPayrollService.ResetMonthlySalaryAsync(1, 1);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -183,10 +183,31 @@
             baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlySalaryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await monthlyPayrollService.EditMonthlySalaryAsync();
+            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(new EditMonthlySalaryViewModel());
 
             // Assert
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task EditMonthlySalaryAsync_WhenCalled_ExpectedEncryptData()
+        {
+            // Arrange
+            var criteria = new EditMonthlySalaryCriteria();
+            var cipherText = "cipherText";
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditMonthlySalaryCriteria>(x => criteria = x)).Returns(new CommandResult());
+            cryptoService.Encrypt(Arg.Any<string>()).Returns(cipherText);
+
+            // Act
+            await monthlyPayrollService.EditMonthlySalaryAsync(new EditMonthlySalaryViewModel());
+
+            // Assert
+            Assert.Equal(cipherText, criteria.Salary);
+            Assert.Equal(cipherText, criteria.EBankingAmount);
+            Assert.Equal(cipherText, criteria.DirectBanking1Amount);
+            Assert.Equal(cipherText, criteria.DirectBanking2Amount);
+            Assert.Equal(cipherText, criteria.CashAmount);
         }
 
         #endregion EditMonthlySalaryAsync

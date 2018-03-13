@@ -15,7 +15,7 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var viewModel = await multi.ReadFirstAsync<EmployeeMonthlyPayrollViewModel>().ConfigureAwait(false);
                     var divisions = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
@@ -50,7 +50,7 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var monhtlyPayrolls = await multi.ReadAsync<MonthlyPayrollEmployeeInfoViewModel>().ConfigureAwait(false);
                     var basicSalaries = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
@@ -71,16 +71,16 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = db.QueryMultiple(criteria))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var viewModel = await multi.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().ConfigureAwait(false);
 
                     if (viewModel != null)
                     {
-                        viewModel.MonthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryViewModel>().ConfigureAwait(false);
-                        viewModel.MonthlySalary = await multi.ReadFirstAsync<MonthlySalaryViewModel>().ConfigureAwait(false);
-                        viewModel.Additions = await multi.ReadAsync<MonthlySalaryAdditionViewModel>().ConfigureAwait(false);
-                        viewModel.Deductions = await multi.ReadAsync<MonthlySalaryDeductionViewModel>().ConfigureAwait(false);
+                        viewModel.MonthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
+                        viewModel.MonthlySalary = await multi.ReadFirstAsync<MonthlySalaryModel>().ConfigureAwait(false);
+                        viewModel.Additions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
+                        viewModel.Deductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
                     }
 
                     return viewModel;

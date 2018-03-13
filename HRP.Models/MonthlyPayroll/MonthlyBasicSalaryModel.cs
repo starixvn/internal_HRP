@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
-    public class MonthlyBasicSalaryViewModel
+    public class MonthlyBasicSalaryModel
     {
         public int PayrollId { get; set; }
         public string CurrencyCode { get; set; }

@@ -195,6 +195,22 @@
             Assert.Null(viewResult.ViewName);
         }
 
+        [Fact]
+        public async Task EditBasicSalaryPost_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+
+            // Act
+            var actual = await controller.EditBasicSalary(new EditMonthlySalaryViewModel());
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
         #endregion EditBasicSalary
 
         [Fact]

@@ -10,9 +10,11 @@
         public int CompanyId { get; set; }
         public string CompanyCode { get; set; }
         public int WorkingDays { get; set; }
-        public MonthlyBasicSalaryViewModel MonthlyBasicSalary { get; set; } = new MonthlyBasicSalaryViewModel();
-        public MonthlySalaryViewModel MonthlySalary { get; set; } = new MonthlySalaryViewModel();
-        public IEnumerable<MonthlySalaryAdditionViewModel> Additions { get; set; } = new List<MonthlySalaryAdditionViewModel>();
-        public IEnumerable<MonthlySalaryDeductionViewModel> Deductions { get; set; } = new List<MonthlySalaryDeductionViewModel>();
+        public MonthlyBasicSalaryModel MonthlyBasicSalary { get; set; } = new MonthlyBasicSalaryModel();
+        public MonthlySalaryModel MonthlySalary { get; set; } = new MonthlySalaryModel();
+        public IEnumerable<MonthlySalaryAdditionModel> Additions { get; set; } = new List<MonthlySalaryAdditionModel>();
+        public IEnumerable<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
+        public bool IsReset { get; set; }
+        public bool IsHost { get; set; }
     }
 }

@@ -1,10 +1,9 @@
 ﻿namespace HRP.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Linq;
-    using Fanex.Data;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
@@ -83,17 +82,51 @@
             return baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
         }
 
-        public async Task<CommandResult> ResetMonthlySalaryAsync()
+        public async Task<CommandResult> ResetMonthlySalaryAsync(int payrollId, int companyId)
         {
-            var criteria = new ResetMonthlySalaryCriteria();
+            var criteria = new ResetMonthlySalaryCriteria
+            {
+                PayrollId = payrollId,
+                CompanyId = companyId,
+                UserId = sessionService.UserId
+            };
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
         }
 
-        public async Task<CommandResult> EditMonthlySalaryAsync()
+        public async Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel)
         {
-            var criteria = new EditMonthlySalaryCriteria();
+            EncryptMonthlySalaryAddition(viewModel.Additions);
+            EncryptMonthlySalaryDeduction(viewModel.Deductions);
+            var criteria = new EditMonthlySalaryCriteria
+            {
+                PayrollId = viewModel.PayrollId,
+                CompanyId = viewModel.CompanyId,
+                UserId = sessionService.UserId,
+                CurrencyId = viewModel.MonthlySalary.CurrencyId,
+                Salary = cryptoService.Encrypt(viewModel.MonthlySalary.Salary),
+                EBankingCurrencyId = viewModel.MonthlySalary.EBankingCurrencyId,
+                EBankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EBankingAmount),
+                EBankingAccountId = viewModel.MonthlySalary.EBankingAccountId,
+
+                DirectBanking1CurrencyId = viewModel.MonthlySalary.DirectBanking1CurrencyId,
+                DirectBanking1Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking1Amount),
+                DirectBanking1BankTypeId = viewModel.MonthlySalary.DirectBanking1BankTypeId,
+                DirectBanking1AccountId = viewModel.MonthlySalary.DirectBanking1AccountId,
+
+                DirectBanking2CurrencyId = viewModel.MonthlySalary.DirectBanking2CurrencyId,
+                DirectBanking2Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking2Amount),
+                DirectBanking2BankTypeId = viewModel.MonthlySalary.DirectBanking2BankTypeId,
+                DirectBanking2AccountId = viewModel.MonthlySalary.DirectBanking2AccountId,
+
+                CashCurrencyId = viewModel.MonthlySalary.CashCurrencyId,
+                CashAmount = cryptoService.Encrypt(viewModel.MonthlySalary.CashAmount),
+                CashAccountId = viewModel.MonthlySalary.CashAccountId,
+
+                AdditionXml = viewModel.Additions.ToXML().ToString(),
+                DeductionXml = viewModel.Deductions.ToXML().ToString()
+            };
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
@@ -185,6 +218,22 @@
                 deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
                 deduction.TotalAmount = cryptoService.Decrypt(deduction.TotalAmount);
+            }
+        }
+
+        private void EncryptMonthlySalaryAddition(IEnumerable<MonthlySalaryAdditionModel> additions)
+        {
+            foreach (var addition in additions)
+            {
+                addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
+            }
+        }
+
+        private void EncryptMonthlySalaryDeduction(IEnumerable<MonthlySalaryDeductionModel> deductions)
+        {
+            foreach (var deduction in deductions)
+            {
+                deduction.NetSalary = cryptoService.Encrypt(deduction.NetSalary);
             }
         }
 

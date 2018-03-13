@@ -229,6 +229,32 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        [HttpPost]
+        public async Task<IActionResult> EditBasicSalary(EditMonthlySalaryViewModel viewModel)
+        {
+            var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
+
+            if (!isHost)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                CommandResult commandResult = viewModel.IsReset
+                    ? await monthlyPayrollService.ResetMonthlySalaryAsync(viewModel.PayrollId, viewModel.CompanyId)
+                    : await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
+
+                if (!commandResult.IsSuccessful)
+                {
+                    ModelState.AddModelError(string.Empty, commandResult.Message);
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> GetEmployeeSuggestionByName(int companyId, string name)
         {
             IEnumerable<EmployeeSuggestionViewModel> employees = await monthlyPayrollService.GetEmployeeSuggestionByNameAsync(companyId, name);
