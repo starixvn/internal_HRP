@@ -25,7 +25,6 @@
         private IHostingEnvironment hostingEnvironment;
         private IPaymentProcessService paymentProcessService;
         private IMonthlyPayrollService monthlyPayrollService;
-        private IObjectStream fileStream;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnExpectedViewResult()

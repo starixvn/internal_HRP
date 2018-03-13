@@ -381,7 +381,8 @@
         {
             return new List<ValidationResult>()
             {
-                new ValidationResult {RowNumber = 7, ResultType = 2, Message = "error"}
+                new ValidationResult {RowNumber = 7, ResultType = 2, Message = "error"},
+                new ValidationResult {RowNumber = 8, ResultType = 2, Message = "error2"}
             };
         }
 
