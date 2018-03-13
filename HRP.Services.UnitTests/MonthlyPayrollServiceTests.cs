@@ -194,11 +194,36 @@
         [Fact]
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
+            var allowance = new MonthlyAllowanceModel();
+            var additions = new List<MonthlyAllowanceAdditionModel>
+            {
+                new MonthlyAllowanceAdditionModel
+                {
+                    PayrollId = 1,
+                    NoOfDays = 20,
+                    Type = 1,
+                    NetAllowance = string.Empty,
+                    TotalAmount = string .Empty,
+                    UnitAmount = string.Empty
+                }
+            };
+            var deductions = new List<MonthlyAllowanceDeductionModel>
+            {
+                new MonthlyAllowanceDeductionModel
+                {
+                    PayrollId = 1,
+                    NoOfDays = 20,
+                    Type = 1,
+                    NetAllowance = string.Empty,
+                    TotalAmount = string .Empty,
+                    UnitAmount = string.Empty
+                }
+            };
+
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>
-                (new MonthlyAllowanceModel(), new List<MonthlyAllowanceAdditionModel>(), new List<MonthlyAllowanceDeductionModel>()));
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>(allowance, additions, deductions));
 
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1);
             Assert.NotNull(actual);
