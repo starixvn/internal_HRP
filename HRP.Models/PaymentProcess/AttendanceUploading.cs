@@ -3,12 +3,8 @@
     using HRP.Core.Extensions;
 
     [XMLName("Row")]
-    public class AttendanceUploading
+    public class AttendanceUploading : TemplateUploading
     {
-        public int RowNumber { get; set; }
-
-        public string EmployeeCode { get; set; }
-
         public string ActualWorkingDay { get; set; }
 
         public string LeaveTaken { get; set; }

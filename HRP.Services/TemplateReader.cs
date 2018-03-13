@@ -82,7 +82,7 @@
                             EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, headers, row)
                         };
 
-                        var checkEmployeeCode = CheckEmployeeCodeInAttendance(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
+                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
                         var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
                         var checkLeaveTaken = CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
                         var checkUnpaidLeave = CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
@@ -151,7 +151,7 @@
                             NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
                         };
 
-                        var checkEmployeeCode = CheckEmployeeCodeInDSTNetSalary(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
+                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
                         var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
 
                         AddToDSTNetSalaryValidationResults(checkEmployeeCode);
@@ -205,42 +205,9 @@
             return result;
         }
 
-        private ValidationResult CheckEmployeeCodeInAttendance(string value, int rowNumber, string companyName,
-                                                            IEnumerable<string> employeeCodeList,
-                                                            IEnumerable<AttendanceUploading> recordsUploading)
-        {
-            var columnName = AttendanceColumn.IDNo;
-            var result = new ValidationResult
-            {
-                RowNumber = rowNumber
-            };
-
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                result.ResultType = 2;
-                result.Message = string.Format(Message.ValueMissing, columnName);
-            }
-            else if (!employeeCodeList.Any(s => s.Equals(value)))
-            {
-                result.ResultType = 2;
-                result.Message = string.Format(Message.IDNoNotExistIn, companyName);
-            }
-            else if (recordsUploading.Any(s => s.EmployeeCode.Equals(value)))
-            {
-                result.ResultType = 2;
-                result.Message = Message.IDNoIsDuplicated;
-            }
-            else
-            {
-                result.ResultType = 1;
-            }
-
-            return result;
-        }
-
-        private ValidationResult CheckEmployeeCodeInDSTNetSalary(string value, int rowNumber, string companyName,
+        private ValidationResult CheckEmployeeCode(string value, int rowNumber, string companyName,
                                                                 IEnumerable<string> employeeCodeList,
-                                                                IEnumerable<DSTNetSalaryUploading> recordsUploading)
+                                                                IEnumerable<TemplateUploading> checkedRecords)
         {
             var columnName = DSTNetSalaryColumn.IDNo;
             var result = new ValidationResult
@@ -258,7 +225,7 @@
                 result.ResultType = 2;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
             }
-            else if (recordsUploading.Any(s => s.EmployeeCode.Equals(value)))
+            else if (checkedRecords.Any(s => s.EmployeeCode.Equals(value)))
             {
                 result.ResultType = 2;
                 result.Message = Message.IDNoIsDuplicated;

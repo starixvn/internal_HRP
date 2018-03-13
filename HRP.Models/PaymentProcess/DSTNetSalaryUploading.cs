@@ -3,12 +3,9 @@
     using HRP.Core.Extensions;
 
     [XMLName("Row")]
-    public class DSTNetSalaryUploading
+    public class DSTNetSalaryUploading : TemplateUploading
+
     {
-        public int RowNumber { get; set; }
-
-        public string EmployeeCode { get; set; }
-
         public string Currency { get; set; }
 
         public string NetSalaryReceived { get; set; }

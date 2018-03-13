@@ -6,22 +6,23 @@
     {
         public string SessionId { get; set; }
 
-        public int CompanyId { get; set; }
-
-        public DateTime Month { get; set; }
+        public int CreatedBy { get; set; }
 
         public string FileName { get; set; }
 
-        public string UploadingXMLDoc { get; set; }
+        public DateTime Month { get; set; }
+
+        public int CompanyId { get; set; }
 
         public string ResultXMLDoc { get; set; }
 
-        public int CreatedBy { get; set; }
+        public string UploadingXMLDoc { get; set; }
 
         public override string GetSettingKey() => "PaymentProcess_CreateAttendanceUploading";
 
-        public override bool IsValid() => CompanyId > 0 && CreatedBy > 0
-            && !string.IsNullOrWhiteSpace(UploadingXMLDoc)
-            && !string.IsNullOrWhiteSpace(ResultXMLDoc);
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(UploadingXMLDoc)
+            && !string.IsNullOrWhiteSpace(ResultXMLDoc)
+            && CompanyId > 0
+            && CreatedBy > 0;
     }
 }
