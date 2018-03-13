@@ -2,11 +2,17 @@
 {
     using HRP.Core.Enumerations;
 
-    public class UpdateMonthlyAllowancesCriteria : CommandBaseCriteria
+    public class EditMonthlyAllowancesCriteria : CommandBaseCriteria
     {
         public int PayrollId { get; set; }
 
         public string CurrencyId { get; set; }
+
+        public string CashCurrencyId { get; set; }
+
+        public string CashAmount { get; set; }
+
+        public int? CashAccountId { get; set; }
 
         public string DirectBanking1CurrencyId { get; set; }
 
@@ -27,12 +33,6 @@
         public int? DirectBanking2BankTypeId { get; set; }
 
         public string DirectBanking2AccountName { get; set; }
-
-        public string CashCurrencyId { get; set; }
-
-        public string CashAmount { get; set; }
-
-        public int? CashAccountId { get; set; }
 
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 

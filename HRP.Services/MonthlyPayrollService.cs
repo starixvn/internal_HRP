@@ -172,12 +172,12 @@
             return model;
         }
 
-        public async Task<CommandResult> UpdateMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId)
+        public async Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId)
         {
             var allowanceAdditionXml = ConvertAllowanceAdditionToXml(viewModel.Additions);
             var allowanceDeductionXml = ConvertAllowanceAdditionToXml(viewModel.Deductions);
 
-            var criteria = new UpdateMonthlyAllowancesCriteria
+            var criteria = new EditMonthlyAllowancesCriteria
             {
                 PayrollId = viewModel.Allowance.PayrollId,
                 CurrencyId = viewModel.Allowance.CurrencyId,

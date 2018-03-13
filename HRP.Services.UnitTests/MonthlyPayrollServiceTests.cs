@@ -347,11 +347,11 @@
         }
 
         [Fact]
-        public async Task UpdateMonthlyAllowancesAsync_ValidModel_ReturnCommandResult()
+        public async Task EditMonthlyAllowancesAsync_ValidModel_ReturnCommandResult()
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
             var viewModel = new MonthlyAllowancesViewModel
             {
                 Allowance = new MonthlyAllowanceModel(),
@@ -381,7 +381,7 @@
                 }
             };
 
-            var actual = await monthlyPayrollService.UpdateMonthlyAllowancesAsync(viewModel, 1);
+            var actual = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, 1);
             Assert.True(actual.IsSuccessful);
         }
 

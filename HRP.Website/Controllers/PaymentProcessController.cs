@@ -291,7 +291,7 @@
 
             if (ModelState.IsValid)
             {
-                var result = await monthlyPayrollService.UpdateMonthlyAllowancesAsync(viewModel, sessionService.UserId);
+                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, sessionService.UserId);
 
                 if (!result.IsSuccessful)
                 {

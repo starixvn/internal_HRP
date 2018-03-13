@@ -22,6 +22,6 @@
 
         Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId);
 
-        Task<CommandResult> UpdateMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
+        Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
     }
 }
