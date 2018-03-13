@@ -18,5 +18,18 @@
             // Assert
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void IsValid_WhenCalled_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new EditMonthlySalaryCriteria();
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
+        }
     }
 }
