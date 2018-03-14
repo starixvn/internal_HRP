@@ -79,10 +79,10 @@
                 <label class="actual">@ViewLang.Actual</label>
             </div>
             <div class="currency-amount">
-                <select class="control without-label basic-salary-calculate select2" asp-for="BasicSalary.CurrencyId" asp-items="currencySelectList">
+                <select class="control without-label basic-salary-calculate select2" asp-for="BasicSalary.CurrencyId" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control without-label number total-amount basic-salary-calculate" placeholder="Total Amount" asp-for="BasicSalary.Salary"/>
+                <input type="text" class="control without-label number total-amount basic-salary-calculate" placeholder="Total Amount" asp-for="BasicSalary.Salary" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
             <div class="">
                 <div class="pull-left calendar">

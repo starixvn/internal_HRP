@@ -152,6 +152,10 @@
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
             $amount.val(number.roundWithCurrency(2, currency).toStringWithCurrency(currency));
+        } else {
+            if ($amount.attr('readonly')) {
+                $amount.val('');
+            }
         }
     }
 
@@ -333,14 +337,14 @@
         }).change();
 
         $('.basic-salary-calculate').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
             roundingAmount(e.target);
+            validatedInvalidRelatedElements(e.target);
             calculateBasicSalary();
         });
 
         $('.allowance-calculate').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
             roundingAmount(e.target);
+            validatedInvalidRelatedElements(e.target);
             calculateAmountForBanks();
         });
 
@@ -472,6 +476,16 @@
                 'BasicSalary.EffectiveDate': {
                     required: function (element) {
                         return checkCurrencyAndAmountChange();
+                    }
+                },
+                'BasicSalary.Salary': {
+                    required: function (element) {
+                        return $('#BasicSalary_CurrencyId').val() !== ''
+                    }
+                },
+                'BasicSalary.CurrencyId': {
+                    required: function (element) {
+                        return $('#BasicSalary_Salary').val() !== ''
                     }
                 }
             }
