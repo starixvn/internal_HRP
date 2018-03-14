@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.PaymentProcess
 {
     using System.Collections.Generic;
-    using HRP.Core.Model;
 
     public class FileResultViewModel
     {

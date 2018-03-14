@@ -86,18 +86,24 @@
         public async Task ValidationFilesResult_WhenCalled_ReturnPartialViewWithValidationFilesResultViewModel()
         {
             // Arrange
+            var expected = new UploadAttendanceAndSalaryViewModel
+            {
+                AttendanceResult = new FileResultViewModel { TotalRow = 3 },
+                DSTNetSalaryResult = new FileResultViewModel { TotalRow = 4 }
+            };
             var companyId = 9;
             DateTime month = DateTime.Now;
             var controller = GetPaymentProcessController();
-            paymentProcessService.GetValidationFilesResultAsync(companyId, month).Returns(new ValidationFilesResultViewModel());
+            paymentProcessService.GetUploadingFilesResultAsync(companyId, month).Returns(expected);
 
             // Act
             var actual = await controller.ValidationFilesResult(companyId, month);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            var model = Assert.IsAssignableFrom<ValidationFilesResultViewModel>(viewResult.Model);
+            var model = Assert.IsType<UploadAttendanceAndSalaryViewModel>(viewResult.Model);
             Assert.Equal("_ValidationFilesResult", viewResult.ViewName);
+            Assert.Equal(expected, model);
         }
 
         #endregion UploadAttendanceAndDSTSalary

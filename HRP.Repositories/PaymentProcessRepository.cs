@@ -3,13 +3,12 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
 
     public class PaymentProcessRepository : IPaymentProcessRepository
     {
-        public async Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(ICriteria criteria)
+        public async Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -19,13 +18,16 @@
                     var attendanceErrors = await multi.ReadAsync<ValidationResult>().ConfigureAwait(false);
                     var dstNetSalaryErrors = await multi.ReadAsync<ValidationResult>().ConfigureAwait(false);
 
-                    var result = new ValidationFilesResultViewModel();
+                    var result = new UploadAttendanceAndSalaryViewModel();
 
                     if (paymentProcess != null)
                     {
+                        result.CompanyCode = paymentProcess.CompanyCode;
+
                         if (paymentProcess.AttendanceFileName != null)
                         {
-                            result.Attendance = new FileResultViewModel
+                            result.AttendanceFileName = paymentProcess.AttendanceFileName;
+                            result.AttendanceResult = new FileResultViewModel
                             {
                                 TotalRow = paymentProcess.AttendanceTotalRow,
                                 ValidationErrors = attendanceErrors
@@ -34,7 +36,8 @@
 
                         if (paymentProcess.DSTNetSalaryFileName != null)
                         {
-                            result.DSTNetSalary = new FileResultViewModel
+                            result.DSTNetSalaryFileName = paymentProcess.DSTNetSalaryFileName;
+                            result.DSTNetSalaryResult = new FileResultViewModel
                             {
                                 TotalRow = paymentProcess.DSTNetSalaryTotalRow,
                                 ValidationErrors = dstNetSalaryErrors

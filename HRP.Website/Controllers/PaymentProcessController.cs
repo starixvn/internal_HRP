@@ -68,6 +68,7 @@
                     CompanyId = viewModel.CompanyId,
                     Month = viewModel.SelectedTime
                 };
+                //insert into payment process if user is Host
                 bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
                 var completedDate = DateTime.Today.AddMonths(3);
                 if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
@@ -118,8 +119,9 @@
 
             if (isHost)
             {
-                var viewModel = await paymentProcessService.GetDataForUploadAttendanceAndSalary(companyId, month);
-
+                var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+                viewModel.CompanyId = companyId;
+                viewModel.SelectedTime = month;
                 return View(viewModel);
             }
 
@@ -175,7 +177,7 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> ValidationFilesResult(int companyId, DateTime month)
         {
-            var viewModel = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
+            var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             return PartialView("_ValidationFilesResult", viewModel);
         }

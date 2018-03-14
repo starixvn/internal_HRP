@@ -290,49 +290,52 @@
 
         #endregion UploadDSTNetSalaryFileAsync
 
-        #region GetValidationFilesResultAsync
+        #region GetUploadingFilesResultAsync
 
         [Fact]
-        public async Task GetValidationFilesResultAsync_CriteriaIsInvalid_ReturnEmptyValidationFilesResultViewModel()
+        public async Task GetUploadingFilesResultAsync_CriteriaIsInvalid_ReturnEmptyUploadAttendanceAndSalaryViewModel()
         {
             // Arrange
+            var expected = new UploadAttendanceAndSalaryViewModel();
             var companyId = 0;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<ValidationFilesResultViewModel>(actual);
-            Assert.Null(actual.Attendance);
-            Assert.Null(actual.DSTNetSalary);
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.Equal(expected.AttendanceFileName, actual.AttendanceFileName);
+            Assert.Equal(expected.AttendanceResult, actual.AttendanceResult);
+            Assert.Equal(expected.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
+            Assert.Equal(expected.DSTNetSalaryResult, actual.DSTNetSalaryResult);
         }
 
         [Fact]
-        public async Task GetValidationFilesResultAsync_CriteriaIsValid_ReturnExpectedValidationFilesResultViewModel()
+        public async Task GetUploadingFilesResultAsync_CriteriaIsValid_ReturnExpectedUploadAttendanceAndSalaryViewModel()
         {
             // Arrange
-            var expected = new ValidationFilesResultViewModel
+            var expected = new UploadAttendanceAndSalaryViewModel
             {
-                Attendance = new FileResultViewModel { TotalRow = 2 },
-                DSTNetSalary = new FileResultViewModel { TotalRow = 4 }
+                AttendanceResult = new FileResultViewModel { TotalRow = 2 },
+                DSTNetSalaryResult = new FileResultViewModel { TotalRow = 4 }
             };
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetValidationFilesResultAsync(Arg.Is<GetValidationFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+            paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
                 .Returns(expected);
 
             // Act
-            var actual = await paymentProcessService.GetValidationFilesResultAsync(companyId, month);
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<ValidationFilesResultViewModel>(actual);
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
             Assert.Equal(expected, actual);
         }
 
-        #endregion GetValidationFilesResultAsync
+        #endregion GetUploadingFilesResultAsync
 
         #region Initialization
 

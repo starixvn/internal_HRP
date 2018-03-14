@@ -6,6 +6,6 @@
 
     public interface IPaymentProcessRepository
     {
-        Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(ICriteria criteria);
+        Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria);
     }
 }

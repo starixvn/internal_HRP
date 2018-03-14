@@ -7,11 +7,9 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
-    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories;
@@ -58,20 +56,6 @@
             var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, Month = process.Month }).ConfigureAwait(false);
 
             return isExisted;
-        }
-
-        public async Task<UploadAttendanceAndSalaryViewModel> GetDataForUploadAttendanceAndSalary(int companyId, DateTime month)
-        {
-            var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
-
-            var viewModel = new UploadAttendanceAndSalaryViewModel
-            {
-                CompanyId = companyId,
-                CompanyCode = company.Code,
-                SelectedTime = month
-            };
-
-            return viewModel;
         }
 
         public CommandResult CheckValidExcelFile(IFormFile file)
@@ -173,21 +157,21 @@
             return commandResult;
         }
 
-        public async Task<ValidationFilesResultViewModel> GetValidationFilesResultAsync(int companyId, DateTime month)
+        public async Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month)
         {
-            var criteria = new GetValidationFilesResultCriteria
+            var criteria = new GetUploadingFilesResultCriteria
             {
                 CompanyId = companyId,
                 Month = month
             };
 
-            ValidationFilesResultViewModel result = null;
+            UploadAttendanceAndSalaryViewModel result = null;
             if (criteria.IsValid())
             {
-                result = await paymentProcessRepository.GetValidationFilesResultAsync(criteria).ConfigureAwait(false);
+                result = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria).ConfigureAwait(false);
             }
 
-            return result ?? new ValidationFilesResultViewModel();
+            return result ?? new UploadAttendanceAndSalaryViewModel();
         }
 
         private async Task<IEnumerable<string>> GetAllEmployeeCodeByCompanyIdAsync(int companyId)

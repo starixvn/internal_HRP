@@ -18,6 +18,14 @@
 
         public IFormFile DSTNetSalaryFile { get; set; }
 
+        public string AttendanceFileName { get; set; }
+
+        public string DSTNetSalaryFileName { get; set; }
+
+        public FileResultViewModel AttendanceResult { get; set; }
+
+        public FileResultViewModel DSTNetSalaryResult { get; set; }
+
         public string CommonError { get; set; }
     }
 }
