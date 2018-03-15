@@ -217,19 +217,19 @@
             int companyId,
             DateTime month)
         {
-            var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
-            if (!isRead)
-            {
-                return RedirectToAction("AccessDenied", "Error");
-            }
+            ////var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
+            ////if (!isRead)
+            ////{
+            ////    return RedirectToAction("AccessDenied", "Error");
+            ////}
 
             var viewModel = await monthlyPayrollService.GetMonthlySalaryToEditAsync(payrollId);
-            if (viewModel == null)
-            {
-                return RedirectToAction("PageNotFound", "Error");
-            }
+            ////if (viewModel == null)
+            ////{
+            ////    return RedirectToAction("PageNotFound", "Error");
+            ////}
 
-            viewModel.Month = month;
+            ////viewModel.Month = month;
 
             return View(viewModel);
         }
