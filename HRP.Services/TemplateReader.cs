@@ -242,7 +242,7 @@
                 result.ResultType = 2;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
-            else if (!currencies.Any(s => s.Equals(value)))
+            else if (!currencies.Any(s => string.Equals(value, s.CurrencyCode, StringComparison.OrdinalIgnoreCase)))
             {
                 result.ResultType = 2;
                 result.Message = string.Format(Message.CurrencyNotExists);
@@ -270,12 +270,12 @@
                 result.ResultType = 2;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
-            else if (!employeeCodeList.Any(s => s.Equals(value)))
+            else if (!employeeCodeList.Any(s => string.Equals(value, s, StringComparison.OrdinalIgnoreCase)))
             {
                 result.ResultType = 2;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
             }
-            else if (checkedRecords.Any(s => s.EmployeeCode.Equals(value)))
+            else if (checkedRecords.Any(s => string.Equals(value, s.EmployeeCode, StringComparison.OrdinalIgnoreCase)))
             {
                 result.ResultType = 2;
                 result.Message = Message.IDNoIsDuplicated;
