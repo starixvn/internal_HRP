@@ -173,9 +173,9 @@
                 Deductions = result.Item3
             };
 
-            DecryptMonthlyAllowance(model.Allowance);
-            DecryptMonthlyAllowanceAdditions(model.Additions);
-            DecryptMonthlyAllowanceDeductions(model.Deductions);
+            //DecryptMonthlyAllowance(model.Allowance);
+            //DecryptMonthlyAllowanceAdditions(model.Additions);
+            //DecryptMonthlyAllowanceDeductions(model.Deductions);
 
             return model;
         }
