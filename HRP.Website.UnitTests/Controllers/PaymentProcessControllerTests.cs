@@ -140,7 +140,7 @@
             };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, Arg.Any<string>()).Returns(model);
+            monthlyPayrollService.GetDataFilterForIndexPageAsync(month, companyId, Arg.Any<string>()).Returns(model);
             monthlyPayrollService.GetMonthlyPayrollAsync(model).Returns(employeePayrolls);
 
             // Act

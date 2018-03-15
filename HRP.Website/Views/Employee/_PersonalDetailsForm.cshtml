@@ -5,7 +5,6 @@
 
 @{
     var minDate = Constants.MinDate;
-    var maxDate = "now";
 }
 
 @Html.Partial("_ValidationPersonalDetails", Model)
@@ -48,8 +47,7 @@
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.DateOfBirth</label>
-                <input type="text" class="control datetimepicker" asp-for="DateOfBirth"
-                       data-mindate="@minDate" data-maxdate="@maxDate">
+                <input type="text" class="control datetimepicker" asp-for="DateOfBirth" data-mindate="@minDate" />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component">
@@ -108,19 +106,18 @@
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.DateIssue</label>
-                <input type="text" class="control datetimepicker" asp-for="DateIssue"
-                       data-mindate="@minDate" data-maxdate="@maxDate">
+                <input type="text" class="control datetimepicker" asp-for="DateIssue" data-mindate="@minDate" />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.ExpiredDate</label>
-                <input type="text" class="control datetimepicker" asp-for="ExpiredDate" data-mindate="@minDate">
+                <input type="text" class="control datetimepicker" asp-for="ExpiredDate" data-mindate="@minDate" />
                 <span class="icon-calendar"></span>
             </div>
         </div>
         <label class="text">@ViewLang.PlaceOfIssue</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="PlaceOfIssue">
+            <input type="text" class="control" asp-for="PlaceOfIssue" />
         </div>
     </div>
     <div class="col">

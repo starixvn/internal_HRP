@@ -5,7 +5,6 @@
 @model UpdateEmploymentViewModel
 @{
     var minDate = Constants.MinDate;
-    var maxDate = "now";
 }
 
 <form id="updateEmploymentForm" class="form-information" name="updateEmploymentForm"
@@ -49,7 +48,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -68,7 +67,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="LocalCompanyChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="LocalCompanyChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="LocalCompanyChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -88,7 +87,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobTitleChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="JobTitleChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="JobTitleChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -109,7 +108,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="LocalJobTitleChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="LocalJobTitleChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="LocalJobTitleChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -125,13 +124,12 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="GroupStartDate">@ViewLang.Group</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="GroupEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -145,13 +143,12 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyStartDate">@ViewLang.Company</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -187,7 +184,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="IDNoChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="IDNoChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -223,8 +220,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="EmploymentStatusChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="EmploymentStatusChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="EmploymentStatusChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
             </div>
@@ -241,8 +237,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobCategoryChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="JobCategoryChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="JobCategoryChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -272,7 +267,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="JobGradeChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="JobGradeChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="JobGradeChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -295,7 +290,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="DivisionChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="DivisionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="DivisionChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -318,7 +313,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="DepartmentChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="DepartmentChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="DepartmentChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -341,8 +336,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CostCenterChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CostCenterChangeDate"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CostCenterChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -365,7 +359,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="SectionChangeDate">@ViewLang.EffectiveDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="SectionChangeDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -421,7 +415,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
@@ -440,7 +434,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.StartDateType2">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">

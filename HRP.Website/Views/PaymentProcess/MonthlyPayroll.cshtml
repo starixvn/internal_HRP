@@ -132,7 +132,22 @@
             {
                 var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
                 <tr>
-                    <td class="text-center has-icon"><span class="status-done"></span></td>
+                    <td class="text-center has-icon">
+                        @switch (employee.Status)
+                        {
+                            case MonthlyPayrollStatus.None:
+                                <span class="status-default"></span>
+                                break;
+
+                            case MonthlyPayrollStatus.Satisfied:
+                                <span class="status-done"></span>
+                                break;
+
+                            case MonthlyPayrollStatus.Unsatisfied:
+                                <span class="status-incorrect"></span>
+                                break;
+                        }
+                    </td>
                     <td>@employee.IDNo</td>
                     <td>@employee.FullName</td>
                     <td>@employee.Nickname</td>
@@ -160,12 +175,12 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="@dropdownId">
-                                @if (employee.EditSalaryPolicy != Policy.None)
+                                @if (employee.Policy != Policy.None)
                                 {
                                     <li>
                                         <a>
                                             <span class="icon-user"></span>
-                                            @if (employee.EditSalaryPolicy == Policy.Host)
+                                            @if (employee.Policy == Policy.Host)
                                             {
                                                 <span>@ViewLang.EditBasicSalary</span>
                                             }
@@ -177,12 +192,12 @@
                                     </li>
                                 }
 
-                                @if (employee.EditAllowancePolicy != Policy.None)
+                                @if (employee.Policy != Policy.None)
                                 {
                                     <li>
                                         <a>
                                             <span></span>
-                                            @if (employee.EditAllowancePolicy == Policy.Host)
+                                            @if (employee.Policy == Policy.Host)
                                             {
                                                 <span>@ViewLang.EditAllowance</span>
                                             }

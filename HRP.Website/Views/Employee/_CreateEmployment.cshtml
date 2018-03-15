@@ -5,7 +5,6 @@
 @model CreateEmploymentViewModel
 @{
     var minDate = Constants.MinDate;
-    var maxDate = "now";
 }
 
 <form id="createEmploymentForm" class="form-information" name="createEmploymentForm" enctype="multipart/form-data">
@@ -105,12 +104,12 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="GroupStartDate">@ViewLang.Group</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupStartDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="GroupEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="GroupEndDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -123,12 +122,12 @@
             <div class="group-complex -emp-layout2">
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyStartDate">@ViewLang.Company</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyStartDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="CompanyEndDate">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate" data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="CompanyEndDate" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component">
@@ -385,8 +384,7 @@
                 </div>
                 <div class="component calendar">
                     <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
@@ -405,14 +403,12 @@
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.StartDateType2">@ViewLang.StartDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2"
-                           data-mindate="@minDate" data-maxdate="@maxDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType2" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
                     <label class="text" asp-for="WorkPermit.EndDateType2">@ViewLang.EndDate</label>
-                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2"
-                           data-mindate="@minDate">
+                    <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType2" data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>
             </div>

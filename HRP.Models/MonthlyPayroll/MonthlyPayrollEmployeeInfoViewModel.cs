@@ -24,8 +24,8 @@
 
         public int WorkingDays { get; set; }
 
-        public Policy EditSalaryPolicy { get; set; }
+        public MonthlyPayrollStatus Status { get; set; }
 
-        public Policy EditAllowancePolicy { get; set; }
+        public Policy Policy { get; set; }
     }
 }

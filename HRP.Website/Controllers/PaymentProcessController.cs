@@ -201,7 +201,7 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(companyId, costCenterIds);
+            EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(month, companyId, costCenterIds);
             viewModel.Month = month;
             viewModel.EmployeeId = employeeId;
             viewModel.Employee = employee;

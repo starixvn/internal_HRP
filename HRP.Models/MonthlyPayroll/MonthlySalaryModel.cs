@@ -35,5 +35,7 @@
         public string CashAmount { get; set; }
 
         public int? CashAccountId { get; set; }
+
+        public string AutoCalculateOn { get; set; }
     }
 }

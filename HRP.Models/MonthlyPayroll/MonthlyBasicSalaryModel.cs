@@ -15,5 +15,7 @@
         public string CashCurrencyCode { get; set; }
         public string CashAmount { get; set; }
         public string AutoCalculateOn { get; set; }
+        public string AfterAdjustmentAmount { get; set; }
+        public string AfterAdjustmentReason { get; set; }
     }
 }

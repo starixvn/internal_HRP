@@ -92,8 +92,7 @@
             Assert.Equal(basicSalaries.First(), actual.First().BasicSalary);
             Assert.Equal(basicSalaries.First(), actual.First().Allowance);
             Assert.Equal(viewModel.First().WorkingDays, actual.First().WorkingDays);
-            Assert.Equal(viewModel.First().EditSalaryPolicy, actual.First().EditSalaryPolicy);
-            Assert.Equal(viewModel.First().EditAllowancePolicy, actual.First().EditAllowancePolicy);
+            Assert.Equal(viewModel.First().Policy, actual.First().Policy);
         }
 
         #region GetMonthlySalaryToEditAsync

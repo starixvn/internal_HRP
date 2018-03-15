@@ -1,13 +1,19 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+    using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
 
@@ -30,11 +36,12 @@
             this.monthlyPayrollRepository = monthlyPayrollRepository ?? new MonthlyPayrollRepository();
         }
 
-        public async Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(int companyId, string costCenterIds)
+        public async Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(DateTime month, int companyId, string costCenterIds)
         {
             var criteria = new GetDataFilterForIndexPageCriteria
             {
                 UserId = sessionService.UserId,
+                Month = month,
                 CompanyId = companyId,
                 CostCenterIds = costCenterIds
             };
@@ -65,6 +72,7 @@
             {
                 monthlyPayrolls = await monthlyPayrollRepository.GetMonthlyPayrollAsync(criteria).ConfigureAwait(false);
                 DecryptMonthlyPayroll(monthlyPayrolls);
+                await CalculateMonthlyPayroll(viewModel.Month, monthlyPayrolls).ConfigureAwait(false);
             }
 
             return monthlyPayrolls;
@@ -204,17 +212,125 @@
 
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
         {
-            foreach (var monthlyPayroll in monthlyPayrolls)
+            foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
             {
+                monthlyPayroll.BasicSalary.Salary = cryptoService.Decrypt(monthlyPayroll.BasicSalary.Salary);
                 monthlyPayroll.BasicSalary.EBankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EBankingAmount);
                 monthlyPayroll.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking1Amount);
                 monthlyPayroll.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking2Amount);
                 monthlyPayroll.BasicSalary.CashAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.CashAmount);
 
+                monthlyPayroll.Allowance.Salary = cryptoService.Decrypt(monthlyPayroll.Allowance.Salary);
                 monthlyPayroll.Allowance.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking1Amount);
                 monthlyPayroll.Allowance.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking2Amount);
                 monthlyPayroll.Allowance.CashAmount = cryptoService.Decrypt(monthlyPayroll.Allowance.CashAmount);
             }
+        }
+
+        private async Task CalculateMonthlyPayroll(DateTime month, IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
+        {
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = month.Month,
+                Year = month.Year
+            };
+            var currencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria).ConfigureAwait(false);
+
+            foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
+            {
+                CalculateMonthlyPayrollBasicSalary(monthlyPayroll.BasicSalary, currencyExchangeRates);
+                CalculateMonthlyPayrollAllowance(monthlyPayroll.Allowance, currencyExchangeRates);
+            }
+        }
+
+        private static void CalculateMonthlyPayrollBasicSalary(
+            MonthlyPayrollBasicSalaryViewModel basicSalary,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            decimal exchangeRate;
+            decimal.TryParse(basicSalary.Salary, out decimal salary);
+            decimal.TryParse(basicSalary.EBankingAmount, out decimal ebanking);
+            decimal.TryParse(basicSalary.DirectBanking1Amount, out decimal directBanking1);
+            decimal.TryParse(basicSalary.DirectBanking2Amount, out decimal directBanking2);
+            decimal.TryParse(basicSalary.CashAmount, out decimal cash);
+            ebanking = GetExchangeRate(currencyExchangeRates, basicSalary.EbankingCurrencyId, basicSalary.CurrencyId) * ebanking;
+            directBanking1 = GetExchangeRate(currencyExchangeRates, basicSalary.DirectBanking1CurrencyId, basicSalary.CurrencyId) * directBanking1;
+            directBanking2 = GetExchangeRate(currencyExchangeRates, basicSalary.DirectBanking2CurrencyId, basicSalary.CurrencyId) * directBanking2;
+            cash = GetExchangeRate(currencyExchangeRates, basicSalary.CashCurrencyId, basicSalary.CurrencyId) * cash;
+
+            switch (basicSalary.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.Ebanking:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId);
+                    basicSalary.EBankingAmount = (exchangeRate * (salary - directBanking1 - directBanking2 - cash)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId);
+                    basicSalary.DirectBanking1Amount = (exchangeRate * (salary - directBanking2 - cash)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId);
+                    basicSalary.DirectBanking2Amount = (exchangeRate * (salary - directBanking1 - cash)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, basicSalary.CurrencyId, basicSalary.CashCurrencyId);
+                    basicSalary.CashAmount = (exchangeRate * (salary - directBanking1 - directBanking2)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                default:
+                    // nothing to do
+                    break;
+            }
+        }
+
+        private static void CalculateMonthlyPayrollAllowance(
+            MonthlyPayrollBasicSalaryViewModel allowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            decimal exchangeRate;
+            decimal.TryParse(allowance.Salary, out decimal salary);
+            decimal.TryParse(allowance.DirectBanking1Amount, out decimal directBanking1);
+            decimal.TryParse(allowance.DirectBanking2Amount, out decimal directBanking2);
+            decimal.TryParse(allowance.CashAmount, out decimal cash);
+            directBanking1 = GetExchangeRate(currencyExchangeRates, allowance.DirectBanking1CurrencyId, allowance.CurrencyId) * directBanking1;
+            directBanking2 = GetExchangeRate(currencyExchangeRates, allowance.DirectBanking2CurrencyId, allowance.CurrencyId) * directBanking2;
+            cash = GetExchangeRate(currencyExchangeRates, allowance.CashCurrencyId, allowance.CurrencyId) * cash;
+
+            switch (allowance.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, allowance.CurrencyId, allowance.DirectBanking1CurrencyId);
+                    allowance.DirectBanking1Amount = (exchangeRate * (salary - directBanking2 - cash)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, allowance.CurrencyId, allowance.DirectBanking2CurrencyId);
+                    allowance.DirectBanking2Amount = (exchangeRate * (salary - directBanking1 - cash)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, allowance.CurrencyId, allowance.CashCurrencyId);
+                    allowance.CashAmount = (exchangeRate * (salary - directBanking1 - directBanking2)).ToString(CultureInfo.InvariantCulture);
+                    break;
+
+                default:
+                    // nothing to do
+                    break;
+            }
+        }
+
+        private static decimal GetExchangeRate(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            int fromCurrencyId,
+            int toCurrencyId)
+        {
+            CurrencyExchangeRateModel currencyExchangeRate =
+                currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
+
+            return currencyExchangeRate != null ? currencyExchangeRate.ExchangeRate : 0;
         }
 
         private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
@@ -319,6 +435,7 @@
 
             foreach (MonthlySalaryAdditionModel addition in viewModel.Additions)
             {
+                addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
                 addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
             }
 

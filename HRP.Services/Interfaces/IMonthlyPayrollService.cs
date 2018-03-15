@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Model;
@@ -8,7 +9,7 @@
 
     public interface IMonthlyPayrollService
     {
-        Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(int companyId, string costCenterIds);
+        Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(DateTime month, int companyId, string costCenterIds);
 
         Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel);
 
