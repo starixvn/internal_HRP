@@ -346,7 +346,7 @@
             fileStream = FakeFileStream();
             templateReader = FakeTemplateReader();
             paymentProcessRepository = FakePaymentProcessRepository();
-            var service = new PaymentProcessService(baseService, sessionService, paymentProcessRepository, fileStream, templateReader);
+            var service = new PaymentProcessService(baseService, sessionService, templateReader, paymentProcessRepository, fileStream);
 
             return service;
         }

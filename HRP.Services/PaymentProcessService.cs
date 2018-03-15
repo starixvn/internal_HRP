@@ -27,15 +27,15 @@
 
         public PaymentProcessService(IBaseService baseService,
             ISessionService sessionService,
+            ITemplateReader templateReader,
             IPaymentProcessRepository paymentProcessRepository = null,
-            IObjectStream fileStream = null,
-            ITemplateReader templateReader = null)
+            IObjectStream fileStream = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
+            this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
             this.fileStream = fileStream ?? new ObjectStream();
-            this.templateReader = templateReader ?? new TemplateReader();
         }
 
         public async Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath)

@@ -2,6 +2,10 @@
 @using HRP.Resources
 @using HRP.Models.PaymentProcess
 @model UploadAttendanceAndSalaryViewModel
+@{ 
+    var isEmptyAttendanceFilename = string.IsNullOrWhiteSpace(Model.AttendanceFileName);
+    var isEmptyDSTNetSalaryFilename = string.IsNullOrWhiteSpace(Model.DSTNetSalaryFileName);
+}
 
 @section Styles {
     <environment include="Development">
@@ -69,13 +73,14 @@
         <div class="inputfile-box">
             <label for="file" class="file">
                 <span id="file-name" class="file-box">
-                    <span class="file-name js-attendanceFileName">Map_chart_sample.xlsx</span>
-                    <span class="icon-successful"></span>
+                    <span class="file-name js-attendanceFileName" data-filename-uploaded="@Model.AttendanceFileName">@Model.AttendanceFileName</span>
+                    <span class="icon-successful js-attendanceIconSuccess @(isEmptyAttendanceFilename ? "hidden" :"")"></span>
+                    <span class="icon-close js-attendanceIconClose hidden"></span>
                 </span>
                 <span class="button -browser js-browseAttendance">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete" disabled>@ViewLang.Delete</button>
+        <button type="button" class="button -delete" @(isEmptyAttendanceFilename ? "disabled" : "")>@ViewLang.Delete</button>
     </div>
     <div class="text width-660">
         @ViewLang.UploadDSTNetSalaryFile
@@ -88,13 +93,14 @@
         <div class="inputfile-box">
             <label for="file" class="file">
                 <span class="file-box">
-                    <span id="file-name" class="file-name no-file js-dstNetSalaryFileName">@ViewLang.ChooseFile</span>
-                    <span class="icon-close"></span>
+                    <span class="file-name js-dstNetSalaryFileName" data-filename-uploaded="@Model.DSTNetSalaryFileName">@Model.DSTNetSalaryFileName</span>
+                    <span class="icon-successful js-dstNetSalaryIconSuccess @(isEmptyDSTNetSalaryFilename ? "hidden" :"")"></span>
+                    <span class="icon-close js-dstNetSalaryIconClose hidden"></span>
                 </span>
                 <span class="button -browser js-browseDSTNetSalary">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete">@ViewLang.Delete</button>
+        <button type="button" class="button -delete" @(isEmptyDSTNetSalaryFilename ? "disabled" : "")>@ViewLang.Delete</button>
     </div>
 
     <div class="text percent-validation-text">Percent Completed Validation Rules</div>
@@ -107,11 +113,12 @@
     </div>
 
     <div class="info-list" id="validationFilesResult">
+        @Html.Partial("_ValidationFilesResult", Model)
     </div>
 
     <div class="group-control list-button">
         <button type="button" class="button -second">@ViewLang.Back</button>
-        <button type="submit" class="button -add" id="uploadFiles">@ViewLang.Upload</button>
+        <button type="submit" class="button -add" id="uploadFiles" disabled>@ViewLang.Upload</button>
         <button type="button" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
@@ -121,7 +128,6 @@
     <div class="group">
         <button type="submit" class="button -primary">@ViewLang.DownloadTemplate</button>
     </div>
-
 </form>
 
 @section Scripts {

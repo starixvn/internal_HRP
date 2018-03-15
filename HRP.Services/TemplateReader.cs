@@ -7,6 +7,7 @@
     using System.Linq;
     using HRP.Core.Constants;
     using HRP.Core.Extensions;
+    using HRP.Core.Services;
     using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
@@ -14,6 +15,7 @@
 
     public class TemplateReader : ITemplateReader
     {
+        private readonly ICryptoService cryptoService;
         private readonly DataFormatter formatter;
         private readonly IList<AttendanceUploading> attendanceUploading;
         private readonly IList<ValidationResult> _attendanceValidationResults;
@@ -25,13 +27,14 @@
         private const int DSTNetSalaryStartRow = 5;
         private const int DSTNetSalaryHeaderRow = 4;
 
-        public TemplateReader(DataFormatter formatter = null)
+        public TemplateReader(ICryptoService cryptoService, DataFormatter formatter = null)
         {
+            this.cryptoService = cryptoService;
+            this.formatter = formatter ?? new DataFormatter();
             attendanceUploading = new List<AttendanceUploading>();
             _attendanceValidationResults = new List<ValidationResult>();
             dstNetSalaryUploading = new List<DSTNetSalaryUploading>();
             _dstNetSalaryValidationResults = new List<ValidationResult>();
-            this.formatter = formatter ?? new DataFormatter();
         }
 
         public ISheet CreateSheet(Stream file)
@@ -61,49 +64,58 @@
 
         public Result<IEnumerable<AttendanceUploading>> ReadAttendance(AttendanceTemplate template)
         {
-            var headers = GetHeaders(template.Sheet, AttendanceHeaderRow);
-            if (IsValidAttendanceSheet(headers))
+            try
             {
-                for (var i = AttendanceStartRow; i <= template.Sheet.LastRowNum; i++)
+                var headers = GetHeaders(template.Sheet, AttendanceHeaderRow);
+                if (IsValidAttendanceSheet(headers))
                 {
-                    var row = template.Sheet.GetRow(i);
-
-                    if (IsValidRow(row))
+                    for (var i = AttendanceStartRow; i <= template.Sheet.LastRowNum; i++)
                     {
-                        var currentRowNumber = row.RowNum + 1;
-                        var record = new AttendanceUploading
+                        var row = template.Sheet.GetRow(i);
+
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        if (IsValidRow(row))
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         {
-                            RowNumber = currentRowNumber,
-                            EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
-                            ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row),
-                            LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, headers, row),
-                            UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, headers, row),
-                            LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, headers, row),
-                            EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, headers, row)
-                        };
+                            var currentRowNumber = row.RowNum + 1;
+                            var record = new AttendanceUploading
+                            {
+                                RowNumber = currentRowNumber,
+                                EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
+                                ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row),
+                                LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, headers, row),
+                                UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, headers, row),
+                                LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, headers, row),
+                                EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, headers, row)
+                            };
 
-                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
-                        var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
-                        var checkLeaveTaken = CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
-                        var checkUnpaidLeave = CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
-                        var checkLateInMinute = CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
-                        var checkEarlyOutMinute = CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
+                            var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
+                            var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
+                            var checkLeaveTaken = CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
+                            var checkUnpaidLeave = CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
+                            var checkLateInMinute = CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
+                            var checkEarlyOutMinute = CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
 
-                        AddToAttendanceValidationResults(checkEmployeeCode);
-                        AddToAttendanceValidationResults(checkActualWorkingDay);
-                        AddToAttendanceValidationResults(checkLeaveTaken);
-                        AddToAttendanceValidationResults(checkUnpaidLeave);
-                        AddToAttendanceValidationResults(checkLateInMinute);
-                        AddToAttendanceValidationResults(checkEarlyOutMinute);
+                            AddToAttendanceValidationResults(checkEmployeeCode);
+                            AddToAttendanceValidationResults(checkActualWorkingDay);
+                            AddToAttendanceValidationResults(checkLeaveTaken);
+                            AddToAttendanceValidationResults(checkUnpaidLeave);
+                            AddToAttendanceValidationResults(checkLateInMinute);
+                            AddToAttendanceValidationResults(checkEarlyOutMinute);
 
-                        attendanceUploading.Add(record);
+                            attendanceUploading.Add(record);
+                        }
                     }
+
+                    return new Success<IEnumerable<AttendanceUploading>>(attendanceUploading);
                 }
 
-                return new Success<IEnumerable<AttendanceUploading>>(attendanceUploading);
+                return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
             }
-
-            return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+            catch (Exception)
+            {
+                return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+            }
         }
 
         private void AddToAttendanceValidationResults(ValidationResult result)
@@ -133,38 +145,50 @@
 
         public Result<IEnumerable<DSTNetSalaryUploading>> ReadDSTNetSalary(DSTNetSalaryTemplate template)
         {
-            var headers = GetHeaders(template.Sheet, DSTNetSalaryHeaderRow);
-            if (IsValidDSTNetSalarySheet(headers))
+            try
             {
-                for (var i = DSTNetSalaryStartRow; i <= template.Sheet.LastRowNum; i++)
+                var headers = GetHeaders(template.Sheet, DSTNetSalaryHeaderRow);
+                if (IsValidDSTNetSalarySheet(headers))
                 {
-                    var row = template.Sheet.GetRow(i);
-
-                    if (IsValidRow(row))
+                    for (var i = DSTNetSalaryStartRow; i <= template.Sheet.LastRowNum; i++)
                     {
-                        var currentRowNumber = row.RowNum + 1;
-                        var record = new DSTNetSalaryUploading
+                        var row = template.Sheet.GetRow(i);
+
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        if (IsValidRow(row))
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         {
-                            RowNumber = currentRowNumber,
-                            EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
-                            Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
-                            NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
-                        };
+                            var currentRowNumber = row.RowNum + 1;
+                            var record = new DSTNetSalaryUploading
+                            {
+                                RowNumber = currentRowNumber,
+                                EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
+                                Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
+                                NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
+                            };
 
-                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
-                        var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
+                            var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
+                            var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
+                            var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
 
-                        AddToDSTNetSalaryValidationResults(checkEmployeeCode);
-                        AddToDSTNetSalaryValidationResults(checkCurrency);
+                            AddToDSTNetSalaryValidationResults(checkEmployeeCode);
+                            AddToDSTNetSalaryValidationResults(checkCurrency);
+                            AddToDSTNetSalaryValidationResults(checkNetSalaryReceived);
 
-                        dstNetSalaryUploading.Add(record);
+                            record.NetSalaryReceived = cryptoService.Encrypt(record.NetSalaryReceived);
+                            dstNetSalaryUploading.Add(record);
+                        }
                     }
+
+                    return new Success<IEnumerable<DSTNetSalaryUploading>>(dstNetSalaryUploading);
                 }
 
-                return new Success<IEnumerable<DSTNetSalaryUploading>>(dstNetSalaryUploading);
+                return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
             }
-
-            return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+            catch (Exception)
+            {
+                return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+            }
         }
 
         private void AddToDSTNetSalaryValidationResults(ValidationResult result)
@@ -178,6 +202,32 @@
         #endregion ReadDSTNetSalary
 
         #region Validation
+
+        public ValidationResult CheckNetSalaryReceived(string value, int rowNumber)
+        {
+            var columnName = DSTNetSalaryColumn.NetSalaryReceived;
+            var result = new ValidationResult
+            {
+                RowNumber = rowNumber
+            };
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMissing, columnName);
+            }
+            else if (!decimal.TryParse(value, out decimal number))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMustBeANumber, columnName);
+            }
+            else
+            {
+                result.ResultType = 1;
+            }
+
+            return result;
+        }
 
         private ValidationResult CheckCurrency(string value, int rowNumber, IEnumerable<Currency> currencies)
         {
