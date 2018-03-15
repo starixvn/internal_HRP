@@ -744,4 +744,7 @@
   <data name="CurrencyNotExists" xml:space="preserve">
     <value>The Currency does not exist</value>
   </data>
+  <data name="UnitAmountRequired" xml:space="preserve">
+    <value>Unit Amount is required!</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
@@ -217,19 +218,26 @@
             int companyId,
             DateTime month)
         {
-            ////var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
-            ////if (!isRead)
-            ////{
-            ////    return RedirectToAction("AccessDenied", "Error");
-            ////}
+            var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
+            if (!isRead)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
 
-            var viewModel = await monthlyPayrollService.GetMonthlySalaryToEditAsync(payrollId);
-            ////if (viewModel == null)
-            ////{
-            ////    return RedirectToAction("PageNotFound", "Error");
-            ////}
+            EditMonthlySalaryViewModel viewModel = await monthlyPayrollService.GetMonthlySalaryToEditAsync(payrollId);
+            if (viewModel == null)
+            {
+                return RedirectToAction("PageNotFound", "Error");
+            }
 
-            ////viewModel.Month = month;
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = month.Month,
+                Year = month.Year
+            };
+
+            viewModel.Month = month;
+            viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
 
             return View(viewModel);
         }
@@ -256,6 +264,13 @@
                     ModelState.AddModelError(string.Empty, commandResult.Message);
                 }
             }
+
+            var criteria = new GetExchangeRateCriteria
+            {
+                Month = viewModel.Month.Month,
+                Year = viewModel.Month.Year
+            };
+            viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
 
             return View(viewModel);
         }

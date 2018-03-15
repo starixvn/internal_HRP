@@ -52,10 +52,8 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control width-92" asp-for="WorkingDays" disabled>
-            <option value="">@ViewLang.All</option>
-            <option value="22">22</option>
-            <option value="26">26</option>
+        <select class="control width-92" disabled>
+            <option value="@Model.MonthlyBasicSalary.WorkingDays" selected="selected">@Model.MonthlyBasicSalary.WorkingDays</option>
         </select>
     </div>
 </div>

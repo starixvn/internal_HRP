@@ -1798,6 +1798,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit Amount is required!.
+        /// </summary>
+        public static string UnitAmountRequired {
+            get {
+                return ResourceManager.GetString("UnitAmountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency Setting has been successfully updated!.
         /// </summary>
         public static string UpdateCurrencySettingSuccessfully {

@@ -172,9 +172,10 @@
         public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsExisted_ReturnAsExpectedViewModel()
         {
             // Arrange
-            var plainText = "plainText";
+            var plainText = "1234";
             var viewModel = new EditMonthlySalaryViewModel
             {
+                MonthlyBasicSalary = new MonthlyBasicSalaryModel { WorkingDays = 10 },
                 Additions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                 Deductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() }
             };
@@ -189,6 +190,7 @@
             Assert.Equal(viewModel.MonthlyBasicSalary.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
             Assert.Equal(viewModel.MonthlyBasicSalary.Salary, actual.MonthlyBasicSalary.Salary);
             Assert.Equal(viewModel.MonthlyBasicSalary.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
+            Assert.Equal("123.4", actual.MonthlyBasicSalary.SalaryPerDay);
             Assert.Equal(viewModel.MonthlyBasicSalary.EBankingCurrencyCode, actual.MonthlyBasicSalary.EBankingCurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.EBankingAmount);
             Assert.Equal(viewModel.MonthlyBasicSalary.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);

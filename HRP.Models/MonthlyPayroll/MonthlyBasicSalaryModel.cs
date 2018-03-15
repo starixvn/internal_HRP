@@ -1,10 +1,22 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System.Globalization;
+
     public class MonthlyBasicSalaryModel
     {
         public int PayrollId { get; set; }
         public string CurrencyCode { get; set; }
         public string Salary { get; set; }
+
+        public string SalaryPerDay
+        {
+            get
+            {
+                decimal.TryParse(Salary, out decimal salary);
+                return (salary / WorkingDays).ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
         public int WorkingDays { get; set; }
         public string EBankingCurrencyCode { get; set; }
         public string EBankingAmount { get; set; }
