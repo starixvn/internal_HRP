@@ -8,6 +8,8 @@
 
         public string CurrencyId { get; set; }
 
+        public string TotalAmount { get; set; }
+
         public string DirectBanking1CurrencyId { get; set; }
 
         public string DirectBanking1Amount { get; set; }

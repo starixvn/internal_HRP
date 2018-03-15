@@ -1,4 +1,6 @@
-﻿namespace HRP.Models.MonthlyPayroll
+﻿using System;
+
+namespace HRP.Models.MonthlyPayroll
 {
     public class MonthlyAllowanceDeductionModel
     {
@@ -13,5 +15,7 @@
         public string TotalAmount { get; set; }
 
         public string NetAllowance { get; set; }
+
+        public int CurrencyId { get; set; }
     }
 }

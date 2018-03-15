@@ -13,5 +13,7 @@
         public string TotalAmount { get; set; }
 
         public string NetAllowance { get; set; }
+
+        public int CurrencyId { get; set; }
     }
 }

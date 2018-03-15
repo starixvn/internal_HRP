@@ -8,6 +8,8 @@
 
         public string CurrencyId { get; set; }
 
+        public string TotalAmount { get; set; }
+
         public string CashCurrencyId { get; set; }
 
         public string CashAmount { get; set; }

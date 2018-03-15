@@ -181,6 +181,7 @@
             {
                 PayrollId = viewModel.Allowance.PayrollId,
                 CurrencyId = viewModel.Allowance.CurrencyId,
+                TotalAmount = viewModel.Allowance.TotalAmount,
                 DirectBanking1CurrencyId = viewModel.Allowance.DirectBanking1CurrencyId,
                 DirectBanking1Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking1Amount),
                 DirectBanking1AccountId = viewModel.Allowance.DirectBanking1AccountId,
@@ -218,6 +219,7 @@
 
         private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
         {
+            allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
             allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
             allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
             allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
@@ -272,6 +274,7 @@
                 row.SetAttributeValue(nameof(addition.UnitAmount), cryptoService.Encrypt(addition.UnitAmount));
                 row.SetAttributeValue(nameof(addition.TotalAmount), cryptoService.Encrypt(addition.TotalAmount));
                 row.SetAttributeValue(nameof(addition.NetAllowance), cryptoService.Encrypt(addition.NetAllowance));
+                row.SetAttributeValue(nameof(addition.CurrencyId), addition.CurrencyId);
 
                 xml.Add(row);
             }
@@ -292,6 +295,7 @@
                 row.SetAttributeValue(nameof(deduction.UnitAmount), cryptoService.Encrypt(deduction.UnitAmount));
                 row.SetAttributeValue(nameof(deduction.TotalAmount), cryptoService.Encrypt(deduction.TotalAmount));
                 row.SetAttributeValue(nameof(deduction.NetAllowance), cryptoService.Encrypt(deduction.NetAllowance));
+                row.SetAttributeValue(nameof(deduction.CurrencyId), deduction.CurrencyId);
 
                 xml.Add(row);
             }

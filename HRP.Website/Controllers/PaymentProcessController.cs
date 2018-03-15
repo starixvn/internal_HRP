@@ -268,25 +268,25 @@
             return Json(employees);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.EditAllowances, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> EditAllowances(int payrollId, int companyId)
         {
-            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Read))
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId);
-            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Host);
+            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
 
             return View(viewModel);
         }
 
         [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.EditAllowances, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel)
         {
-            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EditAllowances, Policy.Host))
+            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
             {
                 return RedirectToAction("AccessDenied", "Error");
             }

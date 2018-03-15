@@ -318,7 +318,8 @@
                     Type = 1,
                     NetAllowance = string.Empty,
                     TotalAmount = string .Empty,
-                    UnitAmount = string.Empty
+                    UnitAmount = string.Empty,
+                    CurrencyId = 1
                 }
             };
             var deductions = new List<MonthlyAllowanceDeductionModel>
@@ -330,7 +331,8 @@
                     Type = 1,
                     NetAllowance = string.Empty,
                     TotalAmount = string .Empty,
-                    UnitAmount = string.Empty
+                    UnitAmount = string.Empty,
+                    CurrencyId = 1
                 }
             };
 
@@ -364,7 +366,8 @@
                         Type = 1,
                         NetAllowance = string.Empty,
                         TotalAmount = string .Empty,
-                        UnitAmount = string.Empty
+                        UnitAmount = string.Empty,
+                        CurrencyId = 1
                     }
                 },
                 Deductions = new List<MonthlyAllowanceDeductionModel>
@@ -376,7 +379,8 @@
                         Type = 1,
                         NetAllowance = string.Empty,
                         TotalAmount = string .Empty,
-                        UnitAmount = string.Empty
+                        UnitAmount = string.Empty,
+                        CurrencyId = 1
                     }
                 }
             };

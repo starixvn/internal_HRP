@@ -267,7 +267,7 @@
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
-            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Read).Returns(false);
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
 
             var actual = await controller.EditAllowances(1, companyId);
 
@@ -281,8 +281,8 @@
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
-            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Read).Returns(true);
-            sessionService.HasPermissionOnCompany(companyId, FunctionKey.EditAllowances, Policy.Host).Returns(true);
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>()).Returns(new MonthlyAllowancesViewModel());
 
             var actual = await controller.EditAllowances(1, companyId);
