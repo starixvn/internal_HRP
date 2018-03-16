@@ -601,7 +601,7 @@
         {
             if (currencyId == Constants.VietnamCurrencyId)
             {
-                return Math.Round(amount / 1000) * 1000;
+                return Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000;
             }
 
             return Math.Round(amount, 2);
