@@ -13,15 +13,15 @@
 
         public string OldSalary { get; set; }
 
-        public string CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
-        public string OldCurrencyId { get; set; }
+        public int? OldCurrencyId { get; set; }
 
         public int WorkingDays { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollCurrencyRequried")]
-        public string EbankingCurrencyId { get; set; }
+        public int? EbankingCurrencyId { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollSettingAmountRequried")]

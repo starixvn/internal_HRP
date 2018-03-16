@@ -4,11 +4,11 @@
     {
         public int EmployeeId { get; set; }
 
-        public string RoomingChargesCurrencyId { get; set; }
+        public int? RoomingChargesCurrencyId { get; set; }
 
         public string RoomingChargesAmount { get; set; }
 
-        public string FitnessFirstCurrencyId { get; set; }
+        public int? FitnessFirstCurrencyId { get; set; }
 
         public string FitnessFirstAmount { get; set; }
     }
