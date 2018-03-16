@@ -19,5 +19,7 @@ namespace HRP.Core.Constants
         public const string TemplateEmailOTPRegistraion = "wwwroot/EmailTemplates/EmailTemplateOTPRegistraion.cshtml";
 
         public const string IsSystemAdmin = "IsSystemAdmin";
+
+        public const int VietnamCurrencyId = 11;
     }
 }

@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
@@ -569,7 +570,7 @@
 
         private static decimal RoundWithCurrency(decimal amount, int currencyId)
         {
-            if (currencyId == 11)
+            if (currencyId == Constants.VietnamCurrencyId)
             {
                 return Math.Round(amount / 1000) * 1000;
             }
