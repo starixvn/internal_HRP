@@ -174,9 +174,20 @@
                 Deductions = result.Item3
             };
 
-            //DecryptMonthlyAllowance(model.Allowance);
-            //DecryptMonthlyAllowanceAdditions(model.Additions);
-            //DecryptMonthlyAllowanceDeductions(model.Deductions);
+            if (model.Allowance != null)
+            {
+                DecryptMonthlyAllowance(model.Allowance);
+            }
+
+            if (model.Additions != null)
+            {
+                DecryptMonthlyAllowanceAdditions(model.Additions);
+            }
+
+            if (model.Deductions != null)
+            {
+                DecryptMonthlyAllowanceDeductions(model.Deductions);
+            }
 
             return model;
         }
@@ -486,7 +497,6 @@
                 FitnessFirstAmount = deduction.FitnessFirstAmount,
             };
 
-
             return monthlyBasicAllowance;
         }
 
@@ -494,59 +504,35 @@
             , DateTime startDate, DateTime? endDate)
         {
             decimal totalAmount = 0;
-
+            decimal amount;
             if (!monthlyPayrollBasicAllowance.CurrencyId.HasValue)
             {
                 return;
             }
 
-            if (monthlyPayrollBasicAllowance.SubsistenceCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.SubsistenceAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.SubsistenceAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.SubsistenceAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.HomePassageCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.HomePassageAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HomePassageAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HomePassageAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.HousingCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.HousingAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HousingAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HousingAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.MobilePhoneCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.MobilePhoneAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.MobilePhoneAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.MobilePhoneAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.HPICurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.HPIAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HPIAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HPICurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.HPIAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.HPICurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.DutyMealCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.DutyMealAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.DutyMealAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.DutyMealAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.SecondmentCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.SecondmentAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.SecondmentAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.SecondmentAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
-            if (monthlyPayrollBasicAllowance.OthersCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyPayrollBasicAllowance.OthersAmount))
-            {
-                decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.OthersAmount), out decimal amount);
-                totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersCurrencyId.Value, monthlyPayrollBasicAllowance.CurrencyId.Value));
-            }
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.OthersAmount), out amount);
+            totalAmount += (amount * GetExchangeRate(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersCurrencyId ?? 0, monthlyPayrollBasicAllowance.CurrencyId.Value));
 
             totalAmount = RoundWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
             monthlyPayrollBasicAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString());
@@ -559,7 +545,7 @@
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(afterAdjustmentAmount.ToString());
 
-            if(afterAdjustmentAmount - totalAmount > 0)
+            if (afterAdjustmentAmount - totalAmount > 0)
             {
                 monthlyPayrollBasicAllowance.Reason = AdjustmentReason.Added.ToString();
             }
