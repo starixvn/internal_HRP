@@ -555,7 +555,7 @@
             var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
             var startDay = startDate.Month == currentDate.Month && startDate.Year == currentDate.Year ? startDate.Day : 1;
             var endDay = endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year ? endDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = totalAmount / daysInMonth * (endDay - startDay + 1);
+            var afterAdjustmentAmount = RoundWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(afterAdjustmentAmount.ToString());
 
