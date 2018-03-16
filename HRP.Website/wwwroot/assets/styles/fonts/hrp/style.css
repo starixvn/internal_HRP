@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'hrp';
-  src:  url('fonts/hrp.eot?v3wbub');
-  src:  url('fonts/hrp.eot?v3wbub#iefix') format('embedded-opentype'),
-    url('fonts/hrp.ttf?v3wbub') format('truetype'),
-    url('fonts/hrp.woff?v3wbub') format('woff'),
-    url('fonts/hrp.svg?v3wbub#hrp') format('svg');
+  src:  url('fonts/hrp.eot?430s5z');
+  src:  url('fonts/hrp.eot?430s5z#iefix') format('embedded-opentype'),
+    url('fonts/hrp.ttf?430s5z') format('truetype'),
+    url('fonts/hrp.woff?430s5z') format('woff'),
+    url('fonts/hrp.svg?430s5z#hrp') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-adjusted:before {
+  content: "\e92c";
+}
 .icon-excel:before {
   content: "\e927";
 }

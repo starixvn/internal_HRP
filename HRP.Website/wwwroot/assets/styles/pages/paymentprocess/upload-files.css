@@ -214,6 +214,8 @@ table.dataTable thead > tr > td.sorting {
 }
 
 table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after {
+  bottom: 50%;
+  margin-bottom: -6px;
   font-family: "hrp";
   font-size: 8px;
   opacity: 1;
@@ -309,6 +311,10 @@ table.dataTable thead .sorting_desc:after {
 .pagination > li:last-child > span {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
+}
+
+.upload-files {
+  margin-top: 8px;
 }
 
 .upload-files .text {
@@ -411,5 +417,13 @@ table.dataTable thead .sorting_desc:after {
 
 .error-desc {
   text-align: left !important;
+}
+
+table.dataTable {
+  margin-top: 0 !important;
+}
+
+.dataTables_wrapper {
+  margin-bottom: 20px;
 }
 /*# sourceMappingURL=upload-files.css.map */

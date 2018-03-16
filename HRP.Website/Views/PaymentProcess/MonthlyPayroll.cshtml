@@ -24,7 +24,10 @@
 
 @Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
 
-<div class="search-form">
+<div class="list-message-error hidden">
+    <p class="message">@Message.SelectAtLeastOneOption</p>
+</div>
+<div class="search-form">    
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
@@ -38,16 +41,6 @@
             <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
-    <div class="payment-duration">
-        <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
-        <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
-        <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
-    </div>
-</div>
-<div class="list-message-error hidden">
-    <p class="message">@Message.SelectAtLeastOneOption</p>
-</div>
-<div class="search-form form-filter">
     <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
 
     <div class="group">
@@ -62,7 +55,7 @@
         <label class="text">Div/Dept/Cost Center</label>
         <select class="control width-200" id="CostCenterMultiSelect"></select>
     </div>
-    <form class="search-form form-filter" asp-action="EmployeeMonthlyPayroll" method="get">
+    <form class="search-form" asp-action="EmployeeMonthlyPayroll" method="get">
         <input asp-for="CompanyId" hidden />
         <input type="text" asp-for="Month" hidden />
         <input asp-for="CostCenterIds" hidden />
@@ -82,6 +75,12 @@
         </div>
     </form>
 </div>
+<div class="payment-duration">
+    <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
+    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
+    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
+</div>
+
 <div class="top-header -only-search-box">
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="Search" />

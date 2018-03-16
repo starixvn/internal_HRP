@@ -176,13 +176,15 @@ table.dataTable thead > tr > td.sorting {
 }
 
 %icon-sorting {
+  bottom: 50%;
+  margin-bottom: -6px;
   font-family: "hrp";
   font-size: 8px;
   opacity: 1;
   right: 5px
 }
 
-table.dataTable thead .sorting:after {  
+table.dataTable thead .sorting:after {
   @extend %icon-sorting;
   content: "\e921";
 }
@@ -234,7 +236,7 @@ table.dataTable thead .sorting_desc:after {
       text-align: center;
   }
 
-  .paginate_button a {       
+  .paginate_button a {
       color: #666;
 
       &:hover {

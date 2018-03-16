@@ -8,6 +8,8 @@
 }
 
 %icon-status {
+    position: relative;
+    top: 3px;
     font-family: "hrp";
     font-size: 16px;
     line-height: 0;
@@ -17,7 +19,7 @@
     @extend %icon-status;
 
     &:before {
-        content: "\e913";
+        content: "\e92c";
         color: #18aa3a;
     }
 }

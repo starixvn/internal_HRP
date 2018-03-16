@@ -5,6 +5,8 @@
 
 // Upload files
 .upload-files {
+    margin-top: 8px;
+
     .text {
         width: 490px;
     }
@@ -108,4 +110,14 @@
 
 .error-desc {
     text-align: left !important;
+}
+
+// Validation Files
+
+table.dataTable {
+    margin-top: 0 !important;
+}
+
+.dataTables_wrapper {
+    margin-bottom: 20px;
 }

@@ -394,7 +394,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 .payment-duration {
   display: flex;
   align-self: flex-start;
-  margin-top: 28px;
+  padding-bottom: 12px;
 }
 
 .payment-duration .date {

@@ -179,6 +179,8 @@ table.dataTable thead > tr > td.sorting {
 }
 
 table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after {
+  bottom: 50%;
+  margin-bottom: -6px;
   font-family: "hrp";
   font-size: 8px;
   opacity: 1;
@@ -408,13 +410,15 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .status-done, .status-incorrect, .status-default {
+  position: relative;
+  top: 3px;
   font-family: "hrp";
   font-size: 16px;
   line-height: 0;
 }
 
 .status-done:before {
-  content: "\e913";
+  content: "\e92c";
   color: #18aa3a;
 }
 
