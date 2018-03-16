@@ -25,6 +25,6 @@
 
         Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
 
-        BackPayViewModel CalculateBackPay(DateTime effectiveDate, DateTime workingMonth, decimal oldBasicSalary, decimal newBasicSalary);
+        BackPayViewModel CalculateBackPay(DateTime effectiveDate, DateTime workingMonth, decimal oldBasicSalary, decimal newBasicSalary, int currencyId);
     }
 }

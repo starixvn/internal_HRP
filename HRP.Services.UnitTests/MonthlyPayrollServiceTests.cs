@@ -315,7 +315,7 @@
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPay(Arg.Any<DateTime>(), Arg.Any<DateTime>(), 1000, 1000);
+            var actual = monthlyPayrollService.CalculateBackPay(Arg.Any<DateTime>(), Arg.Any<DateTime>(), 1000, 1000, Arg.Any<int>());
 
             // Assert
             Assert.Null(actual.Amount);
@@ -330,28 +330,44 @@
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPay(workingMonth, workingMonth, 1000, 1100);
+            var actual = monthlyPayrollService.CalculateBackPay(workingMonth, workingMonth, 1000, 1100, Arg.Any<int>());
 
             // Assert
             Assert.Null(actual.Amount);
             Assert.Null(actual.Description);
         }
 
-        //[Fact]
-        //public void CalculateBackPay_EffectiveDateIsFirstDayOfMonth_ReturnAsExpectedBackPay()
-        //{
-        //    // Arrange
-        //    var workingMonth = new DateTime(2018, 3, 1);
-        //    var effectiveDate = workingMonth.AddMonths(-1);
-        //    var monthlyPayrollService = GetMonthlyPayrollService();
+        [Fact]
+        public void CalculateBackPay_CurrencyIsNotVND_ReturnAsExpectedBackPay()
+        {
+            // Arrange
+            var workingMonth = new DateTime(2018, 3, 1);
+            var effectiveDate = workingMonth.AddMonths(-1);
+            var monthlyPayrollService = GetMonthlyPayrollService();
 
-        //    // Act
-        //    var actual = monthlyPayrollService.CalculateBackPay(effectiveDate, workingMonth, 1000, 1200);
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPay(effectiveDate, workingMonth, 1000, 1200, 1);
 
-        //    // Assert
-        //    Assert.Equal("400", actual.Amount);
-        //    Assert.Equal("Annual Increment from Jan 01, 2018", actual.Description);
-        //}
+            // Assert
+            Assert.Equal("400.00", actual.Amount);
+            Assert.Equal("Annual Increment from Feb 01, 2018", actual.Description);
+        }
+
+        [Fact]
+        public void CalculateBackPay_CurrencyIsVND_ReturnAsExpectedBackPay()
+        {
+            // Arrange
+            var workingMonth = new DateTime(2018, 3, 1);
+            var effectiveDate = workingMonth.AddMonths(-1);
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPay(effectiveDate, workingMonth, 10000, 12000, 11);
+
+            // Assert
+            Assert.Equal("4000", actual.Amount);
+            Assert.Equal("Annual Increment from Feb 01, 2018", actual.Description);
+        }
 
         #endregion CalculateBackPay
 

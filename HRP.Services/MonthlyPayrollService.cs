@@ -224,16 +224,21 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
-        public BackPayViewModel CalculateBackPay(DateTime effectiveDate, DateTime workingMonth, decimal oldBasicSalary, decimal newBasicSalary)
+        public BackPayViewModel CalculateBackPay(
+            DateTime effectiveDate,
+            DateTime workingMonth,
+            decimal oldBasicSalary,
+            decimal newBasicSalary,
+            int currencyId)
         {
             var backPay = new BackPayViewModel();
             if (oldBasicSalary != newBasicSalary && workingMonth.Month > effectiveDate.Month)
             {
                 int monthDiff = GetMonthDifference(workingMonth, effectiveDate);
-
                 int daysInMonth = DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month);
-                backPay.Amount = (((newBasicSalary - oldBasicSalary) / daysInMonth * (daysInMonth - effectiveDate.Day + 1))
-                    + ((newBasicSalary - oldBasicSalary) * monthDiff)).ToString(CultureInfo.InvariantCulture);
+                decimal amount = (((newBasicSalary - oldBasicSalary) / daysInMonth * (daysInMonth - effectiveDate.Day + 1))
+                    + ((newBasicSalary - oldBasicSalary) * monthDiff));
+                backPay.Amount = RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture);
 
                 backPay.Description = string.Format(Message.BackPayDescriptionFormat, effectiveDate.ToString(Constants.DateFormat));
             }
@@ -324,7 +329,7 @@
             totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
                 monthlyPayrollBasicAllowance.OthersCurrencyId ?? 0, currencyId);
 
-            totalAmount = RoundWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
+            totalAmount = RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
             monthlyPayrollBasicAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString(CultureInfo.InvariantCulture));
 
             CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate);
@@ -336,7 +341,7 @@
             var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
             var startDay = startDate.Month == currentDate.Month && startDate.Year == currentDate.Year ? startDate.Day : 1;
             var endDay = endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year ? endDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = RoundWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
+            var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture));
 
@@ -592,12 +597,13 @@
             }
         }
 
-        private static decimal RoundWithCurrency(decimal amount, int currencyId)
+        private static decimal RoundAmountWithCurrency(decimal amount, int currencyId)
         {
             if (currencyId == Constants.VietnamCurrencyId)
             {
                 return Math.Round(amount / 1000) * 1000;
             }
+
             return Math.Round(amount, 2);
         }
     }
