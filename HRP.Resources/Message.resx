@@ -750,4 +750,7 @@
   <data name="SelectAtLeastOneOption" xml:space="preserve">
     <value>Please select at least one option!</value>
   </data>
+  <data name="BackPayDescriptionFormat" xml:space="preserve">
+    <value>Annual Increment from {0}</value>
+  </data>
 </root>

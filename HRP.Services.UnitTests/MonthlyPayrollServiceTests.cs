@@ -306,6 +306,55 @@
 
         #endregion EditMonthlySalaryAsync
 
+        #region CalculateBackPay
+
+        [Fact]
+        public void CalculateBackPay_OldSalaryEqualNewSalary_ReturnDefaultBackPay()
+        {
+            // Arrange
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPay(Arg.Any<DateTime>(), Arg.Any<DateTime>(), 1000, 1000);
+
+            // Assert
+            Assert.Null(actual.Amount);
+            Assert.Null(actual.Description);
+        }
+
+        [Fact]
+        public void CalculateBackPay_WorkingMonthEqualEffectiveMonth_ReturnDefaultBackPay()
+        {
+            // Arrange
+            var workingMonth = DateTime.Now;
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPay(workingMonth, workingMonth, 1000, 1100);
+
+            // Assert
+            Assert.Null(actual.Amount);
+            Assert.Null(actual.Description);
+        }
+
+        //[Fact]
+        //public void CalculateBackPay_EffectiveDateIsFirstDayOfMonth_ReturnAsExpectedBackPay()
+        //{
+        //    // Arrange
+        //    var workingMonth = new DateTime(2018, 3, 1);
+        //    var effectiveDate = workingMonth.AddMonths(-1);
+        //    var monthlyPayrollService = GetMonthlyPayrollService();
+
+        //    // Act
+        //    var actual = monthlyPayrollService.CalculateBackPay(effectiveDate, workingMonth, 1000, 1200);
+
+        //    // Assert
+        //    Assert.Equal("400", actual.Amount);
+        //    Assert.Equal("Annual Increment from Jan 01, 2018", actual.Description);
+        //}
+
+        #endregion CalculateBackPay
+
         [Fact]
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {

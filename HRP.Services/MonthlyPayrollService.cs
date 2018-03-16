@@ -18,6 +18,7 @@
     using HRP.Models.EmployeeManagement;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
+    using HRP.Resources;
 
     public class MonthlyPayrollService : IMonthlyPayrollService
     {
@@ -221,6 +222,29 @@
             };
 
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+        }
+
+        public BackPayViewModel CalculateBackPay(DateTime effectiveDate, DateTime workingMonth, decimal oldBasicSalary, decimal newBasicSalary)
+        {
+            var backPay = new BackPayViewModel();
+            if (oldBasicSalary != newBasicSalary && workingMonth.Month > effectiveDate.Month)
+            {
+                int monthDiff = GetMonthDifference(workingMonth, effectiveDate);
+
+                int daysInMonth = DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month);
+                backPay.Amount = (((newBasicSalary - oldBasicSalary) / daysInMonth * (daysInMonth - effectiveDate.Day + 1))
+                    + ((newBasicSalary - oldBasicSalary) * monthDiff)).ToString(CultureInfo.InvariantCulture);
+
+                backPay.Description = string.Format(Message.BackPayDescriptionFormat, effectiveDate.ToString(Constants.DateFormat));
+            }
+
+            return backPay;
+        }
+
+        private static int GetMonthDifference(DateTime startDate, DateTime endDate)
+        {
+            int monthsApart = 12 * (startDate.Year - endDate.Year) + startDate.Month - endDate.Month;
+            return Math.Abs(monthsApart);
         }
 
         public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeduction deduction)

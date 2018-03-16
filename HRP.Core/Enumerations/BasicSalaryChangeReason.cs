@@ -2,7 +2,7 @@
 {
     public enum BasicSalaryChangeReason
     {
-        AnnuaIncrement = 1,
+        AnnualIncrement = 1,
         Promotion,
         SalaryAdjustment,
         Demotion,

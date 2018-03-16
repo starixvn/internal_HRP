@@ -106,6 +106,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Annual Increment from {0}.
+        /// </summary>
+        public static string BackPayDescriptionFormat {
+            get {
+                return ResourceManager.GetString("BackPayDescriptionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
         /// </summary>
         public static string BankAccountLimitReached {
