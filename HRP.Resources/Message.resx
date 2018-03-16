@@ -747,4 +747,7 @@
   <data name="UnitAmountRequired" xml:space="preserve">
     <value>Unit Amount is required!</value>
   </data>
+  <data name="SelectAtLeastOneOption" xml:space="preserve">
+    <value>Please select at least one option!</value>
+  </data>
 </root>

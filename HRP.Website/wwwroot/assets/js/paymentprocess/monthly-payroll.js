@@ -68,6 +68,10 @@ var monthlyPayroll = (function ($) {
         $('#SearchEmployee').autocomplete({
             source: function (request, response) {
                 var term = request.term;
+                var index = term.indexOf(' (');
+                if (index > 0) {
+                    term = term.substr(0, index);
+                }
 
                 $.ajax({
                     url: commonFunctions.rootURL + 'PaymentProcess/GetEmployeeSuggestionByName',
@@ -93,6 +97,7 @@ var monthlyPayroll = (function ($) {
                 event.preventDefault();
                 $('#SearchEmployee').val(ui.item.label);
                 $('#EmployeeId').val(ui.item.value);
+                $('#Employee').val(ui.item.label);
 
                 return false;
             },
@@ -103,8 +108,23 @@ var monthlyPayroll = (function ($) {
         });
 
         $('#SearchEmployee').keyup(function () {
+            $('#Employee').val($(this).val());
+
             if (!$(this).val()) {
                 $('#EmployeeId').val('');
+            }
+        });
+    }
+
+    function registerEventSubmitForm() {
+        $('form.form-filter').on('submit', function (e) {
+            var costCenterIds = $("#CostCenterIds").val();
+
+            if (!costCenterIds) {
+                $('.list-message-error').removeClass('hidden');
+                $('#CostCenterMultiSelect').addClass('validation-error');
+
+                e.preventDefault();
             }
         });
     }
@@ -115,6 +135,15 @@ var monthlyPayroll = (function ($) {
         $table = $('#monthly-payroll-table');
         initSelect2();
         searchEmployeeSuggestion();
+        registerEventSubmitForm();
+
+        $('#quick-search').off('keyup').on('keyup', function () {
+            $table.DataTable().search($(this).val()).draw();
+        });
+
+        $('#SearchIDNo').keyup(function () {
+            $('#IDNo').val($(this).val());
+        });
     }
 
     return {

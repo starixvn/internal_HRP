@@ -24,7 +24,7 @@
 
 @Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
 
-<form class="search-form">
+<div class="search-form">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
@@ -43,18 +43,20 @@
         <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
         <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
     </div>
-</form>
-
+</div>
+<div class="list-message-error hidden">
+    <p class="message">@Message.SelectAtLeastOneOption</p>
+</div>
 <div class="search-form form-filter">
     <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
 
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
-        <input type="text" class="control" placeholder="" />
+        <input type="text" class="control" placeholder="" id="SearchIDNo" value="@Model.IDNo" />
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control" placeholder="Full name or Nickname" id="SearchEmployee" />
+        <input type="text" class="control" placeholder="Full name or Nickname" id="SearchEmployee" value="@Model.Employee" />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
