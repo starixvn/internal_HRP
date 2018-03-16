@@ -90,7 +90,6 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        [HttpPost]
         public async Task<IActionResult> DownloadAttendance()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
@@ -102,7 +101,6 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        [HttpPost]
         public async Task<IActionResult> DownloadDSTNetSalary()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;

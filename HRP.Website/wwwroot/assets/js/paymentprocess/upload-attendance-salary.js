@@ -14,7 +14,9 @@
         AttendanceIconSuccess: '.js-attendanceIconSuccess',
         DSTNetSalaryIconSuccess: '.js-dstNetSalaryIconSuccess',
         AttendanceIconClose: '.js-attendanceIconClose',
-        DSTNetSalaryIconClose: '.js-dstNetSalaryIconClose'
+        DSTNetSalaryIconClose: '.js-dstNetSalaryIconClose',
+        AttendanceErrorsTable: '.js-attendanceErrorsTable',
+        DSTNetSalaryErrorsTable: '.js-dstNetSalaryErrorsTable'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -70,6 +72,7 @@
             },
             success: function (response) {
                 $(domElement.ValidationFilesResult).html(response);
+                initDatatable(); 
             },
             error: commonFunctions.handleAjaxError
         });
@@ -110,7 +113,7 @@
                 $(domElement.AttendanceIconSuccess).removeClass('hidden').addClass('hidden');
                 $(domElement.AttendanceIconClose).removeClass('hidden');
             } else {
-                showAttendanceFileUploaded();
+                clearAttendanceFilename();
             }
 
             showHideButtonUploadFiles();
@@ -129,11 +132,23 @@
                 $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden').addClass('hidden');
                 $(domElement.DSTNetSalaryIconClose).removeClass('hidden');
             } else {
-                showDSTNetSalaryFileUploaded();
+                clearDSTNetSalaryFilename();
             }
 
             showHideButtonUploadFiles();
         });
+    }
+    
+    function clearAttendanceFilename() {
+            $(domElement.AttendanceFileName).text("");
+            $(domElement.AttendanceIconSuccess).removeClass('hidden').addClass('hidden');
+            $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
+    }
+
+    function clearDSTNetSalaryFilename() {
+            $(domElement.DSTNetSalaryFileName).text("");
+            $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden').addClass('hidden');
+            $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
     }
 
     function showAttendanceFileUploaded() {
@@ -196,7 +211,30 @@
         });
     }
 
+    function initDatatable() {
+        $(domElement.AttendanceErrorsTable).DataTable({
+            info: false,
+            ordering: false,
+            filter: false,
+            scrollY: '145px',
+            scrollCollapse: true,
+            paging: false,
+            scrollX: false,
+        });
+
+        $(domElement.DSTNetSalaryErrorsTable).DataTable({
+            info: false,
+            ordering: false,
+            filter: false,
+            scrollY: '145px',
+            scrollCollapse: true,
+            paging: false,
+            scrollX: false,
+        });
+    }
+
     function init() {
+        initDatatable();
         var $form = $(domElement.UploadFilesForm);
         registerEventChangeFileExcel($form);
         registerEventBrowseFileExcel();

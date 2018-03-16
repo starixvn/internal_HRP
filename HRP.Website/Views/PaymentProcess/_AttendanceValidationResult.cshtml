@@ -5,7 +5,7 @@
 @if (Model.ValidationErrors.Any())
 {
     <div class="msg-warning -no-border">@string.Format(Message.AttendanceFileUploadWarning, Model.ValidationErrors.Count())</div>
-    <table class="table table-bordered">
+    <table class="table table-bordered js-attendanceErrorsTable">
         <thead class="thead-light">
             <tr>
                 <th class="row-no">@ViewLang.RowNo</th>
