@@ -8,13 +8,13 @@
 }
 
 @section Styles {
-<environment include="Development">
-    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-    <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-    <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/paymentprocess/upload-files.css" rel="stylesheet" />
-</environment>
+    <environment include="Development">
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/upload-files.css" rel="stylesheet" />
+    </environment>
 
     <environment exclude="Development">
     </environment>
@@ -121,21 +121,21 @@
     <div class="group-control list-button">
         <button type="button" class="button -second">@ViewLang.Back</button>
         <button type="submit" class="button -add" id="uploadFiles" disabled>@ViewLang.Upload</button>
-        <button type="button" class="button -primary">@ViewLang.Next</button>
+        <button type="button" class="button -primary" id="nextToMonthlyPayroll">@ViewLang.Next</button>
     </div>
 </form>
 
 @section Scripts {
-<environment include="Development">
-    <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/moment/moment.js"></script>
-    <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-    <script src="~/lib/select2/dist/js/select2.js"></script>
-    <script src="~/assets/js/paymentprocess/upload-attendance-salary.js"></script>
-</environment>
+    <environment include="Development">
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/paymentprocess/upload-attendance-salary.js"></script>
+    </environment>
     <environment exclude="Development">
     </environment>
 }

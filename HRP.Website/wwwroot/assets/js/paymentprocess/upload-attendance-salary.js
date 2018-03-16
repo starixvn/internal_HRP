@@ -16,7 +16,8 @@
         AttendanceIconClose: '.js-attendanceIconClose',
         DSTNetSalaryIconClose: '.js-dstNetSalaryIconClose',
         AttendanceErrorsTable: '.js-attendanceErrorsTable',
-        DSTNetSalaryErrorsTable: '.js-dstNetSalaryErrorsTable'
+        DSTNetSalaryErrorsTable: '.js-dstNetSalaryErrorsTable',
+        BtnNextToMonthlyPayroll: '#nextToMonthlyPayroll'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -72,7 +73,7 @@
             },
             success: function (response) {
                 $(domElement.ValidationFilesResult).html(response);
-                initDatatable(); 
+                initDatatable();
             },
             error: commonFunctions.handleAjaxError
         });
@@ -138,17 +139,17 @@
             showHideButtonUploadFiles();
         });
     }
-    
+
     function clearAttendanceFilename() {
-            $(domElement.AttendanceFileName).text("");
-            $(domElement.AttendanceIconSuccess).removeClass('hidden').addClass('hidden');
-            $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
+        $(domElement.AttendanceFileName).text("");
+        $(domElement.AttendanceIconSuccess).removeClass('hidden').addClass('hidden');
+        $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
     }
 
     function clearDSTNetSalaryFilename() {
-            $(domElement.DSTNetSalaryFileName).text("");
-            $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden').addClass('hidden');
-            $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
+        $(domElement.DSTNetSalaryFileName).text("");
+        $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden').addClass('hidden');
+        $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
     }
 
     function showAttendanceFileUploaded() {
@@ -211,6 +212,34 @@
         });
     }
 
+    function registerEventNextToMonthlyPayroll() {
+        $(domElement.BtnNextToMonthlyPayroll).on('click', function () {
+            var $companyId = $(domElement.CompanyId),
+                $selectedTime = $(domElement.SelectedTime);
+
+            $.ajax({
+                type: 'GET',
+                url: commonFunctions.rootURL + 'PaymentProcess/GetPaymentProcess',
+                dataType: 'json',
+                data: {
+                    "companyId": $companyId.val(),
+                    "month": $selectedTime.val()
+                },
+                success: function (response) {
+                    if (response.isPayrollGenerated === false) {
+                        if (response.isAttendanceFileSubmited === false || response.isDSTNetSalaryFileSubmited === false) {
+                            // if (hasErrors) => alert
+                            alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
+                        }
+                    } else {
+                        alert('go to monthly payroll');
+                    }
+                },
+                error: commonFunctions.handleAjaxError
+            });
+        });
+    }
+
     function initDatatable() {
         $(domElement.AttendanceErrorsTable).DataTable({
             info: false,
@@ -219,7 +248,7 @@
             scrollY: '145px',
             scrollCollapse: true,
             paging: false,
-            scrollX: false,
+            scrollX: false
         });
 
         $(domElement.DSTNetSalaryErrorsTable).DataTable({
@@ -229,7 +258,7 @@
             scrollY: '145px',
             scrollCollapse: true,
             paging: false,
-            scrollX: false,
+            scrollX: false
         });
     }
 
@@ -241,6 +270,7 @@
         registerEventClearFiles();
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         registerEventSubmitForm($form);
+        registerEventNextToMonthlyPayroll();
     }
 
     return {

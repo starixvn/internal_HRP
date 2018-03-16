@@ -14,8 +14,18 @@
 
         public int AttendanceTotalRow { get; set; }
 
+        public bool IsAttendanceFileSubmited { get; set; }
+
         public string DSTNetSalaryFileName { get; set; }
 
         public int DSTNetSalaryTotalRow { get; set; }
+
+        public bool IsDSTNetSalaryFileSubmited { get; set; }
+
+        public bool IsPayrollGenerated { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime DueDate { get; set; }
     }
 }

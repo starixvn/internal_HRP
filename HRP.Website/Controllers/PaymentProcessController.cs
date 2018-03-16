@@ -56,38 +56,59 @@
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        [HttpPost]
-        public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
-        {
-            //Check company permission
-            //TODO
-            if (ModelState.IsValid)
-            {
-                var process = new PaymentProcess
+#pragma warning disable S125 // Sections of code should not be "commented out"
+        /*
+                [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+                [HttpPost]
+                public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
                 {
-                    CompanyId = viewModel.CompanyId,
-                    Month = viewModel.SelectedTime
-                };
-                //insert into payment process if user is Host
-                bool isPayrollGenerated = await paymentProcessService.IsPayrollGeneratedAsync(process);
-                var completedDate = DateTime.Today.AddMonths(3);
-                if (viewModel.SelectedTime.Month == DateTime.Today.Month && viewModel.SelectedTime < completedDate && !isPayrollGenerated)
-                {
-                    return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
-                }
+                    //Check permission not select future
+                    //TODO
+                    if (ModelState.IsValid)
+                    {
+                        var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
+                        var paymentProcess = await paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
-                if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > completedDate || isPayrollGenerated)
-                {
-                    return RedirectToAction("EmployeeMonthlyPayroll");
-                }
-            }
+                        var today = DateTime.Today;
+                        var isInDuration = paymentProcess.StartDate <= today && today <= paymentProcess.DueDate;
+                        if (isHost && isInDuration)
+                        {
+                            if (isHost && paymentProcess == null)
+                            {
+                                return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                            }
 
-            viewModel.Companies = new SelectList(
-                await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }),
-                nameof(Company.CompanyId), nameof(Company.Code));
-            return View("Index", viewModel);
-        }
+                            var today = DateTime.Today;
+                            if ((paymentProcess.StartDate <= today && today <= paymentProcess.DueDate)
+                                && (!paymentProcess.IsPayrollGenerated
+                                || (paymentProcess.AttendanceFileName == null && !paymentProcess.IsAttendanceFileSubmited)
+                                || (paymentProcess.DSTNetSalaryFileName == null && !paymentProcess.IsDSTNetSalaryFileSubmited)))
+                            {
+                                return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                            }
+
+                            if (viewModel.SelectedTime.Month < DateTime.Today.Month || viewModel.SelectedTime > paymentProcess.DueDate)
+                            {
+                                return RedirectToAction("EmployeeMonthlyPayroll");
+                            }
+                        }
+                        else
+                        {
+                            if (paymentProcess.IsPayrollGenerated)
+                            {
+                                return RedirectToAction("EmployeeMonthlyPayroll");
+                            }
+
+                            return RedirectToAction("AccessDenied", "Error");
+                        }
+                    }
+
+                    viewModel.Companies = new SelectList(
+                        await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }),
+                        nameof(Company.CompanyId), nameof(Company.Code));
+                    return View("Index", viewModel);
+                }*/
+#pragma warning restore S125 // Sections of code should not be "commented out"
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> DownloadAttendance()
@@ -179,6 +200,14 @@
             var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             return PartialView("_ValidationFilesResult", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> GetPaymentProcess(int companyId, DateTime month)
+        {
+            var processInfo = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
+
+            return Json(processInfo);
         }
 
         #endregion UploadAttendanceAndDSTSalary

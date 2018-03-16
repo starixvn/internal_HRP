@@ -58,6 +58,19 @@
             return isExisted;
         }
 
+        public async Task<PaymentProcess> GetPaymentProcessAsync(int companyId, DateTime month)
+        {
+            var criteria = new GetPaymentProcessCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var process = await baseService.GetDataEntityAsync<PaymentProcess>(criteria).ConfigureAwait(false);
+
+            return process;
+        }
+
         public CommandResult CheckValidExcelFile(IFormFile file)
         {
             var result = new CommandResult { Code = 0 };
@@ -222,6 +235,11 @@
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        public Task<CommandResult> GenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

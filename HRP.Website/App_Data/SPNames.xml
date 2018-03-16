@@ -149,7 +149,7 @@
     <Setting Key="Employee_UpdatePayroll" SpName="Employee_UpdatePayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="PaymentProcess">
-    <Setting Key="PaymentProcess_Update" SpName="PaymentProcess_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_Get" SpName="PaymentProcess_Get" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_CheckPayrollGenerated" SpName="PaymentProcess_CheckPayrollGenerated" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_CreateAttendanceUploading" SpName="PaymentProcess_CreateAttendanceUploading" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_CreateDSTNetSalaryUploading" SpName="PaymentProcess_CreateDSTNetSalaryUploading" DbName="bodb_HRP" Plain="0"></Setting>

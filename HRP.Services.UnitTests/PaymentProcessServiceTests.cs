@@ -454,11 +454,7 @@
                 new AttendanceUploading {
                     RowNumber = 20,
                     EmployeeCode = "111",
-                    ActualWorkingDay = "20",
-                    LeaveTaken = "3",
-                    UnpaidLeave =  "1",
-                    LateInMinute = "2",
-                    EarlyOutMinute =  "0"
+                    ActualWorkingDay = "20"
                 }
             };
 

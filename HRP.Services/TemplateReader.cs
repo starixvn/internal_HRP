@@ -49,11 +49,7 @@
             return
 #pragma warning disable S1067 // Expressions should not be too complex
                     headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.LeaveTaken.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.UnpaidLeave.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.LateInMinute.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.EarlyOutMinute.ToLower(CultureInfo.InvariantCulture));
+                headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture));
 #pragma warning restore S1067 // Expressions should not be too complex
         }
 
@@ -82,26 +78,14 @@
                             {
                                 RowNumber = currentRowNumber,
                                 EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
-                                ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row),
-                                LeaveTaken = GetStringValueAtCell(AttendanceColumn.LeaveTaken, headers, row),
-                                UnpaidLeave = GetStringValueAtCell(AttendanceColumn.UnpaidLeave, headers, row),
-                                LateInMinute = GetStringValueAtCell(AttendanceColumn.LateInMinute, headers, row),
-                                EarlyOutMinute = GetStringValueAtCell(AttendanceColumn.EarlyOutMinute, headers, row)
+                                ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row)
                             };
 
                             var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
                             var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
-                            var checkLeaveTaken = CheckLeaveTaken(record.LeaveTaken, currentRowNumber);
-                            var checkUnpaidLeave = CheckUnpaidLeave(record.UnpaidLeave, currentRowNumber);
-                            var checkLateInMinute = CheckLateInMinute(record.LateInMinute, currentRowNumber, 26);
-                            var checkEarlyOutMinute = CheckEarlyOutMinute(record.EarlyOutMinute, currentRowNumber, 26);
 
                             AddToAttendanceValidationResults(checkEmployeeCode);
                             AddToAttendanceValidationResults(checkActualWorkingDay);
-                            AddToAttendanceValidationResults(checkLeaveTaken);
-                            AddToAttendanceValidationResults(checkUnpaidLeave);
-                            AddToAttendanceValidationResults(checkLateInMinute);
-                            AddToAttendanceValidationResults(checkEarlyOutMinute);
 
                             attendanceUploading.Add(record);
                         }
@@ -292,38 +276,6 @@
         {
             var columnName = AttendanceColumn.ActualWorkingDay;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
-
-            return result;
-        }
-
-        private ValidationResult CheckLeaveTaken(string value, int rowNumber)
-        {
-            var columnName = AttendanceColumn.LeaveTaken;
-            var result = CheckValidNumber(value, columnName, rowNumber, 31);
-
-            return result;
-        }
-
-        private ValidationResult CheckUnpaidLeave(string value, int rowNumber)
-        {
-            var columnName = AttendanceColumn.UnpaidLeave;
-            var result = CheckValidNumber(value, columnName, rowNumber, 31);
-
-            return result;
-        }
-
-        private ValidationResult CheckLateInMinute(string value, int rowNumber, double maxValue)
-        {
-            var columnName = AttendanceColumn.LateInMinute;
-            var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
-
-            return result;
-        }
-
-        private ValidationResult CheckEarlyOutMinute(string value, int rowNumber, double maxValue)
-        {
-            var columnName = AttendanceColumn.EarlyOutMinute;
-            var result = CheckValidNumber(value, columnName, rowNumber, maxValue * 1140);
 
             return result;
         }
