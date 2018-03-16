@@ -56,7 +56,7 @@
                     var basicSalaries = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
                     var allowances = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
 
-                    foreach (var monhtlyPayroll in monhtlyPayrolls)
+                    foreach (MonthlyPayrollEmployeeInfoViewModel monhtlyPayroll in monhtlyPayrolls)
                     {
                         monhtlyPayroll.BasicSalary = basicSalaries.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
                         monhtlyPayroll.Allowance = allowances.First(x => x.PayrollId == monhtlyPayroll.PayrollId);

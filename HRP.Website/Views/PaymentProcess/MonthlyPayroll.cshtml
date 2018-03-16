@@ -178,7 +178,10 @@
                                 @if (employee.Policy != Policy.None)
                                 {
                                     <li>
-                                        <a>
+                                        <a asp-action="EditBasicSalary" asp-controller="PaymentProcess"
+                                           asp-route-payrollId="@employee.PayrollId"
+                                           asp-route-month="@Model.Month"
+                                           asp-route-companyId="@Model.CompanyId">
                                             <span class="icon-user"></span>
                                             @if (employee.Policy == Policy.Host)
                                             {
@@ -195,7 +198,9 @@
                                 @if (employee.Policy != Policy.None)
                                 {
                                     <li>
-                                        <a>
+                                        <a asp-action="EditAllowances" asp-controller="PaymentProcess"
+                                           asp-route-payrollId="@employee.PayrollId"
+                                           asp-route-companyId="@Model.CompanyId">
                                             <span></span>
                                             @if (employee.Policy == Policy.Host)
                                             {
