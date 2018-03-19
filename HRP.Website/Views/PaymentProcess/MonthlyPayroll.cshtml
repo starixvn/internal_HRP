@@ -6,6 +6,7 @@
 @section Styles {
     <environment include="Development">
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/jQuery-contextMenu/jquery.contextMenu.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
@@ -27,7 +28,7 @@
 <div class="list-message-error hidden">
     <p class="message">@Message.SelectAtLeastOneOption</p>
 </div>
-<div class="search-form">    
+<div class="search-form">
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
@@ -169,52 +170,40 @@
                     <td>@employee.Allowance.CashAmount</td>
                     <td>@employee.WorkingDays</td>
                     <td class="text-center has-icon">
-                        <div class="dropdown config-action">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="@dropdownId"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <span class="icon-configuration"></span>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="@dropdownId">
-                                @if (employee.Policy != Policy.None)
-                                {
-                                    <li>
-                                        <a asp-action="EditBasicSalary" asp-controller="PaymentProcess"
-                                           asp-route-payrollId="@employee.PayrollId"
-                                           asp-route-month="@Model.Month"
-                                           asp-route-companyId="@Model.CompanyId">
-                                            <span class="icon-user"></span>
-                                            @if (employee.Policy == Policy.Host)
-                                            {
-                                                <span>@ViewLang.EditBasicSalary</span>
-                                            }
-                                            else
-                                            {
-                                                <span>@ViewLang.ViewBasicSalary</span>
-                                            }
-                                        </a>
-                                    </li>
-                                }
+                        <div class="js-contextMenu">click me</div>
+                        <div class="js-contextMenuItems hidden">
+                            @if (employee.Policy != Policy.None)
+                            {
+                                <a class="js-menuItem-basicSalary" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
+                                   asp-route-payrollId="@employee.PayrollId"
+                                   asp-route-companyId="@Model.CompanyId"
+                                   asp-route-month="@Model.Month">
+                                    @if (employee.Policy == Policy.Host)
+                                    {
+                                        @ViewLang.EditBasicSalary
+                                    }
+                                    else
+                                    {
+                                        @ViewLang.ViewBasicSalary
+                                    }
+                                </a>
+                            }
 
-                                @if (employee.Policy != Policy.None)
-                                {
-                                    <li>
-                                        <a asp-action="EditAllowances" asp-controller="PaymentProcess"
-                                           asp-route-payrollId="@employee.PayrollId"
-                                           asp-route-companyId="@Model.CompanyId">
-                                            <span></span>
-                                            @if (employee.Policy == Policy.Host)
-                                            {
-                                                <span>@ViewLang.EditAllowance</span>
-                                            }
-                                            else
-                                            {
-                                                <span>@ViewLang.ViewAllowance</span>
-                                            }
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
+                            @if (employee.Policy != Policy.None)
+                            {
+                                <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
+                                   asp-route-payrollId="@employee.PayrollId"
+                                   asp-route-companyId="@Model.CompanyId">
+                                    @if (employee.Policy == Policy.Host)
+                                    {
+                                        @ViewLang.EditAllowance
+                                    }
+                                    else
+                                    {
+                                        @ViewLang.ViewAllowance
+                                    }
+                                </a>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -226,6 +215,7 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>

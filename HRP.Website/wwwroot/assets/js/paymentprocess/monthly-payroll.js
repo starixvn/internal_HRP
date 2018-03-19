@@ -116,8 +116,50 @@ var monthlyPayroll = (function ($) {
         });
     }
 
+    function initContextMenu() {
+        $.contextMenu({
+            selector: '.js-contextMenu',
+            trigger: 'left',
+            build: function ($trigger, e) {
+                var $element = $(e.currentTarget);
+                var basicSalary = {
+                    title: $element.next().find('.js-menuItem-basicSalary').text(),
+                    url: $element.next().find('.js-menuItem-basicSalary').attr('href')
+                };
+                var allowance = {
+                    title: $element.next().find('.js-menuItem-allowance').text(),
+                    url: $element.next().find('.js-menuItem-allowance').attr('href')
+                };
+
+                return {
+                    callback: function (key, options) {
+                        switch (key) {
+                            case 'BasicSalary':
+                                location.href = basicSalary.url;
+                                break;
+
+                            case 'Allowances':
+                                location.href = allowance.url;
+                                break;
+                        }
+                    },
+                    items: {
+                        'BasicSalary': {
+                            name: basicSalary.title,
+                            icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-edit'; }
+                        },
+                        'Allowances': {
+                            name: allowance.title,
+                            icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-cut'; }
+                        },
+                    }
+                };
+            }
+        });
+    }
+
     function registerEventSubmitForm() {
-        $('form.form-filter').on('submit', function (e) {
+        $('form.search-form').on('submit', function (e) {
             var costCenterIds = $("#CostCenterIds").val();
 
             if (!costCenterIds) {
@@ -135,6 +177,7 @@ var monthlyPayroll = (function ($) {
         $table = $('#monthly-payroll-table');
         initSelect2();
         searchEmployeeSuggestion();
+        initContextMenu();
         registerEventSubmitForm();
 
         $('#quick-search').off('keyup').on('keyup', function () {

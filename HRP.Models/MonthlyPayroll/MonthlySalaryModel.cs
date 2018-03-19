@@ -14,6 +14,12 @@
 
         public int? EBankingAccountId { get; set; }
 
+        public int? CashCurrencyId { get; set; }
+
+        public string CashAmount { get; set; }
+
+        public int? CashAccountId { get; set; }
+
         public int? DirectBanking1CurrencyId { get; set; }
 
         public string DirectBanking1Amount { get; set; }
@@ -29,12 +35,6 @@
         public int? DirectBanking2BankTypeId { get; set; }
 
         public int? DirectBanking2AccountId { get; set; }
-
-        public int? CashCurrencyId { get; set; }
-
-        public string CashAmount { get; set; }
-
-        public int? CashAccountId { get; set; }
 
         public string AutoCalculateOn { get; set; }
     }

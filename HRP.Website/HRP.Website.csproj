@@ -92,6 +92,7 @@
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shCore.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shLegacy.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\XRegExp.js" />
+    <None Include="wwwroot\lib\jQuery-contextMenu\font\context-menu-icons.woff2" />
   </ItemGroup>
 
   <ItemGroup>

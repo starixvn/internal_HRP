@@ -236,10 +236,10 @@
             {
                 int monthDiff = GetMonthDifference(workingMonth, effectiveDate);
                 int daysInMonth = DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month);
-                decimal amount = (((newBasicSalary - oldBasicSalary) / daysInMonth * (daysInMonth - effectiveDate.Day + 1))
-                    + ((newBasicSalary - oldBasicSalary) * monthDiff));
-                backPay.Amount = RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture);
+                decimal amount = ((newBasicSalary - oldBasicSalary) / daysInMonth * (daysInMonth - effectiveDate.Day + 1))
+                    + ((newBasicSalary - oldBasicSalary) * monthDiff);
 
+                backPay.Amount = RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture);
                 backPay.Description = string.Format(Message.BackPayDescriptionFormat, effectiveDate.ToString(Constants.DateFormat));
             }
 
