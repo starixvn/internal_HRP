@@ -182,4 +182,98 @@ input[type="radio"]:checked + span:after {
 input[type="radio"]:disabled + span {
   opacity: 0.5;
 }
+
+.d-flex {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.d-flex .add {
+  margin-right: 88px;
+}
+
+.d-flex .setting,
+.d-flex .monthly-payroll {
+  margin-right: 20px;
+}
+
+.group-title.-no-space {
+  margin: 0;
+}
+
+.group-payroll {
+  margin-left: 18px;
+}
+
+.group-payment {
+  position: relative;
+  top: -11px;
+}
+
+.group-complex {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-rows: 1fr;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.group-complex.-group-type {
+  font-weight: bold;
+  color: #666;
+}
+
+.group-complex.-layout-add {
+  grid-template-columns: 104px 210px 80px 70px 110px;
+}
+
+.group-complex.-layout-deduction {
+  grid-template-columns: 112px 210px 70px 50px 140px;
+}
+
+.group-complex.-layout-setting {
+  grid-template-columns: 104px 90px 108px;
+}
+
+.group-complex.-layout-setting-2 {
+  grid-template-columns: 104px 208px;
+}
+
+.group-complex.-layout-payroll {
+  grid-template-columns: 122px 90px 108px;
+}
+
+.group-complex.-layout-payment {
+  grid-template-columns: 144px 136px;
+}
+
+.group-complex.-total-salary {
+  grid-template-columns: 166px 146px;
+}
+
+.group-complex .-start-col-5 {
+  grid-column-start: 5;
+}
+
+.group-complex .-start-col-2 {
+  grid-column-start: 2;
+}
+
+.group-complex .highlighted {
+  background-color: #ffeeab !important;
+}
+
+.group-complex .basic-salary {
+  display: flex;
+}
+
+.group-complex .text-red {
+  color: #ff0000 !important;
+}
+
+.group-complex .number {
+  text-align: right;
+}
 /*# sourceMappingURL=edit-basic-salary.css.map */

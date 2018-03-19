@@ -69,6 +69,15 @@
             background-color: $btn-delete-bg-hover;
         }
     }
+
+    &.-preset {
+        background-color: $btn-preset-bg;
+        color: $btn-preset-color;
+
+        &:hover {
+            background-color: $btn-preset-bg-hover;
+        }
+    }
 }
 
 button[disabled],

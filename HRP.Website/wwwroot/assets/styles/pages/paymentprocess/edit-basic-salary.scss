@@ -2,3 +2,96 @@
 @import "../../abstracts/mixins";
 @import "../../components/forms";
 @import "../../components/radio";
+
+.d-flex {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    
+    .add {
+        margin-right: 88px;
+    }
+
+    .setting,
+    .monthly-payroll {
+        margin-right: 20px;
+    }
+}
+
+.group-title.-no-space {
+    margin: 0;
+}
+
+.group-payroll {
+    margin-left: 18px;
+}
+
+.group-payment {
+    position: relative;
+    top: -11px;
+}
+
+.group-complex { 
+    display: grid;      
+    grid-gap: 10px;
+    grid-template-rows: 1fr;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 6px;
+
+    &.-group-type {
+        font-weight: bold;
+        color: #666;
+    }
+
+    &.-layout-add {
+        grid-template-columns: 104px 210px 80px 70px 110px;        
+    }
+
+    &.-layout-deduction {
+        grid-template-columns: 112px 210px 70px 50px 140px;
+    }
+
+    &.-layout-setting {
+        grid-template-columns: 104px 90px 108px;
+    }
+
+    &.-layout-setting-2 {
+        grid-template-columns: 104px 208px;
+    }
+
+    &.-layout-payroll {
+        grid-template-columns: 122px 90px 108px;
+    }
+
+    &.-layout-payment {
+        grid-template-columns: 144px 136px;
+    }
+
+    &.-total-salary {
+        grid-template-columns: 166px 146px;
+    }
+    .-start-col-5 {
+        grid-column-start: 5;
+    }
+
+    .-start-col-2 {
+        grid-column-start: 2;
+    }
+
+    .highlighted {
+        background-color: #ffeeab !important;
+    }
+
+    .basic-salary {
+        display: flex;
+    }
+
+    .text-red {
+        color: #ff0000 !important;
+    }
+
+    .number {
+        text-align: right;
+    }
+}

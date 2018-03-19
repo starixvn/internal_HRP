@@ -126,6 +126,15 @@ input, button {
   background-color: #d30d0d;
 }
 
+.button.-preset {
+  background-color: #f57d14;
+  color: #fff;
+}
+
+.button.-preset:hover {
+  background-color: #e6700a;
+}
+
 button[disabled],
 input[type="button"][disabled] {
   opacity: 0.5;

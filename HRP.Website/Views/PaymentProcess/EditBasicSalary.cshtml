@@ -6,7 +6,8 @@
 @section Styles {
     <environment include="Development">
         <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/edit-basic-salary.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
     </environment>
@@ -14,10 +15,9 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
-    <li class="active"></li>
+    <li class="like-link">View Employee</li>
+    <li class="active">Edit Basic Salary</li>
 </ol>
-
-@Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
 
 <form class="search-form">
     <div class="group">
@@ -29,13 +29,10 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control" disabled>
+        <select class="control width-92" disabled>
             <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
-</form>
-
-<div class="search-form form-filter">
     <input asp-for="CompanyId" hidden />
     <input type="text" asp-for="Month" hidden />
     <div class="group">
@@ -44,11 +41,11 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control" placeholder="" readonly />
+        <input type="text" class="control width-200" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-200" disabled></select>
+        <select class="control width-140" disabled></select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
@@ -56,96 +53,245 @@
             <option value="@Model.MonthlyBasicSalary.WorkingDays" selected="selected">@Model.MonthlyBasicSalary.WorkingDays</option>
         </select>
     </div>
-</div>
-<div class="group-complex">
-    <div>
-        <label class="actual">@ViewLang.BasicSalary</label>
+    <div class="group">
+        <button type="submit" class="button -preset">Preset</button>
     </div>
-    <div class="currency-amount">
-        <select class="control" disabled>
-            <option></option>
-        </select>
-        <input type="text" class="control" placeholder="" readonly />
+    <div class="group">
+        <button type="submit" class="button -add">Refresh</button>
+    </div>
+</form>
+<div class="payment-duration">
+    <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
+    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
+    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
+</div>
+<div class="form-information">
+    <div class="d-flex">
+        <div class="add">
+            <div class="group-complex -layout-add -group-type">
+                <div class="group-title -no-space"><span class="icon-group"></span>Add</div>
+                <div>Description</div>
+                <div>Unit Amount</div>
+                <div>No.of Days</div>
+                <div>Net Salary</div>
+            </div>
+            <div class="group-complex -layout-add">
+                <div class="like-group-title">Back Pay</div>
+                <input type="text" class="control" disabled>
+                <input type="text" class="control number" disabled>
+                <input type="text" class="control number -start-col-5" disabled>
+            </div>
+            <div class="group-complex -layout-add">
+                <div class="like-group-title">Adjustments</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <input type="text" class="control">
+                <input type="text" class="control number">
+            </div>
+            <div class="group-complex -layout-add">
+                <div class="like-group-title">Others</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <input type="text" class="control">
+                <input type="text" class="control number">
+            </div>
+            <div class="group-complex -layout-add">
+                <input type="text" class="control -start-col-2">
+                <input type="text" class="control number">
+                <input type="text" class="control">
+                <input type="text" class="control number">
+            </div>
+            <div class="group-complex -layout-add">
+                <div class="bold">Total Add</div>
+                <input type="text" class="control number highlighted -start-col-5" disabled>
+            </div>
+        </div>
+        <div class="deduction">
+            <div class="group-complex -layout-deduction -group-type">
+                <div class="group-title -no-space text-red"><span class="icon-group"></span>Deduction</div>
+                <div>Description</div>
+                <div class="-start-col-5">Net Salary</div>
+            </div>
+            <div class="group-complex -layout-deduction">
+                <div class="like-group-title">UPL/Absenteeism</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <div>days</div>
+                <input type="text" class="control number" disabled>
+            </div>
+            <div class="group-complex -layout-deduction">
+                <div class="like-group-title">Tardiness</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <div>minutes</div>
+                <input type="text" class="control number" disabled>
+            </div>
+            <div class="group-complex -layout-deduction">
+                <div class="like-group-title">Salary Advance</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <input type="text" class="control number -start-col-5" disabled>
+            </div>
+            <div class="group-complex -layout-deduction">
+                <div class="like-group-title">Others</div>
+                <input type="text" class="control">
+                <input type="text" class="control number">
+                <input type="text" class="control number -start-col-5" disabled>
+            </div>
+            <div class="group-complex -layout-deduction">
+                <div class="like-group-title text-red">Total Deduction</div>
+                <input type="text" class="control number -start-col-5 highlighted" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="group-complex">
+        <div class="group-title -no-space"><span class="icon-group"></span>Basic Salary</div>
+    </div>
+    <div class="d-flex">        
+        <div class="setting">
+            <div class="group-complex -layout-setting">
+                <div class="bold">Setting</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">E-banking</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="500.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Direct Banking1</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="200.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Direct Banking2</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Cash</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="300.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="bold">After Adjustment</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting-2">
+                <div>Reason</div>                
+                <input type="text" class="control" value="" disabled>
+            </div>
+        </div>
+        <div class="monthly-payroll">
+            <div class="group-complex -layout-payroll">
+                <div class="bold group-payroll">Monthly Payroll</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" />
+                    <span class="like-group-title">e-Banking</span>
+                </label>
+                <select class="control">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="500.00">
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" />
+                    <span class="like-group-title">Direct Banking1</span>
+                </label>
+                <select class="control">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="200.00">
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" />
+                    <span class="like-group-title">Direct Banking2</span>
+                </label>
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control number">
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" checked />
+                    <span class="like-group-title">Cash</span>
+                </label>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="300.00"  disabled>
+            </div>
+        </div>
+        <div class="payment">
+            <div class="bold group-payment">Payment Transaction</div>
+            <div class="group-complex -layout-payment -group-type">
+                <div>Bank Type</div>
+                <div>Account Name</div>
+            </div>
+            <div class="group-complex -layout-payment">
+                <div class="like-group-title">e-Banking</div>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+            <div class="group-complex -layout-payment">
+                <select class="control">
+                    <option>Direct Banking 1</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+            <div class="group-complex -layout-payment">
+                <select class="control">
+                    <option>Direct Banking 2</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+            <div class="group-complex -layout-payment">
+                <div class="like-group-title">Cash</div>
+                <select class="control">
+                    <option>Cash-DAR</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="group-complex -total-salary">
+        <div class="bold">TOTAL NET BASIC SALARY</div>
+        <input type="text" class="control number highlighted" disabled >
+    </div>
+    <div class="list-button">
+        <button class="button -second">@ViewLang.Cancel</button>
+        <button class="button -primary" type="submit">@ViewLang.Save</button>
+        <button class="button -primary" type="button">Save and Edit Allowances</button>
     </div>
 </div>
 
-<div class="group-complex">
-    <label class="bank-type">
-        <input type="radio" value="Ebanking" />
-        <span>@ViewLang.EBanking</span>
-    </label>
-    <div class="currency-amount">
-        <select class="control">
-            <option></option>
-        </select>
-        <input type="text" class="control" />
-    </div>
-    <div></div>
-    <div class="payment-transaction">
-        <label class="bank-type">@ViewLang.EBanking</label>
-        <select class="control" name="ebanking">
-            <option value="@((int) BankTypes.Ebanking)" selected></option>
-        </select>
-        <select class="control"></select>
-    </div>
-</div>
-<div class="group-complex">
-    <label class="bank-type">
-        <input type="radio" />
-        <span>@ViewLang.DirectBanking1</span>
-    </label>
-    <div class="currency-amount">
-        <select class="control">
-            <option></option>
-        </select>
-        <input type="text" class="control" />
-    </div>
-    <div></div>
-    <div class="payment-transaction">
-        <select class="control">
-            <option></option>
-        </select>
-        <select class="control"></select>
-    </div>
-</div>
-<div class="group-complex">
-    <label class="bank-type">
-        <input type="radio" />
-        <span>@ViewLang.DirectBanking2</span>
-    </label>
-    <div class="currency-amount">
-        <select class="control">
-            <option></option>
-        </select>
-        <input type="text" class="control" />
-    </div>
-    <div></div>
-    <div class="payment-transaction">
-        <select class="control">
-            <option></option>
-        </select>
-        <select class="control"></select>
-    </div>
-</div>
-<div class="group-complex">
-    <label class="bank-type">
-        <input type="radio" />
-        <span>@ViewLang.Cash</span>
-    </label>
-    <div class="currency-amount">
-        <select class="control">
-            <option></option>
-        </select>
-        <input type="text" class="control" />
-    </div>
-    <div></div>
-    <div class="payment-transaction">
-        <label class="bank-type">@ViewLang.Cash</label>
-        <select class="control">
-            <option></option>
-        </select>
-    </div>
-</div>
 
 @section Scripts {
     <environment include="Development">

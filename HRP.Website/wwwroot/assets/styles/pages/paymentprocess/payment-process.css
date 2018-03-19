@@ -391,10 +391,22 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   margin-bottom: 16px;
 }
 
+.width-200 {
+  width: 200px;
+}
+
+.width-140 {
+  width: 140px;
+}
+
+.width-92 {
+  width: 92px;
+}
+
 .payment-duration {
   display: flex;
   align-self: flex-start;
-  padding-bottom: 12px;
+  padding-bottom: 18px;
 }
 
 .payment-duration .date {
