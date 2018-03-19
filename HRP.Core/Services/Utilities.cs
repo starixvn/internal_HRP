@@ -1,7 +1,9 @@
 ﻿namespace HRP.Core.Services
 {
     using System;
+    using System.ComponentModel;
     using System.IO;
+    using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
     using BCrypt.Net;
@@ -69,6 +71,21 @@
             }
 
             return decrypted;
+        }
+
+        public static string GetDescription(Enum enumType)
+        {
+            string desciption = string.Empty;
+
+            if (enumType != null)
+            {
+                FieldInfo fi = enumType.GetType().GetField(enumType.ToString());
+                DescriptionAttribute[] attributes =
+                    (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                desciption = attributes.Length > 0 ? attributes[0].Description : enumType.ToString();
+            }
+
+            return desciption;
         }
     }
 }

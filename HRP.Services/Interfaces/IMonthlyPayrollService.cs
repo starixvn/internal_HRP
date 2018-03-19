@@ -27,11 +27,19 @@
 
         Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
 
-        BackPayViewModel CalculateBackPay(DateTime effectiveDate, DateTime workingMonth, decimal oldBasicSalary, decimal newBasicSalary, int currencyId);
+        BackPayAfterAdjustmentViewModel CalculateBackPayAndAfterAdjustment(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            DateTime workingMonth,
+            MonthlyBasicSalaryModel basicSetting,
+            DateTime groupStartDate,
+            DateTime? groupEndDate);
 
         MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction);
 
-        void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance
-            , DateTime startDate, DateTime? endDate);
+        void CalculateMonthlyBasicAllowance(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            DateTime startDate,
+            DateTime? endDate);
     }
 }
