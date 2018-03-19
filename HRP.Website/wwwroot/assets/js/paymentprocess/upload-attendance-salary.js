@@ -152,32 +152,6 @@
         $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
     }
 
-    function showAttendanceFileUploaded() {
-        var fileName = $(domElement.AttendanceFileName).data('filename-uploaded');
-        if (fileName) {
-            $(domElement.AttendanceFileName).text(fileName);
-            $(domElement.AttendanceIconSuccess).removeClass('hidden');
-            $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
-        } else {
-            $(domElement.AttendanceFileName).text("");
-            $(domElement.AttendanceIconSuccess).removeClass('hidden').addClass('hidden');
-            $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
-        }
-    }
-
-    function showDSTNetSalaryFileUploaded() {
-        var fileName = $(domElement.DSTNetSalaryFileName).data('filename-uploaded');
-        if (fileName) {
-            $(domElement.DSTNetSalaryFileName).text(fileName);
-            $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden');
-            $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
-        } else {
-            $(domElement.DSTNetSalaryFileName).text("");
-            $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden').addClass('hidden');
-            $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
-        }
-    }
-
     function showHideButtonUploadFiles() {
         var attendanceFile = $(domElement.AttendanceFile).prop('files')[0];
         var dstNetSalaryFile = $(domElement.DSTNetSalaryFile).prop('files')[0];

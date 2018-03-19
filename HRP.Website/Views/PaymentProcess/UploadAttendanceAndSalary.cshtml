@@ -82,7 +82,7 @@
                 <span class="button -browser js-browseAttendance">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete" @(isEmptyAttendanceFilename ? "disabled" : "")>@ViewLang.Delete</button>
+        <button type="button" class="button -delete js-deleteAttendance" @(isEmptyAttendanceFilename ? "disabled" : "")>@ViewLang.Delete</button>
     </div>
     <div class="text width-660">
         @ViewLang.UploadDSTNetSalaryFile
@@ -102,7 +102,7 @@
                 <span class="button -browser js-browseDSTNetSalary">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete" @(isEmptyDSTNetSalaryFilename ? "disabled" : "")>@ViewLang.Delete</button>
+        <button type="button" class="button -delete js-deleteDSTNetSalary" @(isEmptyDSTNetSalaryFilename ? "disabled" : "")>@ViewLang.Delete</button>
     </div>
 
     <div class="text percent-validation-text">Percent Completed Validation Rules</div>
@@ -119,7 +119,7 @@
     </div>
 
     <div class="group-control list-button">
-        <button type="button" class="button -second">@ViewLang.Back</button>
+        <a class="button -second" asp-controller="PaymentProcess" asp-action="Index">@ViewLang.Back</a>
         <button type="submit" class="button -add" id="uploadFiles" disabled>@ViewLang.Upload</button>
         <button type="button" class="button -primary" id="nextToMonthlyPayroll">@ViewLang.Next</button>
     </div>

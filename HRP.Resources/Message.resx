@@ -753,4 +753,7 @@
   <data name="BackPayDescriptionFormat" xml:space="preserve">
     <value>Annual Increment from {0}</value>
   </data>
+  <data name="NoPayrollGenerated" xml:space="preserve">
+    <value>There is no generated payroll during this month.</value>
+  </data>
 </root>

@@ -1429,6 +1429,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no generated payroll during this month..
+        /// </summary>
+        public static string NoPayrollGenerated {
+            get {
+                return ResourceManager.GetString("NoPayrollGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 404 Not Found.
         /// </summary>
         public static string NotFoundError {
