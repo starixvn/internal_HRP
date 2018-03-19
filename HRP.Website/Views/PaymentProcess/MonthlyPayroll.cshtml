@@ -170,7 +170,10 @@
                     <td>@employee.Allowance.CashAmount</td>
                     <td>@employee.WorkingDays</td>
                     <td class="text-center has-icon">
-                        <div class="js-contextMenu"><span class="icon-configuration"></span></div>
+                        <div class="js-contextMenu">
+                            <span class="icon-configuration"></span>
+                            <span class="caret"></span>
+                        </div>
                         <div class="js-contextMenuItems hidden">
                             @if (employee.Policy != Policy.None)
                             {
@@ -178,7 +181,7 @@
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId"
                                    asp-route-month="@Model.Month">
-                                    <span>aaa</span>
+                                   <span class="icon-salary"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditBasicSalary
@@ -195,7 +198,7 @@
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId">
-                                    <span>bbb</span>
+                                   <span class="icon-allowances"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditAllowance

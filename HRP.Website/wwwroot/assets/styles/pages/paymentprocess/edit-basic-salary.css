@@ -276,4 +276,12 @@ input[type="radio"]:disabled + span {
 .group-complex .number {
   text-align: right;
 }
+
+.group-complex .text-reason {
+  height: auto;
+  line-height: 18px;
+  min-height: 62px;
+  resize: none;
+  overflow: hidden;
+}
 /*# sourceMappingURL=edit-basic-salary.css.map */

@@ -147,12 +147,12 @@ var monthlyPayroll = (function ($) {
                         'BasicSalary': {
                             name: basicSalary.title,
                             isHtmlName: true,
-                            icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-edit'; }
+                            icon: function ($element, key, item) { return 'context-menu-icon'; }
                         },
                         'Allowances': {
                             name: allowance.title,
                             isHtmlName: true,
-                            icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-cut'; }
+                            icon: function ($element, key, item) { return 'context-menu-icon'; }
                         },
                     }
                 };

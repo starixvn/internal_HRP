@@ -1,8 +1,23 @@
-.context-menu-active .icon-configuration {
-    color: #1973b2;
+.js-contextMenu {
+    &:hover:not(:disabled) {
+        cursor: pointer;
+    }
+
+    .caret {
+        position: relative;
+        top: -3px;
+        margin-left: -2px;
+        border-color: #888 transparent #888;
+    }
+
+    &.context-menu-active .icon-configuration {
+        color: #1973b2;
+    }
 }
 
 .context-menu-list {
+    margin-top: 19px;
+    margin-left: 20px;
     padding: 0;
     border-radius: 2px;
     border: 1px solid #1973b2;
@@ -17,18 +32,19 @@
             background-color: #f57d14;
             color: #fff;
         }
+    }
 
-        span {
-            margin-left: 10px;
-        }
+    .context-menu-item:hover [class^="icon"] {
+        color: #fff;
     }
 
     [class^="icon"] {
         font-family: "hrp";;
         position: relative;
         top: 2px;
-        margin-right: 10px;
+        line-height: 0;
+        margin-right: 8px;
         color: #888;
-        font-size: 13px;
+        font-size: 18px;        
     }
 }

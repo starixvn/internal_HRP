@@ -24,7 +24,8 @@ input[type="text"],
 input[type="search"],
 input[type="email"],
 input[type="number"],
-input[type="password"] {
+input[type="password"],
+textarea {
     @include border-radius(2px);
     @include transition($transition-common);
     outline: none;
@@ -45,6 +46,8 @@ input[type="password"] {
 
 input[type="text"][disabled],
 input[type="number"][disabled],
+input[type="text"][readonly],
+textarea[disabled],
 input[type="text"][readonly] {
   background-color: #ededed;
   border-color: #d9d9d9;

@@ -94,4 +94,12 @@
     .number {
         text-align: right;
     }
+
+    .text-reason {
+        height: auto;
+        line-height: 18px;
+        min-height: 62px;
+        resize: none;
+        overflow: hidden;
+    }
 }
