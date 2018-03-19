@@ -123,11 +123,11 @@ var monthlyPayroll = (function ($) {
             build: function ($trigger, e) {
                 var $element = $(e.currentTarget);
                 var basicSalary = {
-                    title: $element.next().find('.js-menuItem-basicSalary').text(),
+                    title: $element.next().find('.js-menuItem-basicSalary').html(),
                     url: $element.next().find('.js-menuItem-basicSalary').attr('href')
                 };
                 var allowance = {
-                    title: $element.next().find('.js-menuItem-allowance').text(),
+                    title: $element.next().find('.js-menuItem-allowance').html(),
                     url: $element.next().find('.js-menuItem-allowance').attr('href')
                 };
 
@@ -146,10 +146,12 @@ var monthlyPayroll = (function ($) {
                     items: {
                         'BasicSalary': {
                             name: basicSalary.title,
+                            isHtmlName: true,
                             icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-edit'; }
                         },
                         'Allowances': {
                             name: allowance.title,
+                            isHtmlName: true,
                             icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-cut'; }
                         },
                     }

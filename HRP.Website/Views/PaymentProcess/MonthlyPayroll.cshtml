@@ -46,11 +46,11 @@
 
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
-        <input type="text" class="control" placeholder="" id="SearchIDNo" value="@Model.IDNo" />
+        <input type="text" class="control" placeholder="" id="SearchIDNo" value="@Model.IDNo" maxlength="20" />
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control" placeholder="Full name or Nickname" id="SearchEmployee" value="@Model.Employee" />
+        <input type="text" class="control" placeholder="Full name or Nickname" id="SearchEmployee" value="@Model.Employee" maxlength="70" />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
@@ -178,6 +178,7 @@
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId"
                                    asp-route-month="@Model.Month">
+                                    <span>aaa</span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditBasicSalary
@@ -194,6 +195,7 @@
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId">
+                                    <span>bbb</span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditAllowance
