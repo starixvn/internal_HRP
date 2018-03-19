@@ -1,0 +1,34 @@
+.context-menu-active .icon-configuration {
+    color: #1973b2;
+}
+
+.context-menu-list {
+    padding: 0;
+    border-radius: 2px;
+    border: 1px solid #1973b2;
+    z-index: 1000 !important;
+
+    .context-menu-item {
+        padding: 8px 10px;
+        font-size: 13px;
+        color: #333;
+
+        &:hover {
+            background-color: #f57d14;
+            color: #fff;
+        }
+
+        span {
+            margin-left: 10px;
+        }
+    }
+
+    [class^="icon"] {
+        font-family: "hrp";;
+        position: relative;
+        top: 2px;
+        margin-right: 10px;
+        color: #888;
+        font-size: 13px;
+    }
+}
