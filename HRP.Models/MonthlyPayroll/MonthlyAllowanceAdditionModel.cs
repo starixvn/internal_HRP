@@ -14,6 +14,6 @@
 
         public string NetAllowance { get; set; }
 
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
     }
 }

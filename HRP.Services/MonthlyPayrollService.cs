@@ -313,10 +313,11 @@
             return monthlyBasicAllowance;
         }
 
-        public void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance
-            , DateTime startDate, DateTime? endDate)
+        public void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            DateTime startDate, DateTime? endDate)
         {
             decimal totalAmount = 0;
+
             if (!monthlyPayrollBasicAllowance.CurrencyId.HasValue)
             {
                 return;
@@ -324,33 +325,148 @@
 
             var currencyId = monthlyPayrollBasicAllowance.CurrencyId.Value;
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.SubsistenceAmount),
                 monthlyPayrollBasicAllowance.SubsistenceCurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.HomePassageAmount),
                 monthlyPayrollBasicAllowance.HomePassageCurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.HousingAmount),
                 monthlyPayrollBasicAllowance.HousingCurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.MobilePhoneAmount),
                 monthlyPayrollBasicAllowance.MobilePhoneCurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HPIAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.HPIAmount),
                 monthlyPayrollBasicAllowance.HPICurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DutyMealAmount),
                 monthlyPayrollBasicAllowance.DutyMealCurrencyId ?? 0, currencyId);
 
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentAmount,
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.SecondmentAmount),
                 monthlyPayrollBasicAllowance.SecondmentCurrencyId ?? 0, currencyId);
-            totalAmount += ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
+
+            totalAmount += ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.OthersAmount),
                 monthlyPayrollBasicAllowance.OthersCurrencyId ?? 0, currencyId);
 
             totalAmount = RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
             monthlyPayrollBasicAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString(CultureInfo.InvariantCulture));
 
             CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate);
+            CalculateAuto(currencyExchangeRates, monthlyPayrollBasicAllowance);
+        }
+
+        private void CalculateAuto(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
+        {
+            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.TotalAmount));
+            var currencyId = monthlyPayrollBasicAllowance.CurrencyId ?? 0;
+            var directbanking1CurrencyId = monthlyPayrollBasicAllowance.DirectBanking1CurrencyId ?? 0;
+            var directbanking2CurrencyId = monthlyPayrollBasicAllowance.DirectBanking2CurrencyId ?? 0;
+            var cashCurrencyId = monthlyPayrollBasicAllowance.CashCurrencyId ?? 0;
+            decimal exchangeRate;
+
+            var directBanking1 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking1Amount), directbanking1CurrencyId, currencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking2Amount), directbanking2CurrencyId, currencyId);
+            var cash = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.CashAmount), cashCurrencyId, currencyId);
+
+            switch (monthlyPayrollBasicAllowance.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, directbanking1CurrencyId);
+                    directBanking1 = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking2 - cash), directbanking1CurrencyId);
+                    monthlyPayrollBasicAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, directbanking2CurrencyId);
+                    directBanking2 = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking1 - cash), directbanking2CurrencyId);
+                    monthlyPayrollBasicAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, cashCurrencyId);
+                    cash = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking1 - directBanking2), cashCurrencyId);
+                    monthlyPayrollBasicAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int payrollId, int standardWorkingDays, int actualWorkingDays,
+            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            var additions = new List<MonthlyAllowanceAdditionModel>();
+            var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();
+
+            foreach (var type in types)
+            {
+                additions.Add(new MonthlyAllowanceAdditionModel
+                {
+                    PayrollId = payrollId,
+                    Type = (int)type,
+                    CurrencyId = GetCurrencyBaseOnAllowanceType(type, employeePayrollAllowance)
+                });
+            }
+
+            if (standardWorkingDays < actualWorkingDays)
+            {
+                var dutyMeal = additions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
+
+                var unitAmount = decimal.Parse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount)) / standardWorkingDays;
+                var totalAmount = unitAmount * dutyMeal.NoOfDays;
+
+                dutyMeal.UnitAmount = cryptoService.Encrypt(unitAmount.ToString(CultureInfo.InvariantCulture));
+                dutyMeal.TotalAmount = cryptoService.Encrypt(totalAmount.ToString());
+
+                if (dutyMeal.CurrencyId.HasValue && employeePayrollAllowance.CurrencyId.HasValue)
+                {
+                    var netAllowance = RoundAmountWithCurrency(totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, employeePayrollAllowance.CurrencyId.Value),
+                        employeePayrollAllowance.CurrencyId.Value);
+                    dutyMeal.NetAllowance = cryptoService.Encrypt(netAllowance.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+
+            return additions;
+        }
+
+        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int payrollId, int standardWorkingDays, int actualWorkingDays,
+            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            var deductions = new List<MonthlyAllowanceDeductionModel>();
+            var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();
+
+            foreach (var type in types)
+            {
+                deductions.Add(new MonthlyAllowanceDeductionModel
+                {
+                    PayrollId = payrollId,
+                    Type = (int)type,
+                    CurrencyId = GetCurrencyBaseOnAllowanceType(type, employeePayrollAllowance)
+                });
+            }
+
+            if (standardWorkingDays > actualWorkingDays)
+            {
+                var dutyMeal = deductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
+
+                var unitAmount = decimal.Parse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount)) / standardWorkingDays;
+                var totalAmount = unitAmount * dutyMeal.NoOfDays;
+
+                dutyMeal.UnitAmount = cryptoService.Encrypt(unitAmount.ToString(CultureInfo.InvariantCulture));
+                dutyMeal.TotalAmount = cryptoService.Encrypt(totalAmount.ToString());
+
+                if (dutyMeal.CurrencyId.HasValue && employeePayrollAllowance.CurrencyId.HasValue)
+                {
+                    var netAllowance = RoundAmountWithCurrency(totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, employeePayrollAllowance.CurrencyId.Value),
+                        employeePayrollAllowance.CurrencyId.Value);
+                    dutyMeal.NetAllowance = cryptoService.Encrypt(netAllowance.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+
+            return deductions;
         }
 
         private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate)
@@ -374,9 +490,9 @@
             }
         }
 
-        private decimal ConvertAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, string amount, int fromCurrencyId, int toCurrencyId)
+        private static decimal ConvertAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, string amount, int fromCurrencyId, int toCurrencyId)
         {
-            decimal.TryParse(cryptoService.Decrypt(amount), out decimal value);
+            decimal.TryParse(amount, out decimal value);
             return value * GetExchangeRate(currencyExchangeRates, fromCurrencyId, toCurrencyId);
         }
 
@@ -623,6 +739,22 @@
             }
 
             return Math.Round(amount, 2);
+        }
+
+        private static int? GetCurrencyBaseOnAllowanceType(AllowanceType type, EmployeePayrollAllowanceModel employeePayrollAllowance)
+        {
+            switch (type)
+            {
+                case AllowanceType.Subsistence: return employeePayrollAllowance.SubsistenceCurrencyId;
+                case AllowanceType.HomePassage: return employeePayrollAllowance.HomePassageCurrencyId;
+                case AllowanceType.Housing: return employeePayrollAllowance.HousingCurrencyId;
+                case AllowanceType.MobilePhone: return employeePayrollAllowance.MobilePhoneCurrencyId;
+                case AllowanceType.HPI: return employeePayrollAllowance.HPICurrencyId;
+                case AllowanceType.DutyMeal: return employeePayrollAllowance.DutyMealCurrencyId;
+                case AllowanceType.Secondment: return employeePayrollAllowance.SecondmentCurrencyId;
+                case AllowanceType.Others: return employeePayrollAllowance.OthersCurrencyId;
+                default: return null;
+            }
         }
 
         #region Back Pay and After Adjustment
