@@ -252,7 +252,7 @@
             return Math.Abs(monthsApart);
         }
 
-        public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeduction deduction)
+        public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction)
         {
             var monthlyBasicAllowance = new MonthlyPayrollBasicAllowanceModel
             {

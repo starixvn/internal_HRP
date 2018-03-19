@@ -47,7 +47,7 @@
                         viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>() ?? basicSalary;
                         viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
                         viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowanceModel>() ?? allowance;
-                        viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeduction>() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+                        viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeductionModel>() ?? new EmployeePayrollDeductionModel { EmployeeId = employeeId };
                         viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
                         viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
                         viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria

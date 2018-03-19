@@ -72,7 +72,7 @@
                 InitFirstTime = true
             };
             var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
-            var deduction = new EmployeePayrollDeduction { EmployeeId = employeeId };
+            var deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId };
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
             var currencyCodes = new List<CurrencyCodeModel>();
             var refResources = new List<ReferenceResourceModel>();
@@ -80,7 +80,7 @@
             multiResultReader.ReadFirstOrDefault<EmployeePayrollViewModel>().Returns(employeePayroll);
             multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>().Returns(basicSalary);
             multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowanceModel>().Returns(allowance);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeduction>().Returns(deduction);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeductionModel>().Returns(deduction);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();

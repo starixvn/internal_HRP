@@ -693,7 +693,7 @@
                 EmployeeId = employeeId,
                 BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
                 Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
-                Deduction = new EmployeePayrollDeduction { EmployeeId = employeeId }
+                Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
             };
             var expected = new CommandResult { Code = 0 };
             var employeeController = GetEmployeeController();

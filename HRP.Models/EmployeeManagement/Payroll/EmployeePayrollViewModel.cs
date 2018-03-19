@@ -19,7 +19,7 @@
 
         public EmployeePayrollAllowanceModel Allowance { get; set; } = new EmployeePayrollAllowanceModel();
 
-        public EmployeePayrollDeduction Deduction { get; set; } = new EmployeePayrollDeduction();
+        public EmployeePayrollDeductionModel Deduction { get; set; } = new EmployeePayrollDeductionModel();
 
         public IEnumerable<CurrencyCodeModel> Currencies { get; set; }
 
