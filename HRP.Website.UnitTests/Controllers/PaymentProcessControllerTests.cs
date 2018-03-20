@@ -19,6 +19,8 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
+    using HRP.Core.Model;
+    using Microsoft.AspNetCore.Routing;
 
     public class PaymentProcessControllerTests
     {
@@ -227,6 +229,63 @@
         }
 
         [Fact]
+        public async Task UploadAttendanceAndSalary_UserHasPermission_ReturnViewResultWithExpectedViewModel()
+        {
+            // Arrange
+            var companyId = 13;
+            var month = DateTime.Parse("2018-3-15");
+            var paymentProcess = new PaymentProcess
+            {
+                StartDate = DateTime.Parse("2018-3-1"),
+                DueDate = DateTime.Parse("2018-3-30")
+            };
+            var expected = new UploadAttendanceAndSalaryViewModel
+            {
+                CompanyId = companyId,
+                SelectedTime = month
+            };
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
+            paymentProcessService.GetPaymentProcessAsync(companyId, month).Returns(paymentProcess);
+            paymentProcessService.GetUploadingFilesResultAsync(companyId, month).Returns(expected);
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(companyId, month);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewData = Assert.IsType<UploadAttendanceAndSalaryViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(expected, viewData);
+        }
+
+        [Theory]
+        [InlineData("2018-3-1", "2018-3-30", false)]
+        [InlineData("2018-3-1", "2018-3-11", true)]
+        public async Task UploadAttendanceAndSalary_UserNotHasPermission_ReturnViewResultWithExpectedViewModel
+            (string startDate, string dueDate, bool isHostOnCompany)
+        {
+            // Arrange
+            var companyId = 13;
+            var month = DateTime.Parse("2018-3-15");
+            var paymentProcess = new PaymentProcess
+            {
+                StartDate = DateTime.Parse(startDate),
+                DueDate = DateTime.Parse(dueDate)
+            };
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(isHostOnCompany);
+            paymentProcessService.GetPaymentProcessAsync(companyId, month).Returns(paymentProcess);
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(companyId, month);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
         public async Task ValidationFilesResult_WhenCalled_ReturnPartialViewWithValidationFilesResultViewModel()
         {
             // Arrange
@@ -248,6 +307,53 @@
             var model = Assert.IsType<UploadAttendanceAndSalaryViewModel>(viewResult.Model);
             Assert.Equal("_ValidationFilesResult", viewResult.ViewName);
             Assert.Equal(expected, model);
+        }
+
+        [Fact]
+        public async Task GetPaymentProcess_WhenCalled_ReturnJsonResultWithExpectedData()
+        {
+            // Arrange
+            var companyId = 19;
+            DateTime month = DateTime.Today;
+            var expected = new PaymentProcess
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.GetPaymentProcessAsync(companyId, month).Returns(expected);
+
+            // Act
+            var actual = await controller.GetPaymentProcess(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task ProcessActionNextToMonthlyPayroll_SubmitUploadingFilesNotSuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var companyId = 17;
+            DateTime month = DateTime.Today;
+            var submitResult = new CommandResult
+            {
+                Code = 1,
+                Message = "Submit error"
+            };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.SubmitUploadingFilesAsync(companyId, month).Returns(submitResult);
+
+            // Act
+            var actual = await controller.ProcessActionNextToMonthlyPayroll(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal("Submit error", errors["CommonError"]);
         }
 
         #endregion UploadAttendanceAndDSTSalary
@@ -496,15 +602,6 @@
             var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return selectList;
-        }
-
-        private SelectWorkingMonthCompanyViewModel MockSelectWorkingMonthCompanyViewModel()
-        {
-            return new SelectWorkingMonthCompanyViewModel
-            {
-                CompanyId = 19,
-                SelectedTime = DateTime.Today
-            };
         }
 
         #endregion Helpers

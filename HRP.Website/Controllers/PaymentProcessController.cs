@@ -124,8 +124,6 @@
             if (isHost && isInDuration)
             {
                 var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
-                viewModel.CompanyId = companyId;
-                viewModel.SelectedTime = month;
 
                 return View(viewModel);
             }
@@ -208,11 +206,11 @@
                     return Json(new { isSuccessful = true });
                 }
 
-                ModelState.AddModelError("CommonError", generateResult.Message);
+                ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), generateResult.Message);
             }
             else
             {
-                ModelState.AddModelError("CommonError", submitResult.Message);
+                ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), submitResult.Message);
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
