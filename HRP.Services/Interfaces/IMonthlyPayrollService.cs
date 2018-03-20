@@ -49,6 +49,6 @@
             EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
 
         MonthlyAllowanceModel InitializeMonthlyAllowance(int payrollId, MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
     }
 }
