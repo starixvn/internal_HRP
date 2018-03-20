@@ -3,6 +3,8 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Models.EmployeeManagement.Payroll;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
 
@@ -44,6 +46,26 @@
                             };
                         }
                     }
+
+                    return result;
+                }
+            }
+        }
+
+        public async Task<GeneratePayrollViewModel> GetDataForGeneratePayroll(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                {
+                    var salaryHistory = await multi.ReadAsync<EmployeePayrollBasicSalaryHistory>().ConfigureAwait(false);
+                    var monthlyPayroll = await multi.ReadAsync<MonthlyPayroll>().ConfigureAwait(false);
+
+                    var result = new GeneratePayrollViewModel
+                    {
+                        BasicSalaryHistory = salaryHistory,
+                        MonthlyPayroll = monthlyPayroll
+                    };
 
                     return result;
                 }

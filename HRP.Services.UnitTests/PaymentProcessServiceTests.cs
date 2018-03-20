@@ -62,6 +62,24 @@
             Assert.Equal(paymentProcess.Month, criteria.Month);
         }
 
+        [Fact]
+        public async Task GetPaymentProcessAsync_WhenCalled_ReturnExpectedPaymenProcessInstance()
+        {
+            // Arrange
+            var companyId = 21;
+            var month = DateTime.Today;
+            var expected = MockPaymentProcess();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataEntityAsync<PaymentProcess>(Arg.Is<GetPaymentProcessCriteria>(x => x.CompanyId == companyId
+                && x.Month == month)).Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
         #region CheckValidExcelFile
 
         [Fact]
@@ -337,6 +355,28 @@
 
         #endregion GetUploadingFilesResultAsync
 
+        #region GenerateMonthlyPayroll
+
+        [Fact]
+        public async Task SubmitUploadingFilesAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var companyId = 12;
+            var month = DateTime.Today;
+            var expected = MockSuccessfulCommandResult();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.ExecuteNonQueryAsync(Arg.Is<SubmitUploadingFilesCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion GenerateMonthlyPayroll
+
         #region Initialization
 
         private IPaymentProcessService GetPaymentProcessService()
@@ -359,7 +399,7 @@
         private ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
-            service.UserId.Returns(99);
+            service.UserId = 99;
 
             return service;
         }

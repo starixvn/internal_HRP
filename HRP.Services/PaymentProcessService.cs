@@ -7,15 +7,18 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
+    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class PaymentProcessService : IPaymentProcessService
     {
@@ -36,6 +39,13 @@
             this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
             this.fileStream = fileStream ?? new ObjectStream();
+        }
+
+        public async Task<SelectList> GetCompanySelectListAsync()
+        {
+            var companies = await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }).ConfigureAwait(false);
+
+            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }
 
         public async Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath)
@@ -237,9 +247,46 @@
             return commandResult;
         }
 
-        public Task<CommandResult> GenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId)
+        #region GenerateMonthlyPayroll
+
+        public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
-            throw new NotImplementedException();
+            var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
+
+            return new CommandResult { Data = dataModel };
         }
+
+        public async Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month)
+        {
+            var criteria = new SubmitUploadingFilesCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
+        private async Task<GeneratePayrollViewModel> GetDataForGenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId = null)
+        {
+            var criteria = new GetDataForGeneratePayrollCriteria
+            {
+                CompanyId = companyId,
+                Month = month,
+                EmployeeId = employeeId
+            };
+
+            if (criteria.IsValid())
+            {
+                var result = await paymentProcessRepository.GetDataForGeneratePayroll(criteria).ConfigureAwait(false);
+                return result;
+            }
+
+            return null;
+        }
+
+        #endregion GenerateMonthlyPayroll
     }
 }

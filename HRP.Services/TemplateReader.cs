@@ -47,10 +47,8 @@
         public static bool IsValidAttendanceSheet(ILookup<string, int> headers)
         {
             return
-#pragma warning disable S1067 // Expressions should not be too complex
                     headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
                 headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture));
-#pragma warning restore S1067 // Expressions should not be too complex
         }
 
         public IList<ValidationResult> AttendanceValidationResults

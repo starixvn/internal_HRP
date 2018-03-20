@@ -17,6 +17,8 @@
         DSTNetSalaryIconClose: '.js-dstNetSalaryIconClose',
         AttendanceErrorsTable: '.js-attendanceErrorsTable',
         DSTNetSalaryErrorsTable: '.js-dstNetSalaryErrorsTable',
+        AttendanceTotalError: '.js-attendanceTotalError',
+        DSTNetSalaryTotalError: '.js-dstNetSalaryTotalError',
         BtnNextToMonthlyPayroll: '#nextToMonthlyPayroll'
     };
 
@@ -202,8 +204,13 @@
                 success: function (response) {
                     if (response.isPayrollGenerated === false) {
                         if (response.isAttendanceFileSubmited === false || response.isDSTNetSalaryFileSubmited === false) {
-                            // if (hasErrors) => alert
-                            alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
+                            var attendanceTotalError = $(domElement.AttendanceTotalError).val();
+                            var dstNetSalaryTotalError = $(domElement.DSTNetSalaryTotalError).val();
+                            if (attendanceTotalError > 0 || dstNetSalaryTotalError > 0) {
+                                alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
+                            } else {
+                                processActionNextToMonthlyPayroll();
+                            }
                         }
                     } else {
                         alert('go to monthly payroll');
@@ -211,6 +218,24 @@
                 },
                 error: commonFunctions.handleAjaxError
             });
+        });
+    }
+
+    function processActionNextToMonthlyPayroll() {
+        var $companyId = $(domElement.CompanyId),
+            $selectedTime = $(domElement.SelectedTime);
+
+        $.ajax({
+            type: 'GET',
+            url: commonFunctions.rootURL + 'PaymentProcess/ProcessActionNextToMonthlyPayroll',
+            dataType: 'json',
+            data: {
+                "companyId": $companyId.val(),
+                "month": $selectedTime.val()
+            },
+            success: function (response) {
+            },
+            error: commonFunctions.handleAjaxError
         });
     }
 

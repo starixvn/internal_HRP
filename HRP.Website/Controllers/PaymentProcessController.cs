@@ -19,7 +19,6 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     [HRPAuthorize]
     public class PaymentProcessController : BaseController
@@ -46,11 +45,10 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
-            var companies = await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId });
             var viewModel = new SelectWorkingMonthCompanyViewModel
             {
                 SelectedTime = DateTime.Today,
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
+                Companies = await paymentProcessService.GetCompanySelectListAsync()
             };
 
             return View(viewModel);
@@ -60,8 +58,8 @@
         [HttpPost]
         public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
         {
-            // Check permission not select future
-            //TODO
+            // Check not select future
+            // TODO
             if (ModelState.IsValid)
             {
                 var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
@@ -89,9 +87,7 @@
                 }
             }
 
-            viewModel.Companies = new SelectList(
-                    await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }),
-                    nameof(Company.CompanyId), nameof(Company.Code));
+            viewModel.Companies = await paymentProcessService.GetCompanySelectListAsync();
             return View("Index", viewModel);
         }
 
@@ -199,10 +195,34 @@
             return Json(processInfo);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
+        public async Task<IActionResult> ProcessActionNextToMonthlyPayroll(int companyId, DateTime month)
+        {
+            var submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
+            if (submitResult.IsSuccessful)
+            {
+                var generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
+                if (generateResult.IsSuccessful)
+                {
+                    return Json(new { isSuccessful = true });
+                }
+
+                ModelState.AddModelError("CommonError", generateResult.Message);
+            }
+            else
+            {
+                ModelState.AddModelError("CommonError", submitResult.Message);
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
         private static bool IsRedirectToPageUploadFiles(PaymentProcess paymentProcess)
         {
-            var isAttendanceFileNotSubmited = (paymentProcess.AttendanceFileName == null && !paymentProcess.IsAttendanceFileSubmited);
-            var isDSTNetSalaryFileNotSubmited = (paymentProcess.DSTNetSalaryFileName == null && !paymentProcess.IsDSTNetSalaryFileSubmited);
+            var isAttendanceFileNotSubmited = (paymentProcess.AttendanceFileName != null && !paymentProcess.IsAttendanceFileSubmited);
+            var isDSTNetSalaryFileNotSubmited = (paymentProcess.DSTNetSalaryFileName != null && !paymentProcess.IsDSTNetSalaryFileSubmited);
 
             return (!paymentProcess.IsPayrollGenerated
                         || isAttendanceFileNotSubmited

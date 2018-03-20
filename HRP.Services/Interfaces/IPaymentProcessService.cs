@@ -6,9 +6,12 @@
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IPaymentProcessService
     {
+        Task<SelectList> GetCompanySelectListAsync();
+
         Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath);
 
         Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
@@ -23,6 +26,8 @@
 
         Task<CommandResult> UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
 
-        Task<CommandResult> GenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId);
+        Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month);
+
+        Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId);
     }
 }

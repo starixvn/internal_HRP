@@ -28,3 +28,5 @@ else
 {
     <div class="msg-success -no-border">@string.Format(Message.AttendanceFileUploadSuccess, Model.TotalRow)</div>
 }
+
+<input type="hidden" class="js-attendanceTotalError" value="@Model.ValidationErrors.Count()" />

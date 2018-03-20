@@ -7,5 +7,7 @@
     public interface IPaymentProcessRepository
     {
         Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria);
+
+        Task<GeneratePayrollViewModel> GetDataForGeneratePayroll(ICriteria criteria);
     }
 }
