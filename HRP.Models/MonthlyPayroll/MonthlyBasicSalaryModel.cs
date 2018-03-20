@@ -12,7 +12,6 @@
         public string Salary { get; set; }
         public string OldSalary { get; set; }
         public int OldCurrencyId { get; set; }
-        public string OldCurrencyCode { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public BasicSalaryChangeReason? SalaryChangeReason { get; set; }
         public int WorkingDays { get; set; }
