@@ -431,8 +431,9 @@
             {
                 var dutyMeal = additions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
                 dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
+                decimal.TryParse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount), out decimal dutyMealAmount);
 
-                var unitAmount = decimal.Parse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount)) / standardWorkingDays;
+                var unitAmount = dutyMealAmount / standardWorkingDays;
                 var totalAmount = unitAmount * dutyMeal.NoOfDays;
 
                 dutyMeal.UnitAmount = cryptoService.Encrypt(unitAmount.ToString(CultureInfo.InvariantCulture));
@@ -487,7 +488,11 @@
             return deductions;
         }
 
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var currentDate = DateTime.Today;
             var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
@@ -496,15 +501,29 @@
             var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture));
-
-            if (afterAdjustmentAmount - totalAmount > 0)
+            var amount = afterAdjustmentAmount - totalAmount;
+            if (amount != 0)
             {
-                monthlyPayrollBasicAllowance.Reason = AdjustmentReason.Added.ToString();
-            }
+                var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+                var currencyCode = currencies.FirstOrDefault(x => x.CurrencyId == monthlyPayrollBasicAllowance.CurrencyId.Value).CurrencyCode;
+                var reason = new StringBuilder();
+                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), currencyCode);
 
-            if (afterAdjustmentAmount - totalAmount < 0)
-            {
-                monthlyPayrollBasicAllowance.Reason = AdjustmentReason.Deducted.ToString();
+                if(startDate.Month == currentDate.Month && startDate.Year == currentDate.Year)
+                {
+                    reason.Append(endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year ? 
+                        $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" : 
+                        $"Employee started working from {startDate.ToShortDateString()}");
+                }
+                else
+                {
+                    if(endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year)
+                    {
+                        reason.Append($"Employee official leaves from {endDate.Value.ToShortDateString()}");
+                    }
+                }
+
+                monthlyPayrollBasicAllowance.Reason = reason.ToString();
             }
         }
 

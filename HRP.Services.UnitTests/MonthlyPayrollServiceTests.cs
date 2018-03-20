@@ -7,9 +7,11 @@
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models;
     using HRP.Models.Currency;
+    using HRP.Models.EmployeeManagement;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
     using NSubstitute;
@@ -390,6 +392,214 @@
 
             var actual = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, 1);
             Assert.True(actual.IsSuccessful);
+        }
+
+        [Fact]
+        public void InitializeMonthlyBasicAllowance_ValidData_ReturnExpectedModel()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+
+            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            {
+                EmployeeId = 1,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+            };
+
+            var deduction = new EmployeePayrollDeductionModel
+            {
+                EmployeeId = 1
+            };
+
+            var result = monthlyPayrollService.InitializeMonthlyBasicAllowance(payrollId, employeePayrollAllowance, deduction);
+            Assert.Equal(payrollId, result.PayrollId);
+            Assert.Equal(employeePayrollAllowance.AutoCalculateOn, result.AutoCalculateOn);
+            Assert.Equal(employeePayrollAllowance.CurrencyId, result.CurrencyId);
+            Assert.Equal(employeePayrollAllowance.CashCurrencyId, result.CashCurrencyId);
+        }
+
+        [Fact]
+        public void CalculateMonthlyBasicAllowance_StartDateInMonth_ReturnExpectedResult()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            {
+                PayrollId = payrollId,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                SubsistenceAmount = "2000",
+                SubsistenceCurrencyId = 1
+            };
+            cryptoService.Decrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Decrypt(null).Returns(string.Empty);
+            cryptoService.Encrypt(null).Returns(string.Empty);
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+                .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
+
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 15), null);
+
+            Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
+            Assert.NotNull(basicAllowance.Reason);
+        }
+
+        [Fact]
+        public void CalculateMonthlyBasicAllowance_EndDateInMonth_ReturnExpectedResult()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            {
+                PayrollId = payrollId,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                SubsistenceAmount = "2000",
+                SubsistenceCurrencyId = 1
+            };
+            cryptoService.Decrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Decrypt(null).Returns(string.Empty);
+            cryptoService.Encrypt(null).Returns(string.Empty);
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+                .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
+
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1), 
+                new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20));
+
+            Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
+            Assert.NotNull(basicAllowance.Reason);
+        }
+
+        [Fact]
+        public void CalculateMonthlyBasicAllowance_StartDateAndEndDateInMonth_ReturnExpectedResult()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            {
+                PayrollId = payrollId,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                SubsistenceAmount = "2000",
+                SubsistenceCurrencyId = 1
+            };
+            cryptoService.Decrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
+            cryptoService.Decrypt(null).Returns(string.Empty);
+            cryptoService.Encrypt(null).Returns(string.Empty);
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+                .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
+
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, DateTime.Today.AddMonths(-3), new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20));
+
+            Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
+            Assert.NotNull(basicAllowance.Reason);
+        }
+
+        [Fact]
+        public void InitializeAllowanceAdditions_ValidData_ReturnExpectedModel()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+            var standardWorkingDays = 22;
+            var actualWorkingDays = 24;
+            decimal unitAmount = 10;
+            decimal dutyMealAmount = 10 * standardWorkingDays;
+            decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
+
+            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            {
+                EmployeeId = 1,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                DutyMealAmount = dutyMealAmount.ToString(),
+                DutyMealCurrencyId = 1
+            };
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
+            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
+            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
+            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
+
+            var result = monthlyPayrollService.InitializeAllowanceAdditions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+        
+            Assert.NotEmpty(result);
+            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+            Assert.NotNull(dutyMeal);
+            Assert.Equal(actualWorkingDays - standardWorkingDays, dutyMeal.NoOfDays);
+            Assert.Equal(unitAmount.ToString(), dutyMeal.UnitAmount);
+            Assert.Equal(totalAmount.ToString(), dutyMeal.TotalAmount);
+        }
+
+        [Fact]
+        public void InitializeAllowanceDeductions_ValidData_ReturnExpectedModel()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+            var standardWorkingDays = 22;
+            var actualWorkingDays = 20;
+            decimal unitAmount = 10;
+            decimal dutyMealAmount = 10 * standardWorkingDays;
+            decimal totalAmount = unitAmount * (standardWorkingDays - actualWorkingDays);
+
+            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            {
+                EmployeeId = 1,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                DutyMealAmount = dutyMealAmount.ToString(),
+                DutyMealCurrencyId = 1
+            };
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
+            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
+            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
+            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
+
+            var result = monthlyPayrollService.InitializeAllowanceDeductions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+
+            Assert.NotEmpty(result);
+            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+            Assert.NotNull(dutyMeal);
+            Assert.Equal(standardWorkingDays - actualWorkingDays, dutyMeal.NoOfDays);
+            Assert.Equal(unitAmount.ToString(), dutyMeal.UnitAmount);
+            Assert.Equal(totalAmount.ToString(), dutyMeal.TotalAmount);
         }
 
         #region CalculateBackPayAndAfterAdjustment
