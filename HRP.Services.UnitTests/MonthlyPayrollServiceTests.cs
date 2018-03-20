@@ -521,6 +521,54 @@
         }
 
         [Fact]
+        public void InitializeMonthlyAllowance_ValidDate_ReturnModel()
+        {
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            var payrollId = 1;
+
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+
+            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel>() { new MonthlyAllowanceAdditionModel { Type = (int)AllowanceType.DutyMeal } };
+            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel>() { new MonthlyAllowanceDeductionModel { Type = (int)AllowanceType.DutyMeal } };
+
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            {
+                PayrollId = payrollId,
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                CashCurrencyId = 1,
+                SubsistenceAmount = "2000",
+                SubsistenceCurrencyId = 1,
+                TotalAmount = "2000",
+                AfterAdjustmentAmount = "2000",
+                RoomingChargesCurrencyId = 1,
+                RoomingChargesAmount = "100",
+                FitnessFirstCurrencyId = 1,
+                FitnessFirstAmount = "100"
+            };
+
+            var expectedTotalAmount = "1800";
+
+            cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
+            cryptoService.Decrypt(basicAllowance.RoomingChargesAmount).Returns(basicAllowance.RoomingChargesAmount);
+            cryptoService.Decrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
+            cryptoService.Decrypt(expectedTotalAmount).Returns(expectedTotalAmount);
+            cryptoService.Decrypt(null).Returns(string.Empty);
+
+            cryptoService.Encrypt(expectedTotalAmount).Returns(expectedTotalAmount);
+            cryptoService.Encrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
+            cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
+            cryptoService.Encrypt(null).Returns(string.Empty);
+
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(payrollId, basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates);
+
+            Assert.Equal(expectedTotalAmount, result.TotalAmount);
+        }
+
+        [Fact]
         public void InitializeAllowanceAdditions_ValidData_ReturnExpectedModel()
         {
             var monthlyPayrollService = GetMonthlyPayrollService();

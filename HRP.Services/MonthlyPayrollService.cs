@@ -835,7 +835,7 @@
 
         private void CalculateAutoAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
         {
-            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyAllowance.TotalAmount));
+            decimal.TryParse(cryptoService.Decrypt(monthlyAllowance.TotalAmount), out decimal totalAmount);
             var currencyId = monthlyAllowance.CurrencyId ?? 0;
             var directbanking1CurrencyId = monthlyAllowance.DirectBanking1CurrencyId ?? 0;
             var directbanking2CurrencyId = monthlyAllowance.DirectBanking2CurrencyId ?? 0;
