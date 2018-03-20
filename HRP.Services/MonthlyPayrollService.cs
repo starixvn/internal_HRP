@@ -225,10 +225,11 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
-        public BackPayAfterAdjustmentViewModel CalculateBackPayAndAfterAdjustment(
+        public void CalculateBackPayAndAfterAdjustment(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
+            MonthlySalaryAdditionModel backPay,
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
@@ -239,12 +240,11 @@
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             decimal amount;
-            var result = new BackPayAfterAdjustmentViewModel();
 
             switch (basicSetting.SalaryChangeReason)
             {
                 case BasicSalaryChangeReason.AnnualIncrement:
-                    result = CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+                    CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
                     break;
 
                 case BasicSalaryChangeReason.Promotion:
@@ -256,21 +256,19 @@
                         amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                             + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
                         amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
-                        result.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
-                        result.AfterAdjustmentReason = GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
+                        basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
+                        GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                     }
                     else
                     {
-                        result = CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
+                        CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
                     }
                     break;
 
                 default:
-                    result = CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
+                    CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
                     break;
             }
-
-            return result;
         }
 
         public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction)
@@ -341,9 +339,9 @@
             {
                 decimal.TryParse(cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount), out decimal totalAmount);
 
-                if(basicAllowance.RoomingChargesCurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.RoomingChargesAmount))
+                if (basicAllowance.RoomingChargesCurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.RoomingChargesAmount))
                 {
-                    var roomingCharge = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(basicAllowance.RoomingChargesAmount), 
+                    var roomingCharge = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(basicAllowance.RoomingChargesAmount),
                         basicAllowance.RoomingChargesCurrencyId.Value, basicAllowance.CurrencyId.Value);
                     totalAmount = totalAmount - roomingCharge;
                 }
@@ -800,6 +798,7 @@
                     directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
                     monthlyPayrollBasicAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 case PayrollAutoCalculateOn.DirectBanking2:
                     directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
                     monthlyPayrollBasicAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
@@ -809,6 +808,7 @@
                     cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
                     monthlyPayrollBasicAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 default:
                     return;
             }
@@ -828,10 +828,11 @@
 
             switch (monthlyAllowance.AutoCalculateOn)
             {
-                case PayrollAutoCalculateOn.DirectBanking1:                  
+                case PayrollAutoCalculateOn.DirectBanking1:
                     directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
                     monthlyAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 case PayrollAutoCalculateOn.DirectBanking2:
                     directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
                     monthlyAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
@@ -841,6 +842,7 @@
                     cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
                     monthlyAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 default:
                     return;
             }
@@ -859,10 +861,11 @@
             return Math.Abs(monthsApart);
         }
 
-        private static BackPayAfterAdjustmentViewModel CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(
+        private static void CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
+            MonthlySalaryAdditionModel backPay,
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
@@ -873,7 +876,6 @@
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             decimal amount;
-            var result = new BackPayAfterAdjustmentViewModel();
 
             if (basicSetting.EffectiveDate.HasValue)
             {
@@ -883,27 +885,25 @@
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * monthDiff);
                     amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
-                    result.BackPayAmount = amount.ToString(CultureInfo.InvariantCulture);
-                    result.BackPayDescription = string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat));
+                    backPay.UnitAmount = backPay.NetSalary = amount.ToString(CultureInfo.InvariantCulture);
+                    backPay.Description = string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat));
                 }
                 else
                 {
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
                     amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
-                    result.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
-                    result.AfterAdjustmentReason = GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
+                    basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
+                    GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                 }
             }
             else
             {
-                result = CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
+                CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
             }
-
-            return result;
         }
 
-        private static BackPayAfterAdjustmentViewModel CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(
+        private static void CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
             DateTime groupStartDate,
@@ -913,19 +913,16 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            var result = new BackPayAfterAdjustmentViewModel();
 
             decimal amount = newSalary / daysInMonth * (endDay - startDay + 1);
             amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
-            result.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
-            result.AfterAdjustmentReason = GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
-
-            return result;
+            basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
+            GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-        private static string GetAfterAdjustmentReason(
+        private static void GetAfterAdjustmentReason(
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
             DateTime workingMonth,
@@ -991,7 +988,7 @@
                 }
             }
 
-            return reason.ToString();
+            basicSetting.AfterAdjustmentReason = reason.ToString();
         }
 
         #endregion Back Pay and After Adjustment

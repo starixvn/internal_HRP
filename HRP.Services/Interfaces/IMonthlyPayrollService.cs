@@ -27,10 +27,11 @@
 
         Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
 
-        BackPayAfterAdjustmentViewModel CalculateBackPayAndAfterAdjustment(
+        void CalculateBackPayAndAfterAdjustment(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
+            MonthlySalaryAdditionModel backPay,
             DateTime groupStartDate,
             DateTime? groupEndDate);
 

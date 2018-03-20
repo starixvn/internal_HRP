@@ -407,7 +407,7 @@
         }
 
         [Theory, MemberData(nameof(AnnualIncrement_EffectiveDateIsNull_TestCase))]
-        public void CalculateBackPay_AnnualIncrement_EffectiveDateIsNull_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_AnnualIncrement_EffectiveDateIsNull_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
             string currencyCode,
             DateTime workingMonth,
@@ -425,23 +425,25 @@
                 CurrencyCode = currencyCode,
                 SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
 
             // Assert
-            Assert.Null(actual.BackPayAmount);
-            Assert.Null(actual.BackPayDescription);
-            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
-            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+            Assert.Null(backPay.UnitAmount);
+            Assert.Null(backPay.NetSalary);
+            Assert.Null(backPay.Description);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, basicSetting.AfterAdjustmentReason);
         }
 
         [Theory]
         [InlineData(1, "4000.00")]
         [InlineData(11, "4000")]
-        public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
             string backPayAmount)
         {
@@ -460,17 +462,19 @@
                 SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement,
                 EffectiveDate = new DateTime(2018, 2, 1)
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, Arg.Any<DateTime>(), Arg.Any<DateTime>());
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, Arg.Any<DateTime>(), Arg.Any<DateTime>());
 
             // Assert
-            Assert.Equal(backPayAmount, actual.BackPayAmount);
-            Assert.Equal("Annual Increment from Feb 01, 2018", actual.BackPayDescription);
-            Assert.Null(actual.AfterAdjustmentAmount);
-            Assert.Null(actual.AfterAdjustmentReason);
+            Assert.Equal(backPayAmount, backPay.UnitAmount);
+            Assert.Equal(backPayAmount, backPay.NetSalary);
+            Assert.Equal("Annual Increment from Feb 01, 2018", backPay.Description);
+            Assert.Null(basicSetting.AfterAdjustmentAmount);
+            Assert.Null(basicSetting.AfterAdjustmentReason);
         }
 
         public static IEnumerable<object[]> AnnualIncrement_EffectiveMonthEqualWorkingMonth_TestCase()
@@ -496,7 +500,7 @@
         }
 
         [Theory, MemberData(nameof(AnnualIncrement_EffectiveMonthEqualWorkingMonth_TestCase))]
-        public void CalculateBackPay_AnnualIncrement_EffectiveMonthEqualWorkingMonth_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_AnnualIncrement_EffectiveMonthEqualWorkingMonth_ReturnAsExpectedBackPayAndAfterAdjustment(
             string oldSalary,
             string salary,
             int currencyId,
@@ -523,17 +527,19 @@
                 SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement,
                 EffectiveDate = effectiveDate
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
 
             // Assert
-            Assert.Null(actual.BackPayAmount);
-            Assert.Null(actual.BackPayDescription);
-            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
-            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+            Assert.Null(backPay.UnitAmount);
+            Assert.Null(backPay.NetSalary);
+            Assert.Null(backPay.Description);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, basicSetting.AfterAdjustmentReason);
         }
 
         public static IEnumerable<object[]> OthersBasicSalaryChangeReason_EffectiveDateIsNull_TestCase()
@@ -549,7 +555,7 @@
         }
 
         [Theory, MemberData(nameof(OthersBasicSalaryChangeReason_EffectiveDateIsNull_TestCase))]
-        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNull_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNull_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
             string currencyCode,
             DateTime workingMonth,
@@ -567,17 +573,19 @@
                 CurrencyCode = currencyCode,
                 SalaryChangeReason = BasicSalaryChangeReason.Promotion
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
 
             // Assert
-            Assert.Null(actual.BackPayAmount);
-            Assert.Null(actual.BackPayDescription);
-            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
-            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+            Assert.Null(backPay.UnitAmount);
+            Assert.Null(backPay.NetSalary);
+            Assert.Null(backPay.Description);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, basicSetting.AfterAdjustmentReason);
         }
 
         public static IEnumerable<object[]> OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_TestCase()
@@ -603,7 +611,7 @@
         }
 
         [Theory, MemberData(nameof(OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_TestCase))]
-        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_ReturnAsExpectedBackPayAndAfterAdjustment(
             string oldSalary,
             string salary,
             int currencyId,
@@ -630,17 +638,19 @@
                 SalaryChangeReason = BasicSalaryChangeReason.Promotion,
                 EffectiveDate = effectiveDate
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
 
             // Assert
-            Assert.Null(actual.BackPayAmount);
-            Assert.Null(actual.BackPayDescription);
-            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
-            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+            Assert.Null(backPay.UnitAmount);
+            Assert.Null(backPay.NetSalary);
+            Assert.Null(backPay.Description);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, basicSetting.AfterAdjustmentReason);
         }
 
         public static IEnumerable<object[]> AnnualIncrement_GroupDateCommencement_TestCase()
@@ -656,7 +666,7 @@
         }
 
         [Theory, MemberData(nameof(AnnualIncrement_GroupDateCommencement_TestCase))]
-        public void CalculateBackPay_GroupDateCommencement_ReturnAsExpectedViewModel(
+        public void CalculateBackPay_GroupDateCommencement_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
             string currencyCode,
             DateTime workingMonth,
@@ -673,17 +683,19 @@
                 CurrencyId = currencyId,
                 CurrencyCode = currencyCode
             };
+            var backPay = new MonthlySalaryAdditionModel();
             var monthlyPayrollService = GetMonthlyPayrollService();
 
             // Act
-            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
 
             // Assert
-            Assert.Null(actual.BackPayAmount);
-            Assert.Null(actual.BackPayDescription);
-            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
-            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+            Assert.Null(backPay.UnitAmount);
+            Assert.Null(backPay.NetSalary);
+            Assert.Null(backPay.Description);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, basicSetting.AfterAdjustmentReason);
         }
 
         #endregion CalculateBackPayAndAfterAdjustment
