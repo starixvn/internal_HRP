@@ -50,7 +50,7 @@ var monthlyPayroll = (function ($) {
                 { orderable: false, targets: 17 },
                 { orderable: false, targets: 18 },
                 { className: 'col-width-60', orderable: false, targets: 19 },
-                { className: 'col-width-50', orderable: false, targets: 20 },
+                { className: 'col-width-50', orderable: false, targets: 20 }
             ],
             scrollX: true,
             fixedColumns: {
@@ -146,14 +146,12 @@ var monthlyPayroll = (function ($) {
                     items: {
                         'BasicSalary': {
                             name: basicSalary.title,
-                            isHtmlName: true,
-                            icon: function ($element, key, item) { return 'context-menu-icon'; }
+                            isHtmlName: true
                         },
                         'Allowances': {
                             name: allowance.title,
-                            isHtmlName: true,
-                            icon: function ($element, key, item) { return 'context-menu-icon'; }
-                        },
+                            isHtmlName: true
+                        }
                     }
                 };
             }

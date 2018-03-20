@@ -4,10 +4,10 @@
     {
         public string BackPayAmount { get; set; }
 
-        public string Description { get; set; }
+        public string BackPayDescription { get; set; }
 
         public string AfterAdjustmentAmount { get; set; }
 
-        public string Reason { get; set; }
+        public string AfterAdjustmentReason { get; set; }
     }
 }

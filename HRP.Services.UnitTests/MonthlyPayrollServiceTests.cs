@@ -4,10 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
     using NSubstitute;
@@ -389,6 +391,278 @@
             var actual = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, 1);
             Assert.True(actual.IsSuccessful);
         }
+
+        #region CalculateBackPayAndAfterAdjustment
+
+        public static IEnumerable<object[]> AnnualIncrement_EffectiveDateIsNull_TestCase()
+        {
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000.00", string.Empty };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "5806.45", "Deducted 4193.55 (USD). Employee started working from Mar 14, 2018. Basic Salary changed on  for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "6000", "Deducted 4000 (VND). Employee started working from Mar 14, 2018. Basic Salary changed on  for Annual Increment." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "9677.42", "Deducted 322.58 (USD). Employee official leaves from Mar 30, 2018. Basic Salary changed on  for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5483.87", "Deducted 4516.13 (USD). Employee worked from Mar 14, 2018 to Mar 30, 2018. Basic Salary changed on  for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5000", "Deducted 5000 (VND). Employee worked from Mar 14, 2018 to Mar 30, 2018. Basic Salary changed on  for Annual Increment." };
+        }
+
+        [Theory, MemberData(nameof(AnnualIncrement_EffectiveDateIsNull_TestCase))]
+        public void CalculateBackPay_AnnualIncrement_EffectiveDateIsNull_ReturnAsExpectedViewModel(
+            int currencyId,
+            string currencyCode,
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate,
+            string afterAdjustmentAmount,
+            string afterAdjustmentReason)
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                Salary = "10000",
+                CurrencyId = currencyId,
+                CurrencyCode = currencyCode,
+                SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+
+            // Assert
+            Assert.Null(actual.BackPayAmount);
+            Assert.Null(actual.BackPayDescription);
+            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+        }
+
+        [Theory]
+        [InlineData(1, "4000.00")]
+        [InlineData(11, "4000")]
+        public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedViewModel(
+            int currencyId,
+            string backPayAmount)
+        {
+            // Arrange
+            var workingMonth = new DateTime(2018, 3, 1);
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = currencyId, ExchangeRate = 1 }
+            };
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                OldSalary = "10000",
+                OldCurrencyId = 1,
+                Salary = "12000",
+                CurrencyId = currencyId,
+                SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement,
+                EffectiveDate = new DateTime(2018, 2, 1)
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, Arg.Any<DateTime>(), Arg.Any<DateTime>());
+
+            // Assert
+            Assert.Equal(backPayAmount, actual.BackPayAmount);
+            Assert.Equal("Annual Increment from Feb 01, 2018", actual.BackPayDescription);
+            Assert.Null(actual.AfterAdjustmentAmount);
+            Assert.Null(actual.AfterAdjustmentReason);
+        }
+
+        public static IEnumerable<object[]> AnnualIncrement_EffectiveMonthEqualWorkingMonth_TestCase()
+        {
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), null, "11161.29", "Deducted 838.71 (USD). Employee started working from Mar 01, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), null, "11000", "Deducted 1000 (VND). Employee started working from Mar 01, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), new DateTime(2018, 3, 30), "10774.19", "Deducted 1225.81 (USD). Employee worked from Mar 01, 2018 to Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), new DateTime(2018, 3, 30), "11000", "Deducted 1000 (VND). Employee worked from Mar 01, 2018 to Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), null, "11161.29", "Deducted 838.71 (USD). Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), null, "11000", "Deducted 1000 (VND). Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "10774.19", "Deducted 1225.81 (USD). Employee official leaves from Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "11000", "Deducted 1000 (VND). Employee official leaves from Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Annual Increment." };
+        }
+
+        [Theory, MemberData(nameof(AnnualIncrement_EffectiveMonthEqualWorkingMonth_TestCase))]
+        public void CalculateBackPay_AnnualIncrement_EffectiveMonthEqualWorkingMonth_ReturnAsExpectedViewModel(
+            int currencyId,
+            string currencyCode,
+            DateTime workingMonth,
+            DateTime effectiveDate,
+            DateTime groupStartDate,
+            DateTime? groupEndDate,
+            string afterAdjustmentAmount,
+            string afterAdjustmentReason)
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = currencyId, ExchangeRate = 1 }
+            };
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                OldSalary = "10000",
+                OldCurrencyId = 1,
+                Salary = "12000",
+                CurrencyId = currencyId,
+                CurrencyCode = currencyCode,
+                SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement,
+                EffectiveDate = effectiveDate
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+
+            // Assert
+            Assert.Null(actual.BackPayAmount);
+            Assert.Null(actual.BackPayDescription);
+            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+        }
+
+        public static IEnumerable<object[]> OthersBasicSalaryChangeReason_EffectiveDateIsNull_TestCase()
+        {
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000.00", string.Empty };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "5806.45", "Deducted 4193.55 (USD). Employee started working from Mar 14, 2018. Basic Salary changed on  for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "6000", "Deducted 4000 (VND). Employee started working from Mar 14, 2018. Basic Salary changed on  for Promotion." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "9677.42", "Deducted 322.58 (USD). Employee official leaves from Mar 30, 2018. Basic Salary changed on  for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5483.87", "Deducted 4516.13 (USD). Employee worked from Mar 14, 2018 to Mar 30, 2018. Basic Salary changed on  for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5000", "Deducted 5000 (VND). Employee worked from Mar 14, 2018 to Mar 30, 2018. Basic Salary changed on  for Promotion." };
+        }
+
+        [Theory, MemberData(nameof(OthersBasicSalaryChangeReason_EffectiveDateIsNull_TestCase))]
+        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNull_ReturnAsExpectedViewModel(
+            int currencyId,
+            string currencyCode,
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate,
+            string afterAdjustmentAmount,
+            string afterAdjustmentReason)
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                Salary = "10000",
+                CurrencyId = currencyId,
+                CurrencyCode = currencyCode,
+                SalaryChangeReason = BasicSalaryChangeReason.Promotion
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+
+            // Assert
+            Assert.Null(actual.BackPayAmount);
+            Assert.Null(actual.BackPayDescription);
+            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+        }
+
+        public static IEnumerable<object[]> OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_TestCase()
+        {
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), null, "11161.29", "Deducted 838.71 (USD). Employee started working from Mar 01, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), null, "11000", "Deducted 1000 (VND). Employee started working from Mar 01, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), new DateTime(2018, 3, 30), "10774.19", "Deducted 1225.81 (USD). Employee worked from Mar 01, 2018 to Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 1), new DateTime(2018, 3, 30), "11000", "Deducted 1000 (VND). Employee worked from Mar 01, 2018 to Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), null, "11161.29", "Deducted 838.71 (USD). Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), null, "11000", "Deducted 1000 (VND). Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "10774.19", "Deducted 1225.81 (USD). Employee official leaves from Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "11000", "Deducted 1000 (VND). Employee official leaves from Mar 30, 2018. Basic Salary changed on Mar 14, 2018 for Promotion." };
+        }
+
+        [Theory, MemberData(nameof(OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_TestCase))]
+        public void CalculateBackPay_OthersBasicSalaryChangeReason_EffectiveDateIsNotNull_ReturnAsExpectedViewModel(
+            int currencyId,
+            string currencyCode,
+            DateTime workingMonth,
+            DateTime effectiveDate,
+            DateTime groupStartDate,
+            DateTime? groupEndDate,
+            string afterAdjustmentAmount,
+            string afterAdjustmentReason)
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = currencyId, ExchangeRate = 1 }
+            };
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                OldSalary = "10000",
+                OldCurrencyId = 1,
+                Salary = "12000",
+                CurrencyId = currencyId,
+                CurrencyCode = currencyCode,
+                SalaryChangeReason = BasicSalaryChangeReason.Promotion,
+                EffectiveDate = effectiveDate
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+
+            // Assert
+            Assert.Null(actual.BackPayAmount);
+            Assert.Null(actual.BackPayDescription);
+            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+        }
+
+        public static IEnumerable<object[]> AnnualIncrement_GroupDateCommencement_TestCase()
+        {
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000.00", string.Empty };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), null, "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "5806.45", "Deducted 4193.55 (USD). Employee started working from Mar 14, 2018." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), null, "6000", "Deducted 4000 (VND). Employee started working from Mar 14, 2018." };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "9677.42", "Deducted 322.58 (USD). Employee official leaves from Mar 30, 2018." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 2, 1), new DateTime(2018, 3, 30), "10000", string.Empty };
+            yield return new object[] { 1, "USD", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5483.87", "Deducted 4516.13 (USD). Employee worked from Mar 14, 2018 to Mar 30, 2018." };
+            yield return new object[] { 11, "VND", new DateTime(2018, 3, 1), new DateTime(2018, 3, 14), new DateTime(2018, 3, 30), "5000", "Deducted 5000 (VND). Employee worked from Mar 14, 2018 to Mar 30, 2018." };
+        }
+
+        [Theory, MemberData(nameof(AnnualIncrement_GroupDateCommencement_TestCase))]
+        public void CalculateBackPay_GroupDateCommencement_ReturnAsExpectedViewModel(
+            int currencyId,
+            string currencyCode,
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate,
+            string afterAdjustmentAmount,
+            string afterAdjustmentReason)
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
+            var basicSetting = new MonthlyBasicSalaryModel
+            {
+                Salary = "10000",
+                CurrencyId = currencyId,
+                CurrencyCode = currencyCode
+            };
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            var actual = monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
+                currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+
+            // Assert
+            Assert.Null(actual.BackPayAmount);
+            Assert.Null(actual.BackPayDescription);
+            Assert.Equal(afterAdjustmentAmount, actual.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentReason, actual.AfterAdjustmentReason);
+        }
+
+        #endregion CalculateBackPayAndAfterAdjustment
 
         #region Helper
 
