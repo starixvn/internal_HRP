@@ -313,6 +313,60 @@
             return monthlyBasicAllowance;
         }
 
+        public MonthlyAllowanceModel InitializeMonthlyAllowance(int payrollId, MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            var monthlyAllowance = new MonthlyAllowanceModel
+            {
+                PayrollId = payrollId,
+                CurrencyId = basicAllowance.CurrencyId,
+                DirectBanking1CurrencyId = basicAllowance.DirectBanking1CurrencyId,
+                DirectBanking1Amount = basicAllowance.DirectBanking1Amount,
+                DirectBanking1AccountId = basicAllowance.DirectBanking1AccountId,
+                DirectBanking1BankTypeId = basicAllowance.DirectBanking1BankTypeId,
+                DirectBanking2CurrencyId = basicAllowance.DirectBanking2CurrencyId,
+                DirectBanking2Amount = basicAllowance.DirectBanking2Amount,
+                DirectBanking2AccountId = basicAllowance.DirectBanking2AccountId,
+                DirectBanking2BankTypeId = basicAllowance.DirectBanking2BankTypeId,
+                CashCurrencyId = basicAllowance.CashCurrencyId,
+                CashAmount = basicAllowance.CashAmount,
+                CashAccountId = basicAllowance.CashAccountId,
+                AutoCalculateOn = basicAllowance.AutoCalculateOn,
+            };
+
+            if (basicAllowance.CurrencyId.HasValue)
+            {
+                decimal.TryParse(cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount), out decimal totalAmount);
+
+                if(basicAllowance.RoomingChargesCurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.RoomingChargesAmount))
+                {
+                    var roomingCharge = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(basicAllowance.RoomingChargesAmount), 
+                        basicAllowance.RoomingChargesCurrencyId.Value, basicAllowance.CurrencyId.Value);
+                    totalAmount = totalAmount - roomingCharge;
+                }
+
+                if (basicAllowance.FitnessFirstCurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.FitnessFirstAmount))
+                {
+                    var fitnessFirst = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(basicAllowance.FitnessFirstAmount),
+                        basicAllowance.FitnessFirstCurrencyId.Value, basicAllowance.CurrencyId.Value);
+                    totalAmount = totalAmount - fitnessFirst;
+                }
+
+                var dutyMealAddition = allowanceAdditions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                decimal.TryParse(dutyMealAddition.NetAllowance, out decimal dutyMealAdditionAmount);
+                totalAmount = totalAmount + dutyMealAdditionAmount;
+
+                var dutyMealDeduction = allowanceDeductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                decimal.TryParse(dutyMealDeduction.NetAllowance, out decimal dutyMealDeductionAmount);
+                totalAmount = totalAmount - dutyMealDeductionAmount;
+
+                monthlyAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString(CultureInfo.InvariantCulture));
+                CalculateAutoAllowance(currencyExchangeRates, monthlyAllowance);
+            }
+
+            return monthlyAllowance;
+        }
+
         public void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
             DateTime startDate, DateTime? endDate)
         {
@@ -353,44 +407,7 @@
             monthlyPayrollBasicAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString(CultureInfo.InvariantCulture));
 
             CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate);
-            CalculateAuto(currencyExchangeRates, monthlyPayrollBasicAllowance);
-        }
-
-        private void CalculateAuto(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
-        {
-            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.TotalAmount));
-            var currencyId = monthlyPayrollBasicAllowance.CurrencyId ?? 0;
-            var directbanking1CurrencyId = monthlyPayrollBasicAllowance.DirectBanking1CurrencyId ?? 0;
-            var directbanking2CurrencyId = monthlyPayrollBasicAllowance.DirectBanking2CurrencyId ?? 0;
-            var cashCurrencyId = monthlyPayrollBasicAllowance.CashCurrencyId ?? 0;
-            decimal exchangeRate;
-
-            var directBanking1 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking1Amount), directbanking1CurrencyId, currencyId);
-            var directBanking2 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking2Amount), directbanking2CurrencyId, currencyId);
-            var cash = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.CashAmount), cashCurrencyId, currencyId);
-
-            switch (monthlyPayrollBasicAllowance.AutoCalculateOn)
-            {
-                case PayrollAutoCalculateOn.DirectBanking1:
-                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, directbanking1CurrencyId);
-                    directBanking1 = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking2 - cash), directbanking1CurrencyId);
-                    monthlyPayrollBasicAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
-                    break;
-
-                case PayrollAutoCalculateOn.DirectBanking2:
-                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, directbanking2CurrencyId);
-                    directBanking2 = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking1 - cash), directbanking2CurrencyId);
-                    monthlyPayrollBasicAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
-                    break;
-
-                case PayrollAutoCalculateOn.Cash:
-                    exchangeRate = GetExchangeRate(currencyExchangeRates, currencyId, cashCurrencyId);
-                    cash = RoundAmountWithCurrency(exchangeRate * (totalAmount - directBanking1 - directBanking2), cashCurrencyId);
-                    monthlyPayrollBasicAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
-                    break;
-                default:
-                    return;
-            }
+            CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
         public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int payrollId, int standardWorkingDays, int actualWorkingDays,
@@ -450,7 +467,7 @@
             if (standardWorkingDays > actualWorkingDays)
             {
                 var dutyMeal = deductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
-                dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
+                dutyMeal.NoOfDays = standardWorkingDays - actualWorkingDays;
 
                 var unitAmount = decimal.Parse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount)) / standardWorkingDays;
                 var totalAmount = unitAmount * dutyMeal.NoOfDays;
@@ -494,6 +511,11 @@
         {
             decimal.TryParse(amount, out decimal value);
             return value * GetExchangeRate(currencyExchangeRates, fromCurrencyId, toCurrencyId);
+        }
+
+        private static decimal ConvertAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, decimal amount, int fromCurrencyId, int toCurrencyId)
+        {
+            return amount * GetExchangeRate(currencyExchangeRates, fromCurrencyId, toCurrencyId);
         }
 
         private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
@@ -754,6 +776,70 @@
                 case AllowanceType.Secondment: return employeePayrollAllowance.SecondmentCurrencyId;
                 case AllowanceType.Others: return employeePayrollAllowance.OthersCurrencyId;
                 default: return null;
+            }
+        }
+
+        private void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
+        {
+            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.TotalAmount));
+            var currencyId = monthlyPayrollBasicAllowance.CurrencyId ?? 0;
+            var directbanking1CurrencyId = monthlyPayrollBasicAllowance.DirectBanking1CurrencyId ?? 0;
+            var directbanking2CurrencyId = monthlyPayrollBasicAllowance.DirectBanking2CurrencyId ?? 0;
+            var cashCurrencyId = monthlyPayrollBasicAllowance.CashCurrencyId ?? 0;
+
+            var directBanking1 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking1Amount), directbanking1CurrencyId, currencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.DirectBanking2Amount), directbanking2CurrencyId, currencyId);
+            var cash = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyPayrollBasicAllowance.CashAmount), cashCurrencyId, currencyId);
+
+            switch (monthlyPayrollBasicAllowance.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
+                    monthlyPayrollBasicAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
+                    break;
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
+                    monthlyPayrollBasicAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
+                    monthlyPayrollBasicAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        private void CalculateAutoAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
+        {
+            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyAllowance.TotalAmount));
+            var currencyId = monthlyAllowance.CurrencyId ?? 0;
+            var directbanking1CurrencyId = monthlyAllowance.DirectBanking1CurrencyId ?? 0;
+            var directbanking2CurrencyId = monthlyAllowance.DirectBanking2CurrencyId ?? 0;
+            var cashCurrencyId = monthlyAllowance.CashCurrencyId ?? 0;
+
+            var directBanking1 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.DirectBanking1Amount), directbanking1CurrencyId, currencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.DirectBanking2Amount), directbanking2CurrencyId, currencyId);
+            var cash = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.CashAmount), cashCurrencyId, currencyId);
+
+            switch (monthlyAllowance.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:                  
+                    directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
+                    monthlyAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
+                    break;
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
+                    monthlyAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
+                    monthlyAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
+                    break;
+                default:
+                    return;
             }
         }
 

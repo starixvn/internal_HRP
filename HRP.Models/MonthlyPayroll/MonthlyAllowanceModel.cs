@@ -6,11 +6,11 @@
     {
         public int PayrollId { get; set; }
 
-        public string CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         public string TotalAmount { get; set; }
 
-        public string DirectBanking1CurrencyId { get; set; }
+        public int? DirectBanking1CurrencyId { get; set; }
 
         public string DirectBanking1Amount { get; set; }
 
@@ -20,7 +20,7 @@
 
         public string DirectBanking1AccountName { get; set; }
 
-        public string DirectBanking2CurrencyId { get; set; }
+        public int? DirectBanking2CurrencyId { get; set; }
 
         public string DirectBanking2Amount { get; set; }
 
@@ -30,7 +30,7 @@
 
         public string DirectBanking2AccountName { get; set; }
 
-        public string CashCurrencyId { get; set; }
+        public int? CashCurrencyId { get; set; }
 
         public string CashAmount { get; set; }
 

@@ -41,5 +41,14 @@
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
             DateTime startDate,
             DateTime? endDate);
+
+        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int payrollId, int standardWorkingDays, int actualWorkingDays,
+            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+
+        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int payrollId, int standardWorkingDays, int actualWorkingDays,
+            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+
+        MonthlyAllowanceModel InitializeMonthlyAllowance(int payrollId, MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates
     }
 }
