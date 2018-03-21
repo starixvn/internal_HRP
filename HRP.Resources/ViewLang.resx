@@ -852,4 +852,13 @@
   <data name="UploadDSTNetSalaryFile" xml:space="preserve">
     <value>Upload DST NET Salary File (Max: 5MB)</value>
   </data>
+  <data name="Preset" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="ViewEmployee" xml:space="preserve">
+    <value>View Employee</value>
+  </data>
 </root>

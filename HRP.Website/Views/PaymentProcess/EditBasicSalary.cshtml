@@ -15,8 +15,8 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
-    <li class="like-link">View Employee</li>
-    <li class="active">Edit Basic Salary</li>
+    <li class="like-link">@ViewLang.ViewEmployee</li>
+    <li class="active">@ViewLang.EditBasicSalary</li>
 </ol>
 
 <form class="search-form">
@@ -30,22 +30,23 @@
     <div class="group">
         <label class="text">@ViewLang.Company</label>
         <select class="control width-92" disabled>
-            <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
+            <option value="@Model.CompanyCode" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
-    <input asp-for="CompanyId" hidden />
     <input type="text" asp-for="Month" hidden />
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
-        <input type="text" class="control" placeholder="" readonly />
+        <input type="text" class="control" value="@Model.IDNo" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control width-200" placeholder="" readonly />
+        <input type="text" class="control width-200" value="@Model.FullName" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-140" disabled></select>
+        <select class="control width-140" disabled>
+            <option value="@Model.CostCenter" selected="selected">@Model.CostCenter</option>
+        </select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
@@ -54,10 +55,10 @@
         </select>
     </div>
     <div class="group">
-        <button type="submit" class="button -preset">Preset</button>
+        <button type="submit" class="button -preset">@ViewLang.Preset</button>
     </div>
     <div class="group">
-        <button type="submit" class="button -add">Refresh</button>
+        <button type="submit" class="button -add">@ViewLang.Refresh</button>
     </div>
 </form>
 <div class="payment-duration">
@@ -147,7 +148,7 @@
     <div class="group-complex">
         <div class="group-title -no-space"><span class="icon-group"></span>Basic Salary</div>
     </div>
-    <div class="d-flex">        
+    <div class="d-flex">
         <div class="setting">
             <div class="group-complex -layout-setting">
                 <div class="bold">Setting</div>
@@ -242,7 +243,7 @@
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
-                <input type="text" class="control number" value="300.00"  disabled>
+                <input type="text" class="control number" value="300.00" disabled>
             </div>
         </div>
         <div class="payment">
@@ -283,7 +284,7 @@
     </div>
     <div class="group-complex -total-salary">
         <div class="text-specific">TOTAL NET</div>
-        <input type="text" class="control number total-salary" value="0,000,000.00" disabled >
+        <input type="text" class="control number total-salary" value="0,000,000.00" disabled>
     </div>
     <div class="list-button">
         <button class="button -second">@ViewLang.Cancel</button>
@@ -291,7 +292,6 @@
         <button class="button -primary" type="button">Save and Edit Allowances</button>
     </div>
 </div>
-
 
 @section Scripts {
     <environment include="Development">

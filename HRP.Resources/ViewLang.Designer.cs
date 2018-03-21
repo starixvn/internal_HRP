@@ -1717,6 +1717,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset.
+        /// </summary>
+        public static string Preset {
+            get {
+                return ResourceManager.GetString("Preset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Probation.
         /// </summary>
         public static string Probation {
@@ -1758,6 +1767,15 @@ namespace HRP.Resources {
         public static string Reason {
             get {
                 return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
             }
         }
         
@@ -2181,6 +2199,15 @@ namespace HRP.Resources {
         public static string ViewBasicSalary {
             get {
                 return ResourceManager.GetString("ViewBasicSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Employee.
+        /// </summary>
+        public static string ViewEmployee {
+            get {
+                return ResourceManager.GetString("ViewEmployee", resourceCulture);
             }
         }
         
