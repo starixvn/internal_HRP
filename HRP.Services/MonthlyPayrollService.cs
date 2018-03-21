@@ -165,15 +165,18 @@
             return commandResult;
         }
 
-        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId)
+        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
             var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria).ConfigureAwait(false);
             var model = new MonthlyAllowancesViewModel
             {
-                Allowance = result.Item1,
+                Month = month,
+                Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2,
-                Deductions = result.Item3
+                Deductions = result.Item3,
+                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
+                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year })
             };
 
             if (model.Allowance != null)
@@ -827,27 +830,29 @@
             var directBanking1 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.DirectBanking1Amount), directbanking1CurrencyId, currencyId);
             var directBanking2 = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.DirectBanking2Amount), directbanking2CurrencyId, currencyId);
             var cash = ConvertAmount(currencyExchangeRates, cryptoService.Decrypt(monthlyAllowance.CashAmount), cashCurrencyId, currencyId);
+            decimal autoAmount;
 
             switch (monthlyAllowance.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
-                    monthlyAllowance.DirectBanking1Amount = cryptoService.Encrypt(directBanking1.ToString(CultureInfo.InvariantCulture));
+                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId);
+                    monthlyAllowance.DirectBanking1Amount = cryptoService.Encrypt(autoAmount.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
-                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
-                    monthlyAllowance.DirectBanking2Amount = cryptoService.Encrypt(directBanking2.ToString(CultureInfo.InvariantCulture));
+                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId);
+                    monthlyAllowance.DirectBanking2Amount = cryptoService.Encrypt(autoAmount.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case PayrollAutoCalculateOn.Cash:
-                    cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
-                    monthlyAllowance.CashAmount = cryptoService.Encrypt(cash.ToString(CultureInfo.InvariantCulture));
+                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
+                    monthlyAllowance.CashAmount = cryptoService.Encrypt(autoAmount.ToString(CultureInfo.InvariantCulture));
                     break;
-
                 default:
                     return;
             }
+
+            monthlyAllowance.Status = autoAmount >= 0 ? MonthlyPayrollStatus.None : MonthlyPayrollStatus.Unsatisfied;
         }
 
         #region Back Pay and After Adjustment

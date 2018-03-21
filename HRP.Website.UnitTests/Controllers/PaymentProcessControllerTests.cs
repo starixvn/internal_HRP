@@ -519,7 +519,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
 
-            var actual = await controller.EditAllowances(1, companyId);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
 
             var result = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", result.ControllerName);
@@ -533,9 +533,9 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
-            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>()).Returns(new MonthlyAllowancesViewModel());
+            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(new MonthlyAllowancesViewModel());
 
-            var actual = await controller.EditAllowances(1, companyId);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
 
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);

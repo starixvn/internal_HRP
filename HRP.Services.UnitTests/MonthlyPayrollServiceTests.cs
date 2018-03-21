@@ -345,8 +345,10 @@
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
                 .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>(allowance, additions, deductions));
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
+            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
 
-            var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1);
+            var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
             Assert.NotNull(actual);
             Assert.NotNull(actual.Allowance);
             Assert.NotNull(actual.Additions);

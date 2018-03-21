@@ -328,14 +328,14 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId)
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId);
+            var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
             viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
 
             return View(viewModel);

@@ -23,7 +23,7 @@
 
         Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel);
 
-        Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId);
+        Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month);
 
         Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId);
 

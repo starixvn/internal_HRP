@@ -37,5 +37,7 @@
         public int? CashAccountId { get; set; }
 
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
+
+        public MonthlyPayrollStatus Status { get; set; }
     }
 }
