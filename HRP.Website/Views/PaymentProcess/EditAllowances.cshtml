@@ -1,1 +1,426 @@
-﻿
+﻿@section Styles {
+    <environment include="Development">
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">Payment Process</li>
+    <li class="like-link">View Employee</li>
+    <li class="active">Edit Allowances</li>
+</ol>
+
+<form class="search-form">
+    <div class="group">
+        <label class="text">Month/Year</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker" readonly />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="group">
+        <label class="text">Company</label>
+        <select class="control width-92" disabled>
+            <option value="" selected="selected">Company</option>
+        </select>
+    </div>
+    <input hidden />
+    <input type="text" hidden />
+    <div class="group">
+        <label class="text">ID No.</label>
+        <input type="text" class="control" placeholder="" readonly />
+    </div>
+    <div class="group">
+        <label class="text">Employee</label>
+        <input type="text" class="control width-200" placeholder="" readonly />
+    </div>
+    <div class="group">
+        <label class="text">Div/Dept/Cost Center</label>
+        <select class="control width-140" disabled></select>
+    </div>
+    <div class="group">
+        <label class="text">Working Days</label>
+        <select class="control width-92" disabled>
+            <option value="" selected="selected">22</option>
+        </select>
+    </div>
+    <div class="group">
+        <button type="submit" class="button -preset">Preset</button>
+    </div>
+    <div class="group">
+        <button type="submit" class="button -add">Refresh</button>
+    </div>
+</form>
+<div class="payment-duration">
+    <div class="date"><span class="required">*</span> The Payment Process Duration</div>
+    <div class="date">Start Date: <strong>01/03/2018</strong></div>
+    <div class="date">Due Date: <strong>31/03/2018</strong></div>
+</div>
+<div class="form-information">
+    <div class="d-flex">
+        <div class="add">
+            <div class="group-title m-t-0"><span class="icon-group"></span>Add</div>
+            <div class="group-complex -alw-layout-add -align-items-end text-center -group-type">
+                <div class="-start-col-2">Unit Amount</div>
+                <div>Actual Currency</div>
+                <div>No of Days</div>
+                <div>Total Amount (Actual curr.)</div>
+                <div class="-start-col-7">Net Allowance (Conversion curr.)</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Subsistence</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Home Passage</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Housing</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Mobile Phone</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">HPI</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Duty Meal</div>
+                <input type="text" class="control" disabled>
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Secondment</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="like-group-title">Others</div>
+                <input type="text" class="control">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+                <input type="text" class="control" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-add">
+                <div class="text-specific">Total Add</div>
+                <input type="text" class="control highlighted -start-col-7" disabled>
+            </div>
+        </div>
+        <div class="deduction">
+            <div class="group-deduction"><span class="icon-group"></span>Deduction</div>
+            <div class="group-complex -alw-layout-deduction -align-items-end text-center -group-type">
+                <div>Unit Amount</div>
+                <div>Actual Currency</div>
+                <div>No of Days</div>
+                <div>Total Amount (Actual curr.)</div>
+                <div class="-start-col-6">Net Allowance (Conversion curr.)</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number" disabled>
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction text-center">
+                <input type="text" class="control number">
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control">
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+                <input type="text" class="control number" disabled>
+                <div>USD</div>
+            </div>
+            <div class="group-complex -alw-layout-deduction-2">
+                <div class="text-specific text-red">Total Deduction</div>
+                <input type="text" class="control highlighted -start-col-5" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="monthly-deduction">
+        <div class="group-deduction"><span class="icon-group"></span>Monthly Deduction</div>
+        <div class="group-complex -layout-setting">
+            <div class="text-red bold">Romming Charge</div>
+            <select class="control" disabled>
+                <option>USD</option>
+            </select>
+            <input type="text" class="control number" disabled>
+        </div>
+        <div class="group-complex -layout-setting">
+        <div class="text-red bold">Fitness First</div>
+            <select class="control" disabled>
+                <option>USD</option>
+            </select>
+            <input type="text" class="control number" disabled>
+        </div>
+    </div>    
+    
+    <div class="group-title"><span class="icon-group"></span>Allowances</div>
+    <div class="d-flex">
+        <div class="setting">
+            <div class="group-complex -layout-setting">
+                <div class="bold">Setting</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Direct Banking1</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="200.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Direct Banking1</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="like-group-title">Cash</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="300.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting">
+                <div class="bold">After Adjustment</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control highlighted number" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-setting-2">
+                <div>Reason</div>
+                <textarea class="control text-reason" disabled>Added/Deducted abs(x) (currency). Employee worked from [Start Date of Date</textarea>
+            </div>
+        </div>
+        <div class="monthly-payroll">
+            <div class="group-complex -layout-payroll">
+                <div class="bold group-payroll text-green">Monthly Payroll</div>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number highlighted total-monthly-payroll" value="1,000.00" disabled>
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" />
+                    <span class="like-group-title">Direct Banking1</span>
+                </label>
+                <select class="control">
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="200.00">
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" />
+                    <span class="like-group-title">Direct Banking2</span>
+                </label>
+                <select class="control">
+                    <option></option>
+                </select>
+                <input type="text" class="control number">
+            </div>
+            <div class="group-complex -layout-payroll">
+                <label>
+                    <input type="radio" checked />
+                    <span class="like-group-title">Cash</span>
+                </label>
+                <select class="control" disabled>
+                    <option>USD</option>
+                </select>
+                <input type="text" class="control number" value="300.00"  disabled>
+            </div>
+        </div>
+        <div class="payment">
+            <div class="bold group-payment">Payment Transaction</div>
+            <div class="group-complex -layout-payment -group-type">
+                <div>Bank Type</div>
+                <div>Account Name</div>
+            </div>
+            <div class="group-complex -layout-payment">
+                <select class="control">
+                    <option>Direct Banking 1</option>
+                </select>
+                <select class="control">
+                    <option>Account 1</option>
+                </select>
+            </div>
+            <div class="group-complex -layout-payment">
+                <select class="control">
+                    <option>Direct Banking 2</option>
+                </select>
+                <select class="control">
+                    <option></option>
+                </select>
+            </div>
+            <div class="group-complex -layout-payment">
+                <div class="like-group-title">Cash</div>
+                <select class="control">
+                    <option>Cash-DAR</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="group-complex -total-salary">
+        <div class="text-specific">TOTAL NET</div>
+        <input type="text" class="control total-salary" value="0,000,000.00" disabled >
+    </div>
+    <div class="group-complex -total-salary">
+        <div class="text-specific text-red">DST NET Salary</div>
+        <input type="text" class="control text-dst-net" value="000,000.00" >
+    </div>
+    <div class="group-complex -total-salary">
+        <div class="text-specific text-green">Net Amount</div>
+        <input type="text" class="control text-net-amount" value="0,000,000.00" disabled >
+    </div>
+    <div class="list-button">
+        <button class="button -second">Cancel</button>
+        <button class="button -primary" type="submit">Save</button>
+        <button class="button -primary" type="button">Save and Edit Allowances</button>
+    </div>
+</div>

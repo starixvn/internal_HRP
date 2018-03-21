@@ -102,13 +102,13 @@
                 <input type="text" class="control number">
             </div>
             <div class="group-complex -layout-add">
-                <div class="bold">Total Add</div>
-                <input type="text" class="control number highlighted -start-col-5" disabled>
+                <div class="text-specific">Total Add</div>
+                <input type="text" class="control number highlighted -start-col-5 bold" disabled>
             </div>
         </div>
         <div class="deduction">
             <div class="group-complex -layout-deduction -group-type">
-                <div class="group-title -no-space text-red"><span class="icon-group"></span>Deduction</div>
+                <div class="group-deduction m-b-0"><span class="icon-group"></span>Deduction</div>
                 <div>Description</div>
                 <div class="-start-col-5">Net Salary</div>
             </div>
@@ -139,8 +139,8 @@
                 <input type="text" class="control number -start-col-5" disabled>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="like-group-title text-red">Total Deduction</div>
-                <input type="text" class="control number -start-col-5 highlighted" disabled>
+                <div class="text-specific text-red">Total Deduction</div>
+                <input type="text" class="control number -start-col-5 highlighted bold" disabled>
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
-                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+                <input type="text" class="control number highlighted bold" value="1,000.00" disabled>
             </div>
             <div class="group-complex -layout-setting-2">
                 <div>Reason</div>
@@ -198,11 +198,11 @@
         </div>
         <div class="monthly-payroll">
             <div class="group-complex -layout-payroll">
-                <div class="bold group-payroll">Monthly Payroll</div>
+                <div class="bold group-payroll text-green">Monthly Payroll</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
-                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+                <input type="text" class="control number highlighted total-monthly-payroll" value="1,000.00" disabled>
             </div>
             <div class="group-complex -layout-payroll">
                 <label>
@@ -282,8 +282,8 @@
         </div>
     </div>
     <div class="group-complex -total-salary">
-        <div class="bold">TOTAL NET BASIC SALARY</div>
-        <input type="text" class="control number highlighted" disabled >
+        <div class="text-specific">TOTAL NET</div>
+        <input type="text" class="control number total-salary" value="0,000,000.00" disabled >
     </div>
     <div class="list-button">
         <button class="button -second">@ViewLang.Cancel</button>
