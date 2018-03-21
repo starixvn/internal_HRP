@@ -47,7 +47,8 @@
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
             DateTime startDate,
-            DateTime? endDate);
+            DateTime? endDate, 
+            int month, int year);
 
         IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int payrollId, int standardWorkingDays, int actualWorkingDays,
             EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);

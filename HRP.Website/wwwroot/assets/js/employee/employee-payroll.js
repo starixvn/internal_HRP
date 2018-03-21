@@ -404,7 +404,7 @@
             }
         });
 
-        var $form = $('#payroll-form');
+        var $form = $('#payroll-form'); debugger;
         $form.removeData('validator');
         $form.removeData('unobtrusiveValidation');
 
@@ -417,7 +417,7 @@
 
         $.validator.addMethod('invalidsetting', function (value, element, param) {
             if (element.readOnly)
-                return value === '' || Number(value) > 0;
+                return value === '' || Number(value) >= 0;
             else
                 return true;
         });

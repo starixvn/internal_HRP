@@ -439,7 +439,7 @@
         }
 
         public void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
-            DateTime startDate, DateTime? endDate)
+            DateTime startDate, DateTime? endDate, int month, int year)
         {
             decimal totalAmount = 0;
 
@@ -477,7 +477,7 @@
             totalAmount = RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
             monthlyPayrollBasicAllowance.TotalAmount = cryptoService.Encrypt(totalAmount.ToString(CultureInfo.InvariantCulture));
 
-            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate);
+            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate, month, year);
             CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
@@ -561,14 +561,13 @@
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate)
+        private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate, int month, int year)
 #pragma warning restore S1541 // Methods and properties should not be too complex
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
-            var currentDate = DateTime.Today;
-            var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
-            var startDay = startDate.Month == currentDate.Month && startDate.Year == currentDate.Year ? startDate.Day : 1;
-            var endDay = endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year ? endDate.Value.Day : daysInMonth;
+            var daysInMonth = DateTime.DaysInMonth(year, month);
+            var startDay = startDate.Month == month && startDate.Year == year ? startDate.Day : 1;
+            var endDay = endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ? endDate.Value.Day : daysInMonth;
             var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture));
@@ -580,15 +579,15 @@
                 var reason = new StringBuilder();
                 reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), currencyCode);
 
-                if(startDate.Month == currentDate.Month && startDate.Year == currentDate.Year)
+                if(startDate.Month == month && startDate.Year == year)
                 {
-                    reason.Append(endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year ? 
+                    reason.Append(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ? 
                         $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" : 
                         $"Employee started working from {startDate.ToShortDateString()}");
                 }
                 else
                 {
-                    if(endDate.HasValue && endDate.Value.Month == currentDate.Month && endDate.Value.Year == currentDate.Year)
+                    if(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year)
                     {
                         reason.Append($"Employee official leaves from {endDate.Value.ToShortDateString()}");
                     }

@@ -1,5 +1,8 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using HRP.Core.CustomValidations;
+    using HRP.Resources;
+
     public class MonthlyAllowanceAdditionModel
     {
         public int PayrollId { get; set; }
@@ -8,6 +11,7 @@
 
         public decimal? NoOfDays { get; set; }
 
+        [RequiredIfRealtedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UnitAmountRequired")]
         public string UnitAmount { get; set; }
 
         public string TotalAmount { get; set; }

@@ -1,11 +1,13 @@
 ﻿namespace HRP.Core.CustomValidations
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class RequiredNoneOrAllAttribute : ValidationAttribute
+    public class RequiredNoneOrAllAttribute : ValidationAttribute, IClientModelValidator
     {
         public string[] RelatedProperties { get; set; }
 
@@ -19,6 +21,20 @@
             }
 
             return ValidationResult.Success;
+        }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            MergeAttribute(context.Attributes, "data-val", "true");
+            MergeAttribute(context.Attributes, "data-val-requirednoneorall", ErrorMessageString);
+        }
+
+        private static void MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (!attributes.ContainsKey(key))
+            {
+                attributes.Add(key, value);
+            }
         }
     }
 }
