@@ -12,6 +12,7 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models;
     using HRP.Models.Currency;
