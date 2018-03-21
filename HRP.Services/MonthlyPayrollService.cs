@@ -470,8 +470,9 @@
             {
                 var dutyMeal = deductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
                 dutyMeal.NoOfDays = standardWorkingDays - actualWorkingDays;
+                decimal.TryParse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount), out decimal dutyMealAmount);
 
-                var unitAmount = decimal.Parse(cryptoService.Decrypt(employeePayrollAllowance.DutyMealAmount)) / standardWorkingDays;
+                var unitAmount = dutyMealAmount / standardWorkingDays;
                 var totalAmount = unitAmount * dutyMeal.NoOfDays;
 
                 dutyMeal.UnitAmount = cryptoService.Encrypt(unitAmount.ToString(CultureInfo.InvariantCulture));
@@ -801,7 +802,7 @@
 
         private void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
         {
-            var totalAmount = decimal.Parse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.TotalAmount));
+            decimal.TryParse(cryptoService.Decrypt(monthlyPayrollBasicAllowance.TotalAmount), out decimal totalAmount);
             var currencyId = monthlyPayrollBasicAllowance.CurrencyId ?? 0;
             var directbanking1CurrencyId = monthlyPayrollBasicAllowance.DirectBanking1CurrencyId ?? 0;
             var directbanking2CurrencyId = monthlyPayrollBasicAllowance.DirectBanking2CurrencyId ?? 0;
