@@ -348,9 +348,6 @@
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
                 .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
                 (allowance, additions, deductions, basicAllowance));
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
-            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
             Assert.NotNull(actual);

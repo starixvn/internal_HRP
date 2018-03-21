@@ -1,4 +1,6 @@
-﻿@model HRP.Models.MonthlyPayroll.MonthlyAllowancesViewModel
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
+@model HRP.Models.MonthlyPayroll.MonthlyAllowancesViewModel
 
 @section Styles {
     <environment include="Development">
@@ -10,8 +12,8 @@
     </environment>
 }
 
-@{ 
-    var currencies = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyId), "CurrencyId", "CurrencyCode");
+@{
+    var bankTypes = Html.GetEnumSelectList<BankTypes>().Where(x => int.Parse(x.Value) != (int)BankTypes.Ebanking);
 }
 
 <ol class="breadcrumb">
@@ -66,335 +68,232 @@
     <div class="date">Start Date: <strong>01/03/2018</strong></div>
     <div class="date">Due Date: <strong>31/03/2018</strong></div>
 </div>
-<div class="form-information">
-    <div class="d-flex">
-        <div class="add">
-            <div class="group-title m-t-0"><span class="icon-group"></span>Add</div>
-            <div class="group-complex -alw-layout-add -align-items-end text-center -group-type">
-                <div class="-start-col-2">Unit Amount</div>
-                <div>Actual Currency</div>
-                <div>No of Days</div>
-                <div>Total Amount (Actual curr.)</div>
-                <div class="-start-col-6">Net Allowance (USD)</div>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Subsistence</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Home Passage</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Housing</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Mobile Phone</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">HPI</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Duty Meal</div>
-                <input type="text" class="control" disabled>
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Secondment</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="like-group-title">Others</div>
-                <input type="text" class="control">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control" disabled>
-                <input type="text" class="control" disabled>
-            </div>
-            <div class="group-complex -alw-layout-add">
-                <div class="text-specific">Total Add</div>
-                <input type="text" class="control highlighted -start-col-6" disabled>
-            </div>
-        </div>
-        <div class="deduction">
-            <div class="group-deduction"><span class="icon-group"></span>Deduction</div>
-            <div class="group-complex -alw-layout-deduction -align-items-end text-center -group-type">
-                <div>Unit Amount</div>
-                <div>Actual Currency</div>
-                <div>No of Days</div>
-                <div>Total Amount (Actual curr.)</div>
-                <div class="-start-col-5">Net Allowance (Conversion curr.)</div>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number" disabled>
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction text-center">
-                <input type="text" class="control number">
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control">
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number" disabled>
-            </div>
-            <div class="group-complex -alw-layout-deduction-2">
-                <div class="text-specific text-red">Total Deduction</div>
-                <input type="text" class="control highlighted -start-col-4" disabled>
-            </div>
-        </div>
-    </div>
 
-    <div class="monthly-deduction">
-        <div class="group-deduction"><span class="icon-group"></span>Monthly Deduction</div>
-        <div class="group-complex -layout-setting">
-            <div class="text-red bold">Romming Charge</div>
-            <select class="control" disabled>
-                <option>USD</option>
-            </select>
-            <input type="text" class="control number" disabled>
-        </div>
-        <div class="group-complex -layout-setting">
-            <div class="text-red bold">Fitness First</div>
-            <select class="control" disabled>
-                <option>USD</option>
-            </select>
-            <input type="text" class="control number" disabled>
-        </div>
-    </div>
+@foreach (var currency in Model.CurrencyExchangeRates)
+{
+    <input type="hidden" data-from-currency="@currency.FromCurrencyId" data-to-currency="@currency.ToCurrencyId" value="@currency.ExchangeRate" />
+}
 
-    <div class="group-title"><span class="icon-group"></span>Allowances</div>
-    <div class="d-flex">
-        <div class="setting">
-            <div class="group-complex -layout-setting">
-                <div class="bold">Setting</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="1,000.00" disabled>
+<form asp-action="EditAllowances" method="post" id="edit-allowances-form">
+    <div class="form-information">
+        <div class="list-message-error hidden" id="validation-summary">
+            <span asp-validation-for="Allowance.DirectBanking1CurrencyId" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking1Amount" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking1BankTypeId" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking1AccountId" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking2CurrencyId" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking2Amount" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking2BankTypeId" class="message"></span>
+            <span asp-validation-for="Allowance.DirectBanking2AccountId" class="message"></span>
+            <span asp-validation-for="Allowance.CashCurrencyId" class="message"></span>
+            <span asp-validation-for="Allowance.CashAmount" class="message"></span>
+            <span asp-validation-for="Allowance.CashAccountId" class="message"></span>
+        </div>
+
+        <div class="d-flex">
+            <div class="add">
+                <div class="group-title m-t-0"><span class="icon-group"></span>Add</div>
+                <div class="group-complex -alw-layout-add -align-items-end text-center -group-type">
+                    <div class="-start-col-2">Unit Amount</div>
+                    <div>Actual Currency</div>
+                    <div>No of Days</div>
+                    <div>Total Amount (Actual curr.)</div>
+                    <div class="-start-col-6">Net Allowance (USD)</div>
+                </div>
+
+                @for (var i = 0; i < Model.Additions.Count; i++)
+                {
+                    <div class="group-complex -alw-layout-add">
+                        <div class="like-group-title">@((AllowanceType)Model.Additions[i].Type)</div>
+                        <input type="text" class="control" asp-for="Additions[i].UnitAmount">
+                        <select class="control" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
+                            <option></option>
+                        </select>
+                        <input type="text" class="control" asp-for="Additions[i].NoOfDays">
+                        <input type="text" class="control" readonly asp-for="Additions[i].TotalAmount">
+                        <input type="text" class="control" readonly asp-for="Additions[i].NetAllowance">
+                    </div>
+                }
+
+                <div class="group-complex -alw-layout-add">
+                    <div class="text-specific">Total Add</div>
+                    <input type="text" class="control highlighted -start-col-6" disabled>
+                </div>
             </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">Direct Banking1</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="200.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">Direct Banking1</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">Cash</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="300.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="bold">After Adjustment</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control highlighted number" value="1,000.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting-2">
-                <div>Reason</div>
-                <textarea class="control text-reason" disabled>Added/Deducted abs(x) (currency). Employee worked from [Start Date of Date</textarea>
+            <div class="deduction">
+                <div class="group-deduction"><span class="icon-group"></span>Deduction</div>
+                <div class="group-complex -alw-layout-deduction -align-items-end text-center -group-type">
+                    <div>Unit Amount</div>
+                    <div>Actual Currency</div>
+                    <div>No of Days</div>
+                    <div>Total Amount (Actual curr.)</div>
+                    <div class="-start-col-5">Net Allowance (Conversion curr.)</div>
+                </div>
+
+                @for (var i = 0; i < Model.Deductions.Count; i++)
+                {
+                    <div class="group-complex -alw-layout-add">
+
+                    </div>
+
+                    <div class="group-complex -alw-layout-deduction text-center">
+                        <input type="text" class="control " asp-for="Deductions[i].UnitAmount">
+                        <select class="control" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
+                            <option></option>
+                        </select>
+                        <input type="text" class="control" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" class="control" readonly asp-for="Deductions[i].TotalAmount">
+                        <input type="text" class="control" readonly asp-for="Deductions[i].NetAllowance">
+                    </div>
+                }
+
             </div>
         </div>
-        <div class="monthly-payroll">
-            <div class="group-complex -layout-payroll">
-                <div class="bold group-payroll text-green">Monthly Payroll</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted total-monthly-payroll" value="1,000.00" disabled>
+
+        <div class="monthly-deduction">
+            <div class="group-deduction"><span class="icon-group"></span>Monthly Deduction</div>
+            <div class="group-complex -layout-setting">
+                <div class="text-red bold">@ViewLang.RommingCharges</div>
+                <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.RoomingChargesCurrencyId"></select>
+                <input type="text" class="control number" disabled asp-for="BasicAllowance.RoomingChargesAmount">
             </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" />
-                    <span class="like-group-title">Direct Banking1</span>
-                </label>
-                <select class="control">
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="200.00">
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" />
-                    <span class="like-group-title">Direct Banking2</span>
-                </label>
-                <select class="control">
+            <div class="group-complex -layout-setting">
+                <div class="text-red bold">@ViewLang.FitnessFirst</div>
+                <select class="control" disabled asp-for="BasicAllowance.FitnessFirstCurrencyId">
                     <option></option>
                 </select>
-                <input type="text" class="control number">
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" checked />
-                    <span class="like-group-title">Cash</span>
-                </label>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="300.00" disabled>
+                <input type="text" class="control number" disabled asp-for="BasicAllowance.FitnessFirstAmount">
             </div>
         </div>
-        <div class="payment">
-            <div class="bold group-payment">Payment Transaction</div>
-            <div class="group-complex -layout-payment -group-type">
-                <div>Bank Type</div>
-                <div>Account Name</div>
+
+        <div class="group-title"><span class="icon-group"></span>@ViewLang.Allowances</div>
+        <div class="d-flex">
+            <div class="setting">
+                <div class="group-complex -layout-setting">
+                    <div class="bold">Setting</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number" asp-for="BasicAllowance.TotalAmount" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.DirectBanking1</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.DirectBanking1CurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number" disabled asp-for="BasicAllowance.DirectBanking1Amount">
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.DirectBanking2</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.DirectBanking2CurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number" disabled asp-for="BasicAllowance.DirectBanking2Amount">
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.Cash</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CashCurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number" disabled asp-for="BasicAllowance.CashAmount">
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="bold">After Adjustment</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control highlighted number" disabled asp-for="BasicAllowance.AfterAdjustmentAmount">
+                </div>
+                <div class="group-complex -layout-setting-2">
+                    <div>Reason</div>
+                    <textarea class="control text-reason" disabled asp-for="BasicAllowance.Reason">Added/Deducted abs(x) (currency). Employee worked from [Start Date of Date</textarea>
+                </div>
             </div>
-            <div class="group-complex -layout-payment">
-                <select class="control">
-                    <option>Direct Banking 1</option>
-                </select>
-                <select class="control">
-                    <option>Account 1</option>
-                </select>
+            <div class="monthly-payroll">
+                <div class="group-complex -layout-payroll">
+                    <div class="bold group-payroll text-green">Monthly Allowances</div>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="Allowance.CurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number highlighted total-monthly-payroll" disabled asp-for="Allowance.TotalAmount">
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" />
+                        <span class="like-group-title">@ViewLang.DirectBanking1</span>
+                    </label>
+                    <select class="control" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking1CurrencyId">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="Allowance.DirectBanking1Amount">
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" />
+                        <span class="like-group-title">@ViewLang.DirectBanking2</span>
+                    </label>
+                    <select class="control" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking2CurrencyId">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="Allowance.DirectBanking2Amount">
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" checked />
+                        <span class="like-group-title">@ViewLang.Cash</span>
+                    </label>
+                    <select class="control" disabled asp-items="Model.Currencies" asp-for="Allowance.CashCurrencyId">
+                        <option>USD</option>
+                    </select>
+                    <input type="text" class="control number" disabled asp-for="Allowance.CashAmount">
+                </div>
             </div>
-            <div class="group-complex -layout-payment">
-                <select class="control">
-                    <option>Direct Banking 2</option>
-                </select>
-                <select class="control">
-                    <option></option>
-                </select>
-            </div>
-            <div class="group-complex -layout-payment">
-                <div class="like-group-title">Cash</div>
-                <select class="control">
-                    <option>Cash-DAR</option>
-                </select>
+            <div class="payment">
+                <div class="bold group-payment">Payment Transaction</div>
+                <div class="group-complex -layout-payment -group-type">
+                    <div>@ViewLang.BankType</div>
+                    <div>@ViewLang.AccountName</div>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <select class="control" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId">
+                        <option></option>
+                    </select>
+                    <select class="control" asp-for="Allowance.DirectBanking1AccountId" data-url="@Url.Action("GetEmployeeBankAccounts", "BankAccount")">
+                        <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
+                    </select>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <select class="control" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId">
+                        <option></option>
+                    </select>
+                    <select class="control" asp-for="Allowance.DirectBanking2AccountId" data-url="@Url.Action("GetEmployeeBankAccounts", "BankAccount")">
+                        <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>
+                    </select>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <div class="like-group-title">@ViewLang.Cash</div>
+                    <select class="control" asp-items="Model.CashAccounts" asp-for="Allowance.CashAccountId">
+                        <option></option>
+                    </select>
+                </div>
             </div>
         </div>
+        <div class="group-complex -total-salary">
+            <div class="text-specific">TOTAL NET</div>
+            <input type="text" class="control total-salary" value="0,000,000.00" disabled>
+        </div>
+        <div class="group-complex -total-salary">
+            <div class="text-specific text-red">DST NET Salary</div>
+            <input type="text" class="control text-dst-net" value="000,000.00">
+        </div>
+        <div class="group-complex -total-salary">
+            <div class="text-specific text-green">Net Amount</div>
+            <input type="text" class="control text-net-amount" value="0,000,000.00" disabled>
+        </div>
+        <div class="list-button">
+            <button class="button -second">Cancel</button>
+            <button class="button -primary" type="submit">Save</button>
+            <button class="button -primary" type="button">Save and Edit Allowances</button>
+        </div>
     </div>
-    <div class="group-complex -total-salary">
-        <div class="text-specific">TOTAL NET</div>
-        <input type="text" class="control total-salary" value="0,000,000.00" disabled>
-    </div>
-    <div class="group-complex -total-salary">
-        <div class="text-specific text-red">DST NET Salary</div>
-        <input type="text" class="control text-dst-net" value="000,000.00">
-    </div>
-    <div class="group-complex -total-salary">
-        <div class="text-specific text-green">Net Amount</div>
-        <input type="text" class="control text-net-amount" value="0,000,000.00" disabled>
-    </div>
-    <div class="list-button">
-        <button class="button -second">Cancel</button>
-        <button class="button -primary" type="submit">Save</button>
-        <button class="button -primary" type="button">Save and Edit Allowances</button>
-    </div>
-</div>
+</form>

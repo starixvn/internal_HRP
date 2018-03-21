@@ -21,6 +21,9 @@
     using Xunit;
     using HRP.Core.Model;
     using Microsoft.AspNetCore.Routing;
+    using HRP.Models.Currency;
+    using HRP.Criteria;
+    using HRP.Criteria.RefResource;
 
     public class PaymentProcessControllerTests
     {
@@ -518,6 +521,9 @@
             var companyId = 1;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
+            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
+            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
 

@@ -174,12 +174,9 @@
             {
                 Month = month,
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
-                Additions = result.Item2,
-                Deductions = result.Item3,
-                BasicAllowance = result.Item4,
-                Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year }),
-                CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true })
+                Additions = result.Item2.OrderBy(x => x.Type).ToList(),
+                Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
+                BasicAllowance = result.Item4 
             };
 
             if (model.Allowance != null)

@@ -11,6 +11,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
@@ -19,6 +20,7 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     [HRPAuthorize]
     public class PaymentProcessController : BaseController
@@ -336,6 +338,12 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            viewModel.Currencies = new SelectList(baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()), 
+                nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+            viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
+            viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
+                nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+
             viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
 
             return View(viewModel);
