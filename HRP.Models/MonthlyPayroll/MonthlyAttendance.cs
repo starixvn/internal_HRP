@@ -4,7 +4,7 @@
 
     public class MonthlyAttendance
     {
-        public string EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
 
         public DateTime Month { get; set; }
 

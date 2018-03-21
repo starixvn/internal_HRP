@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
@@ -13,6 +14,7 @@
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.Currency;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories;
     using HRP.Repositories.Interfaces;
@@ -24,18 +26,21 @@
     {
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
+        private readonly IMonthlyPayrollService monthlyPayrollService;
         private readonly IPaymentProcessRepository paymentProcessRepository;
         private readonly IObjectStream fileStream;
         private readonly ITemplateReader templateReader;
 
         public PaymentProcessService(IBaseService baseService,
             ISessionService sessionService,
+            IMonthlyPayrollService monthlyPayrollService,
             ITemplateReader templateReader,
             IPaymentProcessRepository paymentProcessRepository = null,
             IObjectStream fileStream = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
+            this.monthlyPayrollService = monthlyPayrollService;
             this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
             this.fileStream = fileStream ?? new ObjectStream();
@@ -252,6 +257,18 @@
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
             var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
+            var numMonth = month.Month;
+            var numYear = month.Year;
+            foreach (var payroll in dataModel.MonthlyPayroll)
+            {
+                var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
+                var monthlyBasicSalary = dataModel.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
+                var backPay = new MonthlySalaryAdditionModel();
+                var monthlySalary = new MonthlySalaryModel();
+                monthlyPayrollService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
+                monthlyPayrollService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
+                monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, payroll.GroupStartDate, payroll.GroupEndDate, numMonth, numYear);
+            }
 
             return new CommandResult { Code = 0, Data = dataModel };
         }

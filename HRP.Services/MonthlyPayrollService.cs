@@ -566,6 +566,7 @@
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning disable S1541 // Methods and properties should not be too complex
+
         private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate, int month, int year)
 #pragma warning restore S1541 // Methods and properties should not be too complex
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
@@ -584,15 +585,15 @@
                 var reason = new StringBuilder();
                 reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), currencyCode);
 
-                if(startDate.Month == month && startDate.Year == year)
+                if (startDate.Month == month && startDate.Year == year)
                 {
-                    reason.Append(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ? 
+                    reason.Append(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ?
                         $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" :
                         $"Employee started working from {startDate.ToShortDateString()}");
                 }
                 else
                 {
-                    if(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year)
+                    if (endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year)
                     {
                         reason.Append($"Employee official leaves from {endDate.Value.ToShortDateString()}");
                     }
@@ -850,6 +851,7 @@
                     autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId);
                     monthlyAllowance.CashAmount = cryptoService.Encrypt(autoAmount.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 default:
                     return;
             }

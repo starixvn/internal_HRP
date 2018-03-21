@@ -6,6 +6,8 @@
     {
         public int PayrollId { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public int? CurrencyId { get; set; }
 
         public string TotalAmount { get; set; }

@@ -30,6 +30,7 @@
         private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
+        private IMonthlyPayrollService monthlyPayrollService;
 
         [Fact]
         public async Task GetCompanySelectListAsync_BaseServiceGetCompanies_ReturnCompanySelectList()
@@ -408,7 +409,8 @@
             fileStream = FakeFileStream();
             templateReader = FakeTemplateReader();
             paymentProcessRepository = FakePaymentProcessRepository();
-            var service = new PaymentProcessService(baseService, sessionService, templateReader, paymentProcessRepository, fileStream);
+            monthlyPayrollService = FakeMonthlyPayrollService();
+            var service = new PaymentProcessService(baseService, sessionService, monthlyPayrollService, templateReader, paymentProcessRepository, fileStream);
 
             return service;
         }
@@ -439,6 +441,11 @@
         private ITemplateReader FakeTemplateReader()
         {
             return Substitute.For<ITemplateReader>();
+        }
+
+        private IMonthlyPayrollService FakeMonthlyPayrollService()
+        {
+            return Substitute.For<IMonthlyPayrollService>();
         }
 
         private PaymentProcess MockPaymentProcess()
