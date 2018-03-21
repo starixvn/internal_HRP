@@ -480,7 +480,7 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1), 
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1),
                 new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20));
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
@@ -600,7 +600,7 @@
             cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
 
             var result = monthlyPayrollService.InitializeAllowanceAdditions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
-        
+
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
             Assert.NotNull(dutyMeal);
@@ -957,6 +957,174 @@
         }
 
         #endregion CalculateBackPayAndAfterAdjustment
+
+        #region CalculateMonthlySalary
+
+        [Fact]
+        public void CalculateMonthlySalary_AutoCalculateOnEbanking_ReturnAsExpected()
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+            var basicSalary = new MonthlyBasicSalaryModel
+            {
+                AutoCalculateOn = PayrollAutoCalculateOn.Ebanking,
+                CurrencyId = 1,
+                AfterAdjustmentAmount = "10000",
+                EBankingCurrencyId = 1,
+                DirectBanking1CurrencyId = 1,
+                DirectBanking1Amount = "1000",
+                CashCurrencyId = 1,
+                CashAmount = "5000"
+            };
+            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
+            var monthlySalary = new MonthlySalaryModel();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+
+            // Assert
+            Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
+            Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
+            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
+            Assert.Equal("4000", basicSalary.EBankingAmount);
+            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
+            Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+        }
+
+        [Fact]
+        public void CalculateMonthlySalary_AutoCalculateOnDirectBanking1_ReturnAsExpected()
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+            var basicSalary = new MonthlyBasicSalaryModel
+            {
+                AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1,
+                CurrencyId = 1,
+                AfterAdjustmentAmount = "10000",
+                EBankingCurrencyId = 1,
+                EBankingAmount = "1000",
+                DirectBanking1CurrencyId = 1,
+                CashCurrencyId = 1,
+                CashAmount = "5000"
+            };
+            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
+            var monthlySalary = new MonthlySalaryModel();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+
+            // Assert
+            Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
+            Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
+            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
+            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
+            Assert.Equal("4000", basicSalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
+            Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+        }
+
+        [Fact]
+        public void CalculateMonthlySalary_AutoCalculateOnDirectBanking2_ReturnAsExpected()
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+            var basicSalary = new MonthlyBasicSalaryModel
+            {
+                AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking2,
+                CurrencyId = 1,
+                AfterAdjustmentAmount = "10000",
+                EBankingCurrencyId = 1,
+                EBankingAmount = "1000",
+                DirectBanking2CurrencyId = 1,
+                CashCurrencyId = 1,
+                CashAmount = "5000"
+            };
+            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
+            var monthlySalary = new MonthlySalaryModel();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+
+            // Assert
+            Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
+            Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
+            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
+            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
+            Assert.Equal("4000", basicSalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
+            Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+        }
+
+        [Fact]
+        public void CalculateMonthlySalary_AutoCalculateOnCash_ReturnAsExpected()
+        {
+            // Arrange
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            {
+                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+            };
+            var basicSalary = new MonthlyBasicSalaryModel
+            {
+                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                CurrencyId = 1,
+                AfterAdjustmentAmount = "10000",
+                EBankingCurrencyId = 1,
+                EBankingAmount = "1000",
+                DirectBanking1CurrencyId = 1,
+                DirectBanking1Amount = "5000",
+                CashCurrencyId = 1
+            };
+            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
+            var monthlySalary = new MonthlySalaryModel();
+            var monthlyPayrollService = GetMonthlyPayrollService();
+
+            // Act
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+
+            // Assert
+            Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
+            Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
+            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
+            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
+            Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
+            Assert.Equal("4000", basicSalary.CashAmount);
+            Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+        }
+
+        #endregion CalculateMonthlySalary
 
         #region Helper
 

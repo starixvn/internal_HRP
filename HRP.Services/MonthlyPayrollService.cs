@@ -338,6 +338,7 @@
             monthlySalary.CashAmount = basicSalary.CashAmount;
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
             monthlySalary.AdditionAmount = backPay.NetSalary;
+            monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Satisfied;
         }
 
         public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction)
@@ -937,7 +938,7 @@
             decimal.TryParse(basicSetting.Salary, out decimal salary);
             decimal differenceAmount = RoundAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyId);
             var reason = new StringBuilder();
-            if (differenceAmount > 0 || differenceAmount < 0)
+            if (differenceAmount != 0)
             {
                 reason.AppendFormat(
                     "{0} {1} ({2}).",

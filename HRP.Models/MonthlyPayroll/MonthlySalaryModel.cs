@@ -43,5 +43,7 @@
         public string AdditionAmount { get; set; }
 
         public string DeductionAmount { get; set; }
+
+        public MonthlyPayrollStatus Status { get; set; }
     }
 }
