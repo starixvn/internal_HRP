@@ -1,10 +1,12 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using HRP.Core.Enumerations;
+
     public class MonthlySalaryModel
     {
         public int PayrollId { get; set; }
 
-        public int? CurrencyId { get; set; }
+        public int CurrencyId { get; set; }
 
         public string Salary { get; set; }
 
@@ -36,6 +38,10 @@
 
         public int? DirectBanking2AccountId { get; set; }
 
-        public string AutoCalculateOn { get; set; }
+        public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
+
+        public string AdditionAmount { get; set; }
+
+        public string DeductionAmount { get; set; }
     }
 }

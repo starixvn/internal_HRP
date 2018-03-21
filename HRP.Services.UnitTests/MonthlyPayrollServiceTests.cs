@@ -119,21 +119,21 @@
             Assert.Equal(employeePayrolls.First().WorkingDays, actual.First().WorkingDays);
             Assert.Equal(employeePayrolls.First().Policy, actual.First().Policy);
 
-            Assert.Equal(employeePayrolls.First().BasicSalary.EbankingCurrencyCode, actual.First().BasicSalary.EbankingCurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.EBankingAmount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.EBankingCurrencyCode, actual.First().BasicSalary.EBankingCurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.EBankingAmount);
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking1CurrencyCode, actual.First().BasicSalary.DirectBanking1CurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking2CurrencyCode, actual.First().BasicSalary.DirectBanking2CurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
             Assert.Equal(employeePayrolls.First().BasicSalary.CashCurrencyCode, actual.First().BasicSalary.CashCurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
+            Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
 
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking1CurrencyCode, actual.First().BasicSalary.DirectBanking1CurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking2CurrencyCode, actual.First().BasicSalary.DirectBanking2CurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
+            Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking2Amount);
             Assert.Equal(employeePayrolls.First().BasicSalary.CashCurrencyCode, actual.First().BasicSalary.CashCurrencyCode);
-            //Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
+            Assert.Equal(plainText, actual.First().BasicSalary.CashAmount);
         }
 
         #endregion GetMonthlyPayrollAsync

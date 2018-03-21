@@ -2,8 +2,8 @@ namespace HRP.Core.Enumerations
 {
     public enum MonthlySalaryAdditionType
     {
-        Adjustments = 1,
-        BackPay,
+        BackPay = 1,
+        Adjustments,
         Others1,
         Others2
     }

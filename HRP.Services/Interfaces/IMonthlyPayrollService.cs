@@ -35,6 +35,12 @@
             DateTime groupStartDate,
             DateTime? groupEndDate);
 
+        void CalculateMonthlySalary(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            MonthlyBasicSalaryModel basicSalary,
+            MonthlySalaryAdditionModel backPay,
+            MonthlySalaryModel monthlySalary);
+
         MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction);
 
         void CalculateMonthlyBasicAllowance(
