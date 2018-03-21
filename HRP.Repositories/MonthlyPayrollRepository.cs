@@ -79,8 +79,8 @@
                     {
                         viewModel.MonthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
                         viewModel.MonthlySalary = await multi.ReadFirstAsync<MonthlySalaryModel>().ConfigureAwait(false);
-                        viewModel.Additions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
-                        viewModel.Deductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
+                        viewModel.Additions = (await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false)).ToList();
+                        viewModel.Deductions = (await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false)).ToList();
                     }
 
                     return viewModel;

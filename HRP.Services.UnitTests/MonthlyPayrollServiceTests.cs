@@ -707,11 +707,12 @@
         }
 
         [Theory]
-        [InlineData(1, "4000.00")]
-        [InlineData(11, "4000")]
+        [InlineData(1, "4000.00", "16000.00")]
+        [InlineData(11, "4000", "16000")]
         public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
-            string backPayAmount)
+            string backPayAmount,
+            string afterAdjustmentAmount)
         {
             // Arrange
             var workingMonth = new DateTime(2018, 3, 1);
@@ -739,7 +740,7 @@
             Assert.Equal(backPayAmount, backPay.UnitAmount);
             Assert.Equal(backPayAmount, backPay.NetSalary);
             Assert.Equal("Annual Increment from Feb 01, 2018", backPay.Description);
-            Assert.Null(basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
             Assert.Null(basicSetting.AfterAdjustmentReason);
         }
 

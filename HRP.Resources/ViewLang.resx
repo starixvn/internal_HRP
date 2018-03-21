@@ -798,17 +798,17 @@
   <data name="UploadFiles" xml:space="preserve">
     <value>Upload Files</value>
   </data>
-  <data name="EditAllowance" xml:space="preserve">
-    <value>Edit Allowance</value>
+  <data name="EditMonthlyAllowances" xml:space="preserve">
+    <value>Edit Monthly Allowances</value>
   </data>
-  <data name="EditBasicSalary" xml:space="preserve">
-    <value>Edit Basic Salary</value>
+  <data name="EditMonthlyBasicSalary" xml:space="preserve">
+    <value>Edit Monthly Basic Salary</value>
   </data>
-  <data name="ViewAllowance" xml:space="preserve">
-    <value>View Allowance</value>
+  <data name="ViewMonthlyAllowances" xml:space="preserve">
+    <value>View Monthly Allowances</value>
   </data>
-  <data name="ViewBasicSalary" xml:space="preserve">
-    <value>View Basic Salary</value>
+  <data name="ViewMonthlyBasicSalary" xml:space="preserve">
+    <value>View Monthly Basic Salary</value>
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Completed</value>
@@ -852,11 +852,59 @@
   <data name="UploadDSTNetSalaryFile" xml:space="preserve">
     <value>Upload DST NET Salary File (Max: 5MB)</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Adjustments" xml:space="preserve">
+    <value>Adjustments</value>
+  </data>
+  <data name="AfterAdjustment" xml:space="preserve">
+    <value>After Adjustment</value>
+  </data>
+  <data name="BackPay" xml:space="preserve">
+    <value>Back Pay</value>
+  </data>
+  <data name="Deduction" xml:space="preserve">
+    <value>Deduction</value>
+  </data>
+  <data name="MonthlyBasicSalary" xml:space="preserve">
+    <value>Monthly Basic Salary</value>
+  </data>
+  <data name="NetSalary" xml:space="preserve">
+    <value>Net Salary</value>
+  </data>
+  <data name="NoOfDays" xml:space="preserve">
+    <value>No.of Days</value>
+  </data>
   <data name="Preset" xml:space="preserve">
     <value>Preset</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="SalaryAdvance" xml:space="preserve">
+    <value>Salary Advance</value>
+  </data>
+  <data name="SaveAndEditAllowances" xml:space="preserve">
+    <value>Save and Edit Allowances</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="Tardiness" xml:space="preserve">
+    <value>Tardiness</value>
+  </data>
+  <data name="TotalAdd" xml:space="preserve">
+    <value>Total Add</value>
+  </data>
+  <data name="TotalDeduction" xml:space="preserve">
+    <value>Total Deduction</value>
+  </data>
+  <data name="UnitAmount" xml:space="preserve">
+    <value>Unit Amount</value>
+  </data>
+  <data name="UPLAbsenteeism" xml:space="preserve">
+    <value>UPL/Absenteeism</value>
   </data>
   <data name="ViewEmployee" xml:space="preserve">
     <value>View Employee</value>

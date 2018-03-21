@@ -5,6 +5,7 @@
 
 @section Styles {
     <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
@@ -16,7 +17,7 @@
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="like-link">@ViewLang.ViewEmployee</li>
-    <li class="active">@ViewLang.EditBasicSalary</li>
+    <li class="active">@(Model.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary)</li>
 </ol>
 
 <form class="search-form">
@@ -29,7 +30,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control width-92" disabled>
+        <select class="control width-92 js-select2" disabled>
             <option value="@Model.CompanyCode" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
@@ -44,21 +45,21 @@
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-140" disabled>
+        <select class="control width-140 js-select2" disabled>
             <option value="@Model.CostCenter" selected="selected">@Model.CostCenter</option>
         </select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control width-92" disabled>
+        <select class="control width-92 js-select2" disabled>
             <option value="@Model.MonthlyBasicSalary.WorkingDays" selected="selected">@Model.MonthlyBasicSalary.WorkingDays</option>
         </select>
     </div>
     <div class="group">
-        <button type="submit" class="button -preset">@ViewLang.Preset</button>
+        <button type="button" class="button -preset js-btnPreset">@ViewLang.Preset</button>
     </div>
     <div class="group">
-        <button type="submit" class="button -add">@ViewLang.Refresh</button>
+        <button type="button" class="button -add js-btnRefresh">@ViewLang.Refresh</button>
     </div>
 </form>
 <div class="payment-duration">
@@ -70,136 +71,138 @@
     <div class="d-flex">
         <div class="add">
             <div class="group-complex -layout-add -group-type">
-                <div class="group-title -no-space"><span class="icon-group"></span>Add</div>
-                <div>Description</div>
-                <div>Unit Amount</div>
-                <div>No.of Days</div>
-                <div>Net Salary</div>
+                <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.Add</div>
+                <div>@ViewLang.Description</div>
+                <div>@ViewLang.UnitAmount</div>
+                <div>@ViewLang.NoOfDays</div>
+                <div>@ViewLang.NetSalary</div>
             </div>
             <div class="group-complex -layout-add">
-                <div class="like-group-title">Back Pay</div>
-                <input type="text" class="control" disabled>
-                <input type="text" class="control number" disabled>
-                <input type="text" class="control number -start-col-5" disabled>
+                <div class="like-group-title">@ViewLang.BackPay</div>
+                <input type="text" class="control" asp-for="Additions[0].Description" disabled>
+                <input type="text" class="control number" asp-for="Additions[0].UnitAmount" disabled>
+                <input type="text" class="control number -start-col-5" asp-for="Additions[0].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-add">
-                <div class="like-group-title">Adjustments</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
-                <input type="text" class="control">
-                <input type="text" class="control number">
+                <div class="like-group-title">@ViewLang.Adjustments</div>
+                <input type="text" class="control" asp-for="Additions[1].Description">
+                <input type="text" class="control number" asp-for="Additions[1].UnitAmount">
+                <input type="text" class="control" asp-for="Additions[1].NoOfDays">
+                <input type="text" class="control number" asp-for="Additions[1].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-add">
-                <div class="like-group-title">Others</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
-                <input type="text" class="control">
-                <input type="text" class="control number">
+                <div class="like-group-title">@ViewLang.Others</div>
+                <input type="text" class="control" asp-for="Additions[2].Description">
+                <input type="text" class="control number" asp-for="Additions[2].UnitAmount">
+                <input type="text" class="control" asp-for="Additions[2].NoOfDays">
+                <input type="text" class="control number" asp-for="Additions[2].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-add">
-                <input type="text" class="control -start-col-2">
-                <input type="text" class="control number">
-                <input type="text" class="control">
-                <input type="text" class="control number">
+                <input type="text" class="control -start-col-2" asp-for="Additions[3].Description">
+                <input type="text" class="control number" asp-for="Additions[3].UnitAmount">
+                <input type="text" class="control" asp-for="Additions[3].NoOfDays">
+                <input type="text" class="control number" asp-for="Additions[3].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-add">
-                <div class="text-specific">Total Add</div>
-                <input type="text" class="control number highlighted -start-col-5 bold" disabled>
+                <div class="text-specific">@ViewLang.TotalAdd</div>
+                <input type="text" class="control number highlighted -start-col-5 bold js-addition-amount"
+                       asp-for="MonthlySalary.AdditionAmount" disabled />
             </div>
         </div>
         <div class="deduction">
             <div class="group-complex -layout-deduction -group-type">
-                <div class="group-deduction m-b-0"><span class="icon-group"></span>Deduction</div>
-                <div>Description</div>
-                <div class="-start-col-5">Net Salary</div>
+                <div class="group-deduction m-b-0"><span class="icon-group"></span>@ViewLang.Deduction</div>
+                <div>@ViewLang.Description</div>
+                <div class="-start-col-5">@ViewLang.NetSalary</div>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="like-group-title">UPL/Absenteeism</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
+                <div class="like-group-title">@ViewLang.UPLAbsenteeism</div>
+                <input type="text" class="control" asp-for="Deductions[0].Description">
+                <input type="text" class="control number" asp-for="Deductions[0].NoOfDays">
                 <div>days</div>
-                <input type="text" class="control number" disabled>
+                <input type="text" class="control number" asp-for="Deductions[0].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="like-group-title">Tardiness</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
+                <div class="like-group-title">@ViewLang.Tardiness</div>
+                <input type="text" class="control" asp-for="Deductions[1].Description">
+                <input type="text" class="control number" asp-for="Deductions[1].NoOfDays">
                 <div>minutes</div>
-                <input type="text" class="control number" disabled>
+                <input type="text" class="control number" asp-for="Deductions[1].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="like-group-title">Salary Advance</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
-                <input type="text" class="control number -start-col-5" disabled>
+                <div class="like-group-title">@ViewLang.SalaryAdvance</div>
+                <input type="text" class="control" asp-for="Deductions[2].Description">
+                <input type="text" class="control number" asp-for="Deductions[2].NoOfDays">
+                <input type="text" class="control number -start-col-5" asp-for="Deductions[2].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="like-group-title">Others</div>
-                <input type="text" class="control">
-                <input type="text" class="control number">
-                <input type="text" class="control number -start-col-5" disabled>
+                <div class="like-group-title">@ViewLang.Others</div>
+                <input type="text" class="control" asp-for="Deductions[3].Description">
+                <input type="text" class="control number" asp-for="Deductions[3].NoOfDays">
+                <input type="text" class="control number -start-col-5" asp-for="Deductions[3].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-deduction">
-                <div class="text-specific text-red">Total Deduction</div>
-                <input type="text" class="control number -start-col-5 highlighted bold" disabled>
+                <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
+                <input type="text" class="control number -start-col-5 highlighted bold js-deduction-amount"
+                       asp-for="MonthlySalary.DeductionAmount" disabled>
             </div>
         </div>
     </div>
     <div class="group-complex">
-        <div class="group-title -no-space"><span class="icon-group"></span>Basic Salary</div>
+        <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.BasicSalary</div>
     </div>
     <div class="d-flex">
         <div class="setting">
             <div class="group-complex -layout-setting">
-                <div class="bold">Setting</div>
-                <select class="control" disabled>
-                    <option>USD</option>
+                <div class="bold">@ViewLang.Setting</div>
+                <select class="control" asp-for="MonthlyBasicSalary.CurrencyId" disabled>
+                    <option value="@Model.MonthlyBasicSalary.CurrencyId">@Model.MonthlyBasicSalary.CurrencyCode</option>
                 </select>
-                <input type="text" class="control number highlighted" value="1,000.00" disabled>
+                <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.Salary" disabled>
             </div>
             <div class="group-complex -layout-setting">
-                <div class="like-group-title">E-banking</div>
+                <div class="like-group-title">@ViewLang.EBanking</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number highlighted" value="500.00" disabled>
             </div>
             <div class="group-complex -layout-setting">
-                <div class="like-group-title">Direct Banking1</div>
+                <div class="like-group-title">@ViewLang.DirectBanking1</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number highlighted" value="200.00" disabled>
             </div>
             <div class="group-complex -layout-setting">
-                <div class="like-group-title">Direct Banking2</div>
+                <div class="like-group-title">@ViewLang.DirectBanking2</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number highlighted" value="" disabled>
             </div>
             <div class="group-complex -layout-setting">
-                <div class="like-group-title">Cash</div>
+                <div class="like-group-title">@ViewLang.Cash</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number highlighted" value="300.00" disabled>
             </div>
             <div class="group-complex -layout-setting">
-                <div class="bold">After Adjustment</div>
+                <div class="bold">@ViewLang.AfterAdjustment</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number highlighted bold" value="1,000.00" disabled>
             </div>
             <div class="group-complex -layout-setting-2">
-                <div>Reason</div>
+                <div>@ViewLang.Reason</div>
                 <textarea class="control text-reason" disabled></textarea>
             </div>
         </div>
         <div class="monthly-payroll">
             <div class="group-complex -layout-payroll">
-                <div class="bold group-payroll text-green">Monthly Payroll</div>
+                <div class="bold group-payroll text-green">@ViewLang.MonthlyBasicSalary</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
@@ -208,7 +211,7 @@
             <div class="group-complex -layout-payroll">
                 <label>
                     <input type="radio" />
-                    <span class="like-group-title">e-Banking</span>
+                    <span class="like-group-title">@ViewLang.EBanking</span>
                 </label>
                 <select class="control">
                     <option>USD</option>
@@ -218,7 +221,7 @@
             <div class="group-complex -layout-payroll">
                 <label>
                     <input type="radio" />
-                    <span class="like-group-title">Direct Banking1</span>
+                    <span class="like-group-title">@ViewLang.DirectBanking1</span>
                 </label>
                 <select class="control">
                     <option>USD</option>
@@ -228,7 +231,7 @@
             <div class="group-complex -layout-payroll">
                 <label>
                     <input type="radio" />
-                    <span class="like-group-title">Direct Banking2</span>
+                    <span class="like-group-title">@ViewLang.DirectBanking2</span>
                 </label>
                 <select class="control">
                     <option></option>
@@ -238,29 +241,29 @@
             <div class="group-complex -layout-payroll">
                 <label>
                     <input type="radio" checked />
-                    <span class="like-group-title">Cash</span>
+                    <span class="like-group-title">@ViewLang.Cash</span>
                 </label>
-                <select class="control" disabled>
+                <select class="control">
                     <option>USD</option>
                 </select>
                 <input type="text" class="control number" value="300.00" disabled>
             </div>
         </div>
         <div class="payment">
-            <div class="bold group-payment">Payment Transaction</div>
+            <div class="bold group-payment">@ViewLang.PaymentTransaction</div>
             <div class="group-complex -layout-payment -group-type">
-                <div>Bank Type</div>
-                <div>Account Name</div>
+                <div>@ViewLang.BankType</div>
+                <div>@ViewLang.AccountName</div>
             </div>
             <div class="group-complex -layout-payment">
-                <div class="like-group-title">e-Banking</div>
+                <div class="like-group-title">@ViewLang.EBanking</div>
                 <select class="control">
                     <option></option>
                 </select>
             </div>
             <div class="group-complex -layout-payment">
                 <select class="control">
-                    <option>Direct Banking 1</option>
+                    <option>@ViewLang.DirectBanking1</option>
                 </select>
                 <select class="control">
                     <option></option>
@@ -268,14 +271,14 @@
             </div>
             <div class="group-complex -layout-payment">
                 <select class="control">
-                    <option>Direct Banking 2</option>
+                    <option>@ViewLang.DirectBanking2</option>
                 </select>
                 <select class="control">
                     <option></option>
                 </select>
             </div>
             <div class="group-complex -layout-payment">
-                <div class="like-group-title">Cash</div>
+                <div class="like-group-title">@ViewLang.Cash</div>
                 <select class="control">
                     <option>Cash-DAR</option>
                 </select>
@@ -287,14 +290,15 @@
         <input type="text" class="control number total-salary" value="0,000,000.00" disabled>
     </div>
     <div class="list-button">
-        <button class="button -second">@ViewLang.Cancel</button>
+        <button class="button -second js-btnCancel">@ViewLang.Cancel</button>
         <button class="button -primary" type="submit">@ViewLang.Save</button>
-        <button class="button -primary" type="button">Save and Edit Allowances</button>
+        <button class="button -primary" type="button">@ViewLang.SaveAndEditAllowances</button>
     </div>
 </div>
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/assets/js/paymentprocess/edit-basic-salary.js"></script>
     </environment>
     <environment exclude="Development">

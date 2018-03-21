@@ -9,6 +9,7 @@
     {
         public int PayrollId { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 
         public string FullName { get; set; }
@@ -33,9 +34,9 @@
 
         public MonthlySalaryModel MonthlySalary { get; set; } = new MonthlySalaryModel();
 
-        public IEnumerable<MonthlySalaryAdditionModel> Additions { get; set; } = new List<MonthlySalaryAdditionModel>();
+        public IList<MonthlySalaryAdditionModel> Additions { get; set; } = new List<MonthlySalaryAdditionModel>();
 
-        public IEnumerable<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
+        public IList<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; } = new List<CurrencyExchangeRateModel>();
 

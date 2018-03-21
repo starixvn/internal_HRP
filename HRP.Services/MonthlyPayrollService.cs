@@ -230,7 +230,9 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public void CalculateBackPayAndAfterAdjustment(
+#pragma warning restore S1541 // Methods and properties should not be too complex
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
@@ -256,7 +258,7 @@
                 case BasicSalaryChangeReason.SalaryAdjustment:
                 case BasicSalaryChangeReason.Demotion:
                 case BasicSalaryChangeReason.Penalty:
-                    if (basicSetting.EffectiveDate.HasValue)
+                    if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
                     {
                         amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                             + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
@@ -887,13 +889,16 @@
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             decimal amount;
 
-            if (basicSetting.EffectiveDate.HasValue)
+            if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
             {
                 int monthDiff = GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth);
                 if (monthDiff > 0)
                 {
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * monthDiff);
+
+                    basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(amount + newSalary, basicSetting.CurrencyId).ToString(CultureInfo.InvariantCulture);
+
                     amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
                     backPay.UnitAmount = backPay.NetSalary = amount.ToString(CultureInfo.InvariantCulture);
                     backPay.Description = string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat));

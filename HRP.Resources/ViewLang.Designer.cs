@@ -115,6 +115,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string Address {
@@ -124,11 +133,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjustments.
+        /// </summary>
+        public static string Adjustments {
+            get {
+                return ResourceManager.GetString("Adjustments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrator.
         /// </summary>
         public static string Administrator {
             get {
                 return ResourceManager.GetString("Administrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After Adjustment.
+        /// </summary>
+        public static string AfterAdjustment {
+            get {
+                return ResourceManager.GetString("AfterAdjustment", resourceCulture);
             }
         }
         
@@ -174,6 +201,15 @@ namespace HRP.Resources {
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back Pay.
+        /// </summary>
+        public static string BackPay {
+            get {
+                return ResourceManager.GetString("BackPay", resourceCulture);
             }
         }
         
@@ -682,6 +718,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deduction.
+        /// </summary>
+        public static string Deduction {
+            get {
+                return ResourceManager.GetString("Deduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deductions.
         /// </summary>
         public static string Deductions {
@@ -826,15 +871,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Allowance.
-        /// </summary>
-        public static string EditAllowance {
-            get {
-                return ResourceManager.GetString("EditAllowance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit Bank Details.
         /// </summary>
         public static string EditbankDetails {
@@ -853,15 +889,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Basic Salary.
-        /// </summary>
-        public static string EditBasicSalary {
-            get {
-                return ResourceManager.GetString("EditBasicSalary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit Details.
         /// </summary>
         public static string EditDetails {
@@ -876,6 +903,24 @@ namespace HRP.Resources {
         public static string EditEmployeePayroll {
             get {
                 return ResourceManager.GetString("EditEmployeePayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Monthly Allowances.
+        /// </summary>
+        public static string EditMonthlyAllowances {
+            get {
+                return ResourceManager.GetString("EditMonthlyAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Monthly Basic Salary.
+        /// </summary>
+        public static string EditMonthlyBasicSalary {
+            get {
+                return ResourceManager.GetString("EditMonthlyBasicSalary", resourceCulture);
             }
         }
         
@@ -1411,6 +1456,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Basic Salary.
+        /// </summary>
+        public static string MonthlyBasicSalary {
+            get {
+                return ResourceManager.GetString("MonthlyBasicSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month/Year.
         /// </summary>
         public static string MonthYear {
@@ -1434,6 +1488,15 @@ namespace HRP.Resources {
         public static string Nationality {
             get {
                 return ResourceManager.GetString("Nationality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Salary.
+        /// </summary>
+        public static string NetSalary {
+            get {
+                return ResourceManager.GetString("NetSalary", resourceCulture);
             }
         }
         
@@ -1488,6 +1551,15 @@ namespace HRP.Resources {
         public static string NoOfChildren {
             get {
                 return ResourceManager.GetString("NoOfChildren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.of Days.
+        /// </summary>
+        public static string NoOfDays {
+            get {
+                return ResourceManager.GetString("NoOfDays", resourceCulture);
             }
         }
         
@@ -1843,11 +1915,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Salary Advance.
+        /// </summary>
+        public static string SalaryAdvance {
+            get {
+                return ResourceManager.GetString("SalaryAdvance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save and Edit Allowances.
+        /// </summary>
+        public static string SaveAndEditAllowances {
+            get {
+                return ResourceManager.GetString("SaveAndEditAllowances", resourceCulture);
             }
         }
         
@@ -1911,6 +2001,15 @@ namespace HRP.Resources {
         public static string SelectWorkingMonthCompany {
             get {
                 return ResourceManager.GetString("SelectWorkingMonthCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting.
+        /// </summary>
+        public static string Setting {
+            get {
+                return ResourceManager.GetString("Setting", resourceCulture);
             }
         }
         
@@ -2023,6 +2122,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tardiness.
+        /// </summary>
+        public static string Tardiness {
+            get {
+                return ResourceManager.GetString("Tardiness", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tax Declaration.
         /// </summary>
         public static string TaxDeclaration {
@@ -2068,6 +2176,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Add.
+        /// </summary>
+        public static string TotalAdd {
+            get {
+                return ResourceManager.GetString("TotalAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Deduction.
+        /// </summary>
+        public static string TotalDeduction {
+            get {
+                return ResourceManager.GetString("TotalDeduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type 1.
         /// </summary>
         public static string Type1 {
@@ -2100,6 +2226,24 @@ namespace HRP.Resources {
         public static string TypeOfBankAccount {
             get {
                 return ResourceManager.GetString("TypeOfBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Amount.
+        /// </summary>
+        public static string UnitAmount {
+            get {
+                return ResourceManager.GetString("UnitAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPL/Absenteeism.
+        /// </summary>
+        public static string UPLAbsenteeism {
+            get {
+                return ResourceManager.GetString("UPLAbsenteeism", resourceCulture);
             }
         }
         
@@ -2167,15 +2311,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Allowance.
-        /// </summary>
-        public static string ViewAllowance {
-            get {
-                return ResourceManager.GetString("ViewAllowance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to View Bank Details.
         /// </summary>
         public static string ViewBankDetails {
@@ -2194,20 +2329,29 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Basic Salary.
-        /// </summary>
-        public static string ViewBasicSalary {
-            get {
-                return ResourceManager.GetString("ViewBasicSalary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to View Employee.
         /// </summary>
         public static string ViewEmployee {
             get {
                 return ResourceManager.GetString("ViewEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Monthly Allowances.
+        /// </summary>
+        public static string ViewMonthlyAllowances {
+            get {
+                return ResourceManager.GetString("ViewMonthlyAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Monthly Basic Salary.
+        /// </summary>
+        public static string ViewMonthlyBasicSalary {
+            get {
+                return ResourceManager.GetString("ViewMonthlyBasicSalary", resourceCulture);
             }
         }
         
