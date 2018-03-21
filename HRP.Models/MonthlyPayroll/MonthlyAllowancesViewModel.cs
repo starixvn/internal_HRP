@@ -22,6 +22,8 @@
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; }
 
+        public IEnumerable<ReferenceResourceModel> CashAccounts { get; set; }
+
         public bool CanEdit { get; set; }
     }
 }

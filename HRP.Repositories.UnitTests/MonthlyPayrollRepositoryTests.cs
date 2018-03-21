@@ -181,9 +181,11 @@
             };
 
             var allowance = new MonthlyAllowanceModel();
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
 
             var multiResultReader = FakeMultipleResultReader();
             multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
 
             multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
             multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);

@@ -9,6 +9,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
+    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
@@ -314,6 +315,7 @@
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
             var allowance = new MonthlyAllowanceModel();
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
             var additions = new List<MonthlyAllowanceAdditionModel>
             {
                 new MonthlyAllowanceAdditionModel
@@ -344,9 +346,11 @@
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>(allowance, additions, deductions));
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
+                (allowance, additions, deductions, basicAllowance));
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
+            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
             Assert.NotNull(actual);

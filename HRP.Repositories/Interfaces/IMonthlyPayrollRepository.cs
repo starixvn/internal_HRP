@@ -14,6 +14,7 @@
 
         Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(ICriteria criteria);
 
-        Task<Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>> GetMonthlyAllowancesAsync(ICriteria criteria);
+        Task<Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>> 
+            GetMonthlyAllowancesAsync(ICriteria criteria);
     }
 }

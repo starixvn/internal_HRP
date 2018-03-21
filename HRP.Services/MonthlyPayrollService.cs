@@ -14,6 +14,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
+    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
@@ -175,8 +176,10 @@
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2,
                 Deductions = result.Item3,
+                BasicAllowance = result.Item4,
                 Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year })
+                CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year }),
+                CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true })
             };
 
             if (model.Allowance != null)
@@ -852,7 +855,7 @@
                     return;
             }
 
-            monthlyAllowance.Status = autoAmount >= 0 ? MonthlyPayrollStatus.None : MonthlyPayrollStatus.Unsatisfied;
+            monthlyAllowance.Status = autoAmount >= 0 ? MonthlyPayrollStatus.Default : MonthlyPayrollStatus.Unsatisfied;
         }
 
         #region Back Pay and After Adjustment
