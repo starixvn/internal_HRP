@@ -196,7 +196,6 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        [HttpPost]
         public async Task<IActionResult> ProcessActionNextToMonthlyPayroll(int companyId, DateTime month)
         {
             var submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
@@ -205,7 +204,7 @@
                 var generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
                 if (generateResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = true });
+                    return Json(new { isSuccessful = true, data = generateResult.Data });
                 }
 
                 ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), generateResult.Message);

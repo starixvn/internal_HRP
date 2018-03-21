@@ -359,6 +359,50 @@
             Assert.Equal("Submit error", errors["CommonError"]);
         }
 
+        [Fact]
+        public async Task ProcessActionNextToMonthlyPayroll_GeneratePayrollNotSuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var companyId = 17;
+            DateTime month = DateTime.Today;
+            var submitResult = new CommandResult { Code = 0 };
+            var generateResult = new CommandResult { Code = 1, Message = "Generate error" };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.SubmitUploadingFilesAsync(companyId, month).Returns(submitResult);
+            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null).Returns(generateResult);
+
+            // Act
+            var actual = await controller.ProcessActionNextToMonthlyPayroll(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal("Generate error", errors["CommonError"]);
+        }
+
+        [Fact]
+        public async Task ProcessActionNextToMonthlyPayroll_GeneratePayrollSuccessful_ReturnJsonResultSuccessful()
+        {
+            // Arrange
+            var companyId = 17;
+            DateTime month = DateTime.Today;
+            var submitResult = new CommandResult { Code = 0 };
+            var generateResult = new CommandResult { Code = 0 };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.SubmitUploadingFilesAsync(companyId, month).Returns(submitResult);
+            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null).Returns(generateResult);
+
+            // Act
+            var actual = await controller.ProcessActionNextToMonthlyPayroll(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+        }
+
         #endregion UploadAttendanceAndDSTSalary
 
         #region EmployeeMonthlyPayroll

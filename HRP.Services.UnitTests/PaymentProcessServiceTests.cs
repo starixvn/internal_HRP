@@ -8,14 +8,17 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
+    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using NPOI.SS.UserModel;
     using NSubstitute;
     using Xunit;
@@ -27,6 +30,25 @@
         private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
+
+        [Fact]
+        public async Task GetCompanySelectListAsync_BaseServiceGetCompanies_ReturnCompanySelectList()
+        {
+            // Arrange
+            var companies = new List<Company> { MockCompany() };
+            var expected = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataAsync<Company>(Arg.Is<GetCompaniesForPaymentProcessCriteria>(x => x.UserId == sessionService.UserId)).Returns(companies);
+
+            // Act
+            var actual = await paymentProcessService.GetCompanySelectListAsync();
+
+            // Assert
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+        }
 
         [Fact]
         public async Task CopyFileToMemoryStreamAsync_WhenCalled_ReturnMemoryStream()
@@ -541,6 +563,17 @@
             {
                 new Currency {CurrencyCode = "USD"},
                 new Currency {CurrencyCode = "VND"}
+            };
+        }
+
+        private Company MockCompany()
+        {
+            return new Company
+            {
+                CompanyId = 11,
+                Code = "company",
+                Name = "descC",
+                IsActive = true
             };
         }
 

@@ -253,7 +253,7 @@
         {
             var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
 
-            return new CommandResult { Data = dataModel };
+            return new CommandResult { Code = 0, Data = dataModel };
         }
 
         public async Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month)

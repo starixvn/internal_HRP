@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement.Payroll;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
@@ -24,6 +25,8 @@
 
                     if (paymentProcess != null)
                     {
+                        result.CompanyId = paymentProcess.CompanyId;
+                        result.SelectedTime = paymentProcess.Month;
                         result.CompanyCode = paymentProcess.CompanyCode;
 
                         if (paymentProcess.AttendanceFileName != null)
@@ -58,13 +61,21 @@
             {
                 using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var salaryHistory = await multi.ReadAsync<EmployeePayrollBasicSalaryHistory>().ConfigureAwait(false);
                     var monthlyPayroll = await multi.ReadAsync<MonthlyPayroll>().ConfigureAwait(false);
+                    var monthlyAttendance = await multi.ReadAsync<MonthlyAttendance>().ConfigureAwait(false);
+                    var monthlyDSTNetSalary = await multi.ReadAsync<MonthlyDSTNetSalary>().ConfigureAwait(false);
+                    var monthlyBasicSalary = await multi.ReadAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
+                    var monthlyBasicAllowance = await multi.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false);
+                    var currencyExchangeRate = await multi.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false);
 
                     var result = new GeneratePayrollViewModel
                     {
-                        BasicSalaryHistory = salaryHistory,
-                        MonthlyPayroll = monthlyPayroll
+                        MonthlyPayroll = monthlyPayroll,
+                        MonthlyAttendance = monthlyAttendance,
+                        MonthlyDSTNetSalary = monthlyDSTNetSalary,
+                        MonthlyBasicSalary = monthlyBasicSalary,
+                        MonthlyBasicAllowance = monthlyBasicAllowance,
+                        CurrencyExchangeRate = currencyExchangeRate
                     };
 
                     return result;

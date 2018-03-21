@@ -207,7 +207,8 @@
                             var attendanceTotalError = $(domElement.AttendanceTotalError).val();
                             var dstNetSalaryTotalError = $(domElement.DSTNetSalaryTotalError).val();
                             if (attendanceTotalError > 0 || dstNetSalaryTotalError > 0) {
-                                alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
+                                // alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
+                                processActionNextToMonthlyPayroll();
                             } else {
                                 processActionNextToMonthlyPayroll();
                             }
@@ -234,6 +235,7 @@
                 "month": $selectedTime.val()
             },
             success: function (response) {
+                alert(response.isSuccessful);
             },
             error: commonFunctions.handleAjaxError
         });
