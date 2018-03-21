@@ -338,7 +338,7 @@
             monthlySalary.CashAmount = basicSalary.CashAmount;
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
             monthlySalary.AdditionAmount = backPay.NetSalary;
-            monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Satisfied;
+            monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
         }
 
         public MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction)

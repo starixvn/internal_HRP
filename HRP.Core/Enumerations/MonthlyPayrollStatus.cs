@@ -2,7 +2,7 @@
 {
     public enum MonthlyPayrollStatus
     {
-        None,
+        Default,
         Satisfied,
         Unsatisfied
     }

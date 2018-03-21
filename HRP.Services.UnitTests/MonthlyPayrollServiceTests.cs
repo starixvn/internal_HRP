@@ -1000,6 +1000,7 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1041,6 +1042,7 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1082,6 +1084,7 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1123,6 +1126,7 @@
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal("4000", basicSalary.CashAmount);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
