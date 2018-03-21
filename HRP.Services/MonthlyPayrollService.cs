@@ -582,7 +582,7 @@
                 if(startDate.Month == month && startDate.Year == year)
                 {
                     reason.Append(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ? 
-                        $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" : 
+                        $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" :
                         $"Employee started working from {startDate.ToShortDateString()}");
                 }
                 else
@@ -922,11 +922,7 @@
             GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
         }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         private static void GetAfterAdjustmentReason(
-#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
-#pragma warning restore S1541 // Methods and properties should not be too complex
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
             DateTime groupStartDate,
@@ -945,31 +941,9 @@
                     Math.Abs(differenceAmount),
                     basicSetting.CurrencyCode);
 
-                if (GetDifferenceMonth(groupStartDate, workingMonth) == 0)
-                {
-                    if (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0)
-                    {
-                        reason.AppendFormat(
-                            " Employee worked from {0} to {1}.",
-                            groupStartDate.ToString(Constants.DateFormat),
-                            groupEndDate.Value.ToString(Constants.DateFormat));
-                    }
-                    else
-                    {
-                        reason.AppendFormat(
-                            " Employee started working from {0}.",
-                            groupStartDate.ToString(Constants.DateFormat));
-                    }
-                }
-                else
-                {
-                    if (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0)
-                    {
-                        reason.AppendFormat(
-                            " Employee official leaves from {0}.",
-                            groupEndDate.Value.ToString(Constants.DateFormat));
-                    }
-                }
+                string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
+
+                reason.Append(dateCommencementReason);
 
                 switch (basicSetting.SalaryChangeReason)
                 {
@@ -991,6 +965,38 @@
             }
 
             basicSetting.AfterAdjustmentReason = reason.ToString();
+        }
+
+        private static string GetPartOfAfterAdjustmentReason(
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate)
+        {
+            int differenceEndDate = groupEndDate.HasValue ? GetDifferenceMonth(groupEndDate.Value, workingMonth) : -1;
+            var reason = new StringBuilder();
+            if (GetDifferenceMonth(groupStartDate, workingMonth) == 0)
+            {
+                if (differenceEndDate == 0)
+                {
+                    reason.AppendFormat(
+                        " Employee worked from {0} to {1}.",
+                        groupStartDate.ToString(Constants.DateFormat),
+                        groupEndDate.Value.ToString(Constants.DateFormat));
+                }
+                else
+                {
+                    reason.AppendFormat(" Employee started working from {0}.", groupStartDate.ToString(Constants.DateFormat));
+                }
+            }
+            else
+            {
+                if (differenceEndDate == 0)
+                {
+                    reason.AppendFormat(" Employee official leaves from {0}.", groupEndDate.Value.ToString(Constants.DateFormat));
+                }
+            }
+
+            return reason.ToString();
         }
 
         #endregion Back Pay and After Adjustment
