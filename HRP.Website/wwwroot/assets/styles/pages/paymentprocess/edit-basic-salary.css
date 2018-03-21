@@ -186,6 +186,7 @@ input[type="radio"]:disabled + span {
 .d-flex {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   margin-bottom: 12px;
 }
 
@@ -265,11 +266,11 @@ input[type="radio"]:disabled + span {
 }
 
 .group-complex.-layout-add {
-  grid-template-columns: 104px 210px 80px 70px 110px;
+  grid-template-columns: 104px 210px 80px 38px 110px;
 }
 
 .group-complex.-layout-deduction {
-  grid-template-columns: 115px 210px 70px 50px 140px;
+  grid-template-columns: 115px 210px 38px 50px 140px;
 }
 
 .group-complex.-layout-setting {
@@ -333,15 +334,27 @@ input[type="radio"]:disabled + span {
 }
 
 .group-complex.-alw-layout-add {
-  grid-template-columns: 104px 80px 90px 70px 110px 26px 110px 26px;
+  grid-template-columns: 104px 80px 90px 38px 110px 26px 110px 26px;
 }
 
 .group-complex.-alw-layout-deduction {
-  grid-template-columns: 80px 88px 90px 110px 26px 110px 26px;
+  grid-template-columns: 80px 88px 38px 110px 26px 110px 26px;
+}
+
+@media screen and (max-width: 1280px) {
+  .group-complex.-alw-layout-deduction {
+    margin-left: 116px;
+  }
 }
 
 .group-complex.-alw-layout-deduction-2 {
-  grid-template-columns: 178px 90px 110px 26px 110px 26px;
+  grid-template-columns: 178px 38px 110px 26px 110px 26px;
+}
+
+@media screen and (max-width: 1280px) {
+  .group-complex.-alw-layout-deduction-2 {
+    margin-left: 116px;
+  }
 }
 
 .group-complex .text-dst-net {
