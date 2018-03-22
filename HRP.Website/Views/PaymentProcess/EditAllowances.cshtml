@@ -4,6 +4,7 @@
 
 @section Styles {
     <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
@@ -88,6 +89,16 @@
             <span asp-validation-for="Allowance.CashCurrencyId" class="message"></span>
             <span asp-validation-for="Allowance.CashAmount" class="message"></span>
             <span asp-validation-for="Allowance.CashAccountId" class="message"></span>
+
+            @for (var i = 0; i < Model.Additions.Count; i++)
+            {
+                <span asp-validation-for="Additions[i]" class="message"></span>
+            }
+
+            @for (var i = 0; i < Model.Deductions.Count; i++)
+            {
+                <span asp-validation-for="Deductions[i]" class="message"></span>
+            }
         </div>
 
         <div class="d-flex">
@@ -105,19 +116,19 @@
                 {
                     <div class="group-complex -alw-layout-add">
                         <div class="like-group-title">@((AllowanceType)Model.Additions[i].Type)</div>
-                        <input type="text" class="control" asp-for="Additions[i].UnitAmount">
-                        <select class="control" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
+                        <input type="text" class="control addtion unit-amount" data-group="addtion-@i" asp-for="Additions[i].UnitAmount">
+                        <select class="control addtion currency" data-group="addtion-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control" asp-for="Additions[i].NoOfDays">
-                        <input type="text" class="control" readonly asp-for="Additions[i].TotalAmount">
-                        <input type="text" class="control" readonly asp-for="Additions[i].NetAllowance">
+                        <input type="text" class="control addtion no-of-days" data-group="addtion-@i" asp-for="Additions[i].NoOfDays">
+                        <input type="text" class="control addtion total-amount" data-group="addtion-@i" readonly asp-for="Additions[i].TotalAmount">
+                        <input type="text" class="control addtion net-allowance" data-group="addtion-@i" readonly asp-for="Additions[i].NetAllowance">
                     </div>
                 }
 
                 <div class="group-complex -alw-layout-add">
                     <div class="text-specific">Total Add</div>
-                    <input type="text" class="control highlighted -start-col-6" disabled>
+                    <input type="text" id="total-addition" class="control highlighted -start-col-6" disabled>
                 </div>
             </div>
             <div class="deduction">
@@ -132,21 +143,21 @@
 
                 @for (var i = 0; i < Model.Deductions.Count; i++)
                 {
-                    <div class="group-complex -alw-layout-add">
-
-                    </div>
-
                     <div class="group-complex -alw-layout-deduction text-center">
-                        <input type="text" class="control " asp-for="Deductions[i].UnitAmount">
-                        <select class="control" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
+                        <input type="text" class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
+                        <select class="control deduction currency" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control" asp-for="Deductions[i].NoOfDays">
-                        <input type="text" class="control" readonly asp-for="Deductions[i].TotalAmount">
-                        <input type="text" class="control" readonly asp-for="Deductions[i].NetAllowance">
+                        <input type="text" class="control  deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" class="control  deduction total-amount" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmount">
+                        <input type="text" class="control  deduction net-allowance" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowance">
                     </div>
                 }
-
+                
+                <div class="group-complex -alw-layout-deduction-2">
+                    <div class="text-specific text-red">Total Deduction</div>
+                    <input type="text" id="total-deduction" class="control highlighted -start-col-4" disabled>
+                </div>
             </div>
         </div>
 
@@ -297,3 +308,18 @@
         </div>
     </div>
 </form>
+
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/bignumber.js/bignumber.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/paymentprocess/edit-allowances.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/bignumber.js/bignumber.min.js"></script>
+        <script src="~/assets/bundles/employee/js/employee-payroll.min.js"></script>
+    </environment>
+}

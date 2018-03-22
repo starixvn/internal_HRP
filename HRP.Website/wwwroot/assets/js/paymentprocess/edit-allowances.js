@@ -1,10 +1,36 @@
 ﻿var editAllowances = (function ($) {
-    function setValidationValues(options, ruleName, value) {
-        options.rules[ruleName] = value;
-        if (options.message) {
-            options.messages[ruleName] = options.message;
-        }
-    }
+    BigNumber.prototype.roundWithCurrency = function (dp, currency) {
+        if (currency === '11')
+            return this.div(1000).round().mul(1000);
+
+        return this.round(dp);
+    };
+
+    BigNumber.prototype.toStringWithCurrency = function (currency) {
+        if (currency === '11')
+            return this.toString();
+
+        return this.toFixed(2);
+    };
+
+    function calculateTotalAddition() {
+        var totalAddition = new BigNumber(0);
+        $('.addtion.net-allowance').each(function (i, element) {
+            totalAddition = totalAddition.plus(Number(element.value));
+        });
+
+        $("#total-addition").val(totalAddition.toNumber());
+    };
+
+    function calculateTotalDeduction() {
+        var totalDeduction = new BigNumber(0);
+        $('.deduction.net-allowance').each(function (i, element) {
+            totalDeduction = totalDeduction.plus(Number(element.value));
+        });
+
+        $("#total-deduction").val(totalDeduction.toNumber());
+    };
+
 
     function initModule() {
         $('.number:enabled').on('keydown', function (e) {
@@ -33,8 +59,8 @@
                 url: $(this).data('url'),
                 data: function (params) {
                     var query = {
-                        employeeId: $('#EmployeeId').val(),
-                        bankTypeId: $(this).siblings('.bank-type-select').val()
+                        //employeeId: $('#EmployeeId').val(),
+                        //bankTypeId: $(this).siblings('.bank-type-select').val()
                     };
 
                     return query;
@@ -51,13 +77,40 @@
             minimumResultsForSearch: Infinity
         })
 
+        $('.addtion, .deduction').on('change', function (e) {
+            var $this = $(this);
+            var dataGroup = $this.data('group');
+            var $relatedElements = $('input[data-group="' + dataGroup + '"]');
+
+            var $unitAmount = $('.unit-amount', $relatedElements);
+            var $currency = $('.currency', $relatedElements);
+            var $noOfDays = $('.no-of-days', $relatedElements);
+            var $totalAmount = $('.total-amount', $relatedElements);
+            var $netAllowance = $('.net-allowance', $relatedElements);
+
+            if ($unitAmount.val() !== '') {
+                var unitAmount = new BigNumber($unitAmount.val());
+                if ($noOfDays.val() !== '') {
+                    unitAmount = unitAmount.mul($noOfDays.val());
+                    $totalAmount.val(unitAmount.toString());
+                } else {
+                    $totalAmount.val(unitAmount.toString());
+                }
+
+
+            } else {
+                $totalAmount.val('');
+                $netAllowance.val('');
+            }
+        });
+
         var $editAllowanceForm = $("#edit-allowances-form");
         $editAllowanceForm.removeData("validator").removeData("unobtrusiveValidation");
 
-        $.validator.addMethod('requiredif', function (value, element, params) {
+        $.validator.addMethod('requiredifrelatedfieldhasvalue', function (value, element, params) {
             var $element = $(element);
             var dataGroup = $element.data('group');
-            var $relatedElement = $('input[data-group="' + 'dataGroup"]');
+            var $relatedElement = $('input[data-group="' + dataGroup + '"]');
             if ($relatedElement.val() !== '' && $element.val() === '') {
                 return false;
             }
@@ -65,9 +118,9 @@
             return true;
         });
 
-        $.validator.unobtrusive.adapters.add('requiredif', [], function (options) {
-            options.rules['requiredif'] = options.params['year'];
-            options.messages['requiredif'] = options.message;.l
+        $.validator.unobtrusive.adapters.add('requiredifrelatedfieldhasvalue', [], function (options) {
+            options.rules['requiredifrelatedfieldhasvalue'] = [];
+            options.messages['requiredifrelatedfieldhasvalue'] = options.message;
         });
 
         $.validator.unobtrusive.parse($editAllowanceForm);

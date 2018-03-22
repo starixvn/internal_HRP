@@ -398,32 +398,6 @@
         }
 
         [Fact]
-        public void InitializeMonthlyBasicAllowance_ValidData_ReturnExpectedModel()
-        {
-            var monthlyPayrollService = GetMonthlyPayrollService();
-            var payrollId = 1;
-
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
-            {
-                EmployeeId = 1,
-                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
-                CurrencyId = 1,
-                CashCurrencyId = 1,
-            };
-
-            var deduction = new EmployeePayrollDeductionModel
-            {
-                EmployeeId = 1
-            };
-
-            var result = monthlyPayrollService.InitializeMonthlyBasicAllowance(payrollId, employeePayrollAllowance, deduction);
-            Assert.Equal(payrollId, result.PayrollId);
-            Assert.Equal(employeePayrollAllowance.AutoCalculateOn, result.AutoCalculateOn);
-            Assert.Equal(employeePayrollAllowance.CurrencyId, result.CurrencyId);
-            Assert.Equal(employeePayrollAllowance.CashCurrencyId, result.CashCurrencyId);
-        }
-
-        [Fact]
         public void CalculateMonthlyBasicAllowance_StartDateInMonth_ReturnExpectedResult()
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
@@ -511,10 +485,7 @@
                 SubsistenceAmount = "2000",
                 SubsistenceCurrencyId = 1
             };
-            cryptoService.Decrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
-            cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
-            cryptoService.Decrypt(null).Returns(string.Empty);
-            cryptoService.Encrypt(null).Returns(string.Empty);
+            
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
@@ -557,18 +528,7 @@
 
             var expectedTotalAmount = "1800";
 
-            cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
-            cryptoService.Decrypt(basicAllowance.RoomingChargesAmount).Returns(basicAllowance.RoomingChargesAmount);
-            cryptoService.Decrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
-            cryptoService.Decrypt(expectedTotalAmount).Returns(expectedTotalAmount);
-            cryptoService.Decrypt(null).Returns(string.Empty);
-
-            cryptoService.Encrypt(expectedTotalAmount).Returns(expectedTotalAmount);
-            cryptoService.Encrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
-            cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
-            cryptoService.Encrypt(null).Returns(string.Empty);
-
-            var result = monthlyPayrollService.InitializeMonthlyAllowance(payrollId, basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates);
 
             Assert.Equal(expectedTotalAmount, result.TotalAmount);
         }
@@ -584,8 +544,9 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            var basicAlloance = new MonthlyPayrollBasicAllowanceModel
             {
+                PayrollId = payrollId,
                 EmployeeId = 1,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 CurrencyId = 1,
@@ -599,12 +560,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
-            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
-
-            var result = monthlyPayrollService.InitializeAllowanceAdditions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAlloance, currencyExchangeRates);
 
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
@@ -625,8 +581,9 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (standardWorkingDays - actualWorkingDays);
 
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
+                PayrollId = payrollId,
                 EmployeeId = 1,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 CurrencyId = 1,
@@ -640,12 +597,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
-            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
-
-            var result = monthlyPayrollService.InitializeAllowanceDeductions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceDeductions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
 
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);

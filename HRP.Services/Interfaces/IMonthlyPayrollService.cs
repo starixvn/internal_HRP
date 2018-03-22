@@ -41,8 +41,6 @@
             MonthlySalaryAdditionModel backPay,
             MonthlySalaryModel monthlySalary);
 
-        MonthlyPayrollBasicAllowanceModel InitializeMonthlyBasicAllowance(int payrollId, EmployeePayrollAllowanceModel employeePayrollAllowance, EmployeePayrollDeductionModel deduction);
-
         void CalculateMonthlyBasicAllowance(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
@@ -50,13 +48,13 @@
             DateTime? endDate, 
             int month, int year);
 
-        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int payrollId, int standardWorkingDays, int actualWorkingDays,
-            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, int actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
 
-        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int payrollId, int standardWorkingDays, int actualWorkingDays,
-            EmployeePayrollAllowanceModel employeePayrollAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int standardWorkingDays, int actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
 
-        MonthlyAllowanceModel InitializeMonthlyAllowance(int payrollId, MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
+        MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
             IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
     }
 }
