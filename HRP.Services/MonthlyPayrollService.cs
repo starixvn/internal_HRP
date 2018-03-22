@@ -14,7 +14,6 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
-    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
@@ -176,7 +175,7 @@
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2.OrderBy(x => x.Type).ToList(),
                 Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4 
+                BasicAllowance = result.Item4
             };
 
             if (model.Allowance != null)
@@ -227,9 +226,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
         public void CalculateBackPayAndAfterAdjustment(
-#pragma warning restore S1541 // Methods and properties should not be too complex
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
@@ -237,36 +234,14 @@
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
-            decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
-            decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, basicSetting.CurrencyId);
-            int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
-            int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
-            int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            decimal amount;
-
             switch (basicSetting.SalaryChangeReason)
             {
                 case BasicSalaryChangeReason.AnnualIncrement:
-                    CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
-                    break;
-
                 case BasicSalaryChangeReason.Promotion:
                 case BasicSalaryChangeReason.SalaryAdjustment:
                 case BasicSalaryChangeReason.Demotion:
                 case BasicSalaryChangeReason.Penalty:
-                    if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
-                    {
-                        amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
-                            + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
-                        amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
-                        basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
-                        GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
-                    }
-                    else
-                    {
-                        CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
-                    }
+                    CalculateBackPayAndAfterAdjustmentInCaseSalaryChangeReason(currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
                     break;
 
                 default:
@@ -566,7 +541,6 @@
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning disable S1541 // Methods and properties should not be too complex
-
         private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate, int month, int year)
 #pragma warning restore S1541 // Methods and properties should not be too complex
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
@@ -863,13 +837,46 @@
 
         private static int GetDifferenceMonth(DateTime past, DateTime now)
         {
-            int monthsApart = 0;
-            if (past < now)
-            {
-                monthsApart = 12 * (past.Year - now.Year) + past.Month - now.Month;
-            }
+            int monthsApart = 12 * (past.Year - now.Year) + past.Month - now.Month;
 
             return Math.Abs(monthsApart);
+        }
+
+        private static void CalculateBackPayAndAfterAdjustmentInCaseSalaryChangeReason(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            DateTime workingMonth,
+            MonthlyBasicSalaryModel basicSetting,
+            MonthlySalaryAdditionModel backPay,
+            DateTime groupStartDate,
+            DateTime? groupEndDate)
+        {
+            decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
+            decimal.TryParse(basicSetting.Salary, out decimal newSalary);
+            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, basicSetting.CurrencyId);
+            int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
+            int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
+            int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
+            decimal amount;
+
+            if (basicSetting.SalaryChangeReason == BasicSalaryChangeReason.AnnualIncrement)
+            {
+                CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, groupEndDate);
+            }
+            else
+            {
+                if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
+                {
+                    amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
+                        + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
+                    amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
+                    basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
+                    GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
+                }
+                else
+                {
+                    CalculateBackPayAndAfterAdjustmentInCaseGroupDateCommencement(workingMonth, basicSetting, groupStartDate, groupEndDate);
+                }
+            }
         }
 
         private static void CalculateBackPayAndAfterAdjustmentInCaseAnnualIncrement(
