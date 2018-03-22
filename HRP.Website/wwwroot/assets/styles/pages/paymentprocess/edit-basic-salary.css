@@ -266,11 +266,11 @@ input[type="radio"]:disabled + span {
 }
 
 .group-complex.-layout-add {
-  grid-template-columns: 104px 210px 80px 70px 110px;
+  grid-template-columns: 104px 210px 80px 52px 110px;
 }
 
 .group-complex.-layout-deduction {
-  grid-template-columns: 115px 210px 70px 50px 110px;
+  grid-template-columns: 115px 210px 52px 50px 110px;
 }
 
 .group-complex.-layout-setting {
@@ -338,11 +338,11 @@ input[type="radio"]:disabled + span {
 }
 
 .group-complex.-alw-layout-add {
-  grid-template-columns: 104px 80px 90px 70px 110px 110px;
+  grid-template-columns: 104px 80px 90px 52px 110px 110px;
 }
 
 .group-complex.-alw-layout-deduction {
-  grid-template-columns: 80px 88px 70px 110px 110px;
+  grid-template-columns: 80px 88px 52px 110px 110px;
 }
 
 @media screen and (max-width: 1280px) {
@@ -352,7 +352,7 @@ input[type="radio"]:disabled + span {
 }
 
 .group-complex.-alw-layout-deduction-2 {
-  grid-template-columns: 178px 70px 110px 110px;
+  grid-template-columns: 178px 52px 110px 110px;
 }
 
 @media screen and (max-width: 1280px) {
