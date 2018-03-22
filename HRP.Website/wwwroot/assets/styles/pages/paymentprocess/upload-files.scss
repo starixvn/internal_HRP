@@ -1,6 +1,5 @@
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
-@import "../../components/progress-bar";
 @import "../../components/tables";
 
 // Upload files
@@ -95,9 +94,8 @@
     }
 }
 
-.group-bar {
-    height: 35px;
-    align-items: flex-end;
+.info-list {
+    padding-top: 12px;
 }
 
 .width-660 {

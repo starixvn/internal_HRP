@@ -10,12 +10,16 @@
     margin-bottom: 12px;
     
     .add {
-        margin-right: 88px;
+        margin-right: 128px;
+    }
+
+    .add-allowances {
+        margin-right: 126px;
     }
 
     .setting,
     .monthly-payroll {
-        margin-right: 20px;
+        margin-right: 30px;
     }
 }
 
@@ -48,10 +52,6 @@
     &.m-t-0 {
         margin-top: 0;
     }
-}
-
-.group-payroll {
-    margin-left: 18px;
 }
 
 .group-payment {
@@ -87,19 +87,23 @@
     }
 
     &.-layout-add {
-        grid-template-columns: 104px 210px 80px 52px 110px;        
+        grid-template-columns: 108px 210px 80px 52px 110px;        
     }
 
     &.-layout-deduction {
         grid-template-columns: 115px 210px 52px 50px 110px;
     }
 
+    &.-layout-deduction-2 {
+        grid-template-columns: 115px 210px 112px 110px;
+    }
+
     &.-layout-setting {
-        grid-template-columns: 104px 90px 110px;
+        grid-template-columns: 108px 90px 110px;
     }
 
     &.-layout-setting-2 {
-        grid-template-columns: 104px 208px;
+        grid-template-columns: 108px 208px;
     }
 
     &.-layout-payroll {
@@ -111,7 +115,7 @@
     }
 
     &.-total-salary {
-        grid-template-columns: 104px 208px;
+        grid-template-columns: 108px 208px;
     }
     
     .-start-col-2 {

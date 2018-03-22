@@ -129,17 +129,17 @@
                 <div>minutes</div>
                 <input type="text" class="control number" asp-for="Deductions[1].NetSalary" disabled>
             </div>
-            <div class="group-complex -layout-deduction">
+            <div class="group-complex -layout-deduction-2">
                 <div class="like-group-title">@ViewLang.SalaryAdvance</div>
                 <input type="text" class="control" asp-for="Deductions[2].Description">
                 <input type="text" class="control number" asp-for="Deductions[2].NoOfDays">
-                <input type="text" class="control number -start-col-5" asp-for="Deductions[2].NetSalary" disabled>
+                <input type="text" class="control number" asp-for="Deductions[2].NetSalary" disabled>
             </div>
-            <div class="group-complex -layout-deduction">
+            <div class="group-complex -layout-deduction-2">
                 <div class="like-group-title">@ViewLang.Others</div>
                 <input type="text" class="control" asp-for="Deductions[3].Description">
                 <input type="text" class="control number" asp-for="Deductions[3].NoOfDays">
-                <input type="text" class="control number -start-col-5" asp-for="Deductions[3].NetSalary" disabled>
+                <input type="text" class="control number" asp-for="Deductions[3].NetSalary" disabled>
             </div>
             <div class="group-complex -layout-deduction">
                 <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
@@ -202,7 +202,7 @@
         </div>
         <div class="monthly-payroll">
             <div class="group-complex -layout-payroll">
-                <div class="bold group-payroll text-green">@ViewLang.MonthlyBasicSalary</div>
+                <div class="bold">@ViewLang.MonthlyBasicSalary</div>
                 <select class="control" disabled>
                     <option>USD</option>
                 </select>
