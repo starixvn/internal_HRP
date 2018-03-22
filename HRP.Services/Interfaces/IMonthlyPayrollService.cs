@@ -6,7 +6,6 @@
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement;
     using HRP.Models.MonthlyPayroll;
 
     public interface IMonthlyPayrollService
@@ -45,7 +44,7 @@
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
             DateTime startDate,
-            DateTime? endDate, 
+            DateTime? endDate,
             int month, int year);
 
         IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, int actualWorkingDays,

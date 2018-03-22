@@ -235,7 +235,12 @@
                 "month": $selectedTime.val()
             },
             success: function (response) {
-                alert(response.isSuccessful);
+                if (response.isSuccessful) {
+                    alert('generate successful!');
+                } else {
+                    $(domElement.UploadFilesForm).validate().showErrors(response.errors);
+                    alert('generate fail !!!!!');
+                }
             },
             error: commonFunctions.handleAjaxError
         });

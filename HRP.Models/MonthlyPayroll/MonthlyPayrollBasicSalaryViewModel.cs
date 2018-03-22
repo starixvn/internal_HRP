@@ -4,8 +4,8 @@
     {
         public int PayrollId { get; set; }
         public string Salary { get; set; }
-        public string EBankingCurrencyCode { get; set; }
-        public string EBankingAmount { get; set; }
+        public string EbankingCurrencyCode { get; set; }
+        public string EbankingAmount { get; set; }
         public string DirectBanking1CurrencyCode { get; set; }
         public string DirectBanking1Amount { get; set; }
         public string DirectBanking2CurrencyCode { get; set; }

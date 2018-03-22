@@ -154,8 +154,8 @@
                     <td>@employee.FullName</td>
                     <td>@employee.Nickname</td>
                     <td>@employee.CostCenter</td>
-                    <td>@employee.BasicSalary.EBankingCurrencyCode</td>
-                    <td>@employee.BasicSalary.EBankingAmount</td>
+                    <td>@employee.BasicSalary.EbankingCurrencyCode</td>
+                    <td>@employee.BasicSalary.EbankingAmount</td>
                     <td>@employee.BasicSalary.DirectBanking1CurrencyCode</td>
                     <td>@employee.BasicSalary.DirectBanking1Amount</td>
                     <td>@employee.BasicSalary.DirectBanking2CurrencyCode</td>
@@ -181,7 +181,7 @@
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId"
                                    asp-route-month="@Model.Month">
-                                   <span class="icon-salary"></span>
+                                    <span class="icon-salary"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditMonthlyBasicSalary
@@ -198,7 +198,7 @@
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId">
-                                   <span class="icon-allowances"></span>
+                                    <span class="icon-allowances"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
                                         @ViewLang.EditMonthlyAllowances

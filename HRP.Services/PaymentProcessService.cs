@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -257,20 +258,38 @@
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
             var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
-            var numMonth = month.Month;
-            var numYear = month.Year;
-            foreach (var payroll in dataModel.MonthlyPayroll)
-            {
-                var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
-                var monthlyBasicSalary = dataModel.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
-                var backPay = new MonthlySalaryAdditionModel();
-                var monthlySalary = new MonthlySalaryModel();
-                monthlyPayrollService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
-                monthlyPayrollService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
-                monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, payroll.GroupStartDate, payroll.GroupEndDate, numMonth, numYear);
-            }
 
-            return new CommandResult { Code = 0, Data = dataModel };
+            var fakeMonthlyPayroll = new List<MonthlyPayroll> {
+                new MonthlyPayroll {EmployeeId = 11, Month = month, Status = 0, SalaryEffectiveDate = DateTime.Now, SalaryChangeReasonId = 9, GroupStartDate = DateTime.Now, GroupEndDate = null },
+                new MonthlyPayroll {EmployeeId = dataModel.MonthlyPayroll.FirstOrDefault().EmployeeId,
+                    Month = month, Status = 0, SalaryEffectiveDate = null, SalaryChangeReasonId = null, GroupStartDate = DateTime.Now, GroupEndDate = null }
+            };
+
+            var fakeBasicSalary = new List<MonthlyBasicSalaryModel>
+            {
+                new MonthlyBasicSalaryModel {EmployeeId = 11, WorkingDays = 22,   CurrencyId = 1, Salary = "asdad", AutoCalculateOn = PayrollAutoCalculateOn.Ebanking},
+                new MonthlyBasicSalaryModel {EmployeeId = 2, WorkingDays = 26,   CurrencyId = 1, Salary = monthlyPayrollService.GetHashCode().ToString(), AutoCalculateOn = PayrollAutoCalculateOn.Cash}
+            };
+
+            var fakeSalary = new List<MonthlySalaryModel>
+            {
+                new MonthlySalaryModel {EmployeeId = 11,   CurrencyId = 1, Salary = "asdad", AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1},
+                new MonthlySalaryModel {EmployeeId = 2,  CurrencyId = 1, Salary = monthlyPayrollService.GetHashCode().ToString(), AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1}
+            };
+
+            var criteria = new GenerateMonthlyPayrollCriteria
+            {
+                CompanyId = companyId,
+                Month = month,
+                PayrollXMLDoc = fakeMonthlyPayroll.ToXML().ToString(),
+                BasicSalaryXMLDoc = fakeBasicSalary.ToXML().ToString(),
+                SalaryXMLDoc = fakeSalary.ToXML().ToString(),
+                UpdatedBy = sessionService.UserId
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
         }
 
         public async Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month)

@@ -204,7 +204,7 @@
                 var generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
                 if (generateResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = true, data = generateResult.Data });
+                    return Json(new { isSuccessful = true });
                 }
 
                 ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), generateResult.Message);
@@ -340,7 +340,7 @@
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
             viewModel.EmployeeId = employeeId;
-            viewModel.Currencies = new SelectList(baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()), 
+            viewModel.Currencies = new SelectList(baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
                 nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
             viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),

@@ -7,9 +7,9 @@
         public int UserId { get; set; }
         public int? CurrencyId { get; set; }
         public string Salary { get; set; }
-        public int? EBankingCurrencyId { get; set; }
-        public string EBankingAmount { get; set; }
-        public int? EBankingAccountId { get; set; }
+        public int? EbankingCurrencyId { get; set; }
+        public string EbankingAmount { get; set; }
+        public int? EbankingAccountId { get; set; }
         public int? DirectBanking1CurrencyId { get; set; }
         public string DirectBanking1Amount { get; set; }
         public int? DirectBanking1BankTypeId { get; set; }

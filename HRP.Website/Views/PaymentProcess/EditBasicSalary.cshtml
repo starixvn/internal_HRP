@@ -183,10 +183,10 @@
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="like-group-title">@ViewLang.EBanking</div>
-                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.EBankingCurrencyId" disabled>
-                        <option value="@Model.MonthlyBasicSalary.EBankingCurrencyId">@Model.MonthlyBasicSalary.EBankingCurrencyCode</option>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.EbankingCurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.EbankingCurrencyId">@Model.MonthlyBasicSalary.EbankingCurrencyCode</option>
                     </select>
-                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.EBankingAmount" disabled>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.EbankingAmount" disabled>
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="like-group-title">@ViewLang.DirectBanking1</div>
@@ -223,7 +223,7 @@
             </div>
             <div class="monthly-payroll">
                 <div class="group-complex -layout-payroll">
-                <div class="bold">@ViewLang.MonthlyBasicSalary</div>
+                    <div class="bold">@ViewLang.MonthlyBasicSalary</div>
                     <select class="control js-select2-disabled" asp-for="MonthlySalary.CurrencyId" asp-items="Model.Currencies" disabled>
                         <option></option>
                     </select>
@@ -234,10 +234,10 @@
                         <input type="radio" asp-for="MonthlySalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.Ebanking" />
                         <span class="like-group-title">@ViewLang.EBanking</span>
                     </label>
-                    <select class="control js-select2-allowclear" asp-for="MonthlySalary.EBankingCurrencyId" asp-items="Model.Currencies">
+                    <select class="control js-select2-allowclear" asp-for="MonthlySalary.EbankingCurrencyId" asp-items="Model.Currencies">
                         <option></option>
                     </select>
-                    <input type="text" class="control number" asp-for="MonthlySalary.EBankingAmount" />
+                    <input type="text" class="control number" asp-for="MonthlySalary.EbankingAmount" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
@@ -278,7 +278,7 @@
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.EBanking</div>
-                    <select class="control js-select2-allowclear" asp-for="MonthlySalary.EBankingAccountId">
+                    <select class="control js-select2-allowclear" asp-for="MonthlySalary.EbankingAccountId">
                         <option></option>
                     </select>
                 </div>

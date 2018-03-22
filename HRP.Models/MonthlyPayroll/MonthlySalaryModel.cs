@@ -1,20 +1,25 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System.Xml.Serialization;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
 
+    [XMLName("Row")]
     public class MonthlySalaryModel
     {
         public int PayrollId { get; set; }
+
+        public int EmployeeId { get; set; }
 
         public int CurrencyId { get; set; }
 
         public string Salary { get; set; }
 
-        public int? EBankingCurrencyId { get; set; }
+        public int? EbankingCurrencyId { get; set; }
 
-        public string EBankingAmount { get; set; }
+        public string EbankingAmount { get; set; }
 
-        public int? EBankingAccountId { get; set; }
+        public int? EbankingAccountId { get; set; }
 
         public int? CashCurrencyId { get; set; }
 
@@ -38,7 +43,14 @@
 
         public int? DirectBanking2AccountId { get; set; }
 
+        [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
+
+        [XMLName("AutoCalculateOn")]
+        public int XmlAutoCalculateOn
+        {
+            get => (int)AutoCalculateOn;
+        }
 
         public string AdditionAmount { get; set; }
 
@@ -48,6 +60,13 @@
 
         public string DeductionAmountDisplay { get; set; }
 
+        [XmlIgnore]
         public MonthlyPayrollStatus Status { get; set; }
+
+        [XMLName("Status")]
+        public int XmlStatus
+        {
+            get => (int)Status;
+        }
     }
 }

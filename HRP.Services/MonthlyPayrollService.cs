@@ -139,9 +139,9 @@
                 UserId = sessionService.UserId,
                 CurrencyId = viewModel.MonthlySalary.CurrencyId,
                 Salary = cryptoService.Encrypt(viewModel.MonthlySalary.Salary),
-                EBankingCurrencyId = viewModel.MonthlySalary.EBankingCurrencyId,
-                EBankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EBankingAmount),
-                EBankingAccountId = viewModel.MonthlySalary.EBankingAccountId,
+                EbankingCurrencyId = viewModel.MonthlySalary.EbankingCurrencyId,
+                EbankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EbankingAmount),
+                EbankingAccountId = viewModel.MonthlySalary.EbankingAccountId,
 
                 DirectBanking1CurrencyId = viewModel.MonthlySalary.DirectBanking1CurrencyId,
                 DirectBanking1Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking1Amount),
@@ -259,7 +259,7 @@
             decimal amount = 0;
             decimal totalAmount = 0;
             decimal.TryParse(basicSalary.AfterAdjustmentAmount, out decimal salary);
-            decimal ebanking = ConvertAmount(currencyExchangeRates, basicSalary.EBankingAmount, basicSalary.EBankingCurrencyId, basicSalary.CurrencyId);
+            decimal ebanking = ConvertAmount(currencyExchangeRates, basicSalary.EbankingAmount, basicSalary.EbankingCurrencyId, basicSalary.CurrencyId);
             decimal directBanking1 = ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking1Amount, basicSalary.DirectBanking1CurrencyId, basicSalary.CurrencyId);
             decimal directBanking2 = ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking2Amount, basicSalary.DirectBanking2CurrencyId, basicSalary.CurrencyId);
             decimal cash = ConvertAmount(currencyExchangeRates, basicSalary.CashAmount, basicSalary.CashCurrencyId, basicSalary.CurrencyId);
@@ -267,17 +267,17 @@
             switch (basicSalary.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.Ebanking:
-                    if (basicSalary.EBankingCurrencyId.HasValue)
+                    if (basicSalary.EbankingCurrencyId.HasValue)
                     {
-                        amount = ConvertAmount(currencyExchangeRates, salary - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EBankingCurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.EBankingCurrencyId.Value);
+                        amount = ConvertAmount(currencyExchangeRates, salary - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
                         totalAmount = amount + directBanking1 + directBanking2 + cash;
-                        basicSalary.EBankingAmount = amount.ToString(CultureInfo.InvariantCulture);
+                        basicSalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    if (basicSalary.EBankingCurrencyId.HasValue)
+                    if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
@@ -287,7 +287,7 @@
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
-                    if (basicSalary.EBankingCurrencyId.HasValue)
+                    if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
@@ -297,7 +297,7 @@
                     break;
 
                 default:
-                    if (basicSalary.EBankingCurrencyId.HasValue)
+                    if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
@@ -309,8 +309,8 @@
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
             monthlySalary.Salary = basicSalary.AfterAdjustmentAmount;
-            monthlySalary.EBankingCurrencyId = basicSalary.EBankingCurrencyId;
-            monthlySalary.EBankingAmount = basicSalary.EBankingAmount;
+            monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
+            monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
             monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
             monthlySalary.DirectBanking2CurrencyId = basicSalary.DirectBanking2CurrencyId;
@@ -320,7 +320,7 @@
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
             monthlySalary.AdditionAmount = backPay.NetSalary;
             monthlySalary.Status = (amount < 0 || totalAmount > salary) ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
-        }      
+        }
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
             IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, int? dstNetSalaryCurrencyId, string dstNetSalaryAmount)
@@ -502,6 +502,7 @@
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning disable S1541 // Methods and properties should not be too complex
+
         private void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate, int month, int year)
 #pragma warning restore S1541 // Methods and properties should not be too complex
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
@@ -562,7 +563,7 @@
             foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
             {
                 monthlyPayroll.BasicSalary.Salary = cryptoService.Decrypt(monthlyPayroll.BasicSalary.Salary);
-                monthlyPayroll.BasicSalary.EBankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EBankingAmount);
+                monthlyPayroll.BasicSalary.EbankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EbankingAmount);
                 monthlyPayroll.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking1Amount);
                 monthlyPayroll.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking2Amount);
                 monthlyPayroll.BasicSalary.CashAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.CashAmount);
@@ -674,13 +675,13 @@
         private void DecryptAndRoudingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
         {
             viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
-            viewModel.MonthlyBasicSalary.EBankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EBankingAmount);
+            viewModel.MonthlyBasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EbankingAmount);
             viewModel.MonthlyBasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking1Amount);
             viewModel.MonthlyBasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking2Amount);
             viewModel.MonthlyBasicSalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.CashAmount);
 
             viewModel.MonthlySalary.Salary = cryptoService.Decrypt(viewModel.MonthlySalary.Salary);
-            viewModel.MonthlySalary.EBankingAmount = cryptoService.Decrypt(viewModel.MonthlySalary.EBankingAmount);
+            viewModel.MonthlySalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlySalary.EbankingAmount);
             viewModel.MonthlySalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking1Amount);
             viewModel.MonthlySalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking2Amount);
             viewModel.MonthlySalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlySalary.CashAmount);
