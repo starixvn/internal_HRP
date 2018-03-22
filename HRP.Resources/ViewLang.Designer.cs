@@ -1933,11 +1933,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save and Edit Allowances.
+        ///   Looks up a localized string similar to Save and Edit Monthly Allowances.
         /// </summary>
-        public static string SaveAndEditAllowances {
+        public static string SaveAndEditMonthlyAllowances {
             get {
-                return ResourceManager.GetString("SaveAndEditAllowances", resourceCulture);
+                return ResourceManager.GetString("SaveAndEditMonthlyAllowances", resourceCulture);
             }
         }
         

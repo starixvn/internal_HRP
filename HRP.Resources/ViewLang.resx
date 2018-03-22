@@ -885,8 +885,8 @@
   <data name="SalaryAdvance" xml:space="preserve">
     <value>Salary Advance</value>
   </data>
-  <data name="SaveAndEditAllowances" xml:space="preserve">
-    <value>Save and Edit Allowances</value>
+  <data name="SaveAndEditMonthlyAllowances" xml:space="preserve">
+    <value>Save and Edit Monthly Allowances</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>

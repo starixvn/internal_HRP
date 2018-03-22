@@ -30,7 +30,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control width-92 js-select2" disabled>
+        <select class="control width-92 js-select2-disabled" disabled>
             <option value="@Model.CompanyCode" selected="selected">@Model.CompanyCode</option>
         </select>
     </div>
@@ -45,13 +45,13 @@
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-140 js-select2" disabled>
+        <select class="control width-140 js-select2-disabled" disabled>
             <option value="@Model.CostCenter" selected="selected">@Model.CostCenter</option>
         </select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control width-92 js-select2" disabled>
+        <select class="control width-92 js-select2-disabled" disabled>
             <option value="@Model.MonthlyBasicSalary.WorkingDays" selected="selected">@Model.MonthlyBasicSalary.WorkingDays</option>
         </select>
     </div>
@@ -67,238 +67,256 @@
     <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
     <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
 </div>
-<div class="form-information">
-    <div class="d-flex">
-        <div class="add">
-            <div class="group-complex -layout-add -group-type">
-                <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.Add</div>
-                <div>@ViewLang.Description</div>
-                <div>@ViewLang.UnitAmount</div>
-                <div>@ViewLang.NoOfDays</div>
-                <div>@ViewLang.NetSalary</div>
-            </div>
-            <div class="group-complex -layout-add">
-                <div class="like-group-title">@ViewLang.BackPay</div>
-                <input type="text" class="control" asp-for="Additions[0].Description" disabled>
-                <input type="text" class="control number" asp-for="Additions[0].UnitAmount" disabled>
-                <input type="text" class="control number -start-col-5" asp-for="Additions[0].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-add">
-                <div class="like-group-title">@ViewLang.Adjustments</div>
-                <input type="text" class="control" asp-for="Additions[1].Description">
-                <input type="text" class="control number" asp-for="Additions[1].UnitAmount">
-                <input type="text" class="control" asp-for="Additions[1].NoOfDays">
-                <input type="text" class="control number" asp-for="Additions[1].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-add">
-                <div class="like-group-title">@ViewLang.Others</div>
-                <input type="text" class="control" asp-for="Additions[2].Description">
-                <input type="text" class="control number" asp-for="Additions[2].UnitAmount">
-                <input type="text" class="control" asp-for="Additions[2].NoOfDays">
-                <input type="text" class="control number" asp-for="Additions[2].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-add">
-                <input type="text" class="control -start-col-2" asp-for="Additions[3].Description">
-                <input type="text" class="control number" asp-for="Additions[3].UnitAmount">
-                <input type="text" class="control" asp-for="Additions[3].NoOfDays">
-                <input type="text" class="control number" asp-for="Additions[3].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-add">
-                <div class="text-specific">@ViewLang.TotalAdd</div>
-                <input type="text" class="control number highlighted -start-col-5 bold js-addition-amount"
-                       asp-for="MonthlySalary.AdditionAmount" disabled />
-            </div>
-        </div>
-        <div class="deduction">
-            <div class="group-complex -layout-deduction -group-type">
-                <div class="group-deduction m-b-0"><span class="icon-group"></span>@ViewLang.Deduction</div>
-                <div>@ViewLang.Description</div>
-                <div class="-start-col-5">@ViewLang.NetSalary</div>
-            </div>
-            <div class="group-complex -layout-deduction">
-                <div class="like-group-title">@ViewLang.UPLAbsenteeism</div>
-                <input type="text" class="control" asp-for="Deductions[0].Description">
-                <input type="text" class="control number" asp-for="Deductions[0].NoOfDays">
-                <div>days</div>
-                <input type="text" class="control number" asp-for="Deductions[0].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-deduction">
-                <div class="like-group-title">@ViewLang.Tardiness</div>
-                <input type="text" class="control" asp-for="Deductions[1].Description">
-                <input type="text" class="control number" asp-for="Deductions[1].NoOfDays">
-                <div>minutes</div>
-                <input type="text" class="control number" asp-for="Deductions[1].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-deduction-2">
-                <div class="like-group-title">@ViewLang.SalaryAdvance</div>
-                <input type="text" class="control" asp-for="Deductions[2].Description">
-                <input type="text" class="control number" asp-for="Deductions[2].NoOfDays">
-                <input type="text" class="control number" asp-for="Deductions[2].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-deduction-2">
-                <div class="like-group-title">@ViewLang.Others</div>
-                <input type="text" class="control" asp-for="Deductions[3].Description">
-                <input type="text" class="control number" asp-for="Deductions[3].NoOfDays">
-                <input type="text" class="control number" asp-for="Deductions[3].NetSalary" disabled>
-            </div>
-            <div class="group-complex -layout-deduction">
-                <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
-                <input type="text" class="control number -start-col-5 highlighted bold js-deduction-amount"
-                       asp-for="MonthlySalary.DeductionAmount" disabled>
-            </div>
-        </div>
-    </div>
-    <div class="group-complex">
-        <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.BasicSalary</div>
-    </div>
-    <div class="d-flex">
-        <div class="setting">
-            <div class="group-complex -layout-setting">
-                <div class="bold">@ViewLang.Setting</div>
-                <select class="control" asp-for="MonthlyBasicSalary.CurrencyId" disabled>
-                    <option value="@Model.MonthlyBasicSalary.CurrencyId">@Model.MonthlyBasicSalary.CurrencyCode</option>
-                </select>
-                <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.Salary" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">@ViewLang.EBanking</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted" value="500.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">@ViewLang.DirectBanking1</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted" value="200.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">@ViewLang.DirectBanking2</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted" value="" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="like-group-title">@ViewLang.Cash</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted" value="300.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting">
-                <div class="bold">@ViewLang.AfterAdjustment</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted bold" value="1,000.00" disabled>
-            </div>
-            <div class="group-complex -layout-setting-2">
-                <div>@ViewLang.Reason</div>
-                <textarea class="control text-reason" disabled></textarea>
-            </div>
-        </div>
-        <div class="monthly-payroll">
-            <div class="group-complex -layout-payroll">
-                <div class="bold">@ViewLang.MonthlyBasicSalary</div>
-                <select class="control" disabled>
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number highlighted total-monthly-payroll" value="1,000.00" disabled>
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" />
-                    <span class="like-group-title">@ViewLang.EBanking</span>
-                </label>
-                <select class="control">
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="500.00">
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" />
-                    <span class="like-group-title">@ViewLang.DirectBanking1</span>
-                </label>
-                <select class="control">
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="200.00">
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" />
-                    <span class="like-group-title">@ViewLang.DirectBanking2</span>
-                </label>
-                <select class="control">
-                    <option></option>
-                </select>
-                <input type="text" class="control number">
-            </div>
-            <div class="group-complex -layout-payroll">
-                <label>
-                    <input type="radio" checked />
-                    <span class="like-group-title">@ViewLang.Cash</span>
-                </label>
-                <select class="control">
-                    <option>USD</option>
-                </select>
-                <input type="text" class="control number" value="300.00" disabled>
-            </div>
-        </div>
-        <div class="payment">
-            <div class="bold group-payment">@ViewLang.PaymentTransaction</div>
-            <div class="group-complex -layout-payment -group-type">
-                <div>@ViewLang.BankType</div>
-                <div>@ViewLang.AccountName</div>
-            </div>
-            <div class="group-complex -layout-payment">
-                <div class="like-group-title">@ViewLang.EBanking</div>
-                <select class="control">
-                    <option></option>
-                </select>
-            </div>
-            <div class="group-complex -layout-payment">
-                <select class="control">
-                    <option>@ViewLang.DirectBanking1</option>
-                </select>
-                <select class="control">
-                    <option></option>
-                </select>
-            </div>
-            <div class="group-complex -layout-payment">
-                <select class="control">
-                    <option>@ViewLang.DirectBanking2</option>
-                </select>
-                <select class="control">
-                    <option></option>
-                </select>
-            </div>
-            <div class="group-complex -layout-payment">
-                <div class="like-group-title">@ViewLang.Cash</div>
-                <select class="control">
-                    <option>Cash-DAR</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="group-complex -total-salary">
-        <div class="text-specific">TOTAL NET</div>
-        <input type="text" class="control number total-salary" value="0,000,000.00" disabled>
-    </div>
-    <div class="list-button">
-        <button class="button -second js-btnCancel">@ViewLang.Cancel</button>
-        <button class="button -primary" type="submit">@ViewLang.Save</button>
-        <button class="button -primary" type="button">@ViewLang.SaveAndEditAllowances</button>
-    </div>
-</div>
 
+<form asp-action="EditBasicSalary" method="post" id="edit-basic-salary-form">
+    <input type="hidden" asp-for="MonthlyBasicSalary.SalaryPerDay" />
+    <div class="form-information">
+        <div class="d-flex">
+            <div class="add">
+                <div class="group-complex -layout-add -group-type">
+                    <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.Add</div>
+                    <div>@ViewLang.Description</div>
+                    <div>@ViewLang.UnitAmount</div>
+                    <div>@ViewLang.NoOfDays</div>
+                    <div>@ViewLang.NetSalary</div>
+                </div>
+                <div class="group-complex -layout-add">
+                    <div class="like-group-title">@ViewLang.BackPay</div>
+                    <input hidden asp-for="Additions[0].Type" />
+                    <input type="text" class="control" asp-for="Additions[0].Description" disabled>
+                    <input type="text" class="control number" asp-for="Additions[0].UnitAmount" disabled>
+                    <input type="text" class="control number -start-col-5 js-addition-netSalary" asp-for="Additions[0].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-add">
+                    <div class="like-group-title">@ViewLang.Adjustments</div>
+                    <input hidden asp-for="Additions[1].Type" />
+                    <input type="text" class="control" asp-for="Additions[1].Description">
+                    <input type="text" class="control number" asp-for="Additions[1].UnitAmount">
+                    <input type="text" class="control" asp-for="Additions[1].NoOfDays">
+                    <input type="text" class="control number js-addition-netSalary" asp-for="Additions[1].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-add">
+                    <div class="like-group-title">@ViewLang.Others</div>
+                    <input hidden asp-for="Additions[2].Type" />
+                    <input type="text" class="control" asp-for="Additions[2].Description">
+                    <input type="text" class="control number" asp-for="Additions[2].UnitAmount">
+                    <input type="text" class="control" asp-for="Additions[2].NoOfDays">
+                    <input type="text" class="control number js-addition-netSalary" asp-for="Additions[2].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-add">
+                    <input hidden asp-for="Additions[3].Type" />
+                    <input type="text" class="control -start-col-2" asp-for="Additions[3].Description">
+                    <input type="text" class="control number" asp-for="Additions[3].UnitAmount">
+                    <input type="text" class="control" asp-for="Additions[3].NoOfDays">
+                    <input type="text" class="control number js-addition-netSalary" asp-for="Additions[3].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-add">
+                    <div class="text-specific">@ViewLang.TotalAdd</div>
+                    <input type="text" class="control number highlighted -start-col-5 bold js-addition-totalNetSalary"
+                           asp-for="MonthlySalary.AdditionAmount" disabled />
+                </div>
+            </div>
+            <div class="deduction">
+                <div class="group-complex -layout-deduction -group-type">
+                    <div class="group-deduction m-b-0"><span class="icon-group"></span>@ViewLang.Deduction</div>
+                    <div>@ViewLang.Description</div>
+                    <div class="-start-col-5">@ViewLang.NetSalary</div>
+                </div>
+                <div class="group-complex -layout-deduction">
+                    <div class="like-group-title">@ViewLang.UPLAbsenteeism</div>
+                    <input hidden asp-for="Deductions[0].Type" />
+                    <input type="text" class="control" asp-for="Deductions[0].Description">
+                    <input type="text" class="control number" asp-for="Deductions[0].NoOfDays">
+                    <div>days</div>
+                    <input type="text" class="control number js-deduction-netSalary" asp-for="Deductions[0].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-deduction">
+                    <div class="like-group-title">@ViewLang.Tardiness</div>
+                    <input hidden asp-for="Deductions[1].Type" />
+                    <input type="text" class="control" asp-for="Deductions[1].Description">
+                    <input type="text" class="control number" asp-for="Deductions[1].NoOfDays">
+                    <div>minutes</div>
+                    <input type="text" class="control number js-deduction-netSalary" asp-for="Deductions[1].NetSalary" disabled>
+                </div>
+            <div class="group-complex -layout-deduction-2">
+                    <div class="like-group-title">@ViewLang.SalaryAdvance</div>
+                    <input hidden asp-for="Deductions[2].Type" />
+                    <input type="text" class="control" asp-for="Deductions[2].Description">
+                    <input type="text" class="control number" asp-for="Deductions[2].NoOfDays">
+                    <input type="text" class="control number js-deduction-netSalary" asp-for="Deductions[2].NetSalary" disabled>
+                </div>
+            <div class="group-complex -layout-deduction-2">
+                    <div class="like-group-title">@ViewLang.Others</div>
+                    <input hidden asp-for="Deductions[3].Type" />
+                    <input type="text" class="control" asp-for="Deductions[3].Description">
+                    <input type="text" class="control number" asp-for="Deductions[3].NoOfDays">
+                    <input type="text" class="control number js-deduction-netSalary" asp-for="Deductions[3].NetSalary" disabled>
+                </div>
+                <div class="group-complex -layout-deduction">
+                    <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
+                    <input type="text" class="control number -start-col-5 highlighted bold js-deduction-totalNetSalary"
+                           asp-for="MonthlySalary.DeductionAmount" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="group-complex">
+            <div class="group-title -no-space"><span class="icon-group"></span>@ViewLang.BasicSalary</div>
+        </div>
+        <div class="d-flex">
+            <div class="setting">
+                <div class="group-complex -layout-setting">
+                    <div class="bold">@ViewLang.Setting</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.CurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.CurrencyId">@Model.MonthlyBasicSalary.CurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.Salary" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.EBanking</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.EBankingCurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.EBankingCurrencyId">@Model.MonthlyBasicSalary.EBankingCurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.EBankingAmount" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.DirectBanking1</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.DirectBanking1CurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.DirectBanking1CurrencyId">@Model.MonthlyBasicSalary.DirectBanking1CurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.DirectBanking1Amount" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.DirectBanking2</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.DirectBanking2CurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.DirectBanking2CurrencyId">@Model.MonthlyBasicSalary.DirectBanking2CurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.DirectBanking2Amount" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="like-group-title">@ViewLang.Cash</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.CashCurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.CashCurrencyId">@Model.MonthlyBasicSalary.CashCurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted" asp-for="MonthlyBasicSalary.CashAmount" disabled>
+                </div>
+                <div class="group-complex -layout-setting">
+                    <div class="bold">@ViewLang.AfterAdjustment</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.CashCurrencyId" disabled>
+                        <option value="@Model.MonthlyBasicSalary.CurrencyId">@Model.MonthlyBasicSalary.CurrencyCode</option>
+                    </select>
+                    <input type="text" class="control number highlighted bold" asp-for="MonthlyBasicSalary.AfterAdjustmentAmount" disabled>
+                </div>
+                <div class="group-complex -layout-setting-2">
+                    <div>@ViewLang.Reason</div>
+                    <textarea class="control text-reason" asp-for="MonthlyBasicSalary.AfterAdjustmentReason" disabled></textarea>
+                </div>
+            </div>
+            <div class="monthly-payroll">
+                <div class="group-complex -layout-payroll">
+                <div class="bold">@ViewLang.MonthlyBasicSalary</div>
+                    <select class="control js-select2-disabled" asp-for="MonthlySalary.CurrencyId" asp-items="Model.Currencies" disabled>
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number highlighted total-monthly-payroll" asp-for="MonthlySalary.Salary" disabled>
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="MonthlySalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.Ebanking" />
+                        <span class="like-group-title">@ViewLang.EBanking</span>
+                    </label>
+                    <select class="control" asp-for="MonthlySalary.EBankingCurrencyId" asp-items="Model.Currencies">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="MonthlySalary.EBankingAmount" />
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="MonthlySalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" />
+                        <span class="like-group-title">@ViewLang.DirectBanking1</span>
+                    </label>
+                    <select class="control" asp-for="MonthlySalary.DirectBanking1CurrencyId" asp-items="Model.Currencies">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="MonthlySalary.DirectBanking1Amount" />
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="MonthlySalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" />
+                        <span class="like-group-title">@ViewLang.DirectBanking2</span>
+                    </label>
+                    <select class="control" asp-for="MonthlySalary.DirectBanking2CurrencyId" asp-items="Model.Currencies">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="MonthlySalary.DirectBanking2Amount">
+                </div>
+                <div class="group-complex -layout-payroll">
+                    <label>
+                        <input type="radio" asp-for="MonthlySalary.AutoCalculateOn" value="@PayrollAutoCalculateOn.Cash" />
+                        <span class="like-group-title">@ViewLang.Cash</span>
+                    </label>
+                    <select class="control" asp-for="MonthlySalary.CashCurrencyId" asp-items="Model.Currencies">
+                        <option></option>
+                    </select>
+                    <input type="text" class="control number" asp-for="MonthlySalary.CashAmount" disabled>
+                </div>
+            </div>
+            <div class="payment">
+                <div class="bold group-payment">@ViewLang.PaymentTransaction</div>
+                <div class="group-complex -layout-payment -group-type">
+                    <div>@ViewLang.BankType</div>
+                    <div>@ViewLang.AccountName</div>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <div class="like-group-title">@ViewLang.EBanking</div>
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <select class="control">
+                        <option>@ViewLang.DirectBanking1</option>
+                    </select>
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <select class="control">
+                        <option>@ViewLang.DirectBanking2</option>
+                    </select>
+                    <select class="control">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="group-complex -layout-payment">
+                    <div class="like-group-title">@ViewLang.Cash</div>
+                    <select class="control">
+                        <option>Cash-DAR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="group-complex -total-salary">
+            <div class="text-specific">TOTAL NET</div>
+            <input type="text" class="control number total-salary" value="0,000,000.00" disabled>
+        </div>
+        <div class="list-button">
+            <button class="button -second js-btnCancel">@ViewLang.Cancel</button>
+            <button class="button -primary" type="submit">@ViewLang.Save</button>
+            <button class="button -primary" type="button">@ViewLang.SaveAndEditMonthlyAllowances</button>
+        </div>
+    </div>
+</form>
+<div class="js-currencyExchangeRates">
+    @foreach (var currency in Model.CurrencyExchangeRates)
+    {
+        <input type="hidden" data-from-currency="@currency.FromCurrencyId" data-to-currency="@currency.ToCurrencyId" value="@currency.ExchangeRate" />
+    }
+</div>
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/bignumber.js/bignumber.js"></script>
         <script src="~/assets/js/paymentprocess/edit-basic-salary.js"></script>
     </environment>
     <environment exclude="Development">

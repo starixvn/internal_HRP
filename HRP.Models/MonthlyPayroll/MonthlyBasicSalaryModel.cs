@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
     using System;
-    using System.Globalization;
     using HRP.Core.Enumerations;
 
     public class MonthlyBasicSalaryModel
@@ -32,12 +31,19 @@
         public string AfterAdjustmentAmount { get; set; }
         public string AfterAdjustmentReason { get; set; }
 
-        public string SalaryPerDay
+        public decimal SalaryPerDay
         {
             get
             {
+                decimal salaryPerDay = 0;
                 decimal.TryParse(Salary, out decimal salary);
-                return (salary / WorkingDays).ToString(CultureInfo.InvariantCulture);
+
+                if (WorkingDays > 0)
+                {
+                    salaryPerDay = salary / WorkingDays;
+                }
+
+                return salaryPerDay;
             }
         }
     }

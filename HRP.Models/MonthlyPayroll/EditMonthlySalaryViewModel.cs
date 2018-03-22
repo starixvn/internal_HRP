@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Models.Currency;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class EditMonthlySalaryViewModel
     {
@@ -37,6 +38,8 @@
         public IList<MonthlySalaryAdditionModel> Additions { get; set; } = new List<MonthlySalaryAdditionModel>();
 
         public IList<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
+
+        public SelectList Currencies { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; } = new List<CurrencyExchangeRateModel>();
 

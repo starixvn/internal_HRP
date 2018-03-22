@@ -195,7 +195,7 @@
             Assert.Equal(viewModel.MonthlyBasicSalary.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
             Assert.Equal(viewModel.MonthlyBasicSalary.Salary, actual.MonthlyBasicSalary.Salary);
             Assert.Equal(viewModel.MonthlyBasicSalary.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
-            Assert.Equal("123.4", actual.MonthlyBasicSalary.SalaryPerDay);
+            Assert.Equal(123.4M, actual.MonthlyBasicSalary.SalaryPerDay);
             Assert.Equal(viewModel.MonthlyBasicSalary.EBankingCurrencyCode, actual.MonthlyBasicSalary.EBankingCurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.EBankingAmount);
             Assert.Equal(viewModel.MonthlyBasicSalary.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);
