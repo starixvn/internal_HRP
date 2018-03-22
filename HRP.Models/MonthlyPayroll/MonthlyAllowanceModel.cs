@@ -36,6 +36,12 @@
 
         public int? CashAccountId { get; set; }
 
+        public int? DSTNetSalaryCurrencyId { get; set; }
+
+        public string DSTNetSalaryAmount { get; set; }
+
+        public string TotalNetAmount { get; set; }
+
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         public MonthlyPayrollStatus Status { get; set; }

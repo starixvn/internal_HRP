@@ -569,7 +569,7 @@
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
             baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
-            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
 
             var result = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", result.ControllerName);
@@ -585,7 +585,7 @@
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(new MonthlyAllowancesViewModel());
 
-            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
 
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);

@@ -323,7 +323,7 @@
         }      
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, int? dstNetSalaryCurrencyId, string dstNetSalaryAmount)
         {
             var monthlyAllowance = new MonthlyAllowanceModel
             {
@@ -341,6 +341,8 @@
                 CashAmount = basicAllowance.CashAmount,
                 CashAccountId = basicAllowance.CashAccountId,
                 AutoCalculateOn = basicAllowance.AutoCalculateOn,
+                DSTNetSalaryAmount = dstNetSalaryAmount,
+                DSTNetSalaryCurrencyId = dstNetSalaryCurrencyId
             };
 
             if (basicAllowance.CurrencyId.HasValue)
@@ -371,6 +373,7 @@
 
                 monthlyAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
                 CalculateAutoAllowance(currencyExchangeRates, monthlyAllowance);
+                CalculateTotalNetAmount(currencyExchangeRates, monthlyAllowance);
             }
 
             return monthlyAllowance;
@@ -807,6 +810,18 @@
             }
 
             monthlyAllowance.Status = autoAmount >= 0 ? MonthlyPayrollStatus.Default : MonthlyPayrollStatus.Unsatisfied;
+        }
+
+        private static void CalculateTotalNetAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
+        {
+            if (monthlyAllowance.DSTNetSalaryCurrencyId.HasValue && !string.IsNullOrEmpty(monthlyAllowance.DSTNetSalaryAmount))
+            {
+                decimal.TryParse(monthlyAllowance.TotalAmount, out decimal totalAmount);
+                var totalNetAmount = totalAmount -
+                    ConvertAmount(currencyExchangeRates, monthlyAllowance.DSTNetSalaryAmount, monthlyAllowance.DSTNetSalaryCurrencyId.Value, monthlyAllowance.CurrencyId.Value);
+
+                monthlyAllowance.TotalNetAmount = totalNetAmount.ToString(CultureInfo.InvariantCulture);
+            }
         }
 
         #region Back Pay and After Adjustment

@@ -7,6 +7,8 @@
 
     public class MonthlyAllowancesViewModel
     {
+        public int EmployeeId { get; set; }
+
         public int CompanyId { get; set; }
 
         public DateTime Month { get; set; }

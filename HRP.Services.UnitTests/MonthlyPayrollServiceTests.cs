@@ -528,7 +528,7 @@
 
             var expectedTotalAmount = "1800";
 
-            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, 1, "200");
 
             Assert.Equal(expectedTotalAmount, result.TotalAmount);
         }

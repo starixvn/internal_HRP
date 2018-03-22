@@ -331,7 +331,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month)
+        public async Task<IActionResult> EditAllowances(int payrollId, int employeeId, int companyId, DateTime month)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
@@ -339,6 +339,7 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            viewModel.EmployeeId = employeeId;
             viewModel.Currencies = new SelectList(baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()), 
                 nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
