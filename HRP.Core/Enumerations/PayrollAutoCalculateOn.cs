@@ -2,8 +2,7 @@
 {
     public enum PayrollAutoCalculateOn
     {
-        None,
-        Ebanking,
+        Ebanking = 1,
         DirectBanking1,
         DirectBanking2,
         Cash
