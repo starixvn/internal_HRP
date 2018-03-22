@@ -96,7 +96,7 @@
 
                 if (viewModel != null)
                 {
-                    DecryptMonthlySalary(viewModel);
+                    DecryptAndRoudingAmountMonthlySalary(viewModel);
                 }
             }
 
@@ -668,7 +668,7 @@
             return xml.ToString();
         }
 
-        private void DecryptMonthlySalary(EditMonthlySalaryViewModel viewModel)
+        private void DecryptAndRoudingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
         {
             viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
             viewModel.MonthlyBasicSalary.EBankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EBankingAmount);
@@ -681,16 +681,34 @@
             viewModel.MonthlySalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking1Amount);
             viewModel.MonthlySalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking2Amount);
             viewModel.MonthlySalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlySalary.CashAmount);
+            viewModel.MonthlySalary.AdditionAmount = cryptoService.Decrypt(viewModel.MonthlySalary.AdditionAmount);
+            viewModel.MonthlySalary.DeductionAmount = cryptoService.Decrypt(viewModel.MonthlySalary.DeductionAmount);
+
+            decimal.TryParse(viewModel.MonthlySalary.AdditionAmount, out decimal amount);
+            viewModel.MonthlySalary.AdditionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.AdditionAmount)
+                ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
+            decimal.TryParse(viewModel.MonthlySalary.DeductionAmount, out amount);
+            viewModel.MonthlySalary.DeductionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.DeductionAmount)
+                ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
 
             foreach (MonthlySalaryAdditionModel addition in viewModel.Additions)
             {
                 addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
                 addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
+
+                decimal.TryParse(addition.NetSalary, out amount);
+                addition.NetSalaryDisplay = !string.IsNullOrWhiteSpace(addition.NetSalary)
+                    ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
             }
 
             foreach (MonthlySalaryDeductionModel deduction in viewModel.Deductions)
             {
+                deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
                 deduction.NetSalary = cryptoService.Decrypt(deduction.NetSalary);
+
+                decimal.TryParse(deduction.NetSalary, out amount);
+                deduction.NetSalaryDisplay = !string.IsNullOrWhiteSpace(deduction.NetSalary)
+                    ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
             }
         }
 
