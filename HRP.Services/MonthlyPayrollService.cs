@@ -136,7 +136,6 @@
                 PayrollId = viewModel.PayrollId,
                 CompanyId = viewModel.CompanyId,
                 UserId = sessionService.UserId,
-                CurrencyId = viewModel.MonthlySalary.CurrencyId,
                 Salary = cryptoService.Encrypt(viewModel.MonthlySalary.Salary),
                 EbankingCurrencyId = viewModel.MonthlySalary.EbankingCurrencyId,
                 EbankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EbankingAmount),
@@ -731,6 +730,7 @@
 
         private void DecryptAndRoudingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
         {
+            var currencyId = viewModel.MonthlySalary.CurrencyId ?? 0;
             viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
             viewModel.MonthlyBasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EbankingAmount);
             viewModel.MonthlyBasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking1Amount);
@@ -748,10 +748,10 @@
 
             decimal.TryParse(viewModel.MonthlySalary.AdditionAmount, out decimal amount);
             viewModel.MonthlySalary.AdditionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.AdditionAmount)
-                ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
+                ? RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
             decimal.TryParse(viewModel.MonthlySalary.DeductionAmount, out amount);
             viewModel.MonthlySalary.DeductionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.DeductionAmount)
-                ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
+                ? RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
 
             foreach (MonthlySalaryAdditionModel addition in viewModel.Additions)
             {
@@ -760,7 +760,7 @@
 
                 decimal.TryParse(addition.NetSalary, out amount);
                 addition.NetSalaryDisplay = !string.IsNullOrWhiteSpace(addition.NetSalary)
-                    ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
+                    ? RoundAmountWithCurrency(amount, currencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
             }
 
             foreach (MonthlySalaryDeductionModel deduction in viewModel.Deductions)
@@ -770,7 +770,7 @@
 
                 decimal.TryParse(deduction.NetSalary, out amount);
                 deduction.NetSalaryDisplay = !string.IsNullOrWhiteSpace(deduction.NetSalary)
-                    ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId).ToString(CultureInfo.InvariantCulture) : string.Empty;
+                    ? RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyId ?? 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
             }
         }
 
@@ -900,9 +900,10 @@
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
+            var currencyId = basicSetting.CurrencyId ?? 0;
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, basicSetting.CurrencyId);
+            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
@@ -918,7 +919,7 @@
                 {
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
-                    amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId);
                     basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
                     GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                 }
@@ -937,8 +938,9 @@
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
+            var currencyId = basicSetting.CurrencyId ?? 0;
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
-            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, basicSetting.CurrencyId);
+            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
             decimal.TryParse(basicSetting.Salary, out decimal newSalary);
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
@@ -953,9 +955,9 @@
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * monthDiff);
 
-                    basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(amount + newSalary, basicSetting.CurrencyId).ToString(CultureInfo.InvariantCulture);
+                    basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(amount + newSalary, currencyId).ToString(CultureInfo.InvariantCulture);
 
-                    amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId);
                     backPay.UnitAmount = backPay.NetSalary = amount.ToString(CultureInfo.InvariantCulture);
                     backPay.Description = string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat));
                 }
@@ -963,7 +965,7 @@
                 {
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
-                    amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId);
                     basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
                     GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                 }
@@ -986,7 +988,7 @@
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
 
             decimal amount = newSalary / daysInMonth * (endDay - startDay + 1);
-            amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId);
+            amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId ?? 0);
             basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
             GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
         }
@@ -1000,7 +1002,7 @@
         {
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             decimal.TryParse(basicSetting.Salary, out decimal salary);
-            decimal differenceAmount = RoundAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyId);
+            decimal differenceAmount = RoundAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyId ?? 0);
             var reason = new StringBuilder();
             if (differenceAmount != 0)
             {

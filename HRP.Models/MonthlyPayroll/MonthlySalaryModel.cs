@@ -11,7 +11,7 @@
 
         public int EmployeeId { get; set; }
 
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         public string Salary { get; set; }
 

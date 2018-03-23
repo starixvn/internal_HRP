@@ -5,7 +5,6 @@
         public int PayrollId { get; set; }
         public int CompanyId { get; set; }
         public int UserId { get; set; }
-        public int? CurrencyId { get; set; }
         public string Salary { get; set; }
         public int? EbankingCurrencyId { get; set; }
         public string EbankingAmount { get; set; }
