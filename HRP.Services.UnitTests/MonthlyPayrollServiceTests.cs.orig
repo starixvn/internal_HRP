@@ -9,6 +9,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
+    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
@@ -119,8 +120,8 @@
             Assert.Equal(employeePayrolls.First().WorkingDays, actual.First().WorkingDays);
             Assert.Equal(employeePayrolls.First().Policy, actual.First().Policy);
 
-            Assert.Equal(employeePayrolls.First().BasicSalary.EBankingCurrencyCode, actual.First().BasicSalary.EBankingCurrencyCode);
-            Assert.Equal(plainText, actual.First().BasicSalary.EBankingAmount);
+            Assert.Equal(employeePayrolls.First().BasicSalary.EbankingCurrencyCode, actual.First().BasicSalary.EbankingCurrencyCode);
+            Assert.Equal(plainText, actual.First().BasicSalary.EbankingAmount);
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking1CurrencyCode, actual.First().BasicSalary.DirectBanking1CurrencyCode);
             Assert.Equal(plainText, actual.First().BasicSalary.DirectBanking1Amount);
             Assert.Equal(employeePayrolls.First().BasicSalary.DirectBanking2CurrencyCode, actual.First().BasicSalary.DirectBanking2CurrencyCode);
@@ -194,9 +195,9 @@
             Assert.Equal(viewModel.MonthlyBasicSalary.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
             Assert.Equal(viewModel.MonthlyBasicSalary.Salary, actual.MonthlyBasicSalary.Salary);
             Assert.Equal(viewModel.MonthlyBasicSalary.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
-            Assert.Equal("123.4", actual.MonthlyBasicSalary.SalaryPerDay);
-            Assert.Equal(viewModel.MonthlyBasicSalary.EBankingCurrencyCode, actual.MonthlyBasicSalary.EBankingCurrencyCode);
-            Assert.Equal(plainText, actual.MonthlyBasicSalary.EBankingAmount);
+            Assert.Equal(123.4M, actual.MonthlyBasicSalary.SalaryPerDay);
+            Assert.Equal(viewModel.MonthlyBasicSalary.EbankingCurrencyCode, actual.MonthlyBasicSalary.EbankingCurrencyCode);
+            Assert.Equal(plainText, actual.MonthlyBasicSalary.EbankingAmount);
             Assert.Equal(viewModel.MonthlyBasicSalary.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.DirectBanking1Amount);
             Assert.Equal(viewModel.MonthlyBasicSalary.DirectBanking2CurrencyCode, actual.MonthlyBasicSalary.DirectBanking2CurrencyCode);
@@ -207,9 +208,9 @@
 
             Assert.Equal(viewModel.MonthlySalary.CurrencyId, actual.MonthlySalary.CurrencyId);
             Assert.Equal(viewModel.MonthlySalary.Salary, actual.MonthlySalary.Salary);
-            Assert.Equal(viewModel.MonthlySalary.EBankingCurrencyId, actual.MonthlySalary.EBankingCurrencyId);
-            Assert.Equal(viewModel.MonthlySalary.EBankingAccountId, actual.MonthlySalary.EBankingAccountId);
-            Assert.Equal(plainText, actual.MonthlySalary.EBankingAmount);
+            Assert.Equal(viewModel.MonthlySalary.EbankingCurrencyId, actual.MonthlySalary.EbankingCurrencyId);
+            Assert.Equal(viewModel.MonthlySalary.EbankingAccountId, actual.MonthlySalary.EbankingAccountId);
+            Assert.Equal(plainText, actual.MonthlySalary.EbankingAmount);
             Assert.Equal(viewModel.MonthlySalary.DirectBanking1CurrencyId, actual.MonthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(viewModel.MonthlySalary.DirectBanking1BankTypeId, actual.MonthlySalary.DirectBanking1BankTypeId);
             Assert.Equal(viewModel.MonthlySalary.DirectBanking1AccountId, actual.MonthlySalary.DirectBanking1AccountId);
@@ -302,7 +303,7 @@
 
             // Assert
             Assert.Equal(cipherText, criteria.Salary);
-            Assert.Equal(cipherText, criteria.EBankingAmount);
+            Assert.Equal(cipherText, criteria.EbankingAmount);
             Assert.Equal(cipherText, criteria.DirectBanking1Amount);
             Assert.Equal(cipherText, criteria.DirectBanking2Amount);
             Assert.Equal(cipherText, criteria.CashAmount);
@@ -314,6 +315,7 @@
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
             var allowance = new MonthlyAllowanceModel();
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
             var additions = new List<MonthlyAllowanceAdditionModel>
             {
                 new MonthlyAllowanceAdditionModel
@@ -341,16 +343,21 @@
                 }
             };
 
+            var info = new MonthlyAllowanceEmployeeInfoModel();
+
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>>(allowance, additions, deductions));
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, MonthlyAllowanceEmployeeInfoModel>
+                (allowance, additions, deductions, basicAllowance, info));
 
-            var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1);
+            var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
             Assert.NotNull(actual);
             Assert.NotNull(actual.Allowance);
             Assert.NotNull(actual.Additions);
             Assert.NotNull(actual.Deductions);
+            Assert.NotNull(actual.BasicAllowance);
+            Assert.NotNull(actual.EmployeeInfo);
         }
 
         [Fact]
@@ -395,32 +402,6 @@
         }
 
         [Fact]
-        public void InitializeMonthlyBasicAllowance_ValidData_ReturnExpectedModel()
-        {
-            var monthlyPayrollService = GetMonthlyPayrollService();
-            var payrollId = 1;
-
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
-            {
-                EmployeeId = 1,
-                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
-                CurrencyId = 1,
-                CashCurrencyId = 1,
-            };
-
-            var deduction = new EmployeePayrollDeductionModel
-            {
-                EmployeeId = 1
-            };
-
-            var result = monthlyPayrollService.InitializeMonthlyBasicAllowance(payrollId, employeePayrollAllowance, deduction);
-            Assert.Equal(payrollId, result.PayrollId);
-            Assert.Equal(employeePayrollAllowance.AutoCalculateOn, result.AutoCalculateOn);
-            Assert.Equal(employeePayrollAllowance.CurrencyId, result.CurrencyId);
-            Assert.Equal(employeePayrollAllowance.CashCurrencyId, result.CashCurrencyId);
-        }
-
-        [Fact]
         public void CalculateMonthlyBasicAllowance_StartDateInMonth_ReturnExpectedResult()
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
@@ -447,7 +428,7 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, 
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance,
                 new DateTime(DateTime.Today.Year, DateTime.Today.Month, 15), null, DateTime.Today.Month, DateTime.Today.Year);
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
@@ -481,13 +462,8 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-<<<<<<< HEAD
             monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1),
-                new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20));
-=======
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1), 
                 new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20), DateTime.Today.Month, DateTime.Today.Year);
->>>>>>> #91417 - edit allowances - implement validations
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
             Assert.NotNull(basicAllowance.Reason);
@@ -513,14 +489,11 @@
                 SubsistenceAmount = "2000",
                 SubsistenceCurrencyId = 1
             };
-            cryptoService.Decrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
-            cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
-            cryptoService.Decrypt(null).Returns(string.Empty);
-            cryptoService.Encrypt(null).Returns(string.Empty);
+
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, 
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance,
                 DateTime.Today.AddMonths(-3), new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20), DateTime.Today.Month, DateTime.Today.Year);
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
@@ -540,6 +513,7 @@
 
             var allowanceAdditions = new List<MonthlyAllowanceAdditionModel>() { new MonthlyAllowanceAdditionModel { Type = (int)AllowanceType.DutyMeal } };
             var allowanceDeductions = new List<MonthlyAllowanceDeductionModel>() { new MonthlyAllowanceDeductionModel { Type = (int)AllowanceType.DutyMeal } };
+            var dstNetSalary = new MonthlyDSTNetSalary { CurrencyId = 1, NetSalaryReceived = "333" };
 
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
@@ -559,18 +533,11 @@
 
             var expectedTotalAmount = "1800";
 
-            cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
-            cryptoService.Decrypt(basicAllowance.RoomingChargesAmount).Returns(basicAllowance.RoomingChargesAmount);
-            cryptoService.Decrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
-            cryptoService.Decrypt(expectedTotalAmount).Returns(expectedTotalAmount);
-            cryptoService.Decrypt(null).Returns(string.Empty);
-
-            cryptoService.Encrypt(expectedTotalAmount).Returns(expectedTotalAmount);
-            cryptoService.Encrypt(basicAllowance.FitnessFirstAmount).Returns(basicAllowance.FitnessFirstAmount);
-            cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount).Returns(basicAllowance.AfterAdjustmentAmount);
-            cryptoService.Encrypt(null).Returns(string.Empty);
-
-            var result = monthlyPayrollService.InitializeMonthlyAllowance(payrollId, basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates);
+<<<<<<< HEAD
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, dstNetSalary);
+=======
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, new MonthlyDSTNetSalary { });
+>>>>>>> #000 - fix unit tests
 
             Assert.Equal(expectedTotalAmount, result.TotalAmount);
         }
@@ -586,8 +553,9 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            var basicAlloance = new MonthlyPayrollBasicAllowanceModel
             {
+                PayrollId = payrollId,
                 EmployeeId = 1,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 CurrencyId = 1,
@@ -601,12 +569,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
-            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
-
-            var result = monthlyPayrollService.InitializeAllowanceAdditions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAlloance, currencyExchangeRates);
 
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
@@ -627,8 +590,9 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (standardWorkingDays - actualWorkingDays);
 
-            var employeePayrollAllowance = new EmployeePayrollAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
+                PayrollId = payrollId,
                 EmployeeId = 1,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 CurrencyId = 1,
@@ -642,12 +606,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            cryptoService.Decrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Decrypt(dutyMealAmount.ToString()).Returns(dutyMealAmount.ToString());
-            cryptoService.Encrypt(unitAmount.ToString()).Returns(unitAmount.ToString());
-            cryptoService.Encrypt(totalAmount.ToString()).Returns(totalAmount.ToString());
-
-            var result = monthlyPayrollService.InitializeAllowanceDeductions(payrollId, standardWorkingDays, actualWorkingDays, employeePayrollAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceDeductions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
 
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
@@ -706,11 +665,12 @@
         }
 
         [Theory]
-        [InlineData(1, "4000.00")]
-        [InlineData(11, "4000")]
+        [InlineData(1, "4000.00", "16000.00")]
+        [InlineData(11, "4000", "16000")]
         public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
-            string backPayAmount)
+            string backPayAmount,
+            string afterAdjustmentAmount)
         {
             // Arrange
             var workingMonth = new DateTime(2018, 3, 1);
@@ -738,7 +698,7 @@
             Assert.Equal(backPayAmount, backPay.UnitAmount);
             Assert.Equal(backPayAmount, backPay.NetSalary);
             Assert.Equal("Annual Increment from Feb 01, 2018", backPay.Description);
-            Assert.Null(basicSetting.AfterAdjustmentAmount);
+            Assert.Equal(afterAdjustmentAmount, basicSetting.AfterAdjustmentAmount);
             Assert.Null(basicSetting.AfterAdjustmentReason);
         }
 
@@ -980,7 +940,7 @@
                 AutoCalculateOn = PayrollAutoCalculateOn.Ebanking,
                 CurrencyId = 1,
                 AfterAdjustmentAmount = "10000",
-                EBankingCurrencyId = 1,
+                EbankingCurrencyId = 1,
                 DirectBanking1CurrencyId = 1,
                 DirectBanking1Amount = "1000",
                 CashCurrencyId = 1,
@@ -996,15 +956,16 @@
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
-            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
-            Assert.Equal("4000", basicSalary.EBankingAmount);
-            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
+            Assert.Equal("4000", basicSalary.EbankingAmount);
+            Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1021,8 +982,8 @@
                 AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1,
                 CurrencyId = 1,
                 AfterAdjustmentAmount = "10000",
-                EBankingCurrencyId = 1,
-                EBankingAmount = "1000",
+                EbankingCurrencyId = 1,
+                EbankingAmount = "1000",
                 DirectBanking1CurrencyId = 1,
                 CashCurrencyId = 1,
                 CashAmount = "5000"
@@ -1037,8 +998,8 @@
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
-            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
-            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
+            Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal("4000", basicSalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
@@ -1046,6 +1007,7 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1062,8 +1024,8 @@
                 AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking2,
                 CurrencyId = 1,
                 AfterAdjustmentAmount = "10000",
-                EBankingCurrencyId = 1,
-                EBankingAmount = "1000",
+                EbankingCurrencyId = 1,
+                EbankingAmount = "1000",
                 DirectBanking2CurrencyId = 1,
                 CashCurrencyId = 1,
                 CashAmount = "5000"
@@ -1078,8 +1040,8 @@
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
-            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
-            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
+            Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
@@ -1087,6 +1049,7 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 
@@ -1103,8 +1066,8 @@
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 CurrencyId = 1,
                 AfterAdjustmentAmount = "10000",
-                EBankingCurrencyId = 1,
-                EBankingAmount = "1000",
+                EbankingCurrencyId = 1,
+                EbankingAmount = "1000",
                 DirectBanking1CurrencyId = 1,
                 DirectBanking1Amount = "5000",
                 CashCurrencyId = 1
@@ -1119,8 +1082,8 @@
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal(basicSalary.AfterAdjustmentAmount, monthlySalary.Salary);
-            Assert.Equal(basicSalary.EBankingCurrencyId, monthlySalary.EBankingCurrencyId);
-            Assert.Equal(basicSalary.EBankingAmount, monthlySalary.EBankingAmount);
+            Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
+            Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
@@ -1128,6 +1091,7 @@
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal("4000", basicSalary.CashAmount);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }
 

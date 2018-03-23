@@ -159,7 +159,7 @@
             $(this).click();
         });
 
-        $('.unit-amount, .no-of-days, input.allowance-calculate').inputmask({
+        $('.unit-amount, .no-of-days').inputmask({
             'alias': 'numeric',
             'autoGroup': true,
             'digits': 2,
