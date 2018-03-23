@@ -16,7 +16,6 @@
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
     using HRP.Resources;

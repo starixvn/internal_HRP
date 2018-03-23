@@ -274,7 +274,32 @@
             var fakeSalary = new List<MonthlySalaryModel>
             {
                 new MonthlySalaryModel {EmployeeId = 11,   CurrencyId = 1, Salary = "asdad", AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1},
-                new MonthlySalaryModel {EmployeeId = 2,  CurrencyId = 1, Salary = monthlyPayrollService.GetHashCode().ToString(), AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1}
+                new MonthlySalaryModel {EmployeeId = 2,  CurrencyId = 1, Salary = monthlyPayrollService.GetHashCode().ToString(), AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking2}
+            };
+
+            var fakeSalaryAddition = new List<MonthlySalaryAdditionModel>
+            {
+                new MonthlySalaryAdditionModel {EmployeeId = 11, Type = 1, NoOfDays = 2},
+                new MonthlySalaryAdditionModel {EmployeeId = 11, Type = 2, NoOfDays = 1},
+                new MonthlySalaryAdditionModel {EmployeeId = 2, Type = 1, NoOfDays = 11}
+            };
+
+            var fakeBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> {
+                new MonthlyPayrollBasicAllowanceModel { EmployeeId = 11, AutoCalculateOn = PayrollAutoCalculateOn.Ebanking },
+                new MonthlyPayrollBasicAllowanceModel { EmployeeId = 2, AutoCalculateOn = PayrollAutoCalculateOn.Cash }
+            };
+
+            var fakeAllowance = new List<MonthlyAllowanceModel>
+            {
+                new MonthlyAllowanceModel{  EmployeeId = 11, AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1},
+                 new MonthlyAllowanceModel{  EmployeeId = 2, AutoCalculateOn = PayrollAutoCalculateOn.Cash, Status = MonthlyPayrollStatus.Unsatisfied}
+            };
+
+            var fakeAllowanceAddition = new List<MonthlyAllowanceAdditionModel>
+            {
+                new MonthlyAllowanceAdditionModel {EmployeeId = 11, Type = 1, NoOfDays = 2, UnitAmount = "ccc"},
+                new MonthlyAllowanceAdditionModel {EmployeeId = 11, Type = 2, NoOfDays = 9, CurrencyId = 1},
+                new MonthlyAllowanceAdditionModel {EmployeeId = 2, Type = 3, NoOfDays = 4}
             };
 
             var criteria = new GenerateMonthlyPayrollCriteria
@@ -284,6 +309,10 @@
                 PayrollXMLDoc = fakeMonthlyPayroll.ToXML().ToString(),
                 BasicSalaryXMLDoc = fakeBasicSalary.ToXML().ToString(),
                 SalaryXMLDoc = fakeSalary.ToXML().ToString(),
+                SalaryAdditionXMLDoc = fakeSalaryAddition.ToXML().ToString(),
+                BasicAllowanceXMLDoc = fakeBasicAllowance.ToXML().ToString(),
+                AllowanceXMLDoc = fakeAllowance.ToXML().ToString(),
+                AllowanceAdditionXMLDoc = fakeAllowanceAddition.ToXML().ToString(),
                 UpdatedBy = sessionService.UserId
             };
 

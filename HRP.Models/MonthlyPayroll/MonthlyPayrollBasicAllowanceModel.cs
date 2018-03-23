@@ -1,7 +1,10 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System.Xml.Serialization;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
 
+    [XMLName("Row")]
     public class MonthlyPayrollBasicAllowanceModel
     {
         public int PayrollId { get; set; }
@@ -78,7 +81,14 @@
 
         public string FitnessFirstAmount { get; set; }
 
+        [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
+
+        [XMLName("AutoCalculateOn")]
+        public string XmlAutoCalculateOn
+        {
+            get => AutoCalculateOn.ToString();
+        }
 
         public string AfterAdjustmentAmount { get; set; }
 

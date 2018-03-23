@@ -14,6 +14,8 @@
     {
         public int PayrollId { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public int Type { get; set; }
 
         [RequiredIfRealtedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UnitAmountRequired")]
@@ -22,26 +24,18 @@
         [XmlIgnore]
         public decimal? NoOfDays { get; set; }
 
+        [XMLName("NoOfDays")]
+        public string XmlNoOfDays
+        {
+            get => (NoOfDays.HasValue) ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
+        }
+
         public string NetSalary { get; set; }
 
+        [XmlIgnore]
         public string NetSalaryDisplay { get; set; }
 
         [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
-
-        [XMLName("NoOfDays")]
-        public string XmlNoOfDays
-        {
-            get
-            {
-                var noOfDays = string.Empty;
-                if (NoOfDays.HasValue)
-                {
-                    noOfDays = NoOfDays.Value.ToString(CultureInfo.InvariantCulture);
-                }
-
-                return noOfDays;
-            }
-        }
     }
 }

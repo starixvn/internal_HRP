@@ -47,9 +47,9 @@
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         [XMLName("AutoCalculateOn")]
-        public int XmlAutoCalculateOn
+        public string XmlAutoCalculateOn
         {
-            get => (int)AutoCalculateOn;
+            get => AutoCalculateOn.ToString();
         }
 
         public string AdditionAmount { get; set; }

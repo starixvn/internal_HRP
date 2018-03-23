@@ -1,10 +1,15 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System.Xml.Serialization;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
 
+    [XMLName("Row")]
     public class MonthlyAllowanceModel
     {
         public int PayrollId { get; set; }
+
+        public int EmployeeId { get; set; }
 
         public int? CurrencyId { get; set; }
 
@@ -42,8 +47,22 @@
 
         public string TotalNetAmount { get; set; }
 
+        [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
+        [XMLName("AutoCalculateOn")]
+        public string XmlAutoCalculateOn
+        {
+            get => AutoCalculateOn.ToString();
+        }
+
+        [XmlIgnore]
         public MonthlyPayrollStatus Status { get; set; }
+
+        [XMLName("Status")]
+        public int XmlStatus
+        {
+            get => (int)Status;
+        }
     }
 }
