@@ -681,6 +681,7 @@
             viewModel.MonthlyBasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking1Amount);
             viewModel.MonthlyBasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking2Amount);
             viewModel.MonthlyBasicSalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.CashAmount);
+            viewModel.MonthlyBasicSalary.AfterAdjustmentAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.AfterAdjustmentAmount);
 
             viewModel.MonthlySalary.Salary = cryptoService.Decrypt(viewModel.MonthlySalary.Salary);
             viewModel.MonthlySalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlySalary.EbankingAmount);

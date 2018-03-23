@@ -27,6 +27,9 @@
 
         public int? CashAccountId { get; set; }
 
+        [XmlIgnore]
+        public string EbankingAccountName { get; set; }
+
         public int? DirectBanking1CurrencyId { get; set; }
 
         public string DirectBanking1Amount { get; set; }
@@ -35,6 +38,9 @@
 
         public int? DirectBanking1AccountId { get; set; }
 
+        [XmlIgnore]
+        public string DirectBanking1AccountName { get; set; }
+
         public int? DirectBanking2CurrencyId { get; set; }
 
         public string DirectBanking2Amount { get; set; }
@@ -42,6 +48,9 @@
         public int? DirectBanking2BankTypeId { get; set; }
 
         public int? DirectBanking2AccountId { get; set; }
+
+        [XmlIgnore]
+        public string DirectBanking2AccountName { get; set; }
 
         [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }

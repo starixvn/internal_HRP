@@ -337,6 +337,12 @@ input[type="radio"]:disabled + span {
   overflow: hidden;
 }
 
+.group-complex .text-reason[readonly] {
+  background-color: #ededed;
+  border-color: #d9d9d9;
+  color: #777;
+}
+
 .group-complex.-align-items-end {
   align-items: flex-end;
 }
@@ -377,4 +383,3 @@ input[type="radio"]:disabled + span {
   font-weight: bold;
   color: #117a00 !important;
 }
-/*# sourceMappingURL=edit-basic-salary.css.map */

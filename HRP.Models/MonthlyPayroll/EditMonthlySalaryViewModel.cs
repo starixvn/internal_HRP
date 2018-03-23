@@ -10,6 +10,8 @@
     {
         public int PayrollId { get; set; }
 
+        public int EmployeeId { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 
@@ -40,6 +42,8 @@
         public IList<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
 
         public SelectList Currencies { get; set; }
+
+        public SelectList CashAccounts { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; } = new List<CurrencyExchangeRateModel>();
 

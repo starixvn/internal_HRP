@@ -2,9 +2,11 @@
 
 var editBasicSalary = (function ($) {
     var $btnPreset, $btnRefresh, $btnCancel, $form,
-        currencySettingId, salaryPerDay, afterAdjustmentAmount;
+        employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount,
+        maxDigit = 6,
+        bankAcountUrl = 'BankAccount/GetEmployeeBankAccounts';
 
-    BigNumber.prototype.roundAmountWithCurrency = function (currencyId) {
+    BigNumber.prototype.roundAmount = function (currencyId) {
         if (currencyId === '11') {
             return this.div(1000).round().mul(1000);
         }
@@ -12,12 +14,31 @@ var editBasicSalary = (function ($) {
         return this.round(2);
     };
 
+    BigNumber.prototype.toFixedAmount = function (currencyId) {
+        if (currencyId === '11')
+            return this.toString();
+
+        return this.toFixed(2);
+    };
+
+    function getNumber($element) {
+        var value = $element.val().trim().replace(',', '');
+
+        if (!isNaN(Number(value))) {
+            return $element.val().trim().replace(',', '');
+        } else {
+            return '';
+        }
+    }
+
     function calculateTotalAddition() {
         var hasValue = false,
-            totalAmount = new BigNumber(0);
-        $('.js-addition-netSalaryDisplay').each(function () {
+            totalAmount = new BigNumber(0),
+            deduction = Number(getNumber($('.js-deduction-totalNetSalary'))),
+            monthlySalary = afterAdjustmentAmount.minus(deduction);
+        $('.js-addition-netSalary').each(function () {
             var $this = $(this),
-                value = $this.val().trim();
+                value = getNumber($this);
 
             if (value.length > 0 && !isNaN(Number(value))) {
                 hasValue = true;
@@ -26,17 +47,30 @@ var editBasicSalary = (function ($) {
         });
 
         if (hasValue) {
-            $('.js-addition-totalNetSalaryDisplay').val(totalAmount.roundAmountWithCurrency(currencySettingId));
-            $('.js-addition-totalNetSalary').val(totalAmount);
+            var addition = totalAmount.round(maxDigit);
+
+            $('.js-addition-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+            $('.js-addition-totalNetSalary').val(addition);
+            monthlySalary = monthlySalary.plus(addition);
+        } else {
+            $('.js-addition-totalNetSalaryDisplay').val('');
+            $('.js-addition-totalNetSalary').val('');
         }
+
+        monthlySalary = monthlySalary.roundAmount(currencySettingId).toFixedAmount(currencySettingId);
+        $('#MonthlySalary_Salary').val(monthlySalary);
+        $('.js-totalNetSalary').val(monthlySalary);
+        calculateMonthlyBasicSalary();
     }
 
     function calculateTotalDeduction() {
         var hasValue = false,
-            totalAmount = new BigNumber(0);
-        $('.js-deduction-netSalaryDisplay').each(function () {
+            totalAmount = new BigNumber(0),
+            addition = Number(getNumber($('.js-addition-totalNetSalary'))),
+            monthlySalary = afterAdjustmentAmount.plus(addition);
+        $('.js-deduction-netSalary').each(function () {
             var $this = $(this),
-                value = $this.val().trim();
+                value = getNumber($this);
 
             if (value.length > 0 && !isNaN(Number(value))) {
                 hasValue = true;
@@ -45,9 +79,52 @@ var editBasicSalary = (function ($) {
         });
 
         if (hasValue) {
-            $('.js-deduction-totalNetSalaryDisplay').val(totalAmount.roundAmountWithCurrency(currencySettingId));
-            $('.js-deduction-totalNetSalary').val(totalAmount);
+            var deduction = totalAmount.round(maxDigit);
+
+            $('.js-deduction-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+            $('.js-deduction-totalNetSalary').val(deduction);
+            monthlySalary = monthlySalary.minus(deduction);
+        } else {
+            $('.js-deduction-totalNetSalaryDisplay').val('');
+            $('.js-deduction-totalNetSalary').val('');
         }
+
+        monthlySalary = monthlySalary.roundAmount(currencySettingId).toFixedAmount(currencySettingId);
+        $('#MonthlySalary_Salary').val(monthlySalary);
+        $('.js-totalNetSalary').val(monthlySalary);
+        calculateMonthlyBasicSalary();
+    }
+
+    function calculateMonthlyBasicSalary() {
+        var monthlySalary = Number(getNumber($('#MonthlySalary_Salary'))),
+            $autoCalculateOn = $('input[name="MonthlySalary.AutoCalculateOn"]:checked'),
+            $parentAutoCalculateOn = $autoCalculateOn.closest('.js-monthlySalary'),
+            autoCalculateCurrencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val(),
+            currencyId, exchangeRate;
+        if (monthlySalary.length === 0 || currencySettingId < 1 || autoCalculateCurrencyId === '') {
+            return;
+        }
+
+        monthlySalary = new BigNumber(monthlySalary);
+        $('input[name="MonthlySalary.AutoCalculateOn"]:not(:checked)').each(function () {
+            var $this = $(this),
+                $parent = $this.closest('.js-monthlySalary');
+            currencyId = $parent.find('.js-selectCurrency').val();
+
+            if (currencyId !== '') {
+                var amount = getNumber($parent.find('.js-autoCalculateAmount'));
+                if (amount.length > 0 && !isNaN(amount)) {
+                    amount = new BigNumber(amount);
+                    exchangeRate = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + currencySettingId + '"]').val());
+                    monthlySalary = monthlySalary.minus(amount.mul(exchangeRate));
+                }
+            }
+        });
+
+        currencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val();
+        exchangeRate = Number($('input[data-from-currency="' + currencySettingId + '"][data-to-currency="' + currencyId + '"]').val());
+        monthlySalary = monthlySalary.mul(exchangeRate).roundAmount(currencyId);
+        $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary.toFixed(2));
     }
 
     function initSelect2() {
@@ -58,57 +135,101 @@ var editBasicSalary = (function ($) {
             allowClear: true
         });
 
-        $('.js-select2-allowclear-hidesearchbox').select2({
+        $('.js-select2-bankType').select2({
             placeholder: '',
             allowClear: true,
             minimumResultsForSearch: Infinity
         });
-    }
 
-    function registerInputEventForAddition() {
-        $('.js-addition-unitAmount, .js-addition-noOfDays').on('change', function () {
-            var $this = $(this),
-                $relatedEl,
-                value = $this.val().trim(),
-                unitAmount,
-                noOfDays,
-                amount;
+        $('.js-select2-bankAcount').select2({
+            ajax: {
+                url: commonFunctions.rootURL + bankAcountUrl,
+                data: function (params) {
+                    var query = {
+                        employeeId: employeeId,
+                        bankTypeId: $(this).siblings('.js-bankType').val()
+                    };
 
-            if (value.length > 0) {
-                if ($this.hasClass('js-addition-unitAmount')) {
-                    $relatedEl = $this.siblings('.js-addition-noOfDays');
-                    noOfDays = Number($relatedEl.val().trim());
-
-                    if ($relatedEl.val().trim().length === 0) {
-                        amount = new BigNumber(Number(value));
-                        $this.siblings('.js-addition-netSalaryDisplay').val(amount.roundAmountWithCurrency(currencySettingId));
-                        $this.siblings('.js-addition-netSalary').val(amount);
-
-                        calculateTotalAddition();
-                    } else if (!isNaN(noOfDays)) {
-                        amount = new BigNumber(Number(value));
-                        amount = amount.mul(noOfDays);
-                        $this.siblings('.js-addition-netSalaryDisplay').val(amount.roundAmountWithCurrency(currencySettingId));
-
-                        calculateTotalAddition();
-                    }
-                } else {
-                    unitAmount = Number($this.siblings('.js-addition-unitAmount').val().trim());
-                    if (!isNaN(unitAmount)) {
-                        amount = unitAmount * Number(value);
-                        $this.siblings('.js-addition-netSalaryDisplay').val(amount);
-
-                        calculateTotalAddition();
-                    }
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
                 }
-            }
+            },
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity
         });
     }
 
-    function registerInputEventForDeduction() {
+    function registerInputAdditionEvent() {
+        $('.js-addition-unitAmount, .js-addition-noOfDays').on('change', function () {
+            var $this = $(this),
+                $netSalaryDisplay = $this.siblings('.js-addition-netSalaryDisplay'),
+                $netSalary = $this.siblings('.js-addition-netSalary'),
+                $relatedEl,
+                value = getNumber($this),
+                unitAmount, noOfDays, amount;
+
+            if (value.length > 0) {
+                amount = new BigNumber(Number(value));
+
+                if ($this.hasClass('js-addition-unitAmount')) {
+                    $relatedEl = $this.siblings('.js-addition-noOfDays');
+                    noOfDays = Number(getNumber($relatedEl));
+
+                    if (getNumber($relatedEl).length > 0) {
+                        amount = amount.mul(noOfDays);
+
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalary.val(amount.round(maxDigit));
+                    } else {
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalary.val(amount.round(maxDigit));
+                    }
+                } else {
+                    $relatedEl = $this.siblings('.js-addition-unitAmount');
+                    unitAmount = Number(getNumber($relatedEl));
+
+                    if (getNumber($relatedEl).length > 0) {
+                        amount = amount.mul(unitAmount);
+
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalary.val(amount.round(maxDigit));
+                    } else {
+                        $netSalaryDisplay.val('');
+                        $netSalary.val('');
+                    }
+                }
+            } else {
+                if ($this.hasClass('js-addition-unitAmount')) {
+                    $netSalaryDisplay.val('');
+                    $netSalary.val('');
+                } else {
+                    $relatedEl = $this.siblings('.js-addition-unitAmount');
+                    unitAmount = new BigNumber(Number(getNumber($relatedEl)));
+
+                    if (getNumber($relatedEl).length > 0) {
+                        $netSalaryDisplay.val(unitAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalary.val(unitAmount.round(maxDigit));
+                    } else {
+                        $netSalaryDisplay.val('');
+                        $netSalary.val('');
+                    }
+                }
+            }
+
+            calculateTotalAddition();
+        });
+    }
+
+    function registerInputDeductionEvent() {
         $('.js-unpaidleave-absenteeism, .js-tardiness, .js-deduction-unitAmount').on('change', function () {
             var $this = $(this),
-                value = $this.val().trim(),
+                value = getNumber($this),
                 amount;
 
             if (value.length > 0 && !isNaN(Number(value))) {
@@ -117,30 +238,28 @@ var editBasicSalary = (function ($) {
                 } else if ($this.hasClass('js-tardiness')) {
                     amount = salaryPerDay.div(8 * 60).mul(Number(value));
                 } else {
-                    amount = Number(value);
+                    amount = new BigNumber(Number(value));
                 }
 
-                $this.siblings('.js-deduction-netSalaryDisplay').val(amount);
-                calculateTotalDeduction();
+                $this.siblings('.js-deduction-netSalaryDisplay').val(amount.roundAmount(currencySettingId));
+                $this.siblings('.js-deduction-netSalary').val(amount.round(maxDigit));
+            } else {
+                $this.siblings('.js-deduction-netSalaryDisplay').val('');
+                $this.siblings('.js-deduction-netSalary').val('');
             }
+
+            calculateTotalDeduction();
         });
     }
 
     function registerInputNumberEvent() {
-        $('.js-numberOnly').on('keyup', function (e) {
-            var val = $(this).val(),
-                regex = /^\d*\.?([0-9]{1,2})?$/g,
-                regex1 = /^\d*\.?([0-9]{1,2})?/g;
-
-            if (!regex.test(val)) {
-                val = regex1.exec(val);
-
-                if (val) {
-                    $(this).val(val[0]);
-                } else {
-                    $(this).val('');
-                }
-            }
+        $('.js-numberOnly').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            allowMinus: false,
+            groupSeparator: ','
         });
     }
 
@@ -150,21 +269,40 @@ var editBasicSalary = (function ($) {
         });
     }
 
+    function registerEvents() {
+        registerRefreshPageEvent();
+        registerInputNumberEvent();
+        registerInputAdditionEvent();
+        registerInputDeductionEvent();
+
+        $('input[name="MonthlySalary.AutoCalculateOn"]').on('change', function () {
+            var $this = $(this),
+                $parent = $this.closest('.js-monthlySalary');
+
+            if (this.checked) {
+                $('.js-autoCalculateAmount[readonly]').removeAttr('readonly');
+                $parent.find('.js-numberOnly').attr('readonly', 'readonly');
+            }
+        }).change();
+
+        $('.js-selectCurrency, .js-autoCalculateAmount').on('change', function () {
+            calculateMonthlyBasicSalary();
+        });
+    }
+
     function initModule() {
         $btnPreset = $('.js-btnPreset');
         $btnRefresh = $('.js-btnRefresh');
         $btnCancel = $('.js-btnCancel');
         $form = $('#edit-basic-salary-form');
-        currencySettingId = $('#MonthlyBasicSalary_CurrencyId').val();
-        salaryPerDay = new BigNumber(Number($('#SalaryPerDay').val()));
-        afterAdjustmentAmount = new BigNumber(Number($('#MonthlyBasicSalary_AfterAdjustmentAmount').val()));
+        employeeId = parseInt($('#EmployeeId').val(), 10);
+        currencySettingId = parseInt($('#MonthlySalary_CurrencyId').val(), 10);
+        salaryPerDay = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_SalaryPerDay'))));
+        afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount'))));
 
-        registerRefreshPageEvent();
-        registerRefreshPageEvent();
-        registerInputEventForAddition();
-        registerInputEventForDeduction();
-
+        commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         initSelect2();
+        registerEvents();
     }
 
     return {
