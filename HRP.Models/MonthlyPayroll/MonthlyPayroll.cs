@@ -12,8 +12,6 @@
 
         public DateTime Month { get; set; }
 
-        public int Status { get; set; }
-
         [XmlIgnore]
         public DateTime? SalaryEffectiveDate { get; set; }
 

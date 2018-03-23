@@ -242,7 +242,7 @@
                     alert('generate fail !!!!!');
                 }
             },
-            error: commonFunctions.handleAjaxError
+            //error: commonFunctions.handleAjaxError
         });
     }
 

@@ -322,11 +322,12 @@
         }
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, int? dstNetSalaryCurrencyId, string dstNetSalaryAmount)
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyDSTNetSalary dstNetSalary)
         {
             var monthlyAllowance = new MonthlyAllowanceModel
             {
                 PayrollId = basicAllowance.PayrollId,
+                EmployeeId = basicAllowance.EmployeeId,
                 CurrencyId = basicAllowance.CurrencyId,
                 DirectBanking1CurrencyId = basicAllowance.DirectBanking1CurrencyId,
                 DirectBanking1Amount = basicAllowance.DirectBanking1Amount,
@@ -340,8 +341,8 @@
                 CashAmount = basicAllowance.CashAmount,
                 CashAccountId = basicAllowance.CashAccountId,
                 AutoCalculateOn = basicAllowance.AutoCalculateOn,
-                DSTNetSalaryAmount = dstNetSalaryAmount,
-                DSTNetSalaryCurrencyId = dstNetSalaryCurrencyId
+                DSTNetSalaryAmount = dstNetSalary?.NetSalaryReceived,
+                DSTNetSalaryCurrencyId = dstNetSalary?.CurrencyId
             };
 
             if (basicAllowance.CurrencyId.HasValue)
@@ -421,7 +422,7 @@
             CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
-        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, int actualWorkingDays,
+        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var additions = new List<MonthlyAllowanceAdditionModel>();
@@ -432,6 +433,7 @@
                 additions.Add(new MonthlyAllowanceAdditionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
+                    EmployeeId = basicAllowance.EmployeeId,
                     Type = (int)type,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(type, basicAllowance)
                 });
@@ -460,7 +462,7 @@
             return additions;
         }
 
-        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int standardWorkingDays, int actualWorkingDays,
+        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int standardWorkingDays, decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var deductions = new List<MonthlyAllowanceDeductionModel>();
@@ -471,6 +473,7 @@
                 deductions.Add(new MonthlyAllowanceDeductionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
+                    EmployeeId = basicAllowance.EmployeeId,
                     Type = (int)type,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(type, basicAllowance)
                 });

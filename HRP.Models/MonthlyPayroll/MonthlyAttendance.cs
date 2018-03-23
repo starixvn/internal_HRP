@@ -8,6 +8,6 @@
 
         public DateTime Month { get; set; }
 
-        public double ActualWorkingDay { get; set; }
+        public decimal ActualWorkingDay { get; set; }
     }
 }
