@@ -174,8 +174,14 @@
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2.OrderBy(x => x.Type).ToList(),
                 Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4
+                BasicAllowance = result.Item4,
+                EmployeeInfo = result.Item5
             };
+
+            if (model.BasicAllowance != null)
+            {
+                DecryptMonthlyBasicAllowance(model.BasicAllowance);
+            }
 
             if (model.Allowance != null)
             {
@@ -199,12 +205,20 @@
         {
             var allowanceAdditionXml = ConvertAllowanceAdditionToXml(viewModel.Additions);
             var allowanceDeductionXml = ConvertAllowanceAdditionToXml(viewModel.Deductions);
+            var status = MonthlyPayrollStatus.Satisfied;
+            decimal.TryParse(viewModel.Allowance.DirectBanking1Amount, out decimal directbanking1);
+            decimal.TryParse(viewModel.Allowance.DirectBanking2Amount, out decimal directbanking2);
+            decimal.TryParse(viewModel.Allowance.CashAmount, out decimal cash);
+            if (directbanking1 < 0 || directbanking2 < 0 || cash < 0)
+            {
+                status = MonthlyPayrollStatus.Unsatisfied;
+            }
 
             var criteria = new EditMonthlyAllowancesCriteria
             {
                 PayrollId = viewModel.Allowance.PayrollId,
                 CurrencyId = viewModel.Allowance.CurrencyId,
-                TotalAmount = viewModel.Allowance.TotalAmount,
+                TotalAmount = cryptoService.Encrypt(viewModel.Allowance.TotalAmount),
                 DirectBanking1CurrencyId = viewModel.Allowance.DirectBanking1CurrencyId,
                 DirectBanking1Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking1Amount),
                 DirectBanking1AccountId = viewModel.Allowance.DirectBanking1AccountId,
@@ -217,9 +231,13 @@
                 CashAmount = cryptoService.Encrypt(viewModel.Allowance.CashAmount),
                 CashAccountId = viewModel.Allowance.CashAccountId,
                 AutoCalculateOn = viewModel.Allowance.AutoCalculateOn,
+                TotalNetAmount = cryptoService.Encrypt(viewModel.Allowance.TotalNetAmount),
+                DSTNetSalaryCurrencyId = viewModel.Allowance.DSTNetSalaryCurrencyId,
+                DSTNetSalaryAmount = cryptoService.Encrypt(viewModel.Allowance.DSTNetSalaryAmount),
                 AllowanceAddition = allowanceAdditionXml,
                 AllowanceDeduction = allowanceDeductionXml,
-                UserId = userId
+                UserId = userId,
+                Status = status
             };
 
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
@@ -371,7 +389,7 @@
                 decimal.TryParse(dutyMealDeduction.NetAllowance, out decimal dutyMealDeductionAmount);
                 totalAmount = totalAmount - dutyMealDeductionAmount;
 
-                monthlyAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
+                monthlyAllowance.TotalAmount = RoundAmountWithCurrency(totalAmount, monthlyAllowance.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
                 CalculateAutoAllowance(currencyExchangeRates, monthlyAllowance);
                 CalculateTotalNetAmount(currencyExchangeRates, monthlyAllowance);
             }
@@ -453,8 +471,7 @@
 
                 if (dutyMeal.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
                 {
-                    var netAllowance = RoundAmountWithCurrency(totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value),
-                        basicAllowance.CurrencyId.Value);
+                    var netAllowance = totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
                     dutyMeal.NetAllowance = netAllowance.ToString(CultureInfo.InvariantCulture);
                 }
             }
@@ -493,8 +510,7 @@
 
                 if (dutyMeal.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
                 {
-                    var netAllowance = RoundAmountWithCurrency(totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value),
-                        basicAllowance.CurrencyId.Value);
+                    var netAllowance = totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
                     dutyMeal.NetAllowance = netAllowance.ToString(CultureInfo.InvariantCulture);
                 }
             }
@@ -588,12 +604,25 @@
             return currencyExchangeRate != null ? currencyExchangeRate.ExchangeRate : 0;
         }
 
+        private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
+        {
+            basicAllowance.TotalAmount = cryptoService.Decrypt(basicAllowance.TotalAmount);
+            basicAllowance.DirectBanking1Amount = cryptoService.Decrypt(basicAllowance.DirectBanking1Amount);
+            basicAllowance.DirectBanking2Amount = cryptoService.Decrypt(basicAllowance.DirectBanking2Amount);
+            basicAllowance.CashAmount = cryptoService.Decrypt(basicAllowance.CashAmount);
+            basicAllowance.AfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount);
+            basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
+            basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
+        }
+
         private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
         {
             allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
             allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
             allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
             allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
+            allowance.TotalNetAmount = cryptoService.Decrypt(allowance.TotalNetAmount);
+            allowance.DSTNetSalaryAmount = cryptoService.Decrypt(allowance.DSTNetSalaryAmount);
         }
 
         private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)
@@ -603,6 +632,19 @@
                 addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
                 addition.NetAllowance = cryptoService.Decrypt(addition.NetAllowance);
                 addition.TotalAmount = cryptoService.Decrypt(addition.TotalAmount);
+
+                if (addition.CurrencyId.HasValue)
+                {
+                    if (!string.IsNullOrEmpty(addition.NetAllowance))
+                    {
+                        addition.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(addition.NetAllowance), addition.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    if (!string.IsNullOrEmpty(addition.TotalAmount))
+                    {
+                        addition.TotalAmountToDisplay = RoundAmountWithCurrency(decimal.Parse(addition.TotalAmount), addition.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                    }
+                }
             }
         }
 
@@ -613,6 +655,19 @@
                 deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
                 deduction.TotalAmount = cryptoService.Decrypt(deduction.TotalAmount);
+
+                if (deduction.CurrencyId.HasValue)
+                {
+                    if (!string.IsNullOrEmpty(deduction.NetAllowance))
+                    {
+                        deduction.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(deduction.NetAllowance), deduction.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    if (!string.IsNullOrEmpty(deduction.TotalAmount))
+                    {
+                        deduction.TotalAmountToDisplay = RoundAmountWithCurrency(decimal.Parse(deduction.TotalAmount), deduction.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                    }
+                }
             }
         }
 
@@ -824,7 +879,7 @@
                 var totalNetAmount = totalAmount -
                     ConvertAmount(currencyExchangeRates, monthlyAllowance.DSTNetSalaryAmount, monthlyAllowance.DSTNetSalaryCurrencyId.Value, monthlyAllowance.CurrencyId.Value);
 
-                monthlyAllowance.TotalNetAmount = totalNetAmount.ToString(CultureInfo.InvariantCulture);
+                monthlyAllowance.TotalNetAmount = RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
             }
         }
 

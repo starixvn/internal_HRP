@@ -38,11 +38,19 @@
 
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
+        public string TotalNetAmount { get; set; }
+
+        public int? DSTNetSalaryCurrencyId { get; set; }
+
+        public string DSTNetSalaryAmount { get; set; }
+
         public string AllowanceAddition { get; set; }
 
         public string AllowanceDeduction { get; set; }
 
         public int UserId { get; set; }
+
+        public MonthlyPayrollStatus Status { get; set; }
 
         public override string GetSettingKey() => "MonthlyPayroll_UpdateAllowances";
 

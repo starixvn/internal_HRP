@@ -265,8 +265,6 @@
                 $(this).removeData('unselecting');
                 e.preventDefault();
             }
-        }).on('change', function () {
-            $(this).click();
         });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');

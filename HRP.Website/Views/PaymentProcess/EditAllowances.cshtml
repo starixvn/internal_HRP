@@ -18,43 +18,45 @@
 }
 
 <ol class="breadcrumb">
-    <li class="like-link">Payment Process</li>
-    <li class="like-link">View Employee</li>
-    <li class="active">Edit Allowances</li>
+    <li class="like-link">@ViewLang.PaymentProcess</li>
+    <li class="like-link">@ViewLang.ViewEmployee</li>
+    <li class="active">@(Model.CanEdit ? ViewLang.EditMonthlyAllowances : ViewLang.ViewMonthlyAllowances)</li>
 </ol>
 
 <form class="search-form">
     <div class="group">
-        <label class="text">Month/Year</label>
+        <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" readonly />
+            <input type="text" class="control datetimepicker" readonly value="@Html.DisplayFor(x => x.Month)" />
             <span class="icon-calendar"></span>
         </div>
     </div>
     <div class="group">
-        <label class="text">Company</label>
+        <label class="text">@ViewLang.Company</label>
         <select class="control width-92" disabled>
-            <option value="" selected="selected">Company</option>
+            <option value="@Model.EmployeeInfo.CompanyId" selected="selected">@Model.EmployeeInfo.CompanyCode</option>
         </select>
     </div>
     <input hidden />
     <input type="text" hidden />
     <div class="group">
-        <label class="text">ID No.</label>
-        <input type="text" class="control" placeholder="" readonly />
+        <label class="text">@ViewLang.IDNo</label>
+        <input type="text" class="control" placeholder="" value="@Model.EmployeeInfo.IdNo" readonly />
     </div>
     <div class="group">
-        <label class="text">Employee</label>
-        <input type="text" class="control width-200" placeholder="" readonly />
+        <label class="text">@ViewLang.Employee</label>
+        <input type="text" class="control width-200" placeholder="" value="@Model.EmployeeInfo.FullName" readonly />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-140" disabled></select>
+        <select class="control width-140" disabled>
+            <option>@Model.EmployeeInfo.CostCenter</option>
+        </select>
     </div>
     <div class="group">
-        <label class="text">Working Days</label>
+        <label class="text">@ViewLang.WorkingDays</label>
         <select class="control width-92" disabled>
-            <option value="" selected="selected">22</option>
+            <option value="">@Model.EmployeeInfo.WorkingDays</option>
         </select>
     </div>
     <div class="group">
@@ -66,8 +68,8 @@
 </form>
 <div class="payment-duration">
     <div class="date"><span class="required">*</span> The Payment Process Duration</div>
-    <div class="date">Start Date: <strong>01/03/2018</strong></div>
-    <div class="date">Due Date: <strong>31/03/2018</strong></div>
+    <div class="date">Start Date: <strong>@Html.DisplayFor(x => x.EmployeeInfo.StartDate)</strong></div>
+    <div class="date">Due Date: <strong>@Html.DisplayFor(x => x.EmployeeInfo.DueDate)</strong></div>
 </div>
 
 @foreach (var currency in Model.CurrencyExchangeRates)
@@ -77,7 +79,23 @@
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
+    <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="Month" />
+    <input type="hidden" asp-for="CompanyId" />
+    <input type="hidden" asp-for="Allowance.PayrollId" />
+    <input type="hidden" asp-for="Allowance.CurrencyCode" />
+    <input type="hidden" asp-for="BasicAllowance.PayrollId" />
+    <input type="hidden" asp-for="EmployeeInfo.EmployeeId" />
+    <input type="hidden" asp-for="EmployeeInfo.FullName" />
+    <input type="hidden" asp-for="EmployeeInfo.Nickname" />
+    <input type="hidden" asp-for="EmployeeInfo.IdNo" />
+    <input type="hidden" asp-for="EmployeeInfo.CostCenter" />
+    <input type="hidden" asp-for="EmployeeInfo.StartDate" />
+    <input type="hidden" asp-for="EmployeeInfo.CompanyCode" />
+    <input type="hidden" asp-for="EmployeeInfo.CompanyId" />
+    <input type="hidden" asp-for="EmployeeInfo.WorkingDays" />
+
     <div class="form-information">
         <div class="list-message-error hidden" id="validation-summary">
             <span asp-validation-for="Allowance.DirectBanking1CurrencyId" class="message"></span>
@@ -111,14 +129,17 @@
                     <div>Actual Currency</div>
                     <div>No of Days</div>
                     <div>Total Amount (Actual curr.)</div>
-                    <div class="-start-col-6">Net Allowance (USD)</div>
+                    <div class="-start-col-6">Net Allowance (@Model.Allowance.CurrencyCode)</div>
                 </div>
 
                 @for (var i = 0; i < Model.Additions.Count; i++)
                 {
                     <div class="group-complex -alw-layout-add">
                         <div class="like-group-title">@((AllowanceType)Model.Additions[i].Type)</div>
-                        <input type="text" class="control number addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount">
+                        <input type="hidden" asp-for="Additions[i].PayrollId">
+                        <input type="hidden" asp-for="Additions[i].Type">
+
+                        <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount">
                         <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
@@ -134,7 +155,9 @@
 
                 <div class="group-complex -alw-layout-add">
                     <div class="text-specific">Total Add</div>
-                    <input type="text" id="total-addition" class="control highlighted -start-col-6" disabled>
+                    <input type="hidden" id="total-addition" disabled>
+                    <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled>
+
                 </div>
             </div>
             <div class="deduction">
@@ -149,24 +172,28 @@
 
                 @for (var i = 0; i < Model.Deductions.Count; i++)
                 {
-                    <div class="group-complex -alw-layout-deduction text-center">
-                        <input type="text" class="control number deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
-                        <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
-                            <option></option>
-                        </select>
-                        <input type="text" class="deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                <div class="group-complex -alw-layout-deduction text-center">
+                    <input type="hidden" asp-for="Deductions[i].PayrollId">
+                    <input type="hidden" asp-for="Deductions[i].Type">
 
-                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
-                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
+                    <input type="text" class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
+                    <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
+                        <option></option>
+                    </select>
+                    <input type="text" class="deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
 
-                        <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance">
-                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay">
-                    </div>
+                    <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
+                    <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
+
+                    <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance">
+                    <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay">
+                </div>
                 }
 
                 <div class="group-complex -alw-layout-deduction-2">
                     <div class="text-specific text-red">Total Deduction</div>
-                    <input type="text" id="total-deduction" class="control highlighted -start-col-4" disabled>
+                    <input type="hidden" id="total-deduction">
+                    <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled>
                 </div>
             </div>
         </div>
@@ -175,7 +202,10 @@
             <div class="group-deduction"><span class="icon-group"></span>Monthly Deduction</div>
             <div class="group-complex -layout-setting">
                 <div class="text-red bold">@ViewLang.RommingCharges</div>
-                <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.RoomingChargesCurrencyId"></select>
+                <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.RoomingChargesCurrencyId">
+                    <option></option>
+                </select>
+                <input type="hidden" asp-for="BasicAllowance.RoomingChargesCurrencyId">
                 <input type="text" class="control number" disabled asp-for="BasicAllowance.RoomingChargesAmount">
             </div>
             <div class="group-complex -layout-setting">
@@ -183,6 +213,8 @@
                 <select class="control select2" disabled asp-for="BasicAllowance.FitnessFirstCurrencyId">
                     <option></option>
                 </select>
+                <input type="hidden" asp-for="BasicAllowance.FitnessFirstCurrencyId">
+
                 <input type="text" class="control number" disabled asp-for="BasicAllowance.FitnessFirstAmount">
             </div>
         </div>
@@ -193,80 +225,91 @@
                 <div class="group-complex -layout-setting">
                     <div class="bold">Setting</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
-                        <option>USD</option>
+                        <option></option>
                     </select>
+                    <input type="hidden" asp-for="BasicAllowance.CurrencyId">
+
                     <input type="text" class="control number" asp-for="BasicAllowance.TotalAmount" disabled>
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="like-group-title">@ViewLang.DirectBanking1</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.DirectBanking1CurrencyId">
-                        <option>USD</option>
+                        <option></option>
                     </select>
+                    <input type="hidden" asp-for="BasicAllowance.DirectBanking1CurrencyId">
+
                     <input type="text" class="control number" disabled asp-for="BasicAllowance.DirectBanking1Amount">
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="like-group-title">@ViewLang.DirectBanking2</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.DirectBanking2CurrencyId">
-                        <option>USD</option>
+                        <option></option>
                     </select>
+                    <input type="hidden" asp-for="BasicAllowance.DirectBanking2CurrencyId">
+
                     <input type="text" class="control number" disabled asp-for="BasicAllowance.DirectBanking2Amount">
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="like-group-title">@ViewLang.Cash</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CashCurrencyId">
-                        <option>USD</option>
+                        <option></option>
                     </select>
+                    <input type="hidden" asp-for="BasicAllowance.CashCurrencyId">
+
                     <input type="text" class="control number" disabled asp-for="BasicAllowance.CashAmount">
                 </div>
                 <div class="group-complex -layout-setting">
                     <div class="bold">After Adjustment</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
-                        <option>USD</option>
+                        <option></option>
                     </select>
-                    <input type="text" class="control highlighted number" disabled asp-for="BasicAllowance.AfterAdjustmentAmount">
+
+                    <input type="text" class="control highlighted number" readonly asp-for="BasicAllowance.AfterAdjustmentAmount">
                 </div>
                 <div class="group-complex -layout-setting-2">
                     <div>Reason</div>
-                    <textarea class="control text-reason" disabled asp-for="BasicAllowance.Reason">Added/Deducted abs(x) (currency). Employee worked from [Start Date of Date</textarea>
+                    <textarea class="control text-reason" readonly asp-for="BasicAllowance.Reason"></textarea>
                 </div>
             </div>
             <div class="monthly-payroll">
                 <div class="group-complex -layout-payroll">
                     <div class="bold">Monthly Allowances</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="Allowance.CurrencyId">
-                        <option value="10">USD</option>
+                        <option></option>
                     </select>
-                    <input type="text" class="control number highlighted total-monthly-payroll" disabled asp-for="Allowance.TotalAmount">
+                    <input type="hidden" asp-for="Allowance.CurrencyId">
+
+                    <input type="text" class="control number highlighted total-monthly-payroll" readonly asp-for="Allowance.TotalAmount">
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
-                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" />
+                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking1" data-calculate-for="directbanking1" />
                         <span class="like-group-title">@ViewLang.DirectBanking1</span>
                     </label>
-                    <select class="control select2" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking1CurrencyId">
+                    <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking1CurrencyId" data-calculate-for="directbanking1" data-group="directbanking1">
                         <option></option>
                     </select>
-                    <input type="text" class="control number" asp-for="Allowance.DirectBanking1Amount">
+                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.DirectBanking1Amount" data-calculate-for="directbanking1" data-group="directbanking1" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
-                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" />
+                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.DirectBanking2" data-calculate-for="directbanking2" />
                         <span class="like-group-title">@ViewLang.DirectBanking2</span>
                     </label>
-                    <select class="control select2" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking2CurrencyId">
+                    <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking2CurrencyId" data-calculate-for="directbanking2" data-group="directbanking2">
                         <option></option>
                     </select>
-                    <input type="text" class="control number" asp-for="Allowance.DirectBanking2Amount">
+                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.DirectBanking2Amount" data-calculate-for="directbanking2"  data-group="directbanking2" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
-                        <input type="radio" checked />
+                        <input type="radio" asp-for="Allowance.AutoCalculateOn" value="@PayrollAutoCalculateOn.Cash" data-calculate-for="cash" />
                         <span class="like-group-title">@ViewLang.Cash</span>
                     </label>
-                    <select class="control select2" disabled asp-items="Model.Currencies" asp-for="Allowance.CashCurrencyId">
-                        <option>USD</option>
+                    <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.CashCurrencyId" data-calculate-for="cash" data-group="cash">
+                        <option></option>
                     </select>
-                    <input type="text" class="control number" disabled asp-for="Allowance.CashAmount">
+                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.CashAmount" data-calculate-for="cash" data-group="cash">
                 </div>
             </div>
             <div class="payment">
@@ -276,45 +319,46 @@
                     <div>@ViewLang.AccountName</div>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId">
+                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-group="directbanking1">
                         <option></option>
                     </select>
-                    <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking1AccountId" data-url="@Url.Action("GetEmployeeBankAccounts", "BankAccount")">
+                    <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking1AccountId" data-group="directbanking1">
                         <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId">
+                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-group="directbanking2">
                         <option></option>
                     </select>
-                    <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking2AccountId" data-url="@Url.Action("GetEmployeeBankAccounts", "BankAccount")">
+                    <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking2AccountId" data-group="directbanking2">
                         <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.Cash</div>
-                    <select class="control select2" asp-items="Model.CashAccounts" asp-for="Allowance.CashAccountId">
+                    <select class="control select2" asp-items="Model.CashAccounts" asp-for="Allowance.CashAccountId" data-group="cash">
                         <option></option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="group-complex -total-salary">
-            <div class="text-specific">TOTAL NET</div>
-            <input type="text" class="control total-salary" value="0,000,000.00" disabled>
+            <div class="text-specific">TOTAL GROSS</div>
+            <input type="text" class="control total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-red">DST NET Salary</div>
-            <input type="text" class="control text-dst-net" value="000,000.00">
+            <input type="text" class="control text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" />
+            <input type="hidden" asp-for="Allowance.DSTNetSalaryCurrencyId" />
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-green">Net Amount</div>
-            <input type="text" class="control text-net-amount" value="0,000,000.00" disabled>
+            <input type="text" class="control text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
         </div>
         <div class="list-button">
-            <button class="button -second">Cancel</button>
-            <button class="button -primary" type="submit">Save</button>
-            <button class="button -primary" type="button">Save and Edit Allowances</button>
+            <button class="button -second">@ViewLang.Cancel</button>
+            <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save">@ViewLang.Save</button>
+            <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary">Save and Edit Basic Salary</button>
         </div>
     </div>
 </form>

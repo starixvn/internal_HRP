@@ -565,9 +565,7 @@
             var companyId = 1;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
-            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
+
 
             var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
 
@@ -583,9 +581,17 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
-            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(new MonthlyAllowancesViewModel());
+            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
+                .Returns(new MonthlyAllowancesViewModel
+                {
+                    Allowance = new MonthlyAllowanceModel(),
+                    EmployeeInfo = new MonthlyAllowanceEmployeeInfoModel()
+                });
 
             var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
+            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
+            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
+            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);

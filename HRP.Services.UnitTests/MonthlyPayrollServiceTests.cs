@@ -343,17 +343,21 @@
                 }
             };
 
+            var info = new MonthlyAllowanceEmployeeInfoModel();
+
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
-                (allowance, additions, deductions, basicAllowance));
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, MonthlyAllowanceEmployeeInfoModel>
+                (allowance, additions, deductions, basicAllowance, info));
 
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
             Assert.NotNull(actual);
             Assert.NotNull(actual.Allowance);
             Assert.NotNull(actual.Additions);
             Assert.NotNull(actual.Deductions);
+            Assert.NotNull(actual.BasicAllowance);
+            Assert.NotNull(actual.EmployeeInfo);
         }
 
         [Fact]

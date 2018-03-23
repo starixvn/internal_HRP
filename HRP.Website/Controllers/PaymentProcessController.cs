@@ -344,20 +344,24 @@
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
             viewModel.EmployeeId = employeeId;
-            viewModel.Currencies = new SelectList(baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()),
-                nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+
+            var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
+            viewModel.Currencies = new SelectList(currencies,nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
             viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
                 nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
-            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
+            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host) 
+                && DateTime.Today >= viewModel.EmployeeInfo.StartDate && DateTime.Today <= viewModel.EmployeeInfo.DueDate;
 
             return View(viewModel);
         }
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel)
+        public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
         {
             if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
             {
@@ -372,7 +376,26 @@
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
                 }
+                else
+                {
+                    switch (submitAction)
+                    {
+                        case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
+                            return RedirectToAction("EditBasicSalary", new { companyId = viewModel.CompanyId, month = viewModel.Month, payrollId = viewModel.Allowance.PayrollId });
+
+                        case EditMonthlyAllowanceAction.Save:
+                        default:
+                            return RedirectToAction("EmployeeMonthlyPayroll");
+                    }
+                }
             }
+
+            var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+
+            viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = viewModel.Month.Month, Year = viewModel.Month.Year });
+            viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
+                nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
             return View(viewModel);
         }
