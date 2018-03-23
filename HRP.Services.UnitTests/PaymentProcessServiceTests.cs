@@ -27,6 +27,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICryptoService cryptoService;
         private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
@@ -406,11 +407,12 @@
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
+            cryptoService = FakeCryptoService();
             fileStream = FakeFileStream();
             templateReader = FakeTemplateReader();
             paymentProcessRepository = FakePaymentProcessRepository();
             monthlyPayrollService = FakeMonthlyPayrollService();
-            var service = new PaymentProcessService(baseService, sessionService, monthlyPayrollService, templateReader, paymentProcessRepository, fileStream);
+            var service = new PaymentProcessService(baseService, sessionService, cryptoService, monthlyPayrollService, templateReader, paymentProcessRepository, fileStream);
 
             return service;
         }
@@ -446,6 +448,11 @@
         private IMonthlyPayrollService FakeMonthlyPayrollService()
         {
             return Substitute.For<IMonthlyPayrollService>();
+        }
+
+        private ICryptoService FakeCryptoService()
+        {
+            return Substitute.For<ICryptoService>();
         }
 
         private PaymentProcess MockPaymentProcess()

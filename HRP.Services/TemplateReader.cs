@@ -152,6 +152,12 @@
                             var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
                             var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
                             var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
+                            if (checkNetSalaryReceived.IsValid)
+                            {
+                                decimal.TryParse(record.NetSalaryReceived, out decimal salary);
+                                salary = record.Currency.ToLower(CultureInfo.InvariantCulture).Equals("vnd") ? Math.Round(salary) : Math.Round(salary, 2);
+                                record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
+                            }
 
                             AddToDSTNetSalaryValidationResults(checkEmployeeCode);
                             AddToDSTNetSalaryValidationResults(checkCurrency);

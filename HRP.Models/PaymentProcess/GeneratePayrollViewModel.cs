@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement.Payroll;
     using HRP.Models.MonthlyPayroll;
 
     public class GeneratePayrollViewModel

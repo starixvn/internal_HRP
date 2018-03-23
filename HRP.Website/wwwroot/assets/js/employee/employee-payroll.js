@@ -402,7 +402,7 @@
             }
         });
 
-        var $form = $('#payroll-form'); debugger;
+        var $form = $('#payroll-form'); 
         $form.removeData('validator');
         $form.removeData('unobtrusiveValidation');
 

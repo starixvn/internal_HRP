@@ -513,6 +513,7 @@
 
             var allowanceAdditions = new List<MonthlyAllowanceAdditionModel>() { new MonthlyAllowanceAdditionModel { Type = (int)AllowanceType.DutyMeal } };
             var allowanceDeductions = new List<MonthlyAllowanceDeductionModel>() { new MonthlyAllowanceDeductionModel { Type = (int)AllowanceType.DutyMeal } };
+            var dstNetSalary = new MonthlyDSTNetSalary { CurrencyId = 1, NetSalaryReceived = "333" };
 
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
@@ -532,7 +533,7 @@
 
             var expectedTotalAmount = "1800";
 
-            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, 1, "200");
+            var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, dstNetSalary);
 
             Assert.Equal(expectedTotalAmount, result.TotalAmount);
         }
