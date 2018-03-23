@@ -126,6 +126,24 @@ var editBasicSalary = (function ($) {
         });
     }
 
+    function registerInputNumberEvent() {
+        $('.js-numberOnly').on('keyup', function (e) {
+            var val = $(this).val(),
+                regex = /^\d*\.?([0-9]{1,2})?$/g,
+                regex1 = /^\d*\.?([0-9]{1,2})?/g;
+
+            if (!regex.test(val)) {
+                val = regex1.exec(val);
+
+                if (val) {
+                    $(this).val(val[0]);
+                } else {
+                    $(this).val('');
+                }
+            }
+        });
+    }
+
     function registerRefreshPageEvent() {
         $btnRefresh.on('click', function () {
             location.reload();
@@ -142,26 +160,11 @@ var editBasicSalary = (function ($) {
         afterAdjustmentAmount = new BigNumber(Number($('#MonthlyBasicSalary_AfterAdjustmentAmount').val()));
 
         registerRefreshPageEvent();
+        registerRefreshPageEvent();
         registerInputEventForAddition();
         registerInputEventForDeduction();
 
         initSelect2();
-
-        $('.js-numberOnly').on('keyup', function (e) {
-            var val = $(this).val(),
-                regex = /^\d*\.?([0-9]?[0-9])?$/g,
-                regex1 = /^\d*\.?([0-9]?[0-9])?/g;
-
-            if (!regex.test(val)) {
-                val = regex1.exec(val);
-
-                if (val) {
-                    $(this).val(val[0]);
-                } else {
-                    $(this).val('');
-                }
-            }
-        });
     }
 
     return {
