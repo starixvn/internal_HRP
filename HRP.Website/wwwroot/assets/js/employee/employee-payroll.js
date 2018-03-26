@@ -24,7 +24,7 @@
         var oldValue = $('#BasicSalary_OldSalary').val();
         var $currency = $('#BasicSalary_CurrencyId');
         var oldCurrency = $('#BasicSalary_OldCurrencyId').val();
-        return (oldValue !== '' && Number($basicSalary.val()) !== Number(oldValue)) || (oldCurrency !== '' && oldCurrency !== $currency.val());
+        return (oldValue !== '' && $basicSalary.val() !== '') || (oldCurrency !== '' &&  $currency.val() !== '');
     }
 
     function calculateBasicSalary() {

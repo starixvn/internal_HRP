@@ -180,12 +180,15 @@
                 }
             };
 
+
             var allowance = new MonthlyAllowanceModel();
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
+            var employeeInfo = new MonthlyAllowanceEmployeeInfoModel();
 
             var multiResultReader = FakeMultipleResultReader();
             multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
             multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyAllowanceEmployeeInfoModel>().Returns(employeeInfo);
 
             multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
             multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
@@ -199,6 +202,8 @@
             Assert.NotNull(actual.Item1);
             Assert.NotEmpty(actual.Item2);
             Assert.NotEmpty(actual.Item3);
+            Assert.NotNull(actual.Item4);
+            Assert.NotNull(actual.Item5);
         }
 
         #region Helpers

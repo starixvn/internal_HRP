@@ -640,6 +640,36 @@
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);
         }
 
+        [Fact]
+        public async Task Preset_NotHavePermission_RederiectToAccessDenied()
+        {
+            var companyId = 1;
+            var employeeId = 1;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(false);
+
+
+            var actual = await controller.Preset(companyId, employeeId, DateTime.Today);
+
+            var result = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", result.ControllerName);
+            Assert.Equal("AccessDenied", result.ActionName);
+        }
+
+        [Fact]
+        public async Task Preset_HavePermission_ReturnExpectedCommandResult()
+        {
+            var companyId = 1;
+            var employeeId = 1;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
+            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, DateTime.Today, employeeId).Returns(new CommandResult { Code = 0 });
+
+            var actual = await controller.Preset(companyId, employeeId, DateTime.Today);
+
+            var result = Assert.IsType<JsonResult>(actual);
+            Assert.NotNull(result.Value);
+        }
         #region Helpers
 
         private PaymentProcessController GetPaymentProcessController()

@@ -316,7 +316,6 @@
             $('#btn-yes').button('loading');
         },
         onPresetSuccess: function (response, status) {
-            debugger;
             if (response.isSuccessful) {
                 window.location.reload();
             } else {
