@@ -29,8 +29,8 @@ var monthlyPayroll = (function ($) {
                 zeroRecords: commonFunctions.noDataOnTableMsg,
                 sZeroRecords: commonFunctions.noDataOnTableMsg
             },
-            columnDefs: [
-                { className: 'col-width-58', orderable: true, targets: 0 },
+            aoColumnDefs: [
+                { className: 'col-width-58', orderable: true, targets: 0, sType: "sortByStatus", bSortable: true },
                 { orderable: true, targets: 1 },
                 { orderable: true, targets: 2 },
                 { orderable: true, targets: 3 },
