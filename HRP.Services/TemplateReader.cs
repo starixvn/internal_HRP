@@ -51,12 +51,7 @@
                 headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture));
         }
 
-        public IList<ValidationResult> AttendanceValidationResults
-        {
-            get => _attendanceValidationResults;
-        }
-
-        public Result<IEnumerable<AttendanceUploading>> ReadAttendance(AttendanceTemplate template)
+        public Result<AttendanceTemplate> ReadAttendance(AttendanceTemplate template)
         {
             try
             {
@@ -89,14 +84,17 @@
                         }
                     }
 
-                    return new Success<IEnumerable<AttendanceUploading>>(attendanceUploading);
+                    template.Records = attendanceUploading;
+                    template.ValidationResults = _attendanceValidationResults;
+
+                    return new Success<AttendanceTemplate>(template);
                 }
 
-                return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+                return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
             }
             catch (Exception)
             {
-                return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+                return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
             }
         }
 
@@ -120,12 +118,10 @@
                 headers.Contains(DSTNetSalaryColumn.NetSalaryReceived.ToLower(CultureInfo.InvariantCulture));
         }
 
-        public IList<ValidationResult> DSTNetSalaryValidationResults
-        {
-            get => _dstNetSalaryValidationResults;
-        }
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 
-        public Result<IEnumerable<DSTNetSalaryUploading>> ReadDSTNetSalary(DSTNetSalaryTemplate template)
+        public Result<DSTNetSalaryTemplate> ReadDSTNetSalary(DSTNetSalaryTemplate template)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             try
             {
@@ -168,14 +164,17 @@
                         }
                     }
 
-                    return new Success<IEnumerable<DSTNetSalaryUploading>>(dstNetSalaryUploading);
+                    template.Records = dstNetSalaryUploading;
+                    template.ValidationResults = _dstNetSalaryValidationResults;
+
+                    return new Success<DSTNetSalaryTemplate>(template);
                 }
 
-                return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+                return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
             }
             catch (Exception)
             {
-                return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+                return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
             }
         }
 

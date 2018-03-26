@@ -1,6 +1,5 @@
 ﻿namespace HRP.Services
 {
-    using System.Collections.Generic;
     using System.IO;
     using HRP.Core.Extensions;
     using HRP.Models.PaymentProcess;
@@ -10,12 +9,8 @@
     {
         ISheet CreateSheet(Stream file);
 
-        Result<IEnumerable<AttendanceUploading>> ReadAttendance(AttendanceTemplate template);
+        Result<AttendanceTemplate> ReadAttendance(AttendanceTemplate template);
 
-        IList<ValidationResult> AttendanceValidationResults { get; }
-
-        Result<IEnumerable<DSTNetSalaryUploading>> ReadDSTNetSalary(DSTNetSalaryTemplate template);
-
-        IList<ValidationResult> DSTNetSalaryValidationResults { get; }
+        Result<DSTNetSalaryTemplate> ReadDSTNetSalary(DSTNetSalaryTemplate template);
     }
 }

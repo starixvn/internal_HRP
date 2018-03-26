@@ -3,9 +3,9 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IPaymentProcessService
@@ -18,13 +18,13 @@
 
         Task<PaymentProcess> GetPaymentProcessAsync(int companyId, DateTime month);
 
-        CommandResult CheckValidExcelFile(IFormFile file);
+        Task<Result<AttendanceTemplate>> ReadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
 
-        Task<CommandResult> UploadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<Result<DSTNetSalaryTemplate>> ReadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+
+        Task<CommandResult> UploadAttendanceAndDSTNetSalaryAsync(int companyId, DateTime month, AttendanceTemplate attendanceTemplate, DSTNetSalaryTemplate dstNetSalaryTemplate);
 
         Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month);
-
-        Task<CommandResult> UploadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
 
         Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month);
 

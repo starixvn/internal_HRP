@@ -151,8 +151,7 @@
   <Function Name="PaymentProcess">
     <Setting Key="PaymentProcess_Get" SpName="PaymentProcess_Get" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_CheckPayrollGenerated" SpName="PaymentProcess_CheckPayrollGenerated" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="PaymentProcess_CreateAttendanceUploading" SpName="PaymentProcess_CreateAttendanceUploading" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="PaymentProcess_CreateDSTNetSalaryUploading" SpName="PaymentProcess_CreateDSTNetSalaryUploading" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_UploadAttendanceAndDSTNetSalary" SpName="PaymentProcess_UploadAttendanceAndDSTNetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_GetUploadingFilesResult" SpName="PaymentProcess_GetUploadingFilesResult" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_SubmitUploadingFiles" SpName="PaymentProcess_SubmitUploadingFiles" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_GetDataForGenerateMonthlyPayroll" SpName="PaymentProcess_GetDataForGenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0"></Setting>

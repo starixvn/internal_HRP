@@ -104,171 +104,130 @@
             Assert.Equal(expected, actual);
         }
 
-        #region CheckValidExcelFile
+        #region ReadAttendanceFileAsync
 
         [Fact]
-        public void CheckValidExcelFile_FileIsNull_ReturnExpectedCommandResult()
+        public async Task ReadAttendanceFileAsync_AttendanceFileIsNull_ReturnSuccessResult()
         {
             // Arrange
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = paymentProcessService.CheckValidExcelFile(null);
+            var actual = await paymentProcessService.ReadAttendanceFileAsync(new UploadAttendanceAndSalaryViewModel { });
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
+            var result = Assert.IsType<Success<AttendanceTemplate>>(actual);
+            Assert.Null(result.Value);
         }
 
         [Fact]
-        public void CheckValidExcelFile_FileSizeLargerThan5Mb_ReturnErrorCommandResult()
+        public async Task ReadAttendanceFileAsync_AttendanceFileSizeIsLargerThan5Mb_ReturnFailureResult()
         {
             // Arrange
-            var excelFile = MockExcelFile(1024 * 1024 * 6);
+            var commandResult = new CommandResult();
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                AttendanceFile = MockExcelFile(1024 * 1024 * 6)
+            };
+
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = paymentProcessService.CheckValidExcelFile(excelFile);
+            var actual = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.Equal(Message.FileTooLarge, actual.Message);
+            var result = Assert.IsType<Failure<AttendanceTemplate>>(actual);
+            Assert.Equal(Message.FileTooLarge, result.Message);
         }
 
         [Fact]
-        public void CheckValidExcelFile_ParamIsNotAnExcelFile_ReturnErrorCommandResult()
+        public async Task ReadAttendanceFileAsync_AttendanceFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var file = MockTxtFile();
+            var commandResult = new CommandResult();
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                AttendanceFile = MockTxtFile()
+            };
+
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = paymentProcessService.CheckValidExcelFile(file);
+            var actual = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.Equal(Message.InvalidFileType, actual.Message);
+            var result = Assert.IsType<Failure<AttendanceTemplate>>(actual);
+            Assert.Equal(Message.InvalidFileType, result.Message);
         }
 
         [Fact]
-        public void CheckValidExcelFile_ParamIsExcelFile_ReturnSuccessfulCommandResult()
+        public async Task ReadAttendanceFileAsync_AttendanceFileIsValidExcelFile_ReturnExpectedReadResult()
         {
             // Arrange
-            var file = MockExcelFile();
-            var paymentProcessService = GetPaymentProcessService();
-
-            // Act
-            var actual = paymentProcessService.CheckValidExcelFile(file);
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-        }
-
-        #endregion CheckValidExcelFile
-
-        #region UploadAttendanceFileAsync
-
-        [Fact]
-        public async Task UploadAttendanceFileAsync_AttendanceFileIsNull_ReturnSuccessfulCommandResult()
-        {
-            // Arrange
-            var paymentProcessService = GetPaymentProcessService();
-
-            // Act
-            var actual = await paymentProcessService.UploadAttendanceFileAsync(new UploadAttendanceAndSalaryViewModel { });
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-        }
-
-        [Fact]
-        public async Task UploadAttendanceFileAsync_ReadAttendanceFileFailure_ReturnErrorCommandResult()
-        {
-            // Arrange
-            var viewModel = MockUploadAttendanceAndSalaryViewModel();
             var employeeCodeList = MockListString();
-            var mockReadResult = MockFailureResultAttendanceUploading();
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var readResult = MockFailureResultAttendanceTemplate();
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
             var sheet = Substitute.For<ISheet>();
             templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
             templateReader.ReadAttendance(Arg.Is<AttendanceTemplate>(x => x.Sheet == sheet && x.EmployeeCodeList == employeeCodeList && x.CompanyCode == viewModel.CompanyCode))
-                .Returns(mockReadResult);
+                .Returns(readResult);
 
             // Act
-            var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
+            var actual = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.Equal(actual.Message, mockReadResult.Message);
+            var result = Assert.IsType<Failure<AttendanceTemplate>>(actual);
+            Assert.Equal(readResult, result);
         }
 
-        [Fact]
-        public async Task UploadAttendanceFileAsync_ReadAttendanceFileSuccess_ReturnExpectedCommandResult()
-        {
-            // Arrange
-            var expected = MockSuccessfulCommandResult();
-            var viewModel = MockUploadAttendanceAndSalaryViewModel();
-            var employeeCodeList = MockListString();
-            var mockReadResult = MockSuccessResultAttendanceUploading();
-            var validationResult = MockListValidationResult();
-            var criteria = new CreateAttendanceUploadingCriteria();
+        #endregion ReadAttendanceFileAsync
 
-            var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateAttendanceUploadingCriteria>(x => criteria = x)).Returns(expected);
-            var sheet = Substitute.For<ISheet>();
-            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
-            templateReader.ReadAttendance(Arg.Is<AttendanceTemplate>(x => x.Sheet == sheet && x.EmployeeCodeList == employeeCodeList && x.CompanyCode == viewModel.CompanyCode))
-                .Returns(mockReadResult);
-            templateReader.AttendanceValidationResults.Returns(validationResult);
-
-            // Act
-            var actual = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
-
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(actual, expected);
-            Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
-            Assert.Equal(viewModel.SelectedTime, criteria.Month);
-            Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
-            Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
-            Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
-            Assert.Equal(sessionService.UserId, criteria.CreatedBy);
-        }
-
-        #endregion UploadAttendanceFileAsync
-
-        #region UploadDSTNetSalaryFileAsync
+        #region ReadDSTNetSalaryFileAsync
 
         [Fact]
-        public async Task UploadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNull_ReturnSuccessfulCommandResult()
+        public async Task ReadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNull_ReturnSuccessResult()
         {
             // Arrange
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(new UploadAttendanceAndSalaryViewModel { });
+            var actual = await paymentProcessService.ReadDSTNetSalaryFileAsync(new UploadAttendanceAndSalaryViewModel { });
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
+            var result = Assert.IsType<Success<DSTNetSalaryTemplate>>(actual);
+            Assert.Null(result.Value);
         }
 
         [Fact]
-        public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileFailure_ReturnErrorCommandResult()
+        public async Task ReadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var commandResult = new CommandResult();
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                DSTNetSalaryFile = MockTxtFile()
+            };
+
+            var paymentProcessService = GetPaymentProcessService();
+
+            // Act
+            var actual = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
+
+            // Assert
+            var result = Assert.IsType<Failure<DSTNetSalaryTemplate>>(actual);
+            Assert.Equal(Message.InvalidFileType, result.Message);
+        }
+
+        [Fact]
+        public async Task ReadDSTNetSalaryFileAsync_DSTNetSalaryFileIsValidExcelFile_ReturnExpectedReadResult()
+        {
+            // Arrange
             var employeeCodeList = MockListString();
             var currencies = MockCurrencies();
-            var mockReadResult = MockFailureResultDSTNetSalaryUploading();
+            var viewModel = MockUploadAttendanceAndSalaryViewModel();
+            var readResult = MockFailureResultDSTNetSalaryTemplate();
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
             baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
@@ -278,59 +237,58 @@
                                         && x.EmployeeCodeList == employeeCodeList
                                         && x.CompanyCode == viewModel.CompanyCode
                                         && x.Currencies == currencies))
-                                       .Returns(mockReadResult);
+                                       .Returns(readResult);
 
             // Act
-            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
+            var actual = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
 
             // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.False(actual.IsSuccessful);
-            Assert.Equal(actual.Message, mockReadResult.Message);
+            var result = Assert.IsType<Failure<DSTNetSalaryTemplate>>(actual);
+            Assert.Equal(readResult, result);
         }
 
-        [Fact]
-        public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileSuccess_ReturnExpectedCommandResult()
-        {
-            // Arrange
-            var expected = MockSuccessfulCommandResult();
-            var viewModel = MockUploadAttendanceAndSalaryViewModel();
-            var employeeCodeList = MockListString();
-            var currencies = MockCurrencies();
-            var mockReadResult = MockSuccessResultDSTNetSalaryUploading();
-            var validationResult = MockListValidationResult();
-            var criteria = new CreateDSTNetSalaryUploadingCriteria();
+        //[Fact]
+        //public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileSuccess_ReturnExpectedCommandResult()
+        //{
+        //    // Arrange
+        //    var expected = MockSuccessfulCommandResult();
+        //    var viewModel = MockUploadAttendanceAndSalaryViewModel();
+        //    var employeeCodeList = MockListString();
+        //    var currencies = MockCurrencies();
+        //    var mockReadResult = MockSuccessResultDSTNetSalaryUploading();
+        //    var validationResult = MockListValidationResult();
+        //    var criteria = new CreateDSTNetSalaryUploadingCriteria();
 
-            var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
-            baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
-            baseService.ExecuteNonQueryAsync(Arg.Do<CreateDSTNetSalaryUploadingCriteria>(x => criteria = x)).Returns(expected);
+        //    var paymentProcessService = GetPaymentProcessService();
+        //    baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
+        //    baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
+        //    baseService.ExecuteNonQueryAsync(Arg.Do<CreateDSTNetSalaryUploadingCriteria>(x => criteria = x)).Returns(expected);
 
-            var sheet = Substitute.For<ISheet>();
-            templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
-            templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
-                                        && x.EmployeeCodeList == employeeCodeList
-                                        && x.CompanyCode == viewModel.CompanyCode
-                                        && x.Currencies == currencies))
-                                       .Returns(mockReadResult);
-            templateReader.DSTNetSalaryValidationResults.Returns(validationResult);
+        //    var sheet = Substitute.For<ISheet>();
+        //    templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
+        //    templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
+        //                                && x.EmployeeCodeList == employeeCodeList
+        //                                && x.CompanyCode == viewModel.CompanyCode
+        //                                && x.Currencies == currencies))
+        //                               .Returns(mockReadResult);
+        //    templateReader.DSTNetSalaryValidationResults.Returns(validationResult);
 
-            // Act
-            var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
+        //    // Act
+        //    var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
 
-            // Assert
-            Assert.IsType<CommandResult>(actual);
-            Assert.True(actual.IsSuccessful);
-            Assert.Equal(actual, expected);
-            Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
-            Assert.Equal(viewModel.SelectedTime, criteria.Month);
-            Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
-            Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
-            Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
-            Assert.Equal(sessionService.UserId, criteria.CreatedBy); ;
-        }
+        //    // Assert
+        //    Assert.IsType<CommandResult>(actual);
+        //    Assert.True(actual.IsSuccessful);
+        //    Assert.Equal(actual, expected);
+        //    Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
+        //    Assert.Equal(viewModel.SelectedTime, criteria.Month);
+        //    Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
+        //    Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
+        //    Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
+        //    Assert.Equal(sessionService.UserId, criteria.CreatedBy); ;
+        //}
 
-        #endregion UploadDSTNetSalaryFileAsync
+        #endregion ReadDSTNetSalaryFileAsync
 
         #region GetUploadingFilesResultAsync
 
@@ -537,14 +495,14 @@
             return new Success<IEnumerable<AttendanceUploading>>(list);
         }
 
-        private Failure<IEnumerable<AttendanceUploading>> MockFailureResultAttendanceUploading()
+        private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
         {
-            return new Failure<IEnumerable<AttendanceUploading>>(Message.IncorrectTemplate);
+            return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
         }
 
-        private Failure<IEnumerable<DSTNetSalaryUploading>> MockFailureResultDSTNetSalaryUploading()
+        private Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
         {
-            return new Failure<IEnumerable<DSTNetSalaryUploading>>(Message.IncorrectTemplate);
+            return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
         }
 
         private Success<IEnumerable<DSTNetSalaryUploading>> MockSuccessResultDSTNetSalaryUploading()

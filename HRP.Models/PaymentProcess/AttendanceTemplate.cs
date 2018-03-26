@@ -6,11 +6,7 @@
 
     public class AttendanceTemplate
     {
-        public int CompanyId { get; set; }
-
         public string CompanyCode { get; set; }
-
-        public DateTime Month { get; set; }
 
         public string FileName { get; set; }
 

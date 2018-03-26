@@ -1,17 +1,12 @@
 ﻿namespace HRP.Models.PaymentProcess
 {
-    using System;
     using System.Collections.Generic;
     using HRP.Models.Currency;
     using NPOI.SS.UserModel;
 
     public class DSTNetSalaryTemplate
     {
-        public int CompanyId { get; set; }
-
         public string CompanyCode { get; set; }
-
-        public DateTime Month { get; set; }
 
         public string FileName { get; set; }
 

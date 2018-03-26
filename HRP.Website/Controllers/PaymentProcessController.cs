@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -137,42 +138,36 @@
         [HttpPost]
         public async Task<IActionResult> UploadAttendanceAndSalary(UploadAttendanceAndSalaryViewModel viewModel)
         {
-            CommandResult validateAttendanceFile = paymentProcessService.CheckValidExcelFile(viewModel.AttendanceFile);
-            if (!validateAttendanceFile.IsSuccessful)
-            {
-                ModelState.AddModelError(nameof(viewModel.AttendanceFile), validateAttendanceFile.Message);
-            }
-
-            CommandResult validateDSTSalaryFile = paymentProcessService.CheckValidExcelFile(viewModel.DSTNetSalaryFile);
-            if (!validateDSTSalaryFile.IsSuccessful)
-            {
-                ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), validateDSTSalaryFile.Message);
-            }
-
             if (viewModel.AttendanceFile == null && viewModel.DSTNetSalaryFile == null)
             {
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PleaseSelectFile);
             }
 
+            var readAttendanceResult = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
+            var readDSTNetSalaryResult = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
+            if (readAttendanceResult is Failure<AttendanceTemplate> failureAttendance)
+            {
+                ModelState.AddModelError(nameof(viewModel.AttendanceFile), failureAttendance.Message);
+            }
+
+            if (readDSTNetSalaryResult is Failure<DSTNetSalaryTemplate> failureDSTNetSalary)
+            {
+                ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), failureDSTNetSalary.Message);
+            }
+
             if (ModelState.IsValid)
             {
-                var attendanceResult = await paymentProcessService.UploadAttendanceFileAsync(viewModel);
-                var salaryResult = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
+                var attendanceResult = (Success<AttendanceTemplate>)readAttendanceResult;
+                var dstNetSalaryResult = (Success<DSTNetSalaryTemplate>)readDSTNetSalaryResult;
+                var uploadFiles = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(viewModel.CompanyId, viewModel.SelectedTime,
+                                                                                                attendanceResult.Value, dstNetSalaryResult.Value);
 
-                if (attendanceResult.IsSuccessful && salaryResult.IsSuccessful)
+                if (uploadFiles.IsSuccessful)
                 {
                     return Json(new { isSuccessful = true });
                 }
 
-                if (!attendanceResult.IsSuccessful)
-                {
-                    ModelState.AddModelError(nameof(viewModel.AttendanceFile), attendanceResult.Message);
-                }
-
-                if (!salaryResult.IsSuccessful)
-                {
-                    ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), salaryResult.Message);
-                }
+                ModelState.AddModelError(nameof(viewModel.CommonError), uploadFiles.Message);
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
