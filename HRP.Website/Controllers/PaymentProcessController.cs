@@ -304,11 +304,16 @@
 
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = viewModel.IsPreset
-                    ? await monthlyPayrollService.ResetMonthlySalaryAsync(viewModel.PayrollId, viewModel.CompanyId)
-                    : await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
+                CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
 
-                return Json(commandResult);
+                return Json(new
+                {
+                    isSuccessful = commandResult.IsSuccessful,
+                    message = commandResult.Message,
+                    redirectTo = commandResult.IsSuccessful && viewModel.IsRedirectToEditAllowance
+                        ? Url.Action("EditAllowances", new { payrollId = viewModel.PayrollId, companyId = viewModel.CompanyId, month = viewModel.Month })
+                        : string.Empty
+                });
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
@@ -336,13 +341,13 @@
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
-            viewModel.Currencies = new SelectList(currencies,nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
 
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
             viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
                 nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
-            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host) 
+            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host)
                 && DateTime.Today >= viewModel.EmployeeInfo.StartDate && DateTime.Today <= viewModel.EmployeeInfo.DueDate;
 
             return View(viewModel);

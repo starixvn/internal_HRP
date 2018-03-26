@@ -107,12 +107,21 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/css/edit-basic-salary.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/assets/styles/pages/paymentprocess/payment-process.css",
+      "wwwroot/assets/styles/pages/employee/common.css",
+      "wwwroot/assets/styles/pages/paymentprocess/edit-basic-salary.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/assets/bundles/paymentprocess/css/edit-allowances.min.css",
     "inputFiles": [
       "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/assets/styles/pages/paymentprocess/payment-process.css",
       "wwwroot/assets/styles/pages/employee/common.css",
-      "wwwroot/assets/styles/pages/paymentprocess/edit-basic-salary.csss"
+      "wwwroot/assets/styles/pages/paymentprocess/edit-basic-salary.css"
     ]
   },
   {
@@ -353,10 +362,28 @@
     }
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/edit-basic-salary.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.extensions.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.numeric.extensions.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/jquery.inputmask.min.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/assets/js/paymentprocess/edit-basic-salary.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/edit-allowances.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js", 
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/select2/dist/js/select2.min.js",
       "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.min.js",
       "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.extensions.min.js",

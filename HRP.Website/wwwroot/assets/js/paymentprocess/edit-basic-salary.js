@@ -344,6 +344,24 @@ var editBasicSalary = (function ($) {
         });
     }
 
+    function displaySuccessMessageAndRedirectToEditAllowances(redirectTo) {
+        var $element = $form.find('.js-submitSuccessAndEditAllowances'),
+            $countDownElement = $element.find('.count-down');
+        var delay = 5;
+        $element.removeClass('hidden');
+
+        var intervalCountDown = setInterval(function () {
+            if (delay === 0) {
+                clearInterval(intervalCountDown);
+
+                window.location.href = redirectTo;
+            } else {
+                delay--;
+                $countDownElement.html(delay);
+            }
+        }, 1000);
+    }
+
     function registerEvents() {
         registerRefreshPageEvent();
         registerInputNumberEvent();
@@ -368,6 +386,15 @@ var editBasicSalary = (function ($) {
             initSelect2();
 
             if ($form.valid()) {
+                $form.submit();
+            }
+        });
+
+        $btnSubmitAndEditAllowances.on('click', function () {
+            initSelect2();
+
+            if ($form.valid()) {
+                $('#IsRedirectToEditAllowance').prop('checked', true);
                 $form.submit();
             }
         });
@@ -402,11 +429,18 @@ var editBasicSalary = (function ($) {
         initModule: initModule,
         onUpdateSuccess: function (response) {
             if (response.isSuccessful) {
+                if ($('#IsRedirectToEditAllowance').prop('checked')) {
+                    displaySuccessMessageAndRedirectToEditAllowances(response.redirectTo);
+                } else {
+                    commonFunctions.showSuccessMessage($form.find('.js-submitSuccess'));
+                }
 
+                $('#IsRedirectToEditAllowance').prop('checked', false);
             } else {
                 if (response.errors) {
                     $form.validate().showErrors(response.errors);
                 } else {
+                    commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
                 }
             }
         }

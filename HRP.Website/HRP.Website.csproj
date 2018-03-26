@@ -83,8 +83,6 @@
     <Folder Include="wwwroot\assets\bundles\configuration\css\" />
     <Folder Include="wwwroot\assets\bundles\currency\js\" />
     <Folder Include="wwwroot\assets\bundles\employee\" />
-    <Folder Include="wwwroot\assets\bundles\paymentprocess\css\" />
-    <Folder Include="wwwroot\assets\bundles\paymentprocess\js\" />
     <Folder Include="wwwroot\assets\bundles\user\css\" />
     <Folder Include="wwwroot\assets\bundles\user\js\" />
   </ItemGroup>

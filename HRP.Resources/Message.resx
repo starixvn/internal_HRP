@@ -756,4 +756,7 @@
   <data name="NoPayrollGenerated" xml:space="preserve">
     <value>There is no generated payroll during this month.</value>
   </data>
+  <data name="UpdateMonthlyBasicSalarySuccessfully" xml:space="preserve">
+    <value>Monthly Basic Salary has been successfully updated!</value>
+  </data>
 </root>

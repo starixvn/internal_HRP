@@ -47,9 +47,7 @@
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRates { get; set; } = new List<CurrencyExchangeRateModel>();
 
-        public bool IsPreset { get; set; }
-
-
+        public bool IsRedirectToEditAllowance { get; set; }
 
         public bool IsHost { get; set; }
     }

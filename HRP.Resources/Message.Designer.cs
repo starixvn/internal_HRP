@@ -1879,6 +1879,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Basic Salary has been successfully updated!.
+        /// </summary>
+        public static string UpdateMonthlyBasicSalarySuccessfully {
+            get {
+                return ResourceManager.GetString("UpdateMonthlyBasicSalarySuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permission has been successfully updated!.
         /// </summary>
         public static string UpdatePermissionSuccessfully {

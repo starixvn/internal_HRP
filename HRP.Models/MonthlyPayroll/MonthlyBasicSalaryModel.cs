@@ -74,6 +74,7 @@
                 if (WorkingDays > 0)
                 {
                     salaryPerDay = salary / WorkingDays;
+                    salaryPerDay = Math.Round(salaryPerDay, 6);
                 }
 
                 return salaryPerDay;

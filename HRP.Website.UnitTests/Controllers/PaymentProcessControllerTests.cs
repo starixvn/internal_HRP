@@ -504,9 +504,11 @@
             var payrollId = 1;
             var month = DateTime.Now;
             var viewModel = new EditMonthlySalaryViewModel();
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(viewModel);
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
 
             // Act
             var actual = await controller.EditBasicSalary(payrollId, companyId, month);
@@ -520,6 +522,7 @@
             Assert.Equal(viewModel.MonthlySalary, viewModelResult.MonthlySalary);
             Assert.Equal(viewModel.Additions, viewModelResult.Additions);
             Assert.Equal(viewModel.Deductions, viewModelResult.Deductions);
+            Assert.Equal(currencyExchangeRates, viewModelResult.CurrencyExchangeRates);
         }
 
         [Fact]
@@ -536,6 +539,46 @@
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", viewResult.ControllerName);
             Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task EditBasicSalaryPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            controller.ModelState.AddModelError("UnitAmount", "required");
+
+            // Act
+            var actual = await controller.EditBasicSalary(new EditMonthlySalaryViewModel());
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("UnitAmount", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
+        }
+
+        [Fact]
+        public async Task EditBasicSalaryPost_ModelStateIsValid_ReturnAsExpected()
+        {
+            // Arrange
+            var viewModel = new EditMonthlySalaryViewModel();
+            var commandResult = new CommandResult();
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.EditMonthlySalaryAsync(viewModel).Returns(commandResult);
+
+            // Act
+            var actual = await controller.EditBasicSalary(viewModel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult.IsSuccessful, (bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(commandResult.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
         }
 
         #endregion EditBasicSalary
