@@ -136,6 +136,7 @@
                 PayrollId = viewModel.PayrollId,
                 CompanyId = viewModel.CompanyId,
                 UserId = sessionService.UserId,
+                Month = viewModel.Month,
                 Salary = cryptoService.Encrypt(viewModel.MonthlySalary.Salary),
                 EbankingCurrencyId = viewModel.MonthlySalary.EbankingCurrencyId,
                 EbankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EbankingAmount),
@@ -155,6 +156,9 @@
                 CashAmount = cryptoService.Encrypt(viewModel.MonthlySalary.CashAmount),
                 CashAccountId = viewModel.MonthlySalary.CashAccountId,
 
+                AdditionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.AdditionAmount),
+                DeductionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.DeductionAmount),
+                AutoCalculateOn = viewModel.MonthlySalary.AutoCalculateOn.ToString(),
                 AdditionXml = viewModel.Additions.ToXML().ToString(),
                 DeductionXml = viewModel.Deductions.ToXML().ToString()
             };

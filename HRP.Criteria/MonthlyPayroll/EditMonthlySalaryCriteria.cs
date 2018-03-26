@@ -1,10 +1,13 @@
 ﻿namespace HRP.Criteria.MonthlyPayroll
 {
+    using System;
+
     public class EditMonthlySalaryCriteria : CommandBaseCriteria
     {
         public int PayrollId { get; set; }
         public int CompanyId { get; set; }
         public int UserId { get; set; }
+        public DateTime Month { get; set; }
         public string Salary { get; set; }
         public int? EbankingCurrencyId { get; set; }
         public string EbankingAmount { get; set; }
@@ -20,8 +23,11 @@
         public int? CashCurrencyId { get; set; }
         public string CashAmount { get; set; }
         public int? CashAccountId { get; set; }
+        public string AdditionAmount { get; set; }
+        public string DeductionAmount { get; set; }
         public string AdditionXml { get; set; }
         public string DeductionXml { get; set; }
+        public string AutoCalculateOn { get; set; }
 
         public override string GetSettingKey() => "MonthlyPayroll_UpdateSalary";
 

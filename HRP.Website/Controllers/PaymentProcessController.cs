@@ -282,7 +282,9 @@
             };
 
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            var cashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
             viewModel.Month = month;
+            viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
 
@@ -302,28 +304,15 @@
 
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = viewModel.IsReset
+                CommandResult commandResult = viewModel.IsPreset
                     ? await monthlyPayrollService.ResetMonthlySalaryAsync(viewModel.PayrollId, viewModel.CompanyId)
                     : await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
 
-                if (!commandResult.IsSuccessful)
-                {
-                    ModelState.AddModelError(string.Empty, commandResult.Message);
-                }
+                return Json(commandResult);
             }
 
-            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-            var cashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
-            var criteria = new GetExchangeRateCriteria
-            {
-                Month = viewModel.Month.Month,
-                Year = viewModel.Month.Year
-            };
-            viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
-            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
-            viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
-
-            return View(viewModel);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]

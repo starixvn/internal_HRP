@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var editBasicSalary = (function ($) {
-    var $btnPreset, $btnRefresh, $btnCancel, $form,
+    var $form, $btnPreset, $btnRefresh, $btnCancel, $btnSubmit, $btnSubmitAndEditAllowances,
         employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount,
         maxDigit = 6,
         bankAcountUrl = 'BankAccount/GetEmployeeBankAccounts';
@@ -269,6 +269,81 @@ var editBasicSalary = (function ($) {
         });
     }
 
+    function customAnnotation() {
+        $.validator.addMethod('requiredifrelatedfieldhasvalue', function (value, element, params) {
+            var $element = $(element),
+                $relatedElement = $element.siblings('.js-addition-noOfDays');
+            if ($relatedElement.length > 0 && getNumber($relatedElement) !== '' && getNumber($element) === '') {
+                return false;
+            }
+
+            return true;
+        });
+
+        $.validator.addMethod('requirednoneorall', function (value, element, params) {
+            var $element = $(element),
+                dataGroup = $element.data('group'),
+                $relatedElement = $('[data-group="' + dataGroup + '"]').not($element);
+
+            var relatedElementValues = $relatedElement.map(function (i, element) {
+                if (element.value !== '') {
+                    return element.value;
+                }
+            });
+
+            return relatedElementValues.length === 0 || element.value !== '';
+        });
+
+        $.validator.unobtrusive.adapters.add('requiredifrelatedfieldhasvalue', [], function (options) {
+            options.rules['requiredifrelatedfieldhasvalue'] = [];
+            options.messages['requiredifrelatedfieldhasvalue'] = options.message;
+        });
+
+        $.validator.unobtrusive.adapters.add('requirednoneorall', [], function (options) {
+            options.rules['requirednoneorall'] = [];
+            options.messages['requirednoneorall'] = options.message;
+        });
+    }
+
+    function reparseform($form) {
+        customAnnotation();
+
+        $form.removeData('validator').removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse($form);
+
+        var $validator = $form.validate();
+        $validator.settings.highlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.addClass(errorClass).removeClass(validClass);
+
+            if ($element.hasClass('js-select2-validation')) {
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(errorClass).addClass('control');
+            }
+        };
+        $validator.settings.unhighlight = function (element, errorClass, validClass) {
+            var $element = $(element);
+            $element.removeClass(errorClass).addClass(validClass);
+
+            if ($element.hasClass('js-select2-validation')) {
+                $element.next().find('.select2-selection')
+                    .removeClass(errorClass).removeClass('control').removeClass(validClass)
+                    .addClass(validClass);
+            }
+        };
+
+        $form.find('.js-select2-validation').on('change', function () {
+            var $this = $(this);
+            var $select2 = $this.next().find('.select2-selection');
+
+            if ($this.val() && $select2.hasClass('input-validation-error')) {
+                $select2.removeClass('input-validation-error').removeClass('control');
+                $this.valid();
+            }
+        });
+    }
+
     function registerEvents() {
         registerRefreshPageEvent();
         registerInputNumberEvent();
@@ -288,12 +363,22 @@ var editBasicSalary = (function ($) {
         $('.js-selectCurrency, .js-autoCalculateAmount').on('change', function () {
             calculateMonthlyBasicSalary();
         });
+
+        $btnSubmit.on('click', function () {
+            initSelect2();
+
+            if ($form.valid()) {
+                $form.submit();
+            }
+        });
     }
 
     function initModule() {
         $btnPreset = $('.js-btnPreset');
         $btnRefresh = $('.js-btnRefresh');
         $btnCancel = $('.js-btnCancel');
+        $btnSubmit = $('.js-btnSubmit');
+        $btnSubmitAndEditAllowances = $('.js-btnSubmitAndEditAllowances');
         $form = $('#edit-basic-salary-form');
         employeeId = parseInt($('#EmployeeId').val(), 10);
         currencySettingId = parseInt($('#MonthlySalary_CurrencyId').val(), 10);
@@ -301,12 +386,30 @@ var editBasicSalary = (function ($) {
         afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount'))));
 
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
+        commonFunctions.registerEventGoBack($btnCancel);
         initSelect2();
         registerEvents();
+        reparseform($form);
+
+        if (!$('#IsHost').prop('checked')) {
+            $form.find('input[type="text"]').attr('readonly', 'readonly');
+            $form.find('select').attr('disabled', 'disabled');
+            $form.submit(false);
+        }
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        onUpdateSuccess: function (response) {
+            if (response.isSuccessful) {
+
+            } else {
+                if (response.errors) {
+                    $form.validate().showErrors(response.errors);
+                } else {
+                }
+            }
+        }
     };
 }(jQuery));
 
