@@ -10,6 +10,7 @@
         <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
+        <link href="~/assets/bundles/paymentprocess/css/edit-allowances.min.css" rel="stylesheet" />
     </environment>
 }
 
@@ -289,7 +290,7 @@
                     <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking1CurrencyId" data-calculate-for="directbanking1" data-group="directbanking1">
                         <option></option>
                     </select>
-                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.DirectBanking1Amount" data-calculate-for="directbanking1" data-group="directbanking1" />
+                    <input type="text" class="control number allowance-calculate" asp-for="Allowance.DirectBanking1Amount" data-calculate-for="directbanking1" data-group="directbanking1" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
@@ -299,7 +300,7 @@
                     <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking2CurrencyId" data-calculate-for="directbanking2" data-group="directbanking2">
                         <option></option>
                     </select>
-                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.DirectBanking2Amount" data-calculate-for="directbanking2"  data-group="directbanking2" />
+                    <input type="text" class="control number allowance-calculate" asp-for="Allowance.DirectBanking2Amount" data-calculate-for="directbanking2"  data-group="directbanking2" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
@@ -309,11 +310,11 @@
                     <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.CashCurrencyId" data-calculate-for="cash" data-group="cash">
                         <option></option>
                     </select>
-                    <input type="text" class="control inputmask allowance-calculate" asp-for="Allowance.CashAmount" data-calculate-for="cash" data-group="cash">
+                    <input type="text" class="control number allowance-calculate" asp-for="Allowance.CashAmount" data-calculate-for="cash" data-group="cash">
                 </div>
             </div>
             <div class="payment">
-                <div class="bold group-payment">Payment Transaction</div>
+                <div class="bold group-payment">@ViewLang.PaymentTransaction</div>
                 <div class="group-complex -layout-payment -group-type">
                     <div>@ViewLang.BankType</div>
                     <div>@ViewLang.AccountName</div>
@@ -378,6 +379,6 @@
     </environment>
     <environment exclude="Development">
         <script src="~/lib/bignumber.js/bignumber.min.js"></script>
-        <script src="~/assets/bundles/employee/js/employee-payroll.min.js"></script>
+        <script src="~/assets/bundles/paymentprocess/js/edit-allowances.min.js"></script>
     </environment>
 }

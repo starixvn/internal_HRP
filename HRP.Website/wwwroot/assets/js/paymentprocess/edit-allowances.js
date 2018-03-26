@@ -130,7 +130,7 @@
             placeholder: '',
             minimumResultsForSearch: Infinity
         }).on('change', function () {
-            $(this).click();
+            $(this).valid();
         });
 
 

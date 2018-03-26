@@ -392,6 +392,7 @@
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+            viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
 
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = viewModel.Month.Month, Year = viewModel.Month.Year });
             viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
