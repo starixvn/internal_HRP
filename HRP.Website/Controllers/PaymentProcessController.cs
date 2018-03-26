@@ -360,10 +360,10 @@
         }
 
         [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
         {
-            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
+            if (!sessionService.HasPermissionOnCompany(viewModel.EmployeeInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
@@ -381,7 +381,7 @@
                     switch (submitAction)
                     {
                         case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
-                            return RedirectToAction("EditBasicSalary", new { companyId = viewModel.CompanyId, month = viewModel.Month, payrollId = viewModel.Allowance.PayrollId });
+                            return RedirectToAction("EditBasicSalary", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month, payrollId = viewModel.Allowance.PayrollId });
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
@@ -399,6 +399,20 @@
                 nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> Preset(int companyId, int employeeId, DateTime month)
+        {
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            var result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+
+            return Json(result);
         }
 
         #endregion Monthly Payroll

@@ -909,4 +909,43 @@
   <data name="ViewEmployee" xml:space="preserve">
     <value>View Employee</value>
   </data>
+  <data name="ActualCurrency" xml:space="preserve">
+    <value>Actual Currency</value>
+  </data>
+  <data name="DSTNetSalary" xml:space="preserve">
+    <value>DST Net Salary</value>
+  </data>
+  <data name="MonthlyAllowances" xml:space="preserve">
+    <value>Monthly Allowances</value>
+  </data>
+  <data name="MonthlyDeduction" xml:space="preserve">
+    <value>Monthly Deduction</value>
+  </data>
+  <data name="NetAllowance" xml:space="preserve">
+    <value>Net Allowance</value>
+  </data>
+  <data name="NetAmount" xml:space="preserve">
+    <value>Net Amount</value>
+  </data>
+  <data name="SaveAndEditBasicSalary" xml:space="preserve">
+    <value>Save and Edit Basic Salary</value>
+  </data>
+  <data name="TotalAmountActualCurrency" xml:space="preserve">
+    <value>Total Amount (Actual curr.)</value>
+  </data>
+  <data name="TotalGross" xml:space="preserve">
+    <value>Total Gross</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="PayrollPresetConfirmationMessage" xml:space="preserve">
+    <value>Preset function will retrieve data from Payroll setting page for both Basic Salary and Allowances. Are you sure you want to apply this preset?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

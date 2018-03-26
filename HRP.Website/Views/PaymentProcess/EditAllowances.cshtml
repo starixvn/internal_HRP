@@ -61,10 +61,13 @@
         </select>
     </div>
     <div class="group">
-        <button type="submit" class="button -preset">Preset</button>
+        @if (Model.CanEdit)
+        {
+            <button type="button" class="button -preset" id="btn-preset" data-toggle="modal" data-target="#modal">@ViewLang.Preset</button>
+        }
     </div>
     <div class="group">
-        <button type="submit" class="button -add">Refresh</button>
+        <button type="button" class="button -add" id="btn-refresh">@ViewLang.Refresh</button>
     </div>
 </form>
 <div class="payment-duration">
@@ -79,11 +82,14 @@
 }
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
+<div class="-has-icon msg-error hidden">
+
+</div>
+
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="EmployeeId" />
     <input type="hidden" asp-for="Month" />
-    <input type="hidden" asp-for="CompanyId" />
     <input type="hidden" asp-for="Allowance.PayrollId" />
     <input type="hidden" asp-for="Allowance.CurrencyCode" />
     <input type="hidden" asp-for="BasicAllowance.PayrollId" />
@@ -124,13 +130,13 @@
 
         <div class="d-flex">
             <div class="add-allowances">
-                <div class="group-title m-t-0"><span class="icon-group"></span>Add</div>
+                <div class="group-title m-t-0"><span class="icon-group"></span>@ViewLang.Add</div>
                 <div class="group-complex -alw-layout-add -align-items-end text-center -group-type">
-                    <div class="-start-col-2">Unit Amount</div>
-                    <div>Actual Currency</div>
-                    <div>No of Days</div>
-                    <div>Total Amount (Actual curr.)</div>
-                    <div class="-start-col-6">Net Allowance (@Model.Allowance.CurrencyCode)</div>
+                    <div class="-start-col-2">@ViewLang.UnitAmount</div>
+                    <div>@ViewLang.ActualCurrency</div>
+                    <div>@ViewLang.NoOfDays</div>
+                    <div>@ViewLang.TotalAmountActualCurrency</div>
+                    <div class="-start-col-6">@ViewLang.NetAllowance (@Model.Allowance.CurrencyCode)</div>
                 </div>
 
                 @for (var i = 0; i < Model.Additions.Count; i++)
@@ -140,7 +146,8 @@
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
-                        <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount">
+                        <input type="text" @(Model.Additions[i].Type == (int) AllowanceType.DutyMeal ? "readonly" : string.Empty)
+                               class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" />
                         <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
@@ -155,44 +162,45 @@
                 }
 
                 <div class="group-complex -alw-layout-add">
-                    <div class="text-specific">Total Add</div>
+                    <div class="text-specific">@ViewLang.TotalAdd</div>
                     <input type="hidden" id="total-addition" disabled>
                     <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled>
 
                 </div>
             </div>
             <div class="deduction">
-                <div class="group-deduction"><span class="icon-group"></span>Deduction</div>
+                <div class="group-deduction"><span class="icon-group"></span>@ViewLang.Deduction</div>
                 <div class="group-complex -alw-layout-deduction -align-items-end text-center -group-type">
-                    <div>Unit Amount</div>
-                    <div>Actual Currency</div>
-                    <div>No of Days</div>
-                    <div>Total Amount (Actual curr.)</div>
-                    <div class="-start-col-5">Net Allowance (Conversion curr.)</div>
+                    <div>@ViewLang.UnitAmount</div>
+                    <div>@ViewLang.ActualCurrency</div>
+                    <div>@ViewLang.NoOfDays</div>
+                    <div>@ViewLang.TotalAmountActualCurrency</div>
+                    <div class="-start-col-5">@ViewLang.NetAllowance (@Model.Allowance.CurrencyCode)</div>
                 </div>
 
                 @for (var i = 0; i < Model.Deductions.Count; i++)
                 {
-                <div class="group-complex -alw-layout-deduction text-center">
-                    <input type="hidden" asp-for="Deductions[i].PayrollId">
-                    <input type="hidden" asp-for="Deductions[i].Type">
+                    <div class="group-complex -alw-layout-deduction text-center">
+                        <input type="hidden" asp-for="Deductions[i].PayrollId">
+                        <input type="hidden" asp-for="Deductions[i].Type">
 
-                    <input type="text" class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
-                    <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
-                        <option></option>
-                    </select>
-                    <input type="text" class="deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" @(Model.Deductions[i].Type == (int) AllowanceType.DutyMeal ? "readonly" : string.Empty)
+                               class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
+                        <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
+                            <option></option>
+                        </select>
+                        <input type="text" class="deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
 
-                    <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
-                    <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
+                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
+                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
 
-                    <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance">
-                    <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay">
-                </div>
+                        <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance">
+                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay">
+                    </div>
                 }
 
                 <div class="group-complex -alw-layout-deduction-2">
-                    <div class="text-specific text-red">Total Deduction</div>
+                    <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
                     <input type="hidden" id="total-deduction">
                     <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled>
                 </div>
@@ -200,7 +208,7 @@
         </div>
 
         <div class="monthly-deduction">
-            <div class="group-deduction"><span class="icon-group"></span>Monthly Deduction</div>
+            <div class="group-deduction"><span class="icon-group"></span>@ViewLang.MonthlyDeduction</div>
             <div class="group-complex -layout-setting">
                 <div class="text-red bold">@ViewLang.RommingCharges</div>
                 <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.RoomingChargesCurrencyId">
@@ -224,7 +232,7 @@
         <div class="d-flex">
             <div class="setting">
                 <div class="group-complex -layout-setting">
-                    <div class="bold">Setting</div>
+                    <div class="bold">@ViewLang.Setting</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
                         <option></option>
                     </select>
@@ -260,7 +268,7 @@
                     <input type="text" class="control number" disabled asp-for="BasicAllowance.CashAmount">
                 </div>
                 <div class="group-complex -layout-setting">
-                    <div class="bold">After Adjustment</div>
+                    <div class="bold">@ViewLang.AfterAdjustment</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.CurrencyId">
                         <option></option>
                     </select>
@@ -274,7 +282,7 @@
             </div>
             <div class="monthly-payroll">
                 <div class="group-complex -layout-payroll">
-                    <div class="bold">Monthly Allowances</div>
+                    <div class="bold">@ViewLang.MonthlyAllowances</div>
                     <select class="control select2" disabled asp-items="Model.Currencies" asp-for="Allowance.CurrencyId">
                         <option></option>
                     </select>
@@ -300,7 +308,7 @@
                     <select class="control select2 allowance-calculate" asp-items="Model.Currencies" asp-for="Allowance.DirectBanking2CurrencyId" data-calculate-for="directbanking2" data-group="directbanking2">
                         <option></option>
                     </select>
-                    <input type="text" class="control number allowance-calculate" asp-for="Allowance.DirectBanking2Amount" data-calculate-for="directbanking2"  data-group="directbanking2" />
+                    <input type="text" class="control number allowance-calculate" asp-for="Allowance.DirectBanking2Amount" data-calculate-for="directbanking2" data-group="directbanking2" />
                 </div>
                 <div class="group-complex -layout-payroll">
                     <label>
@@ -344,32 +352,60 @@
             </div>
         </div>
         <div class="group-complex -total-salary">
-            <div class="text-specific">TOTAL GROSS</div>
+            <div class="text-specific">@ViewLang.TotalGross</div>
             <input type="text" class="control total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
         </div>
         <div class="group-complex -total-salary">
-            <div class="text-specific text-red">DST NET Salary</div>
+            <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
             <input type="text" class="control text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" />
             <input type="hidden" asp-for="Allowance.DSTNetSalaryCurrencyId" />
         </div>
         <div class="group-complex -total-salary">
-            <div class="text-specific text-green">Net Amount</div>
+            <div class="text-specific text-green">@ViewLang.NetAmount</div>
             <input type="text" class="control text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
         </div>
         <div class="list-button">
-            <button class="button -second">@ViewLang.Cancel</button>
-            <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save">@ViewLang.Save</button>
-            <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary">Save and Edit Basic Salary</button>
+            <button class="button -second" id="btn-cancel">@ViewLang.Cancel</button>
+            @if (Model.CanEdit)
+            {
+                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save">@ViewLang.Save</button>
+                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary">@ViewLang.SaveAndEditBasicSalary</button>
+            }
         </div>
     </div>
 </form>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title">@ViewLang.Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-information" asp-action="Preset" method="post" id="preset-form"
+                      data-ajax-method="post" data-ajax="true" data-ajax-begin="editAllowances.onPresetBegin" data-ajax-failure="commonFunctions.handleAjaxError"
+                      data-ajax-success="editAllowances.onPresetSuccess" data-ajax-complete="editAllowances.onPresetComplete">
+                    <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                    <input type="hidden" name="month" value="@Model.Month" />
+                    <input type="hidden" name="companyId" value="@Model.EmployeeInfo.CompanyId" />
+                    <p>@ViewLang.PayrollPresetConfirmationMessage</p>
+                    <div class="list-button">
+                        <button class="button -primary" type="submit" data-loading-text="Updating..." id="btn-yes" >@ViewLang.Yes</button>
+                        <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/bignumber.js/bignumber.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/inputmask.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>

@@ -104,9 +104,19 @@
     }
 
     function initModule() {
+        var $editAllowanceForm = $("#edit-allowances-form");
         totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
         calculateTotalAddition();
         calculateTotalDeduction();
+
+        $('.select2:disabled').select2();
+        $('.select2:enabled').select2({
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        }).on('change', function () {
+            $(this).valid();
+        });
 
         $('.number:enabled').on('keydown', function (e) {
             // Allow: backspace, delete, tab, escape, enter and .
@@ -123,16 +133,18 @@
             }
         });
 
-        $('.select2:disabled').select2();
-
-        $('.select2:enabled').select2({
-            allowClear: true,
-            placeholder: '',
-            minimumResultsForSearch: Infinity
-        }).on('change', function () {
-            $(this).valid();
+        $('#btn-refresh').on('click', function () {
+            window.location.reload();
         });
 
+        $('#btn-cancel').on('click', function () {
+            window.history.back()
+        });
+
+        if ($('#CanEdit').val() === 'False') {
+            $('input:enabled, select:enabled', $editAllowanceForm).attr('disabled', 'disabled');
+            return;
+        }
 
         $('.select2-ajax').select2({
             ajax: {
@@ -156,7 +168,7 @@
             placeholder: '',
             minimumResultsForSearch: Infinity
         }).on('change', function () {
-            $(this).click();
+            $(this).valid();
         });
 
         $('.unit-amount, .no-of-days').inputmask({
@@ -274,7 +286,6 @@
             options.messages['requirednoneorall'] = options.message;
         });
 
-        var $editAllowanceForm = $("#edit-allowances-form");
         $editAllowanceForm.removeData("validator").removeData("unobtrusiveValidation");
 
         $.validator.unobtrusive.parse($editAllowanceForm);
@@ -300,7 +311,23 @@
     }
 
     return {
-        initModule: initModule
+        initModule: initModule,
+        onPresetBegin: function () {
+            $('#btn-yes').button('loading');
+        },
+        onPresetSuccess: function (response, status) {
+            debugger;
+            if (response.isSuccessful) {
+                window.location.reload();
+            } else {
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
+            }
+
+            $('#modal').modal('hide');
+        },
+        onPresetComplete: function () {
+            $('#btn-yes').button('reset');
+        }
     };
 }(jQuery, commonFunctions));
 
