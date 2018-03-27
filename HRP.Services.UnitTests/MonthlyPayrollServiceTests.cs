@@ -952,12 +952,18 @@
             Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
             Assert.Equal("4000", basicSalary.EbankingAmount);
             Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
+            Assert.Equal(basicSalary.EbankingAccountId, monthlySalary.EbankingAccountId);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
+            Assert.Equal(basicSalary.DirectBanking1BankTypeId, monthlySalary.DirectBanking1BankTypeId);
+            Assert.Equal(basicSalary.DirectBanking1AccountId, monthlySalary.DirectBanking1AccountId);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
+            Assert.Equal(basicSalary.DirectBanking2BankTypeId, monthlySalary.DirectBanking2BankTypeId);
+            Assert.Equal(basicSalary.DirectBanking2AccountId, monthlySalary.DirectBanking2AccountId);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
+            Assert.Equal(basicSalary.CashAccountId, monthlySalary.CashAccountId);
             Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
             Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
         }

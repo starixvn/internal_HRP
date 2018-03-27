@@ -63,7 +63,7 @@
     @if (Model.IsHost)
     {
         <div class="group">
-            <button type="button" class="button -preset js-btnPreset">@ViewLang.Preset</button>
+            <button type="button" class="button -preset js-btnPreset" data-toggle="modal" data-target="#modal">@ViewLang.Preset</button>
         </div>
     }
     <div class="group">
@@ -396,6 +396,32 @@
     {
         <input type="hidden" data-from-currency="@currency.FromCurrencyId" data-to-currency="@currency.ToCurrencyId" value="@currency.ExchangeRate" />
     }
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title">@ViewLang.Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-information" asp-action="Preset" method="post" id="preset-form"
+                      data-ajax-method="post" data-ajax="true"
+                      data-ajax-failure="commonFunctions.handleAjaxError"
+                      data-ajax-success="editBasicSalary.onPresetSuccess">
+                    <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                    <input type="hidden" name="month" value="@Model.Month" />
+                    <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                    <p>@ViewLang.PayrollPresetConfirmationMessage</p>
+                    <div class="list-button">
+                        <button class="button -primary" type="submit" id="btn-yes">@ViewLang.Yes</button>
+                        <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

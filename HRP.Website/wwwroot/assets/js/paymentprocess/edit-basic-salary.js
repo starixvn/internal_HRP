@@ -450,6 +450,15 @@ var editBasicSalary = (function ($) {
                     commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
                 }
             }
+        },
+        onPresetSuccess: function (response, status) {
+            if (response.isSuccessful) {
+                window.location.reload();
+            } else {
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
+            }
+
+            $('#modal').modal('hide');
         }
     };
 }(jQuery));

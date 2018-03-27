@@ -245,18 +245,31 @@
             var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
             var numMonth = month.Month;
             var numYear = month.Year;
-            var monthlySalaryList = new List<MonthlySalaryModel>();
-            var monthlySalaryAdditionList = new List<MonthlySalaryAdditionModel>();
-            var monthlyAllowanceList = new List<MonthlyAllowanceModel>();
-            var monthlyAllowanceAdditionList = new List<MonthlyAllowanceAdditionModel>();
-            var monthlyAllowanceDeductionList = new List<MonthlyAllowanceDeductionModel>();
+            var monthlySalaries = new List<MonthlySalaryModel>();
+            var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
+            var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
+            var monthlyAllowances = new List<MonthlyAllowanceModel>();
+            var monthlyAllowanceAdditions = new List<MonthlyAllowanceAdditionModel>();
+            var monthlyAllowanceDeductions = new List<MonthlyAllowanceDeductionModel>();
 
             foreach (var payroll in dataModel.MonthlyPayroll)
             {
-                //// Calculate Salary
                 var monthlyBasicSalary = dataModel.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
                 if (monthlyBasicSalary != null)
                 {
+                    //// Calculate Salary
+                    var salaryAdditions = Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
+                        .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
+                        {
+                            EmployeeId = payroll.EmployeeId,
+                            Type = (int)x
+                        });
+                    var salaryDeductions = Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
+                        .Select(x => new MonthlySalaryDeductionModel
+                        {
+                            EmployeeId = payroll.EmployeeId,
+                            Type = (int)x
+                        });
                     var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
                     var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
                     DecryptMonthlyBasicSalary(monthlyBasicSalary);
@@ -267,8 +280,10 @@
                     EncryptMonthlyBasicSalary(monthlyBasicSalary);
                     EncryptMonthlySalary(monthlySalary);
                     EncryptMonthlySalaryAddition(backPay);
-                    monthlySalaryList.Add(monthlySalary);
-                    monthlySalaryAdditionList.Add(backPay);
+                    monthlySalaries.Add(monthlySalary);
+                    monthlySalaryAdditions.AddRange(salaryAdditions);
+                    monthlySalaryAdditions.Add(backPay);
+                    monthlySalaryDeductions.AddRange(salaryDeductions);
 
                     //// Calculate Allowance
                     var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
@@ -293,9 +308,9 @@
                     EncryptMonthlyAllowance(allowance);
                     EncryptMonthlyAllowanceAdditions(allowanceAdditions);
                     EncryptMonthlyAllowanceDeductions(allowanceDeductions);
-                    monthlyAllowanceList.Add(allowance);
-                    monthlyAllowanceAdditionList.AddRange(allowanceAdditions);
-                    monthlyAllowanceDeductionList.AddRange(allowanceDeductions);
+                    monthlyAllowances.Add(allowance);
+                    monthlyAllowanceAdditions.AddRange(allowanceAdditions);
+                    monthlyAllowanceDeductions.AddRange(allowanceDeductions);
                 }
             }
 
@@ -305,12 +320,13 @@
                 Month = month,
                 PayrollXMLDoc = dataModel.MonthlyPayroll.ToXML().ToString(),
                 BasicSalaryXMLDoc = dataModel.MonthlyBasicSalary.ToXML().ToString(),
-                SalaryXMLDoc = monthlySalaryList.ToXML().ToString(),
-                SalaryAdditionXMLDoc = monthlySalaryAdditionList.ToXML().ToString(),
+                SalaryXMLDoc = monthlySalaries.ToXML().ToString(),
+                SalaryAdditionXMLDoc = monthlySalaryAdditions.ToXML().ToString(),
+                SalaryDeductionXMLDoc = monthlySalaryDeductions.ToXML().ToString(),
                 BasicAllowanceXMLDoc = dataModel.MonthlyBasicAllowance.ToXML().ToString(),
-                AllowanceXMLDoc = monthlyAllowanceList.ToXML().ToString(),
-                AllowanceAdditionXMLDoc = monthlyAllowanceAdditionList.ToXML().ToString(),
-                AllowanceDeductionXMLDoc = monthlyAllowanceDeductionList.ToXML().ToString(),
+                AllowanceXMLDoc = monthlyAllowances.ToXML().ToString(),
+                AllowanceAdditionXMLDoc = monthlyAllowanceAdditions.ToXML().ToString(),
+                AllowanceDeductionXMLDoc = monthlyAllowanceDeductions.ToXML().ToString(),
                 UpdatedBy = sessionService.UserId
             };
 

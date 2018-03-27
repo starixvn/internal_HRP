@@ -402,14 +402,15 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> Preset(int companyId, int employeeId, DateTime month)
         {
-            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
+            if (!isHost)
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+            CommandResult commandResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
 
-            return Json(result);
+            return Json(commandResult);
         }
 
         #endregion Monthly Payroll
