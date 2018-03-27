@@ -266,7 +266,8 @@
             int? employeeId = null,
             string employee = null,
             string costCenterIds = null,
-            string idNo = null)
+            string idNo = null,
+            int? workingDays = null)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
             if (!isRead)
@@ -279,6 +280,7 @@
             viewModel.EmployeeId = employeeId;
             viewModel.Employee = employee;
             viewModel.IDNo = idNo;
+            viewModel.WorkingDays = workingDays;
             viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
 
             return View("MonthlyPayroll", viewModel);
