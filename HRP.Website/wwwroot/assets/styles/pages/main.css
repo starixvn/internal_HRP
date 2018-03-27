@@ -689,6 +689,37 @@ input[type="checkbox"]:disabled + span {
   padding: 12px 0 0;
 }
 
+.block-ui {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 19999;
+}
+
+.loader02 {
+  width: 40px;
+  height: 40px;
+  border: 8px solid rgba(25, 115, 178, 0.25);
+  border-top-color: #1973b2;
+  border-radius: 50%;
+  position: relative;
+  animation: loader-rotate 0.8s linear infinite;
+  top: 50%;
+  margin: -20px auto 0;
+}
+
+@keyframes loader-rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 body {
   background-color: #f2f4f6;
   overflow: hidden;
