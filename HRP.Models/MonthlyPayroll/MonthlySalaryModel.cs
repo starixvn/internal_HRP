@@ -1,5 +1,6 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
@@ -23,6 +24,7 @@
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
+        [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string EbankingAmount { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAmount) },
@@ -35,6 +37,7 @@
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
+        [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string CashAmount { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAmount) },
@@ -50,6 +53,7 @@
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1AccountId), nameof(DirectBanking1BankTypeId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
+        [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking1Amount { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId) },
@@ -69,6 +73,7 @@
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2AccountId), nameof(DirectBanking2BankTypeId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
+        [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking2Amount { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId) },

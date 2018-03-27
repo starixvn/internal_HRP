@@ -265,8 +265,20 @@ var editBasicSalary = (function ($) {
             autoGroup: true,
             digits: 2,
             placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true
+        });
+
+        $('.js-positiveNumberOnly').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            groupSeparator: ',',
             allowMinus: false,
-            groupSeparator: ','
+            autoUnmask: true,
+            removeMaskOnSubmit: true
         });
     }
 
