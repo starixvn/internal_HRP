@@ -1,5 +1,6 @@
 ﻿var editAllowances = (function ($, commonFunctions) {
     var totalAmountCurrencyId;
+    var $editAllowanceForm;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
         if (currency === '11')
@@ -104,59 +105,7 @@
         $autoCalculatedElement.valid();
     }
 
-    function initModule() {
-        var $editAllowanceForm = $("#edit-allowances-form");
-        totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
-        calculateTotalAddition();
-        calculateTotalDeduction();
-
-        $('.select2:disabled').select2();
-        $('.select2:enabled').select2({
-            allowClear: true,
-            placeholder: '',
-            minimumResultsForSearch: Infinity
-        }).on('change', function () {
-            $(this).valid();
-        });
-
-        $('#btn-refresh').on('click', function () {
-            window.location.reload();
-        });
-
-        $('#btn-cancel').on('click', function () {
-            window.history.back()
-        });
-
-        if ($('#CanEdit').val() === 'False') {
-            $('input:enabled, select:enabled', $editAllowanceForm).attr('disabled', 'disabled');
-            return;
-        }
-
-        $('.select2-ajax').select2({
-            ajax: {
-                url: $('#get-bank-acount-url').val(),
-                data: function (params) {
-                    var query = {
-                        employeeId: $('#EmployeeId').val(),
-                        bankTypeId: $(this).siblings('select').val()
-                    };
-
-                    return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            allowClear: true,
-            placeholder: '',
-            minimumResultsForSearch: Infinity
-        }).on('change', function () {
-            $(this).valid();
-        });
-
+    function initInputMask() {
         $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display').inputmask({
             alias: 'numeric',
             autoGroup: true,
@@ -177,80 +126,45 @@
             autoUnmask: true,
             removeMaskOnSubmit: true,
         })
+    }
 
-        $('.bank-type-select').on('change', function (e) {
-            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+    function initSelect2() {
+        $('.select2:disabled').select2();
+        $('.select2:enabled').select2({
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        }).on('change', function () {
+            $(this).valid();
         });
 
-        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
-            if (this.checked) {
-                var group = $(this).data('calculate-for');
-                $('input.allowance-calculate[readonly]').removeAttr('readonly');
-                $('input.allowance-calculate[data-calculate-for="' + group + '"]').attr('readonly', 'readonly');
-            }
-        }).change();
+        $('.select2-ajax').select2({
+            ajax: {
+                url: $('#get-bank-acount-url').val(),
+                data: function (params) {
+                    var query = {
+                        employeeId: $('#EmployeeInfo_EmployeeId').val(),
+                        bankTypeId: $(this).siblings('select').val()
+                    };
 
-        $('.allowance-calculate').on('change', function (e) {
-            calculateAutoAllowance();
-        });
-
-        $('.addition:enabled, .deduction:enabled').on('change', function (e) {
-            var $this = $(this);
-            var dataGroup = $this.data('group');
-            var $relatedElements = $('[data-group="' + dataGroup + '"]');
-
-            var $unitAmount = $relatedElements.filter('.unit-amount');
-            var $currency = $relatedElements.filter('.currency');
-            var currencyId = $currency.val();
-            var $noOfDays = $relatedElements.filter('.no-of-days');
-            var $totalAmount = $relatedElements.filter('.total-amount');  
-            var $totalAmountDisplay = $relatedElements.filter('.total-amount-display');
-            var $netAllowance = $relatedElements.filter('.net-allowance');
-            var $netAllowanceDisplay = $relatedElements.filter('.net-allowance-display');
-
-            if ($unitAmount.val() !== '') {     
-                var unitAmount = new BigNumber($unitAmount.val());
-                var totalAmount = '';
-
-                if ($noOfDays.val() !== '') {
-                    totalAmount = unitAmount.mul($noOfDays.val());
-                    $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
-                } else {
-                    totalAmount = unitAmount
-                    $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
                 }
-
-                if (currencyId !== '' && totalAmountCurrencyId !== '') {
-                    var exchangeRates = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
-                    var netAllowance = totalAmount.mul(exchangeRates);
-                    $netAllowance.val(netAllowance.toString());
-                    $netAllowanceDisplay.val(netAllowance.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
-                } else {
-                    $netAllowance.val('')
-                    $netAllowanceDisplay.val('');
-                }
-            } else {
-                $totalAmount.val('');
-                $totalAmountDisplay.val('');
-                $netAllowance.val('');
-                $netAllowanceDisplay.val('');
-            }         
-
-            if ($this.hasClass('addition')) {
-                calculateTotalAddition();
-            } else {
-                calculateTotalDeduction();
-            }
-
-            calculateTotalAmount();
-            calculateAutoAllowance();
-            calculateTotalNetAmount();
+            },
+            allowClear: true,
+            placeholder: '',
+            minimumResultsForSearch: Infinity
+        }).on('change', function () {
+            $(this).valid();
         });
+    }
 
-        $("#Allowance_DSTNetSalaryAmount").on('change', calculateTotalNetAmount);
-
+    function parseForm() {
         $.validator.addMethod('requiredifrelatedfieldhasvalue', function (value, element, params) {
             var $element = $(element);
             var dataGroup = $element.data('group');
@@ -274,7 +188,7 @@
 
             return relatedElementValues.length === 0 || element.value !== '';
         });
-        
+
         $.validator.unobtrusive.adapters.add('requiredifrelatedfieldhasvalue', [], function (options) {
             options.rules['requiredifrelatedfieldhasvalue'] = [];
             options.messages['requiredifrelatedfieldhasvalue'] = options.message;
@@ -307,6 +221,107 @@
                 $element.next().find('.select2-selection').removeClass('select2-has-error');
             }
         };
+    }
+
+    function initEvents() {
+        $('.bank-type-select').on('change', function (e) {
+            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+        });
+
+        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
+            if (this.checked) {
+                var group = $(this).data('calculate-for');
+                $('input.allowance-calculate[readonly]').removeAttr('readonly');
+                $('input.allowance-calculate[data-calculate-for="' + group + '"]').attr('readonly', 'readonly');
+            }
+        }).change();
+
+        $('.allowance-calculate').on('change', function (e) {
+            calculateAutoAllowance();
+        });
+
+        $('.addition:enabled, .deduction:enabled').on('change', function (e) {
+            var $this = $(this);
+            var dataGroup = $this.data('group');
+            var $relatedElements = $('[data-group="' + dataGroup + '"]');
+
+            var $unitAmount = $relatedElements.filter('.unit-amount');
+            var $currency = $relatedElements.filter('.currency');
+            var currencyId = $currency.val();
+            var $noOfDays = $relatedElements.filter('.no-of-days');
+            var $totalAmount = $relatedElements.filter('.total-amount');
+            var $totalAmountDisplay = $relatedElements.filter('.total-amount-display');
+            var $netAllowance = $relatedElements.filter('.net-allowance');
+            var $netAllowanceDisplay = $relatedElements.filter('.net-allowance-display');
+
+            if ($unitAmount.val() !== '') {
+                var unitAmount = new BigNumber($unitAmount.val());
+                var totalAmount = '';
+
+                if ($noOfDays.val() !== '') {
+                    totalAmount = unitAmount.mul($noOfDays.val());
+                    $totalAmount.val(totalAmount.toString());
+                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                } else {
+                    totalAmount = unitAmount
+                    $totalAmount.val(totalAmount.toString());
+                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                }
+
+                if (currencyId !== '' && totalAmountCurrencyId !== '') {
+                    var exchangeRates = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
+                    var netAllowance = totalAmount.mul(exchangeRates);
+                    $netAllowance.val(netAllowance.toString());
+                    $netAllowanceDisplay.val(netAllowance.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
+                } else {
+                    $netAllowance.val('')
+                    $netAllowanceDisplay.val('');
+                }
+            } else {
+                $totalAmount.val('');
+                $totalAmountDisplay.val('');
+                $netAllowance.val('');
+                $netAllowanceDisplay.val('');
+            }
+
+            if ($this.hasClass('addition')) {
+                calculateTotalAddition();
+            } else {
+                calculateTotalDeduction();
+            }
+
+            calculateTotalAmount();
+            calculateAutoAllowance();
+            calculateTotalNetAmount();
+        });
+
+        $("#Allowance_DSTNetSalaryAmount").on('change', calculateTotalNetAmount);
+    }
+
+    function initModule() {
+        $editAllowanceForm = $("#edit-allowances-form");
+        totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
+        calculateTotalAddition();
+        calculateTotalDeduction();
+
+        initSelect2();
+        initInputMask();
+
+        $('#btn-refresh').on('click', function () {
+            window.location.reload();
+        });
+
+        $('#btn-cancel').on('click', function () {
+            window.history.back()
+        });
+
+        if ($('#CanEdit').val() === 'False') {
+            $('input:enabled, select:enabled', $editAllowanceForm).attr('disabled', 'disabled');
+            return;
+        }
+
+        initEvents();
+        parseForm();
     }
 
     return {

@@ -332,7 +332,6 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int employeeId, int companyId, DateTime month)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
@@ -340,7 +339,6 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
-            viewModel.EmployeeId = employeeId;
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
@@ -382,7 +380,7 @@
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
-                            return RedirectToAction("EmployeeMonthlyPayroll");
+                            return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month Ư);
                     }
                 }
             }

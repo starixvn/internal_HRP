@@ -628,7 +628,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
 
-            var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
 
             var result = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", result.ControllerName);
@@ -649,7 +649,7 @@
                     EmployeeInfo = new MonthlyAllowanceEmployeeInfoModel()
                 });
 
-            var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
             baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
