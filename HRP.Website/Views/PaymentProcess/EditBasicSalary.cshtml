@@ -10,6 +10,8 @@
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
+        <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
@@ -137,7 +139,7 @@
                 <div class="group-complex -layout-add">
                     <div class="like-group-title">@ViewLang.BackPay</div>
                     <input hidden asp-for="Additions[0].Type" />
-                    <input type="text" class="control" asp-for="Additions[0].Description" disabled>
+                    <input type="text" class="control js-description" asp-for="Additions[0].Description" readonly />
                     <input type="text" class="control number js-positiveNumberOnly" asp-for="Additions[0].UnitAmount" readonly>
                     <input type="text" class="control number -start-col-5 js-positiveNumberOnly js-addition-netSalaryDisplay" asp-for="Additions[0].NetSalaryDisplay" readonly>
                     <input hidden class="js-addition-netSalary" asp-for="Additions[0].NetSalary" />
@@ -145,7 +147,7 @@
                 <div class="group-complex -layout-add">
                     <div class="like-group-title">@ViewLang.Adjustments</div>
                     <input hidden asp-for="Additions[1].Type" />
-                    <input type="text" class="control" asp-for="Additions[1].Description">
+                    <input type="text" class="control js-description" asp-for="Additions[1].Description">
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount" asp-for="Additions[1].UnitAmount">
                     <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[1].NoOfDays" maxlength="5" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay" asp-for="Additions[1].NetSalaryDisplay" readonly>
@@ -154,7 +156,7 @@
                 <div class="group-complex -layout-add">
                     <div class="like-group-title">@ViewLang.Others</div>
                     <input hidden asp-for="Additions[2].Type" />
-                    <input type="text" class="control" asp-for="Additions[2].Description">
+                    <input type="text" class="control js-description" asp-for="Additions[2].Description">
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount" asp-for="Additions[2].UnitAmount">
                     <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[2].NoOfDays" maxlength="5" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay" asp-for="Additions[2].NetSalaryDisplay" readonly>
@@ -162,7 +164,7 @@
                 </div>
                 <div class="group-complex -layout-add">
                     <input hidden asp-for="Additions[3].Type" />
-                    <input type="text" class="control -start-col-2" asp-for="Additions[3].Description">
+                    <input type="text" class="control -start-col-2 js-description" asp-for="Additions[3].Description">
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount" asp-for="Additions[3].UnitAmount">
                     <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[3].NoOfDays" maxlength="5" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay" asp-for="Additions[3].NetSalaryDisplay" readonly>
@@ -184,7 +186,7 @@
                 <div class="group-complex -layout-deduction">
                     <div class="like-group-title">@ViewLang.UPLAbsenteeism</div>
                     <input hidden asp-for="Deductions[0].Type" />
-                    <input type="text" class="control" asp-for="Deductions[0].Description" />
+                    <input type="text" class="control js-description" asp-for="Deductions[0].Description" />
                     <input type="text" class="control number js-positiveNumberOnly js-unpaidleave-absenteeism" asp-for="Deductions[0].NoOfDays" maxlength="5" />
                     <div>days</div>
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay" asp-for="Deductions[0].NetSalaryDisplay" readonly />
@@ -193,7 +195,7 @@
                 <div class="group-complex -layout-deduction">
                     <div class="like-group-title">@ViewLang.Tardiness</div>
                     <input hidden asp-for="Deductions[1].Type" />
-                    <input type="text" class="control" asp-for="Deductions[1].Description" />
+                    <input type="text" class="control js-description" asp-for="Deductions[1].Description" />
                     <input type="text" class="control number js-positiveNumberOnly js-tardiness" asp-for="Deductions[1].NoOfDays" maxlength="8" />
                     <div>minutes</div>
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay" asp-for="Deductions[1].NetSalaryDisplay" readonly />
@@ -202,7 +204,7 @@
                 <div class="group-complex -layout-deduction-2">
                     <div class="like-group-title">@ViewLang.SalaryAdvance</div>
                     <input hidden asp-for="Deductions[2].Type" />
-                    <input type="text" class="control" asp-for="Deductions[2].Description">
+                    <input type="text" class="control js-description" asp-for="Deductions[2].Description">
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-unitAmount" asp-for="Deductions[2].UnitAmount">
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay" asp-for="Deductions[2].NetSalaryDisplay" readonly>
                     <input hidden class="js-deduction-netSalary" asp-for="Deductions[2].NetSalary" />
@@ -210,7 +212,7 @@
                 <div class="group-complex -layout-deduction-2">
                     <div class="like-group-title">@ViewLang.Others</div>
                     <input hidden asp-for="Deductions[3].Type" />
-                    <input type="text" class="control" asp-for="Deductions[3].Description">
+                    <input type="text" class="control js-description" asp-for="Deductions[3].Description">
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-unitAmount" asp-for="Deductions[3].UnitAmount">
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay" asp-for="Deductions[3].NetSalaryDisplay" readonly>
                     <input hidden class="js-deduction-netSalary" asp-for="Deductions[3].NetSalary" />
@@ -272,7 +274,7 @@
                 </div>
                 <div class="group-complex -layout-setting-2">
                     <div>@ViewLang.Reason</div>
-                    <textarea class="control text-reason" asp-for="MonthlyBasicSalary.AfterAdjustmentReason" readonly></textarea>
+                    <textarea class="control text-reason js-afterAdjustmentReason" asp-for="MonthlyBasicSalary.AfterAdjustmentReason" readonly></textarea>
                 </div>
             </div>
             <div class="monthly-payroll">
@@ -435,6 +437,7 @@
         <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/tooltipster/dist/js/tooltipster.bundle.js"></script>
         <script src="~/assets/js/paymentprocess/edit-basic-salary.js"></script>
     </environment>
     <environment exclude="Development">

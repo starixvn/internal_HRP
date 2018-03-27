@@ -419,6 +419,29 @@ var editBasicSalary = (function ($) {
         });
     }
 
+    function inittoolTipster() {
+        $('.js-description').each(function () {
+            var $this = $(this);
+
+            if ($this[0].scrollWidth > $this.innerWidth()) {
+                $this.tooltipster({
+                    content: $this.val(),
+                    theme: 'tooltipster-light',
+                    maxWidth: 250
+                });
+            }
+        });
+
+        var $afterAdjustmentReason = $('.js-afterAdjustmentReason');
+        if ($afterAdjustmentReason[0].scrollHeight > $afterAdjustmentReason.innerHeight()) {
+            $afterAdjustmentReason.tooltipster({
+                content: $afterAdjustmentReason.val(),
+                theme: 'tooltipster-light',
+                maxWidth: 250
+            });
+        }
+    }
+
     function initModule() {
         $btnPreset = $('.js-btnPreset');
         $btnRefresh = $('.js-btnRefresh');
@@ -434,6 +457,7 @@ var editBasicSalary = (function ($) {
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         commonFunctions.registerEventGoBack($btnCancel);
         initSelect2();
+        inittoolTipster();
         registerEvents();
         reparseform($form);
 
