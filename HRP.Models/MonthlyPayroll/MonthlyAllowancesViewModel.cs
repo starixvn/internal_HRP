@@ -30,5 +30,15 @@
         public SelectList CashAccounts { get; set; }
 
         public bool CanEdit { get; set; }
+
+        public int? SearchWorkingDays { get; set; }
+
+        public int? SearchEmployeeId { get; set; }
+
+        public string SearchEmployee { get; set; }
+
+        public object SearcCostCenterIds { get; set; }
+
+        public string SearchIdNo { get; set; }
     }
 }

@@ -332,7 +332,11 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month)
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month, int? searchWorkingDays,
+            int? searchEmployeeId = null,
+            string searchEmployee = null,
+            string searchCostCenterIds = null,
+            string searchIdNo = null)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
@@ -340,6 +344,11 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            viewModel.SearchWorkingDays = searchWorkingDays;
+            viewModel.SearchEmployeeId = searchEmployeeId;
+            viewModel.SearchEmployee = searchEmployee;
+            viewModel.SearcCostCenterIds = searchCostCenterIds;
+            viewModel.SearchIdNo = searchIdNo;
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
@@ -381,7 +390,15 @@
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
-                            return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month });
+                            return RedirectToAction("EmployeeMonthlyPayroll", 
+                                new {
+                                    companyId = viewModel.EmployeeInfo.CompanyId,
+                                    month = viewModel.Month,
+                                    employeeId = viewModel.SearchEmployeeId,
+                                    employee = viewModel.SearchEmployee,
+                                    costCenterIds = viewModel.SearcCostCenterIds,
+                                    idNo = viewModel.SearchIdNo
+                                });
                     }
                 }
             }

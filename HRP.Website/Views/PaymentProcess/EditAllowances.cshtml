@@ -89,6 +89,11 @@
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="Month" />
+    <input type="hidden" asp-for="SearchWorkingDays" />
+    <input type="hidden" asp-for="SearchEmployeeId" />
+    <input type="hidden" asp-for="SearchEmployee" />
+    <input type="hidden" asp-for="SearcCostCenterIds" />
+    <input type="hidden" asp-for="SearchIdNo" />
     <input type="hidden" asp-for="Allowance.PayrollId" />
     <input type="hidden" asp-for="Allowance.CurrencyCode" />
     <input type="hidden" asp-for="BasicAllowance.PayrollId" />
@@ -145,7 +150,7 @@
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
-                        <input type="text" @(Model.Additions[i].Type == (int) AllowanceType.DutyMeal ? "readonly" : string.Empty)
+                        <input type="text" @(Model.Additions[i].Type == (int)AllowanceType.DutyMeal ? "readonly" : string.Empty)
                                class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" />
                         <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
@@ -183,7 +188,7 @@
                         <input type="hidden" asp-for="Deductions[i].PayrollId">
                         <input type="hidden" asp-for="Deductions[i].Type">
 
-                        <input type="text" @(Model.Deductions[i].Type == (int) AllowanceType.DutyMeal ? "readonly" : string.Empty)
+                        <input type="text" @(Model.Deductions[i].Type == (int)AllowanceType.DutyMeal ? "readonly" : string.Empty)
                                class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
                         <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
