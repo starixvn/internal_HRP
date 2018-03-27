@@ -379,6 +379,50 @@
 
         #endregion UploadAttendanceAndDSTNetSalaryAsync
 
+        #region DeleteUploadedAttendance
+
+        [Fact]
+        public async Task DeleteUploadedAttendance_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var companyId = 2;
+            var month = DateTime.Today;
+            var expected = new CommandResult();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.ExecuteNonQueryAsync(Arg.Is<DeleteUploadedAttendanceCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.DeleteUploadedAttendance(companyId, month);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+        }
+
+        #endregion DeleteUploadedAttendance
+
+        #region DeleteUploadedDSTNetSalary
+
+        [Fact]
+        public async Task DeleteUploadedDSTNetSalary_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var companyId = 2;
+            var month = DateTime.Today;
+            var expected = new CommandResult();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.ExecuteNonQueryAsync(Arg.Is<DeleteUploadedDSTNetSalaryCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.DeleteUploadedDSTNetSalary(companyId, month);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.False(actual.IsSuccessful);
+        }
+
+        #endregion DeleteUploadedDSTNetSalary
+
         #region GenerateMonthlyPayroll
 
         [Fact]

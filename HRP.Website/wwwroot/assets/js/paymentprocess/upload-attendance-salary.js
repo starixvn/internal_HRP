@@ -249,6 +249,8 @@
                             var dstNetSalaryTotalError = $(domElement.DSTNetSalaryTotalError).val();
                             if (attendanceTotalError > 0 || dstNetSalaryTotalError > 0) {
                                 $(domElement.GeneratePayrollWarning).modal('show');
+                            } else {
+                                processActionNextToMonthlyPayroll();
                             }
                         } else {
                             processActionNextToMonthlyPayroll();

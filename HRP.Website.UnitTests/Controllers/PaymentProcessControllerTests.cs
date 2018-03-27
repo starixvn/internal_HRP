@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -19,6 +20,7 @@
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Routing;
@@ -403,6 +405,186 @@
             Assert.True((bool)returnValue["isSuccessful"]);
         }
 
+        [Fact]
+        public async Task UploadAttendanceAndSalaryPost_AttendanceFileAndDSTNetSalaryFileAreNull_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var viewModel = new UploadAttendanceAndSalaryViewModel();
+            var controller = GetPaymentProcessController();
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(Message.PleaseSelectFile, errors["CommonError"]);
+        }
+
+        [Fact]
+        public async Task UploadAttendanceAndSalaryPost_FailureWhenReadAttendanceFileAndDSTNetSalaryFile_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var viewModel = new UploadAttendanceAndSalaryViewModel { AttendanceFile = Substitute.For<IFormFile>() };
+            var failureAttendance = MockFailureResultAttendanceTemplate();
+            var failureDSTNetSalary = MockFailureResultDSTNetSalaryTemplate();
+            var controller = GetPaymentProcessController();
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(failureAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(failureDSTNetSalary);
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(failureAttendance.Message, errors["AttendanceFile"]);
+            Assert.Equal(failureDSTNetSalary.Message, errors["DSTNetSalaryFile"]);
+        }
+
+        [Fact]
+        public async Task UploadAttendanceAndSalaryPost_ModelStateIsValidAndUploadFilesSuccessful_ReturnJsonResultSuccessful()
+        {
+            // Arrange
+            var commandResult = new CommandResult { Code = 0 };
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                CompanyId = 3,
+                SelectedTime = DateTime.Today,
+                AttendanceFile = Substitute.For<IFormFile>()
+            };
+            var successAttendance = MockSuccessResultAttendanceTemplate();
+            var successDSTNetSalary = MockSuccessResultDSTNetSalaryTemplate();
+            var controller = GetPaymentProcessController();
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
+            paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(Arg.Is<int>(x => x == viewModel.CompanyId), Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
+                                   Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value), Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.True((bool)returnValue["isSuccessful"]);
+        }
+
+        [Fact]
+        public async Task UploadAttendanceAndSalaryPost_ModelStateIsValidAndUploadFilesNotSuccessful_ReturnJsonResultSuccessful()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var viewModel = new UploadAttendanceAndSalaryViewModel
+            {
+                CompanyId = 3,
+                SelectedTime = DateTime.Today,
+                AttendanceFile = Substitute.For<IFormFile>()
+            };
+            var successAttendance = MockSuccessResultAttendanceTemplate();
+            var successDSTNetSalary = MockSuccessResultDSTNetSalaryTemplate();
+            var controller = GetPaymentProcessController();
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
+            paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(Arg.Is<int>(x => x == viewModel.CompanyId), Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
+                                   Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value), Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["CommonError"]);
+        }
+
+        [Fact]
+        public async Task DeleteUploadedAttendance_DeleteDataNotSuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var companyId = 12;
+            var month = DateTime.Today;
+            var commandResult = new CommandResult();
+            var controller = GetPaymentProcessController();
+            paymentProcessService.DeleteUploadedAttendance(Arg.Is<int>(x => x == companyId), Arg.Is<DateTime>(x => x == month)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.DeleteUploadedAttendance(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["CommonError"]);
+        }
+
+        [Fact]
+        public async Task DeleteUploadedAttendance_DeleteDataSuccessful_ReturnJsonResultSuccessful()
+        {
+            // Arrange
+            var companyId = 12;
+            var month = DateTime.Today;
+            var commandResult = new CommandResult { Code = 0 };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.DeleteUploadedAttendance(Arg.Is<int>(x => x == companyId), Arg.Is<DateTime>(x => x == month)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.DeleteUploadedAttendance(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+        }
+
+        [Fact]
+        public async Task DeleteUploadedDSTNetSalary_DeleteDataNotSuccessful_ReturnJsonResultWithErrors()
+        {
+            // Arrange
+            var companyId = 17;
+            var month = DateTime.Today;
+            var commandResult = new CommandResult();
+            var controller = GetPaymentProcessController();
+            paymentProcessService.DeleteUploadedDSTNetSalary(Arg.Is<int>(x => x == companyId), Arg.Is<DateTime>(x => x == month)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.DeleteUploadedDSTNetSalary(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            var errors = (IDictionary<string, string>)returnValue["errors"];
+            Assert.False((bool)returnValue["isSuccessful"]);
+            Assert.Equal(commandResult.Message, errors["CommonError"]);
+        }
+
+        [Fact]
+        public async Task DeleteUploadedDSTNetSalary_DeleteDataSuccessful_ReturnJsonResultSuccessful()
+        {
+            // Arrange
+            var companyId = 17;
+            var month = DateTime.Today;
+            var commandResult = new CommandResult { Code = 0 };
+            var controller = GetPaymentProcessController();
+            paymentProcessService.DeleteUploadedDSTNetSalary(Arg.Is<int>(x => x == companyId), Arg.Is<DateTime>(x => x == month)).Returns(commandResult);
+
+            // Act
+            var actual = await controller.DeleteUploadedDSTNetSalary(companyId, month);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
+            Assert.True((bool)returnValue["isSuccessful"]);
+        }
+
         #endregion UploadAttendanceAndDSTSalary
 
         #region EmployeeMonthlyPayroll
@@ -749,6 +931,26 @@
             var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return selectList;
+        }
+
+        private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
+        {
+            return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
+        }
+
+        private Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
+        {
+            return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
+        }
+
+        private Success<AttendanceTemplate> MockSuccessResultAttendanceTemplate()
+        {
+            return new Success<AttendanceTemplate>(null);
+        }
+
+        private Success<DSTNetSalaryTemplate> MockSuccessResultDSTNetSalaryTemplate()
+        {
+            return new Success<DSTNetSalaryTemplate>(null);
         }
 
         #endregion Helpers
