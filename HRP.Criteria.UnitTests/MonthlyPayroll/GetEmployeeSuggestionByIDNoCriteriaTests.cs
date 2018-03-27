@@ -3,14 +3,14 @@
     using HRP.Criteria.MonthlyPayroll;
     using Xunit;
 
-    public class ResetMonthlySalaryCriteriaTests
+    public class GetEmployeeSuggestionByIDNoCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new ResetMonthlySalaryCriteria();
-            var expected = "MonthlyPayroll_ResetSalary";
+            var criteria = new GetEmployeeSuggestionByIDNoCriteria();
+            var expected = "MonthlyPayroll_GetEmployeeSuggestionByIDNo";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -20,21 +20,16 @@
         }
 
         [Theory]
-        [InlineData(1, 1, 0)]
-        [InlineData(1, 0, 1)]
-        [InlineData(1, 0, 0)]
-        [InlineData(0, 1, 1)]
-        [InlineData(0, 1, 0)]
-        [InlineData(0, 0, 1)]
-        [InlineData(0, 0, 0)]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int payrollId, int companyId, int userId)
+        [InlineData(1, 0)]
+        [InlineData(0, 1)]
+        [InlineData(0, 0)]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, int companyId)
         {
             // Arrange
-            var criteria = new ResetMonthlySalaryCriteria
+            var criteria = new GetEmployeeSuggestionByIDNoCriteria
             {
-                PayrollId = payrollId,
-                CompanyId = companyId,
-                UserId = userId
+                UserId = userId,
+                CompanyId = companyId
             };
 
             // Act
@@ -48,11 +43,10 @@
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new ResetMonthlySalaryCriteria
+            var criteria = new GetEmployeeSuggestionByIDNoCriteria
             {
-                PayrollId = 1,
-                CompanyId = 1,
-                UserId = 1
+                UserId = 1,
+                CompanyId = 1
             };
 
             // Act

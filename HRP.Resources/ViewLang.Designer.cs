@@ -142,6 +142,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjust Basic Salary and Allowances.
+        /// </summary>
+        public static string AdjustBasicSalaryAndAllowances {
+            get {
+                return ResourceManager.GetString("AdjustBasicSalaryAndAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustments.
         /// </summary>
         public static string Adjustments {
@@ -858,6 +867,15 @@ namespace HRP.Resources {
         public static string DSTNetSalary {
             get {
                 return ResourceManager.GetString("DSTNetSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DST Salary Files.
+        /// </summary>
+        public static string DSTSalaryFiles {
+            get {
+                return ResourceManager.GetString("DSTSalaryFiles", resourceCulture);
             }
         }
         
@@ -2365,6 +2383,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload Attendance.
+        /// </summary>
+        public static string UploadAttendance {
+            get {
+                return ResourceManager.GetString("UploadAttendance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload Attendance File (Max: 5MB).
         /// </summary>
         public static string UploadAttendanceFile {
@@ -2442,6 +2469,15 @@ namespace HRP.Resources {
         public static string ViewEmployee {
             get {
                 return ResourceManager.GetString("ViewEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Employee&apos;s Monthly Payroll.
+        /// </summary>
+        public static string ViewEmployeeMonthlyPayroll {
+            get {
+                return ResourceManager.GetString("ViewEmployeeMonthlyPayroll", resourceCulture);
             }
         }
         

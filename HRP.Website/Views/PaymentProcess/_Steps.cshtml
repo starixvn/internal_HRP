@@ -9,13 +9,10 @@
     </div>
     <div class="step @(Model == (int)PaymentProcessStep.UploadFiles ? "active" :
             Model > (int)PaymentProcessStep.UploadFiles ? "finished" : string.Empty)">
-        <label class="step-title upload">Upload Attendance <br> & DST Salary Files</label>
+        <label class="step-title upload">@ViewLang.UploadAttendance <br> & @ViewLang.DSTSalaryFiles</label>
     </div>
     <div class="step @(Model == (int)PaymentProcessStep.MonthlyPayroll ? "active" :
             Model > (int)PaymentProcessStep.MonthlyPayroll ? "finished" : string.Empty)">
-        <label class="step-title view-employee">View Employee <br> Adjust Basic Salary Allowances</label>
-    </div>
-    <div class="step @(Model == (int)PaymentProcessStep.Completed ? "active" : string.Empty)">
-        <label class="step-title complete">@ViewLang.Completed</label>
+        <label class="step-title view-employee">@ViewLang.ViewEmployeeMonthlyPayroll <br> @ViewLang.AdjustBasicSalaryAndAllowances</label>
     </div>
 </div>

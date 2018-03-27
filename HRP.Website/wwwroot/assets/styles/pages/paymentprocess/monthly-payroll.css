@@ -454,6 +454,22 @@ table.dataTable thead .sorting_desc:after {
   color: #f57d14;
 }
 
+.ui-widget.ui-widget-content {
+  padding: 10px 6px;
+  border-color: #2a9ded;
+}
+
+.ui-menu .ui-menu-item {
+  padding: 6px 0;
+}
+
+.ui-menu .ui-menu-item .ui-state-active, .ui-menu .ui-menu-item .ui-state-active:hover {
+  margin: 0;
+  background: none;
+  border: none;
+  color: #1973b2;
+}
+
 .DTFC_ScrollWrapper {
   margin-bottom: 8px;
 }
@@ -507,4 +523,7 @@ select.width-92 {
 select.width-200 {
   width: 200px;
 }
-/*# sourceMappingURL=monthly-payroll.css.map */
+
+.negative-amount {
+  color: #ff0000;
+}

@@ -9,10 +9,8 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.MonthlyPayroll;
-    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement;
     using HRP.Models.MonthlyPayroll;
     using HRP.Repositories;
     using NSubstitute;
@@ -252,24 +250,23 @@
             Assert.Equal(expected, actual);
         }
 
-        #region ResetMonthlySalaryAsync
-
         [Fact]
-        public async Task ResetMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
+        public async Task GetEmployeeSuggestionByIDNoAsync_WhenCalled_ReturnExpectedEmployees()
         {
             // Arrange
-            var expected = new CommandResult();
+            var expected = new List<EmployeeSuggestionViewModel>
+            {
+                new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
+            };
             var monthlyPayrollService = GetMonthlyPayrollService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<ResetMonthlySalaryCriteria>()).Returns(expected);
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(expected);
 
             // Act
-            var actual = await monthlyPayrollService.ResetMonthlySalaryAsync(1, 1);
+            var actual = await monthlyPayrollService.GetEmployeeSuggestionByIDNoAsync(1, "DAR111");
 
             // Assert
             Assert.Equal(expected, actual);
         }
-
-        #endregion ResetMonthlySalaryAsync
 
         #region EditMonthlySalaryAsync
 

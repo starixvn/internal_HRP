@@ -6,6 +6,13 @@ var editBasicSalary = (function ($) {
         maxDigit = 6,
         bankAcountUrl = 'BankAccount/GetEmployeeBankAccounts';
 
+    BigNumber.config({
+        FORMAT: {
+            decimalSeparator: '.',
+            groupSeparator: ','
+        }
+    });
+
     BigNumber.prototype.roundAmount = function (currencyId) {
         if (currencyId === '11') {
             return this.div(1000).round().mul(1000);

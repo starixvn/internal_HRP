@@ -2,13 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
+    using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
+    using HRP.Criteria.RefResource;
     using HRP.Models;
+    using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Resources;
@@ -17,13 +21,9 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
-    using HRP.Core.Model;
-    using Microsoft.AspNetCore.Routing;
-    using HRP.Models.Currency;
-    using HRP.Criteria;
-    using HRP.Criteria.RefResource;
 
     public class PaymentProcessControllerTests
     {
@@ -584,7 +584,7 @@
         #endregion EditBasicSalary
 
         [Fact]
-        public async Task GetEmployeeSuggestion_WhenCalled_ReturnExpectedEmployees()
+        public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnExpectedEmployees()
         {
             // Arrange
             var expected = new List<EmployeeSuggestionViewModel>
@@ -603,12 +603,30 @@
         }
 
         [Fact]
+        public async Task GetEmployeeSuggestionByIDNo_WhenCalled_ReturnExpectedEmployees()
+        {
+            // Arrange
+            var expected = new List<EmployeeSuggestionViewModel>
+            {
+                new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
+            };
+            var controller = GetPaymentProcessController();
+            monthlyPayrollService.GetEmployeeSuggestionByIDNoAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(expected);
+
+            // Act
+            var actual = await controller.GetEmployeeSuggestionByIDNo(1, "DAR111");
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
+        }
+
+        [Fact]
         public async Task EditAllowances_NotHavePermission_RederiectToAccessDenied()
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
-
 
             var actual = await controller.EditAllowances(1, 1, companyId, DateTime.Today);
 
@@ -648,7 +666,6 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(false);
 
-
             var actual = await controller.Preset(companyId, employeeId, DateTime.Today);
 
             var result = Assert.IsType<RedirectToActionResult>(actual);
@@ -670,6 +687,7 @@
             var result = Assert.IsType<JsonResult>(actual);
             Assert.NotNull(result.Value);
         }
+
         #region Helpers
 
         private PaymentProcessController GetPaymentProcessController()

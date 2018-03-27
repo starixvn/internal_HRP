@@ -68,6 +68,8 @@
                 CompanyId = viewModel.CompanyId,
                 CostCenterIds = viewModel.CostCenterIds,
                 EmployeeId = viewModel.EmployeeId,
+                Employee = viewModel.Employee,
+                IDNo = viewModel.IDNo,
                 WorkingDays = viewModel.WorkingDays
             };
 
@@ -114,17 +116,16 @@
             return baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
         }
 
-        public async Task<CommandResult> ResetMonthlySalaryAsync(int payrollId, int companyId)
+        public Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByIDNoAsync(int companyId, string idNo)
         {
-            var criteria = new ResetMonthlySalaryCriteria
+            var criteria = new GetEmployeeSuggestionByIDNoCriteria
             {
-                PayrollId = payrollId,
+                UserId = sessionService.UserId,
                 CompanyId = companyId,
-                UserId = sessionService.UserId
+                IDNo = idNo
             };
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
-            return commandResult;
+            return baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
         }
 
         public async Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel)

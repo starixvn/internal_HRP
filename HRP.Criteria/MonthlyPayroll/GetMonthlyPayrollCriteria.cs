@@ -15,6 +15,10 @@
 
         public int? EmployeeId { get; set; }
 
+        public string Employee { get; set; }
+
+        public string IDNo { get; set; }
+
         public int? WorkingDays { get; set; }
 
         public override string GetSettingKey() => "MonthlyPayroll_Get";

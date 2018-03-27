@@ -21,7 +21,7 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
-    <li class="active"></li>
+    <li class="active">@ViewLang.ViewEmployeeMonthlyPayroll</li>
 </ol>
 
 @Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
@@ -133,7 +133,7 @@
         {
             foreach (MonthlyPayrollEmployeeInfoViewModel employee in Model.Employees)
             {
-                var dropdownId = string.Format("dropdown{0}", Guid.NewGuid().ToString("N"));
+                decimal amount;
                 <tr>
                     <td class="text-center has-icon">
                         @switch (employee.Status)
@@ -156,20 +156,97 @@
                     <td>@employee.Nickname</td>
                     <td>@employee.CostCenter</td>
                     <td>@employee.BasicSalary.EbankingCurrencyCode</td>
-                    <td>@employee.BasicSalary.EbankingAmount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.EbankingAmount))
+                    {
+                        decimal.TryParse(employee.BasicSalary.EbankingAmount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.BasicSalary.DirectBanking1CurrencyCode</td>
-                    <td>@employee.BasicSalary.DirectBanking1Amount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking1Amount))
+                    {
+                        decimal.TryParse(employee.BasicSalary.DirectBanking1Amount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.BasicSalary.DirectBanking2CurrencyCode</td>
-                    <td>@employee.BasicSalary.DirectBanking2Amount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking2Amount))
+                    {
+                        decimal.TryParse(employee.BasicSalary.DirectBanking2Amount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.BasicSalary.CashCurrencyCode</td>
-                    <td>@employee.BasicSalary.CashAmount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.CashAmount))
+                    {
+                        decimal.TryParse(employee.BasicSalary.CashAmount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.Allowance.DirectBanking1CurrencyCode</td>
-                    <td>@employee.Allowance.DirectBanking1Amount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking1Amount))
+                    {
+                        decimal.TryParse(employee.Allowance.DirectBanking1Amount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.Allowance.DirectBanking2CurrencyCode</td>
-                    <td>@employee.Allowance.DirectBanking2Amount</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking2Amount))
+                    {
+                        decimal.TryParse(employee.Allowance.DirectBanking2Amount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@employee.Allowance.CashCurrencyCode</td>
-                    <td>@employee.Allowance.CashAmount</td>
-                    <td>@employee.WorkingDays</td>
+                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.CashAmount))
+                    {
+                        decimal.TryParse(employee.Allowance.CashAmount, out amount);
+
+                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
+                            @string.Format("{0:n}", amount)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td class="text-center">@employee.WorkingDays</td>
                     <td class="text-center has-icon">
                         <div class="js-contextMenu">
                             <span class="icon-configuration"></span>
@@ -217,6 +294,10 @@
         }
     </tbody>
 </table>
+<div class="list-button">
+    <a class="button -second" asp-controller="PaymentProcess" asp-action="UploadAttendanceAndSalary"
+            asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.Back</a>
+</div>
 
 @section Scripts {
     <environment include="Development">

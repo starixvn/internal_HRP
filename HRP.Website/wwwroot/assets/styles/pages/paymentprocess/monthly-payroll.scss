@@ -3,6 +3,7 @@
 @import "../../components/tables";
 @import "../../components/customize-jquery-contextMenu";
 @import "../../components/customize-fanex-multiSelect";
+@import "../../components/customize-autocomplete";
 
 .DTFC_ScrollWrapper {
     margin-bottom: 8px;
@@ -68,4 +69,8 @@ select.width-92 {
 
 select.width-200 {
     width: 200px;
+}
+
+.negative-amount {
+    color: #ff0000;
 }

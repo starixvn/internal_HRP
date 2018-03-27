@@ -324,6 +324,14 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public async Task<IActionResult> GetEmployeeSuggestionByIDNo(int companyId, string idNo)
+        {
+            IEnumerable<EmployeeSuggestionViewModel> employees = await monthlyPayrollService.GetEmployeeSuggestionByIDNoAsync(companyId, idNo);
+
+            return Json(employees);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> EditAllowances(int payrollId, int employeeId, int companyId, DateTime month)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))

@@ -118,11 +118,11 @@
     <Compile Include="JobGrade\UpdateJobGradeCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\EditMonthlyAllowancesCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetDataFilterForIndexPageCriteriaTests.cs" />
+    <Compile Include="MonthlyPayroll\GetEmployeeSuggestionByIDNoCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetEmployeeSuggestionByNameCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetMonthlyAllowanceCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetMonthlySalaryToUpdateCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\GetMonthlyPayrollCriteriaTests.cs" />
-    <Compile Include="MonthlyPayroll\ResetMonthlySalaryCriteriaTests.cs" />
     <Compile Include="MonthlyPayroll\EditMonthlySalaryCriteriaTests.cs" />
     <Compile Include="Office\CheckOfficeExistsCriteriaTests.cs" />
     <Compile Include="Office\CreateOfficeCriteriaTests.cs" />

@@ -4,7 +4,6 @@ namespace HRP.Core.Enumerations
     {
         SelectMonthAndCompany = 1,
         UploadFiles,
-        MonthlyPayroll,
-        Completed
+        MonthlyPayroll
     }
 }

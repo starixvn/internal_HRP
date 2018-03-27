@@ -114,6 +114,51 @@ var monthlyPayroll = (function ($) {
                 $('#EmployeeId').val('');
             }
         });
+
+        $('#SearchIDNo').autocomplete({
+            source: function (request, response) {
+                var term = request.term;
+                var index = term.indexOf(' (');
+                if (index > 0) {
+                    term = term.substr(0, index);
+                }
+
+                $.ajax({
+                    url: commonFunctions.rootURL + 'PaymentProcess/GetEmployeeSuggestionByIDNo',
+                    dataType: 'json',
+                    data: {
+                        companyId: companyId,
+                        idNo: term
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.idNo,
+                                    value: item.idNo
+                                };
+                            }));
+                        }
+                    }
+                });
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                event.preventDefault();
+                $('#SearchIDNo').val(ui.item.label);
+                $('#IDNo').val(ui.item.label);
+
+                return false;
+            },
+            focus: function (event, ui) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $('#SearchIDNo').keyup(function () {
+            $('#IDNo').val($(this).val());
+        });
     }
 
     function initContextMenu() {
@@ -182,10 +227,6 @@ var monthlyPayroll = (function ($) {
 
         $('#quick-search').off('keyup').on('keyup', function () {
             $table.DataTable().search($(this).val()).draw();
-        });
-
-        $('#SearchIDNo').keyup(function () {
-            $('#IDNo').val($(this).val());
         });
     }
 
