@@ -154,6 +154,8 @@
     <Setting Key="PaymentProcess_UploadAttendanceAndDSTNetSalary" SpName="PaymentProcess_UploadAttendanceAndDSTNetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_GetUploadingFilesResult" SpName="PaymentProcess_GetUploadingFilesResult" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_SubmitUploadingFiles" SpName="PaymentProcess_SubmitUploadingFiles" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_DeleteUploadedAttendance" SpName="PaymentProcess_DeleteUploadedAttendance" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_DeleteUploadedDSTNetSalary" SpName="PaymentProcess_DeleteUploadedDSTNetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_GetDataForGenerateMonthlyPayroll" SpName="PaymentProcess_GetDataForGenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="PaymentProcess_GenerateMonthlyPayroll" SpName="PaymentProcess_GenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>

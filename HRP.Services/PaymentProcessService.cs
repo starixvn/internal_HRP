@@ -224,6 +224,32 @@
             return result ?? new UploadAttendanceAndSalaryViewModel();
         }
 
+        public async Task<CommandResult> DeleteUploadedAttendance(int companyId, DateTime month)
+        {
+            var criteria = new DeleteUploadedAttendanceCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
+        public async Task<CommandResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month)
+        {
+            var criteria = new DeleteUploadedDSTNetSalaryCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+
+            return commandResult;
+        }
+
         private async Task<IEnumerable<string>> GetAllEmployeeCodeByCompanyIdAsync(int companyId)
         {
             var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId }).ConfigureAwait(false);

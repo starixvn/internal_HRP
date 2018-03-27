@@ -960,4 +960,7 @@
   <data name="ViewEmployeeMonthlyPayroll" xml:space="preserve">
     <value>View Employee's Monthly Payroll</value>
   </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Discard</value>
+  </data>
 </root>

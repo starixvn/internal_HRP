@@ -19,7 +19,11 @@
         DSTNetSalaryErrorsTable: '.js-dstNetSalaryErrorsTable',
         AttendanceTotalError: '.js-attendanceTotalError',
         DSTNetSalaryTotalError: '.js-dstNetSalaryTotalError',
-        BtnNextToMonthlyPayroll: '#nextToMonthlyPayroll'
+        BtnNextToMonthlyPayroll: '#nextToMonthlyPayroll',
+        GeneratePayrollWarning: '#generatePayrollWarning',
+        ConfirmGeneratePayroll: '.js-confirmGeneratePayroll',
+        BtnDeleteAttendanceFile: '.js-deleteAttendance',
+        BtnDeleteDSTNetSalaryFile: '.js-deleteDSTNetSalary'
     };
 
     function showErrorsValidationFile($form, inputName, message) {
@@ -50,11 +54,38 @@
 
     function onUploadSuccess(response) {
         if (response.isSuccessful) {
+            ////Note: can reduce these JS code if reload page :D
             renderValidationFilesResult();
 
-            ////TODO: Must consider: 1. JS load component upload 2. js render all page
             $(domElement.AttendanceFile).val("");
             $(domElement.DSTNetSalaryFile).val("");
+            var attendanceFileName = $(domElement.AttendanceFileName);
+            var dstNetSalaryFileName = $(domElement.DSTNetSalaryFileName);
+
+            if (attendanceFileName.text() === '') {
+                var oldAttendanceFileName = attendanceFileName.data('filename-uploaded');
+                attendanceFileName.text(oldAttendanceFileName);
+                if (oldAttendanceFileName !== '') {
+                    showAttendanceIconSuccess();
+                }
+            } else {
+                attendanceFileName.data('filename-uploaded', attendanceFileName.text());
+                showAttendanceIconSuccess();
+                $(domElement.BtnDeleteAttendanceFile).prop('disabled', false);
+            }
+
+            if (dstNetSalaryFileName.text() === '') {
+                var oldDSTNetSalaryFileName = dstNetSalaryFileName.data('filename-uploaded');
+                dstNetSalaryFileName.text(oldDSTNetSalaryFileName);
+                if (oldDSTNetSalaryFileName !== '') {
+                    showDSTNetSalaryIconSuccess();
+                }
+            } else {
+                dstNetSalaryFileName.data('filename-uploaded', dstNetSalaryFileName.text());
+                showDSTNetSalaryIconSuccess();
+                $(domElement.BtnDeleteDSTNetSalaryFile).prop('disabled', false);
+            }
+
             showHideButtonUploadFiles();
         } else {
             $(domElement.UploadFilesForm).validate().showErrors(response.errors);
@@ -102,7 +133,7 @@
         });
     }
 
-    function registerEventChangeFileExcel($form) {
+    function registerEventChangeExcelFiles($form) {
         $(domElement.AttendanceFile).on('change', function () {
             var errorMessage = validateFileExcel($form, "AttendanceFile", this.files[0]);
             showErrorsValidationFile($form, "AttendanceFile", errorMessage);
@@ -154,6 +185,16 @@
         $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
     }
 
+    function showAttendanceIconSuccess() {
+        $(domElement.AttendanceIconSuccess).removeClass('hidden');
+        $(domElement.AttendanceIconClose).removeClass('hidden').addClass('hidden');
+    }
+
+    function showDSTNetSalaryIconSuccess() {
+        $(domElement.DSTNetSalaryIconSuccess).removeClass('hidden');
+        $(domElement.DSTNetSalaryIconClose).removeClass('hidden').addClass('hidden');
+    }
+
     function showHideButtonUploadFiles() {
         var attendanceFile = $(domElement.AttendanceFile).prop('files')[0];
         var dstNetSalaryFile = $(domElement.DSTNetSalaryFile).prop('files')[0];
@@ -178,7 +219,7 @@
         });
     }
 
-    function registerEventBrowseFileExcel() {
+    function registerEventBrowseExcelFiles() {
         $(domElement.BrowseAttendance).on('click', function () {
             $(domElement.AttendanceFile).trigger('click');
         });
@@ -207,8 +248,7 @@
                             var attendanceTotalError = $(domElement.AttendanceTotalError).val();
                             var dstNetSalaryTotalError = $(domElement.DSTNetSalaryTotalError).val();
                             if (attendanceTotalError > 0 || dstNetSalaryTotalError > 0) {
-                                // alert('If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?');
-                                processActionNextToMonthlyPayroll();
+                                $(domElement.GeneratePayrollWarning).modal('show');
                             }
                         } else {
                             processActionNextToMonthlyPayroll();
@@ -219,6 +259,13 @@
                 },
                 error: commonFunctions.handleAjaxError
             });
+        });
+    }
+
+    function registerEventConfirmGeneratePayroll() {
+        $(domElement.ConfirmGeneratePayroll).on('click', function () {
+            processActionNextToMonthlyPayroll();
+            $(domElement.GeneratePayrollWarning).modal('hide');
         });
     }
 
@@ -242,7 +289,41 @@
                     alert('generate fail !!!!!');
                 }
             },
-            //error: commonFunctions.handleAjaxError
+            error: commonFunctions.handleAjaxError
+        });
+    }
+
+    function registerEventDeleteUploadedFiles() {
+        $(domElement.BtnDeleteAttendanceFile).on('click', function () {
+            deleteUploadedFile('PaymentProcess/DeleteUploadedAttendance');
+        });
+
+        $(domElement.BtnDeleteDSTNetSalaryFile).on('click', function () {
+            deleteUploadedFile('PaymentProcess/DeleteUploadedDSTNetSalary');
+        });
+    }
+
+    function deleteUploadedFile(urlDelete) {
+        var $companyId = $(domElement.CompanyId),
+            $selectedTime = $(domElement.SelectedTime);
+
+        $.ajax({
+            type: 'POST',
+            url: commonFunctions.rootURL + urlDelete,
+            dataType: 'json',
+            data: {
+                companyId: $companyId.val(),
+                month: $selectedTime.val(),
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', '#uploadFilesForm').val()
+            },
+            success: function (response) {
+                if (response.isSuccessful) {
+                    window.location = commonFunctions.rootURL + 'PaymentProcess/UploadAttendanceAndSalary?companyId=' + $companyId.val() + '&month=' + encodeURIComponent($selectedTime.val());
+                } else {
+                    $(domElement.UploadFilesForm).validate().showErrors(response.errors);
+                }
+            },
+            error: commonFunctions.handleAjaxError
         });
     }
 
@@ -271,12 +352,14 @@
     function init() {
         initDatatable();
         var $form = $(domElement.UploadFilesForm);
-        registerEventChangeFileExcel($form);
-        registerEventBrowseFileExcel();
+        registerEventChangeExcelFiles($form);
+        registerEventBrowseExcelFiles();
         registerEventClearFiles();
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         registerEventSubmitForm($form);
+        registerEventDeleteUploadedFiles();
         registerEventNextToMonthlyPayroll();
+        registerEventConfirmGeneratePayroll();
     }
 
     return {

@@ -116,12 +116,11 @@
     </div>
 </form>
 
-
-@*<div class="block-ui">
+<div class="block-ui">
     <div class="loader02"></div>
 </div>
 
-<div class="modal fade in" id="otp-device-change-warning" tabindex="-1" role="dialog">
+<div class="modal fade in" id="generatePayrollWarning" tabindex="-1" role="dialog">
     <div class="modal-dialog -small" role="document">
         <div class="modal-content -has-icon">
             <div class="modal-header">
@@ -131,15 +130,15 @@
                 <div class="circle">
                     <span class="icon-warning"></span>
                 </div>
-                <p>If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?</p>
+                <p>@Message.WarningGeneratePayroll</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="button -second" data-dismiss="modal">Discard</button>
-                <a asp-action="ResetOtpDevice" asp-controller="Account" class="button -primary">Yes</a>
+                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Discard</button>
+                <a class="button -primary js-confirmGeneratePayroll">@ViewLang.Yes</a>
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
 @section Scripts {
     <environment include="Development">

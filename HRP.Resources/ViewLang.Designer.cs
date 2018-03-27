@@ -817,6 +817,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discard.
+        /// </summary>
+        public static string Discard {
+            get {
+                return ResourceManager.GetString("Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Division.
         /// </summary>
         public static string Division {

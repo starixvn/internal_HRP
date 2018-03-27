@@ -759,4 +759,7 @@
   <data name="UpdateMonthlyBasicSalarySuccessfully" xml:space="preserve">
     <value>Monthly Basic Salary has been successfully updated!</value>
   </data>
+  <data name="WarningGeneratePayroll" xml:space="preserve">
+    <value>If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?</value>
+  </data>
 </root>

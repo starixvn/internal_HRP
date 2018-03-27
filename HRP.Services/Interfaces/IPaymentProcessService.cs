@@ -26,6 +26,10 @@
 
         Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month);
 
+        Task<CommandResult> DeleteUploadedAttendance(int companyId, DateTime month);
+
+        Task<CommandResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month);
+
         Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month);
 
         Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId);

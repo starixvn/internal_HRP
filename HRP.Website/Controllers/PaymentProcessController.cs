@@ -213,6 +213,38 @@
             return Json(new { isSuccessful = false, errors });
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
+        public async Task<IActionResult> DeleteUploadedAttendance(int companyId, DateTime month)
+        {
+            var deleteResult = await paymentProcessService.DeleteUploadedAttendance(companyId, month);
+            if (deleteResult.IsSuccessful)
+            {
+                return Json(new { isSuccessful = true });
+            }
+
+            ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), deleteResult.Message);
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
+        public async Task<IActionResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month)
+        {
+            var deleteSalaryResult = await paymentProcessService.DeleteUploadedDSTNetSalary(companyId, month);
+            if (deleteSalaryResult.IsSuccessful)
+            {
+                return Json(new { isSuccessful = true });
+            }
+
+            ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), deleteSalaryResult.Message);
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
         private static bool IsRedirectToPageUploadFiles(PaymentProcess paymentProcess)
         {
             var isAttendanceFileNotSubmited = (paymentProcess.AttendanceFileName != null && !paymentProcess.IsAttendanceFileSubmited);

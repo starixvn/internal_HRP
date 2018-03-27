@@ -1978,6 +1978,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?.
+        /// </summary>
+        public static string WarningGeneratePayroll {
+            get {
+                return ResourceManager.GetString("WarningGeneratePayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work Permit - Type1 is required!.
         /// </summary>
         public static string WorkPermitType1Required {
