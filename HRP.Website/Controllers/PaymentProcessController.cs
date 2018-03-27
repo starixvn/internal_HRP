@@ -364,7 +364,8 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month, int? searchWorkingDays,
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month, 
+            int? searchWorkingDays = null,
             int? searchEmployeeId = null,
             string searchEmployee = null,
             string searchCostCenterIds = null,
