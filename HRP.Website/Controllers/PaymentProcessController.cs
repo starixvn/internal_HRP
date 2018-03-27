@@ -332,6 +332,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
@@ -380,7 +381,7 @@
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
-                            return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month Ư);
+                            return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month });
                     }
                 }
             }
@@ -400,15 +401,14 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> Preset(int companyId, int employeeId, DateTime month)
         {
-            var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
-            if (!isHost)
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
             {
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            CommandResult commandResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+            var result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
 
-            return Json(commandResult);
+            return Json(result);
         }
 
         #endregion Monthly Payroll
