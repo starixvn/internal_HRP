@@ -419,7 +419,7 @@ var editBasicSalary = (function ($) {
         });
     }
 
-    function inittoolTipster() {
+    function initTooltipster() {
         $('.js-description').each(function () {
             var $this = $(this);
 
@@ -457,7 +457,7 @@ var editBasicSalary = (function ($) {
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         commonFunctions.registerEventGoBack($btnCancel);
         initSelect2();
-        inittoolTipster();
+        initTooltipster();
         registerEvents();
         reparseform($form);
 
