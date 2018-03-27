@@ -101,6 +101,7 @@
 
         var $autoCalculatedElement = $('input.allowance-calculate[type="text"][data-calculate-for="' + group + '"]');
         $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrencyId));
+        $autoCalculatedElement.valid();
     }
 
     function initModule() {
@@ -156,12 +157,25 @@
             $(this).valid();
         });
 
-        $('.unit-amount, .no-of-days').inputmask({
-            'alias': 'numeric',
-            'autoGroup': true,
-            'digits': 2,
-            'placeholder': '',
-            'allowMinus': false
+        $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            allowMinus: false,
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true,
+        })
+
+        $('.number').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true,
         })
 
         $('.bank-type-select').on('change', function (e) {
