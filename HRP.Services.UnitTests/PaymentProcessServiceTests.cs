@@ -337,6 +337,48 @@
 
         #endregion GetUploadingFilesResultAsync
 
+        #region UploadAttendanceAndDSTNetSalaryAsync
+
+        [Fact]
+        public async Task UploadAttendanceAndDSTNetSalaryAsync_AttendanceTemplateAndDSTNetSalaryTemplateAreNotNull_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var companyId = 1;
+            var month = DateTime.Now;
+            var attendanceTemplate = new AttendanceTemplate
+            {
+                FileName = "attendance.xls",
+                Records = MockListAttendanceUploading(),
+                ValidationResults = MockListValidationResult()
+            };
+
+            var dstNetSalaryTemplate = new DSTNetSalaryTemplate
+            {
+                FileName = "dst.xls",
+                Records = MockListDSTNetSalaryUploading(),
+                ValidationResults = MockListValidationResult()
+            };
+
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.ExecuteNonQueryAsync(Arg.Is<UploadAttendanceAndDSTNetSalaryCriteria>(x => x.CompanyId == companyId && x.Month == month
+                && x.AttendanceFileName == attendanceTemplate.FileName
+                && x.AttendanceUploadingXMLDoc == attendanceTemplate.Records.ToXML().ToString()
+                && x.AttendanceResultXMLDoc == attendanceTemplate.ValidationResults.ToXML().ToString()
+                && x.DSTNetSalaryFileName == dstNetSalaryTemplate.FileName
+                && x.DSTNetSalaryUploadingXMLDoc == dstNetSalaryTemplate.Records.ToXML().ToString()
+                && x.DSTNetSalaryResultXMLDoc == dstNetSalaryTemplate.ValidationResults.ToXML().ToString()
+            )).Returns(new CommandResult());
+
+            // Act
+            var actual = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(companyId, month, attendanceTemplate, dstNetSalaryTemplate);
+
+            // Assert
+            var result = Assert.IsType<CommandResult>(actual);
+            Assert.False(result.IsSuccessful);
+        }
+
+        #endregion UploadAttendanceAndDSTNetSalaryAsync
+
         #region GenerateMonthlyPayroll
 
         [Fact]
@@ -481,9 +523,9 @@
             };
         }
 
-        private Success<IEnumerable<AttendanceUploading>> MockSuccessResultAttendanceUploading()
+        private IEnumerable<AttendanceUploading> MockListAttendanceUploading()
         {
-            var list = new List<AttendanceUploading>()
+            return new List<AttendanceUploading>()
             {
                 new AttendanceUploading {
                     RowNumber = 20,
@@ -491,8 +533,19 @@
                     ActualWorkingDay = "20"
                 }
             };
+        }
 
-            return new Success<IEnumerable<AttendanceUploading>>(list);
+        private IEnumerable<DSTNetSalaryUploading> MockListDSTNetSalaryUploading()
+        {
+            return new List<DSTNetSalaryUploading>()
+            {
+                new DSTNetSalaryUploading {
+                    RowNumber = 8,
+                    EmployeeCode = "111",
+                    Currency = "VND",
+                    NetSalaryReceived = "99999999"
+                }
+            };
         }
 
         private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
@@ -503,21 +556,6 @@
         private Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
         {
             return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
-        }
-
-        private Success<IEnumerable<DSTNetSalaryUploading>> MockSuccessResultDSTNetSalaryUploading()
-        {
-            var list = new List<DSTNetSalaryUploading>()
-            {
-                new DSTNetSalaryUploading {
-                    RowNumber = 8,
-                    EmployeeCode = "111",
-                    Currency = "VND",
-                    NetSalaryReceived = "99999999"
-                }
-            };
-
-            return new Success<IEnumerable<DSTNetSalaryUploading>>(list);
         }
 
         private IEnumerable<ValidationResult> MockListValidationResult()
