@@ -53,6 +53,9 @@ var monthlyPayroll = (function ($) {
                 { className: 'col-width-50', orderable: false, targets: 20 }
             ],
             scrollX: true,
+            scrollY: '50vh',
+            scrollCollapse: true,
+            responsive: true,
             fixedColumns: {
                 leftColumns: 5,
                 rightColumns: 2

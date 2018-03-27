@@ -1,167 +1,166 @@
 // Search Table
 .top-header {
-  @include border-radius(2px 2px 0 0);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: -8px;
-  padding: 8px;
-  border: 1px solid $border-color;
-  border-bottom: none;
+    @include border-radius(2px 2px 0 0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -8px;
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-bottom: none;
 
-  .create-user {
-    &:hover {
-      text-decoration: none;
+    .create-user {
+        &:hover {
+            text-decoration: none;
+        }
+
+        .icon-add {
+            font-size: 10px;
+            margin-right: 2px;
+        }
     }
 
-    .icon-add {
-      font-size: 10px;
-      margin-right: 2px;
-    }
-  }
- 
-  .search-box {
-      position: relative;
-      width: 185px;
-      height: 36px;
-      font-weight: bold;
+    .search-box {
+        position: relative;
+        width: 185px;
+        height: 36px;
+        font-weight: bold;
 
-      .control {    
-        width: 100%;
-      }
-    
-      .icon-search {
-        position: absolute;
-        right: 6px;
-        top: 8px;
-        font-size: 16px;
-        color: #888;
-      }
-  }
-  
-  &.-only-search-box {
-    justify-content: flex-end;
-  }
+        .control {
+            width: 100%;
+        }
+
+        .icon-search {
+            position: absolute;
+            right: 6px;
+            top: 8px;
+            font-size: 16px;
+            color: #888;
+        }
+    }
+
+    &.-only-search-box {
+        justify-content: flex-end;
+    }
 }
 
 .table {
-  margin-bottom: 12px;
+    margin-bottom: 12px;
 
-  thead tr th, tbody tr td {
-    padding: 5px;
-    vertical-align: middle;
-  }
-
-  thead th {    
-    background-color: $table-header-bg;
-    color: $table-header-color;
-    text-align: center;
-
-    &.sub-header {
-      background-color: $table-sub-header-bg;
+    thead tr th, tbody tr td {
+        padding: 5px;
+        vertical-align: middle;
     }
 
-    &.no-border-top {
-      border-top-width: 0;
-    }
-  }
+    thead th {
+        background-color: $table-header-bg;
+        color: $table-header-color;
+        text-align: center;
 
-  thead.thead-light th {
-    background-color: #f1f1f1;
-    color: $text-color;
-  }
-  
-  tbody {
-    tr:first-child td {
-      border-top: none;
-    }
+        &.sub-header {
+            background-color: $table-sub-header-bg;
+        }
 
-    tr:hover {
-      background-color: $table-td-bg-hover;
-
-      .col-odd {
-        background-color: $table-td-bg-hover;
-      }
+        &.no-border-top {
+            border-top-width: 0;
+        }
     }
 
-    .row-special {
-      background-color: $table-row-level-parent;
+    thead.thead-light th {
+        background-color: #f1f1f1;
+        color: $text-color;
     }
 
-    .col-odd, .col-highlight {
-      background-color: rgba(255,253,202,.65);
+    tbody {
+        tr:first-child td {
+            border-top: none;
+        }
+
+        tr:hover {
+            background-color: $table-td-bg-hover;
+
+            .col-odd {
+                background-color: $table-td-bg-hover;
+            }
+        }
+
+        .row-special {
+            background-color: $table-row-level-parent;
+        }
+
+        .col-odd, .col-highlight {
+            background-color: rgba(255,253,202,.65);
+        }
     }
-  }
 
-  &.table-bordered>tbody>tr>td,
-  &.table-bordered>tbody>tr>th,
-  &.table-bordered>thead>tr>td,
-  &.table-bordered>thead>tr>th {
-    border-color: $table-border;
-  }
+    &.table-bordered > tbody > tr > td,
+    &.table-bordered > tbody > tr > th,
+    &.table-bordered > thead > tr > td,
+    &.table-bordered > thead > tr > th {
+        border-color: $table-border;
+    }
 
-  &.table-bordered>thead>tr>th {
-    border-bottom-width: 1px;
-  }
-  
-  .col-number {
-    width: 50px;
-  }
-  
-  //  Icons in table
-  .has-icon {
-    line-height: 1;
-  }  
+    &.table-bordered > thead > tr > th {
+        border-bottom-width: 1px;
+    }
 
-  .config-action {
-      display: inline-block;
-  }
+    .col-number {
+        width: 50px;
+    }
+    //  Icons in table
+    .has-icon {
+        line-height: 1;
+    }
 
-  .icon-configuration {
-      padding-right: 5px;
-      color: #9e9e9e;
-      font-size: 16px;
-  }
+    .config-action {
+        display: inline-block;
+    }
 
-  .dropdown.open .icon-configuration {
-      color: $primary-color;
-  }
+    .icon-configuration {
+        padding-right: 5px;
+        color: #9e9e9e;
+        font-size: 16px;
+    }
 
-  .icon-active {
-      position: relative;
-      color: $primary-color;
-      font-size: 17px;
-  }
-
-  .icon-edit {
-    color: #9e9e9e;
-    font-size: 17px;
-
-    &:hover {
+    .dropdown.open .icon-configuration {
         color: $primary-color;
-        text-decoration: none;
     }
-  }
 
-  .dropdown-menu {
-    @include border-radius(2px);
-    right: 0;
-    left: auto;  
-    min-width: auto;      
-    border: 1px solid $primary-color;       
-    
-    [class^="icon"] {
+    .icon-active {
         position: relative;
-        top: 2px;
-        line-height: 0;
+        color: $primary-color;
+        font-size: 17px;
     }
-    
-    > li >a {
-        padding-top: 6px;
-        padding-bottom: 6px;
+
+    .icon-edit {
+        color: #9e9e9e;
+        font-size: 17px;
+
+        &:hover {
+            color: $primary-color;
+            text-decoration: none;
+        }
     }
-  }
+
+    .dropdown-menu {
+        @include border-radius(2px);
+        right: 0;
+        left: auto;
+        min-width: auto;
+        border: 1px solid $primary-color;
+
+        [class^="icon"] {
+            position: relative;
+            top: 2px;
+            line-height: 0;
+        }
+
+        > li > a {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+    }
 }
 
 // Sorting
@@ -171,101 +170,108 @@ table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
-  position: relative;
-  padding: 0 18px;
+    position: relative;
+    padding: 0 18px;
 }
 
 %icon-sorting {
-  bottom: 50%;
-  margin-bottom: -6px;
-  font-family: "hrp";
-  font-size: 8px;
-  opacity: 1;
-  right: 5px
+    bottom: 50%;
+    margin-bottom: -6px;
+    font-family: "hrp";
+    font-size: 8px;
+    opacity: 1;
+    right: 5px
 }
 
 table.dataTable thead .sorting:after {
-  @extend %icon-sorting;
-  content: "\e921";
+    @extend %icon-sorting;
+    content: "\e921";
 }
 
 table.dataTable thead .sorting_asc:after {
-  @extend %icon-sorting;
-  content: "\e923";
-  color: #fcd601;
+    @extend %icon-sorting;
+    content: "\e923";
+    color: #fcd601;
 }
 
 table.dataTable thead .sorting_desc:after {
-  @extend %icon-sorting;
-  content: "\e922";
-  color: #fcd601;
+    @extend %icon-sorting;
+    content: "\e922";
+    color: #fcd601;
 }
 
 .dataTables_wrapper {
-  .dataTables_length {
-      .form-control {
-          @include border-radius(2px);
-          @include box-shadow-multiple(none);
-          outline: none;
-          width: 60px;
-          height: 28px;
-          line-height: 28px;
-          padding-left: 5px;
-          padding-right: 5px;
-          background-color: #fafafa;
-          border: 1px solid $border-color;
-          font-size: inherit;
-          color: $input-color;   
-      }
-  }
+    .dataTables_length {
+        .form-control {
+            @include border-radius(2px);
+            @include box-shadow-multiple(none);
+            outline: none;
+            width: 60px;
+            height: 28px;
+            line-height: 28px;
+            padding-left: 5px;
+            padding-right: 5px;
+            background-color: #fafafa;
+            border: 1px solid $border-color;
+            font-size: inherit;
+            color: $input-color;
+        }
+    }
+
+    .DTFC_RightHeadBlocker {
+        background-color: $table-header-bg;
+        border-color: $table-border;
+        border-style: solid;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+    }
 }
 
 .pagination {
-  .icon-back, .icon-next {
-    font-size: 10px;
-  }
+    .icon-back, .icon-next {
+        font-size: 10px;
+    }
 
-  .paginate_button.active a,
-  .paginate_button a {
-      @include border-radius(2px);
-      line-height: 28px;
-      height: 28px;
-      width: 28px;
-      padding: 0;
-      border-color: #e2e3e4;
-      text-align: center;
-  }
+    .paginate_button.active a,
+    .paginate_button a {
+        @include border-radius(2px);
+        line-height: 28px;
+        height: 28px;
+        width: 28px;
+        padding: 0;
+        border-color: #e2e3e4;
+        text-align: center;
+    }
 
-  .paginate_button a {
-      color: #666;
+    .paginate_button a {
+        color: #666;
 
-      &:hover {
-          color: $primary-color;
-      }
-  }
+        &:hover {
+            color: $primary-color;
+        }
+    }
 
-  .paginate_button.active a {
-      background-color: #f57d14;
-      color: #fff;
-  }
+    .paginate_button.active a {
+        background-color: #f57d14;
+        color: #fff;
+    }
 
-  > li > a:focus,
-  > li > a:hover,
-  > li > span:focus,
-  > li > span:hover {
-    background-color: lighten($primary-color, 56%);
-  }
+    > li > a:focus,
+    > li > a:hover,
+    > li > span:focus,
+    > li > span:hover {
+        background-color: lighten($primary-color, 56%);
+    }
 
-  > li:first-child > a,
-  > li:first-child > span {
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
-  }
+    > li:first-child > a,
+    > li:first-child > span {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
 
-  > li:last-child > a,
-  > li:last-child > span {
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
-  }
+    > li:last-child > a,
+    > li:last-child > span {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
 }
-

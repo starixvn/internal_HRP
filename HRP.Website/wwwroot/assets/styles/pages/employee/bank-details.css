@@ -411,6 +411,14 @@ table.dataTable thead .sorting_desc:after {
   color: #333;
 }
 
+.dataTables_wrapper .DTFC_RightHeadBlocker {
+  background-color: #1973b2;
+  border-color: #d9d9d9;
+  border-style: solid;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
 .pagination .icon-back, .pagination .icon-next {
   font-size: 10px;
 }
@@ -731,4 +739,3 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 .modal-content .modal-footer.only-button .button {
   margin-right: 0;
 }
-/*# sourceMappingURL=bank-details.css.map */
