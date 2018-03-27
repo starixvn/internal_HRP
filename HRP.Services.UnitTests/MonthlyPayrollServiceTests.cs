@@ -259,7 +259,7 @@
                 new EmployeeSuggestionViewModel { EmployeeId = 1, IDNo = "DAR111", FullName = "Tim", Nickname = "tim.trinh" }
             };
             var monthlyPayrollService = GetMonthlyPayrollService();
-            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByNameCriteria>()).Returns(expected);
+            baseService.GetDataAsync<EmployeeSuggestionViewModel>(Arg.Any<GetEmployeeSuggestionByIDNoCriteria>()).Returns(expected);
 
             // Act
             var actual = await monthlyPayrollService.GetEmployeeSuggestionByIDNoAsync(1, "DAR111");
