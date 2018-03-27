@@ -274,8 +274,9 @@
                             @if (employee.Policy != Policy.None)
                             {
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
-                                   asp-route-payrollId="@employee.PayrollId"
-                                   asp-route-companyId="@Model.CompanyId">
+                                   asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month" asp-route-companyId="@Model.CompanyId"
+                                   asp-route-searchIdNo="@Model.IDNo" asp-route-searchEmployee="@Model.Employee" asp-route-searchEmployeeId="@Model.EmployeeId"
+                                   asp-route-searcCostCenterIds="@Model.CostCenterIds" asp-route-searchWorkingDays="@Model.WorkingDays">
                                     <span class="icon-allowances"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
