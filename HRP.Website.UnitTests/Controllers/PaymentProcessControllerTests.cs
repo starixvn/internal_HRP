@@ -751,6 +751,7 @@
             var viewModel = new EditMonthlySalaryViewModel();
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
+            controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.EditMonthlySalaryAsync(viewModel).Returns(commandResult);
 

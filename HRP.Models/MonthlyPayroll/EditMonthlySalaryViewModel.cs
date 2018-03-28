@@ -50,5 +50,7 @@
         public bool IsRedirectToEditAllowance { get; set; }
 
         public bool IsHost { get; set; }
+
+        public CachingFilterViewModel Filter { get; set; } = new CachingFilterViewModel();
     }
 }

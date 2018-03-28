@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var editBasicSalary = (function ($) {
-    var $form, $btnPreset, $btnRefresh, $btnCancel, $btnSubmit, $btnSubmitAndEditAllowances,
+    var $form, $btnPreset, $btnRefresh, $btnSubmit, $btnSubmitAndEditAllowances,
         employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount,
         maxDigit = 6,
         bankAcountUrl = 'BankAccount/GetEmployeeBankAccounts';
@@ -363,8 +363,8 @@ var editBasicSalary = (function ($) {
         });
     }
 
-    function displaySuccessMessageAndRedirectToEditAllowances(redirectTo) {
-        var $element = $form.find('.js-submitSuccessAndEditAllowances'),
+    function displaySuccessMessageAndRedirectToAction(redirectTo) {
+        var $element = $form.find('.js-updateSuccess'),
             $countDownElement = $element.find('.count-down');
         var delay = 5;
         $element.removeClass('hidden');
@@ -374,6 +374,24 @@ var editBasicSalary = (function ($) {
                 clearInterval(intervalCountDown);
 
                 window.location.href = redirectTo;
+            } else {
+                delay--;
+                $countDownElement.html(delay);
+            }
+        }, 1000);
+    }
+
+    function displayPresetSuccessMessage() {
+        var $element = $form.find('.js-presetSuccess'),
+            $countDownElement = $element.find('.count-down');
+        var delay = 5;
+        $element.removeClass('hidden');
+
+        var intervalCountDown = setInterval(function () {
+            if (delay === 0) {
+                clearInterval(intervalCountDown);
+
+                window.location.reload();
             } else {
                 delay--;
                 $countDownElement.html(delay);
@@ -442,10 +460,15 @@ var editBasicSalary = (function ($) {
         }
     }
 
+    function disableForm() {
+        $form.find('input[type="text"]').attr('readonly', 'readonly');
+        $form.find('select').attr('disabled', 'disabled');
+        $form.submit(false);
+    }
+
     function initModule() {
         $btnPreset = $('.js-btnPreset');
         $btnRefresh = $('.js-btnRefresh');
-        $btnCancel = $('.js-btnCancel');
         $btnSubmit = $('.js-btnSubmit');
         $btnSubmitAndEditAllowances = $('.js-btnSubmitAndEditAllowances');
         $form = $('#edit-basic-salary-form');
@@ -455,16 +478,13 @@ var editBasicSalary = (function ($) {
         afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount'))));
 
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
-        commonFunctions.registerEventGoBack($btnCancel);
         initSelect2();
         initTooltipster();
         registerEvents();
         reparseform($form);
 
         if (!$('#IsHost').prop('checked')) {
-            $form.find('input[type="text"]').attr('readonly', 'readonly');
-            $form.find('select').attr('disabled', 'disabled');
-            $form.submit(false);
+            disableForm();
         }
     }
 
@@ -472,13 +492,9 @@ var editBasicSalary = (function ($) {
         initModule: initModule,
         onUpdateSuccess: function (response) {
             if (response.isSuccessful) {
-                if ($('#IsRedirectToEditAllowance').prop('checked')) {
-                    displaySuccessMessageAndRedirectToEditAllowances(response.redirectTo);
-                } else {
-                    commonFunctions.showSuccessMessage($form.find('.js-submitSuccess'));
-                }
-
+                disableForm();
                 $('#IsRedirectToEditAllowance').prop('checked', false);
+                displaySuccessMessageAndRedirectToAction(response.redirectTo);
             } else {
                 if (response.errors) {
                     $form.validate().showErrors(response.errors);
@@ -488,13 +504,13 @@ var editBasicSalary = (function ($) {
             }
         },
         onPresetSuccess: function (response, status) {
+            $('#modal').modal('hide');
             if (response.isSuccessful) {
-                window.location.reload();
+                disableForm();
+                displayPresetSuccessMessage();
             } else {
                 commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
-
-            $('#modal').modal('hide');
         }
     };
 }(jQuery));

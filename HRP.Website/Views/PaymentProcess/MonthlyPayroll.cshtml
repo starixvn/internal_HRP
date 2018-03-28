@@ -258,7 +258,12 @@
                                 <a class="js-menuItem-basicSalary" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
                                    asp-route-payrollId="@employee.PayrollId"
                                    asp-route-companyId="@Model.CompanyId"
-                                   asp-route-month="@Model.Month">
+                                   asp-route-month="@Model.Month"
+                                   asp-route-employeeId="@Model.EmployeeId"
+                                   asp-route-employee="@Model.Employee"
+                                   asp-route-idNo="@Model.IDNo"
+                                   asp-route-workingDays="@Model.WorkingDays"
+                                   asp-route-costCenterIds="@Model.CostCenterIds">
                                     <span class="icon-salary"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {

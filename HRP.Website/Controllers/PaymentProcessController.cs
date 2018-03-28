@@ -287,10 +287,17 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+#pragma warning disable S107 // Methods should not have too many parameters
         public async Task<IActionResult> EditBasicSalary(
             int payrollId,
             int companyId,
-            DateTime month)
+            DateTime month,
+            int? employeeId = null,
+            string employee = null,
+            string costCenterIds = null,
+            string idNo = null,
+            int? workingDays = null)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
             if (!isRead)
@@ -316,6 +323,11 @@
             viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
+            viewModel.Filter.EmployeeId = employeeId;
+            viewModel.Filter.Employee = employee;
+            viewModel.Filter.IDNo = idNo;
+            viewModel.Filter.CostCenterIds = costCenterIds;
+            viewModel.Filter.WorkingDays = workingDays;
 
             return View(viewModel);
         }
@@ -334,14 +346,34 @@
             if (ModelState.IsValid)
             {
                 CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
+                var redirectTo = viewModel.IsRedirectToEditAllowance
+                    ? Url.Action("EditAllowances", new
+                    {
+                        payrollId = viewModel.PayrollId,
+                        companyId = viewModel.CompanyId,
+                        month = viewModel.Month,
+                        employeeId = viewModel.Filter.EmployeeId,
+                        employee = viewModel.Filter.Employee,
+                        costCenterIds = viewModel.Filter.CostCenterIds,
+                        idNo = viewModel.Filter.IDNo,
+                        workingDays = viewModel.Filter.WorkingDays
+                    })
+                    : Url.Action("EmployeeMonthlyPayroll", new
+                    {
+                        companyId = viewModel.CompanyId,
+                        month = viewModel.Month,
+                        employeeId = viewModel.Filter.EmployeeId,
+                        employee = viewModel.Filter.Employee,
+                        costCenterIds = viewModel.Filter.CostCenterIds,
+                        idNo = viewModel.Filter.IDNo,
+                        workingDays = viewModel.Filter.WorkingDays
+                    });
 
                 return Json(new
                 {
                     isSuccessful = commandResult.IsSuccessful,
                     message = commandResult.Message,
-                    redirectTo = commandResult.IsSuccessful && viewModel.IsRedirectToEditAllowance
-                        ? Url.Action("EditAllowances", new { payrollId = viewModel.PayrollId, companyId = viewModel.CompanyId, month = viewModel.Month })
-                        : string.Empty
+                    redirectTo = commandResult.IsSuccessful ? redirectTo : string.Empty
                 });
             }
 
@@ -366,7 +398,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month, 
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month,
             int? searchWorkingDays = null,
             int? searchEmployeeId = null,
             string searchEmployee = null,
@@ -425,8 +457,9 @@
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
-                            return RedirectToAction("EmployeeMonthlyPayroll", 
-                                new {
+                            return RedirectToAction("EmployeeMonthlyPayroll",
+                                new
+                                {
                                     companyId = viewModel.EmployeeInfo.CompanyId,
                                     month = viewModel.Month,
                                     employeeId = viewModel.SearchEmployeeId,
