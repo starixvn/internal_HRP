@@ -753,8 +753,8 @@
   <data name="BackPayDescriptionFormat" xml:space="preserve">
     <value>Annual Increment from {0}</value>
   </data>
-  <data name="NoPayrollGenerated" xml:space="preserve">
-    <value>There is no generated payroll during this month.</value>
+  <data name="PayrollNotGenerated" xml:space="preserve">
+    <value>Monthly Payroll hasn't been generated. Please come back later.</value>
   </data>
   <data name="UpdateMonthlyBasicSalarySuccessfully" xml:space="preserve">
     <value>Monthly Basic Salary has been successfully updated!</value>
@@ -767,5 +767,8 @@
   </data>
   <data name="WarningBrowseFile" xml:space="preserve">
     <value>Please be informed that any changes taken during this step will reset the information of Monthly Payroll page to default. All changes that you've made in Monthly Payroll will be discard.</value>
+  </data>
+  <data name="NotHasCurrencySetting" xml:space="preserve">
+    <value>There is no currency setting in selected month.</value>
   </data>
 </root>

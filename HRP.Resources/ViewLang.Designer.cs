@@ -214,6 +214,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance file.
+        /// </summary>
+        public static string AttendanceFile {
+            get {
+                return ResourceManager.GetString("AttendanceFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -876,6 +885,15 @@ namespace HRP.Resources {
         public static string DSTNetSalary {
             get {
                 return ResourceManager.GetString("DSTNetSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DST Net Salary file.
+        /// </summary>
+        public static string DSTNetSalaryFile {
+            get {
+                return ResourceManager.GetString("DSTNetSalaryFile", resourceCulture);
             }
         }
         

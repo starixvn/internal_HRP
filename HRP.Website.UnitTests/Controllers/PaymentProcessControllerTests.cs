@@ -39,9 +39,9 @@
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var selectList = MockCompaniesSelectList();
+            var expected = MockSelectWorkingMonthCompanyViewModel();
             var controller = GetPaymentProcessController();
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(expected);
 
             // Act
             var actual = await controller.Index();
@@ -49,32 +49,66 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.Model);
-            Assert.Equal(DateTime.Today, viewModel.SelectedTime);
-            Assert.Equal(selectList, viewModel.Companies);
+            Assert.Equal(expected, viewModel);
         }
 
         [Fact]
-        public async Task SelectWorkingMonthAndCompany_ModelStateIsInvalid_ReturnIndexViewResultWithViewModel()
+        public async Task IndexPost_ModelStateIsInvalid_ReturnIndexViewResultWithViewModel()
         {
             // Arrange
-            var selectList = MockCompaniesSelectList();
+            var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var paramModel = new SelectWorkingMonthCompanyViewModel();
             var controller = GetPaymentProcessController();
             controller.ModelState.AddModelError(nameof(paramModel.CompanyId), "Missing company id");
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
 
             // Act
-            var actual = await controller.SelectWorkingMonthAndCompany(paramModel);
+            var actual = await controller.Index(paramModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
+            var viewDataModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
-            Assert.Equal(selectList, viewModel.Companies);
+            Assert.Equal(viewModel.Companies, viewDataModel.Companies);
+            Assert.Equal(viewModel.SelectedTime, viewDataModel.SelectedTime);
+            Assert.Equal(viewModel.StartDate, viewDataModel.StartDate);
+            Assert.Equal(viewModel.DueDate, viewDataModel.DueDate);
         }
 
         [Fact]
-        public async Task SelectWorkingMonthAndCompany_UserHasHostPermissionAndPayrollIsGenerated_ReturnRedirectToEmployeeMonthlyPayroll()
+        public async Task IndexPost_UserHasHostPermissionAndNotHasCurrencySetting_ReturnIndexViewResultWithModelStateError()
+        {
+            // Arrange
+            var viewModel = MockSelectWorkingMonthCompanyViewModel();
+            var paymentProcess = new PaymentProcess
+            {
+                StartDate = DateTime.Parse("2018-3-1"),
+                DueDate = DateTime.Parse("2018-3-30"),
+                AttendanceFileName = "attendanceFile.xlsx",
+                IsAttendanceFileSubmited = true,
+                DSTNetSalaryFileName = "salaryFile.xls",
+                IsDSTNetSalaryFileSubmited = true,
+                IsPayrollGenerated = true,
+                IsHasCurrencySetting = false
+            };
+
+            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
+            paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
+            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
+            // Act
+            var actual = await controller.Index(paramModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewData = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
+            Assert.Equal("Index", viewResult.ViewName);
+            Assert.Equal(Message.NotHasCurrencySetting, viewResult.ViewData.ModelState["CommonError"].Errors.First().ErrorMessage);
+        }
+
+        [Fact]
+        public async Task IndexPost_UserHasHostPermissionAndPayrollIsGenerated_ReturnRedirectToEmployeeMonthlyPayroll()
         {
             // Arrange
             var paymentProcess = new PaymentProcess
@@ -85,7 +119,8 @@
                 IsAttendanceFileSubmited = true,
                 DSTNetSalaryFileName = "salaryFile.xls",
                 IsDSTNetSalaryFileSubmited = true,
-                IsPayrollGenerated = true
+                IsPayrollGenerated = true,
+                IsHasCurrencySetting = true
             };
 
             var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
@@ -94,7 +129,7 @@
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
 
             // Act
-            var actual = await controller.SelectWorkingMonthAndCompany(paramModel);
+            var actual = await controller.Index(paramModel);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -105,7 +140,7 @@
         [InlineData(false, true, true)]
         [InlineData(true, false, true)]
         [InlineData(true, true, false)]
-        public async Task SelectWorkingMonthAndCompany_UserHasHostPermissionAndPayrollIsNotGenerated_ReturnRedirectToUploadAttendanceAndSalary
+        public async Task IndexPost_UserHasHostPermissionAndPayrollIsNotGenerated_ReturnRedirectToUploadAttendanceAndSalary
             (bool isPayrollGenerated, bool isAttendanceSubmited, bool isDSTNetSalarySubmited)
         {
             // Arrange
@@ -117,7 +152,8 @@
                 IsAttendanceFileSubmited = isAttendanceSubmited,
                 DSTNetSalaryFileName = "salaryFile.xls",
                 IsDSTNetSalaryFileSubmited = isDSTNetSalarySubmited,
-                IsPayrollGenerated = isPayrollGenerated
+                IsPayrollGenerated = isPayrollGenerated,
+                IsHasCurrencySetting = true
             };
             var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
             var controller = GetPaymentProcessController();
@@ -125,7 +161,7 @@
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
 
             // Act
-            var actual = await controller.SelectWorkingMonthAndCompany(paramModel);
+            var actual = await controller.Index(paramModel);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -138,7 +174,7 @@
         [Theory]
         [InlineData("2018-3-1", "2018-3-30", false)]
         [InlineData("2018-3-1", "2018-3-11", true)]
-        public async Task SelectWorkingMonthAndCompany_UserHasReadPermissionAndPayrollIsGenerated_ReturnRedirectToEmployeeMonthlyPayroll
+        public async Task IndexPost_UserHasReadPermissionAndPayrollIsGenerated_ReturnRedirectToEmployeeMonthlyPayroll
             (string startDate, string dueDate, bool isHostOnCompany)
         {
             // Arrange
@@ -154,7 +190,7 @@
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
 
             // Act
-            var actual = await controller.SelectWorkingMonthAndCompany(paramModel);
+            var actual = await controller.Index(paramModel);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -165,11 +201,11 @@
         [Theory]
         [InlineData("2018-3-1", "2018-3-30", false)]
         [InlineData("2018-3-1", "2018-3-11", true)]
-        public async Task SelectWorkingMonthAndCompany_UserHasReadPermissionAndPayrollIsNotGenerated_ReturnIndexViewResultWithModelStateError
+        public async Task IndexPost_UserHasReadPermissionAndPayrollIsNotGenerated_ReturnIndexViewResultWithModelStateError
             (string startDate, string dueDate, bool isHostOnCompany)
         {
             // Arrange
-            var selectList = MockCompaniesSelectList();
+            var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var paymentProcess = new PaymentProcess
             {
                 StartDate = DateTime.Parse(startDate),
@@ -180,17 +216,16 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(isHostOnCompany);
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
 
             // Act
-            var actual = await controller.SelectWorkingMonthAndCompany(paramModel);
+            var actual = await controller.Index(paramModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewData = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
-            Assert.Equal(selectList, viewData.Companies);
-            Assert.Equal(Message.NoPayrollGenerated, viewResult.ViewData.ModelState["CommonError"].Errors.First().ErrorMessage);
+            Assert.Equal(Message.PayrollNotGenerated, viewResult.ViewData.ModelState["CommonError"].Errors.First().ErrorMessage);
         }
 
         #region UploadAttendanceAndDSTSalary
@@ -442,8 +477,8 @@
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.False((bool)returnValue["isSuccessful"]);
-            Assert.Equal(failureAttendance.Message, errors["AttendanceFile"]);
-            Assert.Equal(failureDSTNetSalary.Message, errors["DSTNetSalaryFile"]);
+            Assert.Equal(string.Concat(ViewLang.AttendanceFile, ": ", failureAttendance.Message), errors["AttendanceFile"]);
+            Assert.Equal(string.Concat(ViewLang.DSTNetSalaryFile, ": ", failureDSTNetSalary.Message), errors["DSTNetSalaryFile"]);
         }
 
         [Fact]
@@ -926,12 +961,17 @@
             };
         }
 
-        private SelectList MockCompaniesSelectList()
+        private SelectWorkingMonthCompanyViewModel MockSelectWorkingMonthCompanyViewModel()
         {
             var companies = new List<Company> { MockCompany() };
             var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
-            return selectList;
+            return new SelectWorkingMonthCompanyViewModel
+            {
+                SelectedTime = DateTime.Now,
+                StartDate = DateTime.Today.AddDays(-1),
+                Companies = selectList
+            };
         }
 
         private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()

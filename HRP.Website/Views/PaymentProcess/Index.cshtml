@@ -21,8 +21,8 @@
 
 @Html.Partial("_Steps", (int)PaymentProcessStep.SelectMonthAndCompany)
 
-<form class="search-form" asp-action="SelectWorkingMonthAndCompany" method="post">
-    <div class="list-message-error hidden">
+<form class="search-form" asp-action="Index" method="post">
+    <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
 
@@ -31,7 +31,7 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
+            <input type="text" class="control datetimepicker" asp-for="SelectedTime" data-maxdate="@Model.StartDate" />
             <span class="icon-calendar"></span>
         </div>
     </div>
@@ -41,13 +41,13 @@
     </div>
     <div class="w-100"></div>
     <div class="payment-duration">
-        <div class="date"><span class="required">*</span> The Payment Process Duration</div>
-        <div class="date">Start Date: <strong> 02/01/2018</strong></div>
-        <div class="date">Due Date: <strong>03/01/2018</strong></div>
+        <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
+        <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
+        <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
     </div>
     <div class="w-100"></div>
     <div class="group">
-        <button type="submit" class="button -primary">Submit</button>
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
     </div>
 </form>
 

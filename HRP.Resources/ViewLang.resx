@@ -969,4 +969,10 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="AttendanceFile" xml:space="preserve">
+    <value>Attendance file</value>
+  </data>
+  <data name="DSTNetSalaryFile" xml:space="preserve">
+    <value>DST Net Salary file</value>
+  </data>
 </root>

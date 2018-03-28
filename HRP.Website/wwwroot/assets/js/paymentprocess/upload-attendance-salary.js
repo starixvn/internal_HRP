@@ -40,17 +40,17 @@
         $form.validate().showErrors(errorArray);
     }
 
-    function validateFileExcel($form, inputName, file) {
+    function validateFileExcel($form, fileType, file) {
         var errorMessage;
         if (file === undefined) {
             errorMessage = '';
         } else {
             if (file.size / (1024 * 1024) > 5) {
-                errorMessage = 'The upload file size can not exceed 5Mb. Please use a smaller file!';
+                errorMessage = fileType + 'The upload file size can not exceed 5Mb. Please use a smaller file!';
             } else {
                 var pass = /\.(xls|xlsx)$/i.test(file.name);
                 if (!pass) {
-                    errorMessage = 'The file type is not supported. Please try again.';
+                    errorMessage = fileType + 'The file type is not supported. Please try again.';
                 } else {
                     errorMessage = '';
                 }
@@ -61,10 +61,13 @@
     }
 
     function onUploadSuccess(response) {
+
         if (response.isSuccessful) {
             ////Note: can reduce these JS code if reload page :D
             showErrorsValidationFile($(domElement.UploadFilesForm), "AttendanceFile", '');
             showErrorsValidationFile($(domElement.UploadFilesForm), "DSTNetSalaryFile", '');
+            $(domElement.IsHasAttendanceFileSelected).val(0);
+            $(domElement.IsHasDSTNetSalaryFileSelected).val(0);
             renderValidationFilesResult();
 
             $(domElement.AttendanceFile).val("");
@@ -100,6 +103,8 @@
         } else {
             $(domElement.UploadFilesForm).validate().showErrors(response.errors);
         }
+
+        hideLoadingAnimation();
     }
 
     function renderValidationFilesResult() {
@@ -124,6 +129,7 @@
 
     function registerEventSubmitForm($form) {
         $form.submit(function (e) {
+            showLoadingAnimation();
             e.preventDefault();
 
             if ($(this).valid()) {
@@ -145,7 +151,7 @@
 
     function registerEventChangeExcelFiles($form) {
         $(domElement.AttendanceFile).on('change', function () {
-            var errorMessage = validateFileExcel($form, "AttendanceFile", this.files[0]);
+            var errorMessage = validateFileExcel($form, "Attendance file: ", this.files[0]);
             showErrorsValidationFile($form, "AttendanceFile", errorMessage);
             if (errorMessage !== '') {
                 $(this).val("");
@@ -167,8 +173,8 @@
         });
 
         $(domElement.DSTNetSalaryFile).on('change', function () {
-            var errorMessage = validateFileExcel($form, "DSTNetSalaryFile", this.files[0]);
-            showErrorsValidationFile($form, "DSTNetSalaryFile", errorMessage);
+            var errorMessage = validateFileExcel($form, "DST Net Salary file: ", this.files[0]);
+            showErrorsValidationFile($form, "DSTNetSalaryFile",  errorMessage);
             if (errorMessage !== '') {
                 $(this).val("");
             }
@@ -283,6 +289,7 @@
     }
 
     function checkPaymentProcessStatus() {
+        showLoadingAnimation();
         var $companyId = $(domElement.CompanyId),
             $selectedTime = $(domElement.SelectedTime);
 
@@ -308,8 +315,10 @@
                         processActionNextToMonthlyPayroll();
                     }
                 } else {
-                    alert('go to monthly payroll');
+                    redirectToPageEmployeeMonthlyPayroll();
                 }
+
+                hideLoadingAnimation();
             },
             error: commonFunctions.handleAjaxError
         });
@@ -330,6 +339,7 @@
     }
 
     function processActionNextToMonthlyPayroll() {
+        showLoadingAnimation();
         var $companyId = $(domElement.CompanyId),
             $selectedTime = $(domElement.SelectedTime);
 
@@ -343,11 +353,12 @@
             },
             success: function (response) {
                 if (response.isSuccessful) {
-                    alert('generate successful!');
+                    redirectToPageEmployeeMonthlyPayroll();
                 } else {
                     $(domElement.UploadFilesForm).validate().showErrors(response.errors);
-                    alert('generate fail !!!!!');
                 }
+
+                hideLoadingAnimation();
             },
             error: commonFunctions.handleAjaxError
         });
@@ -364,6 +375,7 @@
     }
 
     function deleteUploadedFile(urlDelete) {
+        showLoadingAnimation();
         var $companyId = $(domElement.CompanyId),
             $selectedTime = $(domElement.SelectedTime);
 
@@ -382,10 +394,27 @@
                 } else {
                     $(domElement.UploadFilesForm).validate().showErrors(response.errors);
                 }
+
+                hideLoadingAnimation();
             },
             error: commonFunctions.handleAjaxError
         });
     }
+
+    function redirectToPageEmployeeMonthlyPayroll() {
+        var $companyId = $(domElement.CompanyId),
+            $selectedTime = $(domElement.SelectedTime);
+        window.location = commonFunctions.rootURL + 'PaymentProcess/EmployeeMonthlyPayroll?companyId=' + $companyId.val() + '&month=' + encodeURIComponent($selectedTime.val());
+    }
+
+    function showLoadingAnimation() {
+        $('.block-ui').removeClass('hidden');
+    }
+
+    function hideLoadingAnimation() {
+        $('.block-ui').removeClass('hidden').addClass('hidden');
+    }
+
 
     function initDatatable() {
         $(domElement.AttendanceErrorsTable).DataTable({

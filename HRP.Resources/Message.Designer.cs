@@ -1429,20 +1429,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no generated payroll during this month..
-        /// </summary>
-        public static string NoPayrollGenerated {
-            get {
-                return ResourceManager.GetString("NoPayrollGenerated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 404 Not Found.
         /// </summary>
         public static string NotFoundError {
             get {
                 return ResourceManager.GetString("NotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no currency setting in selected month..
+        /// </summary>
+        public static string NotHasCurrencySetting {
+            get {
+                return ResourceManager.GetString("NotHasCurrencySetting", resourceCulture);
             }
         }
         
@@ -1569,6 +1569,15 @@ namespace HRP.Resources {
         public static string PasswordRequired {
             get {
                 return ResourceManager.GetString("PasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly Payroll hasn&apos;t been generated. Please come back later..
+        /// </summary>
+        public static string PayrollNotGenerated {
+            get {
+                return ResourceManager.GetString("PayrollNotGenerated", resourceCulture);
             }
         }
         

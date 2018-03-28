@@ -26,6 +26,12 @@
 
         public FileResultViewModel DSTNetSalaryResult { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime DueDate { get; set; }
+
         public string CommonError { get; set; }
     }
 }

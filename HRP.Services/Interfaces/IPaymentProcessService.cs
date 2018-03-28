@@ -10,7 +10,7 @@
 
     public interface IPaymentProcessService
     {
-        Task<SelectList> GetCompanySelectListAsync();
+        Task<SelectWorkingMonthCompanyViewModel> GetDataForSelectWorkingDayMonthAsync();
 
         Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath);
 

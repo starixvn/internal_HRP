@@ -34,22 +34,19 @@
         private IMonthlyPayrollService monthlyPayrollService;
 
         [Fact]
-        public async Task GetCompanySelectListAsync_BaseServiceGetCompanies_ReturnCompanySelectList()
+        public async Task GetDataForSelectWorkingDayMonthAsync_WhenCalled_ReturnSelectWorkingMonthCompanyViewModel()
         {
             // Arrange
-            var companies = new List<Company> { MockCompany() };
-            var expected = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataAsync<Company>(Arg.Is<GetCompanyByFunctionKeyCriteria>(x => x.UserId == sessionService.UserId && x.FunctionKey == "PaymentProcess")).Returns(companies);
+            paymentProcessRepository.GetDataForSelectWorkingMonthCompanyAsync(Arg.Is<GetDataForSelectWorkingMonthCompanyCriteria>(x => x.UserId == sessionService.UserId)).Returns(viewModel);
 
             // Act
-            var actual = await paymentProcessService.GetCompanySelectListAsync();
+            var actual = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
 
             // Assert
-            Assert.IsType<SelectList>(actual);
-            Assert.Equal(expected.DataValueField, actual.DataValueField);
-            Assert.Equal(expected.DataTextField, actual.DataTextField);
-            Assert.Equal(expected.Items, actual.Items);
+            Assert.IsType<SelectWorkingMonthCompanyViewModel>(actual);
+            Assert.Equal(viewModel, actual);
         }
 
         [Fact]
@@ -589,6 +586,19 @@
                     Currency = "VND",
                     NetSalaryReceived = "99999999"
                 }
+            };
+        }
+
+        private SelectWorkingMonthCompanyViewModel MockSelectWorkingMonthCompanyViewModel()
+        {
+            var companies = new List<Company> { MockCompany() };
+            var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+
+            return new SelectWorkingMonthCompanyViewModel
+            {
+                SelectedTime = DateTime.Now,
+                StartDate = DateTime.Today.AddDays(-1),
+                Companies = selectList
             };
         }
 

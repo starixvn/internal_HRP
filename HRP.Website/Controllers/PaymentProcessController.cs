@@ -48,36 +48,35 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new SelectWorkingMonthCompanyViewModel
-            {
-                SelectedTime = DateTime.Today,
-                Companies = await paymentProcessService.GetCompanySelectListAsync()
-            };
+            var viewModel = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
 
             return View(viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         [HttpPost]
-        public async Task<IActionResult> SelectWorkingMonthAndCompany(SelectWorkingMonthCompanyViewModel viewModel)
+        public async Task<IActionResult> Index(SelectWorkingMonthCompanyViewModel viewModel)
         {
-            // Check not select future
-            // TODO
             if (ModelState.IsValid)
             {
                 var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
                 var paymentProcess = await paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
-                var today = DateTime.Today;
-                var isInDuration = paymentProcess.StartDate <= today && today <= paymentProcess.DueDate;
-                if (isHost && isInDuration)
+                if (isHost && IsInPaymentProcessDuration(paymentProcess))
                 {
-                    if (IsRedirectToPageUploadFiles(paymentProcess))
+                    if (paymentProcess.IsHasCurrencySetting)
                     {
-                        return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        if (IsRedirectToPageUploadFiles(paymentProcess))
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        {
+                            return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                        }
+
+                        return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
-                    return RedirectToAction("EmployeeMonthlyPayroll");
+                    ModelState.AddModelError(nameof(viewModel.CommonError), Message.NotHasCurrencySetting);
                 }
                 else
                 {
@@ -86,11 +85,15 @@
                         return RedirectToAction("EmployeeMonthlyPayroll");
                     }
 
-                    ModelState.AddModelError(nameof(viewModel.CommonError), Message.NoPayrollGenerated);
+                    ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
                 }
             }
 
-            viewModel.Companies = await paymentProcessService.GetCompanySelectListAsync();
+            var data = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
+            viewModel.Companies = data.Companies;
+            viewModel.SelectedTime = data.SelectedTime;
+            viewModel.StartDate = data.StartDate;
+            viewModel.DueDate = data.DueDate;
             return View("Index", viewModel);
         }
 
@@ -147,12 +150,12 @@
             var readDSTNetSalaryResult = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
             if (readAttendanceResult is Failure<AttendanceTemplate> failureAttendance)
             {
-                ModelState.AddModelError(nameof(viewModel.AttendanceFile), failureAttendance.Message);
+                ModelState.AddModelError(nameof(viewModel.AttendanceFile), string.Concat(ViewLang.AttendanceFile, ": ", failureAttendance.Message));
             }
 
             if (readDSTNetSalaryResult is Failure<DSTNetSalaryTemplate> failureDSTNetSalary)
             {
-                ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), failureDSTNetSalary.Message);
+                ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), string.Concat(ViewLang.DSTNetSalaryFile, ": ", failureDSTNetSalary.Message));
             }
 
             if (ModelState.IsValid)
@@ -253,6 +256,12 @@
             return (!paymentProcess.IsPayrollGenerated
                         || isAttendanceFileNotSubmited
                         || isDSTNetSalaryFileNotSubmited);
+        }
+
+        private static bool IsInPaymentProcessDuration(PaymentProcess paymentProcess)
+        {
+            var today = DateTime.Today;
+            return paymentProcess.StartDate <= today && today <= paymentProcess.DueDate;
         }
 
         #endregion UploadAttendanceAndDSTSalary
@@ -453,7 +462,8 @@
                     switch (submitAction)
                     {
                         case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
-                            return RedirectToAction("EditBasicSalary", new {
+                            return RedirectToAction("EditBasicSalary", new
+                            {
                                 companyId = viewModel.EmployeeInfo.CompanyId,
                                 month = viewModel.Month,
                                 payrollId = viewModel.Allowance.PayrollId,
