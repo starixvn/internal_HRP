@@ -18,7 +18,7 @@
     <Setting Key="Company_Create" SpName="Company_Create" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Company_GetById" SpName="Company_GetById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Company_Update" SpName="Company_Update" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Company_GetCompaniesForPaymentProcess" SpName="Company_GetCompaniesForPaymentProcess" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_GetByFunctionKey" SpName="Company_GetByFunctionKey" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Division">
     <Setting Key="Division_GetByCompanyId" SpName="Division_GetByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
@@ -168,5 +168,8 @@
     <Setting Key="MonthlyPayroll_UpdateSalary" SpName="MonthlyPayroll_UpdateSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetAllowances" SpName="MonthlyPayroll_GetAllowances" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_UpdateAllowances" SpName="MonthlyPayroll_UpdateAllowances" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Payslip">
+    <Setting Key="Payslip_Get" SpName="Payslip_Get" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

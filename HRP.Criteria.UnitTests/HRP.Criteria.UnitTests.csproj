@@ -82,7 +82,7 @@
     <Compile Include="City\GetAllCityCriteriaTests.cs" />
     <Compile Include="City\GetCityByIdCriteriaTests.cs" />
     <Compile Include="City\UpdateCityCriteriaTests.cs" />
-    <Compile Include="Company\GetCompaniesForPaymentProcessCriteriaTests.cs" />
+    <Compile Include="Company\GetCompanyByFunctionKeyCriteriaTests.cs" />
     <Compile Include="CostCenter\CheckCostCenterExistsCriteriaTests.cs" />
     <Compile Include="CostCenter\CreateCostCenterCriteriaTests.cs" />
     <Compile Include="CostCenter\GetAllCostCenterCriteriaTests.cs" />

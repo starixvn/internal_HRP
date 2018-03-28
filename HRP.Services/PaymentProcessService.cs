@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
@@ -52,7 +53,12 @@
 
         public async Task<SelectList> GetCompanySelectListAsync()
         {
-            var companies = await baseService.GetDataAsync<Company>(new GetCompaniesForPaymentProcessCriteria { UserId = sessionService.UserId }).ConfigureAwait(false);
+            var criteria = new GetCompanyByFunctionKeyCriteria
+            {
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.PaymentProcess
+            };
+            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
 
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }

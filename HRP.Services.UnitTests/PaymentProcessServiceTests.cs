@@ -40,7 +40,7 @@
             var companies = new List<Company> { MockCompany() };
             var expected = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataAsync<Company>(Arg.Is<GetCompaniesForPaymentProcessCriteria>(x => x.UserId == sessionService.UserId)).Returns(companies);
+            baseService.GetDataAsync<Company>(Arg.Is<GetCompanyByFunctionKeyCriteria>(x => x.UserId == sessionService.UserId && x.FunctionKey == "PaymentProcess")).Returns(companies);
 
             // Act
             var actual = await paymentProcessService.GetCompanySelectListAsync();

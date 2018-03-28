@@ -88,6 +88,8 @@
             services.AddScoped<IBaseMailService, BaseMailService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<IBaseService, BaseService>();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IPdfRenderService, PdfRenderService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();
@@ -99,6 +101,7 @@
             services.AddScoped<IPaymentProcessService, PaymentProcessService>();
             services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
             services.AddScoped<ITemplateReader, TemplateReader>();
+            services.AddScoped<IPayslipService, PayslipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
