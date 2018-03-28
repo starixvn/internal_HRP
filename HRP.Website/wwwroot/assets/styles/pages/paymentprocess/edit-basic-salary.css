@@ -415,4 +415,9 @@ input[type="radio"]:disabled + span {
   font-weight: bold;
   color: #117a00 !important;
 }
+
+.search-form .select2-container--default .select2-selection--single {
+  height: 32px;
+  line-height: 32px;
+}
 /*# sourceMappingURL=edit-basic-salary.css.map */
