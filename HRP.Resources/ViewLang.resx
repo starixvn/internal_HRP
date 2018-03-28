@@ -963,4 +963,10 @@
   <data name="Discard" xml:space="preserve">
     <value>Discard</value>
   </data>
+  <data name="NextAnyway" xml:space="preserve">
+    <value>Next Anyway</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

@@ -1618,6 +1618,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next Anyway.
+        /// </summary>
+        public static string NextAnyway {
+            get {
+                return ResourceManager.GetString("NextAnyway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nick Name.
         /// </summary>
         public static string Nickname {
@@ -1677,6 +1686,15 @@ namespace HRP.Resources {
         public static string Office {
             get {
                 return ResourceManager.GetString("Office", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         

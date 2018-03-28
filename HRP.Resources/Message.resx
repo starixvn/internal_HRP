@@ -762,4 +762,10 @@
   <data name="WarningGeneratePayroll" xml:space="preserve">
     <value>If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?</value>
   </data>
+  <data name="WarningFileNotUploaded" xml:space="preserve">
+    <value>Your files have not been uploaded. If you try to go to next screen, all files will be lost. If you wish to proceed to the next step without uploading the files, click 'Next Anyway', otherwise, click 'Cancel' and then click 'Upload'.</value>
+  </data>
+  <data name="WarningBrowseFile" xml:space="preserve">
+    <value>Please be informed that any changes taken during this step will reset the information of Monthly Payroll page to default. All changes that you've made in Monthly Payroll will be discard.</value>
+  </data>
 </root>

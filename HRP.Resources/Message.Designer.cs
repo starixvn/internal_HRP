@@ -1978,6 +1978,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please be informed that any changes taken during this step will reset the information of Monthly Payroll page to default. All changes that you&apos;ve made in Monthly Payroll will be discard..
+        /// </summary>
+        public static string WarningBrowseFile {
+            get {
+                return ResourceManager.GetString("WarningBrowseFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your files have not been uploaded. If you try to go to next screen, all files will be lost. If you wish to proceed to the next step without uploading the files, click &apos;Next Anyway&apos;, otherwise, click &apos;Cancel&apos; and then click &apos;Upload&apos;..
+        /// </summary>
+        public static string WarningFileNotUploaded {
+            get {
+                return ResourceManager.GetString("WarningFileNotUploaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you try to skip the error(s), all the error line(s) will be ignored in Monthly Payroll and information will be retrieved from Payroll Setting page. Do you want to generate Monthly Payroll right away?.
         /// </summary>
         public static string WarningGeneratePayroll {

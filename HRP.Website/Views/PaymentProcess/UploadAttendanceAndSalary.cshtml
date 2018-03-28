@@ -63,6 +63,9 @@
     <input type="hidden" asp-for="SelectedTime" />
     <input type="file" asp-for="AttendanceFile" class="hidden" />
     <input type="file" asp-for="DSTNetSalaryFile" class="hidden" />
+    <input type="hidden" id="isHasAttendanceFileSelected" value="0" />
+    <input type="hidden" id="isHasDSTNetSalaryFileSelected" value="0" />
+    <input type="hidden" id="isShowBrowseFileWarning" value=@((isEmptyAttendanceFilename && isEmptyDSTNetSalaryFilename) ? "0" : "1") />
 
     <div class="text width-660">
         @ViewLang.UploadAttendanceFile
@@ -117,8 +120,8 @@
 </form>
 
 @*<div class="block-ui">
-    <div class="loader02"></div>
-</div>*@
+        <div class="loader02"></div>
+    </div>*@
 
 <div class="modal fade in" id="generatePayrollWarning" tabindex="-1" role="dialog">
     <div class="modal-dialog -small" role="document">
@@ -135,6 +138,47 @@
             <div class="modal-footer">
                 <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Discard</button>
                 <a class="button -primary js-confirmGeneratePayroll">@ViewLang.Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="fileNotUploadedWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog -small" role="document">
+        <div class="modal-content -has-icon">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+            </div>
+            <div class="modal-body">
+                <div class="circle">
+                    <span class="icon-warning"></span>
+                </div>
+                <p>@Message.WarningFileNotUploaded</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Discard</button>
+                <a class="button -primary js-nextAnyway">@ViewLang.NextAnyway</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="browseFileWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog -small" role="document">
+        <div class="modal-content -has-icon">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="continueToAction" value="0" />
+                <div class="circle">
+                    <span class="icon-warning"></span>
+                </div>
+                <p>@Message.WarningBrowseFile</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Cancel</button>
+                <a class="button -primary js-confirmBrowseFile">@ViewLang.OK</a>
             </div>
         </div>
     </div>
