@@ -1,0 +1,41 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/textbox";
+@import "../../components/tables";
+
+.top-header {
+    justify-content: flex-end;
+}
+
+.-send-payslip {
+    background-color: $payslip-primary-color;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 4px;
+    font-size: 13px;
+}
+
+.table {
+    .icon-active {
+        color:  $payslip-primary-color;
+    }
+    .icon-successful {
+        font-size: 17px;
+        color: #999;
+    }
+    .icon-warning {
+        font-size: 17px;
+        color: #f57d14;
+    }
+    .icon-adjusted {
+        font-size: 17px;
+        color: $payslip-primary-color;
+    }
+    .employee-name {
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

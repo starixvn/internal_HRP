@@ -1,1 +1,192 @@
 ﻿
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
+    </environment>
+
+    <environment exclude="Development">
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="active">Payslip</li>
+</ol>
+
+<form class="search-form"  method="post">
+    <div class="group">
+        <label class="text">Month/Year</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker"  readonly />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="group">
+        <label class="text">Company</label>
+        <select class="control select2">
+            <option>DAR</option>
+            <option>GWG</option>
+            <option>WGI</option>
+            <option>EHL</option>
+            <option>OW</option>
+        </select>
+    </div>
+    <div class="group">
+        <label class="text">Send Payslip</label>
+        <select class="control select2">
+            <option>All</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+    </div>
+    <div class="group">
+        <button type="submit" class="button -primary">Submit</button>
+    </div>
+</form>
+<div class="top-header">
+    <div class="search-box">
+        <input type="search" class="control" placeholder="Search">        
+        <span class="icon-search"></span>
+    </div>
+</div>
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="2">#</th>
+                <th rowspan="2">ID No.</th>
+                <th rowspan="2">Employee Name</th>
+                <th rowspan="2">Nickname</th>
+                <th rowspan="2">Section</th>
+                <th rowspan="2">Email</th>
+                <th rowspan="2">Telephone No.</th>
+                <th rowspan="2">Monthly Payroll Status</th>
+                <th colspan="2"><input type="button" value="Send Payslip" class="btn -send-payslip"></th>
+            </tr>
+            <tr>
+                <th>Sent</th>
+                <th>
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">1</td>
+                <td>OW23455</td>
+                <td><a href="#" class="employee-name">Yeo San My</a></td>
+                <td class="text-center">Yeo</td>
+                <td>OW/GO/HRA/HRA/ADM</td>
+                <td>yeomy@gmail.com</td>
+                <td>0123456789</td>
+                <td class="text-center"><span class="icon-successful"></span></td>
+                <td class="text-center"><span class="icon-active"></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">2</td>
+                <td>WGI02458</td>
+                <td><a href="#" class="employee-name">Hunter Tran</a></td>
+                <td class="text-center">Hunter</td>
+                <td>OW/GO/HRA/HRA/HR</td>
+                <td>huntertran123@gmail.com</td>
+                <td>0856432954</td>
+                <td class="text-center"><span class="icon-warning"></span></td>
+                <td class="text-center"><span class="icon-active"></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">3</td>
+                <td>GWG01567</td>
+                <td><a href="#" class="employee-name">Nguyen Thi Thuy Duong</a></td>
+                <td class="text-center">Alice</td>
+                <td>OW/GO/HRA/HRA/HR</td>
+                <td>thuyduong@gmail.com</td>
+                <td>0123456789</td>
+                <td class="text-center"><span class="icon-adjusted"></span></td>
+                <td class="text-center"><span class=""></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">4</td>
+                <td>DAR11365</td>
+                <td><a href="#" class="employee-name">Yee Chang Wang</a></td>
+                <td class="text-center">Wang</td>
+                <td>OW/GO/HRA/HRA/HR</td>
+                <td>yeewang90@gmail.com</td>
+                <td>0123456789</td>
+                <td class="text-center"><span class="icon-successful"></span></td>
+                <td class="text-center"><span class=""></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">5</td>
+                <td>EHL001358</td>
+                <td><a href="#" class="employee-name">Oliver Nguyen</a></td>
+                <td class="text-center">Oliver</td>
+                <td>OW/GO/HRA/HRA/HR</td>
+                <td>olivernguyen@gmail.com</td>
+                <td>0123456789</td>
+                <td class="text-center"><span class="icon-warning"></span></td>
+                <td class="text-center"><span class="icon-active"></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">6</td>
+                <td>OW23455</td>
+                <td><a href="#" class="employee-name">Elton Nguyen</a></td>
+                <td class="text-center">Elton</td>
+                <td>OW/GO/HRA/HRA/ADM</td>
+                <td>elton@gmail.com</td>
+                <td>0123456789</td>
+                <td class="text-center"><span class="icon-adjusted"></span></td>
+                <td class="text-center"><span class="icon-active"></span></td>
+                <td class="text-center">
+                    <label>
+                        <input type="checkbox" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}
