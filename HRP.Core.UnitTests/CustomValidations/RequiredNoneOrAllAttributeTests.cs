@@ -1,6 +1,5 @@
 ﻿namespace HRP.Core.UnitTests
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -73,18 +72,7 @@
         }
 
         [Fact]
-        public void AddValidation_ContextIsNull_ThrowException()
-        {
-            // Arrange
-            var attribute = new RequiredNoneOrAllAttribute();
-
-            // Act & Assert
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValidation(null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
-        }
-
-        [Fact]
-        public void AddValidation_ContextIsNotNull_SetsAttributesAsExpected()
+        public void AddValidation_WhenCalled_SetsAttributesAsExpected()
         {
             // Arrange
             var context = GetClientModelValidationContext();

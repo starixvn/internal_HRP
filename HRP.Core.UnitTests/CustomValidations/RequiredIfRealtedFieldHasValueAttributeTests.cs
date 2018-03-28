@@ -18,18 +18,62 @@
     public class RequiredIfRealtedFieldHasValueAttributeTests
     {
         [Fact]
-        public void AddValidation_ContextIsNull_ThrowException()
+        public void IsValid_ValueIsNotNull_ReturnSuccess()
         {
             // Arrange
-            var attribute = new RequiredIfRealtedFieldHasValueAttribute();
+            var validationResults = new List<ValidationResult>();
+            var model = new AdditionModelTest
+            {
+                UnitAmount = "1000"
+            };
+            var context = new ValidationContext(model);
 
-            // Act & Assert
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValidation(null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
+            // Act
+            Validator.TryValidateObject(model, context, validationResults, true);
+
+            // Assert
+            Assert.Empty(validationResults);
         }
 
         [Fact]
-        public void AddValidation_ContextIsNotNull_SetsAttributesAsExpected()
+        public void IsValid_RelatedPropertyIsNull_ReturnSuccess()
+        {
+            // Arrange
+            var validationResults = new List<ValidationResult>();
+            var model = new AdditionModelTest
+            {
+                UnitAmount = "1000"
+            };
+            var context = new ValidationContext(model);
+
+            // Act
+            Validator.TryValidateObject(model, context, validationResults, true);
+
+            // Assert
+            Assert.Empty(validationResults);
+        }
+
+        [Fact]
+        public void IsValid_ValueIsNullAndRelatedPropertyIsNotNull_ReturnError()
+        {
+            // Arrange
+            var validationResults = new List<ValidationResult>();
+            var model = new AdditionModelTest
+            {
+                NoOfDays = 1
+            };
+            var context = new ValidationContext(model);
+
+            // Act
+            Validator.TryValidateObject(model, context, validationResults, true);
+
+            // Assert
+            Assert.Single(validationResults);
+            Assert.Equal("Required", validationResults.First().ErrorMessage);
+        }
+
+        [Fact]
+        public void AddValidation_WhenCalled_SetsAttributesAsExpected()
         {
             // Arrange
             var context = GetClientModelValidationContext();
@@ -66,6 +110,14 @@
                  metadata,
                  metadataProvider,
                  new AttributeDictionary());
+        }
+
+        private class AdditionModelTest
+        {
+            [RequiredIfRealtedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessage = "Required")]
+            public string UnitAmount { get; set; }
+
+            public decimal? NoOfDays { get; set; }
         }
     }
 }
