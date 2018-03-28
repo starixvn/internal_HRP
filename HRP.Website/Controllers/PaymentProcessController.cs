@@ -453,7 +453,16 @@
                     switch (submitAction)
                     {
                         case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
-                            return RedirectToAction("EditBasicSalary", new { companyId = viewModel.EmployeeInfo.CompanyId, month = viewModel.Month, payrollId = viewModel.Allowance.PayrollId });
+                            return RedirectToAction("EditBasicSalary", new {
+                                companyId = viewModel.EmployeeInfo.CompanyId,
+                                month = viewModel.Month,
+                                payrollId = viewModel.Allowance.PayrollId,
+                                employeeId = viewModel.SearchEmployeeId,
+                                employee = viewModel.SearchEmployee,
+                                costCenterIds = viewModel.SearcCostCenterIds,
+                                idNo = viewModel.SearchIdNo,
+                                workingDays = viewModel.SearchWorkingDays
+                            });
 
                         case EditMonthlyAllowanceAction.Save:
                         default:
@@ -465,7 +474,8 @@
                                     employeeId = viewModel.SearchEmployeeId,
                                     employee = viewModel.SearchEmployee,
                                     costCenterIds = viewModel.SearcCostCenterIds,
-                                    idNo = viewModel.SearchIdNo
+                                    idNo = viewModel.SearchIdNo,
+                                    workingDays = viewModel.SearchWorkingDays
                                 });
                     }
                 }

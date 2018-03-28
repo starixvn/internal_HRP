@@ -45,41 +45,41 @@
 
         public int? SubsistenceCurrencyId { get; set; }
 
-        public string HomePassageAmount { get; set; }
-
-        public int? HomePassageCurrencyId { get; set; }
-
         public string HousingAmount { get; set; }
 
         public int? HousingCurrencyId { get; set; }
+
+        public string HomePassageAmount { get; set; }
+
+        public int? HomePassageCurrencyId { get; set; }
 
         public string MobilePhoneAmount { get; set; }
 
         public int? MobilePhoneCurrencyId { get; set; }
 
-        public string HPIAmount { get; set; }
-
-        public int? HPICurrencyId { get; set; }
-
         public string DutyMealAmount { get; set; }
 
         public int? DutyMealCurrencyId { get; set; }
 
-        public string SecondmentAmount { get; set; }
+        public string HPIAmount { get; set; }
 
-        public int? SecondmentCurrencyId { get; set; }
+        public int? HPICurrencyId { get; set; }
 
         public string OthersAmount { get; set; }
 
         public int? OthersCurrencyId { get; set; }
 
-        public int? RoomingChargesCurrencyId { get; set; }
+        public string SecondmentAmount { get; set; }
 
-        public string RoomingChargesAmount { get; set; }
+        public int? SecondmentCurrencyId { get; set; }
 
         public int? FitnessFirstCurrencyId { get; set; }
 
         public string FitnessFirstAmount { get; set; }
+
+        public int? RoomingChargesCurrencyId { get; set; }
+
+        public string RoomingChargesAmount { get; set; }
 
         [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }

@@ -62,14 +62,14 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? CashCurrencyId { get; set; }
 
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAmount) },
+        ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
+        public int? CashAccountId { get; set; }
+
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string CashAmount { get; set; }
-
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAmount) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
-        public int? CashAccountId { get; set; }
 
         public int? DSTNetSalaryCurrencyId { get; set; }
 
