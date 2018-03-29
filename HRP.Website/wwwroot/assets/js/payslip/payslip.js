@@ -3,7 +3,6 @@
 var payslips = (function ($) {
     function initSelect2() {
         $('.js-select2').select2({
-            placeholder: '',
             minimumResultsForSearch: Infinity
         });
     }

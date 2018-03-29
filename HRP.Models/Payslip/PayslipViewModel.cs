@@ -7,7 +7,7 @@
 
     public class PayslipViewModel
     {
-        [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 
         public int CompanyId { get; set; }

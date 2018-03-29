@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace HRP.Models
+﻿namespace HRP.Models
 {
+    using System.Collections.Generic;
+    using HRP.Resources;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     public static class CommonSelectList
     {
         public static IList<SelectListItem> IsActive
@@ -13,19 +14,19 @@ namespace HRP.Models
                 {
                     new SelectListItem
                     {
-                        Value = "",
-                        Text = "All",
+                        Value = string.Empty,
+                        Text = ViewLang.All,
                         Selected = true
                     },
                     new SelectListItem
                     {
                         Value = true.ToString(),
-                        Text = "Yes"
+                        Text = ViewLang.Yes
                     },
                     new SelectListItem
                     {
                         Value = false.ToString(),
-                        Text = "No"
+                        Text = ViewLang.No
                     }
                 };
 
