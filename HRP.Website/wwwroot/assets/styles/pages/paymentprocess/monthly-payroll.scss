@@ -4,47 +4,10 @@
 @import "../../components/customize-jquery-contextMenu";
 @import "../../components/customize-fanex-multiSelect";
 @import "../../components/customize-autocomplete";
+@import "../../components/status";
 
 .DTFC_ScrollWrapper {
     margin-bottom: 8px;
-}
-
-%icon-status {
-    position: relative;
-    top: 3px;
-    font-family: "hrp";
-    font-size: 16px;
-    line-height: 0;
-}
-
-.status-done {
-    @extend %icon-status;
-
-    &:before {
-        content: "\e92c";
-        color: #18aa3a;
-    }
-}
-
-.status-incorrect {
-    @extend %icon-status;
-
-    &:before {
-        position: relative;
-        top: -1px;
-        font-size: 14px;
-        color: #ff6000;
-        content: "\e91c";
-    }
-}
-
-.status-default {
-    @extend %icon-status;
-
-    &:before {
-        content: "\e913";
-        color: #bebebe;
-    }
 }
 
 .col-width-50 {
@@ -73,4 +36,8 @@ select.width-200 {
 
 .negative-amount {
     color: #ff0000;
+}
+
+#SearchIDNo {
+    width: 90px;
 }

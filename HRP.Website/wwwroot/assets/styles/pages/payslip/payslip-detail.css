@@ -1,0 +1,126 @@
+body {
+  font-family: Roboto, Arial, Tahoma, sans-serif;
+  font-size: 13px;
+}
+
+.employee-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.employee-info .col {
+  padding: 6px;
+}
+
+.employee-info .col .row {
+  padding: 2px 0;
+}
+
+.employee-info .col .row .red {
+  font-weight: normal;
+}
+
+.employee-info .col .main-info {
+  display: flex;
+}
+
+.employee-info .col .main-info .name {
+  margin-right: 5px;
+}
+
+.employee-info .col .main-info .id {
+  margin-right: 28px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.red {
+  color: #f00 !important;
+}
+
+.highlight {
+  background-color: #ffe3cb;
+}
+
+.payslip-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.detail-section {
+  border: 1px solid #d9d9d9;
+  position: relative;
+}
+
+.detail-section .title {
+  text-transform: uppercase;
+  background-color: #1973b2;
+  color: #fff;
+  padding: 5px 16px;
+  font-weight: bold;
+}
+
+.detail-section .content, .detail-section .footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 8px;
+}
+
+.detail-section .content:after {
+  content: '';
+  height: 28px;
+}
+
+.detail-section .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  height: 28px;
+}
+
+.detail-section:nth-of-type(2n+1) {
+  border-right-width: 0;
+}
+
+.detail-section .key {
+  color: #1973b2;
+  padding: 5px 8px;
+}
+
+.detail-section .value {
+  text-align: right;
+  padding: 5px 8px;
+}
+
+.detail-section .key.total, .detail-section .value.total {
+  text-transform: uppercase;
+  color: inherit;
+  position: relative;
+  bottom: 0;
+  font-weight: bold;
+}
+
+.detail-section.grand-total {
+  background: #c5cace;
+  border-top-width: 0;
+}
+
+.detail-section.grand-total .content:after {
+  height: 0;
+}
+
+.detail-section.grand-total .key, .detail-section.grand-total .value {
+  text-transform: uppercase;
+  color: inherit;
+  font-weight: bold;
+}
+
+.note {
+  text-align: center;
+  color: #666;
+  margin-top: 12px;
+}
+/*# sourceMappingURL=payslip-detail.css.map */

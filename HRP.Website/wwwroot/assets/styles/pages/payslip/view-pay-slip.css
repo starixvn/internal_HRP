@@ -500,6 +500,32 @@ table.dataTable thead .sorting_desc:after {
   border-bottom-right-radius: 2px;
 }
 
+.status-done, .status-incorrect, .status-default {
+  position: relative;
+  top: 3px;
+  font-family: "hrp";
+  font-size: 16px;
+  line-height: 0;
+}
+
+.status-done:before {
+  content: "\e92c";
+  color: #18aa3a;
+}
+
+.status-incorrect:before {
+  position: relative;
+  top: -1px;
+  font-size: 14px;
+  color: #ff6000;
+  content: "\e91c";
+}
+
+.status-default:before {
+  content: "\e913";
+  color: #999;
+}
+
 .top-header {
   justify-content: flex-end;
 }
@@ -516,26 +542,30 @@ table.dataTable thead .sorting_desc:after {
   color: #07a10e;
 }
 
-.table .icon-successful {
-  font-size: 17px;
-  color: #999;
-}
-
-.table .icon-warning {
-  font-size: 17px;
-  color: #f57d14;
-}
-
-.table .icon-adjusted {
-  font-size: 17px;
-  color: #07a10e;
-}
-
 .table .employee-name {
   text-decoration: none;
 }
 
 .table .employee-name:hover {
   text-decoration: underline;
+}
+
+.table thead tr:first-child th:last-child {
+  border-bottom-width: 0;
+}
+
+.search-form .select2-container {
+  min-width: 100px;
+}
+
+.search-form .select2-container .select2-selection--single {
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  height: 32px;
+  border-color: #d9d9d9;
 }
 /*# sourceMappingURL=view-pay-slip.css.map */

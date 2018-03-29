@@ -478,10 +478,6 @@ table.dataTable thead .sorting_desc:after {
   color: #1973b2;
 }
 
-.DTFC_ScrollWrapper {
-  margin-bottom: 8px;
-}
-
 .status-done, .status-incorrect, .status-default {
   position: relative;
   top: 3px;
@@ -505,7 +501,11 @@ table.dataTable thead .sorting_desc:after {
 
 .status-default:before {
   content: "\e913";
-  color: #bebebe;
+  color: #999;
+}
+
+.DTFC_ScrollWrapper {
+  margin-bottom: 8px;
 }
 
 .col-width-50 {
@@ -534,5 +534,9 @@ select.width-200 {
 
 .negative-amount {
   color: #ff0000;
+}
+
+#SearchIDNo {
+  width: 90px;
 }
 /*# sourceMappingURL=monthly-payroll.css.map */

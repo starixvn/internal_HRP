@@ -368,6 +368,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   font-weight: normal;
   font-size: 18px;
   color: #1973b2;
+  top: 8px;
 }
 
 .steps.payment-process .select-working-date:before {
