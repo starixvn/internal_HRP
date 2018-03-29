@@ -3,8 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Payslip;
+    using HRP.Models;
     using HRP.Models.Payslip;
 
     public class PayslipService : IPayslipService
@@ -20,7 +23,18 @@
             this.sessionService = sessionService;
         }
 
-        public Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent)
+        public async Task<IEnumerable<Company>> GetCompanyAsync()
+        {
+            var criteria = new GetCompanyByFunctionKeyCriteria
+            {
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.Payslip
+            };
+
+            return await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent)
         {
             var criteria = new GetPayslipCriteria
             {
@@ -30,7 +44,7 @@
                 IsSent = isSent
             };
 
-            return baseService.GetDataAsync<PayslipModel>(criteria);
+            return await baseService.GetDataAsync<PayslipModel>(criteria).ConfigureAwait(false);
         }
     }
 }

@@ -1042,6 +1042,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Add..
         /// </summary>
         public static string EmailAdd {
@@ -1110,6 +1119,15 @@ namespace HRP.Resources {
         public static string EmployeeManagement {
             get {
                 return ResourceManager.GetString("EmployeeManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee Name.
+        /// </summary>
+        public static string EmployeeName {
+            get {
+                return ResourceManager.GetString("EmployeeName", resourceCulture);
             }
         }
         
@@ -1555,6 +1573,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Payroll Status.
+        /// </summary>
+        public static string MonthlyPayrollStatus {
+            get {
+                return ResourceManager.GetString("MonthlyPayrollStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month/Year.
         /// </summary>
         public static string MonthYear {
@@ -1839,6 +1866,15 @@ namespace HRP.Resources {
         public static string PayrollPresetConfirmationMessage {
             get {
                 return ResourceManager.GetString("PayrollPresetConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payslip.
+        /// </summary>
+        public static string Payslip {
+            get {
+                return ResourceManager.GetString("Payslip", resourceCulture);
             }
         }
         
@@ -2154,6 +2190,24 @@ namespace HRP.Resources {
         public static string SelectWorkingMonthCompany {
             get {
                 return ResourceManager.GetString("SelectWorkingMonthCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Payslip.
+        /// </summary>
+        public static string SendPayslip {
+            get {
+                return ResourceManager.GetString("SendPayslip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sent.
+        /// </summary>
+        public static string Sent {
+            get {
+                return ResourceManager.GetString("Sent", resourceCulture);
             }
         }
         

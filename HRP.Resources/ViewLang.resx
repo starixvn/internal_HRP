@@ -975,4 +975,22 @@
   <data name="DSTNetSalaryFile" xml:space="preserve">
     <value>DST Net Salary file</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EmployeeName" xml:space="preserve">
+    <value>Employee Name</value>
+  </data>
+  <data name="MonthlyPayrollStatus" xml:space="preserve">
+    <value>Monthly Payroll Status</value>
+  </data>
+  <data name="Payslip" xml:space="preserve">
+    <value>Payslip</value>
+  </data>
+  <data name="SendPayslip" xml:space="preserve">
+    <value>Send Payslip</value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
 </root>
