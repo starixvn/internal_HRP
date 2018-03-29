@@ -325,7 +325,7 @@
                 .ToLookup(cell => cell.StringCellValue.ToLower(CultureInfo.InvariantCulture), cell => cell.ColumnIndex);
         }
 
-        public static bool IsValidRow(IRow row)
+        private static bool IsValidRow(IRow row)
         {
             return !IsEmptyRow(row);
         }
@@ -334,8 +334,8 @@
         {
             return
                 row == null
-                || row.Cells.Count == 0
-                || row.Cells.TrueForAll(c => c.CellType == CellType.Blank || (c.CellType == CellType.String && string.IsNullOrWhiteSpace(c.StringCellValue)));
+                || row.Cells.TrueForAll(c => c.CellType == CellType.Blank || (c.CellType == CellType.String && string.IsNullOrWhiteSpace(c.StringCellValue)))
+                || row.Cells.Count == 0;
         }
 
         public virtual Type GetBasicType(Type t)

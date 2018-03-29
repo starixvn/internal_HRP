@@ -8,12 +8,12 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models;
     using HRP.Models.Currency;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
@@ -421,6 +421,74 @@
         #endregion DeleteUploadedDSTNetSalary
 
         #region GenerateMonthlyPayroll
+
+        [Fact]
+        public async Task GenerateMonthlyPayrollAsync_MonthlyBasicSalaryIsNull_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult();
+            var generatePayrollViewModel = new GeneratePayrollViewModel
+            {
+                MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = 1, Month = DateTime.Today } },
+                MonthlyBasicSalary = new List<MonthlyBasicSalaryModel>(),
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel>(),
+                MonthlyAttendance = new List<MonthlyAttendance>(),
+                MonthlyDSTNetSalary = new List<MonthlyDSTNetSalary>(),
+                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
+            };
+
+            var companyId = 3;
+            var month = DateTime.Today;
+            var employeeId = 1;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId)).Returns(generatePayrollViewModel);
+            baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GenerateMonthlyPayrollAsync_MonthlyBasicSalaryHasValue_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var expected = new CommandResult();
+            var generatePayrollViewModel = new GeneratePayrollViewModel
+            {
+                MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = 1, Month = DateTime.Today } },
+                MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 1 } },
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 1 } },
+                MonthlyAttendance = new List<MonthlyAttendance>(),
+                MonthlyDSTNetSalary = new List<MonthlyDSTNetSalary>(),
+                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
+            };
+
+            var companyId = 3;
+            var month = DateTime.Today;
+            var employeeId = 1;
+
+            var mockAllowanceAdditions = Substitute.For<IEnumerable<MonthlyAllowanceAdditionModel>>();
+            var mockAllowanceDeduction = Substitute.For<IEnumerable<MonthlyAllowanceDeductionModel>>();
+            var mockAllowance = Substitute.For<MonthlyAllowanceModel>();
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId)).Returns(generatePayrollViewModel);
+            baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
+            monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),
+                Arg.Any<IEnumerable<MonthlyAllowanceAdditionModel>>(),
+                Arg.Any<IEnumerable<MonthlyAllowanceDeductionModel>>(),
+                Arg.Any<IEnumerable<CurrencyExchangeRateModel>>(),
+                Arg.Any<MonthlyDSTNetSalary>()).Returns(mockAllowance);
+            // Act
+            var actual = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+
+            // Assert
+            Assert.IsType<CommandResult>(actual);
+            Assert.Equal(expected, actual);
+        }
 
         [Fact]
         public async Task SubmitUploadingFilesAsync_WhenCalled_ReturnExpectedCommandResult()

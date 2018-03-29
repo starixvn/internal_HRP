@@ -133,7 +133,10 @@
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            var routeValues = viewResult.RouteValues;
             Assert.Equal("EmployeeMonthlyPayroll", viewResult.ActionName);
+            Assert.Equal(paramModel.CompanyId, routeValues["companyId"]);
+            Assert.Equal(paramModel.SelectedTime, routeValues["month"]);
         }
 
         [Theory]
@@ -196,6 +199,8 @@
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             var routeValues = viewResult.RouteValues;
             Assert.Equal("EmployeeMonthlyPayroll", viewResult.ActionName);
+            Assert.Equal(paramModel.CompanyId, routeValues["companyId"]);
+            Assert.Equal(paramModel.SelectedTime, routeValues["month"]);
         }
 
         [Theory]

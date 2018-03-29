@@ -270,7 +270,7 @@
 
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
-            var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
+            var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false); ////Check if dataModel null
             var numMonth = month.Month;
             var numYear = month.Year;
             var monthlySalaries = new List<MonthlySalaryModel>();
@@ -318,10 +318,7 @@
                     var monthlyAttendance = dataModel.MonthlyAttendance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
                     var monthlyDSTNetSalary = dataModel.MonthlyDSTNetSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
                     var actualWorkingDay = monthlyAttendance?.ActualWorkingDay ?? monthlyBasicSalary.WorkingDays;
-                    if (monthlyDSTNetSalary != null)
-                    {
-                        DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
-                    }
+                    DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
                     DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
 
                     monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, payroll.GroupStartDate, payroll.GroupEndDate, numMonth, numYear);
@@ -346,17 +343,18 @@
             {
                 CompanyId = companyId,
                 Month = month,
-                PayrollXMLDoc = dataModel.MonthlyPayroll.ToXML().ToString(),
-                BasicSalaryXMLDoc = dataModel.MonthlyBasicSalary.ToXML().ToString(),
-                SalaryXMLDoc = monthlySalaries.ToXML().ToString(),
-                SalaryAdditionXMLDoc = monthlySalaryAdditions.ToXML().ToString(),
-                SalaryDeductionXMLDoc = monthlySalaryDeductions.ToXML().ToString(),
-                BasicAllowanceXMLDoc = dataModel.MonthlyBasicAllowance.ToXML().ToString(),
-                AllowanceXMLDoc = monthlyAllowances.ToXML().ToString(),
-                AllowanceAdditionXMLDoc = monthlyAllowanceAdditions.ToXML().ToString(),
-                AllowanceDeductionXMLDoc = monthlyAllowanceDeductions.ToXML().ToString(),
                 UpdatedBy = sessionService.UserId
             };
+
+            criteria.PayrollXMLDoc = dataModel.MonthlyPayroll.ToXML().ToString();
+            criteria.BasicSalaryXMLDoc = dataModel.MonthlyBasicSalary.ToXML().ToString();
+            criteria.SalaryXMLDoc = monthlySalaries.ToXML().ToString();
+            criteria.SalaryAdditionXMLDoc = monthlySalaryAdditions.ToXML().ToString();
+            criteria.SalaryDeductionXMLDoc = monthlySalaryDeductions.ToXML().ToString();
+            criteria.BasicAllowanceXMLDoc = dataModel.MonthlyBasicAllowance.ToXML().ToString();
+            criteria.AllowanceXMLDoc = monthlyAllowances.ToXML().ToString();
+            criteria.AllowanceAdditionXMLDoc = monthlyAllowanceAdditions.ToXML().ToString();
+            criteria.AllowanceDeductionXMLDoc = monthlyAllowanceDeductions.ToXML().ToString();
 
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
@@ -396,6 +394,11 @@
 
         private void DecryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)
         {
+            if (basicSalary == null)
+            {
+                return;
+            }
+
             basicSalary.Salary = cryptoService.Decrypt(basicSalary.Salary);
             basicSalary.OldSalary = cryptoService.Decrypt(basicSalary.OldSalary);
             basicSalary.EbankingAmount = cryptoService.Decrypt(basicSalary.EbankingAmount);
@@ -407,6 +410,11 @@
 
         private void EncryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)
         {
+            if (basicSalary == null)
+            {
+                return;
+            }
+
             basicSalary.Salary = cryptoService.Encrypt(basicSalary.Salary);
             basicSalary.OldSalary = cryptoService.Encrypt(basicSalary.OldSalary);
             basicSalary.EbankingAmount = cryptoService.Encrypt(basicSalary.EbankingAmount);
@@ -418,6 +426,11 @@
 
         private void EncryptMonthlySalary(MonthlySalaryModel salary)
         {
+            if (salary == null)
+            {
+                return;
+            }
+
             salary.Salary = cryptoService.Encrypt(salary.Salary);
             salary.EbankingAmount = cryptoService.Encrypt(salary.EbankingAmount);
             salary.DirectBanking1Amount = cryptoService.Encrypt(salary.DirectBanking1Amount);
@@ -429,6 +442,11 @@
 
         private void EncryptMonthlySalaryAddition(MonthlySalaryAdditionModel addition)
         {
+            if (addition == null)
+            {
+                return;
+            }
+
             addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
             addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
         }
@@ -439,6 +457,11 @@
         /// <param name="allowance"></param>
         private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel allowance)
         {
+            if (allowance == null)
+            {
+                return;
+            }
+
             allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
             allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
             allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
@@ -458,11 +481,21 @@
 
         private void DecryptMonthlyDSTNetSalary(MonthlyDSTNetSalary salary)
         {
+            if (salary == null)
+            {
+                return;
+            }
+
             salary.NetSalaryReceived = cryptoService.Decrypt(salary.NetSalaryReceived);
         }
 
         private void EncryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
+            if (basicAllowance == null)
+            {
+                return;
+            }
+
             basicAllowance.TotalAmount = cryptoService.Encrypt(basicAllowance.TotalAmount);
             basicAllowance.DirectBanking1Amount = cryptoService.Encrypt(basicAllowance.DirectBanking1Amount);
             basicAllowance.DirectBanking2Amount = cryptoService.Encrypt(basicAllowance.DirectBanking2Amount);
@@ -482,6 +515,11 @@
 
         private void EncryptMonthlyAllowance(MonthlyAllowanceModel allowance)
         {
+            if (allowance == null)
+            {
+                return;
+            }
+
             allowance.TotalAmount = cryptoService.Encrypt(allowance.TotalAmount);
             allowance.DirectBanking1Amount = cryptoService.Encrypt(allowance.DirectBanking1Amount);
             allowance.DirectBanking2Amount = cryptoService.Encrypt(allowance.DirectBanking2Amount);
