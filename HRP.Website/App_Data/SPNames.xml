@@ -172,5 +172,6 @@
   </Function>
   <Function Name="Payslip">
     <Setting Key="Payslip_Get" SpName="Payslip_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Payslip_GetDetails" SpName="Payslip_GetDetails" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

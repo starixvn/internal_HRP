@@ -53,7 +53,7 @@ var monthlyPayroll = (function ($) {
                 { className: 'col-width-50', orderable: false, targets: 20 }
             ],
             scrollX: true,
-            scrollY: '50vh',
+            scrollY: '300px',
             scrollCollapse: true,
             responsive: true,
             fixedColumns: {
@@ -61,6 +61,8 @@ var monthlyPayroll = (function ($) {
                 rightColumns: 2
             }
         });
+
+        $(window).trigger('resize');
 
         $('select[name=monthly-payroll-table_length]').select2({
             minimumResultsForSearch: Infinity

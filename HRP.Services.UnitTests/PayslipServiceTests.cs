@@ -7,7 +7,9 @@
     using HRP.Criteria;
     using HRP.Criteria.Payslip;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Repositories;
     using NSubstitute;
     using Xunit;
 
@@ -15,6 +17,8 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICryptoService cryptoService;
+        private IPayslipRepository payslipRepository;
 
         [Fact]
         public async Task GetCompanyAsync_WhenCalled_ReturnsAsExpectedCompanies()
@@ -52,6 +56,73 @@
             Assert.Equal(actual, payslips);
         }
 
+        #region GetPayslipDetailAsync
+
+        [Fact]
+        public async Task GetPayslipDetailAsync_NotExistedPayroll_ReturnDefaultModel()
+        {
+            // Arrange
+            PayslipDetailModel expected = null;
+            var payslipService = GetPayslipService();
+            payslipRepository.GetPayslipDetailAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await payslipService.GetPayslipDetailAsync(1, 1);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel()
+        {
+            // Arrange
+            var plainText = "1234";
+            var payslip = new PayslipDetailModel
+            {
+                SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
+                AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
+                AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+            };
+            var payslipService = GetPayslipService();
+            payslipRepository.GetPayslipDetailAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslip);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
+
+            // Act
+            var actual = await payslipService.GetPayslipDetailAsync(1, 1);
+
+            // Assert
+            Assert.Equal(payslip.PayrollId, actual.PayrollId);
+            Assert.Equal(payslip.Month, actual.Month);
+            Assert.Equal(payslip.FullName, actual.FullName);
+            Assert.Equal(payslip.IDNo, actual.IDNo);
+            Assert.Equal(payslip.CompanyName, actual.CompanyName);
+            Assert.Equal(payslip.SalaryCurrencyId, actual.SalaryCurrencyId);
+            Assert.Equal(payslip.SalaryCurrencyCode, actual.SalaryCurrencyCode);
+            Assert.Equal(plainText, actual.SalaryAmount);
+            Assert.Equal(payslip.AllowanceCurrencyId, actual.AllowanceCurrencyId);
+            Assert.Equal(payslip.AllowanceCurrencyCode, actual.AllowanceCurrencyCode);
+            Assert.Equal(plainText, actual.AllowanceAmount);
+            Assert.Collection(
+                actual.SalaryAdditions,
+                kvp => { Assert.Equal(plainText, kvp.NetSalary); });
+
+            Assert.Collection(
+                actual.SalaryDeductions,
+                kvp => { Assert.Equal(plainText, kvp.NetSalary); });
+
+            Assert.Collection(
+                actual.AllowanceAdditions,
+                kvp => { Assert.Equal(plainText, kvp.NetAllowance); });
+
+            Assert.Collection(
+                actual.AllowanceDeductions,
+                kvp => { Assert.Equal(plainText, kvp.NetAllowance); });
+        }
+
+        #endregion GetPayslipDetailAsync
+
         #region Helpers
 
         private static IBaseService FakeBaseService()
@@ -69,11 +140,23 @@
             return service;
         }
 
+        private static ICryptoService FakeCryptoService()
+        {
+            return Substitute.For<ICryptoService>();
+        }
+
+        private static IPayslipRepository FakePayslipRepository()
+        {
+            return Substitute.For<IPayslipRepository>();
+        }
+
         private PayslipService GetPayslipService()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
-            var service = new PayslipService(baseService, sessionService);
+            cryptoService = FakeCryptoService();
+            payslipRepository = FakePayslipRepository();
+            var service = new PayslipService(baseService, sessionService, cryptoService, payslipRepository);
 
             return service;
         }

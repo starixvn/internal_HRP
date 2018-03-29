@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Filters;
     using HRP.Core.Services;
     using HRP.Models;
@@ -39,7 +41,8 @@
                 CompanyId = companyIdSelected,
                 IsSent = isSent,
                 Payslips = payslips,
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code))
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                IsHost = sessionService.HasPermissionOnCompany(companyIdSelected, FunctionKey.Payslip, Policy.Host)
             };
 
             return View(viewModel);

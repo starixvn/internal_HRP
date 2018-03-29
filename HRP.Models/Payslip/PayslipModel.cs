@@ -13,6 +13,5 @@
         public string Phone { get; set; }
         public bool IsSent { get; set; }
         public MonthlyPayrollStatus PayrollStatus { get; set; }
-        public Policy Policy { get; set; }
     }
 }

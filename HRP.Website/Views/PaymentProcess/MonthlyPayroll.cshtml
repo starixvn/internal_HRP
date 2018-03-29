@@ -7,7 +7,7 @@
     <environment include="Development">
         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
         <link href="~/lib/jQuery-contextMenu/jquery.contextMenu.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
@@ -85,11 +85,11 @@
 
 <div class="top-header -only-search-box">
     <div class="pull-right search-box">
-        <input type="search" id="quick-search" class="control" placeholder="Search" />
+        <input type="search" id="quick-search" class="control" placeholder="@ViewLang.Search" />
         <span class="icon-search"></span>
     </div>
 </div>
-<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" width="100%">
+<table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" style="width:100%">
     <thead>
         <tr>
             <th rowspan="3">@ViewLang.Check</th>
@@ -309,7 +309,7 @@
     <environment include="Development">
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
         <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>

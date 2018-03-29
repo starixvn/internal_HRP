@@ -4,11 +4,14 @@
 @using HRP.Models.Payslip
 
 @model PayslipViewModel
+@{ 
+    var disabled = Model.IsHost ? string.Empty : "disabled";
+}
 
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
     </environment>
@@ -43,7 +46,7 @@
 
 <div class="top-header">
     <div class="search-box">
-        <input type="search" class="control" placeholder="@ViewLang.Search" />
+        <input type="search" id="quick-search" class="control" placeholder="@ViewLang.Search" />
         <span class="icon-search"></span>
     </div>
 </div>
@@ -59,13 +62,16 @@
             <th rowspan="2">@ViewLang.Email</th>
             <th rowspan="2">@ViewLang.TelephoneNo</th>
             <th rowspan="2">@ViewLang.MonthlyPayrollStatus</th>
-            <th colspan="2"><input type="button" value="@ViewLang.SendPayslip" class="btn -send-payslip"></th>
+            <th colspan="2">
+                <input type="button" class="btn -send-payslip @(Model.IsHost ? "js-btnSendPayslip" : string.Empty)" 
+                       value="@ViewLang.SendPayslip" @disabled />
+            </th>
         </tr>
         <tr>
             <th>@ViewLang.Sent</th>
             <th>
                 <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" @(Model.IsHost ? "js-checkAll" : string.Empty) @disabled />
                     <span></span>
                 </label>
             </th>
@@ -105,7 +111,7 @@
                 <td class="text-center"><span class="icon-active"></span></td>
                 <td class="text-center">
                     <label>
-                        <input type="checkbox" />
+                        <input type="checkbox" class="@(Model.IsHost ? "js-checkbox" : string.Empty)" @disabled />
                         <span></span>
                     </label>
                 </td>
@@ -220,7 +226,7 @@
     <environment include="Development">
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/assets/js/payslip/payslip.js"></script>

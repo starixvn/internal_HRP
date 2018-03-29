@@ -85,6 +85,7 @@
     <Compile Include="EmployeeRepositoryTests.cs" />
     <Compile Include="MonthlyPayrollRepositoryTests.cs" />
     <Compile Include="PaymentProcessRepositoryTests.cs" />
+    <Compile Include="PayslipRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

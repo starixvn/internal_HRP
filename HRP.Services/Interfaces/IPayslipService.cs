@@ -11,5 +11,7 @@
         Task<IEnumerable<Company>> GetCompanyAsync();
 
         Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent);
+
+        Task<PayslipDetailModel> GetPayslipDetailAsync(int payrollId, int companyId);
     }
 }

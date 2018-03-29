@@ -12,7 +12,8 @@
 
         public int CompanyId { get; set; }
         public bool? IsSent { get; set; }
-        public IEnumerable<PayslipModel> Payslips { get; set; }
+        public IEnumerable<PayslipModel> Payslips { get; set; } = new List<PayslipModel>();
         public SelectList Companies { get; set; }
+        public bool IsHost { get; set; }
     }
 }

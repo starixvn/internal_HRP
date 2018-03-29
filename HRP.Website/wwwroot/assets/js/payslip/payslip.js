@@ -1,6 +1,8 @@
 ﻿'use strict';
 
 var payslips = (function ($) {
+    var $btnSendPayslip;
+
     function initSelect2() {
         $('.js-select2').select2({
             minimumResultsForSearch: Infinity
@@ -57,8 +59,13 @@ var payslips = (function ($) {
     }
 
     function initModule() {
+        $btnSendPayslip = $('.js-btnSendPayslip');
         initSelect2();
         initDatetimepicker();
+
+        $('#quick-search').off('keyup').on('keyup', function () {
+            $table.DataTable().search($(this).val()).draw();
+        });
     }
 
     return {
