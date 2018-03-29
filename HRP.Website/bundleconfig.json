@@ -107,6 +107,24 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/css/select-month-company.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/assets/styles/pages/paymentprocess/payment-process.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/css/upload-attendance-salary.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
+      "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/assets/styles/pages/paymentprocess/payment-process.css",
+      "wwwroot/assets/styles/pages/paymentprocess/upload-files.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/assets/bundles/paymentprocess/css/employee-monthly-payroll.min.css",
     "inputFiles": [
       "wwwroot/lib/jquery-ui/jquery-ui.css",
@@ -352,6 +370,40 @@
       "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
       "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
       "wwwroot/assets/js/configuration/data-configuration.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/select-month-company.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/assets/js/paymentprocess/select-month-company.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/upload-attendance-salary.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/assets/js/paymentprocess/upload-attendance-salary.js"
     ],
     "minify": {
       "enabled": true,

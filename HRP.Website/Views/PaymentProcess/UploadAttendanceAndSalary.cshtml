@@ -17,6 +17,7 @@
     </environment>
 
     <environment exclude="Development">
+        <link href="~/assets/bundles/paymentprocess/css/upload-attendance-salary.min.css" rel="stylesheet" />
     </environment>
 }
 
@@ -120,7 +121,7 @@
 </form>
 
 <div class="block-ui hidden">
-        <div class="loader02"></div>
+    <div class="loader02"></div>
 </div>
 
 <div class="modal fade in" id="generatePayrollWarning" tabindex="-1" role="dialog">
@@ -190,11 +191,13 @@
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/assets/js/paymentprocess/upload-attendance-salary.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/assets/bundles/paymentprocess/js/upload-attendance-salary.min.js"></script>
     </environment>
 }

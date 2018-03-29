@@ -82,7 +82,7 @@
                 {
                     if (paymentProcess.IsPayrollGenerated)
                     {
-                        return RedirectToAction("EmployeeMonthlyPayroll");
+                        return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
                     ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
@@ -125,9 +125,7 @@
             var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
             var paymentProcess = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
 
-            var today = DateTime.Today;
-            var isInDuration = paymentProcess.StartDate <= today && today <= paymentProcess.DueDate;
-            if (isHost && isInDuration)
+            if (isHost && IsInPaymentProcessDuration(paymentProcess))
             {
                 var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
@@ -194,6 +192,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        [HttpPost]
         public async Task<IActionResult> ProcessActionNextToMonthlyPayroll(int companyId, DateTime month)
         {
             var submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);

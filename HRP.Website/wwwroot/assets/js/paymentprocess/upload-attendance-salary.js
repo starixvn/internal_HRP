@@ -61,7 +61,6 @@
     }
 
     function onUploadSuccess(response) {
-
         if (response.isSuccessful) {
             ////Note: can reduce these JS code if reload page :D
             showErrorsValidationFile($(domElement.UploadFilesForm), "AttendanceFile", '');
@@ -174,7 +173,7 @@
 
         $(domElement.DSTNetSalaryFile).on('change', function () {
             var errorMessage = validateFileExcel($form, "DST Net Salary file: ", this.files[0]);
-            showErrorsValidationFile($form, "DSTNetSalaryFile",  errorMessage);
+            showErrorsValidationFile($form, "DSTNetSalaryFile", errorMessage);
             if (errorMessage !== '') {
                 $(this).val("");
             }
@@ -269,7 +268,7 @@
                     break;
                 case '2': //Browse DST Net Salary file
                     $(domElement.DSTNetSalaryFile).trigger('click');
-                    break;                
+                    break;
             }
             $(domElement.IsShowBrowseFileWarning).val(0);
             $(domElement.BrowseFileWarning).modal('hide');
@@ -344,12 +343,13 @@
             $selectedTime = $(domElement.SelectedTime);
 
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: commonFunctions.rootURL + 'PaymentProcess/ProcessActionNextToMonthlyPayroll',
             dataType: 'json',
             data: {
-                "companyId": $companyId.val(),
-                "month": $selectedTime.val()
+                companyId: $companyId.val(),
+                month: $selectedTime.val(),
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', '#uploadFilesForm').val()
             },
             success: function (response) {
                 if (response.isSuccessful) {
@@ -415,31 +415,33 @@
         $('.block-ui').removeClass('hidden').addClass('hidden');
     }
 
-
     function initDatatable() {
         $(domElement.AttendanceErrorsTable).DataTable({
             info: false,
+            // dom: 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             ordering: false,
             filter: false,
+            scrollX: false,
             scrollY: '145px',
             scrollCollapse: true,
-            paging: false,
-            scrollX: false
+            responsive: true,
+            paging: false
         });
 
         $(domElement.DSTNetSalaryErrorsTable).DataTable({
             info: false,
+            // dom: 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             ordering: false,
             filter: false,
             scrollY: '145px',
             scrollCollapse: true,
+            responsive: true,
             paging: false,
             scrollX: false
         });
     }
 
     function init() {
-        initDatatable();
         var $form = $(domElement.UploadFilesForm);
         registerEventChangeExcelFiles($form);
         registerEventBrowseExcelFiles();
@@ -454,10 +456,15 @@
     }
 
     return {
-        init: init
+        init: init,
+        initDatatable: initDatatable
     };
 }(jQuery));
 
 $(document).ready(function () {
     uploadAttendanceAndSalary.init();
 });
+
+if (document.readyState === 'loading') {
+    uploadAttendanceAndSalary.initDatatable();
+}
