@@ -142,11 +142,16 @@
                     <div>@ViewLang.TotalAmountActualCurrency</div>
                     <div class="-start-col-6">@ViewLang.NetAllowance (@Model.Allowance.CurrencyCode)</div>
                 </div>
+                
+                @{
+                    var allowanceTypes = Html.GetEnumSelectList<AllowanceType>();
+                }
 
                 @for (var i = 0; i < Model.Additions.Count; i++)
                 {
                     <div class="group-complex -alw-layout-add">
-                        <div class="like-group-title">@((AllowanceType)Model.Additions[i].Type)</div>
+  
+                        <div class="like-group-title">@allowanceTypes.FirstOrDefault(x => x.Value == Model.Additions[i].Type.ToString()).Text</div>
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
