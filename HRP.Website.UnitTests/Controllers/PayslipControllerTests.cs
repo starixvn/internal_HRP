@@ -31,12 +31,12 @@
             {
                 new PayslipModel { PayrollId = 1, FullName = "thang", Nickname = "tim.trinh" }
             };
-            var homeController = GetPayslipController();
+            var payslipController = GetPayslipController();
             payslipService.GetCompanyAsync().Returns(companies);
             payslipService.GetPayslipAsync(month, companyId, null).Returns(payslips);
 
             //Act
-            var actual = await homeController.Index(month, companyId, null);
+            var actual = await payslipController.Index(month, companyId, null);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -53,10 +53,24 @@
         public void Details_WhenCalled_ReturnsAsExpectedViewResult()
         {
             //Arrange
-            var homeController = GetPayslipController();
+            var payslipController = GetPayslipController();
 
             //Act
-            var actual = homeController.Details(1);
+            var actual = payslipController.Details(1);
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+        }
+
+        [Fact]
+        public void SendPayslip_WhenCalled_ReturnsAsExpectedViewResult()
+        {
+            //Arrange
+            var payslipController = GetPayslipController();
+
+            //Act
+            var actual = payslipController.SendPayslip();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);

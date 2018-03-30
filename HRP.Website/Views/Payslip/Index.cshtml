@@ -4,7 +4,7 @@
 @using HRP.Models.Payslip
 
 @model PayslipViewModel
-@{ 
+@{
     var disabled = Model.IsHost ? string.Empty : "disabled";
 }
 
@@ -63,27 +63,33 @@
             <th rowspan="2">@ViewLang.TelephoneNo</th>
             <th rowspan="2">@ViewLang.MonthlyPayrollStatus</th>
             <th colspan="2">
-                <input type="button" class="btn -send-payslip @(Model.IsHost ? "js-btnSendPayslip" : string.Empty)" 
-                       value="@ViewLang.SendPayslip" @disabled />
+                @if (Model.IsHost)
+                {
+                    <form id="send-payslip-form" asp-controller="payslip" asp-action="SendPayslip" method="post">
+                        <input type="submit" class="btn -send-payslip" value="@ViewLang.SendPayslip" />
+                    </form>
+                }
+                else
+                {
+                    <input type="button" class="btn -send-payslip" value="@ViewLang.SendPayslip" disabled />
+                }
             </th>
         </tr>
         <tr>
             <th>@ViewLang.Sent</th>
             <th>
                 <label>
-                    <input type="checkbox" @(Model.IsHost ? "js-checkAll" : string.Empty) @disabled />
+                    <input type="checkbox" class="@(Model.IsHost ? "js-checkAll" : string.Empty)" @disabled />
                     <span></span>
                 </label>
             </th>
         </tr>
     </thead>
     <tbody>
-        @{ int rowNumber = 0; }
         @foreach (PayslipModel payslip in Model.Payslips)
         {
-            rowNumber++;
             <tr>
-                <td class="text-center">@rowNumber</td>
+                <td class="text-center"></td>
                 <td>@payslip.IDNo</td>
                 <td>
                     <a target="_blank" class="employee-name" asp-controller="payslip" asp-action="details" asp-route-id="@payslip.PayrollId">@payslip.FullName</a>
@@ -111,114 +117,13 @@
                 <td class="text-center"><span class="icon-active"></span></td>
                 <td class="text-center">
                     <label>
-                        <input type="checkbox" class="@(Model.IsHost ? "js-checkbox" : string.Empty)" @disabled />
+                        <input type="checkbox" name="id[]" value="@payslip.PayrollId"
+                               class="@(Model.IsHost ? "js-checkbox" : string.Empty)" @disabled />
                         <span></span>
                     </label>
                 </td>
             </tr>
         }
-        <tr>
-            <td class="text-center">1</td>
-            <td>OW23455</td>
-            <td><a href="#" class="employee-name">Yeo San My</a></td>
-            <td class="text-center">Yeo</td>
-            <td>OW/GO/HRA/HRA/ADM</td>
-            <td>yeomy@gmail.com</td>
-            <td>0123456789</td>
-            <td class="text-center"><span class="status-default"></span></td>
-            <td class="text-center"><span class="icon-active"></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">2</td>
-            <td>WGI02458</td>
-            <td><a href="#" class="employee-name">Hunter Tran</a></td>
-            <td class="text-center">Hunter</td>
-            <td>OW/GO/HRA/HRA/HR</td>
-            <td>huntertran123@gmail.com</td>
-            <td>0856432954</td>
-            <td class="text-center"><span class="status-incorrect"></span></td>
-            <td class="text-center"><span class="icon-active"></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">3</td>
-            <td>GWG01567</td>
-            <td><a target="_blank" class="employee-name" href="/payslip/details/1">Nguyen Thi Thuy Duong</a></td>
-            <td class="text-center">Alice</td>
-            <td>OW/GO/HRA/HRA/HR</td>
-            <td>thuyduong@gmail.com</td>
-            <td>0123456789</td>
-            <td class="text-center"><span class="status-done"></span></td>
-            <td class="text-center"><span class=""></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">4</td>
-            <td>DAR11365</td>
-            <td><a target="_blank" class="employee-name" href="/payslip/details/1">Yee Chang Wang</a></td>
-            <td class="text-center">Wang</td>
-            <td>OW/GO/HRA/HRA/HR</td>
-            <td>yeewang90@gmail.com</td>
-            <td>0123456789</td>
-            <td class="text-center"><span class="status-default"></span></td>
-            <td class="text-center"><span class=""></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">5</td>
-            <td>EHL001358</td>
-            <td><a target="_blank" class="employee-name" href="/payslip/details/1">Oliver Nguyen</a></td>
-            <td class="text-center">Oliver</td>
-            <td>OW/GO/HRA/HRA/HR</td>
-            <td>olivernguyen@gmail.com</td>
-            <td>0123456789</td>
-            <td class="text-center"><span class="status-incorrect"></span></td>
-            <td class="text-center"><span class="icon-active"></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">6</td>
-            <td>OW23455</td>
-            <td><a target="_blank" class="employee-name" href="/payslip/details/1">Elton Nguyen</a></td>
-            <td class="text-center">Elton</td>
-            <td>OW/GO/HRA/HRA/ADM</td>
-            <td>elton@gmail.com</td>
-            <td>0123456789</td>
-            <td class="text-center"><span class="status-done"></span></td>
-            <td class="text-center"><span class="icon-active"></span></td>
-            <td class="text-center">
-                <label>
-                    <input type="checkbox" />
-                    <span></span>
-                </label>
-            </td>
-        </tr>
     </tbody>
 </table>
 

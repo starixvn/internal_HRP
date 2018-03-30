@@ -27,6 +27,7 @@
             this.payslipService = payslipService;
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
         public async Task<IActionResult> Index(DateTime? month = null, int? companyId = null, bool? isSent = null)
         {
             IEnumerable<Company> companies = await payslipService.GetCompanyAsync();
@@ -48,7 +49,15 @@
             return View(viewModel);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
         public IActionResult Details(int id)
+        {
+            return View();
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Host)]
+        [HttpPost]
+        public IActionResult SendPayslip()
         {
             return View();
         }

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var payslips = (function ($) {
-    var $btnSendPayslip;
+    var dataTable;
 
     function initSelect2() {
         $('.js-select2').select2({
@@ -21,7 +21,7 @@ var payslips = (function ($) {
     }
 
     function initDataTable() {
-        $('#payslip-table').dataTable({
+        dataTable = $('#payslip-table').DataTable({
             ordering: true,
             order: [[1, 'asc']],
             lengthMenu: [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
@@ -58,14 +58,54 @@ var payslips = (function ($) {
         });
     }
 
+    function registerEvents() {
+        $('#quick-search').off('keyup').on('keyup', function () {
+            $('#payslip-table').DataTable().search($(this).val()).draw();
+        });
+
+        dataTable.on('order.dt search.dt', function () {
+            dataTable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+        $('.js-checkAll').on('click', function () {
+            var rows = dataTable.rows({ 'search': 'applied' }).nodes();
+
+            $('input.js-checkbox', rows).prop('checked', this.checked);
+        });
+
+        $('#payslip-table tbody').on('change', 'input.js-checkbox', function () {
+            if (!this.checked) {
+                var el = $('.js-checkAll').get(0);
+                if (el && el.checked) {
+                    el.checked = false;
+                }
+            } else {
+            }
+        });
+
+        $('#send-payslip-form').on('submit', function (e) {
+            var form = this;
+            $(form).find('input').remove();
+
+            dataTable.$('input.js-checkbox').each(function () {
+                if (this.checked) {
+                    $(form).append(
+                        $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', this.name)
+                            .val(this.value)
+                    );
+                }
+            });
+        });
+    }
+
     function initModule() {
-        $btnSendPayslip = $('.js-btnSendPayslip');
         initSelect2();
         initDatetimepicker();
-
-        $('#quick-search').off('keyup').on('keyup', function () {
-            $table.DataTable().search($(this).val()).draw();
-        });
+        registerEvents();
     }
 
     return {
