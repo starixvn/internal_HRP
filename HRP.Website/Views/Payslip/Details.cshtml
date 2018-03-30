@@ -55,40 +55,15 @@
                 <div class="content">
                     <div class="row">
                         <div class="key">@ViewLang.BasicAllowances</div>
-                        <div class="value">100.000.000 USD</div>
+                        <div class="value">@Model.AllowanceAmount @Model.AllowanceCurrencyCode</div>
                     </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Subsistence</div>
-                        <div class="value">2.000.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.HomePassage</div>
-                        <div class="value">400.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Housing</div>
-                        <div class="value">80.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.MobilePhone</div>
-                        <div class="value">70.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.HPI</div>
-                        <div class="value">500.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.DutyMeal</div>
-                        <div class="value">50.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Secondment</div>
-                        <div class="value">5.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Others</div>
-                        <div class="value">100.000 @Model.AllowanceCurrencyCode</div>
-                    </div>
+                    @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
+                    {
+                        <div class="row">
+                            <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
+                            <div class="value">@addition.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
+                        </div>
+                    }
                 </div>
                 <div class="footer">
                     <div class="row">
@@ -118,38 +93,13 @@
             <div class="detail-section">
                 <div class="title">@ViewLang.Deduction</div>
                 <div class="content">
-                    <div class="row">
-                        <div class="key">@ViewLang.Subsistence</div>
-                        <div class="value">2.000.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.HomePassage</div>
-                        <div class="value">400.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Housing</div>
-                        <div class="value">80.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.MobilePhone</div>
-                        <div class="value">70.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.HPI</div>
-                        <div class="value">500.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.DutyMeal</div>
-                        <div class="value">50.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Secondment</div>
-                        <div class="value">5.000 USD</div>
-                    </div>
-                    <div class="row">
-                        <div class="key">@ViewLang.Others</div>
-                        <div class="value">100.000 USD</div>
-                    </div>
+                    @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
+                    {
+                        <div class="row">
+                            <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>
+                            <div class="value">@deduction.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
+                        </div>
+                    }
                 </div>
                 <div class="footer">
                     <div class="row">

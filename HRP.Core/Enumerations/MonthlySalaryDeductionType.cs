@@ -7,13 +7,11 @@ namespace HRP.Core.Enumerations
         [Description("UPL/Absenteeism")]
         Absenteeism = 1,
 
-        [Description("Tardiness")]
         Tardiness,
 
         [Description("Salary Advance")]
         SalaryAdvance,
 
-        [Description("Others")]
         Others
     }
 }

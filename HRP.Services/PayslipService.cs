@@ -152,7 +152,7 @@
             amount = basicAllowanceAmount + additionAmount - deductionAmount;
             payslip.NetAllowanceAmount = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
 
-            payslip.SalaryDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
+            payslip.AllowanceDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
         }
 
         private static decimal RoundAmountWithCurrency(decimal amount, int currencyId)

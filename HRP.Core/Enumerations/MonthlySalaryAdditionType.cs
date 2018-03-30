@@ -7,7 +7,6 @@ namespace HRP.Core.Enumerations
         [Description("Back Pay")]
         BackPay = 1,
 
-        [Description("Adjustments")]
         Adjustments,
 
         [Description("Others")]
