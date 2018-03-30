@@ -90,7 +90,8 @@
                 <td class="text-center"></td>
                 <td>@payslip.IDNo</td>
                 <td>
-                    <a target="_blank" class="employee-name" asp-controller="payslip" asp-action="details" asp-route-id="@payslip.PayrollId">@payslip.FullName</a>
+                    <a target="_blank" class="employee-name" asp-controller="payslip" asp-action="details"
+                       asp-route-id="@payslip.PayrollId" asp-route-companyId="@Model.CompanyId">@payslip.FullName</a>
                 </td>
                 <td class="text-center">@payslip.Nickname</td>
                 <td>@payslip.Section</td>

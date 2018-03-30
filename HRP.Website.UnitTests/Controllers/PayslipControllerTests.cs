@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Enumerations;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.Payslip;
@@ -15,6 +16,7 @@
 
     public class PayslipControllerTests
     {
+        private ISessionService sessionService;
         private IPayslipService payslipService;
 
         [Fact]
@@ -49,19 +51,62 @@
             Assert.Equal(companies.Count(), viewModel.Companies.Count());
         }
 
+        #region Details
+
         [Fact]
-        public void Details_WhenCalled_ReturnsAsExpectedViewResult()
+        public async Task Details_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             //Arrange
             var payslipController = GetPayslipController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
             //Act
-            var actual = payslipController.Details(1);
+            var actual = await payslipController.Details(1, 1);
 
             //Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
         }
+
+        [Fact]
+        public async Task Details_PayrollIsNotExisted_ReturnRedirectToPageNotFound()
+        {
+            // Arrange
+            PayslipDetailModel payslip = null;
+            var payslipController = GetPayslipController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            payslipService.GetPayslipDetailAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(payslip);
+
+            // Act
+            var actual = await payslipController.Details(1, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task Details_PayrollIsExisted_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var payslip = new PayslipDetailModel();
+            var payslipController = GetPayslipController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            payslipService.GetPayslipDetailAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(payslip);
+
+            // Act
+            var actual = await payslipController.Details(1, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<PayslipDetailModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Equal(payslip, viewModel);
+        }
+
+        #endregion Details
 
         [Fact]
         public void SendPayslip_WhenCalled_ReturnsAsExpectedViewResult()
@@ -103,7 +148,7 @@
 
         private PayslipController GetPayslipController()
         {
-            var sessionService = FakeSessionService();
+            sessionService = FakeSessionService();
             var baseService = FakeBaseService();
             payslipService = FakePayslipService();
             var controller = new PayslipController(sessionService, baseService, payslipService);

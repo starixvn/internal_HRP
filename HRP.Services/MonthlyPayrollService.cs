@@ -1037,7 +1037,7 @@
                         reason.AppendFormat(
                             " Basic Salary changed on {0} for {1}.",
                             basicSetting.EffectiveDate.HasValue ? basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat) : string.Empty,
-                            Utilities.GetDescription(basicSetting.SalaryChangeReason.Value));
+                            EnumHelper.GetDescription(basicSetting.SalaryChangeReason.Value));
                         break;
 
                     default:

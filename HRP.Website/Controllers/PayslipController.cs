@@ -50,9 +50,23 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id, int companyId)
         {
-            return View();
+            var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.Payslip, Policy.Read);
+
+            if (!isRead)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            PayslipDetailModel payslipDetails = await payslipService.GetPayslipDetailAsync(id, companyId);
+
+            if (payslipDetails == null)
+            {
+                return RedirectToAction("PageNotFound", "Error");
+            }
+
+            return View(payslipDetails);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Host)]

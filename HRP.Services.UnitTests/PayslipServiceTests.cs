@@ -78,6 +78,7 @@
         {
             // Arrange
             var plainText = "1234";
+            var expectedAmount = "1,234.00";
             var payslip = new PayslipDetailModel
             {
                 SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
@@ -100,25 +101,25 @@
             Assert.Equal(payslip.CompanyName, actual.CompanyName);
             Assert.Equal(payslip.SalaryCurrencyId, actual.SalaryCurrencyId);
             Assert.Equal(payslip.SalaryCurrencyCode, actual.SalaryCurrencyCode);
-            Assert.Equal(plainText, actual.SalaryAmount);
+            Assert.Equal(expectedAmount, actual.SalaryAmount);
             Assert.Equal(payslip.AllowanceCurrencyId, actual.AllowanceCurrencyId);
             Assert.Equal(payslip.AllowanceCurrencyCode, actual.AllowanceCurrencyCode);
-            Assert.Equal(plainText, actual.AllowanceAmount);
+            Assert.Equal(expectedAmount, actual.AllowanceAmount);
             Assert.Collection(
                 actual.SalaryAdditions,
-                kvp => { Assert.Equal(plainText, kvp.NetSalary); });
+                kvp => { Assert.Equal(plainText, kvp.NetSalary); Assert.Equal(expectedAmount, kvp.NetSalaryDisplay); });
 
             Assert.Collection(
                 actual.SalaryDeductions,
-                kvp => { Assert.Equal(plainText, kvp.NetSalary); });
+                kvp => { Assert.Equal(plainText, kvp.NetSalary); Assert.Equal(expectedAmount, kvp.NetSalaryDisplay); });
 
             Assert.Collection(
                 actual.AllowanceAdditions,
-                kvp => { Assert.Equal(plainText, kvp.NetAllowance); });
+                kvp => { Assert.Equal(plainText, kvp.NetAllowance); Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay); });
 
             Assert.Collection(
                 actual.AllowanceDeductions,
-                kvp => { Assert.Equal(plainText, kvp.NetAllowance); });
+                kvp => { Assert.Equal(plainText, kvp.NetAllowance); Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay); });
         }
 
         #endregion GetPayslipDetailAsync

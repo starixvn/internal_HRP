@@ -14,6 +14,7 @@
 
     public class PayslipService : IPayslipService
     {
+        private const string AmountFormat = "#,##0.00";
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
@@ -68,36 +69,100 @@
 
             if (payslip != null)
             {
-                DescryptPayslip(payslip);
+                DescryptAndCalculateAmount(payslip);
             }
 
             return payslip;
         }
 
-        private void DescryptPayslip(PayslipDetailModel payslip)
+        private void DescryptAndCalculateAmount(PayslipDetailModel payslip)
         {
+            DescryptAndCalculateMonthlySalary(payslip);
+            DescryptAndCalculateMonthlyAllowance(payslip);
+        }
+
+        private void DescryptAndCalculateMonthlySalary(PayslipDetailModel payslip)
+        {
+            decimal amount;
+            decimal additionAmount = 0;
+            decimal deductionAmount = 0;
             payslip.SalaryAmount = cryptoService.Decrypt(payslip.SalaryAmount);
-            payslip.AllowanceAmount = cryptoService.Decrypt(payslip.AllowanceAmount);
+
+            decimal.TryParse(payslip.SalaryAmount, out decimal basicSalaryAmount);
+            payslip.SalaryAmount = basicSalaryAmount.ToString(AmountFormat);
 
             foreach (MonthlySalaryAdditionModel addition in payslip.SalaryAdditions)
             {
                 addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
+
+                decimal.TryParse(addition.NetSalary, out amount);
+                additionAmount += amount;
+                addition.NetSalaryDisplay = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyId).ToString(AmountFormat);
             }
 
             foreach (MonthlySalaryDeductionModel deduction in payslip.SalaryDeductions)
             {
                 deduction.NetSalary = cryptoService.Decrypt(deduction.NetSalary);
+
+                decimal.TryParse(deduction.NetSalary, out amount);
+                deductionAmount += amount;
+                deduction.NetSalaryDisplay = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyId).ToString(AmountFormat);
             }
+
+            amount = basicSalaryAmount + additionAmount;
+            payslip.GrossSalaryAmount = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyId).ToString(AmountFormat);
+
+            amount = basicSalaryAmount + additionAmount - deductionAmount;
+            payslip.NetSalaryAmount = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyId).ToString(AmountFormat);
+
+            payslip.SalaryDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.SalaryCurrencyId).ToString(AmountFormat);
+        }
+
+        private void DescryptAndCalculateMonthlyAllowance(PayslipDetailModel payslip)
+        {
+            decimal amount;
+            decimal additionAmount = 0;
+            decimal deductionAmount = 0;
+            payslip.AllowanceAmount = cryptoService.Decrypt(payslip.AllowanceAmount);
+
+            decimal.TryParse(payslip.AllowanceAmount, out decimal basicAllowanceAmount);
+            payslip.AllowanceAmount = basicAllowanceAmount.ToString(AmountFormat);
 
             foreach (MonthlyAllowanceAdditionModel addition in payslip.AllowanceAdditions)
             {
                 addition.NetAllowance = cryptoService.Decrypt(addition.NetAllowance);
+
+                decimal.TryParse(addition.NetAllowance, out amount);
+                additionAmount += amount;
+                addition.NetAllowanceToDisplay = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
             }
 
             foreach (MonthlyAllowanceDeductionModel deduction in payslip.AllowanceDeductions)
             {
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
+
+                decimal.TryParse(deduction.NetAllowance, out amount);
+                deductionAmount += amount;
+                deduction.NetAllowanceToDisplay = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
             }
+
+            amount = basicAllowanceAmount + additionAmount;
+            payslip.GrossAllowanceAmount = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
+
+            amount = basicAllowanceAmount + additionAmount - deductionAmount;
+            payslip.NetAllowanceAmount = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
+
+            payslip.SalaryDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
+        }
+
+        private static decimal RoundAmountWithCurrency(decimal amount, int currencyId)
+        {
+            if (currencyId == Constants.VietnamCurrencyId)
+            {
+                return Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000;
+            }
+
+            return Math.Round(amount, 2);
         }
     }
 }

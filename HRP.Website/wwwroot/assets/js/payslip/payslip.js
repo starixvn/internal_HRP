@@ -87,7 +87,7 @@ var payslips = (function ($) {
 
         $('#send-payslip-form').on('submit', function (e) {
             var form = this;
-            $(form).find('input').remove();
+            $(form).find('input.js-id').remove();
 
             dataTable.$('input.js-checkbox').each(function () {
                 if (this.checked) {
@@ -95,6 +95,7 @@ var payslips = (function ($) {
                         $('<input>')
                             .attr('type', 'hidden')
                             .attr('name', this.name)
+                            .attr('class', 'js-id')
                             .val(this.value)
                     );
                 }

@@ -304,6 +304,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basic Allowances.
+        /// </summary>
+        public static string BasicAllowances {
+            get {
+                return ResourceManager.GetString("BasicAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic Salary.
         /// </summary>
         public static string BasicSalary {
@@ -507,6 +516,15 @@ namespace HRP.Resources {
         public static string Completed {
             get {
                 return ResourceManager.GetString("Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confidential.
+        /// </summary>
+        public static string Confidential {
+            get {
+                return ResourceManager.GetString("Confidential", resourceCulture);
             }
         }
         
@@ -1285,6 +1303,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gross Allowances.
+        /// </summary>
+        public static string GrossAllowances {
+            get {
+                return ResourceManager.GetString("GrossAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gross Basic Salary.
+        /// </summary>
+        public static string GrossBasicSalary {
+            get {
+                return ResourceManager.GetString("GrossBasicSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         public static string Group {
@@ -1573,6 +1609,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Deductions.
+        /// </summary>
+        public static string MonthlyDeductions {
+            get {
+                return ResourceManager.GetString("MonthlyDeductions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly Payroll Status.
         /// </summary>
         public static string MonthlyPayrollStatus {
@@ -1623,6 +1668,24 @@ namespace HRP.Resources {
         public static string NetAmount {
             get {
                 return ResourceManager.GetString("NetAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Monthly Allowances.
+        /// </summary>
+        public static string NetMonthlyAllowances {
+            get {
+                return ResourceManager.GetString("NetMonthlyAllowances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Monthly Basic Salary.
+        /// </summary>
+        public static string NetMonthlyBasicSalary {
+            get {
+                return ResourceManager.GetString("NetMonthlyBasicSalary", resourceCulture);
             }
         }
         
@@ -1866,6 +1929,15 @@ namespace HRP.Resources {
         public static string Payslip {
             get {
                 return ResourceManager.GetString("Payslip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp..
+        /// </summary>
+        public static string PayslipNote {
+            get {
+                return ResourceManager.GetString("PayslipNote", resourceCulture);
             }
         }
         

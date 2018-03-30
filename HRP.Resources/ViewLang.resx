@@ -990,4 +990,28 @@
   <data name="Sent" xml:space="preserve">
     <value>Sent</value>
   </data>
+  <data name="Confidential" xml:space="preserve">
+    <value>Confidential</value>
+  </data>
+  <data name="BasicAllowances" xml:space="preserve">
+    <value>Basic Allowances</value>
+  </data>
+  <data name="GrossAllowances" xml:space="preserve">
+    <value>Gross Allowances</value>
+  </data>
+  <data name="GrossBasicSalary" xml:space="preserve">
+    <value>Gross Basic Salary</value>
+  </data>
+  <data name="MonthlyDeductions" xml:space="preserve">
+    <value>Monthly Deductions</value>
+  </data>
+  <data name="NetMonthlyAllowances" xml:space="preserve">
+    <value>Net Monthly Allowances</value>
+  </data>
+  <data name="NetMonthlyBasicSalary" xml:space="preserve">
+    <value>Net Monthly Basic Salary</value>
+  </data>
+  <data name="PayslipNote" xml:space="preserve">
+    <value>This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp.</value>
+  </data>
 </root>
