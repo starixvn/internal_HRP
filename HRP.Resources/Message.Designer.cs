@@ -691,6 +691,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while reading template file..
+        /// </summary>
+        public static string ErrorOccuredWhileReadingTemplate {
+            get {
+                return ResourceManager.GetString("ErrorOccuredWhileReadingTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired Date is required!.
         /// </summary>
         public static string ExpiredDateRequired {

@@ -777,4 +777,7 @@
   <data name="SendPayslipConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to send payslip to the selected employee(s)?</value>
   </data>
+  <data name="ErrorOccuredWhileReadingTemplate" xml:space="preserve">
+    <value>An error occured while reading template file.</value>
+  </data>
 </root>

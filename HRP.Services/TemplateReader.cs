@@ -44,58 +44,57 @@
 
         #region ReadAttendance
 
-        public static bool IsValidAttendanceSheet(ILookup<string, int> headers)
-        {
-            return
-                    headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
-                headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture));
-        }
-
         public Result<AttendanceTemplate> ReadAttendance(AttendanceTemplate template)
         {
             try
             {
                 var headers = GetHeaders(template.Sheet, AttendanceHeaderRow);
-                if (IsValidAttendanceSheet(headers))
+                if (!IsValidAttendanceSheet(headers))
                 {
-                    for (var i = AttendanceStartRow; i <= template.Sheet.LastRowNum; i++)
-                    {
-                        var row = template.Sheet.GetRow(i);
-
-#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        if (IsValidRow(row))
-#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        {
-                            var currentRowNumber = row.RowNum + 1;
-                            var record = new AttendanceUploading
-                            {
-                                RowNumber = currentRowNumber,
-                                EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
-                                ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row)
-                            };
-
-                            var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
-                            var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
-
-                            AddToAttendanceValidationResults(checkEmployeeCode);
-                            AddToAttendanceValidationResults(checkActualWorkingDay);
-
-                            attendanceUploading.Add(record);
-                        }
-                    }
-
-                    template.Records = attendanceUploading;
-                    template.ValidationResults = _attendanceValidationResults;
-
-                    return new Success<AttendanceTemplate>(template);
+                    return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
                 }
 
-                return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
+                for (var i = AttendanceStartRow; i <= template.Sheet.LastRowNum; i++)
+                {
+                    var row = template.Sheet.GetRow(i);
+
+                    if (IsValidRow(row))
+
+                    {
+                        var currentRowNumber = row.RowNum + 1;
+                        var record = new AttendanceUploading
+                        {
+                            RowNumber = currentRowNumber,
+                            EmployeeCode = GetStringValueAtCell(AttendanceColumn.IDNo, headers, row),
+                            ActualWorkingDay = GetStringValueAtCell(AttendanceColumn.ActualWorkingDay, headers, row)
+                        };
+
+                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, attendanceUploading);
+                        var checkActualWorkingDay = CheckActualWorkingDay(record.ActualWorkingDay, currentRowNumber);
+
+                        AddToAttendanceValidationResults(checkEmployeeCode);
+                        AddToAttendanceValidationResults(checkActualWorkingDay);
+
+                        attendanceUploading.Add(record);
+                    }
+                }
+
+                template.Records = attendanceUploading;
+                template.ValidationResults = _attendanceValidationResults;
+
+                return new Success<AttendanceTemplate>(template);
             }
             catch (Exception)
             {
-                return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
+                return new Failure<AttendanceTemplate>(Message.ErrorOccuredWhileReadingTemplate);
             }
+        }
+
+        private static bool IsValidAttendanceSheet(ILookup<string, int> headers)
+        {
+            return
+                    headers.Contains(AttendanceColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
+                headers.Contains(AttendanceColumn.ActualWorkingDay.ToLower(CultureInfo.InvariantCulture));
         }
 
         private void AddToAttendanceValidationResults(ValidationResult result)
@@ -110,72 +109,70 @@
 
         #region ReadDSTNetSalary
 
-        public static bool IsValidDSTNetSalarySheet(ILookup<string, int> headers)
+        public Result<DSTNetSalaryTemplate> ReadDSTNetSalary(DSTNetSalaryTemplate template)
+
+        {
+            try
+            {
+                var headers = GetHeaders(template.Sheet, DSTNetSalaryHeaderRow);
+                if (!IsValidDSTNetSalarySheet(headers))
+                {
+                    return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
+                }
+
+                for (var i = DSTNetSalaryStartRow; i <= template.Sheet.LastRowNum; i++)
+                {
+                    var row = template.Sheet.GetRow(i);
+
+                    if (IsValidRow(row))
+                    {
+                        var currentRowNumber = row.RowNum + 1;
+                        var record = new DSTNetSalaryUploading
+                        {
+                            RowNumber = currentRowNumber,
+                            EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
+                            Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
+                            NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
+                        };
+
+                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
+                        var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
+                        var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        if (checkNetSalaryReceived.IsValid)
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        {
+                            decimal.TryParse(record.NetSalaryReceived, out decimal salary);
+                            salary = record.Currency.ToLower(CultureInfo.InvariantCulture).Equals("vnd") ? Math.Round(salary) : Math.Round(salary, 2);
+                            record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
+                        }
+
+                        AddToDSTNetSalaryValidationResults(checkEmployeeCode);
+                        AddToDSTNetSalaryValidationResults(checkCurrency);
+                        AddToDSTNetSalaryValidationResults(checkNetSalaryReceived);
+
+                        record.NetSalaryReceived = cryptoService.Encrypt(record.NetSalaryReceived);
+                        dstNetSalaryUploading.Add(record);
+                    }
+                }
+
+                template.Records = dstNetSalaryUploading;
+                template.ValidationResults = _dstNetSalaryValidationResults;
+
+                return new Success<DSTNetSalaryTemplate>(template);
+            }
+            catch (Exception)
+            {
+                return new Failure<DSTNetSalaryTemplate>(Message.ErrorOccuredWhileReadingTemplate);
+            }
+        }
+
+        private static bool IsValidDSTNetSalarySheet(ILookup<string, int> headers)
         {
             return
                     headers.Contains(DSTNetSalaryColumn.IDNo.ToLower(CultureInfo.InvariantCulture)) &&
                 headers.Contains(DSTNetSalaryColumn.Currency.ToLower(CultureInfo.InvariantCulture)) &&
                 headers.Contains(DSTNetSalaryColumn.NetSalaryReceived.ToLower(CultureInfo.InvariantCulture));
-        }
-
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-
-        public Result<DSTNetSalaryTemplate> ReadDSTNetSalary(DSTNetSalaryTemplate template)
-#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
-        {
-            try
-            {
-                var headers = GetHeaders(template.Sheet, DSTNetSalaryHeaderRow);
-                if (IsValidDSTNetSalarySheet(headers))
-                {
-                    for (var i = DSTNetSalaryStartRow; i <= template.Sheet.LastRowNum; i++)
-                    {
-                        var row = template.Sheet.GetRow(i);
-
-#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        if (IsValidRow(row))
-#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        {
-                            var currentRowNumber = row.RowNum + 1;
-                            var record = new DSTNetSalaryUploading
-                            {
-                                RowNumber = currentRowNumber,
-                                EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
-                                Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
-                                NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
-                            };
-
-                            var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
-                            var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
-                            var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
-                            if (checkNetSalaryReceived.IsValid)
-                            {
-                                decimal.TryParse(record.NetSalaryReceived, out decimal salary);
-                                salary = record.Currency.ToLower(CultureInfo.InvariantCulture).Equals("vnd") ? Math.Round(salary) : Math.Round(salary, 2);
-                                record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
-                            }
-
-                            AddToDSTNetSalaryValidationResults(checkEmployeeCode);
-                            AddToDSTNetSalaryValidationResults(checkCurrency);
-                            AddToDSTNetSalaryValidationResults(checkNetSalaryReceived);
-
-                            record.NetSalaryReceived = cryptoService.Encrypt(record.NetSalaryReceived);
-                            dstNetSalaryUploading.Add(record);
-                        }
-                    }
-
-                    template.Records = dstNetSalaryUploading;
-                    template.ValidationResults = _dstNetSalaryValidationResults;
-
-                    return new Success<DSTNetSalaryTemplate>(template);
-                }
-
-                return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
-            }
-            catch (Exception)
-            {
-                return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
-            }
         }
 
         private void AddToDSTNetSalaryValidationResults(ValidationResult result)
@@ -189,32 +186,6 @@
         #endregion ReadDSTNetSalary
 
         #region Validation
-
-        public ValidationResult CheckNetSalaryReceived(string value, int rowNumber)
-        {
-            var columnName = DSTNetSalaryColumn.NetSalaryReceived;
-            var result = new ValidationResult
-            {
-                RowNumber = rowNumber
-            };
-
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                result.ResultType = 2;
-                result.Message = string.Format(Message.ValueMissing, columnName);
-            }
-            else if (!decimal.TryParse(value, out decimal number))
-            {
-                result.ResultType = 2;
-                result.Message = string.Format(Message.ValueMustBeANumber, columnName);
-            }
-            else
-            {
-                result.ResultType = 1;
-            }
-
-            return result;
-        }
 
         private ValidationResult CheckCurrency(string value, int rowNumber, IEnumerable<Currency> currencies)
         {
@@ -242,11 +213,37 @@
             return result;
         }
 
+        private ValidationResult CheckNetSalaryReceived(string value, int rowNumber)
+        {
+            var columnName = DSTNetSalaryColumn.NetSalaryReceived;
+            var result = new ValidationResult
+            {
+                RowNumber = rowNumber
+            };
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMissing, columnName);
+            }
+            else if (!decimal.TryParse(value, out decimal number))
+            {
+                result.ResultType = 2;
+                result.Message = string.Format(Message.ValueMustBeANumber, columnName);
+            }
+            else
+            {
+                result.ResultType = 1;
+            }
+
+            return result;
+        }
+
         private ValidationResult CheckEmployeeCode(string value, int rowNumber, string companyName,
                                                                 IEnumerable<string> employeeCodeList,
                                                                 IEnumerable<TemplateUploading> checkedRecords)
         {
-            var columnName = DSTNetSalaryColumn.IDNo;
+            var columnName = AttendanceColumn.IDNo;
             var result = new ValidationResult
             {
                 RowNumber = rowNumber
@@ -338,7 +335,7 @@
                 || row.Cells.Count == 0;
         }
 
-        public virtual Type GetBasicType(Type t)
+        private static Type GetBasicType(Type t)
         {
             var tmp = t;
 
@@ -350,7 +347,7 @@
             return tmp;
         }
 
-        public object GetPropValue(string column, ILookup<string, int> headers, IRow row, Type rowType)
+        private object GetPropValue(string column, ILookup<string, int> headers, IRow row, Type rowType)
         {
             var t = GetBasicType(rowType);
             var values = headers[column.ToLower(CultureInfo.InvariantCulture)].Select(idx => CellReader(row, idx, t));
@@ -400,7 +397,7 @@
             return ReadString(cell);
         }
 
-        public virtual object ReadInt(ICell cell)
+        private static object ReadInt(ICell cell)
         {
             if (cell == null)
             {
@@ -410,7 +407,7 @@
             return cell.CellType == CellType.String ? int.Parse(cell.StringCellValue, CultureInfo.InvariantCulture) : (int)cell.NumericCellValue;
         }
 
-        public virtual object ReadDouble(ICell cell)
+        private static object ReadDouble(ICell cell)
         {
             if (cell == null)
             {
@@ -420,14 +417,14 @@
             return cell.CellType == CellType.String ? double.Parse(cell.StringCellValue, CultureInfo.InvariantCulture) : cell.NumericCellValue;
         }
 
-        public virtual object ReadString(ICell cell)
+        private object ReadString(ICell cell)
         {
             var value = formatter.FormatCellValue(cell);
 
             return value ?? string.Empty;
         }
 
-        public virtual object ReadDateTime(ICell cell)
+        private static object ReadDateTime(ICell cell)
         {
             return cell.DateCellValue;
         }
