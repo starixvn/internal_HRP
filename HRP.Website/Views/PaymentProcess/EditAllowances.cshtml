@@ -34,7 +34,7 @@
     </div>
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control width-92" disabled>
+        <select class="control width-92 select2" disabled>
             <option value="@Model.EmployeeInfo.CompanyId" selected="selected">@Model.EmployeeInfo.CompanyCode</option>
         </select>
     </div>
@@ -50,13 +50,13 @@
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
-        <select class="control width-140" disabled>
+        <select class="control width-140 select2" disabled>
             <option>@Model.EmployeeInfo.CostCenter</option>
         </select>
     </div>
     <div class="group">
         <label class="text">@ViewLang.WorkingDays</label>
-        <select class="control width-92" disabled>
+        <select class="control width-92 select2" disabled>
             <option value="">@Model.EmployeeInfo.WorkingDays</option>
         </select>
     </div>
