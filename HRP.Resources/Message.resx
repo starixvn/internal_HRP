@@ -772,7 +772,7 @@
     <value>There is no currency setting in selected month.</value>
   </data>
   <data name="PayrollPresetConfirmationMessage" xml:space="preserve">
-    <value>Preset function will retrieve data from Payroll setting page for both &amp;lt;strong&amp;gt;Basic Salary&amp;lt;/strong&amp;gt; and &amp;lt;strong&amp;gt;Allowances&amp;lt;/strong&amp;gt;. Are you sure you want to apply this preset?</value>
+    <value>Preset function will retrieve data from Payroll setting page for both &lt;strong&gt;Basic Salary&lt;/strong&gt; and &lt;strong&gt;Allowances&lt;/strong&gt;. Are you sure you want to apply this preset?</value>
   </data>
   <data name="SendPayslipConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to send payslip to the selected employee(s)?</value>

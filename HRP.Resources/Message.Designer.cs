@@ -1582,7 +1582,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preset function will retrieve data from Payroll setting page for both &amp;lt;strong&amp;gt;Basic Salary&amp;lt;/strong&amp;gt; and &amp;lt;strong&amp;gt;Allowances&amp;lt;/strong&amp;gt;. Are you sure you want to apply this preset?.
+        ///   Looks up a localized string similar to Preset function will retrieve data from Payroll setting page for both &lt;strong&gt;Basic Salary&lt;/strong&gt; and &lt;strong&gt;Allowances&lt;/strong&gt;. Are you sure you want to apply this preset?.
         /// </summary>
         public static string PayrollPresetConfirmationMessage {
             get {
