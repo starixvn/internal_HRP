@@ -19,7 +19,6 @@
         private const int DSTNetSalaryStartRow = 5;
         private const int DSTNetSalaryHeaderRow = 4;
         private ICryptoService cryptoService;
-        private DataFormatter dataFormatter;
 
         #region ReadAttendance
 

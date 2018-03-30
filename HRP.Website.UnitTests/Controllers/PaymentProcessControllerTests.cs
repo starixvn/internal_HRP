@@ -70,7 +70,6 @@
             var viewDataModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
             Assert.Equal(viewModel.Companies, viewDataModel.Companies);
-            Assert.Equal(viewModel.SelectedTime, viewDataModel.SelectedTime);
             Assert.Equal(viewModel.StartDate, viewDataModel.StartDate);
             Assert.Equal(viewModel.DueDate, viewDataModel.DueDate);
         }
@@ -975,7 +974,8 @@
             {
                 SelectedTime = DateTime.Now,
                 StartDate = DateTime.Today.AddDays(-1),
-                Companies = selectList
+                Companies = selectList,
+                CommonError = string.Empty
             };
         }
 

@@ -66,14 +66,9 @@
                 {
                     if (paymentProcess.IsHasCurrencySetting)
                     {
-#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        if (IsRedirectToPageUploadFiles(paymentProcess))
-#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        {
-                            return RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
-                        }
-
-                        return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                        return IsRedirectToPageUploadFiles(paymentProcess)
+                            ? RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime })
+                            : RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
                     ModelState.AddModelError(nameof(viewModel.CommonError), Message.NotHasCurrencySetting);
@@ -91,7 +86,6 @@
 
             var data = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
             viewModel.Companies = data.Companies;
-            viewModel.SelectedTime = data.SelectedTime;
             viewModel.StartDate = data.StartDate;
             viewModel.DueDate = data.DueDate;
             return View("Index", viewModel);

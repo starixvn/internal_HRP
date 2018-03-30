@@ -6,15 +6,12 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IPaymentProcessService
     {
         Task<SelectWorkingMonthCompanyViewModel> GetDataForSelectWorkingDayMonthAsync();
 
         Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath);
-
-        Task<bool> IsPayrollGeneratedAsync(PaymentProcess process);
 
         Task<PaymentProcess> GetPaymentProcessAsync(int companyId, DateTime month);
 

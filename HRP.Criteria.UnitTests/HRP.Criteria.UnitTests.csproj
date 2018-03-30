@@ -101,6 +101,7 @@
     <Compile Include="Department\CreateDepartmentCriteriaTests.cs" />
     <Compile Include="Department\GetDepartmentByIdCriteriaTests.cs" />
     <Compile Include="Department\UpdateDepartmentCriteriaTests.cs" />
+    <Compile Include="Employee\GetAllEmployeeCodeByCompanyIdCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeBasicInfoByIdCriteriaTests.cs" />
     <Compile Include="GradeLevel\CheckGradeLevelExistsCriteriaTests.cs" />
     <Compile Include="GradeLevel\CreateGradeLevelCriteriaTests.cs" />
@@ -129,6 +130,15 @@
     <Compile Include="Office\GetAllOfficeCriteriaTests.cs" />
     <Compile Include="Office\GetOfficeByIdCriteriaTests.cs" />
     <Compile Include="Office\UpdateOfficeCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\DeleteUploadedAttendanceCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\DeleteUploadedDSTNetSalaryCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GenerateMonthlyPayrollCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GetDataForGeneratePayrollCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GetDataForSelectWorkingMonthCompanyCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GetPaymentProcessCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GetUploadingFilesResultCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\SubmitUploadingFilesCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\UploadAttendanceAndDSTNetSalaryCriteriaTests.cs" />
     <Compile Include="Payslip\GetPayslipDetailsCriteriaTests.cs" />
     <Compile Include="Payslip\GetPayslipCriteriaTests.cs" />
     <Compile Include="RefResource\CheckRefResourceExistsCriteriaTests.cs" />

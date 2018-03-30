@@ -72,13 +72,6 @@
             return memory;
         }
 
-        public async Task<bool> IsPayrollGeneratedAsync(PaymentProcess process)
-        {
-            var isExisted = await baseService.GetDataEntityAsync<bool>(new CheckPayrollGeneratedCriteria { CompanyId = process.CompanyId, Month = process.Month }).ConfigureAwait(false);
-
-            return isExisted;
-        }
-
         public async Task<PaymentProcess> GetPaymentProcessAsync(int companyId, DateTime month)
         {
             var criteria = new GetPaymentProcessCriteria

@@ -65,25 +65,6 @@
         }
 
         [Fact]
-        public async Task IsPayrollGeneratedAsync_BaseServiceGetBoolInstance_ReturnBoolInstance()
-        {
-            // Arrange
-            var expected = true;
-            var paymentProcess = MockPaymentProcess();
-            var criteria = new CheckPayrollGeneratedCriteria();
-            var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataEntityAsync<bool>(Arg.Do<CheckPayrollGeneratedCriteria>(x => criteria = x)).Returns(expected);
-
-            // Act
-            var actual = await paymentProcessService.IsPayrollGeneratedAsync(paymentProcess);
-
-            // Assert
-            Assert.Equal(expected, actual);
-            Assert.Equal(paymentProcess.CompanyId, criteria.CompanyId);
-            Assert.Equal(paymentProcess.Month, criteria.Month);
-        }
-
-        [Fact]
         public async Task GetPaymentProcessAsync_WhenCalled_ReturnExpectedPaymenProcessInstance()
         {
             // Arrange
@@ -628,7 +609,8 @@
                 DSTNetSalaryFile = MockExcelFile(),
                 CompanyCode = "Nex",
                 CompanyId = 2,
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                CommonError = string.Empty
             };
         }
 
