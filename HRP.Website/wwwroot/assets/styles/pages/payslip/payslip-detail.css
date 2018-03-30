@@ -62,15 +62,18 @@ body {
   font-weight: bold;
 }
 
-.detail-section .content, .detail-section .footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 0 8px;
+.detail-section .content .row, .detail-section .footer .row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px;
 }
 
-.detail-section .content:after {
-  content: '';
-  height: 28px;
+.detail-section .content .row:hover, .detail-section .footer .row:hover {
+  background-color: #ffe3cb;
+}
+
+.detail-section .content {
+  margin-bottom: 28px;
 }
 
 .detail-section .footer {
@@ -108,8 +111,12 @@ body {
   border-top-width: 0;
 }
 
-.detail-section.grand-total .content:after {
-  height: 0;
+.detail-section.grand-total .content {
+  margin-bottom: 0;
+}
+
+.detail-section.grand-total .row:hover {
+  background-color: transparent;
 }
 
 .detail-section.grand-total .key, .detail-section.grand-total .value {

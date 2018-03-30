@@ -943,7 +943,7 @@
     <value>No</value>
   </data>
   <data name="PayrollPresetConfirmationMessage" xml:space="preserve">
-    <value>Preset function will retrieve data from Payroll setting page for both Basic Salary and Allowances. Are you sure you want to apply this preset?</value>
+    <value>Preset function will retrieve data from Payroll setting page for both <b>Basic Salary</b> and <b>Allowances</b>. Are you sure you want to apply this preset?</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

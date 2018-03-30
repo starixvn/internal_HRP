@@ -55,15 +55,17 @@ body {
         font-weight: bold;        
     }
 
-    .content, .footer{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        padding: 0 8px;        
+    .content .row, .footer .row{
+        display: flex;
+        justify-content: space-between;
+        margin: 0 8px;     
+        &:hover {
+            background-color: #ffe3cb;
+        }    
     }
 
-    .content:after {
-        content: '';
-        height: 28px;
+    .content{
+        margin-bottom: 28px;
     }
 
     .footer {
@@ -99,8 +101,11 @@ body {
     &.grand-total {
         background: #c5cace;
         border-top-width: 0;
-        .content:after {
-            height: 0;
+        .content {
+            margin-bottom: 0;
+        }
+        .row:hover {
+            background-color: transparent;
         }
         .key, .value {
             text-transform: uppercase;
