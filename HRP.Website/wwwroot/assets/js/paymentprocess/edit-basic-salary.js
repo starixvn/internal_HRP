@@ -503,7 +503,7 @@ var editBasicSalary = (function ($) {
                 }
             }
         },
-        onPresetSuccess: function (response, status) {
+        onPresetSuccess: function (response) {
             $('#modal').modal('hide');
             if (response.isSuccessful) {
                 disableForm();

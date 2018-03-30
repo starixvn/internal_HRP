@@ -65,9 +65,7 @@
             <th colspan="2">
                 @if (Model.IsHost)
                 {
-                    <form id="send-payslip-form" asp-controller="payslip" asp-action="SendPayslip" method="post">
-                        <input type="submit" class="btn -send-payslip" value="@ViewLang.SendPayslip" />
-                    </form>
+                    <input type="button" class="btn -send-payslip" data-toggle="modal" data-target="#modal" value="@ViewLang.SendPayslip" />
                 }
                 else
                 {
@@ -126,6 +124,29 @@
         }
     </tbody>
 </table>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title">@ViewLang.Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <form id="send-payslip-form" asp-controller="payslip" asp-action="SendPayslip" data-ajax-method="post" data-ajax="true"
+                      data-ajax-failure="commonFunctions.handleAjaxError"
+                      data-ajax-success="payslips.onSendPayslipSuccess">
+                    <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                    <p>@Message.SendPayslipConfirmationMessage</p>
+                    <div class="list-button">
+                        <button class="button -primary" type="submit" id="btn-yes">@ViewLang.Yes</button>
+                        <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <environment include="Development">

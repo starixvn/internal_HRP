@@ -110,7 +110,13 @@ var payslips = (function ($) {
 
     return {
         initModule: initModule,
-        initDataTable: initDataTable
+        initDataTable: initDataTable,
+        onSendPayslipSuccess: function (response) {
+            $('#modal').modal('hide');
+            if (response.isSuccessful) {
+            } else {
+            }
+        }
     };
 }(jQuery));
 

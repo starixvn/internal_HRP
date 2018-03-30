@@ -1582,6 +1582,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset function will retrieve data from Payroll setting page for both &lt;b&gt;Basic Salary&lt;/b&gt; and &lt;b&gt;Allowances&lt;/b&gt;. Are you sure you want to apply this preset?.
+        /// </summary>
+        public static string PayrollPresetConfirmationMessage {
+            get {
+                return ResourceManager.GetString("PayrollPresetConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PDF Password must not over {1} characters long..
         /// </summary>
         public static string PDFPasswordMaxLength {
@@ -1776,6 +1785,15 @@ namespace HRP.Resources {
         public static string SelectAtLeastOneOption {
             get {
                 return ResourceManager.GetString("SelectAtLeastOneOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to send payslip to the selected employee(s)?.
+        /// </summary>
+        public static string SendPayslipConfirmationMessage {
+            get {
+                return ResourceManager.GetString("SendPayslipConfirmationMessage", resourceCulture);
             }
         }
         
