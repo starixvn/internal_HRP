@@ -48,7 +48,14 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
-            var viewModel = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
+            var paymentProcess = await paymentProcessService.GetCurrentDuration();
+            var viewModel = new SelectWorkingMonthCompanyViewModel
+            {
+                Companies = await paymentProcessService.GetCompanySelectListAsync(),
+                SelectedTime = paymentProcess.Month,
+                StartDate = paymentProcess.StartDate,
+                DueDate = paymentProcess.DueDate
+            };
 
             return View(viewModel);
         }
@@ -84,10 +91,8 @@
                 }
             }
 
-            var data = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
-            viewModel.Companies = data.Companies;
-            viewModel.StartDate = data.StartDate;
-            viewModel.DueDate = data.DueDate;
+            viewModel.Companies = await paymentProcessService.GetCompanySelectListAsync();
+
             return View("Index", viewModel);
         }
 

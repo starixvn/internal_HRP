@@ -8,6 +8,7 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
@@ -34,19 +35,38 @@
         private IMonthlyPayrollService monthlyPayrollService;
 
         [Fact]
-        public async Task GetDataForSelectWorkingDayMonthAsync_WhenCalled_ReturnSelectWorkingMonthCompanyViewModel()
+        public async Task GetCompanySelectListAsync_BaseServiceGetCompanyList_ReturnSelectList()
         {
             // Arrange
-            var viewModel = MockSelectWorkingMonthCompanyViewModel();
+            var companies = new List<Company> { MockCompany() };
+            var expected = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetDataForSelectWorkingMonthCompanyAsync(Arg.Is<GetDataForSelectWorkingMonthCompanyCriteria>(x => x.UserId == sessionService.UserId)).Returns(viewModel);
+            baseService.GetDataAsync<Company>(Arg.Is<GetCompanyByFunctionKeyCriteria>(x => x.UserId == sessionService.UserId && x.FunctionKey == FunctionKey.PaymentProcess)).Returns(companies);
 
             // Act
-            var actual = await paymentProcessService.GetDataForSelectWorkingDayMonthAsync();
+            var actual = await paymentProcessService.GetCompanySelectListAsync();
 
             // Assert
-            Assert.IsType<SelectWorkingMonthCompanyViewModel>(actual);
-            Assert.Equal(viewModel, actual);
+            Assert.IsType<SelectList>(actual);
+            Assert.Equal(expected.DataValueField, actual.DataValueField);
+            Assert.Equal(expected.DataTextField, actual.DataTextField);
+            Assert.Equal(expected.Items, actual.Items);
+        }
+
+        [Fact]
+        public async Task GetCurrentDuration_WhenCalled_ReturnExpectedPaymenProcessInstance()
+        {
+            // Arrange
+            var month = DateTime.Today;
+            var expected = MockPaymentProcess();
+            var paymentProcessService = GetPaymentProcessService();
+            baseService.GetDataEntityAsync<PaymentProcess>(Arg.Any<GetCurrentPaymentProcessDurationCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await paymentProcessService.GetCurrentDuration();
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -636,19 +656,6 @@
                     Currency = "VND",
                     NetSalaryReceived = "99999999"
                 }
-            };
-        }
-
-        private SelectWorkingMonthCompanyViewModel MockSelectWorkingMonthCompanyViewModel()
-        {
-            var companies = new List<Company> { MockCompany() };
-            var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
-
-            return new SelectWorkingMonthCompanyViewModel
-            {
-                SelectedTime = DateTime.Now,
-                StartDate = DateTime.Today.AddDays(-1),
-                Companies = selectList
             };
         }
 

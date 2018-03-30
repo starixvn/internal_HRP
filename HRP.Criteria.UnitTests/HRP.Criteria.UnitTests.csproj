@@ -134,7 +134,7 @@
     <Compile Include="PaymentProcess\DeleteUploadedDSTNetSalaryCriteriaTests.cs" />
     <Compile Include="PaymentProcess\GenerateMonthlyPayrollCriteriaTests.cs" />
     <Compile Include="PaymentProcess\GetDataForGeneratePayrollCriteriaTests.cs" />
-    <Compile Include="PaymentProcess\GetDataForSelectWorkingMonthCompanyCriteriaTests.cs" />
+    <Compile Include="PaymentProcess\GetCurrentPaymentProcessDurationCriteriaTests.cs" />
     <Compile Include="PaymentProcess\GetPaymentProcessCriteriaTests.cs" />
     <Compile Include="PaymentProcess\GetUploadingFilesResultCriteriaTests.cs" />
     <Compile Include="PaymentProcess\SubmitUploadingFilesCriteriaTests.cs" />

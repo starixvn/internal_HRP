@@ -3,12 +3,10 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Repositories.Interfaces;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class PaymentProcessRepository : IPaymentProcessRepository
     {
@@ -79,28 +77,6 @@
                         MonthlyBasicSalary = monthlyBasicSalary,
                         MonthlyBasicAllowance = monthlyBasicAllowance,
                         CurrencyExchangeRate = currencyExchangeRate
-                    };
-
-                    return result;
-                }
-            }
-        }
-
-        public async Task<SelectWorkingMonthCompanyViewModel> GetDataForSelectWorkingMonthCompanyAsync(ICriteria criteria)
-        {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
-                {
-                    var companies = await multi.ReadAsync<Company>().ConfigureAwait(false);
-                    var paymentProcess = await multi.ReadFirstOrDefaultAsync<PaymentProcess>().ConfigureAwait(false);
-
-                    var result = new SelectWorkingMonthCompanyViewModel
-                    {
-                        Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                        SelectedTime = paymentProcess.Month,
-                        StartDate = paymentProcess.StartDate,
-                        DueDate = paymentProcess.DueDate
                     };
 
                     return result;

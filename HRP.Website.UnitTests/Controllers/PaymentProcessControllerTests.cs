@@ -39,9 +39,17 @@
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var expected = MockSelectWorkingMonthCompanyViewModel();
+            var selectList = MockCompanySelectList();
+            var paymentProcess = new PaymentProcess
+            {
+                Month = DateTime.Today,
+                StartDate = DateTime.Today.AddDays(-1),
+                DueDate = DateTime.Today.AddDays(10)
+            };
+
             var controller = GetPaymentProcessController();
-            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(expected);
+            paymentProcessService.GetCurrentDuration().Returns(paymentProcess);
+            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
 
             // Act
             var actual = await controller.Index();
@@ -49,27 +57,31 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.Model);
-            Assert.Equal(expected, viewModel);
+            Assert.Equal(selectList, viewModel.Companies);
+            Assert.Equal(paymentProcess.Month, viewModel.SelectedTime);
+            Assert.Equal(paymentProcess.StartDate, viewModel.StartDate);
+            Assert.Equal(paymentProcess.DueDate, viewModel.DueDate);
         }
 
         [Fact]
         public async Task IndexPost_ModelStateIsInvalid_ReturnIndexViewResultWithViewModel()
         {
             // Arrange
+            var selectList = MockCompanySelectList();
             var viewModel = MockSelectWorkingMonthCompanyViewModel();
-            var paramModel = new SelectWorkingMonthCompanyViewModel();
             var controller = GetPaymentProcessController();
-            controller.ModelState.AddModelError(nameof(paramModel.CompanyId), "Missing company id");
-            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
+            controller.ModelState.AddModelError(nameof(viewModel.CompanyId), "Missing company id");
+            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
 
             // Act
-            var actual = await controller.Index(paramModel);
+            var actual = await controller.Index(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewDataModel = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
-            Assert.Equal(viewModel.Companies, viewDataModel.Companies);
+            Assert.Equal(selectList, viewDataModel.Companies);
+            Assert.Equal(viewModel.SelectedTime, viewDataModel.SelectedTime);
             Assert.Equal(viewModel.StartDate, viewDataModel.StartDate);
             Assert.Equal(viewModel.DueDate, viewDataModel.DueDate);
         }
@@ -78,7 +90,8 @@
         public async Task IndexPost_UserHasHostPermissionAndNotHasCurrencySetting_ReturnIndexViewResultWithModelStateError()
         {
             // Arrange
-            var viewModel = MockSelectWorkingMonthCompanyViewModel();
+            var selectList = MockCompanySelectList();
+            var viewModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
             var paymentProcess = new PaymentProcess
             {
                 StartDate = DateTime.Parse("2018-3-1"),
@@ -91,19 +104,23 @@
                 IsHasCurrencySetting = false
             };
 
-            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
             var controller = GetPaymentProcessController();
-            sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
-            paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
-            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
+            paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime).Returns(paymentProcess);
+            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+
             // Act
-            var actual = await controller.Index(paramModel);
+            var actual = await controller.Index(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewData = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
             Assert.Equal(Message.NotHasCurrencySetting, viewResult.ViewData.ModelState["CommonError"].Errors.First().ErrorMessage);
+            Assert.Equal(selectList, viewData.Companies);
+            Assert.Equal(viewModel.SelectedTime, viewData.SelectedTime);
+            Assert.Equal(viewModel.StartDate, viewData.StartDate);
+            Assert.Equal(viewModel.DueDate, viewData.DueDate);
         }
 
         [Fact]
@@ -209,6 +226,7 @@
             (string startDate, string dueDate, bool isHostOnCompany)
         {
             // Arrange
+            var selectList = MockCompanySelectList();
             var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var paymentProcess = new PaymentProcess
             {
@@ -220,7 +238,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(isHostOnCompany);
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
-            paymentProcessService.GetDataForSelectWorkingDayMonthAsync().Returns(viewModel);
+            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
 
             // Act
             var actual = await controller.Index(paramModel);
@@ -963,6 +981,13 @@
                 Name = "descC",
                 IsActive = true
             };
+        }
+
+        private SelectList MockCompanySelectList()
+        {
+            var companies = new List<Company> { MockCompany() };
+
+            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }
 
         private SelectWorkingMonthCompanyViewModel MockSelectWorkingMonthCompanyViewModel()

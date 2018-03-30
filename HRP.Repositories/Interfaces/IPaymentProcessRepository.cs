@@ -9,7 +9,5 @@
         Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria);
 
         Task<GeneratePayrollViewModel> GetDataForGeneratePayroll(ICriteria criteria);
-
-        Task<SelectWorkingMonthCompanyViewModel> GetDataForSelectWorkingMonthCompanyAsync(ICriteria criteria);
     }
 }
