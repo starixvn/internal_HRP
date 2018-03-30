@@ -393,7 +393,7 @@
                     <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                     <input type="hidden" name="month" value="@Model.Month" />
                     <input type="hidden" name="companyId" value="@Model.EmployeeInfo.CompanyId" />
-                    <p>@Message.PayrollPresetConfirmationMessage</p>
+                    <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
                     <div class="list-button">
                         <button class="button -primary" type="submit" data-loading-text="Updating..." id="btn-yes" >@ViewLang.Yes</button>
                         <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
