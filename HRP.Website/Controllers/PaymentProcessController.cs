@@ -400,12 +400,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month,
-            int? searchWorkingDays = null,
-            int? searchEmployeeId = null,
-            string searchEmployee = null,
-            string searchCostCenterIds = null,
-            string searchIdNo = null)
+        public async Task<IActionResult> EditAllowances(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
@@ -413,11 +408,7 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
-            viewModel.SearchWorkingDays = searchWorkingDays;
-            viewModel.SearchEmployeeId = searchEmployeeId;
-            viewModel.SearchEmployee = searchEmployee;
-            viewModel.SearcCostCenterIds = searchCostCenterIds;
-            viewModel.SearchIdNo = searchIdNo;
+            viewModel.Filter = filter;
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
@@ -460,11 +451,11 @@
                                 companyId = viewModel.EmployeeInfo.CompanyId,
                                 month = viewModel.Month,
                                 payrollId = viewModel.Allowance.PayrollId,
-                                employeeId = viewModel.SearchEmployeeId,
-                                employee = viewModel.SearchEmployee,
-                                costCenterIds = viewModel.SearcCostCenterIds,
-                                idNo = viewModel.SearchIdNo,
-                                workingDays = viewModel.SearchWorkingDays
+                                employeeId = viewModel.Filter.EmployeeId,
+                                employee = viewModel.Filter.Employee,
+                                costCenterIds = viewModel.Filter.CostCenterIds,
+                                idNo = viewModel.Filter.IDNo,
+                                workingDays = viewModel.Filter.WorkingDays
                             });
 
                         case EditMonthlyAllowanceAction.Save:
@@ -474,11 +465,11 @@
                                 {
                                     companyId = viewModel.EmployeeInfo.CompanyId,
                                     month = viewModel.Month,
-                                    employeeId = viewModel.SearchEmployeeId,
-                                    employee = viewModel.SearchEmployee,
-                                    costCenterIds = viewModel.SearcCostCenterIds,
-                                    idNo = viewModel.SearchIdNo,
-                                    workingDays = viewModel.SearchWorkingDays
+                                    employeeId = viewModel.Filter.EmployeeId,
+                                    employee = viewModel.Filter.Employee,
+                                    costCenterIds = viewModel.Filter.CostCenterIds,
+                                    idNo = viewModel.Filter.IDNo,
+                                    workingDays = viewModel.Filter.WorkingDays
                                 });
                     }
                 }

@@ -89,11 +89,11 @@
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="Month" />
-    <input type="hidden" asp-for="SearchWorkingDays" />
-    <input type="hidden" asp-for="SearchEmployeeId" />
-    <input type="hidden" asp-for="SearchEmployee" />
-    <input type="hidden" asp-for="SearcCostCenterIds" />
-    <input type="hidden" asp-for="SearchIdNo" />
+    <input type="hidden" asp-for="Filter.WorkingDays" />
+    <input type="hidden" asp-for="Filter.EmployeeId" />
+    <input type="hidden" asp-for="Filter.Employee" />
+    <input type="hidden" asp-for="Filter.CostCenterIds" />
+    <input type="hidden" asp-for="Filter.IDNo" />
     <input type="hidden" asp-for="Allowance.PayrollId" />
     <input type="hidden" asp-for="Allowance.CurrencyCode" />
     <input type="hidden" asp-for="BasicAllowance.PayrollId" />

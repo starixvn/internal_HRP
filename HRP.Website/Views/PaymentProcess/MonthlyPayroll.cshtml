@@ -280,8 +280,11 @@
                             {
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
                                    asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month" asp-route-companyId="@Model.CompanyId"
-                                   asp-route-searchIdNo="@Model.IDNo" asp-route-searchEmployee="@Model.Employee" asp-route-searchEmployeeId="@Model.EmployeeId"
-                                   asp-route-searchCostCenterIds="@Model.CostCenterIds" asp-route-searchWorkingDays="@Model.WorkingDays">
+                                   asp-route-employeeId="@Model.EmployeeId"
+                                   asp-route-employee="@Model.Employee"
+                                   asp-route-idNo="@Model.IDNo"
+                                   asp-route-workingDays="@Model.WorkingDays"
+                                   asp-route-costCenterIds="@Model.CostCenterIds">
                                     <span class="icon-allowances"></span>
                                     @if (employee.Policy == Policy.Host)
                                     {
