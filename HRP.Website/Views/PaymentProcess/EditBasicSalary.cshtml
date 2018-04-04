@@ -23,7 +23,10 @@
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
-    <li class="like-link">@ViewLang.ViewEmployee</li>
+    <li class="like-link">
+        <a asp-controller="PaymentProcess" asp-action="EmployeeMonthlyPayroll"
+           asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.ViewEmployeeMonthlyPayroll</a>
+    </li>
     <li class="active">@(Model.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary)</li>
 </ol>
 
