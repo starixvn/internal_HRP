@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.Payslip;
@@ -18,17 +20,20 @@
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
+        private readonly IBaseMailService emailService;
         private readonly IPayslipRepository payslipRepository;
 
         public PayslipService(
             IBaseService baseService,
             ISessionService sessionService,
             ICryptoService cryptoService,
+            IBaseMailService emailService,
             IPayslipRepository payslipRepository = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
+            this.emailService = emailService;
             this.payslipRepository = payslipRepository ?? new PayslipRepository();
         }
 
@@ -65,7 +70,7 @@
                 CompanyId = companyId
             };
 
-            PayslipDetailModel payslip = await payslipRepository.GetPayslipDetailAsync(criteria).ConfigureAwait(false);
+            PayslipDetailModel payslip = (await payslipRepository.GetPayslipDetailsAsync(criteria).ConfigureAwait(false)).FirstOrDefault();
 
             if (payslip != null)
             {
@@ -73,6 +78,40 @@
             }
 
             return payslip;
+        }
+
+        public async Task<CommandResult> SendPayslipAsync(SendPayslipViewModel viewModel)
+        {
+            var commandResult = new CommandResult();
+            var criteria = new GetPayslipDetailsCriteria
+            {
+                UserId = sessionService.UserId,
+                PayrollIds = string.Join(",", viewModel.PayrollIds),
+                CompanyId = viewModel.CompanyId
+            };
+
+            IEnumerable<PayslipDetailModel> payslips = await payslipRepository.GetPayslipDetailsAsync(criteria).ConfigureAwait(false);
+
+            foreach(PayslipDetailModel payslip in payslips)
+            {
+                DescryptAndCalculateAmount(payslip);
+                SendMail(payslip);
+            }
+
+            return commandResult;
+        }
+
+        private void SendMail(PayslipDetailModel payslip)
+        {
+            var mailModel = new MailModel
+            {
+                Subject = string.Empty,
+                ReceiverEmail = payslip.Email,
+                MailCC = string.Empty,
+                Body = string.Empty
+            };
+
+            emailService.SendEmail(mailModel);
         }
 
         private void DescryptAndCalculateAmount(PayslipDetailModel payslip)

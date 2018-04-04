@@ -1,5 +1,7 @@
 ﻿namespace HRP.Repositories
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
@@ -8,23 +10,27 @@
 
     public class PayslipRepository : IPayslipRepository
     {
-        public async Task<PayslipDetailModel> GetPayslipDetailAsync(ICriteria criteria)
+        public async Task<IEnumerable<PayslipDetailModel>> GetPayslipDetailsAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var payslip = await multi.ReadFirstOrDefaultAsync<PayslipDetailModel>().ConfigureAwait(false);
+                    var payslips = await multi.ReadAsync<PayslipDetailModel>().ConfigureAwait(false);
+                    var salaryAdditions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
+                    var salaryDeductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
+                    var allowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAdditionModel>().ConfigureAwait(false);
+                    var allowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeductionModel>().ConfigureAwait(false);
 
-                    if (payslip != null)
+                    foreach (PayslipDetailModel payslip in payslips)
                     {
-                        payslip.SalaryAdditions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
-                        payslip.SalaryDeductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
-                        payslip.AllowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAdditionModel>().ConfigureAwait(false);
-                        payslip.AllowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeductionModel>().ConfigureAwait(false);
+                        payslip.SalaryAdditions = salaryAdditions.Where(x => x.PayrollId == payslip.PayrollId);
+                        payslip.SalaryDeductions = salaryDeductions.Where(x => x.PayrollId == payslip.PayrollId);
+                        payslip.AllowanceAdditions = allowanceAdditions.Where(x => x.PayrollId == payslip.PayrollId);
+                        payslip.AllowanceDeductions = allowanceDeductions.Where(x => x.PayrollId == payslip.PayrollId);
                     }
 
-                    return payslip;
+                    return payslips;
                 }
             }
         }

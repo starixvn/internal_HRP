@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var payslips = (function ($) {
-    var dataTable;
+    var dataTable, $btnSendPayslip;
 
     function initSelect2() {
         $('.js-select2').select2({
@@ -85,25 +85,30 @@ var payslips = (function ($) {
             }
         });
 
+        $btnSendPayslip.on('click', function () {
+            if (dataTable.$('input.js-checkbox:checked').length > 0) {
+                $('#modal').modal('show');
+            }
+        });
+
         $('#send-payslip-form').on('submit', function (e) {
             var form = this;
-            $(form).find('input.js-id').remove();
+            $(form).find('input.js-payrollId').remove();
 
-            dataTable.$('input.js-checkbox').each(function () {
-                if (this.checked) {
-                    $(form).append(
-                        $('<input>')
-                            .attr('type', 'hidden')
-                            .attr('name', this.name)
-                            .attr('class', 'js-id')
-                            .val(this.value)
-                    );
-                }
+            dataTable.$('input.js-checkbox:checked').each(function (index, element) {
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'PayrollIds[' + index + ']')
+                        .attr('class', 'js-payrollId')
+                        .val(this.value)
+                );
             });
         });
     }
 
     function initModule() {
+        $btnSendPayslip = $('.js-btnSendPayslip');
         initSelect2();
         initDatetimepicker();
         registerEvents();
@@ -116,6 +121,7 @@ var payslips = (function ($) {
             $('#modal').modal('hide');
             if (response.isSuccessful) {
             } else {
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
         }
     };

@@ -14,6 +14,7 @@
 
         public string FullName { get; set; }
         public string IDNo { get; set; }
+        public string Email { get; set; }
         public string CompanyName { get; set; }
         public int SalaryCurrencyId { get; set; }
         public string SalaryCurrencyCode { get; set; }

@@ -953,9 +953,6 @@
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
             decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-            int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
-            int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
-            int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             decimal amount;
 
             if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
@@ -963,6 +960,7 @@
                 int monthDiff = GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth);
                 if (monthDiff > 0)
                 {
+                    int daysInMonth = DateTime.DaysInMonth(basicSetting.EffectiveDate.Value.Year, basicSetting.EffectiveDate.Value.Month);
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * monthDiff);
 
@@ -974,6 +972,9 @@
                 }
                 else
                 {
+                    int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
+                    int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
+                    int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
                     amount = RoundAmountWithCurrency(amount, currencyId);

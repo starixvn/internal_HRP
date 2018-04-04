@@ -44,6 +44,11 @@
     </div>
 </form>
 
+<div class="list-message-error hidden">
+    <p class="message">@Message.SelectAtLeastOneEmployee</p>
+</div>
+<div class="-has-icon msg-error hidden"></div>
+
 <div class="top-header">
     <div class="search-box">
         <input type="search" id="quick-search" class="control" placeholder="@ViewLang.Search" />
@@ -55,7 +60,7 @@
     <thead>
         <tr>
             <th rowspan="2">@ViewLang.SymbolCount</th>
-            <th rowspan="2">ID No.</th>
+            <th rowspan="2">@ViewLang.IDNo</th>
             <th rowspan="2">@ViewLang.EmployeeName</th>
             <th rowspan="2">@ViewLang.Nickname</th>
             <th rowspan="2">@ViewLang.Section</th>
@@ -65,7 +70,7 @@
             <th colspan="2">
                 @if (Model.IsHost)
                 {
-                    <input type="button" class="btn -send-payslip" data-toggle="modal" data-target="#modal" value="@ViewLang.SendPayslip" />
+                    <input type="button" class="btn -send-payslip js-btnSendPayslip" value="@ViewLang.SendPayslip" />
                 }
                 else
                 {
@@ -116,7 +121,7 @@
                 <td class="text-center"><span class="icon-active"></span></td>
                 <td class="text-center">
                     <label>
-                        <input type="checkbox" name="id[]" value="@payslip.PayrollId"
+                        <input type="checkbox" name="PayrollIds[]" value="@payslip.PayrollId"
                                class="@(Model.IsHost ? "js-checkbox" : string.Empty)" @disabled />
                         <span></span>
                     </label>
@@ -151,6 +156,7 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
         <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>

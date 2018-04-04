@@ -1780,6 +1780,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select at least one employee..
+        /// </summary>
+        public static string SelectAtLeastOneEmployee {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select at least one Employment Status.
         /// </summary>
         public static string SelectAtLeastOneEmploymentStatus {

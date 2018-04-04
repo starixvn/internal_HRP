@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
     using HRP.Criteria;
@@ -18,6 +19,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
+        private IBaseMailService emailService;
         private IPayslipRepository payslipRepository;
 
         [Fact]
@@ -62,15 +64,15 @@
         public async Task GetPayslipDetailAsync_NotExistedPayroll_ReturnDefaultModel()
         {
             // Arrange
-            PayslipDetailModel expected = null;
+            var payslips = new List<PayslipDetailModel>();
             var payslipService = GetPayslipService();
-            payslipRepository.GetPayslipDetailAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(expected);
+            payslipRepository.GetPayslipDetailsAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslips);
 
             // Act
             var actual = await payslipService.GetPayslipDetailAsync(1, 1);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Null(actual);
         }
 
         [Fact]
@@ -79,31 +81,34 @@
             // Arrange
             var plainText = "1234";
             var expectedAmount = "1,234.00";
-            var payslip = new PayslipDetailModel
+            var payslips = new List<PayslipDetailModel>
             {
-                SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
-                SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
-                AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
-                AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+                new PayslipDetailModel
+                {
+                    SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                    SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
+                    AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
+                    AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+                }
             };
             var payslipService = GetPayslipService();
-            payslipRepository.GetPayslipDetailAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslip);
+            payslipRepository.GetPayslipDetailsAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslips);
             cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
 
             // Act
             var actual = await payslipService.GetPayslipDetailAsync(1, 1);
 
             // Assert
-            Assert.Equal(payslip.PayrollId, actual.PayrollId);
-            Assert.Equal(payslip.Month, actual.Month);
-            Assert.Equal(payslip.FullName, actual.FullName);
-            Assert.Equal(payslip.IDNo, actual.IDNo);
-            Assert.Equal(payslip.CompanyName, actual.CompanyName);
-            Assert.Equal(payslip.SalaryCurrencyId, actual.SalaryCurrencyId);
-            Assert.Equal(payslip.SalaryCurrencyCode, actual.SalaryCurrencyCode);
+            Assert.Equal(payslips.First().PayrollId, actual.PayrollId);
+            Assert.Equal(payslips.First().Month, actual.Month);
+            Assert.Equal(payslips.First().FullName, actual.FullName);
+            Assert.Equal(payslips.First().IDNo, actual.IDNo);
+            Assert.Equal(payslips.First().CompanyName, actual.CompanyName);
+            Assert.Equal(payslips.First().SalaryCurrencyId, actual.SalaryCurrencyId);
+            Assert.Equal(payslips.First().SalaryCurrencyCode, actual.SalaryCurrencyCode);
             Assert.Equal(expectedAmount, actual.SalaryAmount);
-            Assert.Equal(payslip.AllowanceCurrencyId, actual.AllowanceCurrencyId);
-            Assert.Equal(payslip.AllowanceCurrencyCode, actual.AllowanceCurrencyCode);
+            Assert.Equal(payslips.First().AllowanceCurrencyId, actual.AllowanceCurrencyId);
+            Assert.Equal(payslips.First().AllowanceCurrencyCode, actual.AllowanceCurrencyCode);
             Assert.Equal(expectedAmount, actual.AllowanceAmount);
             Assert.Collection(
                 actual.SalaryAdditions,
@@ -146,6 +151,11 @@
             return Substitute.For<ICryptoService>();
         }
 
+        private static IBaseMailService FakeMailService()
+        {
+            return Substitute.For<IBaseMailService>();
+        }
+
         private static IPayslipRepository FakePayslipRepository()
         {
             return Substitute.For<IPayslipRepository>();
@@ -157,7 +167,8 @@
             sessionService = FakeSessionService();
             cryptoService = FakeCryptoService();
             payslipRepository = FakePayslipRepository();
-            var service = new PayslipService(baseService, sessionService, cryptoService, payslipRepository);
+            emailService = FakeMailService();
+            var service = new PayslipService(baseService, sessionService, cryptoService, emailService, payslipRepository);
 
             return service;
         }
