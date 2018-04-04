@@ -403,6 +403,7 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            viewModel.CompanyId = companyId;
             viewModel.Filter = filter;
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
@@ -443,7 +444,7 @@
                         case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
                             return RedirectToAction("EditBasicSalary", new
                             {
-                                companyId = viewModel.EmployeeInfo.CompanyId,
+                                companyId = viewModel.CompanyId,
                                 month = viewModel.Month,
                                 payrollId = viewModel.Allowance.PayrollId,
                                 employeeId = viewModel.Filter.EmployeeId,
@@ -458,7 +459,7 @@
                             return RedirectToAction("EmployeeMonthlyPayroll",
                                 new
                                 {
-                                    companyId = viewModel.EmployeeInfo.CompanyId,
+                                    companyId = viewModel.CompanyId,
                                     month = viewModel.Month,
                                     employeeId = viewModel.Filter.EmployeeId,
                                     employee = viewModel.Filter.Employee,

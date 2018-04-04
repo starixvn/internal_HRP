@@ -10,6 +10,8 @@
     {
         public int EmployeeId { get; set; }
 
+        public int CompanyId { get; set; }
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 

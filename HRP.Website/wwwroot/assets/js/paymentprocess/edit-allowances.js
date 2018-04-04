@@ -311,10 +311,6 @@
             window.location.reload();
         });
 
-        $('#btn-cancel').on('click', function () {
-            window.history.back()
-        });
-
         if ($('#CanEdit').val() === 'False') {
             $('input:enabled, select:enabled', $editAllowanceForm).attr('disabled', 'disabled');
             return;

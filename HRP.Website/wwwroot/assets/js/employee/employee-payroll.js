@@ -19,12 +19,14 @@
         return this.toFixed(2);
     };
 
-    function checkCurrencyAndAmountChange() {
+    function checkCurrencyAndAmountChange(element) {
+        var oldElementValue = $(element).data('old-value');
         var $basicSalary = $('#BasicSalary_Salary');
-        var oldValue = $('#BasicSalary_OldSalary').val();
+        var oldSalary = $('#BasicSalary_OldSalary').val();
         var $currency = $('#BasicSalary_CurrencyId');
         var oldCurrency = $('#BasicSalary_OldCurrencyId').val();
-        return (oldValue !== '' && $basicSalary.val() !== '') || (oldCurrency !== '' &&  $currency.val() !== '');
+
+        return (oldSalary !== '' && (Number($basicSalary.val()) !== Number(oldSalary) || oldElementValue !== '')) || (oldCurrency !== '' && ($currency.val() !== oldCurrency || oldElementValue !== '' ));
     }
 
     function calculateBasicSalary() {
@@ -152,10 +154,6 @@
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
             $amount.val(number.roundWithCurrency(2, currency).toStringWithCurrency(currency));
-        } else {
-            if ($amount.attr('readonly')) {
-                $amount.val('');
-            }
         }
     }
 
@@ -265,7 +263,9 @@
                 $(this).removeData('unselecting');
                 e.preventDefault();
             }
-        });
+        }).on('change', function () {
+            $(this).click();
+        });;
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
 
@@ -334,6 +334,18 @@
             }
         }).change();
 
+        $('#Allowance_DutyMealCurrencyId').on('change', function (e) {
+            if (e.target.value) {
+                var dutyMealPerDay = $('#duty-meal-per-day').val();
+                if (dutyMealPerDay) {
+                    var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
+                    $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay);
+                }
+            } else {
+                $('#Allowance_DutyMealAmount').val('');
+            }
+        });
+
         $('.basic-salary-calculate').on('change', function (e) {
             roundingAmount(e.target);
             validatedInvalidRelatedElements(e.target);
@@ -370,7 +382,10 @@
         $('input[name="BasicSalary.WorkingDays"], #duty-meal-per-day').on('change', function (e) {
             var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
             $('#working-days').val(workingDays);
-            $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
+
+            if ($('#Allowance_DutyMealCurrencyId').val() !== '') {
+                $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
+            }
         });
 
         if ($('#BasicSalary_InitFirstTime').val() === 'True') {
@@ -468,12 +483,12 @@
             rules: {
                 'BasicSalary.ReasonId': {
                     required: function (element) {
-                        return checkCurrencyAndAmountChange();
+                        return checkCurrencyAndAmountChange(element);
                     }
                 },
                 'BasicSalary.EffectiveDate': {
                     required: function (element) {
-                        return checkCurrencyAndAmountChange();
+                        return checkCurrencyAndAmountChange(element);
                     }
                 },
                 'BasicSalary.Salary': {
@@ -484,6 +499,16 @@
                 'BasicSalary.CurrencyId': {
                     required: function (element) {
                         return $('#BasicSalary_Salary').val() !== ''
+                    }
+                },
+                'Allowance.CurrencyId': {
+                    required: function (element) {
+                        return $('#allowance-total-amount').val() !== ''
+                    }
+                },
+                'AllowanceTotal': {
+                    required: function (element) {
+                        return $('#Allowance_CurrencyId').val() !== ''
                     }
                 }
             }

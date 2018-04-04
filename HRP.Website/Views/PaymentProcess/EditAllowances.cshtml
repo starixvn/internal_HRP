@@ -89,6 +89,7 @@
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="Month" />
+    <input type="hidden" asp-for="CompanyId" />
     <input type="hidden" asp-for="Filter.WorkingDays" />
     <input type="hidden" asp-for="Filter.EmployeeId" />
     <input type="hidden" asp-for="Filter.Employee" />
@@ -142,7 +143,7 @@
                     <div>@ViewLang.TotalAmountActualCurrency</div>
                     <div class="-start-col-6">@ViewLang.NetAllowance (@Model.Allowance.CurrencyCode)</div>
                 </div>
-                
+
                 @{
                     var allowanceTypes = Html.GetEnumSelectList<AllowanceType>();
                 }
@@ -150,7 +151,7 @@
                 @for (var i = 0; i < Model.Additions.Count; i++)
                 {
                     <div class="group-complex -alw-layout-add">
-  
+
                         <div class="like-group-title">@allowanceTypes.FirstOrDefault(x => x.Value == Model.Additions[i].Type.ToString()).Text</div>
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
@@ -198,7 +199,7 @@
                         <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" class="control deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
 
                         <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
                         <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
@@ -228,7 +229,7 @@
             </div>
             <div class="group-complex -layout-setting">
                 <div class="text-red bold">@ViewLang.FitnessFirst</div>
-                <select class="control select2" disabled asp-for="BasicAllowance.FitnessFirstCurrencyId">
+                <select class="control select2" disabled asp-items="Model.Currencies" asp-for="BasicAllowance.FitnessFirstCurrencyId">
                     <option></option>
                 </select>
                 <input type="hidden" asp-for="BasicAllowance.FitnessFirstCurrencyId">
@@ -374,7 +375,14 @@
             <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
         </div>
         <div class="list-button">
-            <button class="button -second" id="btn-cancel">@ViewLang.Cancel</button>
+            <a class="button -second"
+               asp-action="EmployeeMonthlyPayroll"
+               asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month"
+               asp-route-employeeId="@Model.Filter.EmployeeId"
+               asp-route-employee="@Model.Filter.Employee"
+               asp-route-idNo="@Model.Filter.IDNo"
+               asp-route-workingDays="@Model.Filter.WorkingDays"
+               asp-route-costCenterIds="@Model.Filter.CostCenterIds">@ViewLang.Cancel</a>
             @if (Model.CanEdit)
             {
                 <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save">@ViewLang.Save</button>
