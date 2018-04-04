@@ -962,7 +962,7 @@
                 {
                     int daysInMonth = DateTime.DaysInMonth(basicSetting.EffectiveDate.Value.Year, basicSetting.EffectiveDate.Value.Month);
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
-                        + ((newSalary - oldSalary) * monthDiff);
+                        + ((newSalary - oldSalary) * (monthDiff - 1));
 
                     basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(amount + newSalary, currencyId).ToString(CultureInfo.InvariantCulture);
 
