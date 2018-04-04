@@ -1,131 +1,219 @@
-﻿@using HRP.Resources
-@using HRP.Core.Enumerations
-@using HRP.Core.Extensions
-@using HRP.Models.Payslip
-@using HRP.Models.MonthlyPayroll
-
-@model PayslipDetailModel
-
-@{
+﻿@{
     Layout = null;
 }
 
 <!DOCTYPE html>
 <html>
-<head>
-    <link href="~/assets/styles/pages/payslip/payslip-detail.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
-        <div class="employee-info">
-            <div class="col">
-                <div class="row">@Model.CompanyName</div>
-                <div class="row bold">@ViewLang.Payslip <span class="red">(@ViewLang.Confidential)</span> @Html.DisplayFor(x => x.Month)</div>
+    <head>
+        <link href="~/assets/styles/pages/payslip/payslip-detail.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="employee-info">
+                <div class="col">
+                    <div class="row">Nexcel Solutions Co., Ltd.</div>
+                    <div class="row bold">Payslip <span class="red">(Confidential)</span> MARCH - 2018</div>                    
+                </div>
+                <div class="col">
+                    <div class="row main-info"><div class="name">Employee Name:</div><div class="bold">Natalie Dang </div></div>
+                    <div class="row main-info"><div class="id">Employee ID:</div><div class="bold">OW02451</div></div>
+                </div>
             </div>
-            <div class="col">
-                <div class="row main-info"><div class="name">@ViewLang.EmployeeName:</div><div class="bold">@Model.FullName</div></div>
-                <div class="row main-info"><div class="id">@ViewLang.IDNo:</div><div class="bold">@Model.IDNo</div></div>
+            <div class="payslip-detail">
+                <div class="row-tbl">
+                    <div class="detail-section">
+                        <div class="title">Monthly basic salary</div>
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Basic salary</td>
+                                    <td class="value">100.000.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Adjustments</td>
+                                    <td class="value">2.000.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Back Pay</td>
+                                    <td class="value">1.500.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Others</td>
+                                    <td class="value">200.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Others</td>
+                                    <td class="value">200.000 USD</td>
+                                </tr>
+                            </tbody>                      
+                        </table>
+                        <table class="footer">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Gross Basic salary</td>
+                                    <td class="value">2103.700.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="detail-section">
+                        <div class="title">Monthly allowances</div>
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Basic Allowances</td>
+                                    <td class="value">100.000.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Subsistence</td>
+                                    <td class="value">2.000.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Home Passage</td>
+                                    <td class="value">400.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Housing</td>
+                                    <td class="value">80.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Mobile Phone</td>
+                                    <td class="value">70.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">HPI</td>
+                                    <td class="value">500.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Duty Meal</td>
+                                    <td class="value">50.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Secondment</td>
+                                    <td class="value">5.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Others</td>
+                                    <td class="value">100.000 USD</td>
+                                </tr>
+                            </tbody>                   
+                        </table>
+                        <table class="footer">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Gross Allowances</td>
+                                    <td class="value">101.205.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row-tbl">
+                    <div class="detail-section">
+                        <div class="title">Deduction</div>
+                        <table class="content">
+                            <tbody>
+                                 <tr>
+                                    <td class="key">UPL/Absenteeism</td>
+                                    <td class="value">100.000.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Salary Advance</td>
+                                    <td class="value">2.000.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Tadiness</td>
+                                    <td class="value">1.500.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Others</td>
+                                    <td class="value">200.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="footer deduction">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Monthly Deductions</td>
+                                    <td class="value">1.500.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <div class="detail-section">
+                        <div class="title">Deduction</div>
+                        <table class="content">
+                            <tbody>
+                                 <tr>
+                                    <td class="key">Subsistence</td>
+                                    <td class="value">2.000.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Home Passage</td>
+                                    <td class="value">400.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Housing</td>
+                                    <td class="value">80.000 USD</td>
+                                </tr>
+                                 <tr>
+                                    <td class="key">Mobile Phone</td>
+                                    <td class="value">70.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">HPI</td>
+                                    <td class="value">500.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Duty Meal</td>
+                                    <td class="value">50.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Secondment</td>
+                                    <td class="value">5.000 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="key">Others</td>
+                                    <td class="value">100.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="footer deduction">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Monthly Deductions</td>
+                                    <td class="value">305.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row-tbl grand-total">
+                    <div class="detail-section">
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Net monthly basic salary</td>
+                                    <td class="value">102.200.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="detail-section">
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td class="key">Net monthly allowances</td>
+                                    <td class="value">101.000.000 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div  class="note">
+                This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp.
             </div>
         </div>
-        <div class="payslip-detail">
-            <div class="detail-section">
-                <div class="title">@ViewLang.MonthlyBasicSalary</div>
-                <div class="content">
-                    <div class="row">
-                        <div class="key">@ViewLang.BasicSalary</div>
-                        <div class="value">@Model.SalaryAmount @Model.SalaryCurrencyCode</div>
-                    </div>
-                    @foreach (MonthlySalaryAdditionModel addition in Model.SalaryAdditions)
-                    {
-                        <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)addition.Type)</div>
-                            <div class="value">@addition.NetSalaryDisplay @Model.SalaryCurrencyCode</div>
-                        </div>
-                    }
-                </div>
-                <div class="footer">
-                    <div class="row">
-                        <div class="key total">@ViewLang.GrossBasicSalary</div>
-                        <div class="value total">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-            <div class="detail-section">
-                <div class="title">@ViewLang.MonthlyAllowances</div>
-                <div class="content">
-                    <div class="row">
-                        <div class="key">@ViewLang.BasicAllowances</div>
-                        <div class="value">@Model.AllowanceAmount @Model.AllowanceCurrencyCode</div>
-                    </div>
-                    @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
-                    {
-                        <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
-                            <div class="value">@addition.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
-                        </div>
-                    }
-                </div>
-                <div class="footer">
-                    <div class="row">
-                        <div class="key total">@ViewLang.GrossAllowances</div>
-                        <div class="value total">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-            <div class="detail-section">
-                <div class="title">@ViewLang.Deduction</div>
-                <div class="content">
-                    @foreach (MonthlySalaryDeductionModel deduction in Model.SalaryDeductions)
-                    {
-                        <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)deduction.Type)</div>
-                            <div class="value">@deduction.NetSalaryDisplay @Model.SalaryCurrencyCode</div>
-                        </div>
-                    }
-                </div>
-                <div class="footer">
-                    <div class="row">
-                        <div class="key total">@ViewLang.MonthlyDeductions</div>
-                        <div class="value total red">@Model.SalaryDeductionAmount @Model.SalaryCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-            <div class="detail-section">
-                <div class="title">@ViewLang.Deduction</div>
-                <div class="content">
-                    @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
-                    {
-                        <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>
-                            <div class="value">@deduction.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
-                        </div>
-                    }
-                </div>
-                <div class="footer">
-                    <div class="row">
-                        <div class="key total">@ViewLang.MonthlyDeductions</div>
-                        <div class="value total red">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-            <div class="detail-section grand-total">
-                <div class="content">
-                    <div class="row">
-                        <div class="key">@ViewLang.NetMonthlyBasicSalary</div>
-                        <div class="value">@Model.NetSalaryAmount @Model.SalaryCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-            <div class="detail-section grand-total">
-                <div class="content">
-                    <div class="row">
-                        <div class="key">@ViewLang.NetMonthlyAllowances</div>
-                        <div class="value">@Model.NetAllowanceAmount @Model.AllowanceCurrencyCode</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="note">@ViewLang.PayslipNote</div>
-    </div>
-</body>
+    </body>
 </html>

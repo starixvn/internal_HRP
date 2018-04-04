@@ -417,4 +417,8 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 .payment-duration .required {
   color: #ff0000;
 }
+
+.list-button {
+  padding-top: 18px;
+}
 /*# sourceMappingURL=payment-process.css.map */

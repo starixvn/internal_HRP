@@ -44,32 +44,63 @@ body {
   background-color: #ffe3cb;
 }
 
-.payslip-detail {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.note {
+  text-align: center;
+  color: #666;
+  margin-top: 12px;
+}
+
+.payslip-detail .row-tbl {
+  display: table;
+  width: 100%;
+}
+
+.payslip-detail .row-tbl .detail-section:first-child {
+  border-right-width: 0;
+}
+
+.payslip-detail .row-tbl.grand-total .content {
+  margin-bottom: 0;
+  background-color: #c5cace;
+}
+
+.payslip-detail .row-tbl.grand-total .content .key, .payslip-detail .row-tbl.grand-total .content .value {
+  color: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.payslip-detail .row-tbl.grand-total .content tr:hover {
+  background-color: transparent;
 }
 
 .detail-section {
+  width: 50%;
+  display: table-cell;
   border: 1px solid #d9d9d9;
   position: relative;
 }
 
-.detail-section .title {
-  text-transform: uppercase;
-  background-color: #1973b2;
-  color: #fff;
-  padding: 5px 16px;
-  font-weight: bold;
+.detail-section .content, .detail-section .footer {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.detail-section .content .row, .detail-section .footer .row {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 8px;
-}
-
-.detail-section .content .row:hover, .detail-section .footer .row:hover {
+.detail-section .content tr:hover, .detail-section .footer tr:hover {
   background-color: #ffe3cb;
+}
+
+.detail-section .content .key, .detail-section .content .value, .detail-section .footer .key, .detail-section .footer .value {
+  padding: 5px 8px;
+}
+
+.detail-section .content .value, .detail-section .footer .value {
+  text-align: right;
+}
+
+.detail-section .content .key, .detail-section .footer .key {
+  color: #1973b2;
+  font-weight: bold;
 }
 
 .detail-section .content {
@@ -78,56 +109,25 @@ body {
 
 .detail-section .footer {
   position: absolute;
-  bottom: 0;
   width: 100%;
-  box-sizing: border-box;
   height: 28px;
-}
-
-.detail-section:nth-of-type(2n+1) {
-  border-right-width: 0;
-}
-
-.detail-section .key {
-  color: #1973b2;
-  padding: 5px 8px;
-}
-
-.detail-section .value {
-  text-align: right;
-  padding: 5px 8px;
-}
-
-.detail-section .key.total, .detail-section .value.total {
-  text-transform: uppercase;
-  color: inherit;
-  position: relative;
   bottom: 0;
-  font-weight: bold;
 }
 
-.detail-section.grand-total {
-  background: #c5cace;
-  border-top-width: 0;
-}
-
-.detail-section.grand-total .content {
-  margin-bottom: 0;
-}
-
-.detail-section.grand-total .row:hover {
-  background-color: transparent;
-}
-
-.detail-section.grand-total .key, .detail-section.grand-total .value {
+.detail-section .footer .key {
   text-transform: uppercase;
   color: inherit;
-  font-weight: bold;
 }
 
-.note {
-  text-align: center;
-  color: #666;
-  margin-top: 12px;
+.detail-section .footer.deduction .value {
+  color: #f00;
+}
+
+.detail-section .title {
+  text-transform: uppercase;
+  background-color: #1973b2;
+  color: #fff;
+  padding: 5px 16px;
+  font-weight: bold;
 }
 /*# sourceMappingURL=payslip-detail.css.map */
