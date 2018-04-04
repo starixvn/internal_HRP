@@ -27,7 +27,8 @@ namespace HRP.Core.Services
                     MailTo = email.ReceiverEmail,
                     MailCc = email.MailCC,
                     Subject = email.Subject,
-                    Body = email.Body
+                    Body = email.Body,
+                    Attachments = email.Attachments
                 };
 
                 SendMail(mailItem);

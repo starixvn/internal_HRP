@@ -7,6 +7,7 @@
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.Payslip;
@@ -71,9 +72,18 @@
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Host)]
         [HttpPost]
-        public IActionResult SendPayslip()
+        public async Task<IActionResult> SendPayslip(SendPayslipViewModel viewModel)
         {
-            return View();
+            var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.Payslip, Policy.Host);
+
+            if (!isHost)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            CommandResult commandResult = await payslipService.SendPayslipAsync(viewModel);
+
+            return Json(commandResult);
         }
     }
 }

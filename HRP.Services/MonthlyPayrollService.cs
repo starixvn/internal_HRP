@@ -279,7 +279,8 @@
         {
             decimal amount = 0;
             decimal totalAmount = 0;
-            decimal.TryParse(basicSalary.AfterAdjustmentAmount, out decimal salary);
+            decimal.TryParse(basicSalary.Salary, out decimal salaryAmount);
+            decimal.TryParse(basicSalary.AfterAdjustmentAmount, out decimal afterAdjustmentAmount);
             decimal ebanking = ConvertAmount(currencyExchangeRates, basicSalary.EbankingAmount, basicSalary.EbankingCurrencyId, basicSalary.CurrencyId);
             decimal directBanking1 = ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking1Amount, basicSalary.DirectBanking1CurrencyId, basicSalary.CurrencyId);
             decimal directBanking2 = ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking2Amount, basicSalary.DirectBanking2CurrencyId, basicSalary.CurrencyId);
@@ -290,63 +291,79 @@
                 case PayrollAutoCalculateOn.Ebanking:
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
-                        amount = ConvertAmount(currencyExchangeRates, salary - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
+                        amount = ConvertAmount(currencyExchangeRates, salaryAmount - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
+                        basicSalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
                         totalAmount = amount + directBanking1 + directBanking2 + cash;
-                        basicSalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
+                        monthlySalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
+
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking1:
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
-                        amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
+                        amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
+                        basicSalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
                         totalAmount = ebanking + amount + directBanking2 + cash;
-                        basicSalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
+                        monthlySalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
+
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
-                        amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
+                        amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
+                        basicSalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
                         totalAmount = ebanking + directBanking1 + amount + cash;
-                        basicSalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
+                        monthlySalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
+
                     break;
 
                 default:
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
-                        amount = ConvertAmount(currencyExchangeRates, salary - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
+                        amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
+                        basicSalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
                         totalAmount = ebanking + directBanking1 + directBanking2 + amount;
-                        basicSalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
+                        monthlySalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
+
                     break;
             }
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
             monthlySalary.Salary = basicSalary.AfterAdjustmentAmount;
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
-            monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
-            monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
             monthlySalary.DirectBanking1BankTypeId = basicSalary.DirectBanking1BankTypeId;
             monthlySalary.DirectBanking1AccountId = basicSalary.DirectBanking1AccountId;
             monthlySalary.DirectBanking2CurrencyId = basicSalary.DirectBanking2CurrencyId;
-            monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
             monthlySalary.DirectBanking2BankTypeId = basicSalary.DirectBanking2BankTypeId;
             monthlySalary.DirectBanking2AccountId = basicSalary.DirectBanking2AccountId;
             monthlySalary.CashCurrencyId = basicSalary.CashCurrencyId;
-            monthlySalary.CashAmount = basicSalary.CashAmount;
             monthlySalary.CashAccountId = basicSalary.CashAccountId;
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
             monthlySalary.AdditionAmount = backPay.NetSalary;
-            monthlySalary.Status = (amount < 0 || totalAmount > salary) ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
+            monthlySalary.Status = (amount < 0 || totalAmount > afterAdjustmentAmount) ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
         }
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
