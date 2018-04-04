@@ -380,7 +380,7 @@
             return commandResult;
         }
 
-        private async Task<GeneratePayrollViewModel> GetDataForGenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId = null)
+        private async Task<GeneratePayrollModel> GetDataForGenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId = null)
         {
             var criteria = new GetDataForGeneratePayrollCriteria
             {

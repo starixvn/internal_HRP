@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Models.Currency;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using NSubstitute;
     using Xunit;
@@ -22,6 +24,8 @@
             objectDb = Substitute.For<IObjectDb>();
             ObjectDbFactory.Mock((key, time) => objectDb);
         }
+
+        #region GetUploadingFilesResultAsync
 
         [Fact]
         public async Task GetUploadingFilesResultAsync_PaymentProcessIsNull_ReturnEmptyUploadAttendanceAndSalaryViewModel()
@@ -143,6 +147,41 @@
             Assert.Equal(paymentProcess.AttendanceTotalRow, actual.AttendanceResult.TotalRow);
             Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
         }
+
+        #endregion GetUploadingFilesResultAsync
+
+        #region GetDataForGeneratePayroll
+
+        [Fact]
+        public async Task GetDataForGeneratePayroll_WhenCalled_ReturnGeneratePayrollModelAsync()
+        {
+            // Arrange
+            var expected = new GeneratePayrollModel();
+            var criteria = FakeCriteria();
+            var multiResult = FakeMultiResultReader();
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
+            multiResult.ReadAsync<MonthlyPayroll>().Returns(expected.MonthlyPayroll);
+            multiResult.ReadAsync<MonthlyAttendance>().Returns(expected.MonthlyAttendance);
+            multiResult.ReadAsync<MonthlyDSTNetSalary>().Returns(expected.MonthlyDSTNetSalary);
+            multiResult.ReadAsync<MonthlyBasicSalaryModel>().Returns(expected.MonthlyBasicSalary);
+            multiResult.ReadAsync<MonthlyPayrollBasicAllowanceModel>().Returns(expected.MonthlyBasicAllowance);
+            multiResult.ReadAsync<CurrencyExchangeRateModel>().Returns(expected.CurrencyExchangeRate);
+            var repository = new PaymentProcessRepository();
+
+            // Act
+            var actual = await repository.GetDataForGeneratePayroll(criteria);
+
+            // Assert
+            Assert.IsType<GeneratePayrollModel>(actual);
+            Assert.Equal(expected.MonthlyPayroll, actual.MonthlyPayroll);
+            Assert.Equal(expected.MonthlyAttendance, actual.MonthlyAttendance);
+            Assert.Equal(expected.MonthlyDSTNetSalary, actual.MonthlyDSTNetSalary);
+            Assert.Equal(expected.MonthlyBasicSalary, actual.MonthlyBasicSalary);
+            Assert.Equal(expected.MonthlyBasicAllowance, actual.MonthlyBasicAllowance);
+            Assert.Equal(expected.CurrencyExchangeRate, actual.CurrencyExchangeRate);
+        }
+
+        #endregion GetDataForGeneratePayroll
 
         #region Initialization
 

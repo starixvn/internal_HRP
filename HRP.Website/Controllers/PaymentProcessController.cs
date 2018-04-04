@@ -131,7 +131,7 @@
                 return View(viewModel);
             }
 
-            return RedirectToAction("AccessDenied", "Error");
+            return RedirectToAction("Index");
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]

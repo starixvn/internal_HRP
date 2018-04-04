@@ -8,6 +8,6 @@
     {
         Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria);
 
-        Task<GeneratePayrollViewModel> GetDataForGeneratePayroll(ICriteria criteria);
+        Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria);
     }
 }

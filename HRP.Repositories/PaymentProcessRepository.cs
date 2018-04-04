@@ -56,7 +56,7 @@
             }
         }
 
-        public async Task<GeneratePayrollViewModel> GetDataForGeneratePayroll(ICriteria criteria)
+        public async Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -69,7 +69,7 @@
                     var monthlyBasicAllowance = await multi.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false);
                     var currencyExchangeRate = await multi.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false);
 
-                    var result = new GeneratePayrollViewModel
+                    var result = new GeneratePayrollModel
                     {
                         MonthlyPayroll = monthlyPayroll,
                         MonthlyAttendance = monthlyAttendance,

@@ -428,7 +428,7 @@
         {
             // Arrange
             var expected = new CommandResult();
-            var generatePayrollViewModel = new GeneratePayrollViewModel
+            var generatePayrollViewModel = new GeneratePayrollModel
             {
                 MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = 1, Month = DateTime.Today } },
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel>(),
@@ -458,7 +458,7 @@
         {
             // Arrange
             var expected = new CommandResult();
-            var generatePayrollViewModel = new GeneratePayrollViewModel
+            var generatePayrollViewModel = new GeneratePayrollModel
             {
                 MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = 1, Month = DateTime.Today } },
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 1 } },

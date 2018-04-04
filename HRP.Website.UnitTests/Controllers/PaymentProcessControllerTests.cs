@@ -346,8 +346,8 @@
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("Error", viewResult.ControllerName);
-            Assert.Equal("AccessDenied", viewResult.ActionName);
+            Assert.Null(viewResult.ControllerName);
+            Assert.Equal("Index", viewResult.ActionName);
         }
 
         [Fact]

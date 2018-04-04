@@ -4,7 +4,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
 
-    public class GeneratePayrollViewModel
+    public class GeneratePayrollModel
     {
         public IEnumerable<MonthlyPayroll> MonthlyPayroll { get; set; }
 
