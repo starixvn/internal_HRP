@@ -710,7 +710,7 @@
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
             // Act
-            var actual = await controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
+            var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -722,12 +722,13 @@
         public async Task EditBasicSalary_MonthlyPayrollIsNotExisted_ReturnRedirectToPageNotFound()
         {
             // Arrange
+            EditMonthlySalaryViewModel monthlySalary = null;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(x => Task.FromResult<EditMonthlySalaryViewModel>(null));
+            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(monthlySalary);
 
             // Act
-            var actual = await controller.EditBasicSalary(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<DateTime>());
+            var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -750,7 +751,7 @@
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
 
             // Act
-            var actual = await controller.EditBasicSalary(payrollId, companyId, month);
+            var actual = await controller.EditBasicSalary(payrollId, companyId, month, new CachingFilterViewModel());
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -868,7 +869,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(false);
 
-            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
 
             var result = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", result.ControllerName);
@@ -889,7 +890,7 @@
                     EmployeeInfo = new MonthlyAllowanceEmployeeInfoModel()
                 });
 
-            var actual = await controller.EditAllowances(1, companyId, DateTime.Today);
+            var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
             baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());

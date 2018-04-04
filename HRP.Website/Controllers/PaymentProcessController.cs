@@ -294,17 +294,11 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
-#pragma warning disable S107 // Methods should not have too many parameters
         public async Task<IActionResult> EditBasicSalary(
             int payrollId,
             int companyId,
             DateTime month,
-            int? employeeId = null,
-            string employee = null,
-            string costCenterIds = null,
-            string idNo = null,
-            int? workingDays = null)
-#pragma warning restore S107 // Methods should not have too many parameters
+            CachingFilterViewModel filter)
         {
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
             if (!isRead)
@@ -330,11 +324,7 @@
             viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
-            viewModel.Filter.EmployeeId = employeeId;
-            viewModel.Filter.Employee = employee;
-            viewModel.Filter.IDNo = idNo;
-            viewModel.Filter.CostCenterIds = costCenterIds;
-            viewModel.Filter.WorkingDays = workingDays;
+            viewModel.Filter = filter;
 
             return View(viewModel);
         }
