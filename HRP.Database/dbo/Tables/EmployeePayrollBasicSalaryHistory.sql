@@ -5,8 +5,10 @@
     [Salary]        VARCHAR (MAX) NULL,
     [EffectiveDate] DATE          NULL,
     [ReasonId]      TINYINT       NULL,
-    PRIMARY KEY CLUSTERED ([HistoryId] ASC)
+    CONSTRAINT [PK_EmployeePayrollBasicSalaryHistory] PRIMARY KEY CLUSTERED ([HistoryId] ASC)
 );
+
+
 
 
 

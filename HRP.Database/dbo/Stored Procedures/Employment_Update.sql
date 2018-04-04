@@ -12,7 +12,6 @@ CREATE PROCEDURE [dbo].[Employment_Update] @EmployeeId INT
 	,@LocalJobTitleId SMALLINT
 	,@LocalJobTitleChangeDate DATE = NULL
 	,@LocalJobTitleReasonId TINYINT = NULL
-	,@CompanyCode NVARCHAR(50)
 	,@EmployeeCode VARCHAR(15)
 	,@IDNoChangeDate DATE = NULL
 	,@IDNoReasonId TINYINT = NULL
@@ -127,8 +126,7 @@ BEGIN
 			SELECT 1
 			FROM dbo.Employee AS emp WITH (NOLOCK)
 				INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
-			WHERE e.CompanyCode = @CompanyCode
-				AND e.EmployeeCode = @EmployeeCode
+			WHERE e.EmployeeCode = @EmployeeCode
 				AND e.CompanyId = @CompanyId
 				AND emp.EmployeeId <> @EmployeeId
 			)
@@ -174,7 +172,6 @@ BEGIN
 				AND em.LocalCompanyId = @LocalCompanyId
 				AND em.JobTitle = @JobTitle
 				AND em.LocalJobTitleId = @LocalJobTitleId
-				AND em.CompanyCode = @CompanyCode
 				AND em.EmployeeCode = @EmployeeCode
 				AND em.EmploymentType = @EmploymentType
 				AND em.EmploymentStatus = @EmploymentStatus
@@ -258,7 +255,6 @@ BEGIN
 				,e.CompanyStartDate AS '@csd'
 				,e.CompanyEndDate AS '@ced'
 				,ec.CompanyDateReasonId AS '@cdrid'
-				,e.CompanyCode AS '@ccode'
 				,e.EmployeeCode AS '@ecode'
 				,ec.IDNoChangeDate AS '@idnocd'
 				,ec.IDNoReasonId AS '@idnorid'
@@ -335,7 +331,6 @@ BEGIN
 		,LocalCompanyId = @LocalCompanyId
 		,JobTitle = @JobTitle
 		,LocalJobTitleId = @LocalJobTitleId
-		,CompanyCode = @CompanyCode
 		,EmployeeCode = @EmployeeCode
 		,EmploymentType = @EmploymentType
 		,EmploymentStatus = @EmploymentStatus
@@ -452,7 +447,6 @@ BEGIN
 				,e.CompanyStartDate AS '@csd'
 				,e.CompanyEndDate AS '@ced'
 				,ec.CompanyDateReasonId AS '@cdrid'
-				,e.CompanyCode AS '@ccode'
 				,e.EmployeeCode AS '@ecode'
 				,ec.IDNoChangeDate AS '@idnocd'
 				,ec.IDNoReasonId AS '@idnorid'

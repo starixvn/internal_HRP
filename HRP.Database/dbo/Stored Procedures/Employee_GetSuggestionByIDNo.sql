@@ -16,8 +16,9 @@ BEGIN
 	SELECT TOP 10 emp.EmployeeId
 		,emp.NickName
 		,emp.FullName
-		,(em.CompanyCode + em.EmployeeCode) AS IDNo
+		,(c.Code + em.EmployeeCode) AS IDNo
 	FROM dbo.Employee AS emp WITH (NOLOCK)
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
-	WHERE em.CompanyCode + em.EmployeeCode LIKE '%' + @IDNo + '%'
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
+	WHERE c.Code + em.EmployeeCode LIKE '%' + ISNULL(@IDNo, '') + '%'
 END

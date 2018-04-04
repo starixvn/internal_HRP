@@ -164,7 +164,6 @@ BEGIN
 	EXEC dbo.LogDetail_Insert @UserId = @ModifiedBy
 		,@SPName = 'User_AssignFunction'
 		,@ObjectId = @UserId
-		,@ObjectTypeId = 2
 		,@Data = @logData
 		,@OldData = @logDataOld
 		,@Duration = @Duration

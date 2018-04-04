@@ -16,8 +16,9 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT 1
-	FROM dbo.Employment WITH (NOLOCK)
-	WHERE EmployeeId <> @EmployeeId
-		AND CompanyCode = @CompanyCode
-		AND EmployeeCode = @EmployeeCode
+	FROM dbo.Employment AS em WITH (NOLOCK)
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
+	WHERE em.EmployeeId <> @EmployeeId
+		AND c.Code = @CompanyCode
+		AND em.EmployeeCode = @EmployeeCode
 END

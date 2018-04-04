@@ -12,7 +12,6 @@ CREATE PROCEDURE [dbo].[Employment_Create] @EmployeeId INT
 	,@LocalJobTitleId SMALLINT
 	,@LocalJobTitleChangeDate DATE = NULL
 	,@LocalJobTitleReasonId TINYINT = NULL
-	,@CompanyCode NVARCHAR(50)
 	,@EmployeeCode VARCHAR(15)
 	,@IDNoChangeDate DATE = NULL
 	,@IDNoReasonId TINYINT = NULL
@@ -118,7 +117,6 @@ BEGIN
 		,LocalCompanyId
 		,JobTitle
 		,LocalJobTitleId
-		,CompanyCode
 		,EmployeeCode
 		,EmploymentType
 		,EmploymentStatus
@@ -151,7 +149,6 @@ BEGIN
 		,@LocalCompanyId
 		,@JobTitle
 		,@LocalJobTitleId
-		,@CompanyCode
 		,@EmployeeCode
 		,@EmploymentType
 		,@EmploymentStatus
@@ -336,7 +333,6 @@ BEGIN
 				,e.CompanyStartDate AS '@csd'
 				,e.CompanyEndDate AS '@ced'
 				,ec.CompanyDateReasonId AS '@cdrid'
-				,e.CompanyCode AS '@ccode'
 				,e.EmployeeCode AS '@ecode'
 				,ec.IDNoChangeDate AS '@idnocd'
 				,ec.IDNoReasonId AS '@idnorid'

@@ -27,12 +27,13 @@ BEGIN
 	SELECT e.EmployeeId
 		,e.FullName
 		,e.NickName
-		,em.CompanyCode + em.EmployeeCode AS 'Code'
+		,c.Code + em.EmployeeCode AS 'Code'
 		,em.CompanyId
 		,@CanRead AS CanRead
 		,@CanUpdate AS CanUpdate
 	FROM dbo.Employee AS e WITH (NOLOCK)
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
 	WHERE e.EmployeeId = @EmployeeId
 
 	SELECT epbs.EmployeeId
@@ -76,7 +77,7 @@ BEGIN
 		LEFT JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON epbs.DirectBanking1AccountId = rr1.ResourceId
 		AND epbs.DirectBanking1BankTypeId = 3
 		AND rr1.RefName = 'ContraCoAccount'
-		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epbs.DirectBanking2AccountId = rr1.ResourceId
+		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epbs.DirectBanking2AccountId = rr2.ResourceId
 		AND epbs.DirectBanking2BankTypeId = 3
 		AND rr2.RefName = 'ContraCoAccount'
 
@@ -120,7 +121,7 @@ BEGIN
 		LEFT JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON epba.DirectBanking1AccountId = rr1.ResourceId
 		AND epba.DirectBanking1BankTypeId = 3
 		AND rr1.RefName = 'ContraCoAccount'
-		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epba.DirectBanking2AccountId = rr1.ResourceId
+		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epba.DirectBanking2AccountId = rr2.ResourceId
 		AND epba.DirectBanking2BankTypeId = 3
 		AND rr2.RefName = 'ContraCoAccount'
 	WHERE epba.EmployeeId = @EmployeeId

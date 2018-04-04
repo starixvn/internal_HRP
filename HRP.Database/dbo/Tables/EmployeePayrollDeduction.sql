@@ -4,8 +4,10 @@
     [RoomingChargesAmount]     VARCHAR (MAX) NULL,
     [FitnessFirstCurrencyId]   INT           NULL,
     [FitnessFirstAmount]       VARCHAR (MAX) NULL,
-    PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
+    CONSTRAINT [PK_EmployeePayrollDeduction] PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
 );
+
+
 
 
 

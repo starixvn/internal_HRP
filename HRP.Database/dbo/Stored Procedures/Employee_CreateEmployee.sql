@@ -39,7 +39,6 @@ CREATE PROCEDURE [dbo].[Employee_CreateEmployee] @EmployeeId INT OUTPUT
 	,@LocalJobTitleId SMALLINT
 	,@LocalJobTitleChangeDate DATE = NULL
 	,@LocalJobTitleReasonId TINYINT = NULL
-	,@CompanyCode NVARCHAR(50)
 	,@EmployeeCode VARCHAR(15)
 	,@IDNoChangeDate DATE = NULL
 	,@IDNoReasonId TINYINT = NULL
@@ -150,7 +149,7 @@ BEGIN
 			SELECT 1
 			FROM dbo.Employee AS emp WITH (NOLOCK)
 				INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
-			WHERE e.CompanyCode = @CompanyCode
+			WHERE e.CompanyId = @CompanyId
 				AND e.EmployeeCode = @EmployeeCode
 			)
 	BEGIN
@@ -230,7 +229,7 @@ BEGIN
 	IF (@PictureExtension IS NOT NULL)
 	BEGIN
 		UPDATE dbo.Employee WITH (UPDLOCK, ROWLOCK)
-		SET ProfilePic = CAST(@EmployeeId AS VARCHAR(194)) + @PictureExtension
+		SET ProfilePic = CAST(@EmployeeId AS VARCHAR(20)) + @PictureExtension
 		WHERE EmployeeId = @EmployeeId
 	END
 
@@ -264,7 +263,6 @@ BEGIN
 		,@LocalJobTitleId = @LocalJobTitleId
 		,@LocalJobTitleChangeDate = @LocalJobTitleChangeDate
 		,@LocalJobTitleReasonId = @LocalJobTitleReasonId
-		,@CompanyCode = @CompanyCode
 		,@EmployeeCode = @EmployeeCode
 		,@IDNoChangeDate = @IDNoChangeDate
 		,@IDNoReasonId = @IDNoReasonId

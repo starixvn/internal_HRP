@@ -29,8 +29,10 @@
     [SecondmentAmount]         VARCHAR (MAX) NULL,
     [OthersCurrencyId]         INT           NULL,
     [OthersAmount]             VARCHAR (MAX) NULL,
-    PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
+    CONSTRAINT [PK_EmployeePayrollAllowance] PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
 );
+
+
 
 
 

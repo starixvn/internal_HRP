@@ -18,8 +18,10 @@
     [CashAmount]               VARCHAR (MAX) NULL,
     [CashAccountId]            INT           NULL,
     [AutoCalculateOn]          VARCHAR (30)  NULL,
-    PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
+    CONSTRAINT [PK_EmployeePayrollBasicSalary] PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
 );
+
+
 
 
 

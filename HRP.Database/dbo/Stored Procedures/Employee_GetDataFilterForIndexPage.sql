@@ -15,7 +15,7 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @functionId SMALLINT = 5
+	DECLARE @functionKey VARCHAR(50) = 'EmployeeManagement'
 
 	CREATE TABLE #tblDepartmentId (Id SMALLINT)
 
@@ -62,12 +62,13 @@ BEGIN
 		SELECT ref.ResourceId AS Value
 			,ref.Value AS [Text]
 			,CASE 
-				WHEN tbl.Id IS NOT NULL THEN 1
+				WHEN ISNULL(tbl.Id, 0) > 0 THEN 1
 				ELSE 0
 				END AS Checked
 		FROM dbo.RefResource AS ref WITH (NOLOCK)
 			LEFT JOIN #tblEmploymentStatusId AS tbl WITH (NOLOCK) ON ref.ResourceId = tbl.Id
 		WHERE RefName = 'EmploymentStatus'
+			AND IsActive = 1
 	END
 	ELSE
 	BEGIN
@@ -81,6 +82,7 @@ BEGIN
 			,1 AS Checked
 		FROM dbo.RefResource WITH (NOLOCK)
 		WHERE RefName = 'EmploymentStatus'
+			AND IsActive = 1
 	END
 
 	IF EXISTS (
@@ -98,7 +100,7 @@ BEGIN
 			,dept.Code
 			,dept.DivisionId
 			,CASE 
-				WHEN tbl.Id IS NOT NULL THEN 1
+				WHEN ISNULL(tbl.Id, 0) > 0 THEN 1
 				ELSE 0
 				END
 		FROM dbo.Department AS dept WITH (NOLOCK)
@@ -108,9 +110,9 @@ BEGIN
 			AND c.IsActive = 1
 			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
 			AND uf.UserId = @UserId
-			AND uf.FunctionId = @functionId
 			AND uf.IsRead = 1
 			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+			AND f.FunctionKey = @functionKey
 			AND f.IsActive = 1
 			LEFT JOIN #tblDepartmentId AS tbl WITH (NOLOCK) ON dept.DepartmentId = tbl.Id
 		WHERE dept.IsActive = 1
@@ -134,10 +136,10 @@ BEGIN
 			AND c.IsActive = 1
 			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
 			AND uf.UserId = @UserId
-			AND uf.FunctionId = @functionId
 			AND uf.IsRead = 1
 			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
 			AND f.IsActive = 1
+			AND f.FunctionKey = @functionKey
 		WHERE dept.IsActive = 1
 	END
 
@@ -160,14 +162,10 @@ BEGIN
 			ELSE 0
 			END
 	FROM dbo.Division AS di WITH (NOLOCK)
-		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON di.CompanyId = c.CompanyId
-		AND c.IsActive = 1
-		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
-		AND uf.UserId = @UserId
-		AND uf.FunctionId = @functionId
-		AND uf.IsRead = 1
-		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-		AND f.IsActive = 1
+		INNER JOIN (
+		SELECT DISTINCT DivisionId
+		FROM #tblDepartment WITH (NOLOCK)
+		) AS tbl ON tbl.DivisionId = di.DivisionId
 	WHERE di.IsActive = 1
 
 	-- get data filter
@@ -187,21 +185,21 @@ BEGIN
 	-- get company
 	SELECT c.CompanyId AS Value
 		,c.Code AS [Text]
-		,CASE 
+		,(CASE 
 			WHEN NOT EXISTS (
 					SELECT 1
 					FROM #tblDivision AS di WITH (NOLOCK)
 					WHERE di.CompanyId = c.CompanyId
 						AND di.Checked = 0
 					) THEN 1
-			ELSE 0
-			END AS Checked
+			ELSE 0 END
+			) AS Checked
 	FROM dbo.Company AS c WITH (NOLOCK)
-		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
-	WHERE uf.UserId = @UserId
-		AND uf.FunctionId = 5
-		AND uf.IsRead = 1
-		AND c.IsActive = 1
+		INNER JOIN (
+		SELECT DISTINCT CompanyId
+		FROM #tblDivision WITH (NOLOCK)
+		) AS tbl ON tbl.CompanyId = c.CompanyId
+	WHERE c.IsActive = 1
 
 	-- get division
 	SELECT DivisionId AS Value
@@ -230,4 +228,6 @@ BEGIN
 	DROP TABLE #tblDepartment
 
 	DROP TABLE #tblDivision
+
+	DROP TABLE #tblEmploymentStatus
 END

@@ -1,0 +1,256 @@
+﻿
+
+CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
+	@PayrollId INT
+	,@CurrencyId INT = NULL
+	,@TotalAmount VARCHAR(MAX) = NULL
+	,@DirectBanking1CurrencyId INT = NULL
+	,@DirectBanking1Amount VARCHAR(MAX) = NULL
+	,@DirectBanking1BankTypeId TINYINT = NULL
+	,@DirectBanking1AccountId INT = NULL
+	,@DirectBanking2CurrencyId INT = NULL
+	,@DirectBanking2Amount VARCHAR(MAX) = NULL
+	,@DirectBanking2BankTypeId TINYINT = NULL
+	,@DirectBanking2AccountId INT = NULL
+	,@CashCurrencyId INT = NULL
+	,@CashAmount VARCHAR(MAX) = NULL
+	,@CashAccountId INT = NULL
+	,@DSTNetSalaryCurrencyId INT = NULL
+	,@DSTNetSalaryAmount VARCHAR(MAX) = NULL
+	,@AutoCalculateOn VARCHAR(30)
+	,@TotalNetAmount VARCHAR(MAX) = NULL
+	,@Status TINYINT = NULL
+	,@AllowanceAddition VARCHAR(MAX)
+	,@AllowanceDeduction VARCHAR(MAX)
+	,@UserId INT
+	,@ErrCode INT = 0 OUTPUT
+	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
+AS
+/*
+Created: 20180305@EltonTon
+Task : payment process - save allowances
+DB: bodb_HRP
+Original:
+ */
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @startRun DATETIME = GETDATE()
+		,@endRun DATETIME
+		,@duration INT
+		,@logData NVARCHAR(MAX)
+		,@logDataOld NVARCHAR(MAX)
+		,@xml XML
+		,@idocAddition INT
+		,@idocDeduction INT
+
+	CREATE TABLE #addition (
+		PayrollId INT
+		,[Type] TINYINT
+		,NoOfDays DECIMAL(6, 2)
+		,UnitAmount VARCHAR(MAX)
+		,TotalAmount VARCHAR(MAX)
+		,NetAllowance VARCHAR(MAX)
+		,CurrencyId INT
+		)
+
+	CREATE TABLE #deduction (
+		PayrollId INT
+		,[Type] TINYINT
+		,NoOfDays DECIMAL(6, 2)
+		,UnitAmount VARCHAR(MAX)
+		,TotalAmount VARCHAR(MAX)
+		,NetAllowance VARCHAR(MAX)
+		,CurrencyId INT
+		)
+
+	EXEC sp_xml_preparedocument @idocAddition OUTPUT
+		,@AllowanceAddition
+
+	EXEC sp_xml_preparedocument @idocDeduction OUTPUT
+		,@AllowanceDeduction
+
+	INSERT INTO #addition (
+		PayrollId
+		,[Type]
+		,NoOfDays
+		,UnitAmount
+		,TotalAmount
+		,NetAllowance
+		,CurrencyId
+		)
+	SELECT PayrollId
+		,[Type]
+		,NoOfDays
+		,UnitAmount
+		,TotalAmount
+		,NetAllowance
+		,CurrencyId
+	FROM OPENXML(@idocAddition, '/Root/Row', 1) WITH dbo.MonthlyAllowanceAddition AS data
+
+	INSERT INTO #deduction (
+		PayrollId
+		,[Type]
+		,NoOfDays
+		,UnitAmount
+		,TotalAmount
+		,NetAllowance
+		,CurrencyId
+		)
+	SELECT PayrollId
+		,[Type]
+		,NoOfDays
+		,UnitAmount
+		,TotalAmount
+		,NetAllowance
+		,CurrencyId
+	FROM OPENXML(@idocDeduction, '/Root/Row', 1) WITH dbo.MonthlyAllowanceDeduction AS data
+	
+	SET @xml = (
+			SELECT [PayrollId] AS '@pi'
+				,[CurrencyId] AS '@ci'
+				,[TotalAmount] AS '@ta'
+				,[DirectBanking1CurrencyId] AS '@db1ci'
+				,[DirectBanking1Amount] AS '@db1a'
+				,[DirectBanking1BankTypeId] AS '@db1bti'
+				,[DirectBanking1AccountId] AS '@db1ai'
+				,[DirectBanking2CurrencyId] AS '@db2ci'
+				,[DirectBanking2Amount] AS '@db2a'
+				,[DirectBanking2BankTypeId] AS '@db2bti'
+				,[DirectBanking2AccountId] AS '@db2ai'
+				,[CashCurrencyId] AS '@cci'
+				,[CashAmount] AS '@ca'
+				,[CashAccountId] AS '@cai'
+				,[DSTNetSalaryCurrencyId] AS '@dnsci'
+				,[DSTNetSalaryAmount] AS '@dnsa'
+				,[AutoCalculateOn] AS '@aco'
+				,[TotalNetAmount] AS '@tna'
+				,[Status] AS '@st'
+				,(
+					SELECT maa.[Type] AS '@t'
+						,maa.UnitAmount AS '@ua'
+						,maa.NoOfDays AS '@nod'
+						,maa.TotalAmount AS '@ta'
+						,maa.NetAllowance AS '@na'
+						,maa.CurrencyId AS '@ci'
+					FROM dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK)
+					WHERE maa.PayrollId = @PayrollId
+					FOR XML PATH('maa') ,TYPE
+				) AS 'maas'
+				,(
+					SELECT mad.[Type] AS '@t'
+						,mad.UnitAmount AS '@ua'
+						,mad.NoOfDays AS '@nod'
+						,mad.TotalAmount AS '@ta'
+						,mad.NetAllowance AS '@na'
+						,mad.CurrencyId AS '@ci'
+					FROM dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK)
+					WHERE mad.PayrollId = @PayrollId
+					FOR XML PATH('mad') ,TYPE
+				) AS 'mads'
+			FROM [dbo].[MonthlyAllowance] WITH (NOLOCK)
+			WHERE PayrollId = @PayrollId
+			FOR XML PATH('r') ,TYPE
+			)
+	SET @logDataOld = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
+
+	UPDATE ma
+	SET [CurrencyId] = @CurrencyId
+		,[TotalAmount] = @TotalAmount
+		,[DirectBanking1CurrencyId] = @DirectBanking1CurrencyId
+		,[DirectBanking1Amount] = @DirectBanking1Amount
+		,[DirectBanking1BankTypeId] = @DirectBanking1BankTypeId
+		,[DirectBanking1AccountId] = @DirectBanking1AccountId
+		,[DirectBanking2CurrencyId] = @DirectBanking2CurrencyId
+		,[DirectBanking2Amount] = @DirectBanking2Amount
+		,[DirectBanking2BankTypeId] = @DirectBanking2BankTypeId
+		,[DirectBanking2AccountId] = @DirectBanking2AccountId
+		,[CashCurrencyId] = @CashCurrencyId
+		,[CashAmount] = @CashAmount
+		,[DSTNetSalaryCurrencyId] = @DSTNetSalaryCurrencyId
+		,[DSTNetSalaryAmount] = @DSTNetSalaryAmount
+		,[AutoCalculateOn] = @AutoCalculateOn
+		,[TotalNetAmount] = @TotalNetAmount
+		,[Status] = @Status
+	FROM [dbo].[MonthlyAllowance] AS ma WITH (ROWLOCK, UPDLOCK)
+	WHERE ma.PayrollId = @PayrollId
+
+	UPDATE maa
+	SET maa.UnitAmount = a.UnitAmount
+		,maa.NoOfDays = a.NoOfDays
+		,maa.TotalAmount = a.TotalAmount
+		,maa.NetAllowance = a.NetAllowance
+	FROM dbo.MonthlyAllowanceAddition maa WITH (ROWLOCK, UPDLOCK)
+		INNER JOIN #addition a ON maa.PayrollId = a.PayrollId
+		AND maa.Type = a.Type
+
+	UPDATE mad
+	SET mad.UnitAmount = d.UnitAmount
+		,mad.NoOfDays = d.NoOfDays
+		,mad.TotalAmount = d.TotalAmount
+		,mad.NetAllowance = d.NetAllowance
+	FROM dbo.MonthlyAllowanceDeduction mad WITH (ROWLOCK, UPDLOCK)
+		INNER JOIN #deduction d ON mad.PayrollId = d.PayrollId
+		AND mad.Type = d.Type
+	
+	SET @xml = (
+			SELECT [PayrollId] AS '@pi'
+				,[CurrencyId] AS '@ci'
+				,[TotalAmount] AS '@ta'
+				,[DirectBanking1CurrencyId] AS '@db1ci'
+				,[DirectBanking1Amount] AS '@db1a'
+				,[DirectBanking1BankTypeId] AS '@db1bti'
+				,[DirectBanking1AccountId] AS '@db1ai'
+				,[DirectBanking2CurrencyId] AS '@db2ci'
+				,[DirectBanking2Amount] AS '@db2a'
+				,[DirectBanking2BankTypeId] AS '@db2bti'
+				,[DirectBanking2AccountId] AS '@db2ai'
+				,[CashCurrencyId] AS '@cci'
+				,[CashAmount] AS '@ca'
+				,[CashAccountId] AS '@cai'
+				,[DSTNetSalaryCurrencyId] AS '@dnsci'
+				,[DSTNetSalaryAmount] AS '@dnsa'
+				,[AutoCalculateOn] AS '@aco'
+				,[TotalNetAmount] AS '@tna'
+				,[Status] AS '@st'
+				,(
+					SELECT maa.[Type] AS '@t'
+						,maa.UnitAmount AS '@ua'
+						,maa.NoOfDays AS '@nod'
+						,maa.TotalAmount AS '@ta'
+						,maa.NetAllowance AS '@na'
+						,maa.CurrencyId AS '@ci'
+					FROM dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK)
+					WHERE maa.PayrollId = @PayrollId
+					FOR XML PATH('maa'),TYPE
+				) AS 'maas'
+				,(
+					SELECT mad.[Type] AS '@t'
+						,mad.UnitAmount AS '@ua'
+						,mad.NoOfDays AS '@nod'
+						,mad.TotalAmount AS '@ta'
+						,mad.NetAllowance AS '@na'
+						,mad.CurrencyId AS '@ci'
+					FROM dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK)
+					WHERE mad.PayrollId = @PayrollId
+					FOR XML PATH('mad'),TYPE
+				) AS 'mads'
+			FROM [dbo].[MonthlyAllowance] WITH (NOLOCK)
+			WHERE PayrollId = @PayrollId
+			FOR XML PATH('r'), TYPE
+			)
+
+	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
+	SET @endRun = GETDATE()
+	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
+
+	EXEC dbo.LogDetail_Insert @UserId = @UserId
+		,@SPName = 'MonthlyPayroll_UpdateAllowances'
+		,@ObjectId = @PayrollId
+		,@Data = @logData
+		,@OldData = @logDataOld
+		,@Duration = @Duration
+
+	DROP TABLE #addition
+	DROP TABLE #deduction
+END

@@ -1,7 +1,7 @@
 ﻿
 CREATE PROCEDURE [dbo].[Employee_GetAllEmployees] @DepartmentIds VARCHAR(MAX) = ''
 	,@EmployeeId INT = NULL
-	,@EmployeeName VARCHAR (70) = ''
+	,@EmployeeName VARCHAR(70) = ''
 	,@UserId INT
 	,@EmploymentStatusIds VARCHAR(MAX) = NULL
 AS
@@ -18,6 +18,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	CREATE TABLE #tblDepartmentId (Id SMALLINT)
+
 	CREATE TABLE #tblEmployeeStatusId (Id TINYINT)
 
 	INSERT INTO #tblDepartmentId (Id)
@@ -73,20 +74,28 @@ BEGIN
 		LEFT JOIN dbo.UserFunction AS editbank WITH (NOLOCK) ON c.CompanyId = editbank.CompanyId
 		AND editbank.FunctionId = 14
 		AND editbank.UserId = @UserId
-	WHERE   
-		(ISNULL(@EmployeeId, em.EmployeeId) = em.EmployeeId
-		AND (e.FullName LIKE 
-				CASE
-					WHEN (@EmployeeName = NULL AND @EmployeeId = NULL) or (@EmployeeId IS NOT NULL) THEN '%' + '' + '%'
-					ELSE '%' + @EmployeeName + '%'
-				END
-			OR e.Nickname LIKE
-				CASE
-					WHEN (@EmployeeName = NULL AND @EmployeeId = NULL) or (@EmployeeId IS NOT NULL) THEN '%' + '' + '%'
-					ELSE '%' + @EmployeeName + '%'
-				END))
+	WHERE (
+			ISNULL(@EmployeeId, em.EmployeeId) = em.EmployeeId
+			AND (
+				e.FullName LIKE CASE 
+				WHEN (
+						@EmployeeName = NULL
+						AND @EmployeeId = NULL
+						)
+					OR (@EmployeeId IS NOT NULL) THEN '%' + '' + '%'
+				ELSE '%' + @EmployeeName + '%' END
+				OR e.Nickname LIKE CASE 
+				WHEN (
+						@EmployeeName = NULL
+						AND @EmployeeId = NULL
+						)
+					OR (@EmployeeId IS NOT NULL) THEN '%' + '' + '%'
+				ELSE '%' + @EmployeeName + '%' END
+				)
+			)
 		AND ref.RefName = 'EmploymentStatus'
-	ORDER BY em.CompanyCode, em.EmployeeCode
+	ORDER BY c.Code
+		,em.EmployeeCode
 
 	DROP TABLE #tblDepartmentId
 

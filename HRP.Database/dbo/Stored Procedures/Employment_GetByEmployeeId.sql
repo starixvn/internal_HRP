@@ -26,7 +26,7 @@ BEGIN
 		,emp.LocalJobTitleId
 		,ec.LocalJobTitleChangeDate
 		,ec.LocalJobTitleReasonId
-		,emp.CompanyCode
+		,c.Code AS CompanyCode
 		,emp.EmployeeCode
 		,ec.IDNoChangeDate
 		,ec.IDNoReasonId
@@ -72,6 +72,7 @@ BEGIN
 		,emp.FullNamePFileAdmin
 		,emp.NicknamePFileAdmin
 	FROM dbo.Employment AS emp WITH (NOLOCK)
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON emp.CompanyId = c.CompanyId
 		INNER JOIN dbo.EmploymentHistory AS ec WITH (NOLOCK) ON emp.EmployeeId = ec.EmployeeId
 	WHERE emp.EmployeeId = @EmployeeId
 
