@@ -29,6 +29,9 @@
 
     public class PaymentProcessControllerTests
     {
+        private DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        private DateTime dueDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month));
+        private DateTime selectedTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 14);
         private IBaseService baseService;
         private ISessionService sessionService;
         private IHostingEnvironment hostingEnvironment;
@@ -42,9 +45,9 @@
             var selectList = MockCompanySelectList();
             var paymentProcess = new PaymentProcess
             {
-                Month = DateTime.Today,
-                StartDate = DateTime.Today.AddDays(-1),
-                DueDate = DateTime.Today.AddDays(10)
+                Month = selectedTime,
+                StartDate = startDate,
+                DueDate = dueDate
             };
 
             var controller = GetPaymentProcessController();
@@ -91,11 +94,11 @@
         {
             // Arrange
             var selectList = MockCompanySelectList();
-            var viewModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
+            var viewModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = selectedTime };
             var paymentProcess = new PaymentProcess
             {
-                StartDate = DateTime.Parse("2018-3-1"),
-                DueDate = DateTime.Parse("2018-3-30"),
+                StartDate = startDate,
+                DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
                 IsAttendanceFileSubmited = true,
                 DSTNetSalaryFileName = "salaryFile.xls",
@@ -129,8 +132,8 @@
             // Arrange
             var paymentProcess = new PaymentProcess
             {
-                StartDate = DateTime.Parse("2018-3-1"),
-                DueDate = DateTime.Parse("2018-3-30"),
+                StartDate = startDate,
+                DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
                 IsAttendanceFileSubmited = true,
                 DSTNetSalaryFileName = "salaryFile.xls",
@@ -139,7 +142,7 @@
                 IsHasCurrencySetting = true
             };
 
-            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
+            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = selectedTime };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
@@ -165,8 +168,8 @@
             // Arrange
             var paymentProcess = new PaymentProcess
             {
-                StartDate = DateTime.Parse("2018-3-1"),
-                DueDate = DateTime.Parse("2018-3-30"),
+                StartDate = startDate,
+                DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
                 IsAttendanceFileSubmited = isAttendanceSubmited,
                 DSTNetSalaryFileName = "salaryFile.xls",
@@ -174,7 +177,7 @@
                 IsPayrollGenerated = isPayrollGenerated,
                 IsHasCurrencySetting = true
             };
-            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = DateTime.Parse("2018-3-15") };
+            var paramModel = new SelectWorkingMonthCompanyViewModel { CompanyId = 23, SelectedTime = selectedTime };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
@@ -295,11 +298,11 @@
         {
             // Arrange
             var companyId = 13;
-            var month = DateTime.Parse("2018-3-15");
+            var month = selectedTime;
             var paymentProcess = new PaymentProcess
             {
-                StartDate = DateTime.Parse("2018-3-1"),
-                DueDate = DateTime.Parse("2018-3-30")
+                StartDate = startDate,
+                DueDate = dueDate,
             };
             var expected = new UploadAttendanceAndSalaryViewModel
             {
