@@ -25,9 +25,9 @@
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="like-link">
         <a asp-controller="PaymentProcess" asp-action="EmployeeMonthlyPayroll"
-           asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.ViewEmployeeMonthlyPayroll</a>
+           asp-route-companyId="@Model.FilterInfo.CompanyId" asp-route-month="@Model.Month">@ViewLang.ViewEmployeeMonthlyPayroll</a>
     </li>
-    <li class="active">@(Model.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary)</li>
+    <li class="active">@(Model.FilterInfo.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary)</li>
 </ol>
 
 <form class="search-form">
@@ -41,22 +41,22 @@
     <div class="group">
         <label class="text">@ViewLang.Company</label>
         <select class="control width-92 js-select2-disabled" disabled>
-            <option value="@Model.CompanyCode" selected="selected">@Model.CompanyCode</option>
+            <option value="@Model.FilterInfo.CompanyCode" selected="selected">@Model.FilterInfo.CompanyCode</option>
         </select>
     </div>
     <input type="text" asp-for="Month" hidden />
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
-        <input type="text" class="control" value="@Model.IDNo" placeholder="" readonly />
+        <input type="text" class="control" value="@Model.FilterInfo.IdNo" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">@ViewLang.Employee</label>
-        <input type="text" class="control width-200" value="@Model.FullName" placeholder="" readonly />
+        <input type="text" class="control width-200" value="@Model.FilterInfo.FullName" placeholder="" readonly />
     </div>
     <div class="group">
         <label class="text">Div/Dept/Cost Center</label>
         <select class="control width-140 js-select2-disabled" disabled>
-            <option value="@Model.CostCenter" selected="selected">@Model.CostCenter</option>
+            <option value="@Model.FilterInfo.CostCenter" selected="selected">@Model.FilterInfo.CostCenter</option>
         </select>
     </div>
     <div class="group">
@@ -65,7 +65,7 @@
             <option value="@Model.MonthlyBasicSalary.WorkingDays" selected="selected">@Model.MonthlyBasicSalary.WorkingDays</option>
         </select>
     </div>
-    @if (Model.IsHost)
+    @if (Model.FilterInfo.IsHost)
     {
         <div class="group">
             <button type="button" class="button -preset js-btnPreset">@ViewLang.Preset</button>
@@ -77,8 +77,8 @@
 </form>
 <div class="payment-duration">
     <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
-    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
-    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
+    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.FilterInfo.StartDate)</strong></div>
+    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.FilterInfo.DueDate)</strong></div>
 </div>
 
 <form id="edit-basic-salary-form" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
@@ -96,19 +96,19 @@
     </div>
     <div class="-has-icon msg-error hidden"></div>
 
-    <input type="checkbox" hidden asp-for="IsHost" />
+    <input type="checkbox" hidden asp-for="FilterInfo.IsHost" id="IsHost" />
 
     <input type="checkbox" hidden asp-for="IsRedirectToEditAllowance" />
     <input type="hidden" value="@Model.Month" name="Month" />
     <input type="hidden" asp-for="MonthlyBasicSalary.SalaryPerDay" />
-    <input type="hidden" asp-for="PayrollId" />
-    <input type="hidden" asp-for="EmployeeId" />
-    <input type="hidden" asp-for="CompanyId" />
-    <input type="hidden" asp-for="Filter.EmployeeId" />
-    <input type="hidden" asp-for="Filter.Employee" />
-    <input type="hidden" asp-for="Filter.IDNo" />
-    <input type="hidden" asp-for="Filter.WorkingDays" />
-    <input type="hidden" asp-for="Filter.CostCenterIds" />
+    <input type="hidden" asp-for="FilterInfo.PayrollId" />
+    <input type="hidden" asp-for="FilterInfo.EmployeeId" id="EmployeeId" />
+    <input type="hidden" asp-for="FilterInfo.CompanyId" />
+    <input type="hidden" asp-for="CachingFilter.EmployeeId" />
+    <input type="hidden" asp-for="CachingFilter.Employee" />
+    <input type="hidden" asp-for="CachingFilter.IDNo" />
+    <input type="hidden" asp-for="CachingFilter.WorkingDays" />
+    <input type="hidden" asp-for="CachingFilter.CostCenterIds" />
     <div class="list-message-error hidden">
         <span asp-validation-for="MonthlySalary.EbankingCurrencyId" class="message"></span>
         <span asp-validation-for="MonthlySalary.EbankingAmount" class="message"></span>
@@ -396,13 +396,13 @@
         <div class="list-button">
             <a class="button -second js-btnCancel"
                asp-controller="PaymentProcess" asp-action="EmployeeMonthlyPayroll"
-               asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month"
-               asp-route-employeeId="@Model.Filter.EmployeeId"
-               asp-route-employee="@Model.Filter.Employee"
-               asp-route-idNo="@Model.Filter.IDNo"
-               asp-route-workingDays="@Model.Filter.WorkingDays"
-               asp-route-costCenterIds="@Model.Filter.CostCenterIds">@ViewLang.Cancel</a>
-            @if (Model.IsHost)
+               asp-route-companyId="@Model.FilterInfo.CompanyId" asp-route-month="@Model.Month"
+               asp-route-employeeId="@Model.CachingFilter.EmployeeId"
+               asp-route-employee="@Model.CachingFilter.Employee"
+               asp-route-idNo="@Model.CachingFilter.IDNo"
+               asp-route-workingDays="@Model.CachingFilter.WorkingDays"
+               asp-route-costCenterIds="@Model.CachingFilter.CostCenterIds">@ViewLang.Cancel</a>
+            @if (Model.FilterInfo.IsHost)
             {
                 <button class="button -primary js-btnSubmit" type="button">@ViewLang.Save</button>
                 <button class="button -primary js-btnSubmitAndEditAllowances" type="button">@ViewLang.SaveAndEditMonthlyAllowances</button>
@@ -429,9 +429,9 @@
                       data-ajax-method="post" data-ajax="true"
                       data-ajax-failure="commonFunctions.handleAjaxError"
                       data-ajax-success="editBasicSalary.onPresetSuccess">
-                    <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                    <input type="hidden" name="employeeId" value="@Model.FilterInfo.EmployeeId" />
                     <input type="hidden" name="month" value="@Model.Month" />
-                    <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                    <input type="hidden" name="companyId" value="@Model.FilterInfo.CompanyId" />
                     <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
                     <div class="list-button">
                         <button class="button -primary" type="submit" id="btn-yes">@ViewLang.Yes</button>

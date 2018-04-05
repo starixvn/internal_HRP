@@ -306,7 +306,7 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            EditMonthlySalaryViewModel viewModel = await monthlyPayrollService.GetMonthlySalaryToEditAsync(payrollId);
+            EditMonthlySalaryViewModel viewModel = await monthlyPayrollService.GetMonthlySalaryAsync(payrollId);
             if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
@@ -324,7 +324,7 @@
             viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
-            viewModel.Filter = filter;
+            viewModel.CachingFilter = filter;
 
             return View(viewModel);
         }
@@ -333,7 +333,7 @@
         [HttpPost]
         public async Task<IActionResult> EditBasicSalary(EditMonthlySalaryViewModel viewModel)
         {
-            var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
+            var isHost = sessionService.HasPermissionOnCompany(viewModel.FilterInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
 
             if (!isHost)
             {
@@ -346,24 +346,24 @@
                 var redirectTo = viewModel.IsRedirectToEditAllowance
                     ? Url.Action("EditAllowances", new
                     {
-                        payrollId = viewModel.PayrollId,
-                        companyId = viewModel.CompanyId,
+                        payrollId = viewModel.FilterInfo.PayrollId,
+                        companyId = viewModel.FilterInfo.CompanyId,
                         month = viewModel.Month,
-                        employeeId = viewModel.Filter.EmployeeId,
-                        employee = viewModel.Filter.Employee,
-                        costCenterIds = viewModel.Filter.CostCenterIds,
-                        idNo = viewModel.Filter.IDNo,
-                        workingDays = viewModel.Filter.WorkingDays
+                        employeeId = viewModel.CachingFilter.EmployeeId,
+                        employee = viewModel.CachingFilter.Employee,
+                        costCenterIds = viewModel.CachingFilter.CostCenterIds,
+                        idNo = viewModel.CachingFilter.IDNo,
+                        workingDays = viewModel.CachingFilter.WorkingDays
                     })
                     : Url.Action("EmployeeMonthlyPayroll", new
                     {
-                        companyId = viewModel.CompanyId,
+                        companyId = viewModel.FilterInfo.CompanyId,
                         month = viewModel.Month,
-                        employeeId = viewModel.Filter.EmployeeId,
-                        employee = viewModel.Filter.Employee,
-                        costCenterIds = viewModel.Filter.CostCenterIds,
-                        idNo = viewModel.Filter.IDNo,
-                        workingDays = viewModel.Filter.WorkingDays
+                        employeeId = viewModel.CachingFilter.EmployeeId,
+                        employee = viewModel.CachingFilter.Employee,
+                        costCenterIds = viewModel.CachingFilter.CostCenterIds,
+                        idNo = viewModel.CachingFilter.IDNo,
+                        workingDays = viewModel.CachingFilter.WorkingDays
                     });
 
                 return Json(new

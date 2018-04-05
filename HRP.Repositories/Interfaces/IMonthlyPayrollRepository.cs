@@ -12,7 +12,11 @@
 
         Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(ICriteria criteria);
 
-        Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(ICriteria criteria);
+        Task<Tuple<MonthlyPayrollFilterInfoModel,
+            MonthlyBasicSalaryModel,
+            MonthlySalaryModel,
+            IEnumerable<MonthlySalaryAdditionModel>,
+            IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(ICriteria criteria);
 
         Task<Tuple<MonthlyAllowanceModel,
             IEnumerable<MonthlyAllowanceAdditionModel>,

@@ -67,23 +67,29 @@
             }
         }
 
-        public async Task<EditMonthlySalaryViewModel> GetMonthlySalaryToEditAsync(ICriteria criteria)
+        public async Task<Tuple<MonthlyPayrollFilterInfoModel,
+            MonthlyBasicSalaryModel,
+            MonthlySalaryModel,
+            IEnumerable<MonthlySalaryAdditionModel>,
+            IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var viewModel = await multi.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().ConfigureAwait(false);
+                    var filterInfo = await multi.ReadFirstOrDefaultAsync<MonthlyPayrollFilterInfoModel>().ConfigureAwait(false);
+                    var monthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
+                    var monthlySalary = await multi.ReadFirstAsync<MonthlySalaryModel>().ConfigureAwait(false);
+                    var additions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
+                    var deductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
 
-                    if (viewModel != null)
-                    {
-                        viewModel.MonthlyBasicSalary = await multi.ReadFirstAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
-                        viewModel.MonthlySalary = await multi.ReadFirstAsync<MonthlySalaryModel>().ConfigureAwait(false);
-                        viewModel.Additions = (await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false)).ToList();
-                        viewModel.Deductions = (await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false)).ToList();
-                    }
+                    var tuple = new Tuple<MonthlyPayrollFilterInfoModel,
+                        MonthlyBasicSalaryModel,
+                        MonthlySalaryModel,
+                        IEnumerable<MonthlySalaryAdditionModel>,
+                        IEnumerable<MonthlySalaryDeductionModel>>(filterInfo, monthlyBasicSalary, monthlySalary, additions, deductions);
 
-                    return viewModel;
+                    return tuple;
                 }
             }
         }

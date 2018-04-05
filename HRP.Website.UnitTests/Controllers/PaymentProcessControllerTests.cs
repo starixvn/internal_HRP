@@ -728,7 +728,7 @@
             EditMonthlySalaryViewModel monthlySalary = null;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(monthlySalary);
+            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlySalary);
 
             // Act
             var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
@@ -750,7 +750,7 @@
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetMonthlySalaryToEditAsync(Arg.Any<int>()).Returns(viewModel);
+            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(viewModel);
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
 
             // Act

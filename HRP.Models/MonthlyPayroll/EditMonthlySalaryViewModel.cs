@@ -8,30 +8,10 @@
 
     public class EditMonthlySalaryViewModel
     {
-        public int PayrollId { get; set; }
-
-        public int EmployeeId { get; set; }
-
         [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 
-        public string FullName { get; set; }
-
-        public string Nickname { get; set; }
-
-        public string IDNo { get; set; }
-
-        public string CostCenter { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime StartDate { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime DueDate { get; set; }
-
-        public int CompanyId { get; set; }
-
-        public string CompanyCode { get; set; }
+        public MonthlyPayrollFilterInfoModel FilterInfo { get; set; } = new MonthlyPayrollFilterInfoModel();
 
         public MonthlyBasicSalaryModel MonthlyBasicSalary { get; set; } = new MonthlyBasicSalaryModel();
 
@@ -49,8 +29,6 @@
 
         public bool IsRedirectToEditAllowance { get; set; }
 
-        public bool IsHost { get; set; }
-
-        public CachingFilterViewModel Filter { get; set; } = new CachingFilterViewModel();
+        public CachingFilterViewModel CachingFilter { get; set; } = new CachingFilterViewModel();
     }
 }

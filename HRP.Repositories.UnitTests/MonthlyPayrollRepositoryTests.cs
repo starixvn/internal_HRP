@@ -95,38 +95,20 @@
             Assert.Equal(viewModel.First().Policy, actual.First().Policy);
         }
 
-        #region GetMonthlySalaryToEditAsync
+        #region GetMonthlySalaryAsync
 
         [Fact]
-        public async Task GetMonthlySalaryToEditAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
+        public async Task GetMonthlySalaryToEditAsync_WhenCalled_ReturnAsExpected()
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            EditMonthlySalaryViewModel expected = null;
-            multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(expected);
-            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
-            var repository = new MonthlyPayrollRepository();
-
-            // Act
-            var actual = await repository.GetMonthlySalaryToEditAsync(criteria);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public async Task GetMonthlySalaryToEditAsync_ExistedMonthlySalary_ReturnAsExpectedViewModel()
-        {
-            // Arrange
-            var multiResultReader = FakeMultipleResultReader();
-            var criteria = FakeCriteia();
-            var viewModel = new EditMonthlySalaryViewModel();
+            var filterInfo = new MonthlyPayrollFilterInfoModel();
             var monthlyBasicSalary = new MonthlyBasicSalaryModel();
             var monthlySalary = new MonthlySalaryModel();
             var additions = new List<MonthlySalaryAdditionModel>();
             var deductions = new List<MonthlySalaryDeductionModel>();
-            multiResultReader.ReadFirstOrDefaultAsync<EditMonthlySalaryViewModel>().Returns(viewModel);
+            multiResultReader.ReadFirstOrDefaultAsync<MonthlyPayrollFilterInfoModel>().Returns(filterInfo);
             multiResultReader.ReadFirstAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
             multiResultReader.ReadFirstAsync<MonthlySalaryModel>().Returns(monthlySalary);
             multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(additions);
@@ -135,20 +117,17 @@
             var repository = new MonthlyPayrollRepository();
 
             // Act
-            var actual = await repository.GetMonthlySalaryToEditAsync(criteria);
+            var actual = await repository.GetMonthlySalaryAsync(criteria);
 
             // Assert
-            Assert.Equal(viewModel.PayrollId, actual.PayrollId);
-            Assert.Equal(viewModel.Month, actual.Month);
-            Assert.Equal(viewModel.CompanyId, actual.CompanyId);
-            Assert.Equal(viewModel.CompanyCode, actual.CompanyCode);
-            Assert.Equal(monthlyBasicSalary, actual.MonthlyBasicSalary);
-            Assert.Equal(monthlySalary, actual.MonthlySalary);
-            Assert.Equal(additions, actual.Additions);
-            Assert.Equal(deductions, actual.Deductions);
+            Assert.Equal(filterInfo, actual.Item1);
+            Assert.Equal(monthlyBasicSalary, actual.Item2);
+            Assert.Equal(monthlySalary, actual.Item3);
+            Assert.Equal(additions, actual.Item4);
+            Assert.Equal(deductions, actual.Item5);
         }
 
-        #endregion GetMonthlySalaryToEditAsync
+        #endregion GetMonthlySalaryAsync
 
         [Fact]
         public async Task GetMonthlyAllowancesAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
