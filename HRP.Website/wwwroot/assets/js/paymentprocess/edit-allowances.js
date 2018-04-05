@@ -1,6 +1,7 @@
 ﻿var editAllowances = (function ($, commonFunctions) {
     var totalAmountCurrencyId;
     var $editAllowanceForm;
+    var workingDays;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
         if (currency === '11')
@@ -240,6 +241,16 @@
             calculateAutoAllowance();
         });
 
+        $('.no-of-days').on('change', function (e) {
+            var $this = $(this);
+            var dataGroup = $this.data('group');
+            var $unitAmount = $('.unit-amount[data-group="' + dataGroup + '"]');
+            var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
+
+            var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
+            $unitAmount.val(amount.div(workingDays).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+        });
+
         $('.addition:enabled, .deduction:enabled').on('change', function (e) {
             var $this = $(this);
             var dataGroup = $this.data('group');
@@ -295,12 +306,13 @@
             calculateTotalNetAmount();
         });
 
-        $("#Allowance_DSTNetSalaryAmount").on('change', calculateTotalNetAmount);
+        $('#Allowance_DSTNetSalaryAmount').on('change', calculateTotalNetAmount);
     }
 
     function initModule() {
-        $editAllowanceForm = $("#edit-allowances-form");
+        $editAllowanceForm = $('#edit-allowances-form');
         totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
+        workingDays = $('#EmployeeInfo_WorkingDays').val();
         calculateTotalAddition();
         calculateTotalDeduction();
 

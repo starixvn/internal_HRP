@@ -111,6 +111,15 @@
     <input type="hidden" asp-for="EmployeeInfo.CompanyId" />
     <input type="hidden" asp-for="EmployeeInfo.WorkingDays" />
 
+    <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount" class="basic-allowance-amount @((int)AllowanceType.Subsistence)" />
+    <input type="hidden" asp-for="BasicAllowance.HomePassageAmount" class="basic-allowance-amount @((int)AllowanceType.HomePassage)" />
+    <input type="hidden" asp-for="BasicAllowance.HousingAmount" class="basic-allowance-amount @((int)AllowanceType.Housing)" />
+    <input type="hidden" asp-for="BasicAllowance.MobilePhoneAmount" class="basic-allowance-amount @((int)AllowanceType.MobilePhone)" />
+    <input type="hidden" asp-for="BasicAllowance.HPIAmount" class="basic-allowance-amount @((int)AllowanceType.HPI)" />
+    <input type="hidden" asp-for="BasicAllowance.DutyMealAmount" class="basic-allowance-amount @((int)AllowanceType.DutyMeal)" />
+    <input type="hidden" asp-for="BasicAllowance.SecondmentAmount" class="basic-allowance-amount @((int)AllowanceType.Secondment)" />
+    <input type="hidden" asp-for="BasicAllowance.OthersAmount" class="basic-allowance-amount @((int)AllowanceType.Others)" />
+
     <div class="form-information">
         <div class="list-message-error hidden" id="validation-summary">
             <span asp-validation-for="Allowance.DirectBanking1CurrencyId" class="message"></span>
@@ -164,7 +173,7 @@
                         <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control addition no-of-days" data-group="addition-@i" asp-for="Additions[i].NoOfDays">
+                        <input type="text" class="control addition no-of-days" data-allowance-type="@Model.Additions[i].Type" data-group="addition-@i" asp-for="Additions[i].NoOfDays">
 
                         <input type="hidden" class="addition total-amount" data-group="addition-@i" asp-for="Additions[i].TotalAmount">
                         <input type="text" class="control addition total-amount-display" data-group="addition-@i" readonly asp-for="Additions[i].TotalAmountToDisplay">
@@ -202,7 +211,7 @@
                         <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control deduction no-of-days" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" class="control deduction no-of-days" data-allowance-type="@Model.Deductions[i].Type" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
 
                         <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
                         <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
@@ -369,7 +378,7 @@
             <div>
                 <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
                 <span class="currency">@Model.Allowance.CurrencyCode</span>
-            </div>            
+            </div>
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
@@ -384,7 +393,7 @@
             <div class="">
                 <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
                 <span class="currency">@Model.Allowance.CurrencyCode</span>
-            </div>            
+            </div>
         </div>
         <div class="list-button">
             <a class="button -second"
