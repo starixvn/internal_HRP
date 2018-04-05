@@ -299,6 +299,10 @@
                         amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
                         totalAmount = amount + directBanking1 + directBanking2 + cash;
                         monthlySalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
+                        monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
+                        monthlySalary.CashAmount = basicSalary.CashAmount;
                     }
 
                     break;
@@ -314,6 +318,10 @@
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
                         totalAmount = ebanking + amount + directBanking2 + cash;
                         monthlySalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
+                        monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
+                        monthlySalary.CashAmount = basicSalary.CashAmount;
                     }
 
                     break;
@@ -329,6 +337,10 @@
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
                         totalAmount = ebanking + directBanking1 + amount + cash;
                         monthlySalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
+                        monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
+                        monthlySalary.CashAmount = basicSalary.CashAmount;
                     }
 
                     break;
@@ -344,6 +356,10 @@
                         amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
                         totalAmount = ebanking + directBanking1 + directBanking2 + amount;
                         monthlySalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
+
+                        monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
+                        monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
+                        monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
                     }
 
                     break;
