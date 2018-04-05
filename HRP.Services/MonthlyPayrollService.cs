@@ -923,6 +923,10 @@
 
                 monthlyAllowance.TotalNetAmount = RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
             }
+            else
+            {
+                monthlyAllowance.TotalNetAmount = monthlyAllowance.TotalAmount;
+            }
         }
 
         #region Back Pay and After Adjustment

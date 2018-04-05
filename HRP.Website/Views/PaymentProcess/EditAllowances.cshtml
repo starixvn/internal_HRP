@@ -368,7 +368,7 @@
             <div class="text-specific">@ViewLang.TotalGross</div>
             <div>
                 <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
-                <span class="currency">USD</span>
+                <span class="currency">@Model.Allowance.CurrencyCode</span>
             </div>            
         </div>
         <div class="group-complex -total-salary">
@@ -376,14 +376,14 @@
             <div class="">
                 <input type="text" class="control number text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" />
                 <input type="hidden" asp-for="Allowance.DSTNetSalaryCurrencyId" />
-                <span class="currency">USD</span>
+                <span class="currency">@Model.Currencies.FirstOrDefault(x => x.Value == Model.Allowance.DSTNetSalaryCurrencyId.ToString())?.Text</span>
             </div>
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-green">@ViewLang.NetAmount</div>
             <div class="">
                 <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
-                <span class="currency">USD</span>
+                <span class="currency">@Model.Allowance.CurrencyCode</span>
             </div>            
         </div>
         <div class="list-button">

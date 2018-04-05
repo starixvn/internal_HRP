@@ -407,7 +407,6 @@
             viewModel.Filter = filter;
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-            viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
 
             viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });

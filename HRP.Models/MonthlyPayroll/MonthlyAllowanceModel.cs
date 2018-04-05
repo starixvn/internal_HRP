@@ -75,6 +75,9 @@
 
         public string DSTNetSalaryAmount { get; set; }
 
+        [XmlIgnore]
+        public string DSTNetSalaryCurrencyCode { get; set; }
+
         public string TotalNetAmount { get; set; }
 
         [XmlIgnore]
