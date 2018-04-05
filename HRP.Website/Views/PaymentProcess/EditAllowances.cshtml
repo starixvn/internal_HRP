@@ -366,16 +366,25 @@
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific">@ViewLang.TotalGross</div>
-            <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
+            <div>
+                <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
+                <span class="currency">USD</span>
+            </div>            
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
-            <input type="text" class="control number text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" />
-            <input type="hidden" asp-for="Allowance.DSTNetSalaryCurrencyId" />
+            <div class="">
+                <input type="text" class="control number text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" />
+                <input type="hidden" asp-for="Allowance.DSTNetSalaryCurrencyId" />
+                <span class="currency">USD</span>
+            </div>
         </div>
         <div class="group-complex -total-salary">
             <div class="text-specific text-green">@ViewLang.NetAmount</div>
-            <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
+            <div class="">
+                <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
+                <span class="currency">USD</span>
+            </div>            
         </div>
         <div class="list-button">
             <a class="button -second"

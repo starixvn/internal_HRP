@@ -420,4 +420,13 @@ input[type="radio"]:disabled + span {
   height: 32px;
   line-height: 32px;
 }
+
+.form-information .-total-salary .control {
+  display: unset;
+  width: auto;
+}
+
+.form-information .-total-salary .currency {
+  margin-left: 8px;
+}
 /*# sourceMappingURL=edit-basic-salary.css.map */

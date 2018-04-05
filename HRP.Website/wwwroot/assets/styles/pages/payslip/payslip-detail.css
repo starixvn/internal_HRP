@@ -51,8 +51,17 @@ body {
 }
 
 .payslip-detail .row-tbl {
-  display: table;
   width: 100%;
+  border-collapse: collapse;
+  vertical-align: top;
+}
+
+.payslip-detail .row-tbl > tbody > tr > td {
+  vertical-align: top;
+  border: 1px solid #d9d9d9;
+  position: relative;
+  width: 50%;
+  padding: 0;
 }
 
 .payslip-detail .row-tbl .detail-section:first-child {
@@ -72,13 +81,6 @@ body {
 
 .payslip-detail .row-tbl.grand-total .content tr:hover {
   background-color: transparent;
-}
-
-.detail-section {
-  width: 50%;
-  display: table-cell;
-  border: 1px solid #d9d9d9;
-  position: relative;
 }
 
 .detail-section .content, .detail-section .footer {
