@@ -159,7 +159,7 @@
 
     function validatedInvalidRelatedElements(element) {
         var parent = $(element).closest('.group-complex');
-        var validateElements = $('input.input-validation-error, select.input-validation-error').not(element);
+        var validateElements = $('input.input-validation-error, select.input-validation-error', parent).not(element);
         if (validateElements.length > 0) {
             validateElements.valid();
         }
@@ -206,13 +206,19 @@
             });
     }
 
-    function init() {
-        calculateBasicSalary();
-        calculateAllowances();
-        assignAddBankAccountButton();
+    function initInputMask() {
+        $('.number').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true,
+        });
+    }
 
-        $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
-
+    function initTooltip() {
         $('.tooltipster').tooltipster({
             content: $('#tooltip-content'),
             contentCloning: true,
@@ -237,21 +243,9 @@
                 });
             }
         });
+    }
 
-        $('.bank-type-select').on('change', function (e) {
-            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
-            validatedInvalidRelatedElements(e.target);
-            if (this.value === "2" || this.value === "1") {
-                $(this).siblings('.add-account').removeClass('disabled');
-            } else {
-                $(this).siblings('.add-account').addClass('disabled');
-            }
-        });
-
-        $('.bank-account-select').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
-        });
-
+    function initSelect2() {
         $('.select2').select2({
             allowClear: true,
             placeholder: '',
@@ -300,127 +294,10 @@
         }).on('change', function () {
             $(this).click();
         });
+    }
 
-        ////if ($('#CanCreateBankAccount').val() !== 'True') {
-        ////    $('.add-account').addClass('hide');
-        ////}
-
-        if ($('#CanUpdate').val() !== 'True') {
-            $('select, input', '#payroll-form').attr('disabled', 'disabled');
-            return;
-        }
-
-        $('.add-account:not(.disabled)').each(function (index, element) {
-            var $element = $(element);
-            var bankType = $element.siblings('.bank-type-select').val();
-            if (bankType === '3' || bankType === '') {
-                $element.addClass('disabled');
-            }
-        });
-
-        $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
-            if (this.checked) {
-                var parent = $(this).closest('.group-complex');
-                $('input.basic-salary-calculate[readonly]').removeAttr('readonly');
-                $('input.basic-salary-calculate', parent).attr('readonly', 'readonly');
-            }
-        }).change();
-
-        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
-            if (this.checked) {
-                var parent = $(this).closest('.group-complex');
-                $('input.allowance-calculate[readonly]').removeAttr('readonly');
-                $('input.allowance-calculate', parent).attr('readonly', 'readonly');
-            }
-        }).change();
-
-        $('#Allowance_DutyMealCurrencyId').on('change', function (e) {
-            if (e.target.value) {
-                var dutyMealPerDay = $('#duty-meal-per-day').val();
-                if (dutyMealPerDay) {
-                    var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
-                    $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay);
-                }
-            } else {
-                $('#Allowance_DutyMealAmount').val('');
-            }
-        });
-
-        $('.basic-salary-calculate').on('change', function (e) {
-            roundingAmount(e.target);
-            validatedInvalidRelatedElements(e.target);
-            calculateBasicSalary();
-        });
-
-        $('.allowance-calculate').on('change', function (e) {
-            roundingAmount(e.target);
-            validatedInvalidRelatedElements(e.target);
-            calculateAmountForBanks();
-        });
-
-        $('.allowance-detail-calculate').on('change', function (e) {
-            roundingAmount(e.target);
-
-            var allowanceCurrency = $('#Allowance_CurrencyId').val();
-            if (allowanceCurrency === '') {
-                return;
-            }
-
-            convertToAllowanceCurrency($(this), allowanceCurrency);
-            calculateTotalAllowance(allowanceCurrency);
-        });
-
-        $('.deduction-calculate').on('change', function (e) {
-            roundingAmount(e.target);
-        });
-
-        $('#Allowance_CurrencyId').on('change', function () {
-            $('.allowance-total-currency').val(this.options[this.selectedIndex].text);
-            calculateAllowances();
-        });
-
-        $('input[name="BasicSalary.WorkingDays"], #duty-meal-per-day').on('change', function (e) {
-            var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
-            $('#working-days').val(workingDays);
-            var dutyMealPerDay = $('#duty-meal-per-day').val();
-
-            if ($('#Allowance_DutyMealCurrencyId').val() !== '' && dutyMealPerDay !== '') {
-                $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay).change();
-            } else {
-                $('#Allowance_DutyMealAmount').val('');
-            }
-        });
-
-        if ($('#BasicSalary_InitFirstTime').val() === 'True') {
-            $('#BasicSalary_EffectiveDate, #BasicSalary_ReasonId').attr('disabled', 'disabled');
-        } else {
-            $('.calendar input').datetimepicker({
-                format: 'MM/DD/YYYY',
-                useCurrent: false,
-                allowInputToggle: true
-            });
-
-            $('.icon-calendar').on('click', function () {
-                $(this).siblings('input').data('DateTimePicker').toggle();
-            });
-        }
-
-        $('.number:enabled').on('keydown', function (e) {
-            // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                // Allow: Ctrl+A, Command+A
-                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                // Allow: home, end, left, right, down, up
-                (e.keyCode >= 35 && e.keyCode <= 40)) {
-                return;
-            }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
-
-        var $form = $('#payroll-form'); 
+    function initFormValidation() {
+        var $form = $('#payroll-form');
         $form.removeData('validator');
         $form.removeData('unobtrusiveValidation');
 
@@ -439,7 +316,8 @@
         });
 
         var classNames = ['basic-salary-ebanking', 'basic-salary-directbanking1', 'basic-salary-directbanking2',
-            'basic-salary-cash', 'allowance-directbanking1', 'allowance-directbanking2', 'allowance-cash'];
+            'basic-salary-cash', 'allowance-directbanking1', 'allowance-directbanking2', 'allowance-cash',
+            'subsistence', 'home-passage', 'housing', 'mobile-phone', 'hpi', 'duty-meal', 'secondment', 'others'];
 
         classNames.forEach(function (className) {
             $.validator.addClassRules(className, {
@@ -514,6 +392,152 @@
                         return $('#Allowance_CurrencyId').val() !== ''
                     }
                 }
+            }
+        });
+    }
+
+    function initEvents() {
+        $('.bank-type-select').on('change', function (e) {
+            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+            validatedInvalidRelatedElements(e.target);
+
+            if (this.value === "2" || this.value === "1") {
+                $(this).siblings('.add-account').removeClass('disabled');
+            } else {
+                $(this).siblings('.add-account').addClass('disabled');
+            }
+        });
+
+        $('.bank-account-select').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
+        });
+
+        $('input[name="BasicSalary.AutoCalculateOn"]').on('change', function () {
+            if (this.checked) {
+                var parent = $(this).closest('.group-complex');
+                $('input.basic-salary-calculate[readonly]').removeAttr('readonly');
+                $('input.basic-salary-calculate', parent).attr('readonly', 'readonly');
+            }
+        }).change();
+
+        $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
+            if (this.checked) {
+                var parent = $(this).closest('.group-complex');
+                $('input.allowance-calculate[readonly]').removeAttr('readonly');
+                $('input.allowance-calculate', parent).attr('readonly', 'readonly');
+            }
+        }).change();
+
+        $('#Allowance_DutyMealCurrencyId').on('change', function (e) {
+            if (e.target.value) {
+                var dutyMealPerDay = $('#duty-meal-per-day').val();
+                if (dutyMealPerDay) {
+                    var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
+                    $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay);
+                }
+            }
+        });
+
+        $('.basic-salary-calculate').on('change', function (e) {
+            roundingAmount(e.target);
+            validatedInvalidRelatedElements(e.target);
+            calculateBasicSalary();
+        });
+
+        $('.allowance-calculate').on('change', function (e) {
+            roundingAmount(e.target);
+            validatedInvalidRelatedElements(e.target);
+            calculateAmountForBanks();
+        });
+
+        $('.allowance-detail-calculate').on('change', function (e) {
+            roundingAmount(e.target);
+            validatedInvalidRelatedElements(e.target);
+
+            var allowanceCurrency = $('#Allowance_CurrencyId').val();
+            if (allowanceCurrency === '') {
+                return;
+            }
+
+            convertToAllowanceCurrency($(this), allowanceCurrency);
+            calculateTotalAllowance(allowanceCurrency);
+        });
+
+        $('.deduction-calculate').on('change', function (e) {
+            roundingAmount(e.target);
+        });
+
+        $('#Allowance_CurrencyId').on('change', function () {
+            $('.allowance-total-currency').val(this.options[this.selectedIndex].text);
+            calculateAllowances();
+        });
+
+        $('input[name="BasicSalary.WorkingDays"], #duty-meal-per-day').on('change', function (e) {
+            var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
+            $('#working-days').val(workingDays);
+            var dutyMealPerDay = $('#duty-meal-per-day').val();
+
+            if (dutyMealPerDay !== '') {
+                $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay).change().valid();
+            } else {
+                $('#Allowance_DutyMealAmount').val('').change();
+            }
+        });
+
+        if ($('#BasicSalary_InitFirstTime').val() === 'True') {
+            $('#BasicSalary_EffectiveDate, #BasicSalary_ReasonId').attr('disabled', 'disabled');
+        } else {
+            $('.calendar input').datetimepicker({
+                format: 'MM/DD/YYYY',
+                useCurrent: false,
+                allowInputToggle: true
+            });
+
+            $('.icon-calendar').on('click', function () {
+                $(this).siblings('input').data('DateTimePicker').toggle();
+            });
+        }
+    }
+
+    function init() {
+        calculateBasicSalary();
+        calculateAllowances();
+        assignAddBankAccountButton();
+
+        initInputMask();
+        initTooltip();
+        initSelect2();
+
+        $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
+
+        if ($('#CanUpdate').val() !== 'True') {
+            $('select, input', '#payroll-form').attr('disabled', 'disabled');
+            return;
+        }
+
+        initEvents();
+        initFormValidation();
+
+        $('.add-account:not(.disabled)').each(function (index, element) {
+            var $element = $(element);
+            var bankType = $element.siblings('.bank-type-select').val();
+            if (bankType === '3' || bankType === '') {
+                $element.addClass('disabled');
+            }
+        });
+      
+        $('.number:enabled').on('keydown', function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
             }
         });
     }

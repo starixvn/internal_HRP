@@ -420,6 +420,10 @@
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
       "wwwroot/lib/select2/dist/js/select2.min.js",
       "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.extensions.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.numeric.extensions.min.js",
+      "wwwroot/lib/inputmask/dist/min/inputmask/jquery.inputmask.min.js",
       "wwwroot/assets/js/bank/bank-account-form.js",
       "wwwroot/assets/js/employee/employee-payroll.js"
     ],
