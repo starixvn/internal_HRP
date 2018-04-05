@@ -117,6 +117,7 @@
     <Setting Key="Currency_Create" SpName="Currency_Create" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_GetById" SpName="Currency_GetById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Currency_Update" SpName="Currency_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetCurrencyCodesForSetting" SpName="Currency_GetCurrencyCodesForSetting" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employee">
     <Setting Key="Employee_GetBasicInfoById" SpName="Employee_GetBasicInfoById" DbName="bodb_HRP" Plain="0"></Setting>

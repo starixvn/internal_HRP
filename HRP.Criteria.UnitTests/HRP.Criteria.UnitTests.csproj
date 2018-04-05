@@ -96,6 +96,7 @@
     <Compile Include="Currency\CreateCurrencyCriteriaTests.cs" />
     <Compile Include="Currency\GetAllCurrencyCriteriaTests.cs" />
     <Compile Include="Currency\GetCurrencyByIdCriteriaTests.cs" />
+    <Compile Include="Currency\GetCurrencyCodesForSettingCriteriaTests.cs" />
     <Compile Include="Currency\UpdateCurrencyCriteriaTests.cs" />
     <Compile Include="Department\CheckDepartmentExistsCriteriaTests.cs" />
     <Compile Include="Department\CreateDepartmentCriteriaTests.cs" />

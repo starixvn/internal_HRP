@@ -6,6 +6,6 @@
 
         public int ToCurrencyId { get; set; }
 
-        public decimal ExchangeRate { get; set; }
+        public decimal? ExchangeRate { get; set; }
     }
 }

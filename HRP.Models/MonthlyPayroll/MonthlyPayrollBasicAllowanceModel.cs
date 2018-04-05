@@ -13,6 +13,8 @@
 
         public int? CurrencyId { get; set; }
 
+        public string CurrencyCode { get; set; }
+
         public string TotalAmount { get; set; }
 
         public int? DirectBanking1CurrencyId { get; set; }

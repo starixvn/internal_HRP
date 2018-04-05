@@ -577,10 +577,8 @@
             var amount = afterAdjustmentAmount - totalAmount;
             if (amount != 0)
             {
-                var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-                var currencyCode = currencies.FirstOrDefault(x => x.CurrencyId == monthlyPayrollBasicAllowance.CurrencyId.Value).CurrencyCode;
                 var reason = new StringBuilder();
-                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), currencyCode);
+                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode);
 
                 if (startDate.Month == month && startDate.Year == year)
                 {
@@ -644,7 +642,7 @@
             CurrencyExchangeRateModel currencyExchangeRate =
                 currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
 
-            return currencyExchangeRate != null ? currencyExchangeRate.ExchangeRate : 0;
+            return currencyExchangeRate?.ExchangeRate ?? 0;
         }
 
         private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)

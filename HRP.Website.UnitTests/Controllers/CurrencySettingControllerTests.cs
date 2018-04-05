@@ -38,7 +38,7 @@
 
             var controller = GetController();
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
-            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(currencies);
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetCurrencyCodesForSettingCriteria>()).Returns(currencies);
             sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host).Returns(true);
 
             var actual = await controller.Index(DateTime.Today);

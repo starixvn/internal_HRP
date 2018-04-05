@@ -34,12 +34,22 @@
         var baseCurrency = Number($('#base-currency').val());
 
         if ($('#CanUpdate').val() === 'True') {
-            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]').inputmask()
+            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]')
+                .inputmask({
+                    alias: 'numeric',
+                    groupSeparator: '',
+                    autoGroup: true,
+                    digits: 5,
+                    digitsOptional: true,
+                    placeholder: '',
+                    autoUnmask: true,
+                    allowMinus: false
+                })
                 .on('change', function () {
                     var target = $(this);
                     var fromCurrency = target.data('from-currency');
                     var toCurrency = target.data('to-currency');
-                    var value = round(target.inputmask('unmaskedvalue'));
+                    var value = Number(target.val()).toFixed(5);
 
                     if (toCurrency === baseCurrency) {
                         if (Number(value) === 0) {
