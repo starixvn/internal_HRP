@@ -3,33 +3,9 @@ body {
   font-size: 13px;
 }
 
-.employee-info {
-  display: flex;
-  justify-content: space-between;
-}
-
-.employee-info .col {
-  padding: 6px;
-}
-
-.employee-info .col .row {
-  padding: 2px 0;
-}
-
-.employee-info .col .row .red {
-  font-weight: normal;
-}
-
-.employee-info .col .main-info {
-  display: flex;
-}
-
-.employee-info .col .main-info .name {
-  margin-right: 5px;
-}
-
-.employee-info .col .main-info .id {
-  margin-right: 28px;
+.employee-info .main-info {
+  float: right;
+  border-collapse: collapse;
 }
 
 .bold {
@@ -50,36 +26,46 @@ body {
   margin-top: 12px;
 }
 
-.payslip-detail .row-tbl {
+.row-tbl {
   width: 100%;
   border-collapse: collapse;
   vertical-align: top;
 }
 
-.payslip-detail .row-tbl > tbody > tr > td {
+.row-tbl.employee-info tbody tr td {
+  border-width: 0;
+}
+
+.row-tbl > tbody > tr > td {
   vertical-align: top;
   border: 1px solid #d9d9d9;
   position: relative;
   width: 50%;
   padding: 0;
+  margin: 0;
+  border-bottom-width: 0;
 }
 
-.payslip-detail .row-tbl .detail-section:first-child {
+.row-tbl > tbody > tr > td.first-child {
   border-right-width: 0;
 }
 
-.payslip-detail .row-tbl.grand-total .content {
+.row-tbl.grand-total td {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.row-tbl.grand-total .content {
   margin-bottom: 0;
   background-color: #c5cace;
 }
 
-.payslip-detail .row-tbl.grand-total .content .key, .payslip-detail .row-tbl.grand-total .content .value {
+.row-tbl.grand-total .content .key, .row-tbl.grand-total .content .value {
   color: inherit;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.payslip-detail .row-tbl.grand-total .content tr:hover {
+.row-tbl.grand-total .content tr:hover {
   background-color: transparent;
 }
 
@@ -131,5 +117,6 @@ body {
   color: #fff;
   padding: 5px 16px;
   font-weight: bold;
+  text-align: left;
 }
 /*# sourceMappingURL=payslip-detail.css.map */
