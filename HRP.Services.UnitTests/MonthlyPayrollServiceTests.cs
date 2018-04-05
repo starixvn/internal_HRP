@@ -340,12 +340,12 @@
                 }
             };
 
-            var info = new MonthlyAllowanceEmployeeInfoModel();
+            var info = new MonthlyPayrollFilterInfoModel();
 
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, MonthlyAllowanceEmployeeInfoModel>
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, MonthlyPayrollFilterInfoModel>
                 (allowance, additions, deductions, basicAllowance, info));
 
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);

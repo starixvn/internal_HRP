@@ -88,9 +88,11 @@
             }
         }
 
-        public async Task<Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, 
-            MonthlyAllowanceEmployeeInfoModel>> 
-            GetMonthlyAllowancesAsync(ICriteria criteria)
+        public async Task<Tuple<MonthlyAllowanceModel,
+            IEnumerable<MonthlyAllowanceAdditionModel>,
+            IEnumerable<MonthlyAllowanceDeductionModel>,
+            MonthlyPayrollBasicAllowanceModel,
+            MonthlyPayrollFilterInfoModel>> GetMonthlyAllowancesAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -100,11 +102,13 @@
                     var additions = multiResults.Read<MonthlyAllowanceAdditionModel>();
                     var deductions = multiResults.Read<MonthlyAllowanceDeductionModel>();
                     var basicAllowance = multiResults.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>();
-                    var info = multiResults.ReadFirstOrDefault<MonthlyAllowanceEmployeeInfoModel>();
+                    var info = multiResults.ReadFirstOrDefault<MonthlyPayrollFilterInfoModel>();
 
-                    var tuple = new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, 
-                        MonthlyAllowanceEmployeeInfoModel>
-                        (allowance, additions, deductions, basicAllowance, info);
+                    var tuple = new Tuple<MonthlyAllowanceModel,
+                        IEnumerable<MonthlyAllowanceAdditionModel>,
+                        IEnumerable<MonthlyAllowanceDeductionModel>,
+                        MonthlyPayrollBasicAllowanceModel,
+                        MonthlyPayrollFilterInfoModel>(allowance, additions, deductions, basicAllowance, info);
 
                     return tuple;
                 }

@@ -890,7 +890,7 @@
                 .Returns(new MonthlyAllowancesViewModel
                 {
                     Allowance = new MonthlyAllowanceModel(),
-                    EmployeeInfo = new MonthlyAllowanceEmployeeInfoModel()
+                    EmployeeInfo = new MonthlyPayrollFilterInfoModel()
                 });
 
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());

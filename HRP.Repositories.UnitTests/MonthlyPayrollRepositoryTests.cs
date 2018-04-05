@@ -183,12 +183,12 @@
 
             var allowance = new MonthlyAllowanceModel();
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
-            var employeeInfo = new MonthlyAllowanceEmployeeInfoModel();
+            var employeeInfo = new MonthlyPayrollFilterInfoModel();
 
             var multiResultReader = FakeMultipleResultReader();
             multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
             multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
-            multiResultReader.ReadFirstOrDefault<MonthlyAllowanceEmployeeInfoModel>().Returns(employeeInfo);
+            multiResultReader.ReadFirstOrDefault<MonthlyPayrollFilterInfoModel>().Returns(employeeInfo);
 
             multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
             multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);

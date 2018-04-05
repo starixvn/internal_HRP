@@ -382,8 +382,12 @@
             monthlySalary.Status = (amount < 0 || totalAmount > afterAdjustmentAmount) ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
         }
 
-        public MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyDSTNetSalary dstNetSalary)
+        public MonthlyAllowanceModel InitializeMonthlyAllowance(
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            MonthlyDSTNetSalary dstNetSalary)
         {
             var monthlyAllowance = new MonthlyAllowanceModel
             {
@@ -440,8 +444,13 @@
             return monthlyAllowance;
         }
 
-        public void CalculateMonthlyBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
-            DateTime startDate, DateTime? endDate, int month, int year)
+        public void CalculateMonthlyBasicAllowance
+            (IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            DateTime startDate,
+            DateTime? endDate,
+            int month,
+            int year)
         {
             decimal totalAmount = 0;
 
@@ -483,8 +492,11 @@
             CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
-        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(
+            int standardWorkingDays,
+            decimal actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var additions = new List<MonthlyAllowanceAdditionModel>();
             var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();
@@ -522,8 +534,11 @@
             return additions;
         }
 
-        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int standardWorkingDays, decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(
+            int standardWorkingDays,
+            decimal actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var deductions = new List<MonthlyAllowanceDeductionModel>();
             var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();

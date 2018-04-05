@@ -23,7 +23,7 @@
 
         public IList<MonthlyAllowanceDeductionModel> Deductions { get; set; }
 
-        public MonthlyAllowanceEmployeeInfoModel EmployeeInfo { get; set; }
+        public MonthlyPayrollFilterInfoModel EmployeeInfo { get; set; }
 
         public SelectList Currencies { get; set; }
 

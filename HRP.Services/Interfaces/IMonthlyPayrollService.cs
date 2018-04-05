@@ -47,13 +47,23 @@
             DateTime? endDate,
             int month, int year);
 
-        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(int standardWorkingDays, decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(
+            int standardWorkingDays,
+            decimal actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
 
-        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(int standardWorkingDays, decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(
+            int standardWorkingDays,
+            decimal actualWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
 
-        MonthlyAllowanceModel InitializeMonthlyAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyDSTNetSalary dstNetSalary);
+        MonthlyAllowanceModel InitializeMonthlyAllowance(
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
+            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            MonthlyDSTNetSalary dstNetSalary);
     }
 }

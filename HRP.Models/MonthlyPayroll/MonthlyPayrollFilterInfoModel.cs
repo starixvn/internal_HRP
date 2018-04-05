@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class MonthlyAllowanceEmployeeInfoModel
+    public class MonthlyPayrollFilterInfoModel
     {
         public int EmployeeId { get; set; }
 
@@ -26,5 +26,7 @@
         public string CompanyCode { get; set; }
 
         public int WorkingDays { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }
