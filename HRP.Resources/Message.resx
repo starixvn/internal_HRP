@@ -780,7 +780,7 @@
   <data name="ErrorOccuredWhileReadingTemplate" xml:space="preserve">
     <value>An error occured while reading template file.</value>
   </data>
-  <data name="SelectAtLeastOneEmployee" xml:space="preserve">
-    <value>Please select at least one employee.</value>
+  <data name="SentPayslipSuccessful" xml:space="preserve">
+    <value>Payslip has been sent successfully.</value>
   </data>
 </root>

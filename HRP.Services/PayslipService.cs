@@ -107,19 +107,19 @@
             foreach (PayslipDetailModel payslip in payslips)
             {
                 DescryptAndCalculateAmount(payslip);
-                await RenderPdfAndSendMail(payslip).ConfigureAwait(false);
+                RenderPdfAndSendMail(payslip);
             }
 
             return commandResult;
         }
 
-        private async Task RenderPdfAndSendMail(PayslipDetailModel payslip)
+        private void RenderPdfAndSendMail(PayslipDetailModel payslip)
         {
             var body = emailService.ReadTextFile(EmailTemplate);
             body = string.Format(CultureInfo.InvariantCulture, body, payslip.Nickname);
-            var subject = string.Format(CultureInfo.InvariantCulture, "Paslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
+            var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
 
-            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Details", payslip).ConfigureAwait(false);
+            var htmlString = viewRenderService.RenderViewToStringAsync("Payslip/Details", payslip).Result;
             byte[] streamContent = pdfRenderService.RenderContent(cssFilePath, htmlString);
 
             using (var input = new MemoryStream(streamContent))
@@ -129,15 +129,12 @@
                     var reader = new PdfReader(input);
                     PdfEncryptor.Encrypt(reader, output, true, payslip.PDFPassword, payslip.PDFPassword, PdfWriter.ALLOW_SCREENREADERS);
 
-                    var attachedFiles = new List<MailAttachment>
+                    var mailAttachments = new List<MailAttachment>();
+                    var mailAttachment = new MailAttachment(output, FileExtentions.PDF)
                     {
-                        new MailAttachment
-                        {
-                            FileName = subject,
-                            Content = output,
-                            ContentType = FileExtentions.PDF
-                        }
+                        FileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"))
                     };
+                    mailAttachments.Add(mailAttachment);
 
                     var mailModel = new MailModel
                     {
@@ -145,7 +142,7 @@
                         ReceiverEmail = payslip.Email,
                         MailCC = string.Empty,
                         Body = body,
-                        Attachments = attachedFiles
+                        Attachments = mailAttachments
                     };
 
                     emailService.SendEmail(mailModel);

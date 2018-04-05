@@ -20,6 +20,8 @@
         private ISessionService sessionService;
         private ICryptoService cryptoService;
         private IBaseMailService emailService;
+        private IViewRenderService viewRenderService;
+        private IPdfRenderService pdfRenderService;
         private IPayslipRepository payslipRepository;
 
         [Fact]
@@ -156,6 +158,16 @@
             return Substitute.For<IBaseMailService>();
         }
 
+        private static IViewRenderService FakeViewRenderService()
+        {
+            return Substitute.For<IViewRenderService>();
+        }
+
+        private static IPdfRenderService FakePdfRenderService()
+        {
+            return Substitute.For<IPdfRenderService>();
+        }
+
         private static IPayslipRepository FakePayslipRepository()
         {
             return Substitute.For<IPayslipRepository>();
@@ -168,7 +180,9 @@
             cryptoService = FakeCryptoService();
             payslipRepository = FakePayslipRepository();
             emailService = FakeMailService();
-            var service = new PayslipService(baseService, sessionService, cryptoService, emailService, payslipRepository);
+            viewRenderService = FakeViewRenderService();
+            pdfRenderService = FakePdfRenderService();
+            var service = new PayslipService(baseService, sessionService, cryptoService, emailService, viewRenderService, pdfRenderService, payslipRepository);
 
             return service;
         }

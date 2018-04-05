@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Enumerations;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
     using HRP.Models.Payslip;
@@ -109,17 +110,40 @@
         #endregion Details
 
         [Fact]
-        public void SendPayslip_WhenCalled_ReturnsAsExpectedViewResult()
+        public async Task SendPayslip_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             //Arrange
             var payslipController = GetPayslipController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
             //Act
-            var actual = payslipController.SendPayslip();
+            var actual = await payslipController.SendPayslip(new SendPayslipViewModel());
 
             //Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task SendPayslip_HasPermission_ReturnsAsExpectedViewResult()
+        {
+            //Arrange
+            var viewModel = new SendPayslipViewModel();
+            var expected = new CommandResult
+            {
+                Code = 0
+            };
+            var payslipController = GetPayslipController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            payslipService.SendPayslipAsync(viewModel).Returns(expected);
+
+            //Act
+            var actual = await payslipController.SendPayslip(viewModel);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         #region Helpers
@@ -146,12 +170,24 @@
             return service;
         }
 
+        private static IViewRenderService FakeViewRenderService()
+        {
+            return Substitute.For<IViewRenderService>();
+        }
+
+        private static IPdfRenderService FakePdfRenderService()
+        {
+            return Substitute.For<IPdfRenderService>();
+        }
+
         private PayslipController GetPayslipController()
         {
             sessionService = FakeSessionService();
             var baseService = FakeBaseService();
             payslipService = FakePayslipService();
-            var controller = new PayslipController(sessionService, baseService, payslipService);
+            var viewRenderService = FakeViewRenderService();
+            var pdfRenderService = FakePdfRenderService();
+            var controller = new PayslipController(sessionService, baseService, payslipService, viewRenderService, pdfRenderService);
 
             return controller;
         }

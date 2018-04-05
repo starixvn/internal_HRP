@@ -44,10 +44,12 @@
     </div>
 </form>
 
-<div class="list-message-error hidden">
-    <p class="message">@Message.SelectAtLeastOneEmployee</p>
+<div class="-has-icon msg-success hidden">
+    @Message.SentPayslipSuccessful
 </div>
 <div class="-has-icon msg-error hidden"></div>
+
+<a class="button -primary" asp-action="pdf">Pdf</a>
 
 <div class="top-header">
     <div class="search-box">
@@ -118,7 +120,9 @@
                             break;
                     }
                 </td>
-                <td class="text-center"><span class="icon-active"></span></td>
+                <td class="text-center">
+                    <span class="icon-active js-sent @(payslip.IsSent ? string.Empty : "hidden")"></span>
+                </td>
                 <td class="text-center">
                     <label>
                         <input type="checkbox" name="PayrollIds[]" value="@payslip.PayrollId"

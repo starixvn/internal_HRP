@@ -1780,15 +1780,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select at least one employee..
-        /// </summary>
-        public static string SelectAtLeastOneEmployee {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneEmployee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please select at least one Employment Status.
         /// </summary>
         public static string SelectAtLeastOneEmploymentStatus {
@@ -1812,6 +1803,15 @@ namespace HRP.Resources {
         public static string SendPayslipConfirmationMessage {
             get {
                 return ResourceManager.GetString("SendPayslipConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payslip has been sent successfully..
+        /// </summary>
+        public static string SentPayslipSuccessful {
+            get {
+                return ResourceManager.GetString("SentPayslipSuccessful", resourceCulture);
             }
         }
         

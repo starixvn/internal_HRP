@@ -81,7 +81,6 @@ var payslips = (function ($) {
                 if (el && el.checked) {
                     el.checked = false;
                 }
-            } else {
             }
         });
 
@@ -120,6 +119,10 @@ var payslips = (function ($) {
         onSendPayslipSuccess: function (response) {
             $('#modal').modal('hide');
             if (response.isSuccessful) {
+                commonFunctions.showSuccessMessage($('.msg-success'));
+                dataTable.$('input.js-checkbox:checked').each(function () {
+                    $(this).closest('tr').find('.js-sent').removeClass('hidden');
+                });
             } else {
                 commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
