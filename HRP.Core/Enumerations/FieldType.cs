@@ -13,8 +13,8 @@
         [Display(Name = "Currency")]
         Currency = 3,
 
-        [Display(Name = "Basic Salary Change Reason")]
-        BasicSalaryChangeReason = 4,
+        //[Display(Name = "Basic Salary Change Reason")]
+        //BasicSalaryChangeReason = 4,
 
         [Display(Name = "Nationality")]
         Nationality = 5,

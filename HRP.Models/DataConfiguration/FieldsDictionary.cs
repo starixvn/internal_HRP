@@ -94,14 +94,6 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.LocalCompany }
             },
-            { (int)FieldType.BasicSalaryChangeReason, new Field   {
-                    FieldId = (int)FieldType.BasicSalaryChangeReason,
-                    FieldName = ViewLang.BasicSalaryChangeReason,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.BasicSalaryChangeReason }
-            },
             { (int)FieldType.Nationality, new Field   {
                     FieldId = (int)FieldType.Nationality,
                     FieldName = ViewLang.Nationality,
