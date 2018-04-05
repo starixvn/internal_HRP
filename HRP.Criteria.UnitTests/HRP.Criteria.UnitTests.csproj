@@ -139,6 +139,7 @@
     <Compile Include="PaymentProcess\GetUploadingFilesResultCriteriaTests.cs" />
     <Compile Include="PaymentProcess\SubmitUploadingFilesCriteriaTests.cs" />
     <Compile Include="PaymentProcess\UploadAttendanceAndDSTNetSalaryCriteriaTests.cs" />
+    <Compile Include="Payslip\UpdatePayslipCriteriaTests.cs" />
     <Compile Include="Payslip\GetPayslipDetailsCriteriaTests.cs" />
     <Compile Include="Payslip\GetPayslipCriteriaTests.cs" />
     <Compile Include="RefResource\CheckRefResourceExistsCriteriaTests.cs" />

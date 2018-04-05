@@ -48,5 +48,21 @@
                 return stream.ToArray();
             }
         }
+
+        public byte[] RenderContentWithPasswordProtected(string cssFilePath, string htmlText, string userPassword, string ownerPassword)
+        {
+            byte[] content = RenderContent(cssFilePath, htmlText);
+
+            using (var input = new MemoryStream(content))
+            {
+                using (var output = new MemoryStream())
+                {
+                    var reader = new PdfReader(input);
+                    PdfEncryptor.Encrypt(reader, output, true, userPassword, ownerPassword, PdfWriter.ALLOW_SCREENREADERS);
+
+                    return output.ToArray();
+                }
+            }
+        }
     }
 }

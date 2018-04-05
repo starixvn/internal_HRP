@@ -19,7 +19,8 @@
         private readonly ITempDataProvider tempDataProvider;
         private readonly IServiceProvider serviceProvider;
 
-        public ViewRenderService(IRazorViewEngine razorViewEngine,
+        public ViewRenderService(
+            IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
             IServiceProvider serviceProvider)
         {
@@ -57,6 +58,7 @@
                 );
 
                 await viewResult.View.RenderAsync(viewContext).ConfigureAwait(false);
+
                 return sw.ToString();
             }
         }

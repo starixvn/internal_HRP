@@ -158,6 +158,15 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/payslip/css/payslips.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/lib/datatables.net/css/dataTables.bootstrap.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/assets/styles/pages/payslip/view-pay-slip.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
@@ -479,6 +488,22 @@
       "wwwroot/lib/inputmask/dist/min/inputmask/inputmask.numeric.extensions.min.js",
       "wwwroot/lib/inputmask/dist/min/inputmask/jquery.inputmask.min.js",
       "wwwroot/assets/js/paymentprocess/edit-allowances.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/payslip/js/payslips.min.js",
+    "inputFiles": [
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net/js/dataTables.bootstrap.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/assets/js/payslip/payslip.js"
     ],
     "minify": {
       "enabled": true,

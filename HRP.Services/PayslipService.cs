@@ -16,7 +16,6 @@
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Repositories;
-    using iTextSharp.text.pdf;
 
     public class PayslipService : IPayslipService
     {
@@ -94,7 +93,6 @@
 
         public async Task<CommandResult> SendPayslipAsync(SendPayslipViewModel viewModel)
         {
-            var commandResult = new CommandResult();
             var criteria = new GetPayslipDetailsCriteria
             {
                 UserId = sessionService.UserId,
@@ -107,46 +105,52 @@
             foreach (PayslipDetailModel payslip in payslips)
             {
                 DescryptAndCalculateAmount(payslip);
-                RenderPdfAndSendMail(payslip);
+                await RenderPdfAndSendMailAsync(payslip).ConfigureAwait(false);
             }
+
+            CommandResult commandResult = await UpdatePayslipAsync(viewModel).ConfigureAwait(false);
 
             return commandResult;
         }
 
-        private void RenderPdfAndSendMail(PayslipDetailModel payslip)
+        private async Task<CommandResult> UpdatePayslipAsync(SendPayslipViewModel viewModel)
         {
-            var body = emailService.ReadTextFile(EmailTemplate);
-            body = string.Format(CultureInfo.InvariantCulture, body, payslip.Nickname);
-            var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
-
-            var htmlString = viewRenderService.RenderViewToStringAsync("Payslip/Details", payslip).Result;
-            byte[] streamContent = pdfRenderService.RenderContent(cssFilePath, htmlString);
-
-            using (var input = new MemoryStream(streamContent))
+            var criteria = new UpdatePayslipCriteria
             {
-                using (var output = new MemoryStream())
+                UserId = sessionService.UserId,
+                PayrollIds = string.Join(",", viewModel.PayrollIds),
+                CompanyId = viewModel.CompanyId
+            };
+
+            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+        }
+
+        private async Task RenderPdfAndSendMailAsync(PayslipDetailModel payslip)
+        {
+            var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(EmailTemplate), payslip.Nickname);
+            var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
+            var fileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"));
+            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Details", payslip).ConfigureAwait(false);
+            byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslip.PDFPassword, payslip.PDFPassword);
+
+            using (var input = new MemoryStream(content))
+            {
+                var mailAttachments = new List<MailAttachment>();
+                var mailAttachment = new MailAttachment(input, FileExtentions.PDF)
                 {
-                    var reader = new PdfReader(input);
-                    PdfEncryptor.Encrypt(reader, output, true, payslip.PDFPassword, payslip.PDFPassword, PdfWriter.ALLOW_SCREENREADERS);
+                    FileName = fileName
+                };
+                mailAttachments.Add(mailAttachment);
 
-                    var mailAttachments = new List<MailAttachment>();
-                    var mailAttachment = new MailAttachment(output, FileExtentions.PDF)
-                    {
-                        FileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"))
-                    };
-                    mailAttachments.Add(mailAttachment);
+                var mailModel = new MailModel
+                {
+                    Subject = subject,
+                    ReceiverEmail = payslip.Email,
+                    Body = body,
+                    Attachments = mailAttachments
+                };
 
-                    var mailModel = new MailModel
-                    {
-                        Subject = subject,
-                        ReceiverEmail = payslip.Email,
-                        MailCC = string.Empty,
-                        Body = body,
-                        Attachments = mailAttachments
-                    };
-
-                    emailService.SendEmail(mailModel);
-                }
+                emailService.SendEmail(mailModel);
             }
         }
 
@@ -166,7 +170,7 @@
             payslip.SalaryAmount = cryptoService.Decrypt(payslip.SalaryAmount);
 
             decimal.TryParse(payslip.SalaryAmount, out decimal basicSalaryAmount);
-            payslip.SalaryAmount = basicSalaryAmount.ToString(AmountFormat);
+            payslip.SalaryAmount = RoundAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyId).ToString(AmountFormat);
 
             foreach (MonthlySalaryAdditionModel addition in payslip.SalaryAdditions)
             {
@@ -203,7 +207,7 @@
             payslip.AllowanceAmount = cryptoService.Decrypt(payslip.AllowanceAmount);
 
             decimal.TryParse(payslip.AllowanceAmount, out decimal basicAllowanceAmount);
-            payslip.AllowanceAmount = basicAllowanceAmount.ToString(AmountFormat);
+            payslip.AllowanceAmount = RoundAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyId).ToString(AmountFormat);
 
             foreach (MonthlyAllowanceAdditionModel addition in payslip.AllowanceAdditions)
             {

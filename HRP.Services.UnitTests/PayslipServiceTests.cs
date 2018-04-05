@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
+    using HRP.Core.Model;
     using HRP.Criteria;
     using HRP.Criteria.Payslip;
     using HRP.Models;
@@ -77,16 +78,19 @@
             Assert.Null(actual);
         }
 
-        [Fact]
-        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel()
+        [Theory]
+        [InlineData(11, "1,000.00")]
+        [InlineData(1, "1,234.00")]
+        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId,string expectedAmount)
         {
             // Arrange
             var plainText = "1234";
-            var expectedAmount = "1,234.00";
             var payslips = new List<PayslipDetailModel>
             {
                 new PayslipDetailModel
                 {
+                    SalaryCurrencyId = currencyId,
+                    AllowanceCurrencyId = currencyId,
                     SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
                     AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
@@ -130,6 +134,26 @@
         }
 
         #endregion GetPayslipDetailAsync
+
+        [Fact]
+        public async Task SendPayslipAsync_WhenCalled_ExpectedSendMail()
+        {
+            // Arrange
+            var viewModel = new SendPayslipViewModel();
+            var payslips = new List<PayslipDetailModel>
+            {
+                new PayslipDetailModel { PayrollId = 1 },
+                new PayslipDetailModel { PayrollId = 2 }
+            };
+            var payslipService = GetPayslipService();
+            payslipRepository.GetPayslipDetailsAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslips);
+
+            // Act
+            var actual = await payslipService.SendPayslipAsync(viewModel);
+
+            // Assert
+            emailService.Received(2).SendEmail(Arg.Any<MailModel>());
+        }
 
         #region Helpers
 
