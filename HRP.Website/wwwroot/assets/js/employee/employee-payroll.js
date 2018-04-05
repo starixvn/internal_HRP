@@ -382,9 +382,12 @@
         $('input[name="BasicSalary.WorkingDays"], #duty-meal-per-day').on('change', function (e) {
             var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
             $('#working-days').val(workingDays);
+            var dutyMealPerDay = $('#duty-meal-per-day').val();
 
-            if ($('#Allowance_DutyMealCurrencyId').val() !== '') {
-                $('#Allowance_DutyMealAmount').val(workingDays * $('#duty-meal-per-day').val()).change();
+            if ($('#Allowance_DutyMealCurrencyId').val() !== '' && dutyMealPerDay !== '') {
+                $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay).change();
+            } else {
+                $('#Allowance_DutyMealAmount').val('');
             }
         });
 
