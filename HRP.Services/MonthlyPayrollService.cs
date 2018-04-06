@@ -286,7 +286,6 @@
             MonthlySalaryModel monthlySalary)
         {
             decimal amount = 0;
-            decimal totalAmount = 0;
             decimal.TryParse(basicSalary.Salary, out decimal salaryAmount);
             decimal.TryParse(basicSalary.AfterAdjustmentAmount, out decimal afterAdjustmentAmount);
             decimal.TryParse(backPay.NetSalary, out decimal backPayAmount);
@@ -309,7 +308,6 @@
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
-                        totalAmount = amount + directBanking1 + directBanking2 + cash;
                         monthlySalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -327,7 +325,6 @@
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
-                        totalAmount = ebanking + amount + directBanking2 + cash;
                         monthlySalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -345,7 +342,6 @@
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
-                        totalAmount = ebanking + directBanking1 + amount + cash;
                         monthlySalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -363,7 +359,6 @@
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
-                        totalAmount = ebanking + directBanking1 + directBanking2 + amount;
                         monthlySalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -384,7 +379,7 @@
             monthlySalary.CashAccountId = basicSalary.CashAccountId;
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
             monthlySalary.AdditionAmount = backPay.NetSalary;
-            monthlySalary.Status = (amount < 0 || totalAmount > afterAdjustmentAmount) ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
+            monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
         }
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(
