@@ -56,7 +56,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="NPOI" Version="2.3.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />
@@ -76,7 +81,6 @@
 
   <ItemGroup>
     <Folder Include="ExcelTemplates\" />
-    <Folder Include="Views\Report\" />
     <Folder Include="wwwroot\assets\bundles\account\css\" />
     <Folder Include="wwwroot\assets\bundles\account\js\" />
     <Folder Include="wwwroot\assets\bundles\auth\js\" />

@@ -1,6 +1,7 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
     using Core.Services;
+    using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Website.Controllers;
@@ -10,6 +11,7 @@
     {
         private ISessionService sessionService;
         private IBaseService baseService;
+        private IPaymentProcessService paymentProcessService;
 
         [Fact]
         public void BankIn_WhenCalled_ReturnExpectedView()
@@ -42,11 +44,19 @@
             return service;
         }
 
+        private IPaymentProcessService FakePaymentProcessService()
+        {
+            var service = Substitute.For<IPaymentProcessService>();
+
+            return service;
+        }
+
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
-            var controller = new ReportController(baseService, sessionService);
+            paymentProcessService = FakePaymentProcessService();
+            var controller = new ReportController(baseService, sessionService, paymentProcessService);
 
             return controller;
         }
