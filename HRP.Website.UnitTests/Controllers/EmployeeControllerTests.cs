@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -728,19 +729,16 @@
         }
 
         [Fact]
-        public async Task CheckEmployeePayrollChangedInMonth__ReturnErrors()
+        public async Task CheckEmployeePayrollChangedInMonth_ExistChangeInMonth_ReturnTrue()
         {
-            // Arrange
-            var model = new EmployeePayrollViewModel();
             var employeeController = GetEmployeeController();
-            employeeController.ModelState.AddModelError("employee", "error");
-
+            baseService.GetDataAsync<int>(Arg.Any<CheckEmployeePayrollChangedInMonthCriteria>()).Returns(new List<int>() { 1 });
             // Act
-            var actual = await employeeController.EditPayroll(model);
+            var actual = await employeeController.CheckEmployeePayrollChangedInMonth(DateTime.Today, 1);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.True((bool)jsonResult.Value);
         }
         #region Helpers
 
