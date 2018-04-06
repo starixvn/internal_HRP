@@ -727,6 +727,21 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
         }
 
+        [Fact]
+        public async Task CheckEmployeePayrollChangedInMonth__ReturnErrors()
+        {
+            // Arrange
+            var model = new EmployeePayrollViewModel();
+            var employeeController = GetEmployeeController();
+            employeeController.ModelState.AddModelError("employee", "error");
+
+            // Act
+            var actual = await employeeController.EditPayroll(model);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+        }
         #region Helpers
 
         private static ISessionService FakeSessionService()

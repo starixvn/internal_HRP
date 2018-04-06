@@ -231,7 +231,7 @@
                 <select class="control select2" asp-items="currencySelectList" asp-for="Allowance.CurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control total-amount" readonly name="AllowanceTotal" id="allowance-total-amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"/>
+                <input type="text" class="control total-amount" readonly name="AllowanceTotal" id="allowance-total-amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
             <div class="transaction-item -allowances">
                 <span>@ViewLang.BankType</span>
@@ -317,7 +317,7 @@
                 <select class="control allowance-detail-calculate select2 subsistence" asp-items="currencySelectList" asp-for="Allowance.SubsistenceCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number allowance-detail-calculate subsistence" asp-for="Allowance.SubsistenceAmount"  data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                <input type="text" class="control number allowance-detail-calculate subsistence" asp-for="Allowance.SubsistenceAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -413,10 +413,11 @@
         <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">@ViewLang.Others</div>
             <div class="currency-amount">
-                <select class="control allowance-detail-calculate select2 others" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">>
+                <select class="control allowance-detail-calculate select2 others" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                    >
                     <option></option>
                 </select>
-                <input type="text" class="control number allowance-detail-calculate others" asp-for="Allowance.OthersAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"  />
+                <input type="text" class="control number allowance-detail-calculate others" asp-for="Allowance.OthersAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -448,7 +449,7 @@
             @if (Model.CanUpdate)
             {
                 <a href="javascript:history.back()" class="button -second">@ViewLang.Cancel</a>
-                <button class="button -primary" type="submit" data-loading-text="@ViewLang.Saving ..." id="btn-save">@ViewLang.Save</button>
+                <button class="button -primary" type="button" data-loading-text="@ViewLang.Saving ..." id="btn-save">@ViewLang.Save</button>
             }
             else
             {
@@ -458,6 +459,26 @@
         </div>
     </div>
 </form>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p>@ViewLang.EmployeePayrollChangedWarning</p>
+            </div>
+            <div class="modal-footer">
+                <div class="list-button">
+                    <button class="button -primary" type="button" data-loading-text="Updating..." id="btn-yes">@ViewLang.Yes</button>
+                    <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <environment include="Development">

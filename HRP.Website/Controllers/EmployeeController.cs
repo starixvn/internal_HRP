@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
@@ -320,6 +321,13 @@
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckEmployeePayrollChangedInMonth(DateTime month, int employeeId)
+        {
+            var result = await baseService.GetDataAsync<int>(new CheckEmployeePayrollChangedInMonthCriteria { Month = month, EmployeeId = employeeId });
+            return Json(result.Any());
         }
     }
 }

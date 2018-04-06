@@ -1150,6 +1150,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to apply this changes? All the adjustment amounts will be calculated based on the last basic salary amount that you&apos;ve just updated..
+        /// </summary>
+        public static string EmployeePayrollChangedWarning {
+            get {
+                return ResourceManager.GetString("EmployeePayrollChangedWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment.
         /// </summary>
         public static string Employment {

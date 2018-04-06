@@ -129,6 +129,7 @@
     <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetDataFilterForIndexPage" SpName="Employee_GetDataFilterForIndexPage" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_CheckEmployeePayrollChangedInMonth" SpName="Employee_CheckEmployeePayrollChangedInMonth" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Employment">
     <Setting Key="Employment_GetDataToCreate" SpName="Employment_GetDataToCreate" DbName="bodb_HRP" Plain="0"></Setting>

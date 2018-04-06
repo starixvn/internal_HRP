@@ -168,18 +168,26 @@
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
-                        <input type="text" @(Model.Additions[i].Type == (int)AllowanceType.DutyMeal ? "readonly" : string.Empty)
-                               class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" />
+
+                        @if (Model.Deductions[i].Type == (int)AllowanceType.DutyMeal)
+                        {
+                            <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" readonly />
+                        }
+                        else
+                        {
+                            <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" />
+                        }
+
                         <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control addition no-of-days" data-allowance-type="@Model.Additions[i].Type" data-group="addition-@i" asp-for="Additions[i].NoOfDays">
+                        <input type="text" class="control addition no-of-days" data-allowance-type="@Model.Additions[i].Type" data-group="addition-@i" asp-for="Additions[i].NoOfDays" />
 
-                        <input type="hidden" class="addition total-amount" data-group="addition-@i" asp-for="Additions[i].TotalAmount">
-                        <input type="text" class="control addition total-amount-display" data-group="addition-@i" readonly asp-for="Additions[i].TotalAmountToDisplay">
+                        <input type="hidden" class="addition total-amount" data-group="addition-@i" asp-for="Additions[i].TotalAmount" />
+                        <input type="text" class="control addition total-amount-display" data-group="addition-@i" readonly asp-for="Additions[i].TotalAmountToDisplay" />
 
                         <input type="hidden" class="addition net-allowance" data-group="addition-@i" asp-for="Additions[i].NetAllowance">
-                        <input type="text" class="control addition net-allowance-display" data-group="addition-@i" readonly asp-for="Additions[i].NetAllowanceToDisplay">
+                        <input type="text" class="control addition net-allowance-display" data-group="addition-@i" readonly asp-for="Additions[i].NetAllowanceToDisplay" />
                     </div>
                 }
 
@@ -206,18 +214,25 @@
                         <input type="hidden" asp-for="Deductions[i].PayrollId">
                         <input type="hidden" asp-for="Deductions[i].Type">
 
-                        <input type="text" @(Model.Deductions[i].Type == (int)AllowanceType.DutyMeal ? "readonly" : string.Empty)
-                               class="control deduction unit-amount" data-group="deduction-@i" asp-for="Deductions[i].UnitAmount">
+                        @if (Model.Deductions[i].Type == (int)AllowanceType.DutyMeal)
+                        {
+                            <input type="text" asp-for="Deductions[i].UnitAmount" class="control deduction unit-amount" data-group="deduction-@i" readonly />
+
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Deductions[i].UnitAmount" class="control deduction unit-amount" data-group="deduction-@i" />
+                        }
                         <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control deduction no-of-days" data-allowance-type="@Model.Deductions[i].Type" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays">
+                        <input type="text" class="control deduction no-of-days" data-allowance-type="@Model.Deductions[i].Type" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays" />
 
-                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount">
-                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay">
+                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount" />
+                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay" />
 
                         <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance">
-                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay">
+                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay" />
                     </div>
                 }
 
@@ -424,12 +439,12 @@
                 <form class="form-information" asp-action="Preset" method="post" id="preset-form"
                       data-ajax-method="post" data-ajax="true" data-ajax-begin="editAllowances.onPresetBegin" data-ajax-failure="commonFunctions.handleAjaxError"
                       data-ajax-success="editAllowances.onPresetSuccess" data-ajax-complete="editAllowances.onPresetComplete">
-                    <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                    <input type="hidden" name="employeeId" value="@Model.EmployeeInfo.EmployeeId" />
                     <input type="hidden" name="month" value="@Model.Month" />
                     <input type="hidden" name="companyId" value="@Model.EmployeeInfo.CompanyId" />
                     <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
                     <div class="list-button">
-                        <button class="button -primary" type="submit" data-loading-text="Updating..." id="btn-yes" >@ViewLang.Yes</button>
+                        <button class="button -primary" type="submit" data-loading-text="Updating..." id="btn-yes">@ViewLang.Yes</button>
                         <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
                     </div>
                 </form>

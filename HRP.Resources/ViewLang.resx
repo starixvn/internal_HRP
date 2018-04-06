@@ -1014,4 +1014,7 @@
   <data name="PayslipNote" xml:space="preserve">
     <value>This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp.</value>
   </data>
+  <data name="EmployeePayrollChangedWarning" xml:space="preserve">
+    <value>Are you sure you want to apply this changes? All the adjustment amounts will be calculated based on the last basic salary amount that you've just updated.</value>
+  </data>
 </root>

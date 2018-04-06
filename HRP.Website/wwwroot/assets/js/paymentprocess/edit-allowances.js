@@ -245,10 +245,14 @@
             var $this = $(this);
             var dataGroup = $this.data('group');
             var $unitAmount = $('.unit-amount[data-group="' + dataGroup + '"]');
-            var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
+            if ($this.val() !== '') {
+                var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
 
-            var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
-            $unitAmount.val(amount.div(workingDays).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
+                $unitAmount.val(amount.div(workingDays).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+            } else {
+                $unitAmount.val('');
+            }
         });
 
         $('.addition:enabled, .deduction:enabled').on('change', function (e) {

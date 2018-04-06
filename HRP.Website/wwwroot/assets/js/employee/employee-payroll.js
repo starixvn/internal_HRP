@@ -36,10 +36,10 @@
         if (totalAmountCurrency === '' || isNaN($basicSalary.val()))
             return;
 
-        var totalAmount = new BigNumber(Number($basicSalary.val())).roundWithCurrency(2, totalAmountCurrency);
+        var totalAmount = new BigNumber(Number($basicSalary.val()));
 
         if ($basicSalary.val() !== '')
-            $basicSalary.val(totalAmount.toStringWithCurrency(totalAmountCurrency));
+            $basicSalary.val(totalAmount.toString());
 
         var selectedAutoCalculate = $('input[name="BasicSalary.AutoCalculateOn"]:checked');
         var parent = selectedAutoCalculate.closest('.group-complex');
@@ -60,10 +60,10 @@
             }
         });
 
-        totalAmount = totalAmount.mul(Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val())).roundWithCurrency(2, autoCalculateCurrency);
-
+        totalAmount = totalAmount.mul(Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val())).roundWithCurrency(0, autoCalculateCurrency);
         var $autoCalculatedElement = $('input.basic-salary-calculate[type="text"]', parent);
-        $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+        $autoCalculatedElement.val(totalAmount.toString());
+
         if ($('#payroll-form').data('validator')) {
             $autoCalculatedElement.valid();
         }
@@ -95,10 +95,10 @@
             }
         });
 
-        totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()).roundWithCurrency(2, autoCalculateCurrency);
+        totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()).roundWithCurrency(0, autoCalculateCurrency);
 
         var $autoCalculatedElement = $('input.allowance-calculate[type="text"]', parent);
-        $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrency));
+        $autoCalculatedElement.val(totalAmount.toString());
         if ($('#payroll-form').data('validator')) {
             $autoCalculatedElement.valid();
         }
@@ -115,7 +115,7 @@
             totalAmount = totalAmount.plus(Number($(e).val()));
         });
 
-        $('#allowance-total-amount').val(totalAmount.roundWithCurrency(2, allowanceCurrency).toStringWithCurrency(allowanceCurrency));
+        $('#allowance-total-amount').val(totalAmount.roundWithCurrency(0, allowanceCurrency).toString());
         calculateAmountForBanks();
     }
 
@@ -207,14 +207,24 @@
     }
 
     function initInputMask() {
-        $('.number').inputmask({
+        $('input.deduction-calculate, input.allowance-detail-calculate, .allowance-convert-amount, #duty-meal-per-day').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 2,
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,
-            removeMaskOnSubmit: true,
+            removeMaskOnSubmit: true
+        });
+
+        $('input.basic-salary-calculate, input.allowance-calculate, #allowance-total-amount').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 0,
+            placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true
         });
     }
 
@@ -497,6 +507,44 @@
                 $(this).siblings('input').data('DateTimePicker').toggle();
             });
         }
+
+        $('#btn-save').on('click', function () {
+            var $form = $('#payroll-form');
+            if ($form.valid()) {
+                var effectiveDate = $('#BasicSalary_EffectiveDate').val();
+                var basicSalary = $('#BasicSalary_Salary').val();
+                var oldSalary = $('#BasicSalary_OldSalary').val();
+                var currency = $('#BasicSalary_CurrencyId').val();
+                var oldCurrency = $('#BasicSalary_OldCurrencyId').val(); 
+
+                if (effectiveDate !== '' && (Number(basicSalary) !== Number(oldSalary) || oldCurrency !== currency)) {
+                    $.ajax({
+                        type: 'GET',
+                        url: commonFunctions.rootURL + 'Employee/CheckEmployeePayrollChangedInMonth',
+                        data: {
+                            month: effectiveDate,
+                            employeeId: $('#EmployeeId').val(),
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', $form).val()
+                        },
+                        success: function (response) {
+                            if (response) {
+                                $('#modal').modal('show');
+                            } else {
+                                $form.submit();
+                            }
+                        },
+                        error: commonFunctions.handleAjaxError
+                    });
+                }else {
+                    $form.submit();
+                }
+            }
+        });
+
+        $('#modal #btn-yes').on('click', function () {
+            $('#payroll-form').submit();
+            $('#modal').modal('hide');
+        });
     }
 
     function init() {
