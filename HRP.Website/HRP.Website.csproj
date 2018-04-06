@@ -75,6 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ExcelTemplates\" />
     <Folder Include="wwwroot\assets\bundles\account\css\" />
     <Folder Include="wwwroot\assets\bundles\account\js\" />
     <Folder Include="wwwroot\assets\bundles\auth\js\" />
