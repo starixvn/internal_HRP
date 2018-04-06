@@ -1,5 +1,7 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using Core.Constants;
+    using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
     using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,7 @@
         {
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public IActionResult BankIn()
         {
             return View();

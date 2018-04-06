@@ -19,5 +19,7 @@ namespace HRP.Core.Constants
         public const string PaymentProcess = "PaymentProcess";
 
         public const string Payslip = "Payslip";
+
+        public const string Report = "Report";
     }
 }
