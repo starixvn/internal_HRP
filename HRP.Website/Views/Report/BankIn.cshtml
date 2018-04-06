@@ -1,0 +1,9 @@
+@model HRP.Models.Report.BasicReportViewModel
+
+<form>
+    <label asp-for="CompanyId"></label>
+    <select asp-for="CompanyId" asp-items="Model.Companies"></select>
+
+    <label asp-for="Month"></label>
+    <input asp-for="Month"/>
+</form>

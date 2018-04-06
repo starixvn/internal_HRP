@@ -1,14 +1,14 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
-    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
-    using HRP.Models.Report;
-    using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Report;
+    using Services;
+    using System;
+    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class ReportController : BaseController
@@ -24,9 +24,15 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public IActionResult BankIn()
+        public async Task<IActionResult> BankIn()
         {
-            return View();
+            var viewModel = new BasicReportViewModel
+            {
+                Companies = await paymentProcessService.GetCompanySelectListAsync(),
+                Month = DateTime.Now
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> BasicSalaryDirectBankingAndCash()

@@ -1,8 +1,10 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System.Threading.Tasks;
     using Core.Services;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Report;
     using NSubstitute;
     using Website.Controllers;
     using Xunit;
@@ -14,16 +16,17 @@
         private IPaymentProcessService paymentProcessService;
 
         [Fact]
-        public void BankIn_WhenCalled_ReturnExpectedView()
+        public async Task BankIn_WhenCalled_ReturnExpectedView()
         {
             //Arrange
             var reportController = GetReportController();
 
             //Act
-            var actual = reportController.BankIn();
+            var actual = await reportController.BankIn();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<BasicReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
         }
 
