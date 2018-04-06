@@ -24,4 +24,8 @@
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Report\" />
+  </ItemGroup>
+
 </Project>
