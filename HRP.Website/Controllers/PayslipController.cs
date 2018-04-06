@@ -96,7 +96,7 @@
         public async Task<IActionResult> Pdf()
         {
             string cssFilePath = @"assets\\styles\\pages\\payslip\\payslip-detail.css";
-            PayslipDetailModel payslipDetails = await payslipService.GetPayslipDetailAsync(1056, 1);
+            PayslipDetailModel payslipDetails = await payslipService.GetPayslipDetailAsync(1051, 1);
             var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Details", payslipDetails);
 
             byte[] streamContent = pdfRenderService.RenderContent(cssFilePath, htmlString);

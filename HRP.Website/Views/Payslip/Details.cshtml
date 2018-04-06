@@ -1,5 +1,15 @@
-﻿@{
+﻿﻿@using HRP.Resources
+@using HRP.Core.Enumerations
+@using HRP.Core.Extensions
+@using HRP.Models.Payslip
+@using HRP.Models.MonthlyPayroll
+
+@model PayslipDetailModel
+
+@{
     Layout = null;
+    var salaryCurrencyCode = Model.SalaryCurrencyCode;
+    var allowanceCurrencyCode = Model.AllowanceCurrencyCode;
 }
 
 <!DOCTYPE html>
@@ -9,69 +19,112 @@
 </head>
 <body>
     <div class="container">
-        <table class="row-tbl employee-info">
+        <table class="info">
             <tbody>
                 <tr>
+                    <td colspan="2">@Model.CompanyName</td>
+                    <td class="align-right">@ViewLang.EmployeeName:</td>
+                    <td class="bold">@Model.FullName</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bold">@ViewLang.Payslip <span class="red">(@ViewLang.Confidential)</span> @Html.DisplayFor(x => x.Month)</td>
+                    <td class="align-right">@ViewLang.IDNo:</td>
+                    <td class="bold">@Model.IDNo</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr class="header">
+                    <td>@ViewLang.MonthlyBasicSalary</td>
+                    <td>@ViewLang.MonthlyAllowances</td>
+                </tr>
+                <tr class="body">
                     <td>
-                            <div class="row">Nexcel Solutions Co., Ltd.</div>
-                            <div class="row bold">Payslip <span class="red">(Confidential)</span> MARCH - 2018</div>
+                        <span class="key">@ViewLang.BasicSalary</span>
+                        <span class="value">@Model.SalaryAmount @Model.SalaryCurrencyCode</span>
                     </td>
                     <td>
-                        <table class="main-info">
-                            <tbody>
-                                <tr>
-                                    <td class="name">Employee Name:</td>
-                                    <td class="bold">Natalie Dang</td>
-                                </tr>
-                                <tr>
-                                    <td class="id">Employee ID:</td>
-                                    <td class="bold">OW02451</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <span class="key">@ViewLang.BasicAllowances</span>
+                        <span class="value">@Model.AllowanceAmount @Model.AllowanceCurrencyCode</span>
+                    </td>
+                </tr>
+                @{
+                    var salaryLength = Model.SalaryAdditions.Count;
+                    var allowanceLength = Model.AllowanceAdditions.Count;
+                    var total = salaryLength > allowanceLength ? salaryLength : allowanceLength;
+                }
+
+                @for (int i = 0; i < total; i++)
+                {
+                    <tr class="body">
+                        @if (i < salaryLength)
+                        {
+                            <td>
+                                <span class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)Model.SalaryAdditions[i].Type)</span>
+                                <span class="value">@Model.SalaryAdditions[i].NetSalaryDisplay @Model.SalaryCurrencyCode</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (i < allowanceLength)
+                        {
+                            <td>
+                                <span class="key">@EnumHelper.GetDescription((AllowanceType)Model.AllowanceAdditions[i].Type)</span>
+                                <span class="value">@Model.AllowanceAdditions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+                <tr class="footer">
+                    <td>
+                        <span class="key">@ViewLang.GrossBasicSalary</span>
+                        <span class="value">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</span>
+                    </td>
+                    <td>
+                        <span class="key">@ViewLang.GrossAllowances</span>
+                        <span class="value">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</span>
                     </td>
                 </tr>
             </tbody>
         </table>
+
         <table class="row-tbl">
             <tbody>
                 <tr>
                     <td class="first-child">
                         <div class="detail-section">
                             <table class="content">
-                                    <thead>
+                                <thead>
                                     <tr>
-                                        <th class="title" colspan="2">Monthly basic salary</th>
+                                        <th class="title" colspan="2">@ViewLang.MonthlyBasicSalary</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="key">Basic salary</td>
-                                        <td class="value">100.000.000 USD</td>
+                                        <td class="key">@ViewLang.BasicSalary</td>
+                                        <td class="value">@Model.SalaryAmount @salaryCurrencyCode</td>
                                     </tr>
-                                    <tr>
-                                        <td class="key">Adjustments</td>
-                                        <td class="value">2.000.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Back Pay</td>
-                                        <td class="value">1.500.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Others</td>
-                                        <td class="value">200.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Others</td>
-                                        <td class="value">200.000 USD</td>
-                                    </tr>
+                                    @foreach (MonthlySalaryAdditionModel addition in Model.SalaryAdditions)
+                                    {
+                                        <tr>
+                                            <td class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)addition.Type)</td>
+                                            <td class="value">@addition.NetSalaryDisplay @salaryCurrencyCode</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <table class="footer">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Gross Basic salary</td>
-                                        <td class="value">2103.700.000 USD</td>
+                                        <td class="key">@ViewLang.GrossBasicSalary</td>
+                                        <td class="value">@Model.GrossSalaryAmount @salaryCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,53 +135,28 @@
                             <table class="content">
                                 <thead>
                                     <tr>
-                                        <th class="title" colspan="2">Monthly allowances</th>
+                                        <th class="title" colspan="2">@ViewLang.MonthlyAllowances</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="key">Basic Allowances</td>
-                                        <td class="value">100.000.000 USD</td>
+                                        <td class="key">@ViewLang.BasicAllowances</td>
+                                        <td class="value">@Model.AllowanceAmount @allowanceCurrencyCode</td>
                                     </tr>
-                                    <tr>
-                                        <td class="key">Subsistence</td>
-                                        <td class="value">2.000.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Home Passage</td>
-                                        <td class="value">400.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Housing</td>
-                                        <td class="value">80.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Mobile Phone</td>
-                                        <td class="value">70.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">HPI</td>
-                                        <td class="value">500.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Duty Meal</td>
-                                        <td class="value">50.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Secondment</td>
-                                        <td class="value">5.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Others</td>
-                                        <td class="value">100.000 USD</td>
-                                    </tr>
+                                    @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
+                                    {
+                                        <tr>
+                                            <td class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</td>
+                                            <td class="value">@addition.NetAllowanceToDisplay @allowanceCurrencyCode</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <table class="footer">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Gross Allowances</td>
-                                        <td class="value">101.205.000 USD</td>
+                                        <td class="key">@ViewLang.GrossAllowances</td>
+                                        <td class="value">@Model.GrossAllowanceAmount @allowanceCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -143,35 +171,26 @@
                     <td class="first-child">
                         <div class="detail-section">
                             <table class="content">
-                                    <thead>
+                                <thead>
                                     <tr>
-                                        <th class="title" colspan="2">Deduction</th>
+                                        <th class="title" colspan="2">@ViewLang.Deduction</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="key">UPL/Absenteeism</td>
-                                        <td class="value">100.000.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Salary Advance</td>
-                                        <td class="value">2.000.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Tadiness</td>
-                                        <td class="value">1.500.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Others</td>
-                                        <td class="value">200.000 USD</td>
-                                    </tr>
+                                    @foreach (MonthlySalaryDeductionModel deduction in Model.SalaryDeductions)
+                                    {
+                                        <tr>
+                                            <td class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)deduction.Type)</td>
+                                            <td class="value">@deduction.NetSalaryDisplay @salaryCurrencyCode</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <table class="footer deduction">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Monthly Deductions</td>
-                                        <td class="value">1.500.000 USD</td>
+                                        <td class="key">@ViewLang.MonthlyDeductions</td>
+                                        <td class="value">@Model.SalaryDeductionAmount @salaryCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -182,49 +201,24 @@
                             <table class="content">
                                 <thead>
                                     <tr>
-                                        <th class="title" colspan="2">Deduction</th>
+                                        <th class="title" colspan="2">@ViewLang.Deduction</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="key">Subsistence</td>
-                                        <td class="value">2.000.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Home Passage</td>
-                                        <td class="value">400.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Housing</td>
-                                        <td class="value">80.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Mobile Phone</td>
-                                        <td class="value">70.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">HPI</td>
-                                        <td class="value">500.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Duty Meal</td>
-                                        <td class="value">50.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Secondment</td>
-                                        <td class="value">5.000 USD</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key">Others</td>
-                                        <td class="value">100.000 USD</td>
-                                    </tr>
+                                    @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
+                                    {
+                                        <tr>
+                                            <td class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</td>
+                                            <td class="value">@deduction.NetAllowanceToDisplay @allowanceCurrencyCode</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <table class="footer deduction">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Monthly Deductions</td>
-                                        <td class="value">305.000 USD</td>
+                                        <td class="key">@ViewLang.MonthlyDeductions</td>
+                                        <td class="value">@Model.AllowanceDeductionAmount @allowanceCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -241,8 +235,8 @@
                             <table class="content">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Net monthly basic salary</td>
-                                        <td class="value">102.200.000 USD</td>
+                                        <td class="key">@ViewLang.NetMonthlyBasicSalary</td>
+                                        <td class="value">@Model.NetSalaryAmount @salaryCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -253,18 +247,18 @@
                             <table class="content">
                                 <tbody>
                                     <tr>
-                                        <td class="key">Net monthly allowances</td>
-                                        <td class="value">101.000.000 USD</td>
+                                        <td class="key">@ViewLang.NetMonthlyAllowances</td>
+                                        <td class="value">@Model.NetAllowanceAmount @allowanceCurrencyCode</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </td>
                 </tr>
-            </tbody>    
+            </tbody>
         </table>
         <div class="note">
-            This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp.
+            @ViewLang.PayslipNote
         </div>
     </div>
 </body>

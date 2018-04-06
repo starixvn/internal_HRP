@@ -24,10 +24,10 @@
 
                     foreach (PayslipDetailModel payslip in payslips)
                     {
-                        payslip.SalaryAdditions = salaryAdditions.Where(x => x.PayrollId == payslip.PayrollId);
-                        payslip.SalaryDeductions = salaryDeductions.Where(x => x.PayrollId == payslip.PayrollId);
-                        payslip.AllowanceAdditions = allowanceAdditions.Where(x => x.PayrollId == payslip.PayrollId);
-                        payslip.AllowanceDeductions = allowanceDeductions.Where(x => x.PayrollId == payslip.PayrollId);
+                        payslip.SalaryAdditions = salaryAdditions.Where(x => x.PayrollId == payslip.PayrollId).ToList();
+                        payslip.SalaryDeductions = salaryDeductions.Where(x => x.PayrollId == payslip.PayrollId).ToList();
+                        payslip.AllowanceAdditions = allowanceAdditions.Where(x => x.PayrollId == payslip.PayrollId).ToList();
+                        payslip.AllowanceDeductions = allowanceDeductions.Where(x => x.PayrollId == payslip.PayrollId).ToList();
                     }
 
                     return payslips;

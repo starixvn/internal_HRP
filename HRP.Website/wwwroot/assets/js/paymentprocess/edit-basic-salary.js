@@ -466,9 +466,6 @@ var editBasicSalary = (function ($) {
 
     function disableForm() {
         $('button').off('click');
-        $('.js-btnCancel').click(function (event) {
-            event.preventDefault();
-        });
         $form.find('input[type="text"]').attr('readonly', 'readonly');
         $form.find('select').attr('disabled', 'disabled');
         $form.submit(false);

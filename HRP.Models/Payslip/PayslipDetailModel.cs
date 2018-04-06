@@ -30,9 +30,9 @@
         public string GrossAllowanceAmount { get; set; }
         public string NetSalaryAmount { get; set; }
         public string NetAllowanceAmount { get; set; }
-        public IEnumerable<MonthlySalaryAdditionModel> SalaryAdditions { get; set; } = new List<MonthlySalaryAdditionModel>();
-        public IEnumerable<MonthlySalaryDeductionModel> SalaryDeductions { get; set; } = new List<MonthlySalaryDeductionModel>();
-        public IEnumerable<MonthlyAllowanceAdditionModel> AllowanceAdditions { get; set; } = new List<MonthlyAllowanceAdditionModel>();
-        public IEnumerable<MonthlyAllowanceDeductionModel> AllowanceDeductions { get; set; } = new List<MonthlyAllowanceDeductionModel>();
+        public IList<MonthlySalaryAdditionModel> SalaryAdditions { get; set; } = new List<MonthlySalaryAdditionModel>();
+        public IList<MonthlySalaryDeductionModel> SalaryDeductions { get; set; } = new List<MonthlySalaryDeductionModel>();
+        public IList<MonthlyAllowanceAdditionModel> AllowanceAdditions { get; set; } = new List<MonthlyAllowanceAdditionModel>();
+        public IList<MonthlyAllowanceDeductionModel> AllowanceDeductions { get; set; } = new List<MonthlyAllowanceDeductionModel>();
     }
 }
