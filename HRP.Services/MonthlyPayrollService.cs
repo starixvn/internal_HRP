@@ -985,7 +985,9 @@
             }
             else
             {
-                if (basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
+                if (basicSetting.EffectiveDate.HasValue
+                    && GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth) == 0
+                    && oldSalary != newSalary)
                 {
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
