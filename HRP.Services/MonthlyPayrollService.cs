@@ -366,7 +366,7 @@
             }
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
-            monthlySalary.Salary = (salaryAmount + backPayAmount).ToString(CultureInfo.InvariantCulture);
+            monthlySalary.Salary = (afterAdjustmentAmount + backPayAmount).ToString(CultureInfo.InvariantCulture);
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
