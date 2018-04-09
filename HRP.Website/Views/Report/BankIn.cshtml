@@ -1,5 +1,9 @@
 @model HRP.Models.Report.BasicReportViewModel
 
+@{
+    ViewData["Title"] = $"{HRP.Resources.ViewLang.Report} - Bank In";
+}
+
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />

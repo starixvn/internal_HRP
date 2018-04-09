@@ -13,6 +13,7 @@
         public SelectList Companies { get; set; }
 
         [Display(Name = nameof(ViewLang.Month), ResourceType = typeof(ViewLang))]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
     }
 }

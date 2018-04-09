@@ -1020,4 +1020,7 @@
   <data name="Month" xml:space="preserve">
     <value>Month</value>
   </data>
+  <data name="Report" xml:space="preserve">
+    <value>Report</value>
+  </data>
 </root>
