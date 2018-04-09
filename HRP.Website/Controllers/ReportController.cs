@@ -1,5 +1,7 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
@@ -7,8 +9,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
     using Services;
-    using System;
-    using System.Threading.Tasks;
 
     [HRPAuthorize]
     public class ReportController : BaseController
@@ -29,7 +29,7 @@
             var viewModel = new BasicReportViewModel
             {
                 Companies = await paymentProcessService.GetCompanySelectListAsync(),
-                Month = DateTime.Now
+                SelectedTime = DateTime.Now
             };
 
             return View(viewModel);
