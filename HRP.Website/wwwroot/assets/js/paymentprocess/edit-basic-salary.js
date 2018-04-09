@@ -131,7 +131,7 @@ var editBasicSalary = (function ($) {
         currencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val();
         exchangeRate = Number($('input[data-from-currency="' + currencySettingId + '"][data-to-currency="' + currencyId + '"]').val());
         monthlySalary = monthlySalary.mul(exchangeRate).roundAmount(currencyId);
-        $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary.toFixed(2));
+        $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary.toFixed(2)).valid();
     }
 
     function initSelect2() {
