@@ -1,10 +1,8 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
-    using System;
     using System.Threading.Tasks;
     using Core.Services;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
     using NSubstitute;
@@ -48,14 +46,6 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<BasicReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
-        }
-
-
-            //Act
-            var actual = reportController.BankIn(basicReportViewModel);
-
-            //Assert
-            Assert.IsType<EmptyResult>(actual);
         }
 
         #region Helpers
