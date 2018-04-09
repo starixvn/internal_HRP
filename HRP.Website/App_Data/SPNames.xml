@@ -176,4 +176,7 @@
     <Setting Key="Payslip_GetDetails" SpName="Payslip_GetDetails" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Payslip_Update" SpName="Payslip_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
+  <Function Name="Report">
+    <Setting Key="Report_GetBankInByMonthAndCompanyId" SpName="Report_GetBankInByMonthAndCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
 </Functions>

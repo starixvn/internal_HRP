@@ -17,6 +17,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
+    using Services.Interfaces;
 
     public class Startup
     {
@@ -103,6 +104,7 @@
             services.AddScoped<ITemplateReader, TemplateReader>();
             services.AddScoped<IPayslipService, PayslipService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IExportExcelService, ExportExcelService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

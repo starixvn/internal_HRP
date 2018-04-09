@@ -10,12 +10,14 @@
     using Models.Report;
     using Services;
     using System.Threading.Tasks;
+    using Services.Interfaces;
 
     [HRPAuthorize]
     public class ReportController : BaseController
     {
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IReportService reportService;
+        private readonly IExportExcelService exportExcelService;
         private readonly IHostingEnvironment hostingEnvironment;
 
         public ReportController(
@@ -23,10 +25,12 @@
             ISessionService sessionService,
             IPaymentProcessService paymentProcessService,
             IHostingEnvironment hostingEnvironment,
+            IExportExcelService exportExcelService,
             IReportService reportService) : base(baseService, sessionService)
         {
             this.paymentProcessService = paymentProcessService;
             this.reportService = reportService;
+            this.exportExcelService = exportExcelService;
             this.hostingEnvironment = hostingEnvironment;
         }
 
@@ -44,15 +48,17 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public IActionResult BankIn(BasicReportViewModel viewModel)
+        public async Task<IActionResult> BankIn(BasicReportViewModel viewModel)
         {
-            reportService.FileName = "4-KLBankAndCash";
-            reportService.SheetName = "KL Bank & Cash";
+            exportExcelService.FileName = "4-KLBankAndCash";
+            exportExcelService.SheetName = "KL Bank & Cash";
 
-            reportService.InitializeWithTemplate(hostingEnvironment.ContentRootPath +
-                                                 "/ExcelTempates/4-KLBankAndCash.xlsx");
+            exportExcelService.InitializeWithTemplate(hostingEnvironment.ContentRootPath +
+                                                 "\\ExcelTemplates\\4-KLBankAndCash.xlsx");
 
-            reportService.ExportWithTemplate(null, HttpContext.Response);
+            var bankInRecords = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
+
+            exportExcelService.ExportWithTemplate(bankInRecords, HttpContext.Response);
 
             return new EmptyResult();
         }
