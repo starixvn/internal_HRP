@@ -1,4 +1,4 @@
-namespace HRP.Core.Extensions
+namespace HRP.Core.Extensions.Excel
 {
     using NPOI.SS.Util;
 

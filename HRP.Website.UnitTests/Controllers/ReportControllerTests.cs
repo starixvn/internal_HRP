@@ -1,11 +1,14 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using Core.Services;
-    using HRP.Services;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
     using NSubstitute;
+    using Services;
     using Website.Controllers;
     using Xunit;
 
@@ -14,6 +17,8 @@
         private ISessionService sessionService;
         private IBaseService baseService;
         private IPaymentProcessService paymentProcessService;
+        private IReportService reportService;
+        private IHostingEnvironment hostingEnvironment;
 
         [Fact]
         public async Task BankIn_WhenCalled_ReturnExpectedView()
@@ -28,6 +33,29 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<BasicReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
+        }
+
+        [Fact]
+        public void BankIn_WhenPost_ReturnEmptyView()
+        {
+            //Arrange
+            var reportController = GetReportController();
+            reportController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var basicReportViewModel = new BasicReportViewModel
+            {
+                CompanyId = 1,
+                Month = DateTime.Now
+            };
+
+            //Act
+            var actual = reportController.BankIn(basicReportViewModel);
+
+            //Assert
+            Assert.IsType<EmptyResult>(actual);
         }
 
         #region Helpers
@@ -54,14 +82,30 @@
             return service;
         }
 
+        private IReportService FakeReportService()
+        {
+            return Substitute.For<IReportService>();
+        }
+
+        private IHostingEnvironment FakeHostingEnviroment()
+        {
+            return Substitute.For<IHostingEnvironment>();
+        }
+
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             paymentProcessService = FakePaymentProcessService();
-            var controller = new ReportController(baseService, sessionService, paymentProcessService);
+            reportService = FakeReportService();
+            hostingEnvironment = FakeHostingEnviroment();
 
-            return controller;
+            return new ReportController(
+                baseService,
+                sessionService,
+                paymentProcessService,
+                hostingEnvironment,
+                reportService);
         }
 
         #endregion Helpers

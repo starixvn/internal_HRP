@@ -1,4 +1,4 @@
-namespace HRP.Core.Extensions
+namespace HRP.Core.Extensions.Excel
 {
     using System;
     using NPOI.SS.UserModel;
@@ -21,27 +21,27 @@ namespace HRP.Core.Extensions
                 {
                     cell.SetCellValue(stringValue);
                 }
-                else if (value is int?)
+                else if (value is int)
                 {
                     cell.SetCellValue((int)value);
                 }
-                else if (value is long?)
+                else if (value is long)
                 {
                     cell.SetCellValue((long)value);
                 }
-                else if (value is double?)
+                else if (value is double)
                 {
                     cell.SetCellValue((double)value);
                 }
-                else if (value is decimal?)
+                else if (value is decimal)
                 {
                     cell.SetCellValue((decimal)value);
                 }
-                else if (value is bool?)
+                else if (value is bool)
                 {
                     cell.SetCellValue((bool)value);
                 }
-                else if (value is DateTime?)
+                else if (value is DateTime)
                 {
                     cell.SetCellValue((DateTime)value);
                 }

@@ -102,6 +102,7 @@
             services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
             services.AddScoped<ITemplateReader, TemplateReader>();
             services.AddScoped<IPayslipService, PayslipService>();
+            services.AddScoped<IReportService, ReportService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
