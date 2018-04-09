@@ -36,20 +36,20 @@
         }
 
         [Fact]
-        public void BankIn_WhenPost_ReturnEmptyView()
+        public async Task BasicSalaryDirectBankingAndCash_WhenCalled_ReturnExpectedView()
         {
             //Arrange
             var reportController = GetReportController();
-            reportController.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
 
-            var basicReportViewModel = new BasicReportViewModel
-            {
-                CompanyId = 1,
-                SelectedTime = DateTime.Now
-            };
+            //Act
+            var actual = await reportController.BasicSalaryDirectBankingAndCash();
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<BasicReportViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+        }
+
 
             //Act
             var actual = reportController.BankIn(basicReportViewModel);
