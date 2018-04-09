@@ -740,6 +740,7 @@
         {
             foreach (var addition in additions)
             {
+                addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
                 addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
             }
         }
@@ -748,6 +749,7 @@
         {
             foreach (var deduction in deductions)
             {
+                deduction.UnitAmount = cryptoService.Encrypt(deduction.UnitAmount);
                 deduction.NetSalary = cryptoService.Encrypt(deduction.NetSalary);
             }
         }
