@@ -1,36 +1,56 @@
-﻿@model HRP.Models.Report.BasicReportViewModel
+﻿@using HRP.Core.Enumerations
+@using HRP.Resources
+@model HRP.Models.Report.BasicReportViewModel
 
 @{
-    ViewData["Title"] = "BasicSalaryDirectBankingAndCash";
+    ViewData["Title"] = "Basic Salary Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>BasicSalaryDirectBankingAndCash</h2>
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+    </environment>
 
-<h4>BasicReportViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="BasicSalaryDirectBankingAndCash">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CompanyId" class="control-label"></label>
-                <input asp-for="CompanyId" class="form-control" />
-                <span asp-validation-for="CompanyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Month" class="control-label"></label>
-                <input asp-for="Month" class="form-control" />
-                <span asp-validation-for="Month" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/paymentprocess/css/select-month-company.min.css" rel="stylesheet" />
+    </environment>
+}
+
+<form class="search-form" asp-action="BasicSalaryDirectBankingAndCash" method="post">
+
+    <input type="hidden" asp-for="StartDate" />
+    <input type="hidden" asp-for="DueDate" />
+    <div class="w-100"></div>
+    <div class="group">
+        <label class="text">@ViewLang.MonthYear</label>
+        <div class="calendar">
+            <input type="text" class="control datetimepicker" asp-for="SelectedTime" data-maxdate="@Model.SelectedTime" />
+            <span class="icon-calendar"></span>
+        </div>
     </div>
-</div>
+    <div class="group">
+        <label class="text">@ViewLang.Company</label>
+        <select class="control select2" asp-for="CompanyId" asp-items="@Model.Companies"></select>
+    </div>
+    <div class="group">
+        <button type="submit" class="button -primary">Export</button>
+    </div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/paymentprocess/select-month-company.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/paymentprocess/js/select-month-company.min.js"></script>
+    </environment>
+}

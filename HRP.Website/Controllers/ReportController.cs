@@ -39,8 +39,8 @@
         {
             var viewModel = new BasicReportViewModel
             {
-                Companies = await paymentProcessService.GetCompanySelectListAsync(),
-                Month = DateTime.Now
+                SelectedTime = DateTime.Now,
+                Companies = await paymentProcessService.GetCompanySelectListAsync()
             };
             return View(viewModel);
         }
