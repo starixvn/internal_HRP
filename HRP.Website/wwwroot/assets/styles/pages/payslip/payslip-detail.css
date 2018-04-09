@@ -3,6 +3,35 @@ body {
   font-size: 13px;
 }
 
+.employee-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.employee-info .col {
+  padding: 6px;
+}
+
+.employee-info .col .row {
+  padding: 2px 0;
+}
+
+.employee-info .col .row .red {
+  font-weight: normal;
+}
+
+.employee-info .col .main-info {
+  display: flex;
+}
+
+.employee-info .col .main-info .name {
+  margin-right: 5px;
+}
+
+.employee-info .col .main-info .id {
+  margin-right: 28px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -15,61 +44,89 @@ body {
   background-color: #ffe3cb;
 }
 
+.payslip-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.detail-section {
+  border: 1px solid #d9d9d9;
+  position: relative;
+}
+
+.detail-section .title {
+  text-transform: uppercase;
+  background-color: #1973b2;
+  color: #fff;
+  padding: 5px 16px;
+  font-weight: bold;
+}
+
+.detail-section .content .row, .detail-section .footer .row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px;
+}
+
+.detail-section .content .row:hover, .detail-section .footer .row:hover {
+  background-color: #ffe3cb;
+}
+
+.detail-section .content {
+  margin-bottom: 28px;
+}
+
+.detail-section .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  height: 28px;
+}
+
+.detail-section:nth-of-type(2n+1) {
+  border-right-width: 0;
+}
+
+.detail-section .key {
+  color: #1973b2;
+  padding: 5px 8px;
+}
+
+.detail-section .value {
+  text-align: right;
+  padding: 5px 8px;
+}
+
+.detail-section .key.total, .detail-section .value.total {
+  text-transform: uppercase;
+  color: inherit;
+  position: relative;
+  bottom: 0;
+  font-weight: bold;
+}
+
+.detail-section.grand-total {
+  background: #c5cace;
+  border-top-width: 0;
+}
+
+.detail-section.grand-total .content {
+  margin-bottom: 0;
+}
+
+.detail-section.grand-total .row:hover {
+  background-color: transparent;
+}
+
+.detail-section.grand-total .key, .detail-section.grand-total .value {
+  text-transform: uppercase;
+  color: inherit;
+  font-weight: bold;
+}
+
 .note {
   text-align: center;
   color: #666;
   margin-top: 12px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  vertical-align: top;
-}
-
-table .align-left {
-  text-align: left;
-}
-
-table .align-right {
-  text-align: right;
-}
-
-table tbody tr .border-right {
-  border-right: 1px solid #d9d9d9;
-}
-
-table tbody tr .border-left {
-  border-left: 1px solid #d9d9d9;
-}
-
-table tbody tr.header td {
-  text-transform: uppercase;
-  background-color: #1973b2;
-  color: #fff;
-  font-weight: bold;
-  text-align: left;
-  padding: 5px 16px;
-}
-
-table tbody tr.header td:first-child {
-  border-right: 1px solid #d9d9d9;
-}
-
-table tbody tr.body td, table tbody tr.footer td {
-  padding: 5px 8px;
-}
-
-table tbody tr.body td.key {
-  color: #1973b2;
-  font-weight: bold;
-}
-
-table tbody tr.footer td.key {
-  text-transform: uppercase;
-  color: inherit;
-}
-
-table tbody tr.footer.net-amount {
-  background-color: #c5cace;
 }

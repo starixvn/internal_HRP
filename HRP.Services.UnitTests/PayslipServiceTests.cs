@@ -81,7 +81,7 @@
         [Theory]
         [InlineData(11, "1,000.00")]
         [InlineData(1, "1,234.00")]
-        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId,string expectedAmount)
+        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId, string expectedAmount)
         {
             // Arrange
             var plainText = "1234";

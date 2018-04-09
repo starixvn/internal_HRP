@@ -16,8 +16,7 @@
             <span class="message" asp-validation-for="Department.Code"></span>
             <span class="message" asp-validation-for="Department.Name"></span>
         </div>
-        <div class="-has-icon msg-error hidden" id="create-item-error-alert">
-        </div>
+        <div class="-has-border msg-error hidden" id="create-item-error-alert"></div>
 
         <label class="text -has-required">@ViewLang.CompanyBVI</label>
         <div class="group-control">
@@ -49,7 +48,7 @@
 
         <div class="group-control">
             <label>
-                <input type="checkbox" asp-for="Department.IsActive" checked/>
+                <input type="checkbox" asp-for="Department.IsActive" checked />
                 <span>@ViewLang.Active</span>
             </label>
         </div>

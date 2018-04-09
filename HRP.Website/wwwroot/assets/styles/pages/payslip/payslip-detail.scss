@@ -6,6 +6,35 @@ body {
     font-size: $font-size;
 }
 
+.employee-info {
+    display: flex;
+    justify-content: space-between;
+
+    .col {
+        padding: 6px;
+
+        .row {
+            padding: 2px 0;
+
+            .red {
+                font-weight: normal;
+            }
+        }
+
+        .main-info {
+            display: flex;
+
+            .name {
+                margin-right: 5px;
+            }
+
+            .id {
+                margin-right: 28px;
+            }
+        }
+    }
+}
+
 .bold {
     font-weight: bold;
 }
@@ -18,77 +47,89 @@ body {
     background-color: #ffe3cb;
 }
 
+.payslip-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.detail-section {
+    border: 1px solid #d9d9d9;
+    position: relative;
+
+    .title {
+        text-transform: uppercase;
+        background-color: $table-header-bg;
+        color: #fff;
+        padding: 5px 16px;
+        font-weight: bold;
+    }
+
+    .content .row, .footer .row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 8px;
+
+        &:hover {
+            background-color: #ffe3cb;
+        }
+    }
+
+    .content {
+        margin-bottom: 28px;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+        height: 28px;
+    }
+
+    &:nth-of-type(2n+1) {
+        border-right-width: 0;
+    }
+
+    .key {
+        color: $table-header-bg;
+        padding: 5px 8px;
+    }
+
+    .value {
+        text-align: right;
+        padding: 5px 8px;
+    }
+
+    .key.total, .value.total {
+        text-transform: uppercase;
+        color: inherit;
+        position: relative;
+        bottom: 0;
+        font-weight: bold;
+    }
+
+    &.grand-total {
+        background: #c5cace;
+        border-top-width: 0;
+
+        .content {
+            margin-bottom: 0;
+        }
+
+        .row:hover {
+            background-color: transparent;
+        }
+
+        .key, .value {
+            text-transform: uppercase;
+            color: inherit;
+            font-weight: bold;
+        }
+    }
+}
+
 .note {
     text-align: center;
     color: #666;
     margin-top: 12px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    vertical-align: top;
-
-    .align-left {
-        text-align: left;
-    }
-
-    .align-right {
-        text-align: right;
-    }
-
-    tbody {
-        tr {
-            .border-right {
-                border-right: 1px solid #d9d9d9;
-            }
-
-            .border-left {
-                border-left: 1px solid #d9d9d9;
-            }
-
-            &.header {
-                td {
-                    text-transform: uppercase;
-                    background-color: #1973b2;
-                    color: #fff;
-                    font-weight: bold;
-                    text-align: left;
-                    padding: 5px 16px;
-
-                    &:first-child {
-                        border-right: 1px solid #d9d9d9;
-                    }
-                }
-            }
-
-            &.body, &.footer {
-                td {
-                    padding: 5px 8px;
-                }
-            }
-
-            &.body {
-                td {
-                    &.key {
-                        color: $table-header-bg;
-                        font-weight: bold;
-                    }
-                }
-            }
-
-            &.footer {
-                td {
-                    &.key {
-                        text-transform: uppercase;
-                        color: inherit;
-                    }
-                }
-
-                &.net-amount {
-                    background-color: #c5cace;
-                }
-            }
-        }
-    }
 }

@@ -85,8 +85,7 @@
 }
 <input type="hidden" id="get-bank-acount-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
-<div class="-has-icon msg-error hidden">
-
+<div class="-has-border msg-error hidden">
 </div>
 
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form">
@@ -168,7 +167,6 @@
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
-
                         @if (Model.Deductions[i].Type == (int)AllowanceType.DutyMeal)
                         {
                             <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].UnitAmount" readonly />
@@ -195,7 +193,6 @@
                     <div class="text-specific">@ViewLang.TotalAdd</div>
                     <input type="hidden" id="total-addition" disabled>
                     <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled>
-
                 </div>
             </div>
             <div class="deduction">

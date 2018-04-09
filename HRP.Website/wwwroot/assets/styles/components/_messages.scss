@@ -12,7 +12,7 @@
         font-family: "hrp";
         font-size: 20px;
     }
-    
+
     &.-no-border {
         border: none;
         padding: 0 8px 0 22px;
@@ -41,15 +41,15 @@
 
     &:before {
         content: "\e913";
-        color: $msg-success-color; 
+        color: $msg-success-color;
     }
 
-    &.-has-icon {        
+    &.-has-icon {
         border-color: $msg-success-border;
         background-color: $msg-success-bg;
     }
 
-    &.-no-border:before {        
+    &.-no-border:before {
         top: -1px;
         left: 0;
         font-size: 17px;
@@ -57,12 +57,12 @@
 }
 
 .msg-warning {
-    @extend %message-special;   
+    @extend %message-special;
     color: $msg-warning;
 
-    &:before {        
+    &:before {
         content: "\e91c";
-        color: $msg-warning; 
+        color: $msg-warning;
     }
 
     &:has-border {

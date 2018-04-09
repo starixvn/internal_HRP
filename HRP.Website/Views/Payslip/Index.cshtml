@@ -48,9 +48,7 @@
 <div class="-has-icon msg-success hidden">
     @Message.SentPayslipSuccessful
 </div>
-<div class="-has-icon msg-error hidden"></div>
-
-<a class="button -primary" asp-action="pdf">Pdf</a>
+<div class="-has-border msg-error hidden"></div>
 
 <div class="top-header">
     <div class="search-box">
@@ -144,9 +142,9 @@
                 <h4 class="modal-title">@ViewLang.Confirmation</h4>
             </div>
             <div class="modal-body">
-                <form id="send-payslip-form" asp-controller="payslip" asp-action="SendPayslip" data-ajax-method="post" data-ajax="true"
-                      data-ajax-failure="commonFunctions.handleAjaxError"
-                      data-ajax-success="payslips.onSendPayslipSuccess">
+                <form id="send-payslip-form" class="form-information" asp-controller="payslip" asp-action="SendPayslip"
+                      data-ajax-method="post" data-ajax="true"
+                      data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="payslips.onSendPayslipSuccess">
                     <input type="hidden" name="companyId" value="@Model.CompanyId" />
                     <p>@Message.SendPayslipConfirmationMessage</p>
                     <div class="list-button">

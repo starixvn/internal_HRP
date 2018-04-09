@@ -16,8 +16,7 @@
             <span class="message" asp-validation-for="JobGrade.Name"></span>
             <span class="message" asp-validation-for="JobGrade.Description"></span>
         </div>
-        <div class="-has-icon msg-error hidden" id="create-item-error-alert">
-        </div>
+        <div class="-has-border msg-error hidden" id="create-item-error-alert"></div>
 
         <label class="text -has-required">@ViewLang.JobCategory</label>
         <div class="group-control">
@@ -50,7 +49,7 @@
 
         <div class="group-control">
             <label>
-                <input type="checkbox" asp-for="JobGrade.IsActive" checked/>
+                <input type="checkbox" asp-for="JobGrade.IsActive" checked />
                 <span>@ViewLang.Active</span>
             </label>
         </div>

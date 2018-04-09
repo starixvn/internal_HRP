@@ -68,7 +68,7 @@
         @Message.UpdateEmployeePayrollSuccessfully
     </div>
 
-    <div class="-has-icon msg-error hidden">
+    <div class="-has-border msg-error hidden">
     </div>
 
     <div class="form-content">
@@ -413,8 +413,7 @@
         <div class="group-complex -payroll-layout3 allowance-detail">
             <div class="align-text">@ViewLang.Others</div>
             <div class="currency-amount">
-                <select class="control allowance-detail-calculate select2 others" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
-                    >
+                <select class="control allowance-detail-calculate select2 others" asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">>
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate others" asp-for="Allowance.OthersAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
@@ -455,7 +454,6 @@
             {
                 <a href="javascript:history.back()" class="button -second">@ViewLang.Back</a>
             }
-
         </div>
     </div>
 </form>
@@ -496,7 +494,6 @@
         <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script type="text/javascript" src="~/assets/js/bank/bank-account-form.js" asp-append-version="true"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
-
     </environment>
     <environment exclude="Development">
         <script src="~/lib/bignumber.js/bignumber.min.js"></script>
