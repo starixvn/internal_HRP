@@ -1,0 +1,98 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+body {
+    font-family: $font-family;
+    font-size: $font-size;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.red {
+    color: #f00 !important;
+}
+
+.highlight {
+    background-color: #ffe3cb;
+}
+
+.note {
+    text-align: center;
+    color: #666;
+    margin-top: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    vertical-align: top;
+
+    &.info {
+        margin-bottom: 12px;
+    }
+
+    .align-left {
+        text-align: left;
+    }
+
+    .align-right {
+        text-align: right;
+    }
+
+    tbody {
+        tr {
+            td {
+                font-size: 12px;                
+                padding: 0 8px;
+            }
+
+            .border-right {
+                border-right: 1px solid #d9d9d9;
+            }
+
+            .border-left {
+                border-left: 1px solid #d9d9d9;
+            }
+
+            &.header {
+                td {
+                    text-transform: uppercase;
+                    background-color: #1973b2;
+                    color: #fff;
+                    font-weight: bold;
+                    text-align: left;
+
+                    &:first-child {
+                        border-right: 1px solid #d9d9d9;
+                    }
+                }
+            }
+
+            &.body {
+                td {
+                    font-size: 11px;
+
+                    &.key {
+                        color: $table-header-bg;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            &.footer {
+                td {
+                    &.key {
+                        text-transform: uppercase;
+                        color: inherit;
+                    }
+                }
+
+                &.net-amount {
+                    background-color: #c5cace;
+                }
+            }
+        }
+    }
+}

@@ -20,7 +20,7 @@
     public class PayslipService : IPayslipService
     {
         private const string EmailTemplate = @"wwwroot\\EmailTemplates\\Payslip.cshtml";
-        private const string cssFilePath = @"assets\\styles\\pages\\payslip\\payslip-detail.css";
+        private const string cssFilePath = @"assets\\bundles\\payslip\\css\\pdf.min.css";
         private const string AmountFormat = "#,##0.00";
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
@@ -130,7 +130,7 @@
             var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(EmailTemplate), payslip.Nickname);
             var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
             var fileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"));
-            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Details", payslip).ConfigureAwait(false);
+            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Pdf", payslip).ConfigureAwait(false);
             byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslip.PDFPassword, payslip.PDFPassword);
 
             using (var input = new MemoryStream(content))

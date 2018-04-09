@@ -170,24 +170,12 @@
             return service;
         }
 
-        private static IViewRenderService FakeViewRenderService()
-        {
-            return Substitute.For<IViewRenderService>();
-        }
-
-        private static IPdfRenderService FakePdfRenderService()
-        {
-            return Substitute.For<IPdfRenderService>();
-        }
-
         private PayslipController GetPayslipController()
         {
             sessionService = FakeSessionService();
             var baseService = FakeBaseService();
             payslipService = FakePayslipService();
-            var viewRenderService = FakeViewRenderService();
-            var pdfRenderService = FakePdfRenderService();
-            var controller = new PayslipController(sessionService, baseService, payslipService, viewRenderService, pdfRenderService);
+            var controller = new PayslipController(sessionService, baseService, payslipService);
 
             return controller;
         }

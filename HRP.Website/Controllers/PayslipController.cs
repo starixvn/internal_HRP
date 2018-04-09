@@ -18,20 +18,14 @@
     [HRPAuthorize]
     public class PayslipController : BaseController
     {
-        private readonly IViewRenderService viewRenderService;
-        private readonly IPdfRenderService pdfRenderService;
         private readonly IPayslipService payslipService;
 
         public PayslipController(
             ISessionService sessionService,
             IBaseService baseService,
-            IPayslipService payslipService,
-            IViewRenderService viewRenderService,
-            IPdfRenderService pdfRenderService) : base(baseService, sessionService)
+            IPayslipService payslipService) : base(baseService, sessionService)
         {
             this.payslipService = payslipService;
-            this.viewRenderService = viewRenderService;
-            this.pdfRenderService = pdfRenderService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
@@ -90,18 +84,6 @@
             CommandResult commandResult = await payslipService.SendPayslipAsync(viewModel);
 
             return Json(commandResult);
-        }
-
-        [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Host)]
-        public async Task<IActionResult> Pdf()
-        {
-            string cssFilePath = @"assets\\styles\\pages\\payslip\\payslip-detail.css";
-            PayslipDetailModel payslipDetails = await payslipService.GetPayslipDetailAsync(1051, 1);
-            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Details", payslipDetails);
-
-            byte[] streamContent = pdfRenderService.RenderContent(cssFilePath, htmlString);
-
-            return File(streamContent, @"application/pdf", "Payslip.pdf");
         }
     }
 }

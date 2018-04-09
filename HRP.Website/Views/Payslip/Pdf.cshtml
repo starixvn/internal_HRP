@@ -1,0 +1,141 @@
+﻿﻿@using HRP.Resources
+@using HRP.Core.Enumerations
+@using HRP.Core.Extensions
+@using HRP.Models.Payslip
+
+@model PayslipDetailModel
+
+@{
+    Layout = null;
+    var salaryCurrencyCode = Model.SalaryCurrencyCode;
+    var allowanceCurrencyCode = Model.AllowanceCurrencyCode;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/assets/bundles/payslip/css/pdf.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <table class="info">
+            <tbody>
+                <tr>
+                    <td colspan="2">@Model.CompanyName</td>
+                    <td class="align-right">@ViewLang.EmployeeName:</td>
+                    <td class="bold">@Model.FullName</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span class="bold">@ViewLang.Payslip</span> <span class="red">(@ViewLang.Confidential)</span> <span class="bold">@Html.DisplayFor(x => x.Month)</span>
+                    </td>
+                    <td class="align-right">@ViewLang.IDNo:</td>
+                    <td class="bold">@Model.IDNo</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr class="header">
+                    <td colspan="2">@ViewLang.MonthlyBasicSalary.ToUpperInvariant()</td>
+                    <td colspan="2">@ViewLang.MonthlyAllowances.ToUpperInvariant()</td>
+                </tr>
+                <tr class="body">
+                    <td class="key border-left">@ViewLang.BasicSalary</td>
+                    <td class="value align-right">@Model.SalaryAmount @Model.SalaryCurrencyCode</td>
+                    <td class="key border-left">@ViewLang.BasicAllowances</td>
+                    <td class="value border-right align-right">@Model.AllowanceAmount @Model.AllowanceCurrencyCode</td>
+                </tr>
+                @{
+                    var salaryLength = Model.SalaryAdditions.Count;
+                    var allowanceLength = Model.AllowanceAdditions.Count;
+                    var total = salaryLength > allowanceLength ? salaryLength : allowanceLength;
+                }
+
+                @for (int i = 0; i < total; i++)
+                {
+                    <tr class="body">
+                        @if (i < salaryLength)
+                        {
+                            <td class="key border-left">@EnumHelper.GetDescription((MonthlySalaryAdditionType)Model.SalaryAdditions[i].Type)</td>
+                            <td class="value align-right">@Model.SalaryAdditions[i].NetSalaryDisplay @Model.SalaryCurrencyCode</td>
+                        }
+                        else
+                        {
+                            <td class="border-left"></td>
+                            <td></td>
+                        }
+                        @if (i < allowanceLength)
+                        {
+                            <td class="key border-left">@EnumHelper.GetDescription((AllowanceType)Model.AllowanceAdditions[i].Type)</td>
+                            <td class="value border-right align-right">@Model.AllowanceAdditions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</td>
+                        }
+                        else
+                        {
+                            <td class="border-left"></td>
+                            <td class="border-right"></td>
+                        }
+                    </tr>
+                }
+                <tr class="footer">
+                    <td class="key border-left">@ViewLang.GrossBasicSalary.ToUpperInvariant()</td>
+                    <td class="value align-right">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</td>
+                    <td class="key border-left">@ViewLang.GrossAllowances.ToUpperInvariant()</td>
+                    <td class="value border-right align-right">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</td>
+                </tr>
+
+                <tr class="header">
+                    <td colspan="2">@ViewLang.Deduction.ToUpperInvariant()</td>
+                    <td colspan="2">@ViewLang.Deduction.ToUpperInvariant()</td>
+                </tr>
+                @{
+                    salaryLength = Model.SalaryDeductions.Count;
+                    allowanceLength = Model.AllowanceDeductions.Count;
+                    total = salaryLength > allowanceLength ? salaryLength : allowanceLength;
+                }
+
+                @for (int i = 0; i < total; i++)
+                {
+                    <tr class="body">
+                        @if (i < salaryLength)
+                        {
+                            <td class="key border-left">@EnumHelper.GetDescription((MonthlySalaryDeductionType)Model.SalaryDeductions[i].Type)</td>
+                            <td class="value align-right">@Model.SalaryDeductions[i].NetSalaryDisplay @Model.SalaryCurrencyCode</td>
+                        }
+                        else
+                        {
+                            <td class="border-left"></td>
+                            <td></td>
+                        }
+                        @if (i < allowanceLength)
+                        {
+                            <td class="key border-left">@EnumHelper.GetDescription((AllowanceType)Model.AllowanceDeductions[i].Type)</td>
+                            <td class="value border-right align-right">@Model.AllowanceDeductions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</td>
+                        }
+                        else
+                        {
+                            <td class="border-left"></td>
+                            <td class="border-right"></td>
+                        }
+                    </tr>
+                }
+                <tr class="footer">
+                    <td class="key border-left bold">@ViewLang.MonthlyDeductions.ToUpperInvariant()</td>
+                    <td class="value align-right red">@Model.SalaryDeductionAmount @Model.SalaryCurrencyCode</td>
+                    <td class="key border-left bold">@ViewLang.MonthlyDeductions.ToUpperInvariant()</td>
+                    <td class="value border-right align-right red">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</td>
+                </tr>
+                <tr class="footer net-amount">
+                    <td class="key bold">@ViewLang.NetMonthlyBasicSalary.ToUpperInvariant()</td>
+                    <td class="value align-right bold">@Model.NetSalaryAmount @salaryCurrencyCode</td>
+                    <td class="key border-left bold">@ViewLang.NetMonthlyAllowances.ToUpperInvariant()</td>
+                    <td class="value align-right bold">@Model.NetAllowanceAmount @allowanceCurrencyCode</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="note">
+            @ViewLang.PayslipNote
+        </div>
+    </div>
+</body>
+</html>

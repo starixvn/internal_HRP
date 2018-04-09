@@ -2,7 +2,6 @@
 @using HRP.Core.Enumerations
 @using HRP.Core.Extensions
 @using HRP.Models.Payslip
-@using HRP.Models.MonthlyPayroll
 
 @model PayslipDetailModel
 
@@ -15,7 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="~/assets/styles/pages/payslip/payslip-detail.css" rel="stylesheet" />
+    <link href="~/assets/bundles/payslip/css/payslip-details.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
@@ -27,7 +26,9 @@
                     <td class="bold">@Model.FullName</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="bold">@ViewLang.Payslip <span class="red">(@ViewLang.Confidential)</span> @Html.DisplayFor(x => x.Month)</td>
+                    <td colspan="2">
+                        <span class="bold">@ViewLang.Payslip</span> <span class="red">(@ViewLang.Confidential)</span> <span class="bold">@Html.DisplayFor(x => x.Month)</span>
+                    </td>
                     <td class="align-right">@ViewLang.IDNo:</td>
                     <td class="bold">@Model.IDNo</td>
                 </tr>
