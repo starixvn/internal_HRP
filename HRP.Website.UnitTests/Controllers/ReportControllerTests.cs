@@ -48,7 +48,7 @@
             var basicReportViewModel = new BasicReportViewModel
             {
                 CompanyId = 1,
-                Month = DateTime.Now
+                SelectedTime = DateTime.Now
             };
 
             //Act
