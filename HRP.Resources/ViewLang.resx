@@ -1017,4 +1017,7 @@
   <data name="EmployeePayrollChangedWarning" xml:space="preserve">
     <value>Are you sure you want to apply this changes? All the adjustment amounts will be calculated based on the last basic salary amount that you've just updated.</value>
   </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
 </root>

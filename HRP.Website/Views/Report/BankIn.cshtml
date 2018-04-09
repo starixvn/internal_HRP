@@ -1,9 +1,56 @@
 @model HRP.Models.Report.BasicReportViewModel
 
-<form>
-    <label asp-for="CompanyId"></label>
-    <select asp-for="CompanyId" asp-items="Model.Companies"></select>
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
+    </environment>
+}
 
-    <label asp-for="Month"></label>
-    <input asp-for="Month"/>
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/assets/js/report/bankin.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/assets/js/report/bankin.js"></script>
+    </environment>
+}
+
+<form class="search-form">
+    <div class="group">
+        <label asp-for="CompanyId" class="text"></label>
+        <select asp-for="CompanyId" asp-items="Model.Companies" class="control js-select2"></select>
+    </div>
+
+    <div class="group">
+        <label asp-for="Month" class="text"></label>
+        <div class="calendar">
+            <input type="text" asp-for="Month" class="control datetimepicker" />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="group">
+        <button type="submit" class="button -primary">Export</button>
+    </div>
 </form>
