@@ -2,6 +2,7 @@
     var totalAmountCurrencyId;
     var $editAllowanceForm;
     var workingDays;
+    var daysInMonth;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
         if (currency === '11')
@@ -57,7 +58,7 @@
             totalAmount = totalAmount.minus(roomingChargesAmount.mul(exchangeRate));
         }
 
-        var totalAmountDisplay = totalAmount.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId);
+        var totalAmountDisplay = totalAmount.roundWithCurrency(0, totalAmountCurrencyId).toString();
         $('#total-amount-display').val(totalAmountDisplay);
         $('#Allowance_TotalAmount').val(totalAmountDisplay);
     }
@@ -71,7 +72,7 @@
             totalNetAmount = totalNetAmount.minus(dstAmount.mul(exchangeRate));
         }
 
-        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
+        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(0, totalAmountCurrencyId).toString());
     }
 
     function calculateAutoAllowance() {
@@ -99,15 +100,16 @@
             }
         });
 
-        totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrencyId + '"][data-to-currency="' + autoCalculateCurrencyId + '"]').val()).roundWithCurrency(2, autoCalculateCurrencyId);
+        totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrencyId + '"][data-to-currency="' + autoCalculateCurrencyId + '"]').val()).roundWithCurrency(0, autoCalculateCurrencyId);
 
         var $autoCalculatedElement = $('input.allowance-calculate[type="text"][data-calculate-for="' + group + '"]');
-        $autoCalculatedElement.val(totalAmount.toStringWithCurrency(autoCalculateCurrencyId));
+        $autoCalculatedElement.val(totalAmount.toString());
         $autoCalculatedElement.valid();
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display').inputmask({
+        $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount')
+        .inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 2,
@@ -118,10 +120,10 @@
             removeMaskOnSubmit: true,
         })
 
-        $('.number').inputmask({
+        $('.bank-amount-setting').inputmask({
             alias: 'numeric',
             autoGroup: true,
-            digits: 2,
+            digits: 0,
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,
@@ -250,7 +252,8 @@
                 var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
 
                 var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
-                $unitAmount.val(amount.div(workingDays).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
+                $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
             } else {
                 if ($unitAmount.is('[readonly]')) {
                     $unitAmount.val('');
@@ -313,13 +316,15 @@
             calculateTotalNetAmount();
         });
 
-        $('#Allowance_DSTNetSalaryAmount').on('change', calculateTotalNetAmount);
+        $('#Allowance_DSTNetSalaryAmount, #Allowance_DSTNetSalaryCurrencyId').on('change', calculateTotalNetAmount);
     }
 
     function initModule() {
         $editAllowanceForm = $('#edit-allowances-form');
         totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
         workingDays = $('#EmployeeInfo_WorkingDays').val();
+        daysInMonth = $('#DaysInMonth').val();
+
         calculateTotalAddition();
         calculateTotalDeduction();
 

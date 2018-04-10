@@ -34,5 +34,7 @@
         public bool CanEdit { get; set; }
 
         public CachingFilterViewModel Filter { get; set; }
+
+        public int DaysInMonth { get; set; }
     }
 }

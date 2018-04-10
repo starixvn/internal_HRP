@@ -71,8 +71,12 @@
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string CashAmount { get; set; }
 
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DSTNetSalaryAmount) },
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DSTNetSalaryCurrencyId { get; set; }
 
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DSTNetSalaryCurrencyId)},
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         public string DSTNetSalaryAmount { get; set; }
 
         [XmlIgnore]

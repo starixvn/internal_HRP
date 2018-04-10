@@ -405,6 +405,7 @@
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
             viewModel.CompanyId = companyId;
             viewModel.Filter = filter;
+            viewModel.DaysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
             var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
