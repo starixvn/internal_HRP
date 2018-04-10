@@ -146,14 +146,14 @@
         calculateTotalAllowance(allowanceCurrency);
     }
 
-    function roundingAmount(element) {
+    function roundingAmount(element, dp) {
         var parent = $(element).parent();
         var $currency = parent.find('select');
         var $amount = parent.find('input');
         if ($currency.val() !== '' && $amount.val() !== '' && !isNaN($amount.val())) {
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
-            $amount.val(number.roundWithCurrency(2, currency).toStringWithCurrency(currency));
+            $amount.val(number.roundWithCurrency(dp, currency).toStringWithCurrency(currency));
         }
     }
 
@@ -449,19 +449,19 @@
         });
 
         $('.basic-salary-calculate').on('change', function (e) {
-            roundingAmount(e.target);
+            roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
             calculateBasicSalary();
         });
 
         $('.allowance-calculate').on('change', function (e) {
-            roundingAmount(e.target);
+            roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
             calculateAmountForBanks();
         });
 
         $('.allowance-detail-calculate').on('change', function (e) {
-            roundingAmount(e.target);
+            roundingAmount(e.target, 2);
             validatedInvalidRelatedElements(e.target);
 
             var allowanceCurrency = $('#Allowance_CurrencyId').val();
@@ -474,7 +474,7 @@
         });
 
         $('.deduction-calculate').on('change', function (e) {
-            roundingAmount(e.target);
+            roundingAmount(e.target, 2);
         });
 
         $('#Allowance_CurrencyId').on('change', function () {
@@ -524,7 +524,6 @@
                         data: {
                             month: effectiveDate,
                             employeeId: $('#EmployeeId').val(),
-                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', $form).val()
                         },
                         success: function (response) {
                             if (response) {
