@@ -277,8 +277,6 @@
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
             var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false); ////Check if dataModel null
-            var numMonth = month.Month;
-            var numYear = month.Year;
             var monthlySalaries = new List<MonthlySalaryModel>();
             var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
             var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
@@ -327,7 +325,7 @@
                     DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
                     DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
 
-                    monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, payroll.GroupStartDate, payroll.GroupEndDate, numMonth, numYear);
+                    monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
                     var allowanceAdditions = monthlyPayrollService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
                         actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
                     var allowanceDeductions = monthlyPayrollService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,

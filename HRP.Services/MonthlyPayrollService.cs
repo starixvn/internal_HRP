@@ -217,14 +217,10 @@
         {
             var allowanceAdditionXml = ConvertAllowanceAdditionToXml(viewModel.Additions);
             var allowanceDeductionXml = ConvertAllowanceAdditionToXml(viewModel.Deductions);
-            var status = MonthlyPayrollStatus.Satisfied;
             decimal.TryParse(viewModel.Allowance.DirectBanking1Amount, out decimal directbanking1);
             decimal.TryParse(viewModel.Allowance.DirectBanking2Amount, out decimal directbanking2);
             decimal.TryParse(viewModel.Allowance.CashAmount, out decimal cash);
-            if (directbanking1 < 0 || directbanking2 < 0 || cash < 0)
-            {
-                status = MonthlyPayrollStatus.Unsatisfied;
-            }
+            var status = directbanking1 < 0 || directbanking2 < 0 || cash < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Satisfied;
 
             var criteria = new EditMonthlyAllowancesCriteria
             {
@@ -444,13 +440,12 @@
             return monthlyAllowance;
         }
 
-        public void CalculateMonthlyBasicAllowance
-            (IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+        public void CalculateMonthlyBasicAllowance(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
-            DateTime startDate,
-            DateTime? endDate,
-            int month,
-            int year)
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate)
         {
             decimal totalAmount = 0;
 
@@ -488,7 +483,7 @@
             totalAmount = RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyId.Value);
             monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
 
-            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, startDate, endDate, month, year);
+            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate);
             CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
@@ -576,16 +571,16 @@
             return deductions;
         }
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-#pragma warning disable S1541 // Methods and properties should not be too complex
-
-        private static void CalculateAfterAdjustment(decimal totalAmount, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, DateTime startDate, DateTime? endDate, int month, int year)
-#pragma warning restore S1541 // Methods and properties should not be too complex
-#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+        private static void CalculateAfterAdjustment(
+            decimal totalAmount,
+            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate)
         {
-            var daysInMonth = DateTime.DaysInMonth(year, month);
-            var startDay = startDate.Month == month && startDate.Year == year ? startDate.Day : 1;
-            var endDay = endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ? endDate.Value.Day : daysInMonth;
+            int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
+            int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
+            int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
@@ -595,19 +590,9 @@
                 var reason = new StringBuilder();
                 reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode);
 
-                if (startDate.Month == month && startDate.Year == year)
-                {
-                    reason.Append(endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year ?
-                        $"Employee worked from {startDate.ToShortDateString()} to {endDate.Value.ToShortDateString()}" :
-                        $"Employee started working from {startDate.ToShortDateString()}");
-                }
-                else
-                {
-                    if (endDate.HasValue && endDate.Value.Month == month && endDate.Value.Year == year)
-                    {
-                        reason.Append($"Employee official leaves from {endDate.Value.ToShortDateString()}");
-                    }
-                }
+                string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
+
+                reason.Append(dateCommencementReason);
 
                 monthlyPayrollBasicAllowance.Reason = reason.ToString();
             }

@@ -393,6 +393,7 @@
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
+            var workingMonth = DateTime.Today;
 
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -415,8 +416,12 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance,
-                new DateTime(DateTime.Today.Year, DateTime.Today.Month, 15), null, DateTime.Today.Month, DateTime.Today.Year);
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(
+                currencyExchangeRates,
+                basicAllowance,
+                workingMonth,
+                new DateTime(workingMonth.Year, workingMonth.Month, 15),
+                null);
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
             Assert.NotNull(basicAllowance.Reason);
@@ -427,6 +432,7 @@
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
+            var workingMonth = DateTime.Today;
 
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -449,8 +455,12 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1),
-                new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20), DateTime.Today.Month, DateTime.Today.Year);
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(
+                currencyExchangeRates,
+                basicAllowance,
+                workingMonth,
+                new DateTime(workingMonth.Year, workingMonth.Month, 1),
+                new DateTime(workingMonth.Year, workingMonth.Month, 20));
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
             Assert.NotNull(basicAllowance.Reason);
@@ -461,6 +471,7 @@
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
+            var workingMonth = DateTime.Today;
 
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
@@ -480,8 +491,12 @@
             baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(currencyExchangeRates, basicAllowance,
-                DateTime.Today.AddMonths(-3), new DateTime(DateTime.Today.Year, DateTime.Today.Month, 20), DateTime.Today.Month, DateTime.Today.Year);
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(
+                currencyExchangeRates,
+                basicAllowance,
+                workingMonth,
+                workingMonth.AddMonths(-3),
+                new DateTime(workingMonth.Year, workingMonth.Month, 20));
 
             Assert.NotEqual(basicAllowance.TotalAmount, basicAllowance.AfterAdjustmentAmount);
             Assert.NotNull(basicAllowance.Reason);

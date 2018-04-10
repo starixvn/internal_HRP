@@ -43,9 +43,9 @@
         void CalculateMonthlyBasicAllowance(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
-            DateTime startDate,
-            DateTime? endDate,
-            int month, int year);
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate);
 
         IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(
             int standardWorkingDays,
