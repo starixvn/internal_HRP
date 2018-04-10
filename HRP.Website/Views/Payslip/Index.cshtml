@@ -67,25 +67,25 @@
             <th rowspan="2">@ViewLang.Section</th>
             <th rowspan="2">@ViewLang.Email</th>
             <th rowspan="2">@ViewLang.TelephoneNo</th>
-            <th rowspan="2">@ViewLang.MonthlyPayrollStatus</th>
+            <th rowspan="2" class="col-150">@ViewLang.MonthlyPayrollStatus</th>
             <th colspan="2">
                 @if (Model.IsHost)
                 {
-                    <input type="button" class="btn -send-payslip js-btnSendPayslip" value="@ViewLang.SendPayslip" />
+                    <input type="button" class="button -add -send-payslip js-btnSendPayslip" value="@ViewLang.SendPayslip" />
                 }
                 else
                 {
-                    <input type="button" class="btn -send-payslip" value="@ViewLang.SendPayslip" disabled />
+                    <input type="button" class="button -add -send-payslip" value="@ViewLang.SendPayslip" disabled />
                 }
             </th>
         </tr>
         <tr>
-            <th>@ViewLang.Sent</th>
-            <th>
-                <label>
-                    <input type="checkbox" class="@(Model.IsHost ? "js-checkAll" : string.Empty)" @disabled />
-                    <span></span>
-                </label>
+            <th class="col-50">@ViewLang.Sent</th>
+            <th class="col-50">
+                    <label>
+                        <input type="checkbox" class="@(Model.IsHost ? "js-checkAll" : string.Empty)" @disabled />
+                        <span></span>
+                    </label>
             </th>
         </tr>
     </thead>

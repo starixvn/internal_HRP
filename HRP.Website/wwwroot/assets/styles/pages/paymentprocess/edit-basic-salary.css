@@ -427,6 +427,6 @@ input[type="radio"]:disabled + span {
 }
 
 .form-information .-total-salary .currency {
-  margin-left: 8px;
+  margin-left: 4px;
 }
 /*# sourceMappingURL=edit-basic-salary.css.map */

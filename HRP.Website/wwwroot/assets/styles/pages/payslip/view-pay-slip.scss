@@ -2,15 +2,16 @@
 @import "../../abstracts/mixins";
 @import "../../components/forms";
 @import "../../components/textbox";
+@import "../../components/buttons";
 @import "../../components/tables";
 @import "../../components/status";
+@import "../../components/customize-select2";
 
 .top-header {
     justify-content: flex-end;
 }
 
 .-send-payslip {
-    background-color: $payslip-primary-color;
     height: 20px;
     line-height: 20px;
     padding: 0 4px;
@@ -29,6 +30,12 @@
     }
     thead tr:first-child th:last-child {
         border-bottom-width: 0;
+    }
+    .col-150 {
+        width: 120px;
+    }
+    .col-50 {
+        width: 50px;
     }
 }
 
