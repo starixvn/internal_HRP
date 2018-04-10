@@ -1,6 +1,7 @@
 ﻿namespace HRP.Services.Interfaces
 {
     using System.Collections.Generic;
+    using System.IO;
     using Microsoft.AspNetCore.Http;
     using Models.Report;
     using NPOI.SS.UserModel;
@@ -62,5 +63,7 @@
         /// /// <param name="firstColumnAutoIncrement">set to true to set first column is row number with auto increment</param>
         /// <param name="rewriteTitle">Rewrite title with your text</param>
         void ExportWithTemplate(IEnumerable<IExcelRecord> datas, HttpResponse response, bool firstColumnAutoIncrement = false, bool rewriteTitle = false);
+
+        Stream GetPayDetails(Stream fileStream);
     }
 }

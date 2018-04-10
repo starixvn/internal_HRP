@@ -11,6 +11,7 @@
     using Services;
     using System.Threading.Tasks;
     using Services.Interfaces;
+    using System.IO;
 
     [HRPAuthorize]
     public class ReportController : BaseController
@@ -71,6 +72,19 @@
                 SelectedTime = DateTime.Now
             };
             return View(viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public IActionResult PayDetails()
+        {
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
+            string sFileName = @"ExcelTemplates\1. Pay Details.xlsx";
+            var path = Path.Combine(sWebRootFolder, sFileName);
+            var templateStream = new FileStream(path, FileMode.Open);
+
+            var stream = exportExcelService.GetPayDetails(templateStream);
+
+            return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
     }
 }
