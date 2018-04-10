@@ -21,5 +21,9 @@ namespace HRP.Core.Constants
         public const string IsSystemAdmin = "IsSystemAdmin";
 
         public const int VietnamCurrencyId = 11;
+
+        public const string RijndaelKey = "8080808080808080";
+
+        public const string RijndaelIV = "8080808080808080";
     }
 }

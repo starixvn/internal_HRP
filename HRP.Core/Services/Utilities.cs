@@ -5,12 +5,10 @@
     using System.Security.Cryptography;
     using System.Text;
     using BCrypt.Net;
+    using HRP.Core.Constants;
 
     public static class Utilities
     {
-        private const string keyEncrypt = "8080808080808080";
-        private const string ivEncrypt = "8080808080808080";
-
         public static string GenerateRadomString()
         {
             string salt = BCrypt.GenerateSalt(30);
@@ -27,8 +25,8 @@
 
         public static string DecryptStringAES(string cipherText)
         {
-            var keybytes = Encoding.UTF8.GetBytes(keyEncrypt);
-            var iv = Encoding.UTF8.GetBytes(ivEncrypt);
+            var keybytes = Encoding.UTF8.GetBytes(Constants.RijndaelKey);
+            var iv = Encoding.UTF8.GetBytes(Constants.RijndaelIV);
 
             var encrypted = Convert.FromBase64String(cipherText);
             var decriptedFromJavascript = DecryptStringFromBytes(encrypted, keybytes, iv);
