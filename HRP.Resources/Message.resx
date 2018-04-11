@@ -783,4 +783,7 @@
   <data name="SentPayslipSuccessful" xml:space="preserve">
     <value>Payslip has been sent successfully.</value>
   </data>
+  <data name="UpdateMonthlyAllowancesSuccessfully" xml:space="preserve">
+    <value>Monthly Allowances have been successfully updated!</value>
+  </data>
 </root>

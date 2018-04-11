@@ -432,54 +432,39 @@
             if (ModelState.IsValid)
             {
                 var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, sessionService.UserId);
+                var redirectTo = string.Empty;
 
-                if (!result.IsSuccessful)
+                redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                }
-                else
+                    companyId = viewModel.CompanyId,
+                    month = viewModel.Month,
+                    payrollId = viewModel.Allowance.PayrollId,
+                    employeeId = viewModel.Filter.EmployeeId,
+                    employee = viewModel.Filter.Employee,
+                    costCenterIds = viewModel.Filter.CostCenterIds,
+                    idNo = viewModel.Filter.IDNo,
+                    workingDays = viewModel.Filter.WorkingDays
+                }) : Url.Action("EmployeeMonthlyPayroll", new
                 {
-                    switch (submitAction)
-                    {
-                        case EditMonthlyAllowanceAction.SaveAndEditBasicSalary:
-                            return RedirectToAction("EditBasicSalary", new
-                            {
-                                companyId = viewModel.CompanyId,
-                                month = viewModel.Month,
-                                payrollId = viewModel.Allowance.PayrollId,
-                                employeeId = viewModel.Filter.EmployeeId,
-                                employee = viewModel.Filter.Employee,
-                                costCenterIds = viewModel.Filter.CostCenterIds,
-                                idNo = viewModel.Filter.IDNo,
-                                workingDays = viewModel.Filter.WorkingDays
-                            });
+                    companyId = viewModel.CompanyId,
+                    month = viewModel.Month,
+                    employeeId = viewModel.Filter.EmployeeId,
+                    employee = viewModel.Filter.Employee,
+                    costCenterIds = viewModel.Filter.CostCenterIds,
+                    idNo = viewModel.Filter.IDNo,
+                    workingDays = viewModel.Filter.WorkingDays
+                });
 
-                        case EditMonthlyAllowanceAction.Save:
-                        default:
-                            return RedirectToAction("EmployeeMonthlyPayroll",
-                                new
-                                {
-                                    companyId = viewModel.CompanyId,
-                                    month = viewModel.Month,
-                                    employeeId = viewModel.Filter.EmployeeId,
-                                    employee = viewModel.Filter.Employee,
-                                    costCenterIds = viewModel.Filter.CostCenterIds,
-                                    idNo = viewModel.Filter.IDNo,
-                                    workingDays = viewModel.Filter.WorkingDays
-                                });
-                    }
-                }
+                return Json(new
+                {
+                    isSuccessful = result.IsSuccessful,
+                    message = result.Message,
+                    redirectTo = result.IsSuccessful ? redirectTo : string.Empty
+                });
             }
 
-            var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
-            viewModel.Allowance.CurrencyCode = currencies.FirstOrDefault(x => x.CurrencyId == viewModel.Allowance.CurrencyId)?.CurrencyCode;
-
-            viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = viewModel.Month.Month, Year = viewModel.Month.Year });
-            viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
-                nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
-
-            return View(viewModel);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
         }
 
         [HttpPost]

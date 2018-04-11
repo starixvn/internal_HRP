@@ -109,16 +109,16 @@
 
     function initInputMask() {
         $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount')
-        .inputmask({
-            alias: 'numeric',
-            autoGroup: true,
-            digits: 2,
-            placeholder: '',
-            allowMinus: false,
-            groupSeparator: ',',
-            autoUnmask: true,
-            removeMaskOnSubmit: true,
-        })
+            .inputmask({
+                alias: 'numeric',
+                autoGroup: true,
+                digits: 2,
+                placeholder: '',
+                allowMinus: false,
+                groupSeparator: ',',
+                autoUnmask: true,
+                removeMaskOnSubmit: true,
+            })
 
         $('.bank-amount-setting').inputmask({
             alias: 'numeric',
@@ -248,16 +248,16 @@
             var dataGroup = $this.data('group');
             var $unitAmount = $('.unit-amount[data-group="' + dataGroup + '"]');
 
-            if ($this.val() !== '' && $unitAmount.val() === '') {
-                var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
+            if ($this.val() !== '') {
+                if ($unitAmount.val() === '') {
+                    var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
 
-                var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
-                var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
-                $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
-            } else {
-                if ($unitAmount.is('[readonly]')) {
-                    $unitAmount.val('');
+                    var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
+                    var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
+                    $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
                 }
+            } else {
+                $unitAmount.val('');
             }
         });
 
@@ -360,6 +360,26 @@
         },
         onPresetComplete: function () {
             $('#btn-yes').button('reset');
+        },
+        onUpdateBegin: function () {
+            $('button[name="submitAction"]', $editAllowanceForm).button('loading');
+        },
+        onUpdateComplete: function () {
+            $('button[name="submitAction"]', $editAllowanceForm).button('reset');
+        },
+        onUpdateSuccess: function (response) {
+            if (response.isSuccessful) {
+                $('.msg-success').removeClass('hidden');
+                window.setInterval(function () {
+                    window.location.href = response.redirectTo;
+                }, 1000);
+            } else {
+                if (response.errors) {
+                    $editAllowanceForm.validate().showErrors(response.errors);
+                } else {
+                    commonFunctions.showErrorMessage($('.msg-error'), response.message);
+                }
+            }
         }
     };
 }(jQuery, commonFunctions));

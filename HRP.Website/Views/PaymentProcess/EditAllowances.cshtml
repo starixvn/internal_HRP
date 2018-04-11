@@ -88,7 +88,14 @@
 <div class="-has-border msg-error hidden">
 </div>
 
-<form asp-action="EditAllowances" method="post" id="edit-allowances-form">
+<div class="-has-icon msg-success hidden">
+    <span>@Message.UpdateMonthlyAllowancesSuccessfully</span>
+</div>
+
+<form asp-action="EditAllowances" method="post" id="edit-allowances-form"
+      data-ajax-method="post" data-ajax="true" data-ajax-begin="editAllowances.onUpdateBegin" data-ajax-failure="commonFunctions.handleAjaxError"
+      data-ajax-success="editAllowances.onUpdateSuccess" data-ajax-complete="editAllowances.onUpdateComplete">
+
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="Month" />
     <input type="hidden" asp-for="CompanyId" />
@@ -395,9 +402,9 @@
         </div>
         <div class="group-complex -layout-setting ">
             <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
-                <select class="curency">
-                    <option>USD</option>
-                </select>
+                
+                <input type="text" class="control bank-amount-setting text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" data-group="dst" />                </select>
+              
                     <option></option>
                 </select>
                 <span class="currency">@Model.Currencies.FirstOrDefault(x => x.Value == Model.Allowance.DSTNetSalaryCurrencyId.ToString())?.Text</span>
@@ -420,8 +427,8 @@
                asp-route-costCenterIds="@Model.Filter.CostCenterIds">@ViewLang.Cancel</a>
             @if (Model.CanEdit)
             {
-                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save">@ViewLang.Save</button>
-                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary">@ViewLang.SaveAndEditBasicSalary</button>
+                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
+                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary" data-loading-text="@ViewLang.Saving ...">@ViewLang.SaveAndEditBasicSalary</button>
             }
         </div>
     </div>

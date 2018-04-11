@@ -1240,7 +1240,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fitness First.
+        ///   Looks up a localized string similar to Fitness Club Membership.
         /// </summary>
         public static string FitnessFirst {
             get {
