@@ -388,31 +388,26 @@
                 </div>
             </div>
         </div>
-        <div class="group-complex -total-salary">
+        <div class="group-complex  -layout-setting ">
             <div class="text-specific">@ViewLang.TotalGross</div>
-            <div>
-                <input type="text" class="control bank-amount-setting total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
-                <span class="currency">@Model.Allowance.CurrencyCode</span>
-            </div>
+            <span class="currency">@Model.Allowance.CurrencyCode</span>
+            <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
         </div>
-        <div class="group-complex -total-salary">
+        <div class="group-complex -layout-setting ">
             <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
-            <div class="">
-                <input type="text" class="control bank-amount-setting text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" data-group="dst"/>
-                <select class="control select2" asp-items="Model.Currencies" asp-for="Allowance.DSTNetSalaryCurrencyId" data-group="dst">
+                <select class="curency">
+                    <option>USD</option>
+                </select>
                     <option></option>
                 </select>
-                @*<span class="currency">
+                <span class="currency">@Model.Currencies.FirstOrDefault(x => x.Value == Model.Allowance.DSTNetSalaryCurrencyId.ToString())?.Text</span>
 
                     </span>*@
-            </div>
         </div>
-        <div class="group-complex -total-salary">
+        <div class="group-complex -layout-setting">
             <div class="text-specific text-green">@ViewLang.NetAmount</div>
-            <div class="">
-                <input type="text" class="control bank-amount-setting text-net-amount" readonly asp-for="Allowance.TotalNetAmount" />
                 <span class="currency">@Model.Allowance.CurrencyCode</span>
-            </div>
+                <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" /> 
         </div>
         <div class="list-button">
             <a class="button -second"
