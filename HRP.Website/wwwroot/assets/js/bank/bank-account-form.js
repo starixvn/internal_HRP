@@ -1,21 +1,32 @@
 var bankAccountForm = {
     init: function() {
         bankAccountForm.handleFormSubmittedInModal();
+        bankAccountForm.removeBackdropOnModalHide();
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
     },
 
-    handleFormSubmittedInModal: function() {
-
+    removeBackdropOnModalHide: function(){
         $("#dynamic-modals").on("hidden.bs.modal",
-            ".modal",
-            function() {
-                $(this).remove();
-                $(".modal-backdrop").remove();
-            });
+        ".modal",
+        function() {
+            $(this).remove();
+            $(".modal-backdrop").remove();
+        });
+    },
 
+    resetFormClientValidation: function(){
+        var form = $("#dynamic-modals form")
+        .removeData("validator") /* added by the raw jquery.validate plugin */
+        .removeData("unobtrusiveValidation"); /* added by the jquery unobtrusive plugin*/
+
+        $.validator.unobtrusive.parse(form);
+    },
+
+    handleFormSubmittedInModal: function() {
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
+
         if (isModal) {
             $(".modal-bank-account-form").on("submit",
                 "form",
@@ -40,11 +51,7 @@ var bankAccountForm = {
 
                             bankAccountForm.init();
 
-                            var form = $("#dynamic-modals form")
-                                .removeData("validator") /* added by the raw jquery.validate plugin */
-                                .removeData("unobtrusiveValidation"); /* added by the jquery unobtrusive plugin*/
-
-                            $.validator.unobtrusive.parse(form);
+                            bankAccountForm.resetFormClientValidation();
 
                             $(".modal-bank-account-form").modal();
                         }
@@ -117,7 +124,6 @@ var bankAccountForm = {
         bankAccountForm.countTimeInSeconds = bankAccountForm.countTimeInSeconds - 1;
         if (bankAccountForm.countTimeInSeconds <= 0) {
             clearInterval(bankAccountForm.countdown);
-            //counter ended, do something here
             return;
         }
 
