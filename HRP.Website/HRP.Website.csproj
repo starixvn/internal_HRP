@@ -33,14 +33,14 @@
   <ItemGroup>
     <None Remove="App_Data\SPNames - Copy.xml" />
     <None Remove="App_Data\SPNames.xml" />
-    <None Remove="ExcelTemplates\4-KLBankAndCash.xlsx" />
+    <None Remove="ExcelTemplates\BankIn.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="App_Data\SPNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ExcelTemplates\4-KLBankAndCash.xlsx">
+    <Content Include="ExcelTemplates\BankIn.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

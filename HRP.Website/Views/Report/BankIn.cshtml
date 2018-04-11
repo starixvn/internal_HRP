@@ -41,6 +41,7 @@
 }
 
 <form class="search-form" asp-action="BankIn" asp-controller="Report" method="post">
+    
     <div class="group">
         <label asp-for="CompanyId" class="text"></label>
         <select asp-for="CompanyId" asp-items="Model.Companies" class="control js-select2"></select>
@@ -49,7 +50,7 @@
     <div class="group">
         <label asp-for="SelectedTime" class="text"></label>
         <div class="calendar">
-            <input type="text" asp-for="SelectedTime" class="control datetimepicker" />
+            <input type="text" asp-for="SelectedTime" class="control datetimepicker"/>
             <span class="icon-calendar"></span>
         </div>
     </div>

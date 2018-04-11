@@ -7,10 +7,10 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
-    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
+    using Services.Interfaces;
     using Services;
 
     [HRPAuthorize]
@@ -50,16 +50,19 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> BankIn(BasicReportViewModel viewModel)
         {
-            var fileContent = await reportService.ExportBankInAsync(
-                viewModel.CompanyId,
-                viewModel.SelectedTime,
-                hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\4-KLBankAndCash.xlsx");
+            var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
-            return File(fileContent, EXCEL_CONTENT_TYPE, "4-KLBankAndCash.xlsx");
+            FileInfo fileInfo = new FileInfo(hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\BankIn.xlsx");
+
+            var fileContent = exportExcelService.ExportBankInReports(
+                    viewModel.SelectedTime,
+                    fileInfo,
+                    bankInData);
+
+            return File(fileContent, EXCEL_CONTENT_TYPE, $"BankIn {viewModel.SelectedTime.ToString("MMMM yyyy")}.xlsx");
         }
 
         public async Task<IActionResult> BasicSalaryDirectBankingAndCash()
