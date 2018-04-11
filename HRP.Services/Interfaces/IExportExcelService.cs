@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using Microsoft.AspNetCore.Http;
@@ -65,5 +66,6 @@
         void ExportWithTemplate(IEnumerable<IExcelRecord> datas, HttpResponse response, bool firstColumnAutoIncrement = false, bool rewriteTitle = false);
 
         Stream GetPayDetails(Stream fileStream);
+        byte[] ExportBankInReports(int companyId, DateTime selectedTime, FileInfo fileInfo, IEnumerable<BankIn> data);
     }
 }

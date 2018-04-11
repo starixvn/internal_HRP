@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
     using Core.Services;
-    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
@@ -17,7 +16,6 @@
         private IBaseService baseService;
         private IPaymentProcessService paymentProcessService;
         private IReportService reportService;
-        private IExportExcelService exportExcelService;
         private IHostingEnvironment hostingEnvironment;
 
         [Fact]
@@ -84,11 +82,6 @@
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private IExportExcelService FakeExportExcelService()
-        {
-            return Substitute.For<IExportExcelService>();
-        }
-
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
@@ -96,14 +89,12 @@
             paymentProcessService = FakePaymentProcessService();
             reportService = FakeReportService();
             hostingEnvironment = FakeHostingEnviroment();
-            exportExcelService = FakeExportExcelService();
 
             return new ReportController(
                 baseService,
                 sessionService,
                 paymentProcessService,
                 hostingEnvironment,
-                exportExcelService,
                 reportService);
         }
 

@@ -18,7 +18,6 @@
     {
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IReportService reportService;
-        private readonly IExportExcelService exportExcelService;
         private readonly IHostingEnvironment hostingEnvironment;
 
         public ReportController(
@@ -26,12 +25,10 @@
             ISessionService sessionService,
             IPaymentProcessService paymentProcessService,
             IHostingEnvironment hostingEnvironment,
-            IExportExcelService exportExcelService,
             IReportService reportService) : base(baseService, sessionService)
         {
             this.paymentProcessService = paymentProcessService;
             this.reportService = reportService;
-            this.exportExcelService = exportExcelService;
             this.hostingEnvironment = hostingEnvironment;
         }
 
@@ -48,20 +45,18 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> BankIn(BasicReportViewModel viewModel)
         {
-            exportExcelService.FileName = "4-KLBankAndCash";
-            exportExcelService.SheetName = "KL Bank & Cash";
+            var fileContent = await reportService.ExportBankInAsync(
+                viewModel.CompanyId,
+                viewModel.SelectedTime,
+                hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\4-KLBankAndCash.xlsx");
 
-            exportExcelService.InitializeWithTemplate(hostingEnvironment.ContentRootPath +
-                                                 "\\ExcelTemplates\\4-KLBankAndCash.xlsx");
-
-            var bankInRecords = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
-
-            exportExcelService.ExportWithTemplate(bankInRecords, HttpContext.Response);
-
-            return new EmptyResult();
+            return File(fileContent,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "4-KLBankAndCash.xlsx");
         }
 
         public async Task<IActionResult> BasicSalaryDirectBankingAndCash()

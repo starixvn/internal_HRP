@@ -15,6 +15,7 @@
     using NPOI.SS.UserModel;
     using NPOI.SS.Util;
     using NPOI.XSSF.UserModel;
+    using OfficeOpenXml;
 
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
@@ -391,5 +392,39 @@
                 sheet.AddMergedRegion(newRange);
             }
         }
+        
+        public byte[] ExportBankInReports(int companyId, DateTime selectedTime, FileInfo fileInfo, IEnumerable<BankIn> data)
+        {
+            using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
+            {
+                ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
+
+                // Set company name
+                worksheet.Cells["D2"].Value = data.First().CompanyName;
+
+                // Set month
+                worksheet.Cells["D3"].Value = selectedTime.ToString("M");
+
+                // Set values for each banks
+                var bankInDataGrouped = data.GroupBy(x => x.BankName);
+                var startRow = 12;
+                foreach (IGrouping<string, BankIn> bankIns in bankInDataGrouped)
+                {
+                    worksheet.Cells[startRow, 2].LoadFromCollectionFiltered(bankIns.ToList());
+
+                    // Create sumary row for a bank
+                    startRow = startRow + bankIns.Count();
+                    var summaryRow = worksheet.Cells[startRow, 2, startRow, 5];
+                    summaryRow.Merge = true;
+                    summaryRow.Value = "Total (RM) - " + bankIns.Key;
+
+                    worksheet.Cells[startRow, 6].FormulaR1C1 = $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow}C6)";
+
+                    startRow++;
+                }
+
+                return xlPackage.GetAsByteArray();
+            }
+
     }
 }
