@@ -125,7 +125,9 @@
                 },
                 success: function (data) {
                     $('#editItemModalContent').html(data);
-                    initValidationForm($('#editItemForm'));
+                    var $editItemForm = $('#editItemForm');
+                    initValidationForm($editItemForm);
+                    commonFunctions.disableEnterKeySubmit($editItemForm);
                     $('#editItemModal').modal('show');
                 },
                 error: commonFunctions.handleAjaxError
@@ -156,6 +158,7 @@
                     var $createForm = $('#createItemForm');
                     initSelect2($createForm, '100%');
                     initValidationForm($createForm);
+                    commonFunctions.disableEnterKeySubmit($createForm);
 
                     $(domElement.CreateItemModal).modal('show');
                 },

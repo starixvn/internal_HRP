@@ -113,6 +113,13 @@
         });
     }
 
+
+    function disableEnterKeySubmit($form) {
+        $form.find('input').on('keypress', function (e) {
+            return e.keyCode !== 13;
+        });
+    }
+
     function initModule() {
         rootURL = $('#RootURL').val();
     }
@@ -128,7 +135,9 @@
         initDatetimepicker: initDatetimepicker,
         getUrlParameter: getUrlParameter,
         registerEventGoBack: registerEventGoBack,
-        noDataOnTableMsg: noDataOnTableMsg
+        noDataOnTableMsg: noDataOnTableMsg,
+        disableEnterKeySubmit: disableEnterKeySubmit
+
     };
 }(jQuery));
 

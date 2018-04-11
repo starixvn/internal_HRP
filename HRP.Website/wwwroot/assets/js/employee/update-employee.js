@@ -38,6 +38,7 @@
         $form = $('#personalDetailsForm');
         commonFunctions.initDatetimepicker($form);
         commonFunctions.registerEventGoBack($form.find('.js-btnCancel'));
+        commonFunctions.disableEnterKeySubmit($form);
 
         if ($form.find('#IsHost').prop('checked')) {
             employeeCommonFuncs.initForm($form);
