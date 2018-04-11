@@ -367,7 +367,7 @@
             </div>
 
             <div class="group-title"><span class="icon-group"></span>@ViewLang.WorkPermit</div>
-            <label class="text -has-required" asp-for="WorkPermit.LocalCompanyId">@ViewLang.Company</label>
+            <label class="text" asp-for="WorkPermit.LocalCompanyId">@ViewLang.Company</label>
             <div class="group-control">
                 <select class="control width-206 js-select2 js-select2-hidesearchbox" asp-for="WorkPermit.LocalCompanyId"
                         asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
@@ -376,19 +376,19 @@
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
-                    <label class="text -has-required" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
+                    <label class="text" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
                     <select class="control js-select2 js-select2-hidesearchbox-hideplaceholder" asp-for="WorkPermit.Type1"
                             asp-items="@(new SelectList(Model.WorkPermitType1s, "ResourceId", "Value"))">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="component calendar">
-                    <label class="text -has-required" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
+                    <label class="text" asp-for="WorkPermit.StartDateType1">@ViewLang.StartDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.StartDateType1" data-mindate="@minDate" />
                     <span class="icon-calendar"></span>
                 </div>
                 <div class="component calendar">
-                    <label class="text -has-required" asp-for="WorkPermit.EndDateType1">@ViewLang.EndDate</label>
+                    <label class="text" asp-for="WorkPermit.EndDateType1">@ViewLang.EndDate</label>
                     <input type="text" class="control datetimepicker" asp-for="WorkPermit.EndDateType1" data-mindate="@minDate">
                     <span class="icon-calendar"></span>
                 </div>

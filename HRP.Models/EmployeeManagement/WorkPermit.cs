@@ -4,19 +4,15 @@
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
-    using HRP.Resources;
 
     [Serializable]
     public class WorkPermit
     {
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.CompanyRequired))]
         public int LocalCompanyId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.WorkPermitType1Required))]
         public int Type1 { get; set; }
 
         [DataType(DataType.Date)]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StartDateType1Required))]
         [GenericCompare(
             CompareToPropertyName = "EndDateType1",
             DisplayName = "Start Date Type1",
@@ -25,7 +21,6 @@
         public DateTime StartDateType1 { get; set; }
 
         [DataType(DataType.Date)]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EndDateType1Required))]
         public DateTime EndDateType1 { get; set; }
 
         public int? Type2 { get; set; }

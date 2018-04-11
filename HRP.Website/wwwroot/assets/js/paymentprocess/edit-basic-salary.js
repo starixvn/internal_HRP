@@ -13,12 +13,12 @@ var editBasicSalary = (function ($) {
         }
     });
 
-    BigNumber.prototype.roundAmount = function (currencyId) {
+    BigNumber.prototype.roundAmount = function (currencyId, decimals) {
         if (currencyId === '11') {
             return this.div(1000).round().mul(1000);
         }
 
-        return this.round(2);
+        return this.round(decimals);
     };
 
     BigNumber.prototype.toFixedAmount = function (currencyId) {
@@ -56,7 +56,7 @@ var editBasicSalary = (function ($) {
         if (hasValue) {
             var addition = totalAmount.round(maxDigit);
 
-            $('.js-addition-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+            $('.js-addition-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
             $('.js-addition-totalNetSalary').val(addition);
             monthlySalary = monthlySalary.plus(addition);
         } else {
@@ -64,7 +64,7 @@ var editBasicSalary = (function ($) {
             $('.js-addition-totalNetSalary').val('');
         }
 
-        monthlySalary = monthlySalary.roundAmount(currencySettingId).toFixedAmount(currencySettingId);
+        monthlySalary = monthlySalary.roundAmount(currencySettingId, 0);
         $('#MonthlySalary_Salary').val(monthlySalary);
         $('.js-totalNetSalary').val(monthlySalary);
         calculateMonthlyBasicSalary();
@@ -88,7 +88,7 @@ var editBasicSalary = (function ($) {
         if (hasValue) {
             var deduction = totalAmount.round(maxDigit);
 
-            $('.js-deduction-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+            $('.js-deduction-totalNetSalaryDisplay').val(totalAmount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
             $('.js-deduction-totalNetSalary').val(deduction);
             monthlySalary = monthlySalary.minus(deduction);
         } else {
@@ -96,7 +96,7 @@ var editBasicSalary = (function ($) {
             $('.js-deduction-totalNetSalary').val('');
         }
 
-        monthlySalary = monthlySalary.roundAmount(currencySettingId).toFixedAmount(currencySettingId);
+        monthlySalary = monthlySalary.roundAmount(currencySettingId, 0);
         $('#MonthlySalary_Salary').val(monthlySalary);
         $('.js-totalNetSalary').val(monthlySalary);
         calculateMonthlyBasicSalary();
@@ -130,8 +130,8 @@ var editBasicSalary = (function ($) {
 
         currencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val();
         exchangeRate = Number($('input[data-from-currency="' + currencySettingId + '"][data-to-currency="' + currencyId + '"]').val());
-        monthlySalary = monthlySalary.mul(exchangeRate).roundAmount(currencyId);
-        $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary.toFixed(2)).valid();
+        monthlySalary = monthlySalary.mul(exchangeRate).roundAmount(currencyId, 0);
+        $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary).valid();
     }
 
     function initSelect2() {
@@ -191,10 +191,10 @@ var editBasicSalary = (function ($) {
                     if (getNumber($relatedEl).length > 0) {
                         amount = amount.mul(noOfDays);
 
-                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
                         $netSalary.val(amount.round(maxDigit));
                     } else {
-                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
                         $netSalary.val(amount.round(maxDigit));
                     }
                 } else {
@@ -204,7 +204,7 @@ var editBasicSalary = (function ($) {
                     if (getNumber($relatedEl).length > 0) {
                         amount = amount.mul(unitAmount);
 
-                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
                         $netSalary.val(amount.round(maxDigit));
                     } else {
                         $netSalaryDisplay.val('');
@@ -220,7 +220,7 @@ var editBasicSalary = (function ($) {
                     unitAmount = new BigNumber(Number(getNumber($relatedEl)));
 
                     if (getNumber($relatedEl).length > 0) {
-                        $netSalaryDisplay.val(unitAmount.roundAmount(currencySettingId).toFixedAmount(currencySettingId));
+                        $netSalaryDisplay.val(unitAmount.roundAmount(currencySettingId, 2).toFixedAmount(currencySettingId));
                         $netSalary.val(unitAmount.round(maxDigit));
                     } else {
                         $netSalaryDisplay.val('');
@@ -248,7 +248,7 @@ var editBasicSalary = (function ($) {
                     amount = new BigNumber(Number(value));
                 }
 
-                $this.siblings('.js-deduction-netSalaryDisplay').val(amount.roundAmount(currencySettingId));
+                $this.siblings('.js-deduction-netSalaryDisplay').val(amount.roundAmount(currencySettingId, 2));
                 $this.siblings('.js-deduction-netSalary').val(amount.round(maxDigit));
             } else {
                 $this.siblings('.js-deduction-netSalaryDisplay').val('');
@@ -263,7 +263,6 @@ var editBasicSalary = (function ($) {
         $('.js-numberOnly').inputmask({
             alias: 'numeric',
             autoGroup: true,
-            digits: 2,
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,
@@ -366,7 +365,7 @@ var editBasicSalary = (function ($) {
     function displaySuccessMessageAndRedirectToAction(redirectTo) {
         var $element = $form.find('.js-updateSuccess'),
             $countDownElement = $element.find('.count-down');
-        var delay = 5;
+        var delay = 3;
         $element.removeClass('hidden');
 
         var intervalCountDown = setInterval(function () {
@@ -384,7 +383,7 @@ var editBasicSalary = (function ($) {
     function displayPresetSuccessMessage() {
         var $element = $form.find('.js-presetSuccess'),
             $countDownElement = $element.find('.count-down');
-        var delay = 5;
+        var delay = 3;
         $element.removeClass('hidden');
 
         var intervalCountDown = setInterval(function () {

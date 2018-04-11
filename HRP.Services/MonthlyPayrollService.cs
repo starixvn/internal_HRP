@@ -299,11 +299,11 @@
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value, 0);
                         basicSalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - directBanking1 - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.EbankingCurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.EbankingCurrencyId.Value, 0);
                         monthlySalary.EbankingAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -316,11 +316,11 @@
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value, 0);
                         basicSalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value, 0);
                         monthlySalary.DirectBanking1Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -333,11 +333,11 @@
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value, 0);
                         basicSalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value, 0);
                         monthlySalary.DirectBanking2Amount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -350,11 +350,11 @@
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value, 0);
                         basicSalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
 
                         amount = ConvertAmount(currencyExchangeRates, afterAdjustmentAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
-                        amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value);
+                        amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value, 0);
                         monthlySalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -362,7 +362,7 @@
             }
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
-            monthlySalary.Salary = (afterAdjustmentAmount + backPayAmount).ToString(CultureInfo.InvariantCulture);
+            monthlySalary.Salary = RoundAmountWithCurrency(afterAdjustmentAmount + backPayAmount, basicSalary.CurrencyId ?? 0, 0).ToString(CultureInfo.InvariantCulture);
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
@@ -874,7 +874,7 @@
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
-                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), 
+                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId),
                         directbanking2CurrencyId, 0);
                     monthlyPayrollBasicAllowance.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
                     break;
@@ -980,7 +980,7 @@
                 {
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
-                    amount = RoundAmountWithCurrency(amount, currencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId, 0);
                     basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
                     GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                 }
@@ -1014,9 +1014,9 @@
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * (monthDiff - 1));
 
-                    basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(newSalary, currencyId).ToString(CultureInfo.InvariantCulture);
+                    basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(newSalary, currencyId, 0).ToString(CultureInfo.InvariantCulture);
 
-                    amount = RoundAmountWithCurrency(amount, currencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId, 0);
                     backPay.UnitAmount = backPay.NetSalary = amount.ToString(CultureInfo.InvariantCulture);
                     backPay.Description = string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat));
                 }
@@ -1027,7 +1027,7 @@
                     int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
                     amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
-                    amount = RoundAmountWithCurrency(amount, currencyId);
+                    amount = RoundAmountWithCurrency(amount, currencyId, 0);
                     basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
                     GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
                 }
@@ -1050,7 +1050,7 @@
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
 
             decimal amount = newSalary / daysInMonth * (endDay - startDay + 1);
-            amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId ?? 0);
+            amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId ?? 0, 0);
             basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
             GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, amount);
         }
