@@ -796,7 +796,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   width: 50px;
 }
 
-.search-form .select2-container {
+.search-form select, .search-form .select2-container {
   min-width: 100px;
 }
 
