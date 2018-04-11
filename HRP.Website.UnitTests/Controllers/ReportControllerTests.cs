@@ -7,6 +7,7 @@
     using Models.Report;
     using NSubstitute;
     using Services;
+    using Services.Interfaces;
     using Website.Controllers;
     using Xunit;
 
@@ -17,6 +18,7 @@
         private IPaymentProcessService paymentProcessService;
         private IReportService reportService;
         private IHostingEnvironment hostingEnvironment;
+        private IExportExcelService exportExcelService;
 
         [Fact]
         public async Task BankIn_WhenCalled_ReturnExpectedView()
@@ -82,12 +84,18 @@
             return Substitute.For<IHostingEnvironment>();
         }
 
+        private IExportExcelService FakeExportExcelService()
+        {
+            return Substitute.For<IExportExcelService>();
+        }
+
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             paymentProcessService = FakePaymentProcessService();
             reportService = FakeReportService();
+            exportExcelService = FakeExportExcelService();
             hostingEnvironment = FakeHostingEnviroment();
 
             return new ReportController(
@@ -95,6 +103,7 @@
                 sessionService,
                 paymentProcessService,
                 hostingEnvironment,
+                exportExcelService,
                 reportService);
         }
 

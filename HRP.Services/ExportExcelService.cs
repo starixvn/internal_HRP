@@ -392,8 +392,9 @@
                 sheet.AddMergedRegion(newRange);
             }
         }
-        
-        public byte[] ExportBankInReports(int companyId, DateTime selectedTime, FileInfo fileInfo, IEnumerable<BankIn> data)
+
+        public byte[] ExportBankInReports(int companyId, DateTime selectedTime, FileInfo fileInfo,
+            IEnumerable<BankIn> data)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
@@ -418,13 +419,14 @@
                     summaryRow.Merge = true;
                     summaryRow.Value = "Total (RM) - " + bankIns.Key;
 
-                    worksheet.Cells[startRow, 6].FormulaR1C1 = $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow}C6)";
+                    worksheet.Cells[startRow, 6].FormulaR1C1 =
+                        $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow}C6)";
 
                     startRow++;
                 }
 
                 return xlPackage.GetAsByteArray();
             }
-
+        }
     }
 }
