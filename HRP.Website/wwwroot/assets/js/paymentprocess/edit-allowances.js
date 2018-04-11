@@ -18,6 +18,14 @@
         return this.toFixed(2);
     };
 
+    function validatedInvalidRelatedElements(element) {
+        var group = $(element).data('group');
+        var validateElements = $('.input-validation-error[data-group="' + group + '"]').not(element);
+        if (validateElements.length > 0) {
+            validateElements.valid();
+        }
+    }
+
     function calculateTotalAddition() {
         var totalAddition = new BigNumber(0);
         $('.addition.net-allowance').each(function (i, element) {
@@ -240,6 +248,7 @@
         }).change();
 
         $('.allowance-calculate').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
             calculateAutoAllowance();
         });
 
@@ -316,7 +325,10 @@
             calculateTotalNetAmount();
         });
 
-        $('#Allowance_DSTNetSalaryAmount, #Allowance_DSTNetSalaryCurrencyId').on('change', calculateTotalNetAmount);
+        $('#Allowance_DSTNetSalaryAmount, #Allowance_DSTNetSalaryCurrencyId').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
+            calculateTotalNetAmount();
+        });
     }
 
     function initModule() {

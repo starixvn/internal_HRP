@@ -398,23 +398,19 @@
         <div class="group-complex  -layout-setting ">
             <div class="text-specific">@ViewLang.TotalGross</div>
             <span class="currency">@Model.Allowance.CurrencyCode</span>
-            <input type="text" class="control number total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
+            <input type="text" class="control bank-amount-setting total-salary" disabled id="total-amount-display" value="@Model.Allowance.TotalAmount">
         </div>
         <div class="group-complex -layout-setting ">
             <div class="text-specific text-red">@ViewLang.DSTNetSalary</div>
-                
-                <input type="text" class="control bank-amount-setting text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" data-group="dst" />                </select>
-              
-                    <option></option>
-                </select>
-                <span class="currency">@Model.Currencies.FirstOrDefault(x => x.Value == Model.Allowance.DSTNetSalaryCurrencyId.ToString())?.Text</span>
-
-                    </span>*@
+            <select class="control select2" asp-items="Model.Currencies" asp-for="Allowance.DSTNetSalaryCurrencyId" data-group="dst">
+                <option></option>
+            </select>
+            <input type="text" class="control bank-amount-setting text-dst-net" asp-for="Allowance.DSTNetSalaryAmount" data-group="dst" />
         </div>
         <div class="group-complex -layout-setting">
             <div class="text-specific text-green">@ViewLang.NetAmount</div>
                 <span class="currency">@Model.Allowance.CurrencyCode</span>
-                <input type="text" class="control number text-net-amount" readonly asp-for="Allowance.TotalNetAmount" /> 
+                <input type="text" class="control bank-amount-setting text-net-amount" readonly asp-for="Allowance.TotalNetAmount" /> 
         </div>
         <div class="list-button">
             <a class="button -second"
