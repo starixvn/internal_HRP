@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using HRP.Core.Constants;
@@ -10,7 +11,9 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.Currency;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
@@ -63,6 +66,16 @@
            
             var result = await baseService.ExecuteNonQueryAsync(criteria);
             return Json(result);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
+        public async Task<IActionResult> IsPayrollExistedForCurrentMonth()
+        {
+            var result = await baseService.GetDataAsync<string>(new GetCompaniesHavePayrollForCurrentMonthCriteria());
+            var message = result.Any() ? string.Format(Message.UpdateCurrencySettingWarningMessage, string.Join(", ", result)) : string.Empty;
+
+            return Json(new { hasPayroll = result.Any(), message });
         }
     }
 }

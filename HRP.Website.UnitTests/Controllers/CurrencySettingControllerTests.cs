@@ -8,6 +8,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.Currency;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,34 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.True(commandResult.IsSuccessful);
+        }
+
+        [Fact]
+        public async Task IsPayrollExistedForCurrentMonth_PayrollExists_ReturnWarningMessage()
+        {
+            var controller = GetController();
+            baseService.GetDataAsync<string>(Arg.Any<GetCompaniesHavePayrollForCurrentMonthCriteria>()).Returns(new List<string> { "DAR" });
+
+            // Act
+            var actual = await controller.IsPayrollExistedForCurrentMonth();
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.False(string.IsNullOrEmpty(jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value).ToString()));
+        }
+
+        [Fact]
+        public async Task IsPayrollExistedForCurrentMonth_PayrollNotExist_ReturnEmptyMessage()
+        {
+            var controller = GetController();
+            baseService.GetDataAsync<string>(Arg.Any<GetCompaniesHavePayrollForCurrentMonthCriteria>()).Returns(new List<string>());
+
+            // Act
+            var actual = await controller.IsPayrollExistedForCurrentMonth();
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.True(string.IsNullOrEmpty(jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value).ToString()));
         }
 
         private static ISessionService FakeSessionService()

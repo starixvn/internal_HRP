@@ -1888,6 +1888,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The company {0} has been generated the Monthly Payroll with the last Currency setting. Any changes on Currency Setting that you&apos;ve just made will affect the data of above company. Please make sure that you really want to apply this changes and inform above company to re-generate the Monthly Payroll. Thank you..
+        /// </summary>
+        public static string UpdateCurrencySettingWarningMessage {
+            get {
+                return ResourceManager.GetString("UpdateCurrencySettingWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Payroll has been successfully updated. You will be redirected in 5 seconds..
         /// </summary>
         public static string UpdateEmployeePayrollSuccessfully {

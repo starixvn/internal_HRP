@@ -423,8 +423,9 @@
                asp-route-costCenterIds="@Model.Filter.CostCenterIds">@ViewLang.Cancel</a>
             @if (Model.CanEdit)
             {
-                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.Save" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
-                <button class="button -primary" type="submit" name="submitAction" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary" data-loading-text="@ViewLang.Saving ...">@ViewLang.SaveAndEditBasicSalary</button>
+                <button class="button -primary btn-submit" type="button" value="@EditMonthlyAllowanceAction.Save" data-loading-text="@ViewLang.Saving ...">@ViewLang.Save</button>
+                <button class="button -primary btn-submit" type="button" value="@EditMonthlyAllowanceAction.SaveAndEditBasicSalary" data-loading-text="@ViewLang.Saving ...">@ViewLang.SaveAndEditBasicSalary</button>
+                <input type="hidden" name="submitAction" />
             }
         </div>
     </div>

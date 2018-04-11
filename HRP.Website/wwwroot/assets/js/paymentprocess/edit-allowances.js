@@ -329,6 +329,11 @@
             validatedInvalidRelatedElements(e.target);
             calculateTotalNetAmount();
         });
+
+        $('.btn-submit', $editAllowanceForm).on('click', function () {
+            $('input[name="submitAction"]', $editAllowanceForm).val($(this).val());
+            $editAllowanceForm.submit();
+        });
     }
 
     function initModule() {
@@ -374,10 +379,10 @@
             $('#btn-yes').button('reset');
         },
         onUpdateBegin: function () {
-            $('button[name="submitAction"]', $editAllowanceForm).button('loading');
+            $('.btn-submit', $editAllowanceForm).button('loading');
         },
         onUpdateComplete: function () {
-            $('button[name="submitAction"]', $editAllowanceForm).button('reset');
+            $('.btn-submit', $editAllowanceForm).button('reset');
         },
         onUpdateSuccess: function (response) {
             if (response.isSuccessful) {

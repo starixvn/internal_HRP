@@ -30,6 +30,52 @@
         $(window).resize(resizeTableWrapper);
     }
 
+    function checkPayrollExistedForCurrentMonth() {
+        $.ajax({
+            type: 'GET',
+            url: commonFunctions.rootURL + 'CurrencySetting/IsPayrollExistedForCurrentMonth',
+            success: function (response) {
+                if (response.hasPayroll) {
+                    $('#modal #warning-message').text(response.message);
+                    $('#modal').modal('show');
+                } else {
+                    updateCurrencySetting();
+                }
+            },
+            error: commonFunctions.handleAjaxError
+        });
+    }
+
+    function updateCurrencySetting() {
+        var data = [];
+        $('.rate').each(function (index, e) {
+            var element = $(e);
+            data.push({
+                fromCurrencyId: element.data('from-currency'),
+                toCurrencyId: element.data('to-currency'),
+                exchangeRate: element.val()
+            });
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: commonFunctions.rootURL + 'CurrencySetting/Edit',
+            data: {
+                selectedTime: $("#SelectedTime").val(),
+                exchangeRates: data,
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', '#currency-form').val()
+            },
+            success: function (response) {
+                if (response.isSuccessful) {
+                    commonFunctions.showSuccessMessage($('.msg-success'));
+                } else {
+                    commonFunctions.showErrorMessage($('.msg-error'), response.Message);
+                }
+            },
+            error: commonFunctions.handleAjaxError
+        });
+    }
+
     function initModule() {
         var baseCurrency = Number($('#base-currency').val());
 
@@ -103,33 +149,12 @@
                 });
 
             $('#btn-save').on('click', function () {
-                var data = [];
-                $('.rate').each(function (index, e) {
-                    var element = $(e);
-                    data.push({
-                        fromCurrencyId: element.data('from-currency'),
-                        toCurrencyId: element.data('to-currency'),
-                        exchangeRate: element.val()
-                    });
-                });
+                checkPayrollExistedForCurrentMonth();
+            });
 
-                $.ajax({
-                    type: 'POST',
-                    url: commonFunctions.rootURL + 'CurrencySetting/Edit',
-                    data: {
-                        selectedTime: $("#SelectedTime").val(),
-                        exchangeRates: data,
-                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]', '#currency-form').val()
-                    },
-                    success: function (response) {
-                        if (response.isSuccessful) {
-                            commonFunctions.showSuccessMessage($('.msg-success'));
-                        } else {
-                            commonFunctions.showErrorMessage($('.msg-error'), response.Message);
-                        }
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
+            $('#btn-yes').on('click', function () {
+                updateCurrencySetting();
+                $('#modal').modal('hide');
             });
         }
 

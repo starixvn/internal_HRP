@@ -97,6 +97,27 @@
     <button id="btn-save" class="button -primary">@ViewLang.Save</button>
 }
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content -has-title">
+            <div class="modal-header">
+                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-information">
+                    <p id="warning-message"></p>
+                    <div class="list-button">
+                        <button class="button -primary" type="button" id="btn-yes">@ViewLang.Yes</button>
+                        <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
