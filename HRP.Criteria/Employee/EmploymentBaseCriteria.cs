@@ -48,13 +48,13 @@
 
         public virtual int OfficeId { get; set; }
 
-        public virtual int WorkPermitCompanyId { get; set; }
+        public virtual int? WorkPermitCompanyId { get; set; }
 
-        public virtual int Type1 { get; set; }
+        public virtual int? Type1 { get; set; }
 
-        public virtual DateTime StartDateType1 { get; set; }
+        public virtual DateTime? StartDateType1 { get; set; }
 
-        public virtual DateTime EndDateType1 { get; set; }
+        public virtual DateTime? EndDateType1 { get; set; }
 
         public virtual int? Type2 { get; set; }
 
@@ -143,8 +143,6 @@
             && CountryId > 0
             && CityId > 0
             && OfficeId > 0
-            && WorkPermitCompanyId > 0
-            && Type1 > 0
             && !string.IsNullOrWhiteSpace(JobTitle)
             && !string.IsNullOrWhiteSpace(EmployeeCode)
             && !string.IsNullOrWhiteSpace(Email)

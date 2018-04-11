@@ -167,10 +167,10 @@
             Assert.Null(actual.FullNamePFileAdmin);
             Assert.Null(actual.NicknamePFileAdmin);
             Assert.Null(actual.PDFPassword);
-            Assert.Equal(0, actual.WorkPermit.LocalCompanyId);
-            Assert.Equal(0, actual.WorkPermit.Type1);
-            Assert.Equal(DateTime.MinValue, actual.WorkPermit.StartDateType1);
-            Assert.Equal(DateTime.MinValue, actual.WorkPermit.EndDateType1);
+            Assert.Null(actual.WorkPermit.LocalCompanyId);
+            Assert.Null(actual.WorkPermit.Type1);
+            Assert.Null(actual.WorkPermit.StartDateType1);
+            Assert.Null(actual.WorkPermit.EndDateType1);
             Assert.Null(actual.WorkPermit.Type2);
             Assert.Null(actual.WorkPermit.StartDateType2);
             Assert.Null(actual.WorkPermit.EndDateType2);

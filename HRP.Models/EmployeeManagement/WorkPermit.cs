@@ -8,9 +8,9 @@
     [Serializable]
     public class WorkPermit
     {
-        public int LocalCompanyId { get; set; }
+        public int? LocalCompanyId { get; set; }
 
-        public int Type1 { get; set; }
+        public int? Type1 { get; set; }
 
         [DataType(DataType.Date)]
         [GenericCompare(
@@ -18,10 +18,10 @@
             DisplayName = "Start Date Type1",
             OtherPropertyDisplayName = "End Date Type1",
             Operator = GenericCompareOperator.LessThanOrEqual)]
-        public DateTime StartDateType1 { get; set; }
+        public DateTime? StartDateType1 { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime EndDateType1 { get; set; }
+        public DateTime? EndDateType1 { get; set; }
 
         public int? Type2 { get; set; }
 

@@ -1,6 +1,8 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
+    using System.IO;
+    using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
@@ -9,9 +11,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
     using Services;
-    using System.Threading.Tasks;
-    using System.IO;
-    using Services.Interfaces;
 
     [HRPAuthorize]
     public class ReportController : BaseController
