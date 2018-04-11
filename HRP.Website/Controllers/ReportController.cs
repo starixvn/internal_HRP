@@ -7,6 +7,7 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
+    using HRP.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
