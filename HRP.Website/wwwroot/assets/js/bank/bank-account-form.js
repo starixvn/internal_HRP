@@ -25,6 +25,9 @@ var bankAccountForm = {
     },
 
     handleFormSubmittedInModal: function() {
+
+        commonFunctions.disableEnterKeySubmit($(".bank-account-form"));
+
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
 
         if (isModal) {
