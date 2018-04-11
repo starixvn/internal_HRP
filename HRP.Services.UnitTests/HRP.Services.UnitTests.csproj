@@ -265,6 +265,7 @@
     <Compile Include="PayslipServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefResourceServiceTests.cs" />
+    <Compile Include="ReportServiceTests.cs" />
     <Compile Include="TemplateReaderTests.cs" />
     <Compile Include="TwoFactorAuthenticationServiceTests.cs" />
     <Compile Include="UserServiceTests.cs" />

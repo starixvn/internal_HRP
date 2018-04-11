@@ -2,13 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Core.Services;
     using Criteria.Report;
     using Models.Report;
 
-    [ExcludeFromCodeCoverage]
     public class ReportService : IReportService
     {
         private readonly IBaseService baseService;
