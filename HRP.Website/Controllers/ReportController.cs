@@ -21,6 +21,8 @@
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
 
+        private const string EXCEL_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
         public ReportController(
             IBaseService baseService,
             ISessionService sessionService,
@@ -57,9 +59,7 @@
                 viewModel.SelectedTime,
                 hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\4-KLBankAndCash.xlsx");
 
-            return File(fileContent,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "4-KLBankAndCash.xlsx");
+            return File(fileContent, EXCEL_CONTENT_TYPE, "4-KLBankAndCash.xlsx");
         }
 
         public async Task<IActionResult> BasicSalaryDirectBankingAndCash()

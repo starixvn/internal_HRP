@@ -41,7 +41,7 @@
 
             foreach (BankIn bankIn in bankInData)
             {
-                bankIn.Salary = cryptoService.Decrypt(bankIn.Salary);
+                bankIn.SalaryDecrypted = float.Parse(cryptoService.Decrypt(bankIn.Salary));
             }
 
             FileInfo fileInfo = new FileInfo(templateFileString);

@@ -393,7 +393,10 @@
             }
         }
 
-        public byte[] ExportBankInReports(int companyId, DateTime selectedTime, FileInfo fileInfo,
+        public byte[] ExportBankInReports(
+            int companyId,
+            DateTime selectedTime,
+            FileInfo fileInfo,
             IEnumerable<BankIn> data)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
@@ -408,7 +411,7 @@
 
                 // Set values for each banks
                 var bankInDataGrouped = data.GroupBy(x => x.BankName);
-                var startRow = 12;
+                var startRow = 10;
                 foreach (IGrouping<string, BankIn> bankIns in bankInDataGrouped)
                 {
                     worksheet.Cells[startRow, 2].LoadFromCollectionFiltered(bankIns.ToList());
@@ -420,7 +423,7 @@
                     summaryRow.Value = "Total (RM) - " + bankIns.Key;
 
                     worksheet.Cells[startRow, 6].FormulaR1C1 =
-                        $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow}C6)";
+                        $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow - 1}C6)";
 
                     startRow++;
                 }

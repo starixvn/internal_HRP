@@ -12,6 +12,9 @@
 
         public string AccountNumber { get; set; }
 
+        public float SalaryDecrypted { get; set; }
+
+        [EpplusIgnore]
         public string Salary { get; set; }
 
         [EpplusIgnore]
