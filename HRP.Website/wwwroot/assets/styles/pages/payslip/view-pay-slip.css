@@ -768,7 +768,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 .-send-payslip {
   height: 20px;
   line-height: 20px;
-  padding: 0 4px;
+  padding: 0 8px;
   font-size: 13px;
 }
 
