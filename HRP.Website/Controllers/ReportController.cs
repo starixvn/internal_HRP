@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
@@ -20,8 +21,6 @@
         private readonly IReportService reportService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
-
-        private const string EXCEL_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
         public ReportController(
             IBaseService baseService,
@@ -56,13 +55,19 @@
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
             FileInfo fileInfo = new FileInfo(hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\BankIn.xlsx");
+            FileContentResult result = null;
 
-            var fileContent = exportExcelService.ExportBankInReports(
+            if (bankInData.Any())
+            {
+                var fileContent = exportExcelService.ExportBankInReports(
                     viewModel.SelectedTime,
                     fileInfo,
                     bankInData);
 
-            return File(fileContent, EXCEL_CONTENT_TYPE, $"BankIn {viewModel.SelectedTime.ToString("MMMM yyyy")}.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"BankIn {viewModel.SelectedTime.ToString("MMMM yyyy")}.xlsx");
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> BasicSalaryDirectBankingAndCash()
