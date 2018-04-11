@@ -40,8 +40,7 @@
     </environment>
 }
 
-<form class="search-form" asp-action="BankIn" asp-controller="Report" method="post">
-    @Html.AntiForgeryToken()
+<form class="search-form" asp-action="GetBankInReport" asp-controller="Report" method="get">
     <div class="group">
         <label asp-for="CompanyId" class="text"></label>
         <select asp-for="CompanyId" asp-items="Model.Companies" class="control js-select2"></select>

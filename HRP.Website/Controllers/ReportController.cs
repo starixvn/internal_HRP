@@ -48,9 +48,8 @@
             return View(viewModel);
         }
 
-        [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> BankIn(BasicReportViewModel viewModel)
+        public async Task<IActionResult> GetBankInReport(BasicReportViewModel viewModel)
         {
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
@@ -64,7 +63,7 @@
                     fileInfo,
                     bankInData);
 
-                result = File(fileContent, MimeType.XLSX, $"BankIn {viewModel.SelectedTime.ToString("MMMM yyyy")}.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"BankIn {viewModel.SelectedTime:MMMM yyyy}.xlsx");
             }
 
             return result;

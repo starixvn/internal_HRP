@@ -1,5 +1,7 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Core.Services;
     using Microsoft.AspNetCore.Hosting;
@@ -33,6 +35,51 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<BasicReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
+        }
+
+        [Fact]
+        public async Task GetBankInReport_InValidParams_ReturnNull()
+        {
+            //Arrage
+            var bankInReportViewModel = new BasicReportViewModel
+            {
+                CompanyId = 0,
+                SelectedTime = DateTime.Now
+            };
+
+            var reportController = GetReportController();
+
+            //Act
+            var actual = await reportController.GetBankInReport(bankInReportViewModel);
+
+            //Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task GetBankInReport_ValidParams_ReturnNull()
+        {
+            //Arrage
+            var bankInReportViewModel = new BasicReportViewModel
+            {
+                CompanyId = 1,
+                SelectedTime = DateTime.Now
+            };
+
+            var bankInData = new List<BankIn>
+            {
+                new BankIn { Salary = "1" },
+                new BankIn { Salary = "1" },
+            };
+
+            var reportController = GetReportController();
+            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(bankInData);
+
+            //Act
+            var actual = await reportController.GetBankInReport(bankInReportViewModel);
+
+            //Assert
+            Assert.IsType<FileContentResult>(actual);
         }
 
         [Fact]
