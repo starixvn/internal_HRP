@@ -59,11 +59,11 @@
 
                 criteria = GetBaseCriteria();
                 criteria.BankBranch = string.Empty;
-                data.Add(TheoryDatum.Factory(criteria, false));
+                data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = GetBaseCriteria();
                 criteria.BankAddress = string.Empty;
-                data.Add(TheoryDatum.Factory(criteria, false));
+                data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = GetBaseCriteria();
                 criteria.BankSwiftCode = string.Empty;
