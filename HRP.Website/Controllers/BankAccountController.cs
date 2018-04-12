@@ -5,12 +5,12 @@
     using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
+    using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Core.Model;
     using Microsoft.AspNetCore.Mvc;
-    using Models;
     using Models.BankAccount;
+    using Models;
     using Services;
 
     [HRPAuthorize]

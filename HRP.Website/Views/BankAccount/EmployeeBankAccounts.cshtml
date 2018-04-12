@@ -113,12 +113,10 @@
     <tbody>
         @if (Model?.BankAccounts != null && Model.BankAccounts.Any())
         {
-            var index = 0;
             foreach (BankAccount bankAccount in Model.BankAccounts)
             {
-                index++;
                 <tr>
-                    <td class="text-center">@(index + 1)</td>
+                    <td class="text-center"></td>
                     <td>@bankAccount.BankTypeName</td>
                     <td>@bankAccount.AccountName</td>
                     <td>@bankAccount.AccountNumber</td>
