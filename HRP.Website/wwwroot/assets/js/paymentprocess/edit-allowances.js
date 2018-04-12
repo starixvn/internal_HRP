@@ -33,7 +33,7 @@
         });
 
         $("#total-addition").val(totalAddition.toString());
-        $("#total-addition-display").val(totalAddition.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
+        $("#total-addition-display").val(totalAddition.roundWithCurrency(0, totalAmountCurrencyId).toString());
     };
 
     function calculateTotalDeduction() {
@@ -43,7 +43,7 @@
         });
 
         $("#total-deduction").val(totalDeduction.toString());
-        $("#total-deduction-display").val(totalDeduction.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
+        $("#total-deduction-display").val(totalDeduction.roundWithCurrency(0, totalAmountCurrencyId).toString());
     };
 
     function calculateTotalAmount() {
@@ -116,7 +116,7 @@
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, .net-allowance-display, #total-addition-display, #total-deduction-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount')
+        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount')
             .inputmask({
                 alias: 'numeric',
                 autoGroup: true,
@@ -128,7 +128,7 @@
                 removeMaskOnSubmit: true,
             })
 
-        $('.bank-amount-setting').inputmask({
+        $('.bank-amount-setting, .net-allowance-display, #total-addition-display, #total-deduction-display').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 0,
@@ -235,6 +235,12 @@
     }
 
     function initEvents() {
+        $('.bank-amount-setting:enabled:not([readonly])').on('keydown', function (e) {
+            if (e.keyCode == 189) {
+                e.preventDefault();
+            }
+        });
+
         $('.bank-type-select').on('change', function (e) {
             $(this).siblings('.bank-account-select').val('').trigger('change.select2');
         });
@@ -302,7 +308,7 @@
                     var exchangeRates = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
                     var netAllowance = totalAmount.mul(exchangeRates);
                     $netAllowance.val(netAllowance.toString());
-                    $netAllowanceDisplay.val(netAllowance.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId));
+                    $netAllowanceDisplay.val(netAllowance.roundWithCurrency(0, totalAmountCurrencyId).toString());
                 } else {
                     $netAllowance.val('')
                     $netAllowanceDisplay.val('');

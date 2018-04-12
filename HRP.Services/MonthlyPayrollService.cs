@@ -687,7 +687,7 @@
                 {
                     if (!string.IsNullOrEmpty(addition.NetAllowance))
                     {
-                        addition.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(addition.NetAllowance), addition.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                        addition.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(addition.NetAllowance), addition.CurrencyId.Value, 0).ToString(CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(addition.TotalAmount))
@@ -710,7 +710,7 @@
                 {
                     if (!string.IsNullOrEmpty(deduction.NetAllowance))
                     {
-                        deduction.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(deduction.NetAllowance), deduction.CurrencyId.Value).ToString(CultureInfo.InvariantCulture);
+                        deduction.NetAllowanceToDisplay = RoundAmountWithCurrency(decimal.Parse(deduction.NetAllowance), deduction.CurrencyId.Value, 0).ToString(CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(deduction.TotalAmount))
