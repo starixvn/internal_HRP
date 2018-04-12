@@ -61,7 +61,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Name.
+        ///   Looks up a localized string similar to Payment Transaction.
         /// </summary>
         public static string AccountName {
             get {

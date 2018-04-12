@@ -550,7 +550,7 @@
     <value>Bank Name</value>
   </data>
   <data name="AccountName" xml:space="preserve">
-    <value>Account Name</value>
+    <value>Payment Transaction</value>
   </data>
   <data name="AccountNumber" xml:space="preserve">
     <value>Account Number</value>
