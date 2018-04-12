@@ -1,11 +1,44 @@
 var bankAccountForm = {
     init: function () {
         bankAccountForm.addRequiredIfRelatedFieldIsTrueClientValidation();
+        bankAccountForm.toggleRequiredMarkOnBankTypeChanged();
         bankAccountForm.handleFormSubmittedInModal();
         bankAccountForm.removeBackdropOnModalHide();
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
+    },
+
+    checkIfRequired: function (desiredvalue, relatedFieldName) {
+        desiredvalue = (desiredvalue == null ? '' : desiredvalue).toString();
+        var controlType = $("input[id$='" + relatedFieldName + "']").attr("type");
+        var actualvalue = {}
+        if (controlType == "checkbox" || controlType == "radio") {
+            var control = $("input[id$='" + relatedFieldName + "']:checked");
+            actualvalue = control.val();
+        } else {
+            actualvalue = $("#" + relatedFieldName).val();
+        }
+
+        return $.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()
+    },
+
+    toggleRequiredMarkOnBankTypeChanged: function () {
+        $(".bank-account-form").on("change", "#BankTypeId", function () {
+            $("[data-val-requiredifrelatedfieldistrue]").each(function () {
+                var desiredValue = $(this).data("val-requiredifrelatedfieldistrue-desiredvalue");
+                var relatedFieldName = $(this).data("val-requiredifrelatedfieldistrue-relatedfieldname");
+                var labelFor = $(this).attr("name");
+
+                if (bankAccountForm.checkIfRequired(desiredValue, relatedFieldName)) {
+                    $("label[for='" + labelFor + "']").addClass("text -has-required");
+                } else {
+                    $("label[for='" + labelFor + "']").removeClass("text -has-required");
+                }
+            });
+        });
+
+        $("#BankTypeId").trigger("change");
     },
 
     addRequiredIfRelatedFieldIsTrueClientValidation: function () {
@@ -20,10 +53,12 @@ var bankAccountForm = {
             } else {
                 actualvalue = $("#" + parameters.relatedfieldname).val();
             }
+
             if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()) {
                 var isValid = $.validator.methods.required.call(this, value, element, parameters);
                 return isValid;
             }
+
             return true;
         });
 

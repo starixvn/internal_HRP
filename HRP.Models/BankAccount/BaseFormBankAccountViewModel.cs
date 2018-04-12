@@ -35,7 +35,6 @@
             DesiredValue = 1,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(500, ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankAddress { get; set; }
@@ -46,7 +45,6 @@
             DesiredValue = 1,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(70, ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankBranch { get; set; }

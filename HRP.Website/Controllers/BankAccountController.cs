@@ -206,8 +206,6 @@
                 viewModel.BankTypeId = 1;
             }
 
-            ////viewModel.IsBankAddressAndBankBranchRequired = viewModel.BankTypeId == 1;
-
             // TODO: disable over limit bank types (or change spec)
 
             var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
