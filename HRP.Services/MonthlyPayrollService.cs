@@ -581,7 +581,7 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value, 0);
+            var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyId.Value);
 
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
             var amount = afterAdjustmentAmount - totalAmount;

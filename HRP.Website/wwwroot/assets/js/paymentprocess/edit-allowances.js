@@ -116,7 +116,7 @@
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount')
+        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmount')
             .inputmask({
                 alias: 'numeric',
                 autoGroup: true,
