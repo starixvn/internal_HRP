@@ -33,15 +33,15 @@
                 return false;
             }
 
-            if (string.IsNullOrEmpty(BankBranch))
-            {
-                return false;
-            }
+            ////if (string.IsNullOrEmpty(BankBranch))
+            ////{
+            ////    return false;
+            ////}
 
-            if (string.IsNullOrEmpty(BankAddress))
-            {
-                return false;
-            }
+            ////if (string.IsNullOrEmpty(BankAddress))
+            ////{
+            ////    return false;
+            ////}
 
             if (string.IsNullOrEmpty(AccountName))
             {

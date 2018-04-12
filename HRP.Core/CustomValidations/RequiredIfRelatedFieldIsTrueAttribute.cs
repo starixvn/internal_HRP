@@ -19,10 +19,9 @@
             Type type = instance.GetType();
             object proprtyvalue = type.GetProperty(RelatedFieldName)?.GetValue(instance, null);
 
-            if (proprtyvalue?.ToString() == DesiredValue.ToString())
+            if (proprtyvalue?.ToString() == DesiredValue.ToString() && value == null)
             {
-                ValidationResult result = base.IsValid(value, validationContext);
-                return result;
+                return new ValidationResult(GetErrorMessage(validationContext.DisplayName));
             }
 
             return ValidationResult.Success;
