@@ -77,9 +77,13 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateBankAccount(int employeeId)
+        public async Task<IActionResult> CreateBankAccount(int employeeId, int bankTypeId = 1)
         {
-            var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
+            var viewModel = new CreateBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankTypeId
+            };
 
             await PrepareCreateBankAccountViewModel(viewModel);
 
@@ -127,9 +131,14 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, int bankType)
         {
-            var viewModel = new CreateBankAccountViewModel { EmployeeId = employeeId };
+            var viewModel = new CreateBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankType
+            };
 
-            await PrepareCreateBankAccountViewModel(viewModel, bankType);
+            await PrepareCreateBankAccountViewModel(viewModel);
+
             return PartialView("_CreateBankAccountInPayroll", viewModel);
         }
 
@@ -184,12 +193,20 @@
             return View(viewModel);
         }
 
-        private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel, int selectedBankType = 1)
+        private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel)
         {
             Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
 
             viewModel.NickName = employee.NickName;
-            viewModel.BankTypeId = selectedBankType;
+
+            if (viewModel.BankTypeId == default(int))
+            {
+                // 1: e-Banking: Branch and Address are required.
+                // 2: Direct Banking: Branch and Address are NOT required.
+                viewModel.BankTypeId = 1;
+            }
+
+            ////viewModel.IsBankAddressAndBankBranchRequired = viewModel.BankTypeId == 1;
 
             // TODO: disable over limit bank types (or change spec)
 

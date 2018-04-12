@@ -1,5 +1,6 @@
 var bankAccountForm = {
-    init: function() {
+    init: function () {
+        bankAccountForm.addRequiredIfRelatedFieldIsTrueClientValidation();
         bankAccountForm.handleFormSubmittedInModal();
         bankAccountForm.removeBackdropOnModalHide();
         bankAccountForm.handleFormSuccessed();
@@ -7,24 +8,57 @@ var bankAccountForm = {
         bankAccountForm.mutationObserve();
     },
 
-    removeBackdropOnModalHide: function(){
-        $("#dynamic-modals").on("hidden.bs.modal",
-        ".modal",
-        function() {
-            $(this).remove();
-            $(".modal-backdrop").remove();
+    addRequiredIfRelatedFieldIsTrueClientValidation: function () {
+        $.validator.addMethod('requiredifrelatedfieldistrue', function (value, element, parameters) {
+            var desiredvalue = parameters.desiredvalue;
+            desiredvalue = (desiredvalue == null ? '' : desiredvalue).toString();
+            var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr("type");
+            var actualvalue = {}
+            if (controlType == "checkbox" || controlType == "radio") {
+                var control = $("input[id$='" + parameters.relatedfieldname + "']:checked");
+                actualvalue = control.val();
+            } else {
+                actualvalue = $("#" + parameters.relatedfieldname).val();
+            }
+            if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()) {
+                var isValid = $.validator.methods.required.call(this, value, element, parameters);
+                return isValid;
+            }
+            return true;
         });
+
+        $.validator.unobtrusive.adapters.add('requiredifrelatedfieldistrue', ["relatedfieldname", "desiredvalue"], function (options) {
+            options.rules['requiredifrelatedfieldistrue'] = options.params;
+            options.messages['requiredifrelatedfieldistrue'] = options.message;
+        });
+
+        bankAccountForm.reinitValidation($(".bank-account-form"));
     },
 
-    resetFormClientValidation: function(){
+    reinitValidation: function ($form) {
+        $form.removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($form);
+        $form.validate();
+    },
+
+    removeBackdropOnModalHide: function () {
+        $("#dynamic-modals").on("hidden.bs.modal",
+            ".modal",
+            function () {
+                $(this).remove();
+                $(".modal-backdrop").remove();
+            });
+    },
+
+    resetFormClientValidation: function () {
         var form = $("#dynamic-modals form")
-        .removeData("validator") /* added by the raw jquery.validate plugin */
-        .removeData("unobtrusiveValidation"); /* added by the jquery unobtrusive plugin*/
+            .removeData("validator") /* added by the raw jquery.validate plugin */
+            .removeData("unobtrusiveValidation"); /* added by the jquery unobtrusive plugin*/
 
         $.validator.unobtrusive.parse(form);
     },
 
-    handleFormSubmittedInModal: function() {
+    handleFormSubmittedInModal: function () {
 
         commonFunctions.disableEnterKeySubmit($(".bank-account-form"));
 
@@ -33,7 +67,7 @@ var bankAccountForm = {
         if (isModal) {
             $(".modal-bank-account-form").on("submit",
                 "form",
-                function(e) {
+                function (e) {
                     e.preventDefault();
 
                     $.validator.unobtrusive.parse($(this));
@@ -43,7 +77,7 @@ var bankAccountForm = {
                         url: $(this).attr("action"),
                         method: $(this).attr("method"),
                         data: $(this).serialize(),
-                        success: function(result) {
+                        success: function (result) {
                             $(".modal-bank-account-form").modal("hide");
                             $("#dynamic-modals").html(result);
 
@@ -63,7 +97,7 @@ var bankAccountForm = {
         }
     },
 
-    handleFormSuccessed: function() {
+    handleFormSuccessed: function () {
         var isSuccessful = $("#is-successful").val();
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
         if (isSuccessful) {
@@ -71,7 +105,7 @@ var bankAccountForm = {
 
             setInterval(bankAccountForm.countdown, 1000);
 
-            setTimeout(function() {
+            setTimeout(function () {
                     if (isModal) {
                         $(".bank-account-form").closest(".modal").modal("hide");
                     } else {
@@ -87,18 +121,21 @@ var bankAccountForm = {
         }
     },
 
-    config: { attributes: true, childList: true },
+    config: {
+        attributes: true,
+        childList: true
+    },
 
     waitTime: 5000,
 
     countTimeInSeconds: 5,
 
-    mutationObserve: function() {
+    mutationObserve: function () {
         var targetNode = $(".bank-account-form")[0];
 
         // Callback function to execute when mutations are observed
-        var callback = function(mutationsList) {
-            mutationsList.forEach(function(object) {
+        var callback = function (mutationsList) {
+            mutationsList.forEach(function (object) {
                 if (object.type === "childList" || object.type === "attributes") {
                     bankAccountForm.checkFormError();
                 }
@@ -114,7 +151,7 @@ var bankAccountForm = {
         }
     },
 
-    checkFormError: function() {
+    checkFormError: function () {
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
             $(".bank-account-form .list-message-error").addClass("hidden");
@@ -123,7 +160,7 @@ var bankAccountForm = {
         }
     },
 
-    countdown: function() {
+    countdown: function () {
         bankAccountForm.countTimeInSeconds = bankAccountForm.countTimeInSeconds - 1;
         if (bankAccountForm.countTimeInSeconds <= 0) {
             clearInterval(bankAccountForm.countdown);
@@ -133,7 +170,7 @@ var bankAccountForm = {
         $(".bank-account-form .count-down-remaining").text(bankAccountForm.countTimeInSeconds);
     },
 
-    disableForm: function() {
+    disableForm: function () {
         $(".bank-account-form :input").attr("disabled", true).addClass("disabled");
         $(".bank-account-form button").attr("disabled", true).addClass("disabled");
         $(".bank-account-form .button").attr("disabled", true).addClass("disabled");

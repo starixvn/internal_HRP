@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Core.CustomValidations;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
@@ -12,44 +13,66 @@
         public string NickName { get; set; }
 
         [Display(Name = nameof(ViewLang.AccountName), ResourceType = typeof(ViewLang))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string AccountName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.AccountNumber))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(30, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.TypeOfAccount))]
         public int AccountTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankAddress))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [RequiredIfRelatedFieldIsTrue(
+            RelatedFieldName = nameof(BankTypeId),
+            DesiredValue = 1,
+            ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankAddress { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankBranch))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [RequiredIfRelatedFieldIsTrue(
+            RelatedFieldName = nameof(BankTypeId),
+            DesiredValue = 1,
+            ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        ////[Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankBranch { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankName))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         public string BankName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SwiftCode))]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [StringLength(15, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankSwiftCode { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankType))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         public int BankTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BeneficiaryName))]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
+        [StringLength(70, ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BeneficiaryName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.Active))]
@@ -68,6 +91,8 @@
             nameof(ReferenceResourceModel.Value));
 
         public bool HaveHostPermission { get; set; }
+
+        ////public bool IsBankAddressAndBankBranchRequired { get; set; }
 
         public IEnumerable<ReferenceResourceModel> BankTypeResources { get; set; }
 
