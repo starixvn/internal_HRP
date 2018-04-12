@@ -4,32 +4,37 @@ body {
 }
 
 .employee-info {
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
 }
 
-.employee-info .col {
-  padding: 6px;
+.employee-info .company-name {
+  font-size: 18px;
+  color: #1973b2;
+  font-weight: bold;
 }
 
-.employee-info .col .row {
-  padding: 2px 0;
+.employee-info > * {
+  margin-bottom: 4px;
 }
 
-.employee-info .col .row .red {
-  font-weight: normal;
+.employee-info .payslip-title :nth-child(1), .employee-info .payslip-title :nth-child(2) {
+  text-transform: uppercase;
 }
 
-.employee-info .col .main-info {
-  display: flex;
+.employee-info .payslip-title :nth-child(1) {
+  font-size: 16px;
 }
 
-.employee-info .col .main-info .name {
-  margin-right: 5px;
+.employee-info .payslip-title :nth-child(3) {
+  font-size: 15px;
 }
 
-.employee-info .col .main-info .id {
-  margin-right: 28px;
+.employee-info .tbl-main-info {
+  margin: 0 auto 8px;
+}
+
+.employee-info .tbl-main-info tbody tr td {
+  text-align: left;
 }
 
 .bold {

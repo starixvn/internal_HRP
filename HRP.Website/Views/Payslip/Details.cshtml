@@ -18,14 +18,20 @@
 <body>
     <div class="container">
         <div class="employee-info">
-            <div class="col">
-                <div class="row">@Model.CompanyName</div>
-                <div class="row bold">@ViewLang.Payslip <span class="red">(@ViewLang.Confidential)</span> @Html.DisplayFor(x => x.Month)</div>
-            </div>
-            <div class="col">
-                <div class="row main-info"><div class="name">@ViewLang.EmployeeName:</div><div class="bold">@Model.FullName</div></div>
-                <div class="row main-info"><div class="id">@ViewLang.IDNo:</div><div class="bold">@Model.IDNo</div></div>
-            </div>
+            <div class="company-name">@Model.CompanyName</div>
+            <div class="payslip-title"><div class="bold">@ViewLang.Payslip</div><div class="red bold">(@ViewLang.Confidential)</div><div class="bold">@Html.DisplayFor(x => x.Month)</div></div> 
+            <table class="tbl-main-info">
+                <tbody>
+                    <tr>
+                        <td>@ViewLang.EmployeeName:</td>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <td>@ViewLang.IDNo:</td>
+                        <td>@Model.IDNo</td>
+                    </tr>
+                </tbody>
+            </table>            
         </div>
         <div class="payslip-detail">
             <div class="detail-section">

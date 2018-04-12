@@ -7,32 +7,37 @@ body {
 }
 
 .employee-info {
-    display: flex;
-    justify-content: space-between;
+    text-align: center;
 
-    .col {
-        padding: 6px;
+    .company-name {
+        font-size: 18px;
+        color: #1973b2;
+        font-weight: bold;
+    }
 
-        .row {
-            padding: 2px 0;
+    > * {
+        margin-bottom: 4px;
+    }
 
-            .red {
-                font-weight: normal;
-            }
+    .payslip-title {
+        :nth-child(1), :nth-child(2){
+            text-transform: uppercase;
         }
-
-        .main-info {
-            display: flex;
-
-            .name {
-                margin-right: 5px;
-            }
-
-            .id {
-                margin-right: 28px;
-            }
+        :nth-child(1) {
+            font-size: 16px;
+        }
+        :nth-child(3) {
+            font-size: 15px;
         }
     }
+
+    .tbl-main-info {
+        margin: 0 auto 8px;
+        tbody tr td {
+            text-align: left;
+        }
+    }
+
 }
 
 .bold {
