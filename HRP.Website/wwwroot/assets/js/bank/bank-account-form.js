@@ -31,9 +31,9 @@ var bankAccountForm = {
                 var labelFor = $(this).attr("name");
 
                 if (bankAccountForm.checkIfRequired(desiredValue, relatedFieldName)) {
-                    $("label[for='" + labelFor + "']").addClass("text -has-required");
+                    $("label[for='" + labelFor + "']").addClass("-has-required");
                 } else {
-                    $("label[for='" + labelFor + "']").removeClass("text -has-required");
+                    $("label[for='" + labelFor + "']").removeClass("-has-required");
                 }
             });
         });
