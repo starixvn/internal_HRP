@@ -91,5 +91,30 @@
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public async Task<IActionResult> GenerateReport()
+        {
+            var viewModel = new GenerateReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                Companies = await reportService.GetCompanySelectListAsync()
+            };
+
+            return View("GenerateReport", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HttpPost]
+        public async Task<IActionResult> GenerateReport(GenerateReportViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return Content("ahihi");
+            }
+
+            viewModel.Companies = await reportService.GetCompanySelectListAsync();
+            return View("GenerateReport", viewModel);
+        }
     }
 }

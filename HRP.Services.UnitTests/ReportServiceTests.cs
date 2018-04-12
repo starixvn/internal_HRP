@@ -12,6 +12,7 @@
     public class ReportServiceTests
     {
         private IBaseService baseService;
+        private ISessionService sessionService;
         private ICryptoService cryptoService;
 
         [Fact]
@@ -64,14 +65,20 @@
             return Substitute.For<ICryptoService>();
         }
 
+        private static ISessionService FakeSessionService()
+        {
+            return Substitute.For<ISessionService>();
+        }
+
         private ReportService GetReportService()
         {
             baseService = FakeBaseService();
             cryptoService = FakeCryptoService();
+            sessionService = FakeSessionService();
 
-            return new ReportService(baseService, cryptoService);
+            return new ReportService(baseService, sessionService, cryptoService);
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

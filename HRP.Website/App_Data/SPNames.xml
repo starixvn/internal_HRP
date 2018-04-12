@@ -179,5 +179,6 @@
   </Function>
   <Function Name="Report">
     <Setting Key="Report_GetBankInByMonthAndCompanyId" SpName="Report_GetBankInByMonthAndCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetDataForDynamicReport" SpName="Report_GetDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

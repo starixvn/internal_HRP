@@ -5,16 +5,22 @@
     using System.Threading.Tasks;
     using Core.Services;
     using Criteria.Report;
+    using HRP.Core.Constants;
+    using HRP.Criteria;
+    using HRP.Models;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.Report;
 
     public class ReportService : IReportService
     {
         private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
 
-        public ReportService(IBaseService baseService, ICryptoService cryptoService)
+        public ReportService(IBaseService baseService, ISessionService sessionService, ICryptoService cryptoService)
         {
             this.baseService = baseService;
+            this.sessionService = sessionService;
             this.cryptoService = cryptoService;
         }
 
@@ -34,6 +40,38 @@
             }
 
             return bankInData;
+        }
+
+        public async Task<SelectList> GetCompanySelectListAsync()
+        {
+            var criteria = new GetCompanyByFunctionKeyCriteria
+            {
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.Report
+            };
+            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
+
+            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+        }
+
+        public async Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(GenerateReportViewModel viewModel)
+        {
+            var criteria = new GetDataForDynamicReportCriteria
+            {
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.SelectedTime,
+                IsHasIDNo = viewModel.IsHasIDNo,
+                IsHasFullName = viewModel.IsHasFullName,
+                IsHasNickName = viewModel.IsHasNickName,
+                IsHasGender = viewModel.IsHasGender,
+                IsHasDateOfBirth = viewModel.IsHasDateOfBirth,
+                IsHasPlaceOfBirth = viewModel.IsHasPlaceOfBirth,
+                IsHasNationality = viewModel.IsHasNationality
+            };
+
+            var reports = await baseService.GetDataAsync<DynamicReportModel>(criteria).ConfigureAwait(false);
+
+            return reports;
         }
     }
 }
