@@ -3,8 +3,8 @@ CREATE PROCEDURE [dbo].[BankAccount_Update] @Id INT
 	,@EmployeeId INT
 	,@BankType INT = 1
 	,@BankName NVARCHAR(70)
-	,@BankBranch NVARCHAR(70)
-	,@BankAddress NVARCHAR(500)
+	,@BankBranch NVARCHAR(70) = NULL
+	,@BankAddress NVARCHAR(500) = NULL
 	,@BankSwiftCode VARCHAR(15) = NULL
 	,@AccountName NVARCHAR(30)
 	,@AccountNumber VARCHAR(30)

@@ -3,8 +3,8 @@
     [EmployeeId]      INT            NULL,
     [BankType]        INT            NULL,
     [BankName]        NVARCHAR (70)  NOT NULL,
-    [BankBranch]      NVARCHAR (70)  NOT NULL,
-    [BankAddress]     NVARCHAR (500) NOT NULL,
+    [BankBranch]      NVARCHAR (70)  NULL,
+    [BankAddress]     NVARCHAR (500) NULL,
     [BankSwiftCode]   VARCHAR (15)   NULL,
     [AccountName]     NVARCHAR (30)  NOT NULL,
     [AccountNumber]   VARCHAR (30)   NOT NULL,
@@ -12,4 +12,6 @@
     [BeneficiaryName] NVARCHAR (70)  NOT NULL,
     [IsActive]        BIT            NULL
 );
+
+
 
