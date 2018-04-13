@@ -1,4 +1,5 @@
 ﻿@using HRP.Core.Enumerations
+@using HRP.Core.Constants
 @using HRP.Resources
 @using HRP.Models.MonthlyPayroll
 @model EditMonthlySalaryViewModel
@@ -96,8 +97,8 @@
     </div>
     <div class="-has-border msg-error hidden"></div>
 
+    <input type="hidden" id="VietnamCurrencyId" value="@Constants.VietnamCurrencyId" />
     <input type="checkbox" hidden asp-for="FilterInfo.IsHost" id="IsHost" />
-
     <input type="checkbox" hidden asp-for="IsRedirectToEditAllowance" />
     <input type="hidden" value="@Model.Month" name="Month" />
     <input type="hidden" asp-for="MonthlyBasicSalary.SalaryPerDay" />
