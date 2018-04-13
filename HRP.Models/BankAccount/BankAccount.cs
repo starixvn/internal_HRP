@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.BankAccount
 {
-    using HRP.Core.Enumerations;
+    using Core.Enumerations;
 
     public class BankAccount
     {

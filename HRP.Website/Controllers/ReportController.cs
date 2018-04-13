@@ -39,7 +39,7 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> BankIn()
         {
-            var viewModel = new BasicReportViewModel
+            var viewModel = new BankInReportViewModel
             {
                 Companies = await paymentProcessService.GetCompanySelectListAsync(),
                 SelectedTime = DateTime.Now
@@ -49,7 +49,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GetBankInReport(BasicReportViewModel viewModel)
+        public async Task<IActionResult> GetBankInReport(BankInReportViewModel viewModel)
         {
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 

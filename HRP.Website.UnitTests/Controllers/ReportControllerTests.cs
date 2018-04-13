@@ -33,7 +33,7 @@
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<BasicReportViewModel>(viewResult.Model);
+            Assert.IsType<BankInReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
         }
 
@@ -41,7 +41,7 @@
         public async Task GetBankInReport_InValidParams_ReturnNull()
         {
             //Arrage
-            var bankInReportViewModel = new BasicReportViewModel
+            var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
                 SelectedTime = DateTime.Now
@@ -60,7 +60,7 @@
         public async Task GetBankInReport_ValidParams_ReturnNull()
         {
             //Arrage
-            var bankInReportViewModel = new BasicReportViewModel
+            var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 1,
                 SelectedTime = DateTime.Now

@@ -2,7 +2,7 @@
 {
     using Core.Extensions.Excel;
 
-    public class BankIn : IExcelRecord
+    public class BankIn
     {
         public string Nickname { get; set; }
 
@@ -31,20 +31,5 @@
 
         [EpplusIgnore]
         public string CompanyName { get; set; }
-
-        public object ConvertToExcelRecord()
-        {
-            var record = new
-            {
-                Nickname,
-                BeneficiaryName,
-                BankName,
-                AccountNumber,
-                Salary,
-                EbankingAmount
-            };
-
-            return record;
-        }
     }
 }

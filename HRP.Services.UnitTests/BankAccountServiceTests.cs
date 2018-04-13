@@ -28,7 +28,16 @@
                 EmployeeId = 1,
                 BankType = 1,
                 NickName = nickName,
-                CompanyId = companyId
+                CompanyId = companyId,
+                IsActive = true,
+                BeneficiaryName = "test",
+                AccountType = 1,
+                AccountNumber = "1",
+                AccountName = "test",
+                BankSwiftCode = null,
+                BankAddress = null,
+                BankBranch = null,
+                BankName = null
             };
 
             var bankAccountService = GetBankAccountService();

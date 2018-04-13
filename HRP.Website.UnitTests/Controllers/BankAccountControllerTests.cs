@@ -35,6 +35,9 @@
             {
                 EmployeeId = 1,
                 CompanyId = 1,
+                IsActive = null,
+                BankTypeId = null,
+
             };
             var employee = new Employee
             {
@@ -57,6 +60,8 @@
             Assert.True(viewModelResult.HaveHostPermission);
             Assert.True(viewModelResult.BankAccountsLimitReached);
             Assert.IsType<SelectList>(viewModelResult.BankTypes);
+            Assert.NotNull(viewModelResult.BankAccounts);
+            Assert.Equal(employee.NickName, viewModelResult.EmployeeName);
         }
 
         #region Create Bank Account in Payroll
@@ -192,6 +197,7 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
             Assert.True(model.HaveHostPermission);
+            Assert.Equal(employee.NickName, model.NickName);
         }
 
         [Fact]
