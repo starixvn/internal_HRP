@@ -15,12 +15,12 @@ BEGIN
 	declare @totalActiveAccountInBankType INT = 0;
 
 	SELECT @totalActiveAccountInBankType = (
-	SELECT TOP 1 COUNT(Id) as IdNumbers
-	FROM [dbo].[BankAccount] WITH (NOLOCK)
-	WHERE [EmployeeId] = @EmployeeId
-		AND [IsActive] = 1
-	GROUP BY [BankType]
-	ORDER BY IdNumbers ASC)
+	SELECT TOP 1 COUNT(BankAccount.BankType) AS BankTypeCount
+	FROM RefResource WITH (NOLOCK) left join BankAccount WITH (NOLOCK)
+	ON RefResource.ResourceId = BankAccount.BankType and BankAccount.EmployeeId = @EmployeeId
+	WHERE RefResource.RefName = 'BankType'
+	GROUP BY RefResource.ResourceId
+	ORDER BY BankTypeCount ASC)
 
 	SELECT 1
 	WHERE @totalActiveAccountInBankType >= 3
