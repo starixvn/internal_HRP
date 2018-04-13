@@ -13,6 +13,8 @@
     using Models.Report;
     using Services.Interfaces;
     using Services;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using HRP.Models;
 
     [HRPAuthorize]
     public class ReportController : BaseController
@@ -95,10 +97,13 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> GenerateReport()
         {
+            var companies = await reportService.GetCompaniesAsync();
+            var columns = reportService.GetAvailableColumnsList();
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                Companies = await reportService.GetCompanySelectListAsync()
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                ColumnGroups = new SelectList(columns, nameof(ColumnGroup.GroupId), nameof(ColumnGroup.GroupName))
             };
 
             return View("GenerateReport", viewModel);
@@ -110,10 +115,15 @@
         {
             if (ModelState.IsValid)
             {
-                return Content("ahihi");
+                var records = await reportService.GetDataForDynamicReportAsync(viewModel);
+                var stream = exportExcelService.ExportDynamicReport(records, viewModel);
+
+                return File(stream, MimeType.XLSX, "Dynamic Report.xlsx");
             }
 
-            viewModel.Companies = await reportService.GetCompanySelectListAsync();
+            var companies = await reportService.GetCompaniesAsync();
+            viewModel.Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+
             return View("GenerateReport", viewModel);
         }
     }

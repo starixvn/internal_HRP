@@ -73,5 +73,48 @@
                 return xlPackage.GetAsByteArray();
             }
         }
+
+        public Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel)
+        {
+            var selectedGroups = viewModel.ColumnGroupIds.Select(x => ColumnsDictionary.Columns[x]);
+            var headers = selectedGroups.SelectMany(x => x.Columns);
+
+            using (var package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
+
+                // Write header
+                var col = 1;
+                foreach (var header in headers)
+                {
+                    worksheet.Cells[1, col].Value = header.HeaderName;
+                    col++;
+                }
+
+                // Write Data
+                var row = 2;
+                foreach (var record in records)
+                {
+                    col = 1;
+                    foreach (var header in headers)
+                    {
+                        var propertyInfo = record.GetType().GetProperty(header.PropertyName);
+                        var propertyValue = propertyInfo.PropertyType == typeof(DateTime) ?
+                            ((DateTime)propertyInfo.GetValue(record)).ToString("dd/MM/yyyy") : propertyInfo.GetValue(record); ////Refactor
+                        worksheet.Cells[row, col].Value = propertyValue;
+
+                        col++;
+                    }
+
+                    row++;
+                }
+
+                var memory = new MemoryStream();
+                package.SaveAs(memory);
+                memory.Position = 0;
+
+                return memory;
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@
     </environment>
 }
 
-<form class="search-form" asp-action="Index" method="post">
+<form class="search-form" asp-action="GenerateReport" method="post">
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
@@ -34,8 +34,34 @@
         <select class="control select2" asp-for="CompanyId" asp-items="@Model.Companies"></select>
     </div>
     <div class="w-100"></div>
+
     <div class="group">
-        <button type="submit" class="button -primary">@ViewLang.Next</button>
+        <label class="text">Available Columns</label>
+        <select class="control select2" asp-for="ColumnGroupIds" asp-items="@Model.ColumnGroups"></select>
+    </div>
+    <div class="w-100"></div>
+    <div class="group-control">
+        <label>
+            <input type="checkbox" asp-for="IsHasFullName" checked />
+            <span>IsHasFullName</span>
+        </label>
+    </div>
+    <div class="group-control">
+        <label>
+            <input type="checkbox" asp-for="IsHasNickName" checked />
+            <span>IsHasNickName</span>
+        </label>
+    </div>
+    <div class="group-control">
+        <label>
+            <input type="checkbox" asp-for="IsHasGender" />
+            <span>IsHasGender</span>
+        </label>
+    </div>
+
+    <label asp-for="IsHasFullName"></label>
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.Submit</button>
     </div>
 </form>
 

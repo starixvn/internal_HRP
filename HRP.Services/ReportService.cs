@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
     using Criteria.Report;
     using HRP.Core.Constants;
     using HRP.Criteria;
     using HRP.Models;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.Report;
 
     public class ReportService : IReportService
@@ -42,7 +42,7 @@
             return bankInData;
         }
 
-        public async Task<SelectList> GetCompanySelectListAsync()
+        public async Task<IEnumerable<Company>> GetCompaniesAsync()
         {
             var criteria = new GetCompanyByFunctionKeyCriteria
             {
@@ -51,7 +51,12 @@
             };
             var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
 
-            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            return companies;
+        }
+
+        public IEnumerable<ColumnGroup> GetAvailableColumnsList()
+        {
+            return ColumnsDictionary.Columns.Values.OrderBy(x => x.GroupName);
         }
 
         public async Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(GenerateReportViewModel viewModel)

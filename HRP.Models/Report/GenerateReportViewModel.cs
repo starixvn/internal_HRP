@@ -14,11 +14,21 @@
 
         public SelectList Companies { get; set; }
 
+        public int[] ColumnGroupIds { get; set; }
+
+        public SelectList ColumnGroups { get; set; }
+
         public string CommonError { get; set; }
 
+        [Display(Name = "ID No")]
         public bool IsHasIDNo { get; set; }
+
+        [Display(Name = "FullName")]
         public bool IsHasFullName { get; set; }
+
+        [Display(Name = "NickName")]
         public bool IsHasNickName { get; set; }
+
         public bool IsHasGender { get; set; }
         public bool IsHasDateOfBirth { get; set; }
         public bool IsHasPlaceOfBirth { get; set; }

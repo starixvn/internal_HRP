@@ -3,14 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc.Rendering;
+    using HRP.Models;
     using Models.Report;
 
     public interface IReportService
     {
         Task<IEnumerable<BankIn>> GetBankInAsync(int companyId, DateTime selectedTime);
 
-        Task<SelectList> GetCompanySelectListAsync();
+        Task<IEnumerable<Company>> GetCompaniesAsync();
+
+        IEnumerable<ColumnGroup> GetAvailableColumnsList();
 
         Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(GenerateReportViewModel viewModel);
     }

@@ -9,6 +9,8 @@
     {
         Stream GetPayDetails(Stream fileStream);
 
+        Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel);
+
         byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, IEnumerable<BankIn> data);
     }
 }

@@ -1,0 +1,9 @@
+﻿namespace HRP.Models.Report
+{
+    public class MappingColumn
+    {
+        public string PropertyName { get; set; }
+
+        public string HeaderName { get; set; }
+    }
+}
