@@ -19,7 +19,11 @@
     <div class="container">
         <div class="employee-info">
             <div class="company-name">@Model.CompanyName</div>
-            <div class="payslip-title"><div class="bold">@ViewLang.Payslip</div><div class="red bold">(@ViewLang.Confidential)</div><div class="bold">@Html.DisplayFor(x => x.Month)</div></div> 
+            <div class="payslip-title">
+                <div class="bold">@ViewLang.Payslip</div>
+                <div class="red bold">(@ViewLang.Confidential)</div>
+                <div class="bold">@Html.DisplayFor(x => x.Month)</div>
+            </div>
             <table class="tbl-main-info">
                 <tbody>
                     <tr>
@@ -31,7 +35,7 @@
                         <td>@Model.IDNo</td>
                     </tr>
                 </tbody>
-            </table>            
+            </table>
         </div>
         <div class="payslip-detail">
             <div class="detail-section">

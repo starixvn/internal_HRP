@@ -18,24 +18,20 @@
 </head>
 <body>
     <div class="container">
-        <table class="info">
-            <tbody>
-                <tr>
-                    <td colspan="2">@Model.CompanyName</td>
-                    <td class="align-right">@ViewLang.EmployeeName:</td>
-                    <td class="bold">@Model.FullName</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <span class="bold">@ViewLang.Payslip</span> <span class="red">(@ViewLang.Confidential)</span> <span class="bold">@Html.DisplayFor(x => x.Month)</span>
-                    </td>
-                    <td class="align-right">@ViewLang.IDNo:</td>
-                    <td class="bold">@Model.IDNo</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="label-company-name bold">@Model.CompanyName</div>
+        <div class="bold label-payslip">@ViewLang.Payslip.ToUpperInvariant()</div>
+        <div class="red bold label-confidential">(@ViewLang.Confidential.ToUpperInvariant())</div>
+        <div class="bold label-month">@Html.DisplayFor(x => x.Month)</div>
         <table>
             <tbody>
+                <tr class="employee-info">
+                    <td colspan="2" class="align-right">@ViewLang.EmployeeName:</td>
+                    <td colspan="2">@Model.FullName</td>
+                </tr>
+                <tr class="employee-info">
+                    <td colspan="2" class="align-right">@ViewLang.IDNo:</td>
+                    <td colspan="2">@Model.IDNo</td>
+                </tr>
                 <tr class="header">
                     <td colspan="2" class="border-right">@ViewLang.MonthlyBasicSalary.ToUpperInvariant()</td>
                     <td colspan="2">@ViewLang.MonthlyAllowances.ToUpperInvariant()</td>
@@ -78,10 +74,10 @@
                     </tr>
                 }
                 <tr class="footer">
-                    <td class="key border-left">@ViewLang.GrossBasicSalary.ToUpperInvariant()</td>
-                    <td class="value align-right">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</td>
-                    <td class="key border-left">@ViewLang.GrossAllowances.ToUpperInvariant()</td>
-                    <td class="value border-right align-right">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</td>
+                    <td class="key border-left bold">@ViewLang.GrossBasicSalary.ToUpperInvariant()</td>
+                    <td class="value align-right bold">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</td>
+                    <td class="key border-left bold">@ViewLang.GrossAllowances.ToUpperInvariant()</td>
+                    <td class="value border-right align-right bold">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</td>
                 </tr>
 
                 <tr class="header">
@@ -121,9 +117,9 @@
                 }
                 <tr class="footer">
                     <td class="key border-left bold">@ViewLang.MonthlyDeductions.ToUpperInvariant()</td>
-                    <td class="value align-right red">@Model.SalaryDeductionAmount @Model.SalaryCurrencyCode</td>
+                    <td class="value align-right red bold">@Model.SalaryDeductionAmount @Model.SalaryCurrencyCode</td>
                     <td class="key border-left bold">@ViewLang.MonthlyDeductions.ToUpperInvariant()</td>
-                    <td class="value border-right align-right red">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</td>
+                    <td class="value border-right align-right red bold">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</td>
                 </tr>
                 <tr class="footer net-amount">
                     <td class="key bold">@ViewLang.NetMonthlyBasicSalary.ToUpperInvariant()</td>

@@ -18,7 +18,27 @@ body {
 .note {
   text-align: center;
   color: #666;
-  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.label-company-name, .label-payslip, .label-confidential, .label-month {
+  text-align: center;
+}
+
+.label-company-name {
+  font-size: 18px;
+  color: #1973b2;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+.label-payslip {
+  font-size: 16px;
+}
+
+.label-month {
+  font-size: 15px;
+  padding-bottom: 4px;
 }
 
 table {
@@ -27,16 +47,16 @@ table {
   vertical-align: top;
 }
 
-table.info {
-  margin-bottom: 12px;
-}
-
 table .align-left {
   text-align: left;
 }
 
 table .align-right {
   text-align: right;
+}
+
+table tbody tr.employee-info td {
+  font-size: 13px;
 }
 
 table tbody tr td {
@@ -66,7 +86,6 @@ table tbody tr.body td {
 
 table tbody tr.body td.key {
   color: #1973b2;
-  font-weight: bold;
 }
 
 table tbody tr.footer td.key {
