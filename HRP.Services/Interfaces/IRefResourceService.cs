@@ -1,13 +1,12 @@
 ﻿namespace HRP.Services
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Models;
 
     public interface IRefResourceService
     {
-        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName, bool? isActive = true);
-
-        IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names, bool? isActive = true);
+        Task<IEnumerable<ReferenceResourceModel>> GetReferenceResourcesByNamesAsync(string[] names, bool? isActive = true);
 
         IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,

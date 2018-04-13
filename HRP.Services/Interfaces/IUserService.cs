@@ -1,24 +1,25 @@
 namespace HRP.Services
 {
+    using System.Threading.Tasks;
     using Models;
 
     public interface IUserService
     {
-        User GetUserByUsername(string username);
+        Task<User> GetUserByUsernameAsync(string username);
 
-        User GetUserByTokenOTPRegister(string token);
+        Task<User> GetUserByTokenOTPRegisterAsync(string token);
 
-        void ResetUserPassword(string username);
+        Task ResetUserPasswordAsync(string username);
 
-        bool UpdateSecretKey(string username, string secretKey);
+        Task<bool> UpdateSecretKeyAsync(string username, string secretKey);
 
-        string GenerateTokenOTPRegister(string username);
+        Task<string> GenerateTokenOTPRegisterAsync(string username);
 
-        bool ResetTokenOTPRegister(string username);
+        Task<bool> ResetTokenOTPRegisterAsync(string username);
 
-        void SendMailToRegisterOTP(string tokenOTPRegister);
+        Task SendMailToRegisterOTPAsync(string tokenOTPRegister);
 
-        bool UpdateOTPStatus(int userId, bool isOTPRegistered);
+        Task<bool> UpdateOTPStatusAsync(int userId, bool isOTPRegistered);
 
         bool IsCorrectPassword(string password, string hashedPassword);
     }

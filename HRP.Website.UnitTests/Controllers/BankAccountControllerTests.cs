@@ -45,7 +45,7 @@
                 NickName = "hunter.tran"
             };
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
-            refResourceService.GetReferenceResourcesByName(Arg.Any<string>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
             baseService.GetDataEntityAsync<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
@@ -385,7 +385,7 @@
         {
             // Arrange
             var controller = GetBankAccountController();
-            refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount).Returns(new List<ReferenceResourceModel>());
+            refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.ContraCoAccount }).Returns(new List<ReferenceResourceModel>());
 
             // Test
             var actual = await controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
@@ -416,7 +416,7 @@
         {
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
 
-            refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
+            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
             refResourceService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(new List<ReferenceResourceModel>());
@@ -427,7 +427,7 @@
         {
             bankAccountService.GetBankAccountByIdAsync(Arg.Any<int>()).Returns(bankAccount);
 
-            refResourceService.GetReferenceResourcesByNames(Arg.Any<string[]>()).Returns(resources);
+            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
             refResourceService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(new List<ReferenceResourceModel>());

@@ -34,7 +34,7 @@
         [InlineData(AccountTab.Profile)]
         [InlineData(AccountTab.ChangePassword)]
         [InlineData(AccountTab.Otp)]
-        public void Index_WhenCalled_ReturnAsExpectedViewResult(AccountTab tab)
+        public async Task Index_WhenCalled_ReturnAsExpectedViewResult(AccountTab tab)
         {
             // Arrange
             var username = "hunter.tran";
@@ -46,10 +46,10 @@
             };
             var accountController = GetAccountController();
             sessionService.Username = username;
-            userService.GetUserByUsername(username).Returns(user);
+            userService.GetUserByUsernameAsync(username).Returns(user);
 
             // Act
-            var actual = accountController.Index(tab);
+            var actual = await accountController.Index(tab);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -70,14 +70,14 @@
         #region ChangePassword
 
         [Fact]
-        public void ChangePassword_ModelIsInvalid_ReturnAsExpectedJsonResult()
+        public async Task ChangePassword_ModelIsInvalid_ReturnAsExpectedJsonResult()
         {
             // Arrange
             var accountController = GetAccountController();
             accountController.ModelState.AddModelError("error", "error");
 
             // Act
-            var actual = accountController.ChangePassword(new ChangePasswordViewModel());
+            var actual = await accountController.ChangePassword(new ChangePasswordViewModel());
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -90,11 +90,11 @@
         }
 
         [Fact]
-        public void ChangePassword_IncorrectOldPassword_ReturnAsExpectedJsonResult()
+        public async Task ChangePassword_IncorrectOldPassword_ReturnAsExpectedJsonResult()
         {
             //Arrange
             var accountController = GetAccountController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
             var viewModel = new ChangePasswordViewModel
             {
@@ -103,7 +103,7 @@
             };
 
             // Act
-            var actual = accountController.ChangePassword(viewModel);
+            var actual = await accountController.ChangePassword(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -118,16 +118,16 @@
         [Theory]
         [InlineData(0, 0, "Your password has been successfully changed.")]
         [InlineData(-1, -1, "Update failed")]
-        public void ChangePassword_CorrectOldPasswordAndUpdatePassword_ReturnAsExpectedJsonResult(
+        public async Task ChangePassword_CorrectOldPasswordAndUpdatePassword_ReturnAsExpectedJsonResult(
             int codeCommandResult,
             int expectedCode,
             string expectedMessage)
         {
             // Arrange
             var accountController = GetAccountController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
             var viewModel = new ChangePasswordViewModel
             {
                 OldPassword = string.Empty,
@@ -135,7 +135,7 @@
             };
 
             // Act
-            var actual = accountController.ChangePassword(viewModel);
+            var actual = await accountController.ChangePassword(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -166,15 +166,15 @@
         }
 
         [Fact]
-        public void ResetOtpDevice_WhenCalled_ReturnRedirectToSetupOtpAfterReset()
+        public async Task ResetOtpDevice_WhenCalled_ReturnRedirectToSetupOtpAfterReset()
         {
             // Arrange
             var token = "token";
             var accountController = GetAccountController();
-            userService.GenerateTokenOTPRegister(Arg.Any<string>()).Returns(token);
+            userService.GenerateTokenOTPRegisterAsync(Arg.Any<string>()).Returns(token);
 
             // Act
-            var actual = accountController.ResetOtpDevice();
+            var actual = await accountController.ResetOtpDevice();
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -191,13 +191,13 @@
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void SetupOtp_TokenIsInvalid_ReturnRedirectToLogin(string token)
+        public async Task SetupOtp_TokenIsInvalid_ReturnRedirectToLogin(string token)
         {
             // Arrange
             var accountController = GetAccountController();
 
             // Act
-            var actual = accountController.SetupOtp(token);
+            var actual = await accountController.SetupOtp(token);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -206,14 +206,15 @@
         }
 
         [Fact]
-        public void SetupOtp_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task SetupOtp_UserIsNotExisted_ReturnRedirectToLogin()
         {
             // Arrange
+            User user = null;
             var accountController = GetAccountController();
-            userService.GetUserByTokenOTPRegister("token").Returns(x => null);
+            userService.GetUserByTokenOTPRegisterAsync("token").Returns(user);
 
             // Act
-            var actual = accountController.SetupOtp("token");
+            var actual = await accountController.SetupOtp("token");
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -222,17 +223,17 @@
         }
 
         [Fact]
-        public void SetupOtp_UserIsExisted_ReturnAsExpectedViewResult()
+        public async Task SetupOtp_UserIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrage
             var textCode = "TextCode";
             var user = new User { Username = "tim.trinh" };
             var accountController = GetAccountController();
-            userService.GetUserByTokenOTPRegister("token").Returns(user);
+            userService.GetUserByTokenOTPRegisterAsync("token").Returns(user);
             twoFactorAuthService.SetupGoogleAuthInfo(Arg.Any<string>(), Arg.Any<string>()).Returns(textCode);
 
             // Test
-            var actual = accountController.SetupOtp("token");
+            var actual = await accountController.SetupOtp("token");
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -247,13 +248,13 @@
         #region SetupOtpAfterReset
 
         [Fact]
-        public void SetupOtpAfterReset_EmptyToken_ReturnRedirectToLogin()
+        public async Task SetupOtpAfterReset_EmptyToken_ReturnRedirectToLogin()
         {
             // Arrange
             var accountController = GetAccountController();
 
             // Act
-            var actual = accountController.SetupOtpAfterReset(string.Empty);
+            var actual = await accountController.SetupOtpAfterReset(string.Empty);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -262,14 +263,15 @@
         }
 
         [Fact]
-        public void SetupOtpAfterReset_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task SetupOtpAfterReset_UserIsNotExisted_ReturnRedirectToLogin()
         {
             // Arrange
+            User user = null;
             var accountController = GetAccountController();
-            userService.GetUserByTokenOTPRegister("token").Returns(x => null);
+            userService.GetUserByTokenOTPRegisterAsync("token").Returns(user);
 
             // Act
-            var actual = accountController.SetupOtpAfterReset("token");
+            var actual = await accountController.SetupOtpAfterReset("token");
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -278,7 +280,7 @@
         }
 
         [Fact]
-        public void SetupOtpAfterReset_UserIsExisted_ReturnAsExpectedViewResult()
+        public async Task SetupOtpAfterReset_UserIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
             var textCode = "TextCode";
@@ -290,11 +292,11 @@
                 Email = "hunter.tran@nexcel.vn"
             };
             var accountController = GetAccountController();
-            userService.GetUserByTokenOTPRegister(Arg.Any<string>()).Returns(user);
+            userService.GetUserByTokenOTPRegisterAsync(Arg.Any<string>()).Returns(user);
             twoFactorAuthService.SetupGoogleAuthInfo(Arg.Any<string>(), Arg.Any<string>()).Returns(textCode);
 
             // Act
-            var actual = accountController.SetupOtpAfterReset("token");
+            var actual = await accountController.SetupOtpAfterReset("token");
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -469,6 +471,7 @@
         public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsNotExisted_ReturnRedirectToLogin()
         {
             // Arrange
+            User user = null;
             var accountController = GetAccountController();
             var controllerContext = new ControllerContext
             {
@@ -478,7 +481,7 @@
                 }
             };
             accountController.ControllerContext = controllerContext;
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(x => null);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
 
             // Act
             var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel());
@@ -502,7 +505,7 @@
                 }
             };
             accountController.ControllerContext = controllerContext;
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             accountController.ModelState.AddModelError("otpcode", "required");
 
             // Act
@@ -528,7 +531,7 @@
                 }
             };
             accountController.ControllerContext = controllerContext;
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             // Act
@@ -575,7 +578,7 @@
                     }
                 }
             };
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
             var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
             accountController.ControllerContext = controllerContext;
@@ -596,14 +599,15 @@
         #region VerifySetupOTP
 
         [Fact]
-        public void VerifySetupOTP_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task VerifySetupOTP_UserIsNotExisted_ReturnRedirectToLogin()
         {
             // Arrange
+            User user = null;
             var accountController = GetAccountController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(x => null);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
 
             // Act
-            var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -612,47 +616,47 @@
         }
 
         [Fact]
-        public void VerifySetupOTP_ModelStateIsInvalid_ReturnForbidResult()
+        public async Task VerifySetupOTP_ModelStateIsInvalid_ReturnForbidResult()
         {
             // Arrange
             var accountController = GetAccountController();
             accountController.ModelState.AddModelError("otp", "required");
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             // Act
-            var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
 
             // Assert
             Assert.IsType<ForbidResult>(actual);
         }
 
         [Fact]
-        public void VerifySetupOTP_OtpIsInvalid_ReturnForbidResult()
+        public async Task VerifySetupOTP_OtpIsInvalid_ReturnForbidResult()
         {
             // Arrange
             var accountController = GetAccountController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             // Act
-            var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
 
             // Assert
             Assert.IsType<ForbidResult>(actual);
         }
 
         [Fact]
-        public void VerifySetupOTP_ModelStateIsValidAndOtpIsValid_ReturnOkResult()
+        public async Task VerifySetupOTP_ModelStateIsValidAndOtpIsValid_ReturnOkResult()
         {
             // Arrange
             var user = new User { Username = "hunter.tran" };
             var accountController = GetAccountController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(new User());
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             // Act
-            var actual = accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
 
             // Assert
             Assert.IsType<OkResult>(actual);

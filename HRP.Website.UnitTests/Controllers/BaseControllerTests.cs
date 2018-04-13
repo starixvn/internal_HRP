@@ -45,7 +45,7 @@
             actionContext.HttpContext.Connection.RemoteIpAddress = IPAddress.Any;
             actionContext.HttpContext.Request.Headers["User-Agent"] = "12345";
             var controller = GetBaseController();
-            baseService.GetDataEntity<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(true);
+            baseService.GetDataEntityAsync<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(true);
 
             // Act
             controller.OnActionExecuting(actionExecutingContext);
@@ -67,7 +67,7 @@
                 Substitute.For<Controller>()
             );
             var controller = GetBaseController();
-            baseService.GetDataEntity<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(false);
+            baseService.GetDataEntityAsync<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(false);
 
             // Act
             controller.OnActionExecuting(actionExecutingContext);

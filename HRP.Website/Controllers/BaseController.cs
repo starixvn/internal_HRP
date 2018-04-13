@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Threading.Tasks;
     using Core.Criteria;
     using Core.Services;
     using Microsoft.AspNetCore.Authentication;
@@ -24,15 +25,15 @@
             {
                 OnUserId = sessionService.OnUserId
             };
-            var isKickedOut = baseService.GetDataEntity<bool>(criteria);
+            var isKickedOut = baseService.GetDataEntityAsync<bool>(criteria).Result;
 
             if (isKickedOut)
             {
-                DoSignOut(context);
+                DoSignOut(context).Wait();
             }
         }
 
-        private void DoSignOut(ActionExecutingContext context)
+        private async Task DoSignOut(ActionExecutingContext context)
         {
             var criteria = new LogOutUserCriteria
             {
@@ -41,9 +42,9 @@
                 Platform = context.HttpContext.Request.Headers["User-Agent"].ToString()
             };
 
-            baseService.ExecuteNonQuery(criteria);
+            await baseService.ExecuteNonQueryAsync(criteria);
 
-            context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             context.HttpContext.Response.Redirect("/auth/login");
         }
     }

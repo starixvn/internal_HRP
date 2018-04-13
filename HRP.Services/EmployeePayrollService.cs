@@ -48,15 +48,23 @@
                         viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
                         viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowanceModel>() ?? allowance;
                         viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeductionModel>() ?? new EmployeePayrollDeductionModel { EmployeeId = employeeId };
-                        viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
-                        viewModel.Currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-                        viewModel.ChangeReasons = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                        viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria()).ConfigureAwait(false);
+                        viewModel.Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()).ConfigureAwait(false);
+                        viewModel.ChangeReasons = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
                         {
                             RefNames = ReferenceResource.BasicSalaryChangeReason,
                             IsActive = true
-                        });
-                        viewModel.CashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
-                        viewModel.BankTypes = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.BankType, IsActive = true });
+                        }).ConfigureAwait(false);
+                        viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                        {
+                            RefNames = ReferenceResource.PaymentMethodCash,
+                            IsActive = true
+                        }).ConfigureAwait(false);
+                        viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                        {
+                            RefNames = ReferenceResource.BankType,
+                            IsActive = true
+                        }).ConfigureAwait(false);
 
                         DecryptData(viewModel);
                     }

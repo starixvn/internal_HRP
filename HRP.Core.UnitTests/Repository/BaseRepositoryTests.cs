@@ -1,6 +1,5 @@
 ﻿namespace HRP.Core.UnitTests
 {
-    using System;
     using System.Collections;
     using System.Threading.Tasks;
     using Fanex.Data;
@@ -24,56 +23,6 @@
             objectDb = Substitute.For<IObjectDb>();
             ObjectDbFactory.Mock((key, time) => objectDb);
         }
-
-        #region ExecuteNonQuery
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaIsNull_ThrowNullReferenceException()
-        {
-            // Arrange
-            ICriteria criteria = null;
-            var repository = new BaseRepository();
-
-            // Action
-            Action testDelegate = () => repository.ExecuteNonQuery(criteria);
-
-            // Assert
-            Assert.Throws<NullReferenceException>(testDelegate);
-        }
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaNotNull_CallExecuteNonQuery()
-        {
-            // Arrange
-            var criteria = FakeCriteria();
-            var repository = new BaseRepository();
-
-            // Action
-            repository.ExecuteNonQuery(criteria);
-
-            // Assert
-            objectDb.Received().ExecuteNonQuery(criteria);
-        }
-
-        [Fact]
-        public void ExecuteNonQuery_OutputParams_ReturnAsResult()
-        {
-            // Arrange
-            var repository = new BaseRepository();
-            var criteria = FakeCriteria();
-            var outputParams = FakeOutputParamsSuccess();
-            var expected = GetSuccessResult();
-            objectDb.GetOuputParams().Returns(outputParams);
-
-            // Action
-            var result = repository.ExecuteNonQuery(criteria);
-
-            // Assert
-            Assert.Equal(expected.Code, result.Code);
-            Assert.Equal(expected.Message, result.Message);
-        }
-
-        #endregion ExecuteNonQuery
 
         #region ExecuteNonQueryAsync
 

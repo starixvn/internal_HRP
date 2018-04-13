@@ -1,5 +1,6 @@
 namespace HRP.Services.UnitTests
 {
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Model;
     using Core.Services;
@@ -18,7 +19,7 @@ namespace HRP.Services.UnitTests
         #region GenerateTokenOTPRegister
 
         [Fact]
-        public void GenerateTokenOTPRegister_UpdateSuccessful_ReturnExpectedToken()
+        public async Task GenerateTokenOTPRegister_UpdateSuccessful_ReturnExpectedToken()
         {
             // Arrange
             var commandResult = new CommandResult
@@ -26,17 +27,17 @@ namespace HRP.Services.UnitTests
                 Code = 0
             };
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
-            var token = userService.GenerateTokenOTPRegister("test");
+            var token = await userService.GenerateTokenOTPRegisterAsync("test");
 
             // Assert
             Assert.NotNull(token);
         }
 
         [Fact]
-        public void GenerateTokenOTPRegister_UpdateUnsuccessful_ReturnNull()
+        public async Task GenerateTokenOTPRegister_UpdateUnsuccessful_ReturnNull()
         {
             // Arrange
             var commandResult = new CommandResult
@@ -44,10 +45,10 @@ namespace HRP.Services.UnitTests
                 Code = 1
             };
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
-            var token = userService.GenerateTokenOTPRegister(Arg.Any<string>());
+            var token = await userService.GenerateTokenOTPRegisterAsync(Arg.Any<string>());
 
             // Assert
             Assert.Null(token);
@@ -56,30 +57,30 @@ namespace HRP.Services.UnitTests
         #endregion GenerateTokenOTPRegister
 
         [Fact]
-        public void GetUserByUsername_WhenCalled_ReturnExpectedUser()
+        public async Task GetUserByUsername_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
             var expected = new User();
             var userService = GetUserService();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(expected);
 
             // Act
-            var actual = userService.GetUserByUsername(Arg.Any<string>());
+            var actual = await userService.GetUserByUsernameAsync(Arg.Any<string>());
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetUserByTokenOTPRegister_WhenCalled_ReturnExpectedUser()
+        public async Task GetUserByTokenOTPRegister_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
             var expected = new User();
             var userService = GetUserService();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(expected);
 
             // Act
-            var actual = userService.GetUserByTokenOTPRegister(Arg.Any<string>());
+            var actual = await userService.GetUserByTokenOTPRegisterAsync(Arg.Any<string>());
 
             // Assert
             Assert.Equal(expected, actual);
@@ -114,15 +115,15 @@ namespace HRP.Services.UnitTests
         }
 
         [Fact]
-        public void ResetTokenOTPRegister_WhenCalled_ReturnAsExpected()
+        public async Task ResetTokenOTPRegister_WhenCalled_ReturnAsExpected()
         {
             // Arrange
             var commandResult = new CommandResult();
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
 
             // Act
-            var result = userService.ResetTokenOTPRegister(Arg.Any<string>());
+            var result = await userService.ResetTokenOTPRegisterAsync(Arg.Any<string>());
 
             // Assert
             Assert.Equal(commandResult.IsSuccessful, result);
@@ -131,7 +132,7 @@ namespace HRP.Services.UnitTests
         #region ResetUserPassword
 
         [Fact]
-        public void ResetUserPassword_UpdateSuccessful_ExpectedSendMail()
+        public async Task ResetUserPassword_UpdateSuccessful_ExpectedSendMail()
         {
             // Arrange
             var commandResult = new CommandResult
@@ -139,18 +140,18 @@ namespace HRP.Services.UnitTests
                 Code = 0
             };
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
 
             // Act
-            userService.ResetUserPassword("test");
+            await userService.ResetUserPasswordAsync("test");
 
             // Assert
             emailService.Received().SendEmail(Arg.Any<MailModel>());
         }
 
         [Fact]
-        public void ResetUserPassword_UpdateUnsuccessful_ExpectedNotSendMail()
+        public async Task ResetUserPassword_UpdateUnsuccessful_ExpectedNotSendMail()
         {
             // Arrange
             var commandResult = new CommandResult
@@ -158,10 +159,10 @@ namespace HRP.Services.UnitTests
                 Code = 1
             };
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
 
             // Act
-            userService.ResetUserPassword("test");
+            await userService.ResetUserPasswordAsync("test");
 
             // Assert
             emailService.DidNotReceive().SendEmail(Arg.Any<MailModel>());
@@ -170,44 +171,44 @@ namespace HRP.Services.UnitTests
         #endregion ResetUserPassword
 
         [Fact]
-        public void SendMailToRegisterOTP_WhenCalled_ExpectedSendMail()
+        public async Task SendMailToRegisterOTP_WhenCalled_ExpectedSendMail()
         {
             // Arrange
             var userService = GetUserService();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(new User());
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(new User());
 
             // Act
-            userService.SendMailToRegisterOTP("test");
+            await userService.SendMailToRegisterOTPAsync("test");
 
             // Assert
             emailService.Received().SendEmail(Arg.Any<MailModel>());
         }
 
         [Fact]
-        public void UpdateOTPStatus_WhenCalled_ReturnAsExpected()
+        public async Task UpdateOTPStatus_WhenCalled_ReturnAsExpected()
         {
             // Arrange
             var commandResult = new CommandResult();
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserOTPStatusCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserOTPStatusCriteria>()).Returns(commandResult);
 
             // Act
-            var result = userService.UpdateOTPStatus(1, true);
+            var result = await userService.UpdateOTPStatusAsync(1, true);
 
             // Assert
             Assert.Equal(commandResult.IsSuccessful, result);
         }
 
         [Fact]
-        public void UpdateSecretKey_WhenCalled_ReturnAsExpected()
+        public async Task UpdateSecretKey_WhenCalled_ReturnAsExpected()
         {
             // Arrange
             var commandResult = new CommandResult();
             var userService = GetUserService();
-            baseService.ExecuteNonQuery(Arg.Any<UpdateSecretKeyCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateSecretKeyCriteria>()).Returns(commandResult);
 
             // Act
-            var result = userService.UpdateSecretKey("test", "test");
+            var result = await userService.UpdateSecretKeyAsync("test", "test");
 
             // Assert
             Assert.Equal(commandResult.IsSuccessful, result);

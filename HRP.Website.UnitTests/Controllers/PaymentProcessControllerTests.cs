@@ -892,11 +892,11 @@
                     Allowance = new MonthlyAllowanceModel(),
                     EmployeeInfo = new MonthlyPayrollFilterInfoModel()
                 });
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
-            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);

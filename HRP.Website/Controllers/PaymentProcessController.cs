@@ -319,7 +319,7 @@
             };
 
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-            var cashAccounts = baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
+            var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true });
             viewModel.Month = month;
             viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
@@ -407,12 +407,19 @@
             viewModel.Filter = filter;
             viewModel.DaysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
-            var currencies = baseService.GetData<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
 
-            viewModel.CurrencyExchangeRates = baseService.GetData<CurrencyExchangeRateModel>(new GetExchangeRateCriteria { Month = month.Month, Year = month.Year });
-            viewModel.CashAccounts = new SelectList(baseService.GetData<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentMethodCash, IsActive = true }),
-                nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+            viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetExchangeRateCriteria
+            {
+                Month = month.Month,
+                Year = month.Year
+            });
+            viewModel.CashAccounts = new SelectList(await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+            {
+                RefNames = ReferenceResource.PaymentMethodCash,
+                IsActive = true
+            }), nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
             viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host)
                 && DateTime.Today >= viewModel.EmployeeInfo.StartDate && DateTime.Today <= viewModel.EmployeeInfo.DueDate;

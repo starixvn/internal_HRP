@@ -37,9 +37,9 @@ namespace HRP.Website.Controllers
         }
 
         [HRPAuthorize]
-        public IActionResult Index(AccountTab tab = AccountTab.Profile)
+        public async Task<IActionResult> Index(AccountTab tab = AccountTab.Profile)
         {
-            var user = userService.GetUserByUsername(sessionService.Username);
+            var user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
             var userProfile = new UserProfileViewModel
             {
@@ -62,16 +62,18 @@ namespace HRP.Website.Controllers
 
         [HRPAuthorize]
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel viewModel)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                if (!IsCorrectOldPassword(viewModel.OldPassword))
+                bool result = await IsCorrectOldPassword(viewModel.OldPassword);
+                if (!result)
                 {
                     return Json(new { code = -2, message = Message.OldPasswordIncorrect });
                 }
 
-                if (IsSuccessUpdatePassword(viewModel.Password))
+                result = await IsSuccessUpdatePassword(viewModel.Password);
+                if (result)
                 {
                     return Json(new { code = 0, message = Message.PasswordChangeSuccessful });
                 }
@@ -80,14 +82,14 @@ namespace HRP.Website.Controllers
             return Json(new { code = -1, message = Message.UpdateFail });
         }
 
-        private bool IsCorrectOldPassword(string oldPassword)
+        private async Task<bool> IsCorrectOldPassword(string oldPassword)
         {
-            var user = userService.GetUserByUsername(sessionService.Username);
+            var user = await userService.GetUserByUsernameAsync(sessionService.Username);
             var isCorrectOldPassword = userService.IsCorrectPassword(oldPassword, user.Password);
             return isCorrectOldPassword;
         }
 
-        private bool IsSuccessUpdatePassword(string newPassword)
+        private async Task<bool> IsSuccessUpdatePassword(string newPassword)
         {
             var criteria = new UpdateUserPasswordCriteria
             {
@@ -95,7 +97,7 @@ namespace HRP.Website.Controllers
                 Password = BCrypt.HashPassword(newPassword)
             };
 
-            var result = baseService.ExecuteNonQuery(criteria);
+            var result = await baseService.ExecuteNonQueryAsync(criteria);
 
             return result.IsSuccessful;
         }
@@ -107,27 +109,27 @@ namespace HRP.Website.Controllers
         }
 
         [HRPAuthorize]
-        public IActionResult ResetOtpDevice()
+        public async Task<IActionResult> ResetOtpDevice()
         {
             // step 1: Reset IsOTPRegistered
-            userService.UpdateOTPStatus(sessionService.UserId, false);
+            await userService.UpdateOTPStatusAsync(sessionService.UserId, false);
 
             // step 2: Reset OTP token
-            var otpRegisterToken = userService.GenerateTokenOTPRegister(sessionService.Username);
+            string otpRegisterToken = await userService.GenerateTokenOTPRegisterAsync(sessionService.Username);
 
             // step 3: Show SetupOtp screen
             return RedirectToAction("SetupOtpAfterReset", "Account", new { token = otpRegisterToken });
         }
 
         [AllowAnonymous]
-        public IActionResult SetupOtp(string token)
+        public async Task<IActionResult> SetupOtp(string token)
         {
             if (string.IsNullOrEmpty(token))
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            User user = userService.GetUserByTokenOTPRegister(token);
+            User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
@@ -135,7 +137,7 @@ namespace HRP.Website.Controllers
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
-                TextCode = GetOtpSetupCode(user.Username),
+                TextCode = await GetOtpSetupCode(user.Username),
                 Username = user.Username
             };
 
@@ -143,14 +145,14 @@ namespace HRP.Website.Controllers
         }
 
         [HRPAuthorize]
-        public IActionResult SetupOtpAfterReset(string token)
+        public async Task<IActionResult> SetupOtpAfterReset(string token)
         {
             if (string.IsNullOrEmpty(token))
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            User user = userService.GetUserByTokenOTPRegister(token);
+            User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
@@ -165,7 +167,7 @@ namespace HRP.Website.Controllers
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
-                TextCode = GetOtpSetupCode(user.Username),
+                TextCode = await GetOtpSetupCode(user.Username),
                 Username = user.Username
             };
 
@@ -229,7 +231,7 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Index", new { tab = AccountTab.Otp });
             }
 
-            User user = userService.GetUserByUsername(sessionService.Username);
+            User user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
             if (user == null)
             {
@@ -252,9 +254,9 @@ namespace HRP.Website.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult VerifySetupOTP(SetupOtpViewModel viewModel)
+        public async Task<IActionResult> VerifySetupOTP(SetupOtpViewModel viewModel)
         {
-            User user = userService.GetUserByUsername(viewModel.Username);
+            User user = await userService.GetUserByUsernameAsync(viewModel.Username);
 
             if (user == null)
             {
@@ -268,8 +270,8 @@ namespace HRP.Website.Controllers
                 return Forbid();
             }
 
-            userService.UpdateOTPStatus(user.UserId, true);
-            userService.ResetTokenOTPRegister(user.Username);
+            await userService.UpdateOTPStatusAsync(user.UserId, true);
+            await userService.ResetTokenOTPRegisterAsync(user.Username);
             sessionService.Username = user.Username;
             return new OkResult();
         }
@@ -288,10 +290,10 @@ namespace HRP.Website.Controllers
             return new ClaimsPrincipal(claimsIdentity);
         }
 
-        private string GetOtpSetupCode(string username)
+        private async Task<string> GetOtpSetupCode(string username)
         {
             var secretKey = Utilities.GenerateSecretKey();
-            userService.UpdateSecretKey(username, secretKey);
+            await userService.UpdateSecretKeyAsync(username, secretKey);
 
             return twoFactorAuthService.SetupGoogleAuthInfo(sessionService.Username, secretKey);
         }

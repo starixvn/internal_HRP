@@ -14,59 +14,6 @@
         private IDynamicRepository dynamicRepository;
         private IBaseRepository baseRepository;
 
-        #region GetData
-
-        [Fact]
-        public void GetData_CriteriaIsNull_ReturnEmptyList()
-        {
-            // Arrange
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.GetData<int>(null);
-
-            // Assert
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void GetData_CriteriaIsInvalid_ReturnEmptyList()
-        {
-            // Arrange
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(false);
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.GetData<MenuItem>(criteria);
-
-            // Assert
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void GetData_CriteriaIsValid_ReturnExpectedData()
-        {
-            // Arrange
-            var expected = new List<MenuItem>
-            {
-                new MenuItem { MenuId = 1, Name = "configuration", Description = "", Link = "/", FunctionId = 1, ParentId = null, IsActive = true, DisplayOrder = 1 }
-            };
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-            dynamicRepository.Fetch<MenuItem>(criteria).Returns(expected);
-
-            // Act
-            var actual = baseService.GetData<MenuItem>(criteria);
-
-            // Assert
-            Assert.NotEmpty(actual);
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion GetData
-
         #region GetDataAsync
 
         [Fact]
@@ -119,55 +66,6 @@
 
         #endregion GetDataAsync
 
-        #region GetDataEntity
-
-        [Fact]
-        public void GetDataEntity_CriteriaIsNull_ReturnDefaultValue()
-        {
-            // Arrange
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.GetDataEntity<int>(null);
-
-            // Assert
-            Assert.Equal(0, actual);
-        }
-
-        [Fact]
-        public void GetDataEntity_CriteriaIsInvalid_ReturnDefaultValue()
-        {
-            // Arrange
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(false);
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.GetDataEntity<int>(criteria);
-
-            // Assert
-            Assert.Equal(0, actual);
-        }
-
-        [Fact]
-        public void GetDataEntity_CriteriaIsValid_ReturnExpectedData()
-        {
-            // Arrange
-            var expected = 1;
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-            dynamicRepository.Get<int>(criteria).Returns(expected);
-
-            // Act
-            var actual = baseService.GetDataEntity<int>(criteria);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion GetDataEntity
-
         #region GetDataEntityAsync
 
         [Fact]
@@ -216,59 +114,6 @@
         }
 
         #endregion GetDataEntityAsync
-
-        #region ExecuteNonQuery
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaIsNull_ReturnDefaultCommandResult()
-        {
-            // Arrange
-            var expected = new CommandResult();
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.ExecuteNonQuery(null);
-
-            // Assert
-            Assert.Equal(expected.Code, actual.Code);
-            Assert.Equal(expected.IsSuccessful, actual.IsSuccessful);
-            Assert.Equal(expected.Message, actual.Message);
-        }
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaIsInvalid_ReturnDefaultCommandResult()
-        {
-            // Arrange
-            var expected = new CommandResult();
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(false);
-            var baseService = GetBaseService();
-
-            // Act
-            var actual = baseService.ExecuteNonQuery(criteria);
-
-            // Assert
-            Assert.Equal(expected.Code, actual.Code);
-            Assert.Equal(expected.IsSuccessful, actual.IsSuccessful);
-            Assert.Equal(expected.Message, actual.Message);
-        }
-
-        [Fact]
-        public void ExecuteNonQuery_CriteriaIsValid_ExpectedExecuteQuery()
-        {
-            // Arrange
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-
-            // Act
-            baseService.ExecuteNonQuery(criteria);
-
-            // Assert
-            baseRepository.Received().ExecuteNonQuery(Arg.Is<ICriteria>(x => x.IsValid()));
-        }
-
-        #endregion ExecuteNonQuery
 
         #region ExecuteNonQueryAsync
 

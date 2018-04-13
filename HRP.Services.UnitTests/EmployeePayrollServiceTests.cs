@@ -84,9 +84,9 @@
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();
-            baseService.GetData<CurrencyExchangeRateModel>(Arg.Any<ICriteria>()).Returns(currencyExchangeRates);
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<ICriteria>()).Returns(currencyCodes);
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<ICriteria>()).Returns(refResources);
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<ICriteria>()).Returns(currencyExchangeRates);
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<ICriteria>()).Returns(currencyCodes);
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<ICriteria>()).Returns(refResources);
             cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
 
             // Act

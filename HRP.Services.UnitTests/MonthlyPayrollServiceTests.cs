@@ -413,7 +413,7 @@
             cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
             cryptoService.Decrypt(null).Returns(string.Empty);
             cryptoService.Encrypt(null).Returns(string.Empty);
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
             monthlyPayrollService.CalculateMonthlyBasicAllowance(
@@ -452,7 +452,7 @@
             cryptoService.Encrypt(basicAllowance.SubsistenceAmount).Returns(basicAllowance.SubsistenceAmount);
             cryptoService.Decrypt(null).Returns(string.Empty);
             cryptoService.Encrypt(null).Returns(string.Empty);
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
             monthlyPayrollService.CalculateMonthlyBasicAllowance(
@@ -488,7 +488,7 @@
                 SubsistenceCurrencyId = 1
             };
 
-            baseService.GetData<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
+            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>())
                 .Returns(new List<CurrencyCodeModel> { new CurrencyCodeModel { CurrencyId = 1, CurrencyCode = "USD" } });
 
             monthlyPayrollService.CalculateMonthlyBasicAllowance(

@@ -72,7 +72,7 @@
         }
 
         [Fact]
-        public void LoginPost_ValidModel_ReturnSuccessfully()
+        public async Task LoginPost_ValidModel_ReturnSuccessfully()
         {
             //Arrange
             var authController = GetAuthController();
@@ -83,7 +83,7 @@
             };
 
             //Act
-            var actual = authController.Login(model);
+            var actual = await authController.Login(model);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -91,7 +91,7 @@
         }
 
         [Fact]
-        public void Login_CorrectUserAndNotRegisterOTP_RedirectNotificationView()
+        public async Task Login_CorrectUserAndNotRegisterOTP_RedirectNotificationView()
         {
             //Arrange
             var authController = GetAuthController();
@@ -100,12 +100,12 @@
                 Username = "admin",
                 Password = "r2RzX0EqeQCSjpXCp/GMnA=="
             };
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
             user.IsOTPRegistered = false;
 
             //Act
-            var actual = authController.Login(model);
+            var actual = await authController.Login(model);
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -113,7 +113,7 @@
         }
 
         [Fact]
-        public void Login_CorrectUserAndRegisteredOTP_RedirectToVerifyOTPView()
+        public async Task Login_CorrectUserAndRegisteredOTP_RedirectToVerifyOTPView()
         {
             //Arrange
             var authController = GetAuthController();
@@ -122,12 +122,12 @@
                 Username = "admin",
                 Password = "r2RzX0EqeQCSjpXCp/GMnA=="
             };
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
             user.IsOTPRegistered = true;
 
             //Act
-            var actual = authController.Login(model);
+            var actual = await authController.Login(model);
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -136,7 +136,7 @@
         }
 
         [Fact]
-        public void Login_IncorrectUser_ReturnViewResultWithModel()
+        public async Task Login_IncorrectUser_ReturnViewResultWithModel()
         {
             //Arrange
             var authController = GetAuthController();
@@ -145,11 +145,11 @@
                 Username = "admin",
                 Password = "r2RzX0EqeQCSjpXCp/GMnA=="
             };
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             //Act
-            var actual = authController.Login(model);
+            var actual = await authController.Login(model);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -177,14 +177,14 @@
         }
 
         [Fact]
-        public void ForgotPassword_CorrectUser_RedirectSuccessful()
+        public async Task ForgotPassword_CorrectUser_RedirectSuccessful()
         {
             //Arrange
             var authController = GetAuthController();
-            userService.GetUserByUsername(Arg.Any<string>()).Returns(user);
+            userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
 
             //Act
-            var actual = authController.ForgotPassword("test");
+            var actual = await authController.ForgotPassword("test");
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -192,13 +192,13 @@
         }
 
         [Fact]
-        public void ForgotPassword_IncorrectUsername_ReturnViewResult()
+        public async Task ForgotPassword_IncorrectUsername_ReturnViewResult()
         {
             //Arrange
             var authController = GetAuthController();
 
             //Act
-            var actual = authController.ForgotPassword("test");
+            var actual = await authController.ForgotPassword("test");
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -223,16 +223,16 @@
         }
 
         [Fact]
-        public void ResetPassword_ValidModelAndUpdateSuccessful_RedirectToAction()
+        public async Task ResetPassword_ValidModelAndUpdateSuccessful_RedirectToAction()
         {
             //Arrange
             var authController = GetAuthController();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
             var model = new ResetPasswordViewModel { Password = "1234aa", PasswordConfirm = "1234aa" };
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             //Act
-            var actual = authController.ResetPassword("abc", model);
+            var actual = await authController.ResetPassword("abc", model);
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -240,16 +240,16 @@
         }
 
         [Fact]
-        public void ResetPassword_ValidModelAndUpdateFail_ReturnViewResult()
+        public async Task ResetPassword_ValidModelAndUpdateFail_ReturnViewResult()
         {
             //Arrange
             var authController = GetAuthController();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
             var model = new ResetPasswordViewModel { Password = "1234aa" };
-            baseService.ExecuteNonQuery(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = -1, Message = string.Empty });
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = -1, Message = string.Empty });
 
             //Act
-            var actual = authController.ResetPassword("abc", model);
+            var actual = await authController.ResetPassword("abc", model);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -257,14 +257,14 @@
         }
 
         [Fact]
-        public void ResetPassword_IncorrectUser_RedirectToPageNotFound()
+        public async Task ResetPassword_IncorrectUser_RedirectToPageNotFound()
         {
             //Arrange
             var authController = GetAuthController();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
 
             //Act
-            var actual = authController.ResetPassword("test");
+            var actual = await authController.ResetPassword("test");
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -273,14 +273,14 @@
         }
 
         [Fact]
-        public void ResetPassword_CorrectUser_ReturnViewResult()
+        public async Task ResetPassword_CorrectUser_ReturnViewResult()
         {
             //Arrange
             var authController = GetAuthController();
-            baseService.GetDataEntity<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
 
             //Act
-            var actual = authController.ResetPassword("test");
+            var actual = await authController.ResetPassword("test");
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -288,7 +288,7 @@
         }
 
         [Fact]
-        public void ResetPassword_InvalidModel_ReturnViewResult()
+        public async Task ResetPassword_InvalidModel_ReturnViewResult()
         {
             //Arrange
             var authController = GetAuthController();
@@ -296,7 +296,7 @@
             authController.ModelState.AddModelError("", "Error");
 
             //Act
-            var actual = authController.ResetPassword("test", model);
+            var actual = await authController.ResetPassword("test", model);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);

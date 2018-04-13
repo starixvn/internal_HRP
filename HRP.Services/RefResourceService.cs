@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Services;
     using Criteria.RefResource;
     using Models;
@@ -15,20 +16,7 @@
             this.baseService = baseService;
         }
 
-        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByName(string resourceName, bool? isActive = true)
-        {
-            var criteria = new GetRefResourceByNamesCriteria
-            {
-                RefNames = resourceName,
-                IsActive = isActive
-            };
-
-            var refResources = baseService.GetData<ReferenceResourceModel>(criteria);
-
-            return refResources;
-        }
-
-        public IEnumerable<ReferenceResourceModel> GetReferenceResourcesByNames(string[] names, bool? isActive = true)
+        public async Task<IEnumerable<ReferenceResourceModel>> GetReferenceResourcesByNamesAsync(string[] names, bool? isActive = true)
         {
             IEnumerable<ReferenceResourceModel> refResources = new List<ReferenceResourceModel>();
 
@@ -41,7 +29,7 @@
                     IsActive = isActive
                 };
 
-                refResources = baseService.GetData<ReferenceResourceModel>(criteria);
+                refResources = await baseService.GetDataAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
             }
 
             return refResources;

@@ -9,17 +9,6 @@ namespace HRP.Core.Repositories
 
     public class BaseRepository : IBaseRepository
     {
-        public CommandResult ExecuteNonQuery(ICriteria criteria)
-        {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(criteria);
-                CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
-
-                return commandResult;
-            }
-        }
-
         public async Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))

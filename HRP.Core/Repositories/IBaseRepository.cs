@@ -6,8 +6,6 @@ namespace HRP.Core.Repositories
 
     public interface IBaseRepository
     {
-        CommandResult ExecuteNonQuery(ICriteria criteria);
-
         Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria);
     }
 }

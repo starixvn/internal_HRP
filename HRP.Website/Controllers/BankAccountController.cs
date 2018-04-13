@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
@@ -9,8 +10,8 @@
     using Core.Services;
     using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
-    using Models.BankAccount;
     using Models;
+    using Models.BankAccount;
     using Services;
 
     [HRPAuthorize]
@@ -46,7 +47,7 @@
             viewModel.CompanyId = employee.CompanyId;
             viewModel.EmployeeName = employee.NickName;
 
-            viewModel.BankTypeResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.BankType);
+            viewModel.BankTypeResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
             viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
             viewModel.BankAccountsLimitReached =
@@ -61,7 +62,7 @@
         {
             if (bankTypeId == (int)BankTypes.ContraCoAccount)
             {
-                var refResources = refResourceService.GetReferenceResourcesByName(ReferenceResource.ContraCoAccount);
+                IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.ContraCoAccount });
                 return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));
             }
 
@@ -164,7 +165,7 @@
                 IsActive = bankAccount.IsActive
             };
 
-            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
@@ -186,7 +187,7 @@
                 }
             }
 
-            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
@@ -208,7 +209,7 @@
 
             // TODO: disable over limit bank types (or change spec)
 
-            var refResources = refResourceService.GetReferenceResourcesByNames(refNames);
+            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Services;
     using Criteria.RefResource;
     using Models;
@@ -12,56 +13,23 @@
     {
         private IBaseService baseService;
 
-        #region GetReferenceResourcesByName
-        [Fact]
-        public void GetReferenceResourcesByName_ParamIsNull_ReturnEmptyListReferenceResources()
-        {
-            // Arrange
-            var service = GetRefResourceService();
-
-            // Act
-            var actual = service.GetReferenceResourcesByName(null);
-
-            // Assert
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void GetReferenceResourcesByName_ParamIsNotNull_ReturnAsExpectedReferenceResources()
-        {
-            // Arrange
-            var refName = "BankType";
-            var expected = FakeRefResources().Where(x => x.RefName == refName);
-
-            var service = GetRefResourceService();
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
-
-            // Act
-            var actual = service.GetReferenceResourcesByName(refName);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
         #region GetReferenceResourcesByNames
 
         [Fact]
-        public void GetReferenceResourcesByNames_ParamIsNull_ReturnEmptyListReferenceResources()
+        public async Task GetReferenceResourcesByNames_ParamIsNull_ReturnEmptyListReferenceResources()
         {
             // Arrange
             var service = GetRefResourceService();
 
             // Act
-            var actual = service.GetReferenceResourcesByNames(null);
+            var actual = await service.GetReferenceResourcesByNamesAsync(null);
 
             // Assert
             Assert.Empty(actual);
         }
 
         [Fact]
-        public void GetReferenceResourcesByNames_ParamIsNotNull_ReturnAsExpectedReferenceResources()
+        public async Task GetReferenceResourcesByNames_ParamIsNotNull_ReturnAsExpectedReferenceResources()
         {
             // Arrange
             var expected = FakeRefResources();
@@ -73,10 +41,10 @@
             };
 
             var service = GetRefResourceService();
-            baseService.GetData<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
             // Act
-            var actual = service.GetReferenceResourcesByNames(refNames);
+            var actual = await service.GetReferenceResourcesByNamesAsync(refNames);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -129,8 +97,6 @@
             Assert.Single(actual);
             Assert.Equal(refResources.First(), actual.First());
         }
-
-
 
         #endregion FilterReferenceResources
 

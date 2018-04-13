@@ -5,6 +5,7 @@ namespace HRP.Website.Controllers
     using Core.Criteria;
     using Core.Services;
     using Criteria;
+    using HRP.Core.Model;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
@@ -33,18 +34,18 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             string errorMsg = string.Empty;
 
             if (ModelState.IsValid)
             {
-                var user = userService.GetUserByUsername(viewModel.Username);
+                User user = await userService.GetUserByUsernameAsync(viewModel.Username);
                 var password = Utilities.DecryptStringAES(viewModel.Password);
 
                 if (user != null && userService.IsCorrectPassword(password, user.Password) && user.IsActive)
                 {
-                    return AfterLoginSuccessful(user);
+                    return await AfterLoginSuccessful(user);
                 }
 
                 errorMsg = (user != null && userService.IsCorrectPassword(password, user.Password) && !user.IsActive)
@@ -57,13 +58,13 @@ namespace HRP.Website.Controllers
             return View(viewModel);
         }
 
-        private IActionResult AfterLoginSuccessful(User user)
+        private async Task<IActionResult> AfterLoginSuccessful(User user)
         {
             if (!user.IsOTPRegistered)
             {
-                var otpRegisterToken = userService.GenerateTokenOTPRegister(user.Username);
+                string otpRegisterToken = await userService.GenerateTokenOTPRegisterAsync(user.Username);
 
-                userService.SendMailToRegisterOTP(otpRegisterToken);
+                await userService.SendMailToRegisterOTPAsync(otpRegisterToken);
 
                 return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
             }
@@ -79,13 +80,13 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult ForgotPassword(string username)
+        public async Task<IActionResult> ForgotPassword(string username)
         {
-            var user = userService.GetUserByUsername(username);
+            User user = await userService.GetUserByUsernameAsync(username);
 
             if (user != null)
             {
-                userService.ResetUserPassword(username);
+                await userService.ResetUserPasswordAsync(username);
 
                 return RedirectToAction(nameof(ConfirmationEmailSent));
             }
@@ -100,9 +101,9 @@ namespace HRP.Website.Controllers
             return View();
         }
 
-        public IActionResult ResetPassword(string token)
+        public async Task<IActionResult> ResetPassword(string token)
         {
-            var user = baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
+            var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (user == null || user.UserId <= 0)
             {
@@ -118,9 +119,9 @@ namespace HRP.Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(string token, ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(string token, ResetPasswordViewModel model)
         {
-            var user = baseService.GetDataEntity<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
+            var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
             if (model != null && ModelState.IsValid && user != null)
             {
@@ -130,7 +131,7 @@ namespace HRP.Website.Controllers
                     Password = BCrypt.HashPassword(model.Password)
                 };
 
-                var result = baseService.ExecuteNonQuery(criteria);
+                CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
                 if (result.IsSuccessful)
                 {
                     return RedirectToAction(nameof(ResetPasswordSuccessfully));

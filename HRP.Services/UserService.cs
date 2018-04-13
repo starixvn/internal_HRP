@@ -1,6 +1,7 @@
 namespace HRP.Services
 {
     using System.Globalization;
+    using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Constants;
     using Core.Model;
@@ -26,7 +27,7 @@ namespace HRP.Services
             this.baseService = baseService;
         }
 
-        public string GenerateTokenOTPRegister(string username)
+        public async Task<string> GenerateTokenOTPRegisterAsync(string username)
         {
             string tokenOTPRegister = Utilities.GenerateRadomString();
 
@@ -36,34 +37,34 @@ namespace HRP.Services
                 TokenOTPRegister = tokenOTPRegister
             };
 
-            CommandResult result = baseService.ExecuteNonQuery(criteria);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return result.IsSuccessful ? tokenOTPRegister : null;
         }
 
-        public User GetUserByUsername(string username)
+        public async Task<User> GetUserByUsernameAsync(string username)
         {
             var criteria = new GetUserByUsernameCriteria
             {
                 Username = username
             };
 
-            return baseService.GetDataEntity<User>(criteria);
+            return await baseService.GetDataEntityAsync<User>(criteria).ConfigureAwait(false);
         }
 
-        public User GetUserByTokenOTPRegister(string token)
+        public async Task<User> GetUserByTokenOTPRegisterAsync(string token)
         {
             var criteria = new GetUserByTokenOTPRegisterCriteria
             {
                 TokenOTPRegister = token
             };
 
-            return baseService.GetDataEntity<User>(criteria);
+            return await baseService.GetDataEntityAsync<User>(criteria).ConfigureAwait(false);
         }
 
         public bool IsCorrectPassword(string password, string hashedPassword) => BCrypt.Verify(password, hashedPassword);
 
-        public bool ResetTokenOTPRegister(string username)
+        public async Task<bool> ResetTokenOTPRegisterAsync(string username)
         {
             var criteria = new UpdateTokenOTPRegisterCriteria
             {
@@ -71,12 +72,12 @@ namespace HRP.Services
                 TokenOTPRegister = null
             };
 
-            CommandResult result = baseService.ExecuteNonQuery(criteria);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return result.IsSuccessful;
         }
 
-        public void ResetUserPassword(string username)
+        public async Task ResetUserPasswordAsync(string username)
         {
             string tokenResetPassword = Utilities.GenerateRadomString();
             var criteria = new UpdateTokenResetPasswordCriteria
@@ -85,20 +86,20 @@ namespace HRP.Services
                 TokenResetPassword = tokenResetPassword
             };
 
-            CommandResult updateToken = baseService.ExecuteNonQuery(criteria);
+            CommandResult updateToken = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             if (updateToken.IsSuccessful)
             {
-                SendMailToResetPassword(username, tokenResetPassword);
+                await SendMailToResetPasswordAsync(username, tokenResetPassword).ConfigureAwait(false);
             }
         }
 
-        public void SendMailToRegisterOTP(string tokenOTPRegister)
+        public async Task SendMailToRegisterOTPAsync(string tokenOTPRegister)
         {
-            var user = baseService.GetDataEntity<User>(new GetUserByTokenOTPRegisterCriteria
+            var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenOTPRegisterCriteria
             {
                 TokenOTPRegister = tokenOTPRegister
-            });
+            }).ConfigureAwait(false);
 
             var body = emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
             var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.Domain, tokenOTPRegister);
@@ -115,7 +116,7 @@ namespace HRP.Services
             emailService.SendEmail(mailModel);
         }
 
-        public bool UpdateOTPStatus(int userId, bool isOTPRegistered)
+        public async Task<bool> UpdateOTPStatusAsync(int userId, bool isOTPRegistered)
         {
             var criteria = new UpdateUserOTPStatusCriteria
             {
@@ -123,12 +124,12 @@ namespace HRP.Services
                 IsOTPRegistered = isOTPRegistered
             };
 
-            CommandResult result = baseService.ExecuteNonQuery(criteria);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return result.IsSuccessful;
         }
 
-        public bool UpdateSecretKey(string username, string secretKey)
+        public async Task<bool> UpdateSecretKeyAsync(string username, string secretKey)
         {
             var criteria = new UpdateSecretKeyCriteria
             {
@@ -136,14 +137,14 @@ namespace HRP.Services
                 SecretKey = secretKey
             };
 
-            CommandResult result = baseService.ExecuteNonQuery(criteria);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return result.IsSuccessful;
         }
 
-        private void SendMailToResetPassword(string username, string tokenResetPassword)
+        private async Task SendMailToResetPasswordAsync(string username, string tokenResetPassword)
         {
-            var user = GetUserByUsername(username);
+            var user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
             var body = emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
             var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.Domain, tokenResetPassword);
             body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
