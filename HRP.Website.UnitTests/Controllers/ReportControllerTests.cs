@@ -38,7 +38,7 @@
         }
 
         [Fact]
-        public async Task GetBankInReport_InValidParams_ReturnNull()
+        public async Task GetBankInReport_InValidParams_ReturnEmpty()
         {
             //Arrage
             var bankInReportViewModel = new BankInReportViewModel
@@ -53,7 +53,7 @@
             var actual = await reportController.GetBankInReport(bankInReportViewModel);
 
             //Assert
-            Assert.Null(actual);
+            Assert.IsType<RedirectToActionResult>(actual);
         }
 
         [Fact]

@@ -7,13 +7,13 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
-    using HRP.Models;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc;
     using Models.Report;
-    using Services;
+    using Models;
     using Services.Interfaces;
+    using Services;
 
     [HRPAuthorize]
     public class ReportController : BaseController
@@ -55,7 +55,8 @@
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
             FileInfo fileInfo = new FileInfo(hostingEnvironment.WebRootPath + "\\ExcelTemplates\\BankIn.xlsx");
-            FileContentResult result = null;
+
+            IActionResult result = RedirectToAction("BankIn");
 
             if (bankInData != null && bankInData.IsExportable)
             {
