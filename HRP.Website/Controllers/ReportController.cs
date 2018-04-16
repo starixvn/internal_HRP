@@ -8,13 +8,13 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
+    using HRP.Models;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Report;
-    using Services.Interfaces;
-    using Services;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using HRP.Models;
+    using Models.Report;
+    using Services;
+    using Services.Interfaces;
 
     [HRPAuthorize]
     public class ReportController : BaseController
