@@ -18,7 +18,6 @@
     [HRPAuthorize]
     public class ReportController : BaseController
     {
-        private readonly IPaymentProcessService paymentProcessService;
         private readonly IReportService reportService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
@@ -26,12 +25,10 @@
         public ReportController(
             IBaseService baseService,
             ISessionService sessionService,
-            IPaymentProcessService paymentProcessService,
             IHostingEnvironment hostingEnvironment,
             IExportExcelService exportExcelService,
             IReportService reportService) : base(baseService, sessionService)
         {
-            this.paymentProcessService = paymentProcessService;
             this.reportService = reportService;
             this.hostingEnvironment = hostingEnvironment;
             this.exportExcelService = exportExcelService;
@@ -40,9 +37,11 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> BankIn()
         {
+            var companies = await reportService.GetCompaniesAsync();
+
             var viewModel = new BankInReportViewModel
             {
-                Companies = await paymentProcessService.GetCompanySelectListAsync(),
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now
             };
 

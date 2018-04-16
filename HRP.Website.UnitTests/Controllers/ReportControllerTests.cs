@@ -17,7 +17,6 @@
     {
         private ISessionService sessionService;
         private IBaseService baseService;
-        private IPaymentProcessService paymentProcessService;
         private IReportService reportService;
         private IHostingEnvironment hostingEnvironment;
         private IExportExcelService exportExcelService;
@@ -112,13 +111,6 @@
             return service;
         }
 
-        private IPaymentProcessService FakePaymentProcessService()
-        {
-            var service = Substitute.For<IPaymentProcessService>();
-
-            return service;
-        }
-
         private IReportService FakeReportService()
         {
             return Substitute.For<IReportService>();
@@ -138,7 +130,6 @@
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
-            paymentProcessService = FakePaymentProcessService();
             reportService = FakeReportService();
             exportExcelService = FakeExportExcelService();
             hostingEnvironment = FakeHostingEnviroment();
@@ -146,7 +137,6 @@
             return new ReportController(
                 baseService,
                 sessionService,
-                paymentProcessService,
                 hostingEnvironment,
                 exportExcelService,
                 reportService);
