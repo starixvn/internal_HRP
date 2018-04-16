@@ -146,7 +146,7 @@
             placeholder: '',
             minimumResultsForSearch: Infinity
         }).on('change', function () {
-            $(this).valid();
+            $(this).click();
         });
 
         $('.select2-ajax').select2({
@@ -171,7 +171,7 @@
             placeholder: '',
             minimumResultsForSearch: Infinity
         }).on('change', function () {
-            $(this).valid();
+            $(this).click();
         });
     }
 
@@ -243,6 +243,11 @@
 
         $('.bank-type-select').on('change', function (e) {
             $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+            validatedInvalidRelatedElements(e.target);
+        });
+
+        $('#Allowance_CashAccountId').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
         });
 
         $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
