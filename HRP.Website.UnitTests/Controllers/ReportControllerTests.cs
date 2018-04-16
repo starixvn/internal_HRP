@@ -66,14 +66,27 @@
                 SelectedTime = DateTime.Now
             };
 
+            var companyName = "Dashword";
+            var reportedMonth = DateTime.Today;
+
             var bankInData = new List<BankIn>
             {
-                new BankIn { Salary = "1" },
-                new BankIn { Salary = "1" },
+                new BankIn { Amount = "1" },
+                new BankIn { Amount = "1" },
+            };
+
+            var bankInReport = new BankInReport
+            {
+                EBankingBankIns = bankInData,
+                DirectBanking1BankIns = bankInData,
+                DirectBanking2BankIns = bankInData,
+                CashBankIns = bankInData,
+                CompanyName = companyName,
+                ReportedMonth = reportedMonth
             };
 
             var reportController = GetReportController();
-            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(bankInData);
+            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(bankInReport);
 
             //Act
             var actual = await reportController.GetBankInReport(bankInReportViewModel);

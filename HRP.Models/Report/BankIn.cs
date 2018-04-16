@@ -12,24 +12,12 @@
 
         public string AccountNumber { get; set; }
 
-        public float SalaryDecrypted { get; set; }
+        [EpplusIgnore]
+        public string Amount { get; set; }
+
+        public float AmountDecrypted { get; set; }
 
         [EpplusIgnore]
-        public string Salary { get; set; }
-
-        [EpplusIgnore]
-        public string EbankingAmount { get; set; }
-
-        [EpplusIgnore]
-        public string DirectBanking1Amount { get; set; }
-
-        [EpplusIgnore]
-        public string DirectBanking2Amount { get; set; }
-
-        [EpplusIgnore]
-        public string CashAmount { get; set; }
-
-        [EpplusIgnore]
-        public string CompanyName { get; set; }
+        public string CurrencyCode { get; set; }
     }
 }

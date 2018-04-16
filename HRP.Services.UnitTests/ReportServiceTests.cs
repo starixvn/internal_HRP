@@ -7,6 +7,7 @@
     using Fanex.Data.Repository;
     using Models.Report;
     using NSubstitute;
+    using Repositories;
     using Xunit;
 
     public class ReportServiceTests
@@ -14,17 +15,22 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
+        private IReportRepository reportRepository;
 
         [Fact]
         public async Task GetBankInAsync_InValidParams_ReturnEmpty()
         {
             // Arrange
             var reportService = GetReportService();
+            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new BankInReport());
 
             // Act
             var actual = await reportService.GetBankInAsync(0, DateTime.Now);
 
-            Assert.Empty(actual);
+            Assert.Null(actual.EBankingBankIns);
+            Assert.Null(actual.DirectBanking1BankIns);
+            Assert.Null(actual.DirectBanking2BankIns);
+            Assert.Null(actual.CashBankIns);
         }
 
         [Fact]
@@ -34,23 +40,50 @@
             var reportService = GetReportService();
 
             float salaryDescrypted = 1;
+            var companyName = "Dashword";
+            var reportedMonth = DateTime.Today;
 
             var bankInData = new List<BankIn>
             {
-                new BankIn { Salary = "1" },
-                new BankIn { Salary = "1" },
+                new BankIn { Amount = "1" },
+                new BankIn { Amount = "1" },
             };
 
-            baseService.GetDataAsync<BankIn>(Arg.Any<ICriteria>()).Returns(bankInData);
+            var bankInReport = new BankInReport
+            {
+                EBankingBankIns = bankInData,
+                DirectBanking1BankIns = bankInData,
+                DirectBanking2BankIns = bankInData,
+                CashBankIns = bankInData,
+                CompanyName = companyName,
+                ReportedMonth = reportedMonth
+            };
+
+            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(bankInReport);
+
             cryptoService.Decrypt(Arg.Any<string>()).Returns("1");
 
             // Act
             var actual = await reportService.GetBankInAsync(1, DateTime.Now);
 
-            Assert.All(actual, x =>
+            Assert.All(actual.EBankingBankIns, x =>
             {
-                Assert.Equal(salaryDescrypted, x.SalaryDecrypted);
+                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
             });
+            Assert.All(actual.DirectBanking1BankIns, x =>
+            {
+                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+            });
+            Assert.All(actual.DirectBanking2BankIns, x =>
+            {
+                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+            });
+            Assert.All(actual.CashBankIns, x =>
+            {
+                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+            });
+            Assert.Equal(companyName, actual.CompanyName);
+            Assert.Equal(reportedMonth, actual.ReportedMonth);
         }
 
         #region Helpers
@@ -70,13 +103,19 @@
             return Substitute.For<ISessionService>();
         }
 
+        private static IReportRepository FakeReportRepository()
+        {
+            return Substitute.For<IReportRepository>();
+        }
+
         private ReportService GetReportService()
         {
             baseService = FakeBaseService();
             cryptoService = FakeCryptoService();
             sessionService = FakeSessionService();
+            reportRepository = FakeReportRepository();
 
-            return new ReportService(baseService, sessionService, cryptoService);
+            return new ReportService(baseService, sessionService, cryptoService, reportRepository);
         }
 
         #endregion Helpers

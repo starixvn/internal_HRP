@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
@@ -58,14 +57,14 @@
             FileInfo fileInfo = new FileInfo(hostingEnvironment.WebRootPath + "\\ExcelTemplates\\BankIn.xlsx");
             FileContentResult result = null;
 
-            if (bankInData.Any())
+            if (bankInData != null && bankInData.IsExportable)
             {
                 var fileContent = exportExcelService.ExportBankInReports(
                     viewModel.SelectedTime,
                     fileInfo,
                     bankInData);
 
-                result = File(fileContent, MimeType.XLSX, $"BankIn {viewModel.SelectedTime:MMMM yyyy}.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_BankingDetails.xlsx");
             }
 
             return result;

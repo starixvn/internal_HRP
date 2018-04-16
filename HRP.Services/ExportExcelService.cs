@@ -34,44 +34,71 @@
             return memory;
         }
 
-        public byte[] ExportBankInReports(
-            DateTime selectedTime,
-            FileInfo fileInfo,
-            IEnumerable<BankIn> data)
+        public byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, BankInReport data)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 
                 // Set company name
-                worksheet.Cells["C2"].Value = data.First().CompanyName;
+                worksheet.Cells["C2"].Value = data.CompanyName;
 
                 // Set month
                 worksheet.Cells["C3"].Value = selectedTime.ToString("MMMM yyyy");
 
-                // Set values for each banks
-                var bankInDataGrouped = data.GroupBy(x => x.BankName);
-                var startRow = 10;
-                foreach (IGrouping<string, BankIn> bankIns in bankInDataGrouped)
-                {
-                    worksheet.Cells[startRow, 2].LoadFromCollectionFiltered(bankIns.ToList());
+                var startRow = 9;
 
-                    // Create sumary row for a bank
-                    startRow = startRow + bankIns.Count();
-                    var summaryRow = worksheet.Cells[startRow, 2, startRow, 5];
-                    summaryRow.Merge = true;
-                    summaryRow.Value = "Total (RM) - " + bankIns.Key;
+                // EBanking
+                var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                startRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
 
-                    worksheet.Cells[startRow, 6].FormulaR1C1 =
-                        $"=SUM(R{(startRow - bankIns.Count() - 1)}C6:R{startRow - 1}C6)";
+                var directBanking1GroupedByBank = data.DirectBanking1BankIns.GroupBy(x => x.BankName);
+                startRow = RenderReportRowsForBankIns(directBanking1GroupedByBank, worksheet, startRow);
 
-                    startRow++;
-                }
+                var directBanking2GroupedByBank = data.DirectBanking2BankIns.GroupBy(x => x.BankName);
+                startRow = RenderReportRowsForBankIns(directBanking2GroupedByBank, worksheet, startRow);
+
+                var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
+                RenderReportRowsForBankIns(cashGroupedByBank, worksheet, startRow);
 
                 worksheet.Cells.AutoFitColumns();
 
                 return xlPackage.GetAsByteArray();
             }
+        }
+
+        private static int RenderReportRowsForBankIns(
+            IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
+            ExcelWorksheet worksheet,
+            int startRow)
+        {
+            int rowIndex = startRow;
+
+            foreach (IGrouping<string, BankIn> bankIns in bankInsGroupedByBank)
+            {
+                // group by currency
+
+                var bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
+                foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
+                {
+                    worksheet.Cells[rowIndex, 2].LoadFromCollectionFiltered(grouping.ToList());
+
+                    // Create sumary row for a bank
+                    rowIndex = rowIndex + grouping.Count();
+                    var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 5];
+                    summaryRow.Merge = true;
+
+                    // TODO: move to resource when user confirmed
+                    summaryRow.Value = string.Format("Total ({0})", grouping.Key);
+
+                    worksheet.Cells[rowIndex, 6].FormulaR1C1 =
+                        $"=SUM(R{(rowIndex - grouping.Count())}C6:R{rowIndex - 1}C6)";
+
+                    rowIndex++;
+                }
+            }
+
+            return rowIndex;
         }
 
         public Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel)

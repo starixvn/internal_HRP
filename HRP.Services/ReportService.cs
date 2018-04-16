@@ -4,27 +4,34 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Constants;
     using Core.Services;
     using Criteria.Report;
-    using HRP.Core.Constants;
-    using HRP.Criteria;
-    using HRP.Models;
+    using Criteria;
     using Models.Report;
+    using Models;
+    using Repositories;
 
     public class ReportService : IReportService
     {
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
+        private readonly IReportRepository reportRepository;
 
-        public ReportService(IBaseService baseService, ISessionService sessionService, ICryptoService cryptoService)
+        public ReportService(
+            IBaseService baseService,
+            ISessionService sessionService,
+            ICryptoService cryptoService,
+            IReportRepository reportRepository)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
+            this.reportRepository = reportRepository;
         }
 
-        public async Task<IEnumerable<BankIn>> GetBankInAsync(int companyId, DateTime selectedTime)
+        public async Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime)
         {
             var criteria = new BankInReportCriteria
             {
@@ -32,12 +39,12 @@
                 Month = selectedTime
             };
 
-            var bankInData = await baseService.GetDataAsync<BankIn>(criteria).ConfigureAwait(false);
+            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
 
-            foreach (BankIn bankIn in bankInData)
-            {
-                bankIn.SalaryDecrypted = float.Parse(cryptoService.Decrypt(bankIn.Salary));
-            }
+            DecryptBankInAmount(bankInData.EBankingBankIns);
+            DecryptBankInAmount(bankInData.DirectBanking1BankIns);
+            DecryptBankInAmount(bankInData.DirectBanking2BankIns);
+            DecryptBankInAmount(bankInData.CashBankIns);
 
             return bankInData;
         }
@@ -59,7 +66,8 @@
             return ColumnsDictionary.Columns.Values.OrderBy(x => x.GroupName);
         }
 
-        public async Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(GenerateReportViewModel viewModel)
+        public async Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(
+            GenerateReportViewModel viewModel)
         {
             var criteria = new GetDataForDynamicReportCriteria
             {
@@ -77,6 +85,19 @@
             var reports = await baseService.GetDataAsync<DynamicReportModel>(criteria).ConfigureAwait(false);
 
             return reports;
+        }
+
+        private void DecryptBankInAmount(IEnumerable<BankIn> bankIns)
+        {
+            if (bankIns != null && bankIns.Any())
+            {
+                foreach (BankIn bankIn in bankIns)
+                {
+                    float parsedValue;
+                    float.TryParse(cryptoService.Decrypt(bankIn.Amount), out parsedValue);
+                    bankIn.AmountDecrypted = parsedValue;
+                }
+            }
         }
     }
 }

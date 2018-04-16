@@ -8,7 +8,7 @@
 
     public interface IReportService
     {
-        Task<IEnumerable<BankIn>> GetBankInAsync(int companyId, DateTime selectedTime);
+        Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime);
 
         Task<IEnumerable<Company>> GetCompaniesAsync();
 
