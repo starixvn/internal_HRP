@@ -1,10 +1,8 @@
 ﻿namespace HRP.Repositories
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using Interfaces;
     using Models.Report;
 
     public class ReportRepository : IReportRepository
@@ -13,7 +11,7 @@
         {
             using (var database = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader results = database.QueryMultiple(criteria))
+                using (IMultiResultReader results = await database.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var bankInReport = new BankInReport
                     {
