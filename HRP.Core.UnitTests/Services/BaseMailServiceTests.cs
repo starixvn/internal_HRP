@@ -40,8 +40,7 @@
             var mailConfig = new MailConfigs
             {
                 AppId = 52,
-                MailAddress = "net.tcp://10.18.200.116:8787/MailService",
-                SenderName = "HRP"
+                MailAddress = "net.tcp://10.18.200.116:8787/MailService"
             };
             var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
             configuration.Value.Returns(mailConfig);
@@ -159,8 +158,7 @@
             var mailConfig = new MailConfigs
             {
                 AppId = 52,
-                MailAddress = "net.tcp://10.18.200.116:8787/MailService",
-                SenderName = "HRP"
+                MailAddress = "net.tcp://10.18.200.116:8787/MailService"
             };
             var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
             configuration.Value.Returns(mailConfig);

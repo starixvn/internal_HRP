@@ -7,7 +7,6 @@
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
   </PropertyGroup>
 
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CodeAnalysisRuleSet>HRP.Website.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,21 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\ExportExcelController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="App_Data\SPNames - Copy.xml" />
     <None Remove="App_Data\SPNames.xml" />
-    <None Remove="ExcelTemplates\BankIn.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="App_Data\SPNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExcelTemplates\BankIn.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -50,7 +40,6 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.375" />
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
-    <PackageReference Include="Fanex.Data.OldConnectionStringProvider" Version="1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.2" />
@@ -104,11 +93,13 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\ExcelTemplates\BankIn.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="CreateLogsFolder" AfterTargets="AfterPublish">
     <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
     <MakeDir Directories="$(PublishUrl)logs" Condition="!Exists('$(PublishUrl)logs')" />
   </Target>
-
 </Project>

@@ -55,7 +55,7 @@
         {
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
-            FileInfo fileInfo = new FileInfo(hostingEnvironment.ContentRootPath + "\\ExcelTemplates\\BankIn.xlsx");
+            FileInfo fileInfo = new FileInfo(hostingEnvironment.WebRootPath + "\\ExcelTemplates\\BankIn.xlsx");
             FileContentResult result = null;
 
             if (bankInData.Any())
@@ -69,16 +69,6 @@
             }
 
             return result;
-        }
-
-        public async Task<IActionResult> BasicSalaryDirectBankingAndCash()
-        {
-            var viewModel = new BasicReportViewModel
-            {
-                Companies = await paymentProcessService.GetCompanySelectListAsync(),
-                SelectedTime = DateTime.Now
-            };
-            return View(viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]

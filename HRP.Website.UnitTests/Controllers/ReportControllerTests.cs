@@ -82,21 +82,6 @@
             Assert.IsType<FileContentResult>(actual);
         }
 
-        [Fact]
-        public async Task BasicSalaryDirectBankingAndCash_WhenCalled_ReturnExpectedView()
-        {
-            //Arrange
-            var reportController = GetReportController();
-
-            //Act
-            var actual = await reportController.BasicSalaryDirectBankingAndCash();
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<BasicReportViewModel>(viewResult.Model);
-            Assert.Null(viewResult.ViewName);
-        }
-
         #region Helpers
 
         private ISessionService FakeSessionService()
