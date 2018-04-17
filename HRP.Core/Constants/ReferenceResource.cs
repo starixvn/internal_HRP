@@ -15,8 +15,6 @@
         public const string BankType = "BankType";
         public const string TypeOfBankAccount = "TypeOfBankAccount";
         public const string BasicSalaryChangeReason = "BasicSalaryChangeReason";
-        public const string PaymentMethodCash = "PaymentMethodCash";
-        public const string ContraCoAccount = "ContraCoAccount";
         public const string CompanyBVIChangeReason = "CompanyBVIChangeReason";
         public const string CompanyLocalChangeReason = "CompanyLocalChangeReason";
         public const string JobTitleChangeReason = "JobTitleChangeReason";
@@ -28,5 +26,9 @@
         public const string DepartmentChangeReason = "DepartmentChangeReason";
         public const string SectionChangeReason = "SectionChangeReason";
         public const string CostCenterChangeReason = "CostCenterChangeReason";
+        public const string PaymentTransactionCash = "PaymentTransactionCash";
+        public const string PaymentTransactionEbanking = "PaymentTransactionEbanking";
+        public const string PaymentTransactionDirectBanking = "PaymentTransactionDirectBanking";
+        public const string ContraCoAccount = "ContraCoAccount"; //Remove
     }
 }

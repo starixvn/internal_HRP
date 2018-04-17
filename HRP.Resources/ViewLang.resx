@@ -759,8 +759,8 @@
   <data name="JobTitleChangeReason" xml:space="preserve">
     <value>Job Title Change Reason</value>
   </data>
-  <data name="PaymentMethodCash" xml:space="preserve">
-    <value>Payment Method - Cash</value>
+  <data name="PaymentTransactionCash" xml:space="preserve">
+    <value>Payment Transaction - Cash</value>
   </data>
   <data name="SectionChangeReason" xml:space="preserve">
     <value>Section Change Reason</value>
@@ -1022,6 +1022,12 @@
   </data>
   <data name="Report" xml:space="preserve">
     <value>Report</value>
+  </data>
+  <data name="PaymentTransactionDirectBanking" xml:space="preserve">
+    <value>Payment Transaction - Direct Banking</value>
+  </data>
+  <data name="PaymentTransactionEbanking" xml:space="preserve">
+    <value>Payment Transaction - eBanking</value>
   </data>
   <data name="DirectBanking" xml:space="preserve">
     <value>Direct Banking</value>

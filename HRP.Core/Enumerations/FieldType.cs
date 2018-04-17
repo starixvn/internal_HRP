@@ -97,16 +97,22 @@
         [Display(Name = "Type Of Bank Account")]
         TypeOfBankAccount = 31,
 
-        [Display(Name = "Payment Method - Cash")]
-        PaymentMethodCash = 32,
+        [Display(Name = "Payment Transaction - Cash")]
+        PaymentTransactionCash = 32,
 
-        [Display(Name = "Contra Co. Account")]
-        ContraCoAccount = 33,
+        //[Display(Name = "Contra Co. Account")]
+        //ContraCoAccount = 33,
 
         [Display(Name = "Company BVI Change Reason")]
         CompanyBVIChangeReason = 34,
 
         [Display(Name = "Company Local Change Reason")]
-        CompanyLocalChangeReason = 35
+        CompanyLocalChangeReason = 35,
+
+        [Display(Name = "Payment Transaction - eBanking")]
+        PaymentTransactionEbanking = 36,
+
+        [Display(Name = "Payment Transaction - Direct Banking")]
+        PaymentTransactionDirectBanking = 37
     }
 }

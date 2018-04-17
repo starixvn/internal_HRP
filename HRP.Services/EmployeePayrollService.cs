@@ -57,7 +57,7 @@
                         }).ConfigureAwait(false);
                         viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
                         {
-                            RefNames = ReferenceResource.PaymentMethodCash,
+                            RefNames = ReferenceResource.PaymentTransactionCash,
                             IsActive = true
                         }).ConfigureAwait(false);
                         viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria

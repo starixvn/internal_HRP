@@ -1924,15 +1924,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Payment Method - Cash.
-        /// </summary>
-        public static string PaymentMethodCash {
-            get {
-                return ResourceManager.GetString("PaymentMethodCash", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Payment Process.
         /// </summary>
         public static string PaymentProcess {
@@ -1947,6 +1938,33 @@ namespace HRP.Resources {
         public static string PaymentTransaction {
             get {
                 return ResourceManager.GetString("PaymentTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Transaction - Cash.
+        /// </summary>
+        public static string PaymentTransactionCash {
+            get {
+                return ResourceManager.GetString("PaymentTransactionCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Transaction - Direct Banking.
+        /// </summary>
+        public static string PaymentTransactionDirectBanking {
+            get {
+                return ResourceManager.GetString("PaymentTransactionDirectBanking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Transaction - eBanking.
+        /// </summary>
+        public static string PaymentTransactionEbanking {
+            get {
+                return ResourceManager.GetString("PaymentTransactionEbanking", resourceCulture);
             }
         }
         

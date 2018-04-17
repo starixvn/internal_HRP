@@ -230,21 +230,13 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.TypeOfBankAccount }
             },
-            { (int)FieldType.PaymentMethodCash, new Field   {
-                    FieldId = (int)FieldType.PaymentMethodCash,
-                    FieldName = ViewLang.PaymentMethodCash,
+            { (int)FieldType.PaymentTransactionCash, new Field   {
+                    FieldId = (int)FieldType.PaymentTransactionCash,
+                    FieldName = ViewLang.PaymentTransactionCash,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.PaymentMethodCash }
-            },
-            { (int)FieldType.ContraCoAccount, new Field   {
-                    FieldId = (int)FieldType.ContraCoAccount,
-                    FieldName = ViewLang.ContraCoAccount,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.ContraCoAccount }
+                    RefName = ReferenceResource.PaymentTransactionCash }
             },
             { (int)FieldType.CompanyBVIChangeReason, new Field   {
                     FieldId = (int)FieldType.CompanyBVIChangeReason,
@@ -268,6 +260,22 @@
                     LinkGetAllItem = DataConfigurationActionLink.GetAllCurrency,
                     LinkCreateItem =  DataConfigurationActionLink.CreateCurrency,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateCurrency}
+            },
+            { (int)FieldType.PaymentTransactionEbanking, new Field   {
+                    FieldId = (int)FieldType.PaymentTransactionEbanking,
+                    FieldName = ViewLang.PaymentTransactionEbanking,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.PaymentTransactionEbanking }
+            },
+            { (int)FieldType.PaymentTransactionDirectBanking, new Field   {
+                    FieldId = (int)FieldType.PaymentTransactionDirectBanking,
+                    FieldName = ViewLang.PaymentTransactionDirectBanking,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.PaymentTransactionDirectBanking }
             }
         };
 
