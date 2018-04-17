@@ -77,7 +77,7 @@
     <div class="pull-left">
         @if (Model.HaveHostPermission)
         {
-            if (Model.BankAccountsLimitReached)
+            @*if (Model.BankAccountsLimitReached)
             {
                 <a class="button -add create-user" data-toggle="modal" data-target="#bank-account-limit-reached-modal">
                     <span class="icon-add"></span>
@@ -85,12 +85,12 @@
                 </a>
             }
             else
-            {
+            {*@
                 <a class="button -add create-user" asp-action="CreateBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
                     <span class="icon-add"></span>
                     @ViewLang.CreateNewBankAccount
                 </a>
-            }
+            //}
         }
     </div>
 

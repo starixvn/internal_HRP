@@ -42,6 +42,6 @@
 
         public bool HaveHostPermission { get; set; }
 
-        public bool BankAccountsLimitReached { get; set; }
+        ////public bool BankAccountsLimitReached { get; set; }
     }
 }
