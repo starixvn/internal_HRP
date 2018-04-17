@@ -372,16 +372,18 @@
                     <div>@ViewLang.PaymentTransaction</div>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-group="directbanking1">
-                        <option></option>
+                    <div class="like-group-title">@ViewLang.DirectBanking</div>
+                    <select class="control hidden bank-type-select" asp-for="Allowance.DirectBanking1BankTypeId">
+                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking1AccountId" data-group="directbanking1">
                         <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control select2 bank-type-select" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-group="directbanking2">
-                        <option></option>
+                    <div class="like-group-title">@ViewLang.DirectBanking</div>
+                    <select class="control hidden bank-type-select" asp-for="Allowance.DirectBanking2BankTypeId">
+                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking2AccountId" data-group="directbanking2">
                         <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>

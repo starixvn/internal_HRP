@@ -241,8 +241,7 @@
             }
         });
 
-        $('.bank-type-select').on('change', function (e) {
-            $(this).siblings('.bank-account-select').val('').trigger('change.select2');
+        $('.bank-account-select').on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
         });
 

@@ -20,40 +20,36 @@
 
         public string TotalAmount { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId), nameof(DirectBanking1BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId) },
              ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DirectBanking1CurrencyId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1AccountId), nameof(DirectBanking1BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1AccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking1Amount { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1Amount), nameof(DirectBanking1BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? DirectBanking1AccountId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollBankTypeRequried))]
         public int? DirectBanking1BankTypeId { get; set; }
 
         public string DirectBanking1AccountName { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId), nameof(DirectBanking2BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DirectBanking2CurrencyId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2AccountId), nameof(DirectBanking2BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2AccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking2Amount { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount), nameof(DirectBanking2BankTypeId) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? DirectBanking2AccountId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollBankTypeRequried))]
         public int? DirectBanking2BankTypeId { get; set; }
 
         public string DirectBanking2AccountName { get; set; }
@@ -75,7 +71,7 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DSTNetSalaryCurrencyId { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DSTNetSalaryCurrencyId)},
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DSTNetSalaryCurrencyId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         public string DSTNetSalaryAmount { get; set; }
 

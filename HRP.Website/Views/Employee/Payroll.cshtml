@@ -19,7 +19,6 @@
 
 @{
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyId), "CurrencyId", "CurrencyCode");
-    var bankTypes = Html.GetEnumSelectList<BankTypes>().Where(x => int.Parse(x.Value) != (int)BankTypes.Ebanking);
 }
 
 <!--Modals section-->
@@ -161,9 +160,12 @@
             </div>
             <div></div>
             <div class="payment-transaction">
-                <select class="control bank-type-select basic-salary-directbanking1 select2" asp-for="BasicSalary.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
-                    <option></option>
+                <label class="bank-type">@ViewLang.DirectBanking</label>
+
+                <select class="control bank-type-select hidden" asp-for="BasicSalary.DirectBanking1BankTypeId">
+                    <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
+
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking1" asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.DirectBanking1AccountId">@Model.BasicSalary.DirectBanking1AccountName</option>
                 </select>
@@ -187,8 +189,10 @@
             </div>
             <div></div>
             <div class="payment-transaction">
-                <select class="control bank-type-select basic-salary-directbanking2 select2" asp-for="BasicSalary.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried" asp-items="bankTypes">
-                    <option></option>
+                <label class="bank-type">@ViewLang.DirectBanking</label>
+
+                <select class="control bank-type-select hidden" asp-for="BasicSalary.DirectBanking2BankTypeId">
+                    <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.BasicSalary.DirectBanking2AccountId">@Model.BasicSalary.DirectBanking2AccountName</option>
@@ -252,9 +256,12 @@
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
-                <select class="control bank-type-select allowance-directbanking1 select2" asp-items="bankTypes" asp-for="Allowance.DirectBanking1BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
-                    <option></option>
+                <label class="bank-type">@ViewLang.DirectBanking</label>
+
+                <select class="control bank-type-select hidden" asp-for="Allowance.DirectBanking1BankTypeId">
+                    <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
+
                 <select class="control select2-ajax bank-account-select allowance-directbanking1" asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                 </select>
@@ -278,8 +285,10 @@
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
-                <select class="control bank-type-select allowance-directbanking2 select2" asp-items="bankTypes" asp-for="Allowance.DirectBanking2BankTypeId" data-msg-required="@Message.EmployeePayrollBankTypeRequried">
-                    <option></option>
+                 <label class="bank-type">@ViewLang.DirectBanking</label>
+
+                <select class="control bank-type-select hidden" asp-for="Allowance.DirectBanking2BankTypeId">
+                    <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select allowance-directbanking2" asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
                     <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>

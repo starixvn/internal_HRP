@@ -1023,4 +1023,7 @@
   <data name="Report" xml:space="preserve">
     <value>Report</value>
   </data>
+  <data name="DirectBanking" xml:space="preserve">
+    <value>Direct Banking</value>
+  </data>
 </root>

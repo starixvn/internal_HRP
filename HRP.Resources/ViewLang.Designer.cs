@@ -826,6 +826,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Banking.
+        /// </summary>
+        public static string DirectBanking {
+            get {
+                return ResourceManager.GetString("DirectBanking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direct Banking 1.
         /// </summary>
         public static string DirectBanking1 {

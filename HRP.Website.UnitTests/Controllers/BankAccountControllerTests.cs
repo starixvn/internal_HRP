@@ -381,21 +381,7 @@
         #region GetEmployeeBankAccounts
 
         [Fact]
-        public async Task GetEmployeeBankAccounts_ContraCoAccountType_ReturnContraCoAccounts()
-        {
-            // Arrange
-            var controller = GetBankAccountController();
-            refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.ContraCoAccount }).Returns(new List<ReferenceResourceModel>());
-
-            // Test
-            var actual = await controller.GetEmployeeBankAccounts((int)BankTypes.ContraCoAccount, 1);
-
-            // Assert
-            Assert.IsType<JsonResult>(actual);
-        }
-
-        [Fact]
-        public async Task GetEmployeeBankAccounts_NotContraCoAccountType_ReturnEmployeeBankAccounts()
+        public async Task GetEmployeeBankAccounts_ValidBankType_ReturnEmployeeBankAccounts()
         {
             //Arrange
             var controller = GetBankAccountController();

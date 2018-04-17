@@ -60,12 +60,6 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
-            if (bankTypeId == (int)BankTypes.ContraCoAccount)
-            {
-                IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.ContraCoAccount });
-                return Json(refResources.Select(x => new { id = x.ResourceId, text = x.Value }));
-            }
-
             var criteria = new SearchBankAccountCriteria
             {
                 EmployeeId = employeeId,
