@@ -69,7 +69,7 @@
             };
 
             var result = await baseService.GetDataAsync<BankAccount>(criteria);
-            return Json(result.Select(x => new { id = x.BankAccountId, text = x.AccountName }));
+            return Json(result.Select(x => new { id = x.BankAccountId, text = x.PaymentTransaction }));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
