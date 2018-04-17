@@ -20,6 +20,14 @@ var editBasicSalary = (function ($) {
         return this.round(decimals);
     };
 
+    function validatedInvalidRelatedElements(element) {
+        var group = $(element).data('group');
+        var validateElements = $('.input-validation-error[data-group="' + group + '"]').not(element);
+        if (validateElements.length > 0) {
+            validateElements.valid();
+        }
+    }
+
     function getNumber($element) {
         var value = $element.val().trim().replace(',', '');
 
@@ -138,6 +146,9 @@ var editBasicSalary = (function ($) {
             placeholder: '',
             allowClear: true,
             minimumResultsForSearch: Infinity
+        }).on('change', function (e) {
+            $(this).siblings('.js-select2-bankAcount').val('').trigger('change.select2');
+            validatedInvalidRelatedElements(e.target);
         });
 
         $('.js-select2-bankAcount').select2({
@@ -161,6 +172,8 @@ var editBasicSalary = (function ($) {
             allowClear: true,
             placeholder: '',
             minimumResultsForSearch: Infinity
+        }).on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
         });
     }
 
@@ -406,8 +419,9 @@ var editBasicSalary = (function ($) {
             }
         }).change();
 
-        $('.js-selectCurrency, .js-autoCalculateAmount').on('change', function () {
+        $('.js-selectCurrency, .js-autoCalculateAmount').on('change', function (e) {
             calculateMonthlyBasicSalary();
+            validatedInvalidRelatedElements(e.target);
         });
 
         $btnPreset.on('click', function () {
