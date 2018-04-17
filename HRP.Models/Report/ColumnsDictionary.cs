@@ -50,6 +50,15 @@
                        PropertyName = nameof(DynamicReportModel.NRICNo),
                        HeaderName = "NRICNo"
                    }}}
+            },
+            {6,  new ColumnGroup{
+                GroupId = 6,
+                GroupName = "Nationality",
+                Columns = new List<MappingColumn> {
+                   new MappingColumn{
+                       PropertyName = nameof(DynamicReportModel.Nationality),
+                       HeaderName = "Nationality"
+                   }}}
             }
         };
 

@@ -126,9 +126,12 @@
                     foreach (var header in headers)
                     {
                         var propertyInfo = record.GetType().GetProperty(header.PropertyName);
-                        var propertyValue = propertyInfo.PropertyType == typeof(DateTime) ?
-                            ((DateTime)propertyInfo.GetValue(record)).ToString("dd/MM/yyyy") : propertyInfo.GetValue(record); ////Refactor
-                        worksheet.Cells[row, col].Value = propertyValue;
+
+                        worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
+                        if (propertyInfo.PropertyType == typeof(DateTime))
+                        {
+                            worksheet.Cells[row, col].Style.Numberformat.Format = "MM/dd/yyyy";
+                        }
 
                         col++;
                     }
