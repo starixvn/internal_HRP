@@ -34,6 +34,8 @@
 
         public string BeneficiaryName { get; set; }
 
+        public int PaymentTransactionId { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }
