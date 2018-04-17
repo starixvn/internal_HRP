@@ -75,6 +75,8 @@
     <Folder Include="wwwroot\assets\bundles\auth\css\" />
     <Folder Include="wwwroot\assets\bundles\configuration\js\" />
     <Folder Include="wwwroot\assets\bundles\configuration\css\" />
+    <Folder Include="wwwroot\assets\bundles\bank\css\" />
+    <Folder Include="wwwroot\assets\bundles\bank\js\" />
     <Folder Include="wwwroot\assets\bundles\currency\js\" />
     <Folder Include="wwwroot\assets\bundles\employee\" />
     <Folder Include="wwwroot\assets\bundles\user\css\" />

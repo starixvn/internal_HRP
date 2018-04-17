@@ -9,18 +9,27 @@
 }
 
 @section Styles {
-    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" asp-append-version="true" href="~/assets/bundles/bank/css/bank.min.css"/>
+    </environment>
 }
 
 @section Scripts {
-    <script type="text/javascript" src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="~/assets/js/bank/transform-select.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/assets/js/bank/employee-bank.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
+        <script type="text/javascript" src="~/assets/js/bank/transform-select.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/assets/js/bank/employee-bank.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/assets/bundles/bank/js/bank.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <ol class="breadcrumb">

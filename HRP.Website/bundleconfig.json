@@ -522,5 +522,31 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/bank/js/bank.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
+      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/assets/js/bank/transform-select.js",
+      "wwwroot/assets/js/bank/employee-bank.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/bank/css/bank.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
+      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/assets/styles/pages/employee/bank-details.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]
