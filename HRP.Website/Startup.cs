@@ -16,7 +16,6 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Repositories;
     using Services;
     using Services.Interfaces;
 
@@ -106,7 +105,6 @@
             services.AddScoped<IPayslipService, PayslipService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
-            services.AddScoped<IReportRepository, ReportRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

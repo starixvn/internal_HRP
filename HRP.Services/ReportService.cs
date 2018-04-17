@@ -6,10 +6,10 @@
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Services;
-    using Criteria.Report;
     using Criteria;
-    using Models.Report;
+    using Criteria.Report;
     using Models;
+    using Models.Report;
     using Repositories;
 
     public class ReportService : IReportService
@@ -23,12 +23,12 @@
             IBaseService baseService,
             ISessionService sessionService,
             ICryptoService cryptoService,
-            IReportRepository reportRepository)
+            IReportRepository reportRepository = null)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
-            this.reportRepository = reportRepository;
+            this.reportRepository = reportRepository ?? new ReportRepository();
         }
 
         public async Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime)
