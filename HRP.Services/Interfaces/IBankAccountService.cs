@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using HRP.Core.Model;
+    using Core.Model;
     using Models.BankAccount;
 
     public interface IBankAccountService

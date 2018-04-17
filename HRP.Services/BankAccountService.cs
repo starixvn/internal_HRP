@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Core.Model;
     using Models.BankAccount;
 
     public class BankAccountService : IBankAccountService

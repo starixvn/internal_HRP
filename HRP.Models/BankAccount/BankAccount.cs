@@ -36,6 +36,8 @@
 
         public int PaymentTransactionId { get; set; }
 
+        public string PaymentTransaction { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }
