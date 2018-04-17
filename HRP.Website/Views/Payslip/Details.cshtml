@@ -88,7 +88,7 @@
                     @foreach (MonthlySalaryDeductionModel deduction in Model.SalaryDeductions)
                     {
                         <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)deduction.Type)</div>
+                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryDeductionType)deduction.Type)</div>
                             <div class="value">@deduction.NetSalaryDisplay @Model.SalaryCurrencyCode</div>
                         </div>
                     }

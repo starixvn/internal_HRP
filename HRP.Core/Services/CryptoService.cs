@@ -78,7 +78,7 @@ namespace HRP.Core.Services
         {
             if (cert2 == null)
             {
-                X509KeyStorageFlags flags = X509KeyStorageFlags.MachineKeySet;
+                var flags = X509KeyStorageFlags.MachineKeySet;
                 cert2 = new X509Certificate2(configuration.Value.CertificateFilePath, configuration.Value.PasswordToSignTheCertificateFile, flags);
             }
         }

@@ -40,8 +40,6 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HRP.Database", "HRP.Databas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Repositories.UnitTests", "HRP.Repositories.UnitTests\HRP.Repositories.UnitTests.csproj", "{D56D0074-9195-44F3-9672-830F09EC7025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Tools", "HRP.Tools\HRP.Tools.csproj", "{234D7D89-A986-444E-B32B-F56ED26686B0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,18 +234,6 @@ Global
 		{D56D0074-9195-44F3-9672-830F09EC7025}.Release|x64.Build.0 = Release|Any CPU
 		{D56D0074-9195-44F3-9672-830F09EC7025}.Release|x86.ActiveCfg = Release|Any CPU
 		{D56D0074-9195-44F3-9672-830F09EC7025}.Release|x86.Build.0 = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|x64.Build.0 = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Debug|x86.Build.0 = Debug|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|x64.ActiveCfg = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|x64.Build.0 = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|x86.ActiveCfg = Release|Any CPU
-		{234D7D89-A986-444E-B32B-F56ED26686B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

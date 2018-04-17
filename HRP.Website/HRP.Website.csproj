@@ -81,6 +81,7 @@
     <Folder Include="wwwroot\assets\bundles\employee\" />
     <Folder Include="wwwroot\assets\bundles\user\css\" />
     <Folder Include="wwwroot\assets\bundles\user\js\" />
+    <Folder Include="wwwroot\Cert\" />
   </ItemGroup>
 
   <ItemGroup>
