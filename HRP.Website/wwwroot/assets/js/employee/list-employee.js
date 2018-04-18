@@ -86,8 +86,8 @@ var employeeList = (function ($) {
     }
 
     function validateSelection() {
-        var departmentIds = $("#DepartmentIds").val();
-        var employeeStatusIds = $("#EmploymentStatusIds").val();
+        var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
+        var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
         if (departmentIds && employeeStatusIds) {
             return true;
         }
@@ -111,8 +111,8 @@ var employeeList = (function ($) {
     }
 
     function showSelectError() {
-        var departmentIds = $("#DepartmentIds").val();
-        var employeeStatusIds = $("#EmploymentStatusIds").val();
+        var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
+        var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
 
         if (!departmentIds) {
             showErrorMessage("#company-validation", "#CompanyMultiSelect");
@@ -143,13 +143,58 @@ var employeeList = (function ($) {
         $("form").on("submit", function (e) {
             if (!validateSelection()) {
                 e.preventDefault();
+
                 showSelectError();
+            }
+        });
+    }
+
+    function initDepartment() {
+        $.ajax({
+            url: commonFunctions.rootURL + 'Employee/GetDepartment',
+            dataType: 'json',
+            data: {
+                departmentIds: $('#DepartmentIds').val()
+            },
+            success: function (result) {
+                $("#CompanyMultiSelect").fanexMultiSelect({
+                    listData: result,
+                    useCustomCheckAllText: true,
+                    customCheckAllText: "All",
+                    onCheck: function () {
+                        var selectedValue = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#DepartmentIds").val(selectedValue);
+                    }
+                });
+            }
+        });
+    }
+
+    function initEmployeeStatus() {
+        $.ajax({
+            url: commonFunctions.rootURL + 'Employee/GetEmployeeStatus',
+            dataType: 'json',
+            data: {
+                employmentStatusIds: $('#EmploymentStatusIds').val()
+            },
+            success: function (result) {
+                $("#EmploymentStatusMultiSelect").fanexMultiSelect({
+                    listData: result,
+                    useCustomCheckAllText: true,
+                    customCheckAllText: "All",
+                    onCheck: function () {
+                        var selectedValue = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#EmploymentStatusIds").val(selectedValue);
+                    }
+                });
             }
         });
     }
 
     return {
         initModule: initModule,
+        initDepartment: initDepartment,
+        initEmployeeStatus: initEmployeeStatus,
         initDataTable: initDataTable
     };
 }(jQuery));
@@ -157,25 +202,9 @@ var employeeList = (function ($) {
 $(document).ready(function () {
     employeeList.initModule();
 
-    $("#CompanyMultiSelect").fanexMultiSelect({
-        listData: jQuery.parseJSON($('#HierarchyCompanyJson').text()),
-        useCustomCheckAllText: true,
-        customCheckAllText: "All",
-        onCheck: function () {
-            var selectedValue = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
-            $("#DepartmentIds").val(selectedValue);
-        }
-    });
+    employeeList.initDepartment();
 
-    $("#EmploymentStatusMultiSelect").fanexMultiSelect({
-        listData: jQuery.parseJSON($('#EmploymentStatusJson').text()),
-        useCustomCheckAllText: true,
-        customCheckAllText: "All",
-        onCheck: function () {
-            var selectedValue = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
-            $("#EmploymentStatusIds").val(selectedValue);
-        }
-    });
+    employeeList.initEmployeeStatus();
 });
 
 if (document.readyState === 'loading') {

@@ -49,30 +49,102 @@
                     EditProfilePolicy = Policy.Read
                 }
             };
-            var viewModel = new EmployeeManagementViewModel
-            {
-                DepartmentIds = "1,2",
-                EmploymentStatusIds = "1,2"
-            };
+
+            string departmentIds = "1,2";
+            string employmentStatusIds = "1,2";
+            int? employeeId = 1;
+            string displayName = "trinh dang thang";
+
             var employeeController = GetEmployeeController();
             sessionService.HasPermissionOnFunction(Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(viewModel);
             employeeService.GetEmployeesAsync(Arg.Any<EmployeeManagementViewModel>()).Returns(employees);
 
             //Act
-            var actual = await employeeController.Index();
+            var actual = await employeeController.Index(departmentIds, employmentStatusIds, employeeId, displayName);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var model = Assert.IsAssignableFrom<EmployeeManagementViewModel>(viewResult.ViewData.Model);
             Assert.True(model.IsHostCreateEmployee);
-            Assert.Equal(viewModel.DepartmentIds, model.DepartmentIds);
-            Assert.Equal(viewModel.EmploymentStatusIds, model.EmploymentStatusIds);
-            Assert.Equal(viewModel.HierarchyCompanies, model.HierarchyCompanies);
-            Assert.Equal(viewModel.EmploymentStatuses, model.EmploymentStatuses);
-            Assert.Equal(viewModel.HierarchyCompanyJson, model.HierarchyCompanyJson);
-            Assert.Equal(viewModel.EmploymentStatusJson, model.EmploymentStatusJson);
+            Assert.Equal(model.DepartmentIds, departmentIds);
+            Assert.Equal(model.EmploymentStatusIds, employmentStatusIds);
+            Assert.Equal(model.EmployeeId, employeeId);
+            Assert.Equal(model.DisplayName, displayName);
             Assert.Equal(employees, model.Employees);
+        }
+
+        [Fact]
+        public async Task GetDepartment_WhenCalled_ReturnAsExpectedDepartments()
+        {
+            // Arrange
+            var preparedData = PrepareDataForGetDepartmentTest();
+            var departmentIds = preparedData.Item3;
+            var expectedCompanyList = preparedData.Item1;
+            var expected = preparedData.Item2;
+
+            var employeeController = GetEmployeeController();
+            baseService.GetDataAsync<CompanyTree>(Arg.Any<GetDepartmentByUserCriteria>()).Returns(expectedCompanyList);
+
+            // Act
+            var actual = await employeeController.GetDepartment(departmentIds);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected[0].Items[0].Items[0].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Items[0].Value);
+            Assert.Equal(expected[0].Items[0].Items[0].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Items[0].Text);
+            Assert.Equal(expected[0].Items[0].Items[0].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Items[0].Checked);
+
+            Assert.Equal(expected[0].Items[0].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Value);
+            Assert.Equal(expected[0].Items[0].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Text);
+            Assert.Equal(expected[0].Items[0].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Items[0].Checked);
+
+            Assert.Equal(expected[0].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Value);
+            Assert.Equal(expected[0].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Text);
+            Assert.Equal(expected[0].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[0].Checked);
+
+            Assert.Equal(expected[1].Items[0].Items[0].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Items[0].Value);
+            Assert.Equal(expected[1].Items[0].Items[0].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Items[0].Text);
+            Assert.Equal(expected[1].Items[0].Items[0].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Items[0].Checked);
+
+            Assert.Equal(expected[1].Items[0].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Value);
+            Assert.Equal(expected[1].Items[0].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Text);
+            Assert.Equal(expected[1].Items[0].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Items[0].Checked);
+
+            Assert.Equal(expected[1].Value, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Value);
+            Assert.Equal(expected[1].Text, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Text);
+            Assert.Equal(expected[1].Checked, ((List<MultiSelectViewModel>)jsonResult.Value)[1].Checked);
+        }
+
+        [Fact]
+        public async Task GetEmployeeStatus_WhenCalled_ReturnAsExpectedEmployeeStatus()
+        {
+            // Arrange
+            var employeeStatus = "1";
+            var expected = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel
+                {
+                    Value = "1",
+                    Text = "Probation",
+                    Checked = false
+                },
+                new MultiSelectViewModel
+                {
+                    Value = "2",
+                    Text = "Probation",
+                    Checked = false
+                }
+            };
+
+            var employeeController = GetEmployeeController();
+            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await employeeController.GetEmployeeStatus(employeeStatus);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
         }
 
         #region CreateEmployee
@@ -779,6 +851,114 @@
             var controller = new EmployeeController(baseService, employeeService, payrollService, sessionService);
 
             return controller;
+        }
+
+        private Tuple<List<CompanyTree>, List<MultiSelectViewModel>, string> PrepareDataForGetDepartmentTest()
+        {
+            string departmentIds = "4";
+            var expectedCompanyList = new List<CompanyTree>
+            {
+                new CompanyTree
+                {
+                    Id = 1,
+                    Code = "DAR",
+                    CategoryId = (int)CompanyTreeType.Company
+                },
+                new CompanyTree
+                {
+                    Id = 2,
+                    Code = "GWG",
+                    CategoryId = (int)CompanyTreeType.Company
+                },
+                new CompanyTree
+                {
+                    Id = 3,
+                    Code = "SM",
+                    CategoryId = (int)CompanyTreeType.Divison,
+                    ParentId = 1
+                },
+                new CompanyTree
+                {
+                    Id = 4,
+                    Code = "NS",
+                    CategoryId = (int)CompanyTreeType.Department,
+                    ParentId = 3
+                },
+                new CompanyTree
+                {
+                    Id = 5,
+                    Code = "GO",
+                    CategoryId = (int)CompanyTreeType.Divison,
+                    ParentId = 2
+                },
+                new CompanyTree
+                {
+                    Id = 6,
+                    Code = "OTH",
+                    CategoryId = (int)CompanyTreeType.Department,
+                    ParentId = 5
+                }
+            };
+
+            var expected = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel
+                {
+                    Value = "1",
+                    Text = "DAR",
+                    Checked = true,
+                    ParentId = "0",
+                    Items = new List<MultiSelectViewModel>
+                    {
+                        new MultiSelectViewModel
+                        {
+                            Value = "3",
+                            Text = "SM",
+                            Checked = true,
+                            ParentId = "1",
+                            Items = new List<MultiSelectViewModel>
+                            {
+                                new MultiSelectViewModel
+                                {
+                                    Value = "4",
+                                    Text = "NS",
+                                    Checked = true,
+                                    ParentId = "3"
+                                }
+                            }
+                        }
+                    }
+                },
+                new MultiSelectViewModel
+                {
+                    Value = "2",
+                    Text = "GWG",
+                    Checked = false,
+                    ParentId = "0",
+                    Items = new List<MultiSelectViewModel>
+                    {
+                        new MultiSelectViewModel
+                        {
+                            Value = "5",
+                            Text = "GO",
+                            Checked = false,
+                            ParentId = "2",
+                            Items = new List<MultiSelectViewModel>
+                            {
+                                new MultiSelectViewModel
+                                {
+                                    Value = "6",
+                                    Text = "OTH",
+                                    Checked = false,
+                                    ParentId = "5"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return new Tuple<List<CompanyTree>, List<MultiSelectViewModel>, string>(expectedCompanyList, expected, departmentIds);
         }
 
         #endregion Helpers

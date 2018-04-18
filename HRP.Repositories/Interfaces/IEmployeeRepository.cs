@@ -11,7 +11,5 @@ namespace HRP.Repositories
         CreateEmploymentViewModel GetDataToCreateEmployment(ICriteria criteria);
 
         UpdateEmploymentViewModel GetDataToUpdateEmployment(ICriteria criteria);
-
-        Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria);
     }
 }

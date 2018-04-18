@@ -37,8 +37,8 @@
                                 Value = costcenter.Value,
                                 Text = costcenter.Text,
                                 Checked = costcenter.Checked
-                            })
-                        })
+                            }).ToList()
+                        }).ToList()
                     });
 
                     return viewModel;

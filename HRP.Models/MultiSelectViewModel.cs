@@ -12,6 +12,6 @@
         public bool Enable { get; set; } = true;
         public string CssClass { get; set; } = "-option-check";
         public string ParentId { get; set; }
-        public IEnumerable<MultiSelectViewModel> Items { get; set; } = new List<MultiSelectViewModel>();
+        public IList<MultiSelectViewModel> Items { get; set; } = new List<MultiSelectViewModel>();
     }
 }

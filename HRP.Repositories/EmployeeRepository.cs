@@ -127,44 +127,6 @@ namespace HRP.Repositories
             }
         }
 
-        public async Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria)
-        {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
-                {
-                    var viewModel = await multi.ReadFirstAsync<EmployeeManagementViewModel>().ConfigureAwait(false);
-                    var companies = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
-                    var divisions = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
-                    var departments = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
-                    var employmentStatuses = await multi.ReadAsync<MultiSelectViewModel>().ConfigureAwait(false);
-
-                    viewModel.HierarchyCompanies = companies.Select(company => new MultiSelectViewModel
-                    {
-                        Value = company.Value,
-                        Text = company.Text,
-                        Checked = company.Checked,
-                        Items = divisions.Where(division => division.ParentId == company.Value).Select(division => new MultiSelectViewModel
-                        {
-                            Value = division.Value,
-                            Text = division.Text,
-                            Checked = division.Checked,
-                            Items = departments.Where(dept => dept.ParentId == division.Value).Select(dept => new MultiSelectViewModel
-                            {
-                                Value = dept.Value,
-                                Text = dept.Text,
-                                Checked = dept.Checked
-                            })
-                        })
-                    });
-
-                    viewModel.EmploymentStatuses = employmentStatuses;
-
-                    return viewModel;
-                }
-            }
-        }
-
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {
             return refResources.Where(x => x.RefName == refName);

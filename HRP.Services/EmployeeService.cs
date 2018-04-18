@@ -49,24 +49,6 @@
             return await baseService.GetDataEntityAsync<Employee>(criteria).ConfigureAwait(false);
         }
 
-        public async Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(string departmentIds, string employmentStatusIds)
-        {
-            var criteria = new GetDataFilterForIndexPageCriteria
-            {
-                UserId = sessionService.UserId,
-                DepartmentIds = departmentIds,
-                EmploymentStatusIds = employmentStatusIds
-            };
-            var viewModel = new EmployeeManagementViewModel();
-
-            if (criteria.IsValid())
-            {
-                viewModel = await employeeRepository.GetDataFilterForIndexPageAsync(criteria).ConfigureAwait(false);
-            }
-
-            return viewModel;
-        }
-
         public async Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel)
         {
             var criteria = new GetAllEmployeeCriteria

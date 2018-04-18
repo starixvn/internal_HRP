@@ -45,55 +45,6 @@
             Assert.Equal(employee, actual);
         }
 
-        #region GetDataFilterForIndexPageAsync
-
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public async Task GetDataFilterForIndexPageAsync_UserIdIsInvalid_ReturnDefaultViewModel(int userId)
-        {
-            // Arrange
-            var employeeService = GetEmployeeService();
-            sessionService.UserId = userId;
-
-            // Act
-            var actual = await employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>());
-
-            // Assert
-            Assert.IsType<EmployeeManagementViewModel>(actual);
-            Assert.False(actual.IsHostCreateEmployee);
-            Assert.Null(actual.DepartmentIds);
-            Assert.Null(actual.EmploymentStatusIds);
-            Assert.Null(actual.EmployeeId);
-            Assert.Null(actual.DisplayName);
-            Assert.Empty(actual.HierarchyCompanyJson);
-            Assert.Empty(actual.EmploymentStatusJson);
-            Assert.Empty(actual.Employees);
-            Assert.Empty(actual.HierarchyCompanies);
-            Assert.Empty(actual.EmploymentStatuses);
-        }
-
-        [Fact]
-        public async Task GetDataFilterForIndexPageAsync_UserIdIsValid_ReturnAsExpectedViewModel()
-        {
-            // Arrange
-            var viewModel = new EmployeeManagementViewModel
-            {
-                IsHostCreateEmployee = true,
-                DepartmentIds = "1,2"
-            };
-            var employeeService = GetEmployeeService();
-            employeeRepository.GetDataFilterForIndexPageAsync(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
-
-            // Act
-            var actual = await employeeService.GetDataFilterForIndexPageAsync(Arg.Any<string>(), Arg.Any<string>());
-
-            // Assert
-            Assert.Equal(viewModel, actual);
-        }
-
-        #endregion GetDataFilterForIndexPageAsync
-
         #region GetEmployeesAsync
 
         [Fact]

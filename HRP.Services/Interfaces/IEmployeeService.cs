@@ -11,8 +11,6 @@
     {
         Task<Employee> GetEmployeeBasicInfoByIdAsync(int employeeId);
 
-        Task<EmployeeManagementViewModel> GetDataFilterForIndexPageAsync(string departmentIds, string employmentStatusIds);
-
         Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel);
 
         Task<CreateEmployeeViewModel> GetDataToCreateEmployeeAsync();

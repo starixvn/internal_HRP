@@ -1,6 +1,7 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
@@ -34,19 +35,50 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public async Task<IActionResult> Index(
-            string departmentIds = null,
-            string employmentStatusIds = null,
-            int? employeeId = null,
-            string displayName = null)
+        public async Task<IActionResult> Index(string departmentIds,
+            string employmentStatusIds,
+            int? employeeId,
+            string displayName)
         {
-            EmployeeManagementViewModel viewModel = await employeeService.GetDataFilterForIndexPageAsync(departmentIds, employmentStatusIds);
-            viewModel.IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host);
-            viewModel.DisplayName = displayName;
-            viewModel.EmployeeId = employeeId;
-            viewModel.Employees = await employeeService.GetEmployeesAsync(viewModel);
+            EmployeeManagementViewModel viewModel = new EmployeeManagementViewModel
+            {
+                DepartmentIds = departmentIds,
+                EmploymentStatusIds = employmentStatusIds,
+                EmployeeId = employeeId,
+                DisplayName = displayName,
+                IsHostCreateEmployee = sessionService.HasPermissionOnFunction(FunctionKey.EmployeeManagement, Policy.Host)
+            };
 
+            viewModel.Employees = await employeeService.GetEmployeesAsync(viewModel);
             return View(viewModel);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
+        public async Task<IActionResult> GetDepartment(string departmentIds = null)
+        {
+            var criteria = new GetDepartmentByUserCriteria
+            {
+                UserId = sessionService.UserId,
+            };
+
+            var companyTrees = await baseService.GetDataAsync<CompanyTree>(criteria).ConfigureAwait(false);
+            var hierarchyCompanies = GetHierarchyCompanies(companyTrees, departmentIds);
+
+            return Json(hierarchyCompanies);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
+        public async Task<IActionResult> GetEmployeeStatus(string employmentStatusIds = null)
+        {
+            var criteria = new GetEmployeeStatusByUserCriteria
+            {
+                UserId = sessionService.UserId
+            };
+            var employeeStatus = await baseService.GetDataAsync<MultiSelectViewModel>(criteria).ConfigureAwait(false);
+
+            return Json(CombineEmployeeStatus(employeeStatus.ToList(), employmentStatusIds));
         }
 
         [HttpGet]
@@ -328,6 +360,53 @@
         {
             var result = await baseService.GetDataAsync<int>(new CheckEmployeePayrollChangedInMonthCriteria { Month = month, EmployeeId = employeeId });
             return Json(result.Any());
+        }
+        
+        private IEnumerable<MultiSelectViewModel> GetHierarchyCompanies(IEnumerable<CompanyTree> companyTrees, string departmentIds)
+        {
+            var divisions = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Divison);
+            var departments = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Department);
+            var selectedDepartments = (departmentIds ?? string.Empty).Split(',');
+
+            var companyData = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Company).Select(t => new MultiSelectViewModel
+            {
+                Value = t.Id.ToString(),
+                Text = t.Code,
+                ParentId = t.ParentId.ToString(),
+                Checked = false,
+                Items = divisions.Where(di => di.ParentId == t.Id).Select(di => new MultiSelectViewModel
+                {
+                    Value = di.Id.ToString(),
+                    Text = di.Code,
+                    ParentId = di.ParentId.ToString(),
+                    Checked = departmentIds == null || !departments.Where(y => y.ParentId == di.Id).Any(x => !selectedDepartments.Contains(x.Id.ToString())),
+                    Items = departments.Where(de => de.ParentId == di.Id).Select(de => new MultiSelectViewModel
+                    {
+                        Value = de.Id.ToString(),
+                        Text = de.Code,
+                        ParentId = de.ParentId.ToString(),
+                        Checked = departmentIds == null || selectedDepartments.Contains(de.Id.ToString())
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            foreach (var company in companyData)
+            {
+                company.Checked = !company.Items.Any(t => !t.Checked);
+            }
+
+            return companyData;
+        }
+
+        private static IList<MultiSelectViewModel> CombineEmployeeStatus(IList<MultiSelectViewModel> employeeStatus, string employmentStatusIds)
+        {
+            var checkedEmployeeIds = (employmentStatusIds ?? string.Empty).Split(',');
+            foreach (var employee in employeeStatus)
+            {
+                employee.Checked = employmentStatusIds == null || checkedEmployeeIds.Contains(employee.Value);
+            }
+
+            return employeeStatus;
         }
     }
 }
