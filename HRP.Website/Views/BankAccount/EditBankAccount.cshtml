@@ -35,14 +35,14 @@
 <form class="form-information block bank-account-form" asp-action="EditBankAccount" asp-controller="BankAccount" method="post">
 
     <input type="hidden" asp-for="BankAccountId" />
-    <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
+    <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId"/>
     <input type="hidden" asp-for="NickName" />
 
     <div asp-validation-summary="ModelOnly"></div>
 
     <div class="list-message-error hidden">
         <span asp-validation-for="BankTypeId" class="message"></span>
-        <span asp-validation-for="AccountName" class="message"></span>
+        <span asp-validation-for="PaymentTransactionId" class="message"></span>
         <span asp-validation-for="AccountNumber" class="message"></span>
         <span asp-validation-for="BeneficiaryName" class="message"></span>
         <span asp-validation-for="BankName" class="message"></span>
@@ -68,20 +68,20 @@
         <div>
             <requiredlabel asp-for="BankTypeId"></requiredlabel>
             <div class="group-control">
-                <select class="control check-validate" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
+                <select class="control change-payment-transaction" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
             </div>
         </div>
         <div>
-            <requiredlabel asp-for="AccountName"></requiredlabel>
+            <requiredlabel asp-for="PaymentTransactionId"></requiredlabel>
             <div class="group-control">
-                <input class="control revalidate" asp-for="AccountName" />
+                <select class="control payment-transaction-select" data-url="@Url.Action("GetPaymentTransactions", "BankAccount")" asp-for="PaymentTransactionId"></select>
             </div>
         </div>
     </div>
 
     <requiredlabel asp-for="AccountNumber"></requiredlabel>
     <div class="group-control">
-        <input class="control revalidate" asp-for="AccountNumber" />
+        <input class="control" asp-for="AccountNumber" />
     </div>
 
     <requiredlabel asp-for="BeneficiaryName"></requiredlabel>
@@ -119,7 +119,7 @@
     </div>
     <div class="group-control">
         <label>
-            <input asp-for="IsActive" />
+            <input asp-for="IsActive" class="change-payment-transaction"/>
             <span>@ViewLang.Active</span>
         </label>
     </div>

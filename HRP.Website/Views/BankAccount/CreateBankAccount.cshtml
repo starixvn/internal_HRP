@@ -73,7 +73,7 @@
         <div>
             <requiredlabel asp-for="PaymentTransactionId"></requiredlabel>
             <div class="group-control">
-                <select class="control payment-transaction" data-url="@Url.Action("GetPaymentTransactions", "BankAccount")" asp-for="PaymentTransactionId"></select>
+                <select class="control payment-transaction-select" data-url="@Url.Action("GetPaymentTransactions", "BankAccount")" asp-for="PaymentTransactionId"></select>
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
     </div>
     <div class="group-control">
         <label>
-            <input asp-for="IsActive" />
+            <input asp-for="IsActive" class="change-payment-transaction" />
             <span>@ViewLang.Active</span>
         </label>
     </div>

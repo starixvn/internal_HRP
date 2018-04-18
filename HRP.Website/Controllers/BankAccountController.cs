@@ -74,15 +74,25 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> GetPaymentTransactions(int bankTypeId)
+        public async Task<IActionResult> GetPaymentTransactions(int bankTypeId, int employeeId, bool isActive, int bankAccountId = 0)
         {
-            var refResourceName = bankTypeId == 1
+            var refResourceName = bankTypeId == (int)BankTypes.Ebanking
                 ? ReferenceResource.PaymentTransactionEbanking
                 : ReferenceResource.PaymentTransactionDirectBanking;
 
             var results = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
+            var bankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(employeeId, bankTypeId, null);
 
-            return Json(results.Select(x => new { id = x.ResourceId, text = x.Value }));
+            var existedPaymentTransactions = bankAccounts.Select(x => x.PaymentTransaction);
+            var selectedPaymentTransaction = bankAccounts.FirstOrDefault(x => x.BankAccountId == bankAccountId)?.PaymentTransaction;
+
+            return Json(results.Select(x => new
+            {
+                id = x.ResourceId,
+                text = x.Value,
+                disabled = x.Value != null && existedPaymentTransactions.Contains(x.Value) && isActive,
+                selected = x.Value == selectedPaymentTransaction
+            }));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
@@ -214,8 +224,6 @@
                 // 2: Direct Banking: Branch and Address are NOT required.
                 viewModel.BankTypeId = 1;
             }
-
-            // TODO: disable over limit bank types (or change spec)
 
             IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
             viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);

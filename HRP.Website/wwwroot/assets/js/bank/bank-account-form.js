@@ -14,14 +14,29 @@ var bankAccountForm = {
         $(".bank-account-form").on("change",
             ".change-payment-transaction",
             function() {
-                var ajaxUrl = $(".payment-transaction").data("url") + "?bankTypeId=" + $(this).val();
+                var ajaxUrl = $(".payment-transaction-select").data("url") +
+                    "?bankTypeId=" +
+                    $("#BankTypeId").val() +
+                    "&employeeId=" +
+                    $("#EmployeeId").val() +
+                    "&isActive=" +
+                    $("#IsActive").is(":checked") +
+                    "&bankAccountId=" +
+                    $("#BankAccountId").val();
 
                 $.ajax({
                     url: ajaxUrl,
                     method: "get",
                     success: function (results) {
-                        $(".payment-transaction").select2().empty();
-                        $(".payment-transaction").select2({
+                        $.each(results,
+                            function(index, value) {
+                                if (value.disabled) {
+                                    value.selected = false;
+                                }
+                            });
+
+                        $(".payment-transaction-select").select2().empty();
+                        $(".payment-transaction-select").select2({
                             data: results
                         });
                     }
