@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[MonthlyPayroll_GetSalaryToUpdate] @UserId INT
+﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_GetSalaryToUpdate] @UserId INT
 	,@PayrollId INT
 AS
 /*
@@ -10,6 +9,8 @@ Original:
 
 Revisions:
 Param's Explanation:
+Update:
+20180418@Elton: remove DirectbankingBankTypeId
 */
 BEGIN
 	SET NOCOUNT ON;
@@ -99,17 +100,15 @@ BEGIN
 		,EbankingCurrencyId
 		,EbankingAmount
 		,EbankingAccountId
-		,eba.AccountName AS EbankingAccountName
+		,refeb.Value AS EbankingAccountName
 		,DirectBanking1CurrencyId
 		,DirectBanking1Amount
-		,DirectBanking1BankTypeId
 		,DirectBanking1AccountId
-		,ISNULL(badb1.AccountName, refdb1.Value) AS DirectBanking1AccountName
+		,refdb1.Value AS DirectBanking1AccountName
 		,DirectBanking2CurrencyId
 		,DirectBanking2Amount
-		,DirectBanking2BankTypeId
 		,DirectBanking2AccountId
-		,ISNULL(badb2.AccountName, refdb2.Value) AS DirectBanking2AccountName
+		,refdb2.Value AS DirectBanking2AccountName
 		,CashCurrencyId
 		,CashAmount
 		,CashAccountId
@@ -119,16 +118,13 @@ BEGIN
 		,[Status]
 	FROM dbo.MonthlySalary AS ms WITH (NOLOCK)
 		LEFT JOIN dbo.BankAccount AS eba WITH (NOLOCK) ON ms.EbankingAccountId = eba.Id
-		LEFT JOIN dbo.BankAccount AS badb1 WITH (NOLOCK) ON ms.DirectBanking1BankTypeId <> @contraCoBankAccountType
-		AND ms.DirectBanking1AccountId = badb1.Id
-		LEFT JOIN dbo.BankAccount AS badb2 WITH (NOLOCK) ON ms.DirectBanking2BankTypeId <> @contraCoBankAccountType
-		AND ms.DirectBanking2AccountId = badb2.Id
-		LEFT JOIN dbo.RefResource AS refdb1 WITH (NOLOCK) ON ms.DirectBanking1BankTypeId = @contraCoBankAccountType
-		AND ms.DirectBanking1AccountId = refdb1.ResourceId		
-		AND refdb1.RefName = 'ContraCoAccount'
-		LEFT JOIN dbo.RefResource AS refdb2 WITH (NOLOCK) ON ms.DirectBanking1BankTypeId = @contraCoBankAccountType
-		AND ms.DirectBanking2AccountId = refdb2.ResourceId		
-		AND refdb2.RefName = 'ContraCoAccount'
+		LEFT JOIN dbo.RefResource AS refeb WITH (NOLOCK) ON eba.PaymentTransactionId = refeb.ResourceId AND refeb.RefName = 'PaymentTransactionEbanking'
+
+		LEFT JOIN dbo.BankAccount AS badb1 WITH (NOLOCK) ON ms.DirectBanking1AccountId = badb1.Id
+		LEFT JOIN dbo.RefResource AS refdb1 WITH (NOLOCK) ON badb1.PaymentTransactionId = refdb1.ResourceId AND refdb1.RefName = 'PaymentTransactionDirectBanking'
+
+		LEFT JOIN dbo.BankAccount AS badb2 WITH (NOLOCK) ON ms.DirectBanking2AccountId = badb2.Id
+		LEFT JOIN dbo.RefResource AS refdb2 WITH (NOLOCK) ON badb2.PaymentTransactionId = refdb2.ResourceId AND refdb2.RefName = 'PaymentTransactionDirectBanking'	
 	WHERE ms.PayrollId = @PayrollId
 
 	SELECT msa.PayrollId
@@ -155,3 +151,6 @@ BEGIN
 	WHERE ref.RefName = 'MonthlySalaryDeductionType'
 	ORDER BY ref.ResourceId
 END
+
+GO
+

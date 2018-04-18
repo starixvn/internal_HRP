@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateSalary] @UserId INT
+﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateSalary] @UserId INT
 	,@PayrollId INT
 	,@CompanyId SMALLINT
 	,@Month DATE
@@ -9,11 +8,9 @@ CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateSalary] @UserId INT
 	,@EbankingAccountId INT = NULL
 	,@DirectBanking1CurrencyId INT = NULL
 	,@DirectBanking1Amount VARCHAR(MAX) = NULL
-	,@DirectBanking1BankTypeId TINYINT = NULL
 	,@DirectBanking1AccountId INT = NULL
 	,@DirectBanking2CurrencyId INT = NULL
 	,@DirectBanking2Amount VARCHAR(MAX) = NULL
-	,@DirectBanking2BankTypeId TINYINT = NULL
 	,@DirectBanking2AccountId INT = NULL
 	,@CashCurrencyId INT = NULL
 	,@CashAmount VARCHAR(MAX) = NULL
@@ -34,6 +31,8 @@ Original:
 
 Revisions:
 Param's Explanation:
+Update:
+20180418@Elton: remove DirectbankingBankTypeId
 */
 BEGIN
 	SET NOCOUNT ON;
@@ -90,11 +89,9 @@ BEGIN
 				,ms.EbankingAccountId AS '@ebaccid'
 				,ms.DirectBanking1CurrencyId AS '@db1cid'
 				,ms.DirectBanking1Amount AS '@db1amount'
-				,ms.DirectBanking1BankTypeId AS '@db1btid'
 				,ms.DirectBanking1AccountId AS '@db1accid'
 				,ms.DirectBanking2CurrencyId AS '@db2cid'
 				,ms.DirectBanking2Amount AS '@db2amount'
-				,ms.DirectBanking2BankTypeId AS '@db2btid'
 				,ms.DirectBanking2AccountId AS '@db2accid'
 				,ms.CashCurrencyId AS '@cashcid'
 				,ms.CashAmount AS '@cashamount'
@@ -156,11 +153,13 @@ BEGIN
 
 	INSERT INTO #tblDeduction (
 		[Type]
+		,UnitAmount
 		,NoOfDays
 		,NetSalary
 		,[Description]
 		)
 	SELECT [Type]
+		,UnitAmount
 		,CASE 
 			WHEN ISNUMERIC(NoOfDays) <> 1 THEN NULL
 			ELSE NoOfDays
@@ -176,11 +175,9 @@ BEGIN
 		,ms.EbankingAccountId = @EbankingAccountId
 		,ms.DirectBanking1CurrencyId = @DirectBanking1CurrencyId
 		,ms.DirectBanking1Amount = @DirectBanking1Amount
-		,ms.DirectBanking1BankTypeId = @DirectBanking1BankTypeId
 		,ms.DirectBanking1AccountId = @DirectBanking1AccountId
 		,ms.DirectBanking2CurrencyId = @DirectBanking2CurrencyId
 		,ms.DirectBanking2Amount = @DirectBanking2Amount
-		,ms.DirectBanking2BankTypeId = @DirectBanking2BankTypeId
 		,ms.DirectBanking2AccountId = @DirectBanking2AccountId
 		,ms.CashCurrencyId = @CashCurrencyId
 		,ms.CashAmount = @CashAmount
@@ -260,11 +257,9 @@ BEGIN
 				,ms.EbankingAccountId AS '@ebaccid'
 				,ms.DirectBanking1CurrencyId AS '@db1cid'
 				,ms.DirectBanking1Amount AS '@db1amount'
-				,ms.DirectBanking1BankTypeId AS '@db1btid'
 				,ms.DirectBanking1AccountId AS '@db1accid'
 				,ms.DirectBanking2CurrencyId AS '@db2cid'
 				,ms.DirectBanking2Amount AS '@db2amount'
-				,ms.DirectBanking2BankTypeId AS '@db2btid'
 				,ms.DirectBanking2AccountId AS '@db2accid'
 				,ms.CashCurrencyId AS '@cashcid'
 				,ms.CashAmount AS '@cashamount'
@@ -314,3 +309,6 @@ BEGIN
 
 	DROP TABLE #tblDeduction
 END
+
+GO
+
