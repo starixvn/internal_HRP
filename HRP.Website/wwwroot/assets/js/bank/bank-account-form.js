@@ -37,6 +37,7 @@ var bankAccountForm = {
 
                         $(".payment-transaction-select").select2().empty();
                         $(".payment-transaction-select").select2({
+                            width: "100%",
                             data: results
                         });
                     }
