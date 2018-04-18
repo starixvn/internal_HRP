@@ -141,7 +141,7 @@
   <Function Name="EmployeeBankDetails">
     <Setting Key="BankAccount_Create" SpName="BankAccount_Create_xtest" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_GetBankAccountsByEmpId" SpName="BankAccount_GetBankAccountsByEmpId_xtest" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById_xtest" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Update" SpName="BankAccount_Update" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Search" SpName="BankAccount_Search" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_CheckLimitReached" SpName="BankAccount_CheckLimitReached" DbName="bodb_HRP" Plain="0"></Setting>

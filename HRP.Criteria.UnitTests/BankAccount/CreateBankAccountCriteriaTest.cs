@@ -38,7 +38,7 @@
                 BankBranch = "Test",
                 BankAddress = "Test",
                 BankSwiftCode = "Test",
-                AccountName = "Test",
+                PaymentTransactionId = 1,
                 AccountNumber = "Test",
                 AccountType = 1,
                 BeneficiaryName = "Test",
@@ -70,8 +70,8 @@
                 data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = GetBaseCriteria();
-                criteria.AccountName = string.Empty;
-                data.Add(TheoryDatum.Factory(criteria, false));
+                criteria.PaymentTransactionId = 1;
+                data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = GetBaseCriteria();
                 criteria.AccountNumber = string.Empty;
