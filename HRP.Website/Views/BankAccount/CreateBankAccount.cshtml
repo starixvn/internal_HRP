@@ -39,7 +39,7 @@
 
     <div class="list-message-error hidden">
         <span asp-validation-for="BankTypeId" class="message"></span>
-        <span asp-validation-for="AccountName" class="message"></span>
+        <span asp-validation-for="PaymentTransactionId" class="message"></span>
         <span asp-validation-for="AccountNumber" class="message"></span>
         <span asp-validation-for="BeneficiaryName" class="message"></span>
         <span asp-validation-for="BankName" class="message"></span>
@@ -67,13 +67,13 @@
         <div>
             <requiredlabel asp-for="BankTypeId"></requiredlabel>
             <div class="group-control">
-                <select class="control" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
+                <select class="control change-payment-transaction" asp-for="BankTypeId" asp-items="Model.BankTypes"></select>
             </div>
         </div>
         <div>
-            <requiredlabel asp-for="AccountName"></requiredlabel>
+            <requiredlabel asp-for="PaymentTransactionId"></requiredlabel>
             <div class="group-control">
-                <input class="control" asp-for="AccountName" />
+                <select class="control payment-transaction" data-url="@Url.Action("GetPaymentTransactions", "BankAccount")" asp-for="PaymentTransactionId"></select>
             </div>
         </div>
     </div>

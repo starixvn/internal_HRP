@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string AccountName { get; set; }
+        public int PaymentTransactionId { get; set; }
 
         public string AccountNumber { get; set; }
 
@@ -43,7 +43,7 @@
             ////    return false;
             ////}
 
-            if (string.IsNullOrEmpty(AccountName))
+            if (PaymentTransactionId == 0)
             {
                 return false;
             }

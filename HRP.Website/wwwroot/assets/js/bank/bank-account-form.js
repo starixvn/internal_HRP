@@ -7,65 +7,92 @@ var bankAccountForm = {
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
         bankAccountForm.mutationObserve();
+        bankAccountForm.initPaymentTransactionSelect();
+    },
+
+    initPaymentTransactionSelect: function () {
+        $(".bank-account-form").on("change",
+            ".change-payment-transaction",
+            function() {
+                var ajaxUrl = $(".payment-transaction").data("url") + "?bankTypeId=" + $(this).val();
+
+                $.ajax({
+                    url: ajaxUrl,
+                    method: "get",
+                    success: function (results) {
+                        $(".payment-transaction").select2().empty();
+                        $(".payment-transaction").select2({
+                            data: results
+                        });
+                    }
+                });
+            });
+
+        $(".change-payment-transaction").trigger("change");
     },
 
     checkIfRequired: function (desiredvalue, relatedFieldName) {
-        desiredvalue = (desiredvalue == null ? '' : desiredvalue).toString();
+        desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
         var controlType = $("input[id$='" + relatedFieldName + "']").attr("type");
-        var actualvalue = {}
-        if (controlType == "checkbox" || controlType == "radio") {
+        var actualvalue;
+        if (controlType === "checkbox" || controlType === "radio") {
             var control = $("input[id$='" + relatedFieldName + "']:checked");
             actualvalue = control.val();
         } else {
             actualvalue = $("#" + relatedFieldName).val();
         }
 
-        return $.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()
+        return $.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase();
     },
 
     toggleRequiredMarkOnBankTypeChanged: function () {
-        $(".bank-account-form").on("change", "#BankTypeId", function () {
-            $("[data-val-requiredifrelatedfieldistrue]").each(function () {
-                var desiredValue = $(this).data("val-requiredifrelatedfieldistrue-desiredvalue");
-                var relatedFieldName = $(this).data("val-requiredifrelatedfieldistrue-relatedfieldname");
-                var labelFor = $(this).attr("name");
+        $(".bank-account-form").on("change",
+            "#BankTypeId",
+            function () {
+                $("[data-val-requiredifrelatedfieldistrue]").each(function () {
+                    var desiredValue = $(this).data("val-requiredifrelatedfieldistrue-desiredvalue");
+                    var relatedFieldName = $(this).data("val-requiredifrelatedfieldistrue-relatedfieldname");
+                    var labelFor = $(this).attr("name");
 
-                if (bankAccountForm.checkIfRequired(desiredValue, relatedFieldName)) {
-                    $("label[for='" + labelFor + "']").addClass("-has-required");
-                } else {
-                    $("label[for='" + labelFor + "']").removeClass("-has-required");
-                }
+                    if (bankAccountForm.checkIfRequired(desiredValue, relatedFieldName)) {
+                        $("label[for='" + labelFor + "']").addClass("-has-required");
+                    } else {
+                        $("label[for='" + labelFor + "']").removeClass("-has-required");
+                    }
+                });
             });
-        });
 
         $("#BankTypeId").trigger("change");
     },
 
     addRequiredIfRelatedFieldIsTrueClientValidation: function () {
-        $.validator.addMethod('requiredifrelatedfieldistrue', function (value, element, parameters) {
-            var desiredvalue = parameters.desiredvalue;
-            desiredvalue = (desiredvalue == null ? '' : desiredvalue).toString();
-            var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr("type");
-            var actualvalue = {}
-            if (controlType == "checkbox" || controlType == "radio") {
-                var control = $("input[id$='" + parameters.relatedfieldname + "']:checked");
-                actualvalue = control.val();
-            } else {
-                actualvalue = $("#" + parameters.relatedfieldname).val();
-            }
+        $.validator.addMethod("requiredifrelatedfieldistrue",
+            function (value, element, parameters) {
+                var desiredvalue = parameters.desiredvalue;
+                desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
+                var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr("type");
+                var actualvalue;
+                if (controlType === "checkbox" || controlType === "radio") {
+                    var control = $("input[id$='" + parameters.relatedfieldname + "']:checked");
+                    actualvalue = control.val();
+                } else {
+                    actualvalue = $("#" + parameters.relatedfieldname).val();
+                }
 
-            if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()) {
-                var isValid = $.validator.methods.required.call(this, value, element, parameters);
-                return isValid;
-            }
+                if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()) {
+                    var isValid = $.validator.methods.required.call(this, value, element, parameters);
+                    return isValid;
+                }
 
-            return true;
-        });
+                return true;
+            });
 
-        $.validator.unobtrusive.adapters.add('requiredifrelatedfieldistrue', ["relatedfieldname", "desiredvalue"], function (options) {
-            options.rules['requiredifrelatedfieldistrue'] = options.params;
-            options.messages['requiredifrelatedfieldistrue'] = options.message;
-        });
+        $.validator.unobtrusive.adapters.add("requiredifrelatedfieldistrue",
+            ["relatedfieldname", "desiredvalue"],
+            function (options) {
+                options.rules["requiredifrelatedfieldistrue"] = options.params;
+                options.messages["requiredifrelatedfieldistrue"] = options.message;
+            });
 
         bankAccountForm.reinitValidation($(".bank-account-form"));
     },
@@ -141,17 +168,17 @@ var bankAccountForm = {
             setInterval(bankAccountForm.countdown, 1000);
 
             setTimeout(function () {
-                    if (isModal) {
-                        $(".bank-account-form").closest(".modal").modal("hide");
+                if (isModal) {
+                    $(".bank-account-form").closest(".modal").modal("hide");
+                } else {
+                    var redirectLink = $("#redirect-link").prop("href");
+                    if (redirectLink !== undefined) {
+                        window.location.replace(redirectLink);
                     } else {
-                        var redirectLink = $("#redirect-link").prop("href");
-                        if (redirectLink !== undefined) {
-                            window.location.replace(redirectLink);
-                        } else {
-                            window.location.href = $("#index-link").prop("href");
-                        }
+                        window.location.href = $("#index-link").prop("href");
                     }
-                },
+                }
+            },
                 bankAccountForm.waitTime);
         }
     },

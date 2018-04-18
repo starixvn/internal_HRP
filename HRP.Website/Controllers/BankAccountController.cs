@@ -72,6 +72,19 @@
             return Json(result.Select(x => new { id = x.BankAccountId, text = x.PaymentTransaction }));
         }
 
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> GetPaymentTransactions(int bankTypeId)
+        {
+            var refResourceName = bankTypeId == 1
+                ? ReferenceResource.PaymentTransactionEbanking
+                : ReferenceResource.PaymentTransactionDirectBanking;
+
+            var results = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
+
+            return Json(results.Select(x => new { id = x.ResourceId, text = x.Value }));
+        }
+
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> CreateBankAccount(int employeeId, int bankTypeId = 1)
         {
@@ -148,7 +161,7 @@
                 EmployeeId = bankAccount.EmployeeId,
                 NickName = bankAccount.NickName,
                 BankAccountId = bankAccount.BankAccountId,
-                AccountName = bankAccount.AccountName,
+                PaymentTransactionId = bankAccount.PaymentTransactionId,
                 AccountNumber = bankAccount.AccountNumber,
                 AccountTypeId = bankAccount.AccountType,
                 BankAddress = bankAccount.BankAddress,
