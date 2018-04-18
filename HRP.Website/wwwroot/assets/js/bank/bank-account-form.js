@@ -28,12 +28,28 @@ var bankAccountForm = {
                     url: ajaxUrl,
                     method: "get",
                     success: function (results) {
-                        $.each(results,
-                            function(index, value) {
-                                if (value.disabled) {
-                                    value.selected = false;
-                                }
-                            });
+                        var selectedItemIndex = 0;
+                        var isAllItemDisabled = true;
+                        for (var i = 0, l = results.length; i < l; i++) {
+                            if (results[i].selected === true) {
+                                selectedItemIndex = i;
+                            }
+
+                            if (results[i].disabled === false) {
+                                // there is an item enabled
+                                isAllItemDisabled = false;
+                            }
+                        }
+
+                        if ($("#IsActive").is(":checked") === true) {
+                            if (isAllItemDisabled === true) {
+                                // clear the selected value
+                                results[selectedItemIndex].selected = false;
+                            }
+
+                            // Allow user to re-select the old value
+                            results[selectedItemIndex].disabled = false;
+                        }
 
                         $(".payment-transaction-select").select2().empty();
                         $(".payment-transaction-select").select2({
