@@ -23,7 +23,7 @@ BEGIN
 		, ba.BankBranch
 		, ba.BankAddress
 		, ba.BankSwiftCode
-		, ba.AccountName
+		, ba.PaymentTransactionId
 		, ba.AccountNumber
 		, ba.AccountType
 		, ba.BeneficiaryName

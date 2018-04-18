@@ -1,12 +1,13 @@
 ﻿
-CREATE PROCEDURE [dbo].[BankAccount_Create] @Id INT = 0
+CREATE PROCEDURE [dbo].[BankAccount_Create] 
+	@Id INT = 0
 	,@EmployeeId INT
 	,@BankType INT = 1
 	,@BankName NVARCHAR(70)
 	,@BankBranch NVARCHAR(70) = NULL
 	,@BankAddress NVARCHAR(500) = NULL
 	,@BankSwiftCode VARCHAR(15) = NULL
-	,@AccountName NVARCHAR(30)
+	,@PaymentTransactionId INT
 	,@AccountNumber VARCHAR(30)
 	,@AccountType INT = 1
 	,@BeneficiaryName NVARCHAR(70)
@@ -37,13 +38,13 @@ BEGIN
 	IF EXISTS (
 			SELECT 1
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
-			WHERE [AccountName] = @AccountName
+			WHERE [PaymentTransactionId] = @PaymentTransactionId
 				AND [EmployeeId] = @EmployeeId
 				AND [BankType] = @BankType
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name already exists. Please enter another value.'
+		SET @ErrMsg = N'Payment Transaction already exists. Please enter another value.'
 
 		RETURN
 	END
@@ -62,24 +63,24 @@ BEGIN
 		RETURN
 	END
 
-	DECLARE @totalActiveAccountInBankType INT = 0;
+	--DECLARE @totalActiveAccountInBankType INT = 0;
 
-	SELECT @totalActiveAccountInBankType = COUNT(Id)
-	FROM [dbo].[BankAccount] WITH (NOLOCK)
-	WHERE [EmployeeId] = @EmployeeId
-		AND [BankType] = @BankType
-		AND [IsActive] = 1
+	--SELECT @totalActiveAccountInBankType = COUNT(Id)
+	--FROM [dbo].[BankAccount] WITH (NOLOCK)
+	--WHERE [EmployeeId] = @EmployeeId
+	--	AND [BankType] = @BankType
+	--	AND [IsActive] = 1
 
-	IF (
-			@totalActiveAccountInBankType >= 3
-			AND @IsActive = 1
-			)
-	BEGIN
-		SET @ErrCode = 3
-		SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot create more bank account.'
+	--IF (
+	--		@totalActiveAccountInBankType >= 3
+	--		AND @IsActive = 1
+	--		)
+	--BEGIN
+	--	SET @ErrCode = 3
+	--	SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot create more bank account.'
 
-		RETURN
-	END
+	--	RETURN
+	--END
 
 	INSERT INTO [dbo].[BankAccount] (
 		[EmployeeId]
@@ -88,7 +89,7 @@ BEGIN
 		,[BankBranch]
 		,[BankAddress]
 		,[BankSwiftCode]
-		,[AccountName]
+		,[PaymentTransactionId]
 		,[AccountNumber]
 		,[AccountType]
 		,[BeneficiaryName]
@@ -101,7 +102,7 @@ BEGIN
 		,@BankBranch
 		,@BankAddress
 		,@BankSwiftCode
-		,@AccountName
+		,@PaymentTransactionId
 		,@AccountNumber
 		,@AccountType
 		,@BeneficiaryName
@@ -118,7 +119,7 @@ BEGIN
 				,BankBranch AS '@bb'
 				,BankAddress AS '@ba'
 				,BankSwiftCode AS '@bs'
-				,AccountName AS '@an'
+				,PaymentTransactionId AS '@pti'
 				,AccountNumber AS '@anum'
 				,AccountType AS '@at'
 				,BeneficiaryName AS '@bene'

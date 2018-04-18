@@ -6,7 +6,7 @@ CREATE PROCEDURE [dbo].[BankAccount_Update] @Id INT
 	,@BankBranch NVARCHAR(70) = NULL
 	,@BankAddress NVARCHAR(500) = NULL
 	,@BankSwiftCode VARCHAR(15) = NULL
-	,@AccountName NVARCHAR(30)
+	,@PaymentTransactionId INT
 	,@AccountNumber VARCHAR(30)
 	,@AccountType INT = 1
 	,@BeneficiaryName NVARCHAR(70)
@@ -35,20 +35,20 @@ BEGIN
 		,@endRun DATETIME
 		,@duration INT
 
-	IF EXISTS (
-			SELECT 1
-			FROM [dbo].[BankAccount] WITH (NOLOCK)
-			WHERE [AccountName] = @AccountName
-				AND [EmployeeId] = @EmployeeId
-				AND [BankType] = @BankType
-				AND [Id] <> @Id
-			)
-	BEGIN
-		SET @ErrCode = 1
-		SET @ErrMsg = N'Account Name already exists. Please enter another value.'
+	--IF EXISTS (
+	--		SELECT 1
+	--		FROM [dbo].[BankAccount] WITH (NOLOCK)
+	--		WHERE [PaymentTransactionId] = @PaymentTransactionId
+	--			AND [EmployeeId] = @EmployeeId
+	--			AND [BankType] = @BankType
+	--			AND [Id] <> @Id
+	--		)
+	--BEGIN
+	--	SET @ErrCode = 1
+	--	SET @ErrMsg = N'Account Name already exists. Please enter another value.'
 
-		RETURN
-	END
+	--	RETURN
+	--END
 
 	IF EXISTS (
 			SELECT 1
@@ -65,40 +65,40 @@ BEGIN
 		RETURN
 	END
 
-	DECLARE @totalActiveAccountInBankType INT = 0
-		,@isAccountChangeBankType BIT = 0
-		,@isAccountChangeStatus BIT = 0
+	--DECLARE @totalActiveAccountInBankType INT = 0
+	--	,@isAccountChangeBankType BIT = 0
+	--	,@isAccountChangeStatus BIT = 0
 
-	SELECT @totalActiveAccountInBankType = COUNT(Id)
-	FROM [dbo].[BankAccount] WITH (NOLOCK)
-	WHERE [EmployeeId] = @EmployeeId
-		AND [BankType] = @BankType
-		AND [IsActive] = 1
+	--SELECT @totalActiveAccountInBankType = COUNT(Id)
+	--FROM [dbo].[BankAccount] WITH (NOLOCK)
+	--WHERE [EmployeeId] = @EmployeeId
+	--	AND [BankType] = @BankType
+	--	AND [IsActive] = 1
 
-	SELECT @isAccountChangeBankType = 1
-	FROM [dbo].[BankAccount] WITH (NOLOCK)
-	WHERE [Id] = @Id
-		AND [BankType] <> @BankType
+	--SELECT @isAccountChangeBankType = 1
+	--FROM [dbo].[BankAccount] WITH (NOLOCK)
+	--WHERE [Id] = @Id
+	--	AND [BankType] <> @BankType
 
-	SELECT @isAccountChangeStatus = 1
-	FROM [dbo].[BankAccount] WITH (NOLOCK)
-	WHERE [Id] = @Id
-		AND [IsActive] <> @IsActive
+	--SELECT @isAccountChangeStatus = 1
+	--FROM [dbo].[BankAccount] WITH (NOLOCK)
+	--WHERE [Id] = @Id
+	--	AND [IsActive] <> @IsActive
 
-	IF (
-			@totalActiveAccountInBankType >= 3
-			AND @IsActive = 1
-			AND (
-				@isAccountChangeBankType = 1
-				OR @isAccountChangeStatus = 1
-				)
-			)
-	BEGIN
-		SET @ErrCode = 3
-		SET @ErrMsg = N'This employee has reached the limit of number bank accounts'
+	--IF (
+	--		@totalActiveAccountInBankType >= 3
+	--		AND @IsActive = 1
+	--		AND (
+	--			@isAccountChangeBankType = 1
+	--			OR @isAccountChangeStatus = 1
+	--			)
+	--		)
+	--BEGIN
+	--	SET @ErrCode = 3
+	--	SET @ErrMsg = N'This employee has reached the limit of number bank accounts'
 
-		RETURN
-	END
+	--	RETURN
+	--END
 
 	SET @xml = (
 			SELECT Id AS '@id'
@@ -108,7 +108,7 @@ BEGIN
 				,BankBranch AS '@bb'
 				,BankAddress AS '@ba'
 				,BankSwiftCode AS '@bs'
-				,AccountName AS '@an'
+				,PaymentTransactionId AS '@pti'
 				,AccountNumber AS '@anum'
 				,AccountType AS '@at'
 				,BeneficiaryName AS '@bene'
@@ -127,7 +127,7 @@ BEGIN
 		,BankBranch = @BankBranch
 		,BankAddress = @BankAddress
 		,BankSwiftCode = @BankSwiftCode
-		,AccountName = @AccountName
+		,PaymentTransactionId = @PaymentTransactionId
 		,AccountNumber = @AccountNumber
 		,AccountType = @AccountType
 		,BeneficiaryName = @BeneficiaryName
@@ -143,7 +143,7 @@ BEGIN
 				,BankBranch AS '@bb'
 				,BankAddress AS '@ba'
 				,BankSwiftCode AS '@bs'
-				,AccountName AS '@an'
+				,PaymentTransactionId AS '@pti'
 				,AccountNumber AS '@anum'
 				,AccountType AS '@at'
 				,BeneficiaryName AS '@bene'
