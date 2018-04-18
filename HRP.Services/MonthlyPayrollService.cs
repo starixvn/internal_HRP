@@ -153,12 +153,10 @@
 
                 DirectBanking1CurrencyId = viewModel.MonthlySalary.DirectBanking1CurrencyId,
                 DirectBanking1Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking1Amount),
-                DirectBanking1BankTypeId = viewModel.MonthlySalary.DirectBanking1BankTypeId,
                 DirectBanking1AccountId = viewModel.MonthlySalary.DirectBanking1AccountId,
 
                 DirectBanking2CurrencyId = viewModel.MonthlySalary.DirectBanking2CurrencyId,
                 DirectBanking2Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking2Amount),
-                DirectBanking2BankTypeId = viewModel.MonthlySalary.DirectBanking2BankTypeId,
                 DirectBanking2AccountId = viewModel.MonthlySalary.DirectBanking2AccountId,
 
                 CashCurrencyId = viewModel.MonthlySalary.CashCurrencyId,
@@ -364,10 +362,8 @@
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
-            monthlySalary.DirectBanking1BankTypeId = basicSalary.DirectBanking1BankTypeId;
             monthlySalary.DirectBanking1AccountId = basicSalary.DirectBanking1AccountId;
             monthlySalary.DirectBanking2CurrencyId = basicSalary.DirectBanking2CurrencyId;
-            monthlySalary.DirectBanking2BankTypeId = basicSalary.DirectBanking2BankTypeId;
             monthlySalary.DirectBanking2AccountId = basicSalary.DirectBanking2AccountId;
             monthlySalary.CashCurrencyId = basicSalary.CashCurrencyId;
             monthlySalary.CashAccountId = basicSalary.CashAccountId;

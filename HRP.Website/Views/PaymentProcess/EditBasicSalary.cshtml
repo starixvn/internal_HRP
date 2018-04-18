@@ -116,11 +116,9 @@
         <span asp-validation-for="MonthlySalary.EbankingAccountId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking1CurrencyId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking1Amount" class="message"></span>
-        <span asp-validation-for="MonthlySalary.DirectBanking1BankTypeId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking1AccountId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking2CurrencyId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking2Amount" class="message"></span>
-        <span asp-validation-for="MonthlySalary.DirectBanking2BankTypeId" class="message"></span>
         <span asp-validation-for="MonthlySalary.DirectBanking2AccountId" class="message"></span>
         <span asp-validation-for="MonthlySalary.CashCurrencyId" class="message"></span>
         <span asp-validation-for="MonthlySalary.CashAmount" class="message"></span>
@@ -362,9 +360,9 @@
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control js-select2-validation js-select2-bankType js-bankType" data-group="directbanking1"
-                            asp-for="MonthlySalary.DirectBanking1BankTypeId" asp-items="bankTypes">
-                        <option></option>
+                    <div class="like-group-title">@ViewLang.DirectBanking</div>
+                    <select class="hidden js-bankType">
+                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control js-select2-validation js-select2-bankAcount" data-group="directbanking1"
                             asp-for="MonthlySalary.DirectBanking1AccountId">
@@ -372,9 +370,9 @@
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
-                    <select class="control js-select2-validation js-select2-bankType js-bankType" data-group="directbanking2"
-                            asp-for="MonthlySalary.DirectBanking2BankTypeId" asp-items="bankTypes">
-                        <option></option>
+                    <div class="like-group-title">@ViewLang.DirectBanking</div>
+                    <select class="hidden js-bankType">
+                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control js-select2-validation js-select2-bankAcount" data-group="directbanking2"
                             asp-for="MonthlySalary.DirectBanking2AccountId">

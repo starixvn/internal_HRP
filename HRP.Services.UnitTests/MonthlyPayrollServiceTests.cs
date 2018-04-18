@@ -200,11 +200,9 @@
             Assert.Equal(tuple.Item3.EbankingAccountId, actual.MonthlySalary.EbankingAccountId);
             Assert.Equal(plainText, actual.MonthlySalary.EbankingAmount);
             Assert.Equal(tuple.Item3.DirectBanking1CurrencyId, actual.MonthlySalary.DirectBanking1CurrencyId);
-            Assert.Equal(tuple.Item3.DirectBanking1BankTypeId, actual.MonthlySalary.DirectBanking1BankTypeId);
             Assert.Equal(tuple.Item3.DirectBanking1AccountId, actual.MonthlySalary.DirectBanking1AccountId);
             Assert.Equal(plainText, actual.MonthlySalary.DirectBanking1Amount);
             Assert.Equal(tuple.Item3.DirectBanking2CurrencyId, actual.MonthlySalary.DirectBanking2CurrencyId);
-            Assert.Equal(tuple.Item3.DirectBanking2BankTypeId, actual.MonthlySalary.DirectBanking2BankTypeId);
             Assert.Equal(tuple.Item3.DirectBanking2AccountId, actual.MonthlySalary.DirectBanking2AccountId);
             Assert.Equal(plainText, actual.MonthlySalary.DirectBanking2Amount);
             Assert.Equal(tuple.Item3.CashCurrencyId, actual.MonthlySalary.CashCurrencyId);
@@ -962,11 +960,9 @@
             Assert.Equal(basicSalary.EbankingAccountId, monthlySalary.EbankingAccountId);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
-            Assert.Equal(basicSalary.DirectBanking1BankTypeId, monthlySalary.DirectBanking1BankTypeId);
             Assert.Equal(basicSalary.DirectBanking1AccountId, monthlySalary.DirectBanking1AccountId);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
-            Assert.Equal(basicSalary.DirectBanking2BankTypeId, monthlySalary.DirectBanking2BankTypeId);
             Assert.Equal(basicSalary.DirectBanking2AccountId, monthlySalary.DirectBanking2AccountId);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
