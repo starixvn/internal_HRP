@@ -14,10 +14,6 @@
     </environment>
 }
 
-@{
-    var bankTypes = Html.GetEnumSelectList<BankTypes>().Where(x => int.Parse(x.Value) != (int)BankTypes.Ebanking);
-}
-
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="like-link">
@@ -131,11 +127,9 @@
         <div class="list-message-error hidden" id="validation-summary">
             <span asp-validation-for="Allowance.DirectBanking1CurrencyId" class="message"></span>
             <span asp-validation-for="Allowance.DirectBanking1Amount" class="message"></span>
-            <span asp-validation-for="Allowance.DirectBanking1BankTypeId" class="message"></span>
             <span asp-validation-for="Allowance.DirectBanking1AccountId" class="message"></span>
             <span asp-validation-for="Allowance.DirectBanking2CurrencyId" class="message"></span>
             <span asp-validation-for="Allowance.DirectBanking2Amount" class="message"></span>
-            <span asp-validation-for="Allowance.DirectBanking2BankTypeId" class="message"></span>
             <span asp-validation-for="Allowance.DirectBanking2AccountId" class="message"></span>
             <span asp-validation-for="Allowance.CashCurrencyId" class="message"></span>
             <span asp-validation-for="Allowance.CashAmount" class="message"></span>
@@ -373,7 +367,7 @@
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.DirectBanking</div>
-                    <select class="control hidden bank-type-select" asp-for="Allowance.DirectBanking1BankTypeId">
+                    <select class="control hidden bank-type-select" disabled>
                         <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking1AccountId" data-group="directbanking1">
@@ -382,7 +376,7 @@
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.DirectBanking</div>
-                    <select class="control hidden bank-type-select" asp-for="Allowance.DirectBanking2BankTypeId">
+                    <select class="control hidden bank-type-select" disabled>
                         <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
                     <select class="control select2-ajax bank-account-select" asp-for="Allowance.DirectBanking2AccountId" data-group="directbanking2">

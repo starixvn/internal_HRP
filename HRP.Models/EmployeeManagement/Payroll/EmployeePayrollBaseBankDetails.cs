@@ -18,8 +18,6 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
         public int? DirectBanking1AccountId { get; set; }
 
-        public int? DirectBanking1BankTypeId { get; set; }
-
         public string DirectBanking1AccountName { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId) },
@@ -33,8 +31,6 @@
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
         public int? DirectBanking2AccountId { get; set; }
-
-        public int? DirectBanking2BankTypeId { get; set; }
 
         public string DirectBanking2AccountName { get; set; }
 

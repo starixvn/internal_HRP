@@ -162,7 +162,7 @@
             <div class="payment-transaction">
                 <label class="bank-type">@ViewLang.DirectBanking</label>
 
-                <select class="control bank-type-select hidden" asp-for="BasicSalary.DirectBanking1BankTypeId">
+                <select class="control bank-type-select hidden" disabled>
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
 
@@ -191,7 +191,7 @@
             <div class="payment-transaction">
                 <label class="bank-type">@ViewLang.DirectBanking</label>
 
-                <select class="control bank-type-select hidden" asp-for="BasicSalary.DirectBanking2BankTypeId">
+                <select class="control bank-type-select hidden" disabled>
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking2" asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
@@ -258,7 +258,7 @@
             <div class="payment-transaction -allowances">
                 <label class="bank-type">@ViewLang.DirectBanking</label>
 
-                <select class="control bank-type-select hidden" asp-for="Allowance.DirectBanking1BankTypeId">
+                <select class="control bank-type-select hidden" disabled>
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
 
@@ -287,7 +287,7 @@
             <div class="payment-transaction -allowances">
                  <label class="bank-type">@ViewLang.DirectBanking</label>
 
-                <select class="control bank-type-select hidden" asp-for="Allowance.DirectBanking2BankTypeId">
+                <select class="control bank-type-select hidden" disabled>
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select allowance-directbanking2" asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">

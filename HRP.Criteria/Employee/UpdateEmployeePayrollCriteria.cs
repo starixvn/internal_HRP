@@ -27,15 +27,11 @@
 
         public int? DirectBanking1AccountId { get; set; }
 
-        public int? DirectBanking1BankTypeId { get; set; }
-
         public int? DirectBanking2CurrencyId { get; set; }
 
         public string DirectBanking2Amount { get; set; }
 
         public int? DirectBanking2AccountId { get; set; }
-
-        public int? DirectBanking2BankTypeId { get; set; }
 
         public int? CashCurrencyId { get; set; }
 
@@ -57,15 +53,11 @@
 
         public int? AllowanceDirectBanking1AccountId { get; set; }
 
-        public int? AllowanceDirectBanking1BankTypeId { get; set; }
-
         public int? AllowanceDirectBanking2CurrencyId { get; set; }
 
         public string AllowanceDirectBanking2Amount { get; set; }
 
         public int? AllowanceDirectBanking2AccountId { get; set; }
-
-        public int? AllowanceDirectBanking2BankTypeId { get; set; }
 
         public int? AllowanceCashCurrencyId { get; set; }
 

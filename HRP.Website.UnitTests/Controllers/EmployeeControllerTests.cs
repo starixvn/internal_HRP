@@ -665,10 +665,8 @@
                     EbankingAccountId = 1,
                     EbankingAccountName = "E Account",
                     DirectBanking1AccountId = 1,
-                    DirectBanking1BankTypeId = 1,
                     DirectBanking1AccountName = "Account 1",
                     DirectBanking2AccountId = 2,
-                    DirectBanking2BankTypeId = 2,
                     DirectBanking2AccountName = "Account 2",
                 }
             };
