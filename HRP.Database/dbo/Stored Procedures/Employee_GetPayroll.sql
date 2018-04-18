@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Employee_GetPayroll] @EmployeeId INT
+﻿CREATE PROCEDURE [dbo].[Employee_GetPayroll] @EmployeeId INT
 	,@UserId INT
 AS
 /*
@@ -7,6 +6,8 @@ Created: 20180112@Elton.Ton
 Task: Get employee payroll
 DB: bodb_HRP
 Original:
+Updated: 
+ ---- 20180417@Elton: dont need to join RefResource for contra co account, remove banktypeid
 */
 BEGIN
 	SET NOCOUNT ON;
@@ -43,17 +44,15 @@ BEGIN
 		,epbs.EbankingCurrencyId
 		,epbs.EbankingAmount
 		,epbs.EbankingAccountId
-		,eba.AccountName AS 'EbankingAccountName'
+		,rr.Value AS 'EbankingAccountName'
 		,epbs.DirectBanking1CurrencyId
 		,epbs.DirectBanking1Amount
 		,epbs.DirectBanking1AccountId
-		,epbs.DirectBanking1BankTypeId
-		,ISNULL(dba1.AccountName, rr1.Value) AS 'DirectBanking1AccountName'
+		,rr1.Value AS 'DirectBanking1AccountName'
 		,epbs.DirectBanking2CurrencyId
 		,epbs.DirectBanking2Amount
 		,epbs.DirectBanking2AccountId
-		,epbs.DirectBanking2BankTypeId
-		,ISNULL(dba2.AccountName, rr2.Value) AS 'DirectBanking2AccountName'
+		,rr2.Value AS 'DirectBanking2AccountName'
 		,epbs.CashCurrencyId
 		,epbs.CashAmount
 		,epbs.CashAccountId
@@ -61,38 +60,33 @@ BEGIN
 		,epbsh.EffectiveDate
 		,epbsh.ReasonId
 	FROM dbo.EmployeePayrollBasicSalary AS epbs WITH (NOLOCK)
-		INNER JOIN (
+	INNER JOIN (
 		SELECT TOP 1 EmployeeId
 			,EffectiveDate
 			,ReasonId
 		FROM dbo.EmployeePayrollBasicSalaryHistory WITH (NOLOCK)
 		WHERE EmployeeId = @EmployeeId
 		ORDER BY HistoryId DESC
-		) AS epbsh ON epbs.EmployeeId = epbsh.EmployeeId
-		LEFT JOIN dbo.BankAccount AS eba WITH (NOLOCK) ON epbs.EbankingAccountId = eba.Id
-		LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON epbs.DirectBanking1AccountId = dba1.Id
-		AND epbs.DirectBanking1BankTypeId <> 3
-		LEFT JOIN dbo.BankAccount AS dba2 WITH (NOLOCK) ON epbs.DirectBanking2AccountId = dba2.Id
-		AND epbs.DirectBanking2BankTypeId <> 3
-		LEFT JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON epbs.DirectBanking1AccountId = rr1.ResourceId
-		AND epbs.DirectBanking1BankTypeId = 3
-		AND rr1.RefName = 'ContraCoAccount'
-		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epbs.DirectBanking2AccountId = rr2.ResourceId
-		AND epbs.DirectBanking2BankTypeId = 3
-		AND rr2.RefName = 'ContraCoAccount'
+	) AS epbsh ON epbs.EmployeeId = epbsh.EmployeeId
+	LEFT JOIN dbo.BankAccount AS eba WITH (NOLOCK) ON epbs.EbankingAccountId = eba.Id
+	LEFT JOIN dbo.RefResource rr WITH (NOLOCK) ON eba.PaymentTransactionId = rr.ResourceId AND rr.RefName = 'PaymentTransactionEbanking'
+
+	LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON epbs.DirectBanking1AccountId = dba1.Id
+	LEFT JOIN dbo.RefResource rr1 WITH (NOLOCK) ON dba1.PaymentTransactionId = rr1.ResourceId AND rr1.RefName = 'PaymentTransactionDirectBanking'
+
+	LEFT JOIN dbo.BankAccount AS dba2 WITH (NOLOCK) ON DirectBanking2AccountId = dba2.Id
+	LEFT JOIN dbo.RefResource rr2 WITH (NOLOCK) ON dba2.PaymentTransactionId = rr2.ResourceId AND rr2.RefName = 'PaymentTransactionDirectBanking'
 
 	SELECT epba.EmployeeId
 		,epba.CurrencyId
 		,epba.DirectBanking1CurrencyId
 		,epba.DirectBanking1Amount
 		,epba.DirectBanking1AccountId
-		,epba.DirectBanking1BankTypeId
-		,ISNULL(dba1.AccountName, rr1.Value) AS 'DirectBanking1AccountName'
+		,rr1.Value AS 'DirectBanking1AccountName'
 		,epba.DirectBanking2CurrencyId
 		,epba.DirectBanking2Amount
 		,epba.DirectBanking2AccountId
-		,epba.DirectBanking2BankTypeId
-		,ISNULL(dba2.AccountName, rr2.Value) AS 'DirectBanking2AccountName'
+		,rr2.Value AS 'DirectBanking2AccountName'
 		,epba.CashCurrencyId
 		,epba.CashAmount
 		,epba.CashAccountId
@@ -114,16 +108,11 @@ BEGIN
 		,epba.OthersCurrencyId
 		,epba.OthersAmount
 	FROM dbo.EmployeePayrollAllowance AS epba WITH (NOLOCK)
-		LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON epba.DirectBanking1AccountId = dba1.Id
-		AND epba.DirectBanking1BankTypeId <> 3
-		LEFT JOIN dbo.BankAccount AS dba2 WITH (NOLOCK) ON epba.DirectBanking2AccountId = dba2.Id
-		AND epba.DirectBanking2BankTypeId <> 3
-		LEFT JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON epba.DirectBanking1AccountId = rr1.ResourceId
-		AND epba.DirectBanking1BankTypeId = 3
-		AND rr1.RefName = 'ContraCoAccount'
-		LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON epba.DirectBanking2AccountId = rr2.ResourceId
-		AND epba.DirectBanking2BankTypeId = 3
-		AND rr2.RefName = 'ContraCoAccount'
+	LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON epba.DirectBanking1AccountId = dba1.Id
+	LEFT JOIN dbo.RefResource rr1 WITH (NOLOCK) ON dba1.PaymentTransactionId = rr1.ResourceId AND rr1.RefName = 'PaymentTransactionDirectBanking'
+
+	LEFT JOIN dbo.BankAccount AS dba2 WITH (NOLOCK) ON DirectBanking2AccountId = dba2.Id
+	LEFT JOIN dbo.RefResource rr2 WITH (NOLOCK) ON dba2.PaymentTransactionId = rr2.ResourceId AND rr2.RefName = 'PaymentTransactionDirectBanking'
 	WHERE epba.EmployeeId = @EmployeeId
 
 	SELECT epd.EmployeeId
@@ -134,3 +123,7 @@ BEGIN
 	FROM dbo.EmployeePayrollDeduction AS epd WITH (NOLOCK)
 	WHERE epd.EmployeeId = @EmployeeId
 END
+
+GO
+
+

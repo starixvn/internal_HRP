@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
+﻿CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@Salary VARCHAR(MAX) = NULL
 	,@IsSalaryChanged BIT
 	,@CurrencyId INT = NULL
@@ -10,11 +9,9 @@ CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@DirectBanking1CurrencyId INT = NULL
 	,@DirectBanking1Amount VARCHAR(MAX) = NULL
 	,@DirectBanking1AccountId INT = NULL
-	,@DirectBanking1BankTypeId INT = NULL
 	,@DirectBanking2CurrencyId INT = NULL
 	,@DirectBanking2Amount VARCHAR(MAX) = NULL
 	,@DirectBanking2AccountId INT = NULL
-	,@DirectBanking2BankTypeId INT = NULL
 	,@CashCurrencyId INT = NULL
 	,@CashAmount VARCHAR(MAX) = NULL
 	,@CashAccountId INT = NULL
@@ -25,11 +22,9 @@ CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@AllowanceDirectBanking1CurrencyId INT = NULL
 	,@AllowanceDirectBanking1Amount VARCHAR(MAX) = NULL
 	,@AllowanceDirectBanking1AccountId INT = NULL
-	,@AllowanceDirectBanking1BankTypeId INT = NULL
 	,@AllowanceDirectBanking2CurrencyId INT = NULL
 	,@AllowanceDirectBanking2Amount VARCHAR(MAX) = NULL
 	,@AllowanceDirectBanking2AccountId INT = NULL
-	,@AllowanceDirectBanking2BankTypeId INT = NULL
 	,@AllowanceCashCurrencyId INT = NULL
 	,@AllowanceCashAmount VARCHAR(MAX) = NULL
 	,@AllowanceCashAccountId INT = NULL
@@ -63,9 +58,10 @@ Created: 20180119@EltonTon
 Task : Update Employee Payroll
 DB: bodb_HRP
 Original:
-
 Revisions:
 Param's Explanation:
+Updated: 
+ ---- 20180417@Elton: dont need to join RefResource for contra co account, remove banktypeid
  */
 BEGIN
 	SET NOCOUNT ON
@@ -112,11 +108,9 @@ BEGIN
 					,epbs.DirectBanking1CurrencyId AS '@epbsdb1cc'
 					,epbs.DirectBanking1Amount AS '@epbsdb1a'
 					,epbs.DirectBanking1AccountId AS '@epbsdb1ai'
-					,epbs.DirectBanking1BankTypeId AS '@epbsdb1bti'
 					,epbs.DirectBanking2CurrencyId AS '@epbsdb2cc'
 					,epbs.DirectBanking2Amount AS '@epbsdb2a'
 					,epbs.DirectBanking2AccountId AS '@epbsdb2ai'
-					,epbs.DirectBanking2BankTypeId AS '@epbsdb2bti'
 					,epbs.CashCurrencyId AS '@epbsccc'
 					,epbs.CashAmount AS '@epbsca'
 					,epbs.CashAccountId AS '@epbscai'
@@ -127,11 +121,9 @@ BEGIN
 					,epa.DirectBanking1CurrencyId AS '@epadb1cc'
 					,epa.DirectBanking1Amount AS '@epadb1a'
 					,epa.DirectBanking1AccountId AS '@epadb1ai'
-					,epa.DirectBanking1BankTypeId AS '@epadb1bti'
 					,epa.DirectBanking2CurrencyId AS '@epadb2cc'
 					,epa.DirectBanking2Amount AS '@epadb2a'
 					,epa.DirectBanking2AccountId AS '@epadb2ai'
-					,epa.DirectBanking2BankTypeId AS '@epadb2bti'
 					,epa.CashCurrencyId AS '@epaccc'
 					,epa.CashAmount AS '@epaca'
 					,epa.CashAccountId AS '@epacai'
@@ -223,8 +215,6 @@ BEGIN
 			,[CashAmount] = @CashAmount
 			,[CashAccountId] = @CashAccountId
 			,[AutoCalculateOn] = @AutoCalculateOn
-			,[DirectBanking1BankTypeId] = @DirectBanking1BankTypeId
-			,[DirectBanking2BankTypeId] = @DirectBanking2BankTypeId
 		WHERE EmployeeId = @EmployeeId
 
 		UPDATE [dbo].[EmployeePayrollAllowance] WITH (ROWLOCK, UPDLOCK)
@@ -255,8 +245,6 @@ BEGIN
 			,[SecondmentAmount] = @SecondmentAmount
 			,[OthersCurrencyId] = @OthersCurrencyId
 			,[OthersAmount] = @OthersAmount
-			,[DirectBanking1BankTypeId] = @AllowanceDirectBanking1BankTypeId
-			,[DirectBanking2BankTypeId] = @AllowanceDirectBanking2BankTypeId
 		WHERE EmployeeId = @EmployeeId
 
 		UPDATE [dbo].[EmployeePayrollDeduction] WITH (ROWLOCK, UPDLOCK)
@@ -286,8 +274,6 @@ BEGIN
 			,[CashAmount]
 			,[CashAccountId]
 			,[AutoCalculateOn]
-			,[DirectBanking1BankTypeId]
-			,[DirectBanking2BankTypeId]
 			)
 		VALUES (
 			@EmployeeId
@@ -307,8 +293,6 @@ BEGIN
 			,@CashAmount
 			,@CashAccountId
 			,@AutoCalculateOn
-			,@DirectBanking1BankTypeId
-			,@DirectBanking2BankTypeId
 			)
 
 		INSERT INTO [dbo].[EmployeePayrollBasicSalaryHistory] (
@@ -355,8 +339,6 @@ BEGIN
 			,[SecondmentAmount]
 			,[OthersCurrencyId]
 			,[OthersAmount]
-			,[DirectBanking1BankTypeId]
-			,[DirectBanking2BankTypeId]
 			)
 		VALUES (
 			@EmployeeId
@@ -387,8 +369,6 @@ BEGIN
 			,@SecondmentAmount
 			,@OthersCurrencyId
 			,@OthersAmount
-			,@AllowanceDirectBanking1BankTypeId
-			,@AllowanceDirectBanking2BankTypeId
 			)
 
 		INSERT INTO [dbo].[EmployeePayrollDeduction] (
@@ -418,11 +398,9 @@ BEGIN
 				,epbs.DirectBanking1CurrencyId AS '@epbsdb1cc'
 				,epbs.DirectBanking1Amount AS '@epbsdb1a'
 				,epbs.DirectBanking1AccountId AS '@epbsdb1ai'
-				,epbs.DirectBanking1BankTypeId AS '@epbsdb1bti'
 				,epbs.DirectBanking2CurrencyId AS '@epbsdb2cc'
 				,epbs.DirectBanking2Amount AS '@epbsdb2a'
 				,epbs.DirectBanking2AccountId AS '@epbsdb2ai'
-				,epbs.DirectBanking2BankTypeId AS '@epbsdb2bti'
 				,epbs.CashCurrencyId AS '@epbsccc'
 				,epbs.CashAmount AS '@epbsca'
 				,epbs.CashAccountId AS '@epbscai'
@@ -433,11 +411,9 @@ BEGIN
 				,epa.DirectBanking1CurrencyId AS '@epadb1cc'
 				,epa.DirectBanking1Amount AS '@epadb1a'
 				,epa.DirectBanking1AccountId AS '@epadb1ai'
-				,epa.DirectBanking1BankTypeId AS '@epadb1bti'
 				,epa.DirectBanking2CurrencyId AS '@epadb2cc'
 				,epa.DirectBanking2Amount AS '@epadb2a'
 				,epa.DirectBanking2AccountId AS '@epadb2ai'
-				,epa.DirectBanking2BankTypeId AS '@epadb2bti'
 				,epa.CashCurrencyId AS '@epaccc'
 				,epa.CashAmount AS '@epaca'
 				,epa.CashAccountId AS '@epacai'
@@ -488,3 +464,6 @@ BEGIN
 		,@OldData = @oldLogData
 		,@Duration = @Duration
 END
+
+GO
+

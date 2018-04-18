@@ -1,16 +1,12 @@
-﻿
-
-CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
+﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
 	@PayrollId INT
 	,@CurrencyId INT = NULL
 	,@TotalAmount VARCHAR(MAX) = NULL
 	,@DirectBanking1CurrencyId INT = NULL
 	,@DirectBanking1Amount VARCHAR(MAX) = NULL
-	,@DirectBanking1BankTypeId TINYINT = NULL
 	,@DirectBanking1AccountId INT = NULL
 	,@DirectBanking2CurrencyId INT = NULL
 	,@DirectBanking2Amount VARCHAR(MAX) = NULL
-	,@DirectBanking2BankTypeId TINYINT = NULL
 	,@DirectBanking2AccountId INT = NULL
 	,@CashCurrencyId INT = NULL
 	,@CashAmount VARCHAR(MAX) = NULL
@@ -31,6 +27,8 @@ Created: 20180305@EltonTon
 Task : payment process - save allowances
 DB: bodb_HRP
 Original:
+Updated: 
+ ---- 20180417@Elton: remove banktypeid
  */
 BEGIN
 	SET NOCOUNT ON
@@ -112,11 +110,9 @@ BEGIN
 				,[TotalAmount] AS '@ta'
 				,[DirectBanking1CurrencyId] AS '@db1ci'
 				,[DirectBanking1Amount] AS '@db1a'
-				,[DirectBanking1BankTypeId] AS '@db1bti'
 				,[DirectBanking1AccountId] AS '@db1ai'
 				,[DirectBanking2CurrencyId] AS '@db2ci'
 				,[DirectBanking2Amount] AS '@db2a'
-				,[DirectBanking2BankTypeId] AS '@db2bti'
 				,[DirectBanking2AccountId] AS '@db2ai'
 				,[CashCurrencyId] AS '@cci'
 				,[CashAmount] AS '@ca'
@@ -159,11 +155,9 @@ BEGIN
 		,[TotalAmount] = @TotalAmount
 		,[DirectBanking1CurrencyId] = @DirectBanking1CurrencyId
 		,[DirectBanking1Amount] = @DirectBanking1Amount
-		,[DirectBanking1BankTypeId] = @DirectBanking1BankTypeId
 		,[DirectBanking1AccountId] = @DirectBanking1AccountId
 		,[DirectBanking2CurrencyId] = @DirectBanking2CurrencyId
 		,[DirectBanking2Amount] = @DirectBanking2Amount
-		,[DirectBanking2BankTypeId] = @DirectBanking2BankTypeId
 		,[DirectBanking2AccountId] = @DirectBanking2AccountId
 		,[CashCurrencyId] = @CashCurrencyId
 		,[CashAmount] = @CashAmount
@@ -199,11 +193,9 @@ BEGIN
 				,[TotalAmount] AS '@ta'
 				,[DirectBanking1CurrencyId] AS '@db1ci'
 				,[DirectBanking1Amount] AS '@db1a'
-				,[DirectBanking1BankTypeId] AS '@db1bti'
 				,[DirectBanking1AccountId] AS '@db1ai'
 				,[DirectBanking2CurrencyId] AS '@db2ci'
 				,[DirectBanking2Amount] AS '@db2a'
-				,[DirectBanking2BankTypeId] AS '@db2bti'
 				,[DirectBanking2AccountId] AS '@db2ai'
 				,[CashCurrencyId] AS '@cci'
 				,[CashAmount] AS '@ca'
@@ -254,3 +246,6 @@ BEGIN
 	DROP TABLE #addition
 	DROP TABLE #deduction
 END
+
+GO
+

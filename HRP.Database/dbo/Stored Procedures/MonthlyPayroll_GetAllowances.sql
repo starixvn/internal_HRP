@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[MonthlyPayroll_GetAllowances] 
+﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_GetAllowances] 
 	@PayrollId INT
 AS
 /*
@@ -7,41 +6,41 @@ Created: 20180305@EltonTon
 Task : payment process - get monthly allowances
 DB: bodb_HRP
 Original:
+Updated: 
+ ---- 20180417@Elton: dont need to join RefResource for contra co account, remove direct banking type
  */
 BEGIN
 	DECLARE @startDate DATE, @dueDate DATE, @month DATE
 
 	SELECT [PayrollId]
-		,[CurrencyId]
+		,ma.[CurrencyId]
+		,c.CurrencyCode
 		,[TotalAmount]
 		,[DirectBanking1CurrencyId]
 		,[DirectBanking1Amount]
-		,[DirectBanking1BankTypeId]
 		,[DirectBanking1AccountId]
-		,ISNULL(dba1.AccountName, rr1.Value) AS 'DirectBanking1AccountName'
+		,rr1.Value AS 'DirectBanking1AccountName'
 		,[DirectBanking2CurrencyId]
 		,[DirectBanking2Amount]
-		,[DirectBanking2BankTypeId]
 		,[DirectBanking2AccountId]
-		,ISNULL(dba2.AccountName, rr2.Value) AS 'DirectBanking2AccountName'
+		,rr2.Value AS 'DirectBanking2AccountName'
 		,[CashCurrencyId]
 		,[CashAmount]
 		,[CashAccountId]
 		,[DSTNetSalaryCurrencyId]
 		,[DSTNetSalaryAmount]
+		,dst.CurrencyCode AS [DSTNetSalaryCurrencyCode]
 		,[AutoCalculateOn]
 		,[TotalNetAmount]
 		,[Status]
-	FROM [dbo].[MonthlyAllowance] WITH(NOLOCK)
+	FROM [dbo].[MonthlyAllowance] AS ma WITH(NOLOCK)
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = ma.CurrencyId
+	LEFT JOIN dbo.Currency AS dst WITH (NOLOCK) ON dst.CurrencyId = ma.DSTNetSalaryCurrencyId
 	LEFT JOIN dbo.BankAccount AS dba1 WITH (NOLOCK) ON DirectBanking1AccountId = dba1.Id
-	AND DirectBanking1BankTypeId <> 3
+	LEFT JOIN dbo.RefResource rr1 WITH (NOLOCK) ON dba1.PaymentTransactionId = rr1.ResourceId AND rr1.RefName = 'PaymentTransactionDirectBanking'
+
 	LEFT JOIN dbo.BankAccount AS dba2 WITH (NOLOCK) ON DirectBanking2AccountId = dba2.Id
-	AND DirectBanking2BankTypeId <> 3
-	LEFT JOIN dbo.RefResource AS rr1 WITH (NOLOCK) ON DirectBanking1AccountId = rr1.ResourceId
-	AND DirectBanking1BankTypeId = 3
-	AND rr1.RefName = 'ContraCoAccount'
-	LEFT JOIN dbo.RefResource AS rr2 WITH (NOLOCK) ON DirectBanking2AccountId = rr2.ResourceId
-	AND DirectBanking2BankTypeId = 3 AND rr2.RefName = 'ContraCoAccount'
+	LEFT JOIN dbo.RefResource rr2 WITH (NOLOCK) ON dba2.PaymentTransactionId = rr2.ResourceId AND rr2.RefName = 'PaymentTransactionDirectBanking'
 	WHERE PayrollId = @PayrollId
 
 	SELECT [PayrollId]
@@ -129,3 +128,6 @@ BEGIN
 	INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON em.CostCenterId = cc.CostCenterId
 	WHERE mp.PayrollId = @PayrollId
 END
+
+GO
+
