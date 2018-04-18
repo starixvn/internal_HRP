@@ -66,6 +66,11 @@
         public string BankName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SwiftCode))]
+        [RequiredIfRelatedFieldIsTrue(
+            RelatedFieldName = nameof(BankTypeId),
+            DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
+            ErrorMessageResourceType = typeof(Message),
+            ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
             15,
             ErrorMessageResourceType = typeof(Message),
