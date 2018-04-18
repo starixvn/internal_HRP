@@ -28,7 +28,7 @@ var bankAccountForm = {
                     url: ajaxUrl,
                     method: "get",
                     success: function (results) {
-                        var selectedItemIndex = 0;
+                        var selectedItemIndex = -1;
                         var isAllItemDisabled = true;
                         for (var i = 0, l = results.length; i < l; i++) {
                             if (results[i].selected === true) {
@@ -41,7 +41,7 @@ var bankAccountForm = {
                             }
                         }
 
-                        if ($("#IsActive").is(":checked") === true) {
+                        if ($("#IsActive").is(":checked") === true && selectedItemIndex !== -1) {
                             if (isAllItemDisabled === true) {
                                 // clear the selected value
                                 results[selectedItemIndex].selected = false;
