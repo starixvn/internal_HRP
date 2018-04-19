@@ -8,10 +8,6 @@
 
         public bool EnableEncrypt { get; set; }
 
-        public string CertificateFilePath { get; set; }
-
-        public string PasswordToSignTheCertificateFile { get; set; }
-
         public string Domain { get; set; }
 
         public DateTime LaunchMonth { get; set; }

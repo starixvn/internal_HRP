@@ -121,6 +121,11 @@
 
         #region Helpers
 
+        private static ICertificateService FakeCertificateService()
+        {
+            return Substitute.For<ICertificateService>();
+        }
+
         private IOptionsSnapshot<AppSettingsOptions> FakeIOptionsSnapshot(bool enableEncrypt)
         {
             var appSettings = new AppSettingsOptions
@@ -151,7 +156,8 @@
             IOptionsSnapshot<AppSettingsOptions> config,
             X509Certificate2 cert)
         {
-            var service = new CryptoService(config, cert);
+            ICertificateService certificateService = FakeCertificateService();
+            var service = new CryptoService(certificateService, config, cert);
 
             return service;
         }

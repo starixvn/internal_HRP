@@ -3,6 +3,7 @@
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
+    using HRP.Core.CustomException;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
 
@@ -31,6 +32,8 @@
 
         private void HandleException(HttpContext context, Exception exception)
         {
+            var exceptionType = exception.GetType();
+
             string message = string.Format(
                     CultureInfo.InvariantCulture,
                     "{0}\n\rSource: {1}\n\rDomain: {2}\n\rTargetSite: {3}\n\rStackTrace: {4}",
@@ -41,7 +44,18 @@
                     exception.StackTrace);
             logger.LogError(message);
 
-            context.Response.Redirect("/error/500");
+            if (exceptionType == typeof(CertificateNotFoundException))
+            {
+                context.Response.Redirect("/certificate/FileNotFound");
+            }
+            else if (exceptionType == typeof(CertificatePasswordException))
+            {
+                context.Response.Redirect("/certificate/password");
+            }
+            else
+            {
+                context.Response.Redirect("/error/500");
+            }
         }
     }
 }

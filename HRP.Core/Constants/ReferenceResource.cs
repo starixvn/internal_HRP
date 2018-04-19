@@ -30,5 +30,6 @@
         public const string PaymentTransactionEbanking = "PaymentTransactionEbanking";
         public const string PaymentTransactionDirectBanking = "PaymentTransactionDirectBanking";
         public const string ContraCoAccount = "ContraCoAccount"; //Remove
+        public const string IsGeneratedCertificate = "IsGeneratedCertificate";
     }
 }

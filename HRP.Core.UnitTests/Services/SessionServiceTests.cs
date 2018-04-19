@@ -87,6 +87,22 @@
         }
 
         [Fact]
+        public void IsSystemAdmin_WhenCalled_GetAndSetCorrectly()
+        {
+            // Arrange
+            var isSystemAdmin = true;
+            _session = new MockSession();
+            sessionService = GetSessionService(_session);
+            sessionService.IsSystemAdmin = isSystemAdmin;
+
+            // Act
+            var actual = sessionService.IsSystemAdmin;
+
+            // Assert
+            Assert.Equal(isSystemAdmin, actual);
+        }
+
+        [Fact]
         public void MenuItems_WhenCalled_GetAndSetCorrectly()
         {
             // Arrange

@@ -25,5 +25,9 @@ namespace HRP.Core.Constants
         public const string RijndaelKey = "8080808080808080";
 
         public const string RijndaelIV = "8080808080808080";
+
+        public const string CertificateFilePath = "Cert";
+
+        public const string CertificateFileName = "HRP.pfx";
     }
 }
