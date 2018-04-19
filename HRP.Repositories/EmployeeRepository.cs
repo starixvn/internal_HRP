@@ -2,10 +2,10 @@ namespace HRP.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Core.Constants;
+    using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Mvc.Rendering;

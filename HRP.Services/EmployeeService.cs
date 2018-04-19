@@ -4,8 +4,8 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Criteria.RefResource;
     using HRP.Core.Constants;
+    using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.Employee;

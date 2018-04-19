@@ -193,7 +193,6 @@
     <Compile Include="Employee\UpdateEmploymentCriteriaTests.cs" />
     <Compile Include="Function\GetAllFunctionCriteriaTests.cs" />
     <Compile Include="Function\GetFunctionByUserIdCriteriaTests.cs" />
-    <Compile Include="RefResource\GetRefResourceByNamesCriteriaTests.cs" />
     <Compile Include="GradeLevel\GetGradeLevelByJobCategoryIdCriteriaTests.cs" />
     <Compile Include="JobCategory\GetAllJobCategoryCriteriaTests.cs" />
     <Compile Include="JobGrade\GetJobGradeByGradeLevelIdCriteriaTests.cs" />

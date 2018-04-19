@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Core.CustomValidations;
+    using HRP.Core.Model;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
@@ -11,13 +12,6 @@
         public int EmployeeId { get; set; }
 
         public string NickName { get; set; }
-
-        ////[Display(Name = nameof(ViewLang.AccountName), ResourceType = typeof(ViewLang))]
-        ////[Required(ErrorMessageResourceType = typeof(Message),
-        ////    ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        ////[StringLength(30, ErrorMessageResourceType = typeof(Message),
-        ////    ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
-        ////public string AccountName { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.PaymentTransaction))]
         [Required(ErrorMessageResourceType = typeof(Message),

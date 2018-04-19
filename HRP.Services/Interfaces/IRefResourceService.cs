@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models;
+    using HRP.Core.Model;
 
     public interface IRefResourceService
     {

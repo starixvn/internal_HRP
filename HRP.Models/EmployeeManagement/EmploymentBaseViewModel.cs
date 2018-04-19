@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
+    using HRP.Core.Model;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
 

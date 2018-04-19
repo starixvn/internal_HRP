@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using HRP.Core.Model;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
@@ -41,7 +42,5 @@
         public bool? IsActive { get; set; }
 
         public bool HaveHostPermission { get; set; }
-
-        ////public bool BankAccountsLimitReached { get; set; }
     }
 }

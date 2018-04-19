@@ -1,14 +1,13 @@
 ﻿namespace HRP.Services
 {
     using System.Threading.Tasks;
-    using Criteria.RefResource;
     using Fanex.Data;
     using HRP.Core.Constants;
+    using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.EmployeeManagement;
     using Models.EmployeeManagement.Payroll;

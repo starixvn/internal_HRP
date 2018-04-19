@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Currency;
+    using HRP.Core.Model;
 
     public class EmployeePayrollViewModel
     {

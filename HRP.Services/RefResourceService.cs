@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
-    using Criteria.RefResource;
-    using Models;
+    using HRP.Core.Criteria;
+    using HRP.Core.Model;
 
     public class RefResourceService : IRefResourceService
     {

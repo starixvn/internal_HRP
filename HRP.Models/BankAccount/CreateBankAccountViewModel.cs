@@ -1,6 +1,7 @@
 ﻿namespace HRP.Models.BankAccount
 {
     using System.Collections.Generic;
+    using HRP.Core.Model;
 
     public class CreateBankAccountViewModel : BaseFormBankAccountViewModel
     {
