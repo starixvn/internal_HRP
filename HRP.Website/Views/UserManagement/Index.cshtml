@@ -1,6 +1,4 @@
-﻿@using HRP.Core.Constants
-@using HRP.Models
-@using HRP.Resources
+﻿@using HRP.Resources
 @using HRP.Core.Enumerations
 @using HRP.Models.UserManagement
 
@@ -8,7 +6,6 @@
 
 @{
     var rowNumber = 1;
-    var isSystemAdmin = Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value);
 }
 
 @section Styles {
@@ -95,7 +92,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-@user.UserId">
-                            @if (Model.IsHost && (!user.IsSystemAdmin || isSystemAdmin))
+                            @if (Model.IsHost && !user.IsSystemAdmin)
                             {
                                 <li>
                                     <a asp-action="EditUser" asp-controller="UserManagement" asp-route-id="@user.UserId">

@@ -121,8 +121,6 @@
             {
                 SessionTimeout = 60,
                 EnableEncrypt = true,
-                CertificateFilePath = "D=\\Test.pfx",
-                PasswordToSignTheCertificateFile = "123456",
                 Domain = "http=//localhost=56977",
                 LaunchMonth = DateTime.Today
             };

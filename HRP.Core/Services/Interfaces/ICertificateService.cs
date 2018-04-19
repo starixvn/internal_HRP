@@ -1,12 +1,23 @@
 ﻿namespace HRP.Core.Services
 {
-    using System.Security.Cryptography.X509Certificates;
+    using HRP.Core.Model;
 
     public interface ICertificateService
     {
-        X509Certificate2 GenerateSelfSignedCertificate(
-            string subjectName,
-            string issuerName,
-            int keyStrength = 2048);
+        string GetCertificateFilePath();
+
+        string GetPasswordAccessTheCertificate();
+
+        CommandResult GenerateSelfSignedCertificate(string password);
+
+        bool IsGeneratedCertificate();
+
+        bool IsExistedCertificate();
+
+        bool IsCorrectPasswordAccessTheCertificate(string password);
+
+        void CachePasswordAccessTheCertificate(string password);
+
+        CommandResult ChangePasswordAccessTheCertificate(string oldPassword, string password);
     }
 }

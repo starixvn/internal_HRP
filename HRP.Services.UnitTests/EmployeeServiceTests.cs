@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using Criteria.RefResource;
+    using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;

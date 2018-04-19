@@ -14,15 +14,19 @@ namespace HRP.Website.Controllers
     using Resources;
     using Services;
 
-    public class AuthController : BaseController
+    public class AuthController : Controller
     {
+        private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
         private readonly IUserService userService;
 
         public AuthController(
             IUserService userService,
             ISessionService sessionService,
-            IBaseService baseService) : base(baseService, sessionService)
+            IBaseService baseService)
         {
+            this.sessionService = sessionService;
+            this.baseService = baseService;
             this.userService = userService;
         }
 

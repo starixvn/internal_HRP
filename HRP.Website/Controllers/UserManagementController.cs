@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -145,8 +144,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host)
-                && (!viewModel.IsSystemAdmin || Convert.ToBoolean(User.FindFirst(x => x.Type == Constants.IsSystemAdmin).Value));
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && !viewModel.IsSystemAdmin;
 
             return View(viewModel);
         }

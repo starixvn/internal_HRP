@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+    var isSystemAdmin = ViewData["IsSystemAdmin"] != null && bool.Parse(ViewData["IsSystemAdmin"].ToString());
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="~/assets/styles/pages/certificate/certificate.css" rel="stylesheet" />
+</head>
+<body>
+    <section class="block">
+        <a href="#" class="logo">
+            <img src="~/assets/styles/images/logo_login.svg" alt="logo" />
+        </a>
+
+        @if (isSystemAdmin)
+        {
+            <p>File not found.</p>
+        }
+        else
+        {
+            <p>File not found. Please contact your system administrator!</p>
+        }
+    </section>
+</body>
+</html>

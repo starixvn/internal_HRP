@@ -8,6 +8,7 @@
     using Core.Model;
     using Core.Services;
     using Fanex.Data;
+    using HRP.Core.Filters;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -69,6 +70,7 @@
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
 
+            services.AddMemoryCache();
             services.AddMvc(options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -89,8 +91,10 @@
             services.AddScoped<IBaseMailService, BaseMailService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<IBaseService, BaseService>();
+            services.AddScoped<HRPActionFilterAttribute>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IPdfRenderService, PdfRenderService>();
+            services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();

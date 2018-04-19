@@ -21,8 +21,10 @@ namespace HRP.Website.Controllers
     using Resources;
     using Services;
 
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
+        private readonly IBaseService baseService;
+        private readonly ISessionService sessionService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
         private readonly IUserService userService;
 
@@ -30,8 +32,10 @@ namespace HRP.Website.Controllers
             ISessionService sessionService,
             IBaseService baseService,
             ITwoFactorAuthenticatorService twoFactorAuthService,
-            IUserService userService) : base(baseService, sessionService)
+            IUserService userService)
         {
+            this.sessionService = sessionService;
+            this.baseService = baseService;
             this.twoFactorAuthService = twoFactorAuthService;
             this.userService = userService;
         }
@@ -281,8 +285,7 @@ namespace HRP.Website.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(Constants.IsSystemAdmin, user.IsSystemAdmin.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -315,9 +318,10 @@ namespace HRP.Website.Controllers
 
         private async Task SignUserIn(User user)
         {
-            // Step 1: setup userId and username in Session
+            // Step 1: save some infos into session
             sessionService.UserId = user.UserId;
             sessionService.Username = user.Username;
+            sessionService.IsSystemAdmin = user.IsSystemAdmin;
 
             // Step 2: Get menus and functions
             await PopulateMenusAndFunctions(user);

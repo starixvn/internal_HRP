@@ -39,6 +39,12 @@ namespace HRP.Core.Services
             set => _session.SetString(SessionKey.InternalUsername, value);
         }
 
+        public bool IsSystemAdmin
+        {
+            get => _session.Get<bool>(SessionKey.InternalIsSystemAdmin);
+            set => _session.Set<bool>(SessionKey.InternalIsSystemAdmin, value);
+        }
+
         public IEnumerable<MenuItem> MenuItems
         {
             get => _session.Get<List<MenuItem>>(SessionKey.InternalMenuItemList);

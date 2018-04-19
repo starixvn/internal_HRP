@@ -1,7 +1,13 @@
 ﻿namespace HRP.Core.Services
 {
     using System;
+    using System.IO;
     using System.Security.Cryptography.X509Certificates;
+    using HRP.Core.Constants;
+    using HRP.Core.Criteria;
+    using HRP.Core.Model;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Caching.Memory;
     using Org.BouncyCastle.Asn1;
     using Org.BouncyCastle.Asn1.Pkcs;
     using Org.BouncyCastle.Asn1.X509;
@@ -18,9 +24,128 @@
 
     public class CertificateService : ICertificateService
     {
-        private const string signatureAlgorithm = "SHA256WithRSA";
+        private const string SignatureAlgorithm = "SHA256WithRSA";
+        private const string SubjectName = "CN=HRP";
+        private const string IssuerName = "CN=HRP";
 
-        public X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, int keyStrength = 2048)
+        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IMemoryCache memoryCache;
+        private readonly IBaseService baseService;
+
+        public CertificateService(
+            IHostingEnvironment hostingEnvironment,
+            IMemoryCache memoryCache,
+            IBaseService baseService)
+        {
+            this.hostingEnvironment = hostingEnvironment;
+            this.memoryCache = memoryCache;
+            this.baseService = baseService;
+        }
+
+        public string GetCertificateFilePath()
+        {
+            string filePath = Path.Combine(hostingEnvironment.WebRootPath, Constants.CertificateFilePath, Constants.CertificateFileName);
+            return filePath;
+        }
+
+        public string GetPasswordAccessTheCertificate()
+        {
+            memoryCache.TryGetValue(CacheKeys.PasswordAccessTheCertificate, out string password);
+
+            return password;
+        }
+
+        public CommandResult GenerateSelfSignedCertificate(string password)
+        {
+            var commandResult = new CommandResult
+            {
+                Code = 0
+            };
+
+            try
+            {
+                X509Certificate2 cert = GenerateSelfSignedCertificate(SubjectName, IssuerName);
+                byte[] certData = cert.Export(X509ContentType.Pfx, password);
+                string filePath = GetCertificateFilePath();
+                File.WriteAllBytes(filePath, certData);
+            }
+            catch (Exception ex)
+            {
+                commandResult.Code = 1;
+                commandResult.Message = ex.Message;
+            }
+
+            return commandResult;
+        }
+
+        public bool IsGeneratedCertificate()
+        {
+            var criteria = new GetRefResourceByNamesCriteria
+            {
+                RefNames = ReferenceResource.IsGeneratedCertificate,
+                IsActive = true
+            };
+            var refResource = baseService.GetDataEntityAsync<ReferenceResourceModel>(criteria).Result;
+
+            return refResource.Value.Equals("1");
+        }
+
+        public bool IsExistedCertificate()
+        {
+            string filePath = GetCertificateFilePath();
+            return File.Exists(filePath);
+        }
+
+        public bool IsCorrectPasswordAccessTheCertificate(string password)
+        {
+            X509Certificate2 cert = null;
+
+            try
+            {
+                string filePath = GetCertificateFilePath();
+                cert = new X509Certificate2(filePath, password);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return cert != null;
+        }
+
+        public void CachePasswordAccessTheCertificate(string password)
+        {
+            var cacheExpirationOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(1),
+                Priority = CacheItemPriority.Normal
+            };
+            memoryCache.Set(CacheKeys.PasswordAccessTheCertificate, password, cacheExpirationOptions);
+        }
+
+        public CommandResult ChangePasswordAccessTheCertificate(string oldPassword, string password)
+        {
+            var commandResult = new CommandResult
+            {
+                Code = 0
+            };
+
+            try
+            {
+                string filePath = GetCertificateFilePath();
+                var cert = new X509Certificate2(filePath, oldPassword, X509KeyStorageFlags.Exportable);
+                File.WriteAllBytes(filePath, cert.Export(X509ContentType.Pfx, password));
+            }
+            catch (Exception ex)
+            {
+                commandResult.Code = 1;
+                commandResult.Message = ex.Message;
+            }
+
+            return commandResult;
+        }
+
+        private static X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, int keyStrength = 2048)
         {
             // Generating Random Numbers
             var randomGenerator = new CryptoApiRandomGenerator();
@@ -34,7 +159,7 @@
             certificateGenerator.SetSerialNumber(serialNumber);
 
             // Signature Algorithm
-            certificateGenerator.SetSignatureAlgorithm(signatureAlgorithm);
+            certificateGenerator.SetSignatureAlgorithm(SignatureAlgorithm);
 
             // Issuer and Subject Name
             var subjectDN = new X509Name(subjectName);

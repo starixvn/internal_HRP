@@ -9,6 +9,7 @@ namespace HRP.Core.Services
         int UserId { get; set; }
         int OnUserId { get; set; }
         string Username { get; set; }
+        bool IsSystemAdmin { get; set; }
         IEnumerable<MenuItem> MenuItems { get; set; }
         IEnumerable<FunctionModel> Functions { get; set; }
 

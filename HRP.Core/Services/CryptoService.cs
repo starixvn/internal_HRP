@@ -4,28 +4,27 @@ namespace HRP.Core.Services
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
+    using HRP.Core.CustomException;
+    using HRP.Core.Model;
+    using HRP.Resources;
     using Microsoft.Extensions.Options;
-    using Model;
 
     public class CryptoService : ICryptoService, IDisposable
     {
         private const bool OptimalAsymmetricEncryptionPadding = false;
-        private X509Certificate2 cert2;
+
+        private readonly X509Certificate2 cert2;
+        private readonly ICertificateService certificateService;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
 
         public CryptoService(
-            IOptionsSnapshot<AppSettingsOptions> configuration)
-        {
-            this.configuration = configuration;
-            InitCertificate();
-        }
-
-        public CryptoService(
+            ICertificateService certificateService,
             IOptionsSnapshot<AppSettingsOptions> configuration,
-            X509Certificate2 cert)
+            X509Certificate2 cert2 = null)
         {
+            this.certificateService = certificateService;
             this.configuration = configuration;
-            cert2 = cert;
+            this.cert2 = cert2 ?? InitCertificate();
         }
 
         public string Encrypt(string plainText)
@@ -74,15 +73,6 @@ namespace HRP.Core.Services
             return plainText;
         }
 
-        public void InitCertificate()
-        {
-            if (cert2 == null)
-            {
-                var flags = X509KeyStorageFlags.MachineKeySet;
-                cert2 = new X509Certificate2(configuration.Value.CertificateFilePath, configuration.Value.PasswordToSignTheCertificateFile, flags);
-            }
-        }
-
         public void Dispose()
         {
             Dispose(true);
@@ -92,6 +82,27 @@ namespace HRP.Core.Services
         protected virtual void Dispose(bool disposing)
         {
             cert2.Dispose();
+        }
+
+        private X509Certificate2 InitCertificate()
+        {
+            if (!certificateService.IsExistedCertificate())
+            {
+                throw new CertificateNotFoundException(Message.CertificateNotFound);
+            }
+
+            try
+            {
+                string filePath = certificateService.GetCertificateFilePath();
+                string password = certificateService.GetPasswordAccessTheCertificate();
+                var flags = X509KeyStorageFlags.MachineKeySet;
+
+                return new X509Certificate2(filePath, password, flags);
+            }
+            catch (Exception ex)
+            {
+                throw new CertificatePasswordException(ex.Message);
+            }
         }
     }
 }

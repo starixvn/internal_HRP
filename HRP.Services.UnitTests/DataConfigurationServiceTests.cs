@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;

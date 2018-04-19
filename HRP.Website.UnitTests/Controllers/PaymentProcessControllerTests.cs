@@ -6,12 +6,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Criteria.RefResource;
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
