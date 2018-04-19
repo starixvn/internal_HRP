@@ -29,7 +29,7 @@
 
         public string DirectBanking2Amount { get; set; }
 
-        public int? DirectBanking2AccountId { get; set; }
+        public int? DirectBanking2AccountId { get; set; }      
 
         public string DirectBanking2AccountName { get; set; }
 
