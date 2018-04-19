@@ -104,7 +104,9 @@
     <Compile Include="Department\UpdateDepartmentCriteriaTests.cs" />
     <Compile Include="Employee\CheckEmployeePayrollChangedInMonthCriteriaTests.cs" />
     <Compile Include="Employee\GetAllEmployeeCodeByCompanyIdCriteriaTests.cs" />
+    <Compile Include="Employee\GetEmployeeStatusByUserCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeBasicInfoByIdCriteriaTests.cs" />
+    <Compile Include="Employee\GetDepartmentByUserCriteriaTests.cs" />
     <Compile Include="GradeLevel\CheckGradeLevelExistsCriteriaTests.cs" />
     <Compile Include="GradeLevel\CreateGradeLevelCriteriaTests.cs" />
     <Compile Include="GradeLevel\GetAllGradeLevelCriteriaTests.cs" />
