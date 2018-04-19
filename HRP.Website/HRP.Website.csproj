@@ -82,13 +82,14 @@
     <Folder Include="wwwroot\assets\bundles\employee\" />
     <Folder Include="wwwroot\assets\bundles\user\css\" />
     <Folder Include="wwwroot\assets\bundles\user\js\" />
-    <Folder Include="wwwroot\Cert\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\Certificate\FileNotFound.cshtml" />
     <None Include="Views\Certificate\Generate.cshtml" />
     <None Include="Views\Certificate\Password.cshtml" />
+    <None Include="wwwroot\assets\styles\pages\certificate\certificate.css.map" />
+    <None Include="wwwroot\assets\styles\pages\certificate\certificate.scss" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shBrushGroovy.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shCore.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shLegacy.js" />
@@ -97,7 +98,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Cert\HRP.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\ExcelTemplates\BankIn.xlsx">
