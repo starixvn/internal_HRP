@@ -71,7 +71,7 @@
 
     function calculateAmountForBanks() {
         var totalAmountCurrency = $('#Allowance_CurrencyId').val();
-        var totalAmount = new BigNumber($('#allowance-total-amount').val());
+        var totalAmount = new BigNumber(Number($('#allowance-total-amount').val()));
 
         if (totalAmountCurrency === '')
             return;

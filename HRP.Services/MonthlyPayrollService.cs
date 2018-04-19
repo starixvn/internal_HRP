@@ -342,7 +342,7 @@
                 default:
                     monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
                     monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
-                    monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
+                    monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
                     if (basicSalary.EbankingCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);

@@ -225,9 +225,9 @@ BEGIN
 			,[DirectBanking2CurrencyId] = @AllowanceDirectBanking2CurrencyId
 			,[DirectBanking2Amount] = @AllowanceDirectBanking2Amount
 			,[DirectBanking2AccountId] = @AllowanceDirectBanking2AccountId
-			,[CashCurrencyId] = @CashCurrencyId
-			,[CashAmount] = @CashAmount
-			,[CashAccountId] = @CashAccountId
+			,[CashCurrencyId] = @AllowanceCashCurrencyId
+			,[CashAmount] = @AllowanceCashAmount
+			,[CashAccountId] = @AllowanceCashAccountId
 			,[AutoCalculateOn] = @AllowanceAutoCalculateOn
 			,[SubsistenceCurrencyId] = @SubsistenceCurrencyId
 			,[SubsistenceAmount] = @SubsistenceAmount
