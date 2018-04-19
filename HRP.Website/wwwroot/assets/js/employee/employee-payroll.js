@@ -115,7 +115,13 @@
             totalAmount = totalAmount.plus(Number($(e).val()));
         });
 
-        $('#allowance-total-amount').val(totalAmount.roundWithCurrency(0, allowanceCurrency).toString());
+        var $totalAmount = $('#allowance-total-amount');
+        $totalAmount.val(totalAmount.roundWithCurrency(0, allowanceCurrency).toString());
+
+        if ($totalAmount.hasClass('input-validation-error')) {
+            $totalAmount.valid();
+        }
+
         calculateAmountForBanks();
     }
 
@@ -396,10 +402,26 @@
                     }
                 },
                 'Allowance.CurrencyId': {
-                    required: true
+                    required: function (element) {
+                        var allowanceDetailValues = $('.allowance-detail-calculate').map(function (i, element) {
+                            if (element.value !== '') {
+                                return element.value
+                            }
+                        });
+
+                        return allowanceDetailValues.length > 0;
+                    }
                 },
                 'AllowanceTotal': {
-                    required: true
+                    required: function (element) {
+                        var allowanceDetailValues = $('.allowance-detail-calculate').map(function (i, element) {
+                            if (element.value !== '') {
+                                return element.value
+                            }
+                        });
+
+                        return allowanceDetailValues.length > 0;
+                    }
                 }
             }
         });
@@ -451,6 +473,16 @@
         $('.allowance-detail-calculate').on('change', function (e) {
             roundingAmount(e.target, 2);
             validatedInvalidRelatedElements(e.target);
+
+            var $totalAmount = $('#allowance-total-amount');
+            if ($totalAmount.hasClass('input-validation-error')) {
+                $totalAmount.valid();
+            }
+
+            var $totalAmountCurrency = $('#Allowance_CurrencyId');
+            if ($totalAmountCurrency.hasClass('input-validation-error')) {
+                $totalAmountCurrency.valid();
+            }
 
             var allowanceCurrency = $('#Allowance_CurrencyId').val();
             if (allowanceCurrency === '') {
