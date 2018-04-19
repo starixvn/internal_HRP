@@ -223,13 +223,48 @@
                 Month = month
             };
 
-            UploadAttendanceAndSalaryViewModel result = null;
+            var result = new UploadAttendanceAndSalaryViewModel();
             if (criteria.IsValid())
             {
-                result = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria).ConfigureAwait(false);
+                Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>> uploadingResults = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria).ConfigureAwait(false);
+
+                var paymentProcess = uploadingResults.Item1;
+                var attendanceErrors = uploadingResults.Item2;
+                var dstNetSalaryErrors = uploadingResults.Item3;
+
+                if (paymentProcess != null)
+                {
+                    result.CompanyId = paymentProcess.CompanyId;
+                    result.SelectedTime = paymentProcess.Month;
+                    result.CompanyCode = paymentProcess.CompanyCode;
+                    result.StartDate = paymentProcess.StartDate;
+                    result.DueDate = paymentProcess.DueDate;
+
+                    if (paymentProcess.AttendanceFileName != null)
+                    {
+                        result.AttendanceFileName = paymentProcess.AttendanceFileName;
+                        result.AttendanceResult = new FileResultViewModel
+                        {
+                            TotalRow = paymentProcess.AttendanceTotalRow,
+                            ValidationErrors = attendanceErrors
+                        };
+                    }
+
+                    if (paymentProcess.DSTNetSalaryFileName != null)
+                    {
+                        result.DSTNetSalaryFileName = paymentProcess.DSTNetSalaryFileName;
+                        result.DSTNetSalaryResult = new FileResultViewModel
+                        {
+                            TotalRow = paymentProcess.DSTNetSalaryTotalRow,
+                            ValidationErrors = dstNetSalaryErrors
+                        };
+                    }
+                }
             }
 
-            return result ?? new UploadAttendanceAndSalaryViewModel();
+            return result;
         }
 
         public async Task<CommandResult> DeleteUploadedAttendance(int companyId, DateTime month)

@@ -311,26 +311,192 @@
         }
 
         [Fact]
-        public async Task GetUploadingFilesResultAsync_CriteriaIsValid_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        public async Task GetUploadingFilesResultAsync_PaymentProcessIsNull_ReturnEmptyUploadAttendanceAndSalaryViewModel()
         {
             // Arrange
-            var expected = new UploadAttendanceAndSalaryViewModel
-            {
-                AttendanceResult = new FileResultViewModel { TotalRow = 2 },
-                DSTNetSalaryResult = new FileResultViewModel { TotalRow = 4 }
-            };
+            var expected = new UploadAttendanceAndSalaryViewModel();
+            var tuple = new Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>>(null, null, null);
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(expected);
+                .Returns(tuple);
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
             Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.AttendanceFileName, actual.AttendanceFileName);
+            Assert.Equal(expected.AttendanceResult, actual.AttendanceResult);
+            Assert.Equal(expected.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
+            Assert.Equal(expected.DSTNetSalaryResult, actual.DSTNetSalaryResult);
+        }
+
+        [Fact]
+        public async Task GetUploadingFilesResultAsync_AttendanceAndDSTSalaryFileNameAreNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        {
+            // Arrange
+            var paymentProcess = new PaymentProcess
+            {
+                CompanyId = 2,
+                Month = DateTime.Now,
+                CompanyCode = "DAR",
+                StartDate = DateTime.Today,
+                DueDate = DateTime.Today.AddDays(1)
+            };
+
+            var tuple = new Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>>(paymentProcess, null, null);
+            var companyId = 2;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(tuple);
+
+            // Act
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
+            Assert.Equal(paymentProcess.Month, actual.SelectedTime);
+            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
+            Assert.Equal(paymentProcess.StartDate, actual.StartDate);
+            Assert.Equal(paymentProcess.DueDate, actual.DueDate);
+            Assert.Null(actual.AttendanceFileName);
+            Assert.Null(actual.AttendanceResult);
+            Assert.Null(actual.DSTNetSalaryFileName);
+            Assert.Null(actual.DSTNetSalaryResult);
+        }
+
+        [Fact]
+        public async Task GetUploadingFilesResultAsync_AttendanceAndDSTSalaryFileNameAreNotNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        {
+            // Arrange
+            var paymentProcess = new PaymentProcess
+            {
+                CompanyId = 2,
+                Month = DateTime.Now,
+                CompanyCode = "DAR",
+                StartDate = DateTime.Today,
+                DueDate = DateTime.Today.AddDays(1),
+                AttendanceFileName = "attendanceFile.xlsx",
+                AttendanceTotalRow = 10,
+                DSTNetSalaryFileName = "salaryFile.xls",
+                DSTNetSalaryTotalRow = 12
+            };
+            var validationResults = MockListValidationResult();
+            var tuple = new Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>>(paymentProcess, validationResults, validationResults);
+            var companyId = 2;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(tuple);
+
+            // Act
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
+            Assert.Equal(paymentProcess.Month, actual.SelectedTime);
+            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
+            Assert.Equal(paymentProcess.StartDate, actual.StartDate);
+            Assert.Equal(paymentProcess.DueDate, actual.DueDate);
+            Assert.Equal(paymentProcess.AttendanceFileName, actual.AttendanceFileName);
+            Assert.Equal(paymentProcess.AttendanceTotalRow, actual.AttendanceResult.TotalRow);
+            Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
+            Assert.Equal(paymentProcess.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
+            Assert.Equal(paymentProcess.DSTNetSalaryTotalRow, actual.DSTNetSalaryResult.TotalRow);
+            Assert.Equal(validationResults, actual.DSTNetSalaryResult.ValidationErrors);
+        }
+
+        [Fact]
+        public async Task GetUploadingFilesResultAsync_AttendanceFileNameIsNullAndDSTSalaryFileNameIsNotNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        {
+            // Arrange
+            var paymentProcess = new PaymentProcess
+            {
+                CompanyId = 2,
+                Month = DateTime.Now,
+                CompanyCode = "DAR",
+                StartDate = DateTime.Today,
+                DueDate = DateTime.Today.AddDays(1),
+                DSTNetSalaryFileName = "salaryFile.xls",
+                DSTNetSalaryTotalRow = 12
+            };
+            var validationResults = MockListValidationResult();
+            var tuple = new Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>>(paymentProcess, null, validationResults);
+            var companyId = 2;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(tuple);
+
+            // Act
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
+            Assert.Equal(paymentProcess.Month, actual.SelectedTime);
+            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
+            Assert.Equal(paymentProcess.StartDate, actual.StartDate);
+            Assert.Equal(paymentProcess.DueDate, actual.DueDate);
+            Assert.Null(actual.AttendanceFileName);
+            Assert.Null(actual.AttendanceResult);
+            Assert.Equal(paymentProcess.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
+            Assert.Equal(paymentProcess.DSTNetSalaryTotalRow, actual.DSTNetSalaryResult.TotalRow);
+            Assert.Equal(validationResults, actual.DSTNetSalaryResult.ValidationErrors);
+        }
+
+        [Fact]
+        public async Task GetUploadingFilesResultAsync_AttendanceFileNameIsNotNullAndDSTSalaryFileNameIsNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        {
+            // Arrange
+            var paymentProcess = new PaymentProcess
+            {
+                CompanyId = 2,
+                Month = DateTime.Now,
+                CompanyCode = "DAR",
+                StartDate = DateTime.Today,
+                DueDate = DateTime.Today.AddDays(1),
+                AttendanceFileName = "attendanceFile.xlsx",
+                AttendanceTotalRow = 10,
+            };
+            var validationResults = MockListValidationResult();
+            var tuple = new Tuple<PaymentProcess,
+                    IEnumerable<ValidationResult>,
+                    IEnumerable<ValidationResult>>(paymentProcess, validationResults, null);
+            var companyId = 2;
+            var month = DateTime.Now;
+            var paymentProcessService = GetPaymentProcessService();
+            paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                .Returns(tuple);
+
+            // Act
+            var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+
+            // Assert
+            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
+            Assert.Equal(paymentProcess.Month, actual.SelectedTime);
+            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
+            Assert.Equal(paymentProcess.StartDate, actual.StartDate);
+            Assert.Equal(paymentProcess.DueDate, actual.DueDate);
+            Assert.Equal(paymentProcess.AttendanceFileName, actual.AttendanceFileName);
+            Assert.Equal(paymentProcess.AttendanceTotalRow, actual.AttendanceResult.TotalRow);
+            Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
+            Assert.Null(actual.DSTNetSalaryResult);
+            Assert.Null(actual.DSTNetSalaryFileName);
         }
 
         #endregion GetUploadingFilesResultAsync

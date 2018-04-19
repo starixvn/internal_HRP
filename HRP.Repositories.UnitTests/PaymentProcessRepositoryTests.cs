@@ -28,51 +28,7 @@
         #region GetUploadingFilesResultAsync
 
         [Fact]
-        public async Task GetUploadingFilesResultAsync_PaymentProcessIsNull_ReturnEmptyUploadAttendanceAndSalaryViewModel()
-        {
-            // Arrange
-            PaymentProcess paymentProcess = null;
-            var criteria = FakeCriteria();
-            var multiResult = FakeMultiResultReader();
-            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
-            multiResult.ReadFirstOrDefaultAsync<PaymentProcess>().Returns(paymentProcess);
-            var repository = new PaymentProcessRepository();
-
-            // Act
-            var actual = await repository.GetUploadingFilesResultAsync(criteria);
-
-            // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Null(actual.CompanyCode);
-            Assert.Null(actual.AttendanceFileName);
-            Assert.Null(actual.AttendanceResult);
-            Assert.Null(actual.DSTNetSalaryFileName);
-            Assert.Null(actual.DSTNetSalaryResult);
-        }
-
-        [Fact]
-        public async Task GetUploadingFilesResultAsync_AttendanceAndDSTSalaryFileNameAreNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
-        {
-            // Arrange
-            var paymentProcess = new PaymentProcess { CompanyCode = "DAR" };
-            var criteria = FakeCriteria();
-            var multiResult = FakeMultiResultReader();
-            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
-            multiResult.ReadFirstOrDefaultAsync<PaymentProcess>().Returns(paymentProcess);
-            var repository = new PaymentProcessRepository();
-
-            // Act
-            var actual = await repository.GetUploadingFilesResultAsync(criteria);
-
-            // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
-            Assert.Null(actual.AttendanceFileName);
-            Assert.Null(actual.DSTNetSalaryFileName);
-        }
-
-        [Fact]
-        public async Task GetUploadingFilesResultAsync_AttendanceAndDSTSalaryFileNameAreNotNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
+        public async Task GetUploadingFilesResultAsync_WhenCalled_ReturnExpectedTuple()
         {
             // Arrange
             var paymentProcess = MockPaymentProcess();
@@ -88,64 +44,10 @@
             var actual = await repository.GetUploadingFilesResultAsync(criteria);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
-            Assert.Equal(paymentProcess.AttendanceFileName, actual.AttendanceFileName);
-            Assert.Equal(paymentProcess.AttendanceTotalRow, actual.AttendanceResult.TotalRow);
-            Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
-            Assert.Equal(paymentProcess.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
-            Assert.Equal(paymentProcess.DSTNetSalaryTotalRow, actual.DSTNetSalaryResult.TotalRow);
-            Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
-        }
-
-        [Fact]
-        public async Task GetUploadingFilesResultAsync_AttendanceFileNameIsNullAndDSTSalaryFileNameIsNotNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
-        {
-            // Arrange
-            var paymentProcess = new PaymentProcess { DSTNetSalaryFileName = "dstsalary.xls", DSTNetSalaryTotalRow = 9 };
-            var criteria = FakeCriteria();
-            var multiResult = FakeMultiResultReader();
-            var validationResults = MockListValidationResult();
-            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
-            multiResult.ReadFirstOrDefaultAsync<PaymentProcess>().Returns(paymentProcess);
-            multiResult.ReadAsync<ValidationResult>().Returns(validationResults);
-            var repository = new PaymentProcessRepository();
-
-            // Act
-            var actual = await repository.GetUploadingFilesResultAsync(criteria);
-
-            // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Null(actual.AttendanceFileName);
-            Assert.Null(actual.AttendanceResult);
-            Assert.Equal(paymentProcess.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
-            Assert.Equal(paymentProcess.DSTNetSalaryTotalRow, actual.DSTNetSalaryResult.TotalRow);
-            Assert.Equal(validationResults, actual.DSTNetSalaryResult.ValidationErrors);
-        }
-
-        [Fact]
-        public async Task GetUploadingFilesResultAsync_AttendanceFileNameIsNotNullAndDSTSalaryFileNameIsNull_ReturnExpectedUploadAttendanceAndSalaryViewModel()
-        {
-            // Arrange
-            var paymentProcess = new PaymentProcess { AttendanceFileName = "attendance.xlsx", AttendanceTotalRow = 7 };
-            var criteria = FakeCriteria();
-            var multiResult = FakeMultiResultReader();
-            var validationResults = MockListValidationResult();
-            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
-            multiResult.ReadFirstOrDefaultAsync<PaymentProcess>().Returns(paymentProcess);
-            multiResult.ReadAsync<ValidationResult>().Returns(validationResults);
-            var repository = new PaymentProcessRepository();
-
-            // Act
-            var actual = await repository.GetUploadingFilesResultAsync(criteria);
-
-            // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
-            Assert.Null(actual.DSTNetSalaryResult);
-            Assert.Null(actual.DSTNetSalaryFileName);
-            Assert.Equal(paymentProcess.AttendanceFileName, actual.AttendanceFileName);
-            Assert.Equal(paymentProcess.AttendanceTotalRow, actual.AttendanceResult.TotalRow);
-            Assert.Equal(validationResults, actual.AttendanceResult.ValidationErrors);
+            Assert.IsType<Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>>(actual);
+            Assert.Equal(paymentProcess, actual.Item1);
+            Assert.Equal(validationResults, actual.Item2);
+            Assert.Equal(validationResults, actual.Item3);
         }
 
         #endregion GetUploadingFilesResultAsync

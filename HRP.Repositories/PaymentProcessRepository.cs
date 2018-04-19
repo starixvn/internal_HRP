@@ -1,5 +1,7 @@
 ﻿namespace HRP.Repositories
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
@@ -10,7 +12,7 @@
 
     public class PaymentProcessRepository : IPaymentProcessRepository
     {
-        public async Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria)
+        public async Task<Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>> GetUploadingFilesResultAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -20,38 +22,7 @@
                     var attendanceErrors = await multi.ReadAsync<ValidationResult>().ConfigureAwait(false);
                     var dstNetSalaryErrors = await multi.ReadAsync<ValidationResult>().ConfigureAwait(false);
 
-                    var result = new UploadAttendanceAndSalaryViewModel();
-
-                    if (paymentProcess != null)
-                    {
-                        result.CompanyId = paymentProcess.CompanyId;
-                        result.SelectedTime = paymentProcess.Month;
-                        result.CompanyCode = paymentProcess.CompanyCode;
-                        result.StartDate = paymentProcess.StartDate;
-                        result.DueDate = paymentProcess.DueDate;
-
-                        if (paymentProcess.AttendanceFileName != null)
-                        {
-                            result.AttendanceFileName = paymentProcess.AttendanceFileName;
-                            result.AttendanceResult = new FileResultViewModel
-                            {
-                                TotalRow = paymentProcess.AttendanceTotalRow,
-                                ValidationErrors = attendanceErrors
-                            };
-                        }
-
-                        if (paymentProcess.DSTNetSalaryFileName != null)
-                        {
-                            result.DSTNetSalaryFileName = paymentProcess.DSTNetSalaryFileName;
-                            result.DSTNetSalaryResult = new FileResultViewModel
-                            {
-                                TotalRow = paymentProcess.DSTNetSalaryTotalRow,
-                                ValidationErrors = dstNetSalaryErrors
-                            };
-                        }
-                    }
-
-                    return result;
+                    return new Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>(paymentProcess, attendanceErrors, dstNetSalaryErrors);
                 }
             }
         }

@@ -1,12 +1,14 @@
 ﻿namespace HRP.Repositories.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
     using HRP.Models.PaymentProcess;
 
     public interface IPaymentProcessRepository
     {
-        Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(ICriteria criteria);
+        Task<Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>> GetUploadingFilesResultAsync(ICriteria criteria);
 
         Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria);
     }
