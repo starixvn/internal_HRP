@@ -23,8 +23,6 @@
 
         public int? DirectBanking1AccountId { get; set; }
 
-        public int? DirectBanking1BankTypeId { get; set; }
-
         public string DirectBanking1AccountName { get; set; }
 
         public int? DirectBanking2CurrencyId { get; set; }
@@ -32,8 +30,6 @@
         public string DirectBanking2Amount { get; set; }
 
         public int? DirectBanking2AccountId { get; set; }
-
-        public int? DirectBanking2BankTypeId { get; set; }
 
         public string DirectBanking2AccountName { get; set; }
 

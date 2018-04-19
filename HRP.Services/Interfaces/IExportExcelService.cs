@@ -11,6 +11,8 @@
 
         Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel);
 
+        Stream ExportSalaryAllowanceReport(string templatePath, IEnumerable<DynamicReportModel> records);
+
         byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, BankInReport data);
     }
 }

@@ -146,5 +146,34 @@
                 return memory;
             }
         }
+
+        public Stream ExportSalaryAllowanceReport(string templatePath, IEnumerable<DynamicReportModel> records)
+        {
+            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
+            using (var package = new ExcelPackage())
+            {
+                ExcelWorksheet templateWorksheet = templatePackage.Workbook.Worksheets[1];
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Salary & Allowance Report");
+
+                // Write header
+                templateWorksheet.Cells[1, 1, 8, 46].Copy(worksheet.Cells[1, 1, 8, 46]);
+
+                // Write Data
+                var row = 9;
+                foreach (var record in records)
+                {
+                    templateWorksheet.Cells[9, 1, 9, 46].Copy(worksheet.Cells[row, 1, row, 46]);
+
+                    worksheet.Cells[row, 1].Value = record.FullName;
+                    worksheet.Cells[row, 2].Value = record.Nickname;
+                    row++;
+                }
+                var memory = new MemoryStream();
+                package.SaveAs(memory);
+                memory.Position = 0;
+
+                return memory;
+            }
+        }
     }
 }
