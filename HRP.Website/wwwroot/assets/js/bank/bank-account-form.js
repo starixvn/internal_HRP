@@ -6,56 +6,58 @@ var bankAccountForm = {
         bankAccountForm.removeBackdropOnModalHide();
         bankAccountForm.handleFormSuccessed();
         bankAccountForm.checkFormError();
-        bankAccountForm.mutationObserve();
         bankAccountForm.initPaymentTransactionSelect();
     },
 
     initPaymentTransactionSelect: function () {
         $(".bank-account-form").on("change",
             ".change-payment-transaction",
-            function() {
+            function () {
                 var ajaxUrl = $(".payment-transaction-select").data("url") +
                     "?bankTypeId=" +
                     $("#BankTypeId").val() +
                     "&employeeId=" +
-                    $("#EmployeeId").val() +
-                    "&isActive=" +
-                    $("#IsActive").is(":checked") +
-                    "&bankAccountId=" +
-                    $("#BankAccountId").val();
+                    $("#EmployeeId").val();
+                    //"&paymentTransactionId=" +
+                    //$("#PaymentTransactionId").val();
 
                 $.ajax({
                     url: ajaxUrl,
                     method: "get",
                     success: function (results) {
-                        var selectedItemIndex = -1;
-                        var isAllItemDisabled = true;
-                        for (var i = 0, l = results.length; i < l; i++) {
-                            if (results[i].selected === true) {
-                                selectedItemIndex = i;
-                            }
+                        //var selectedItemIndex = -1;
+                        //var isAllItemDisabled = true;
+                        //for (var i = 0, l = results.length; i < l; i++) {
+                        //    if (results[i].selected === true) {
+                        //        selectedItemIndex = i;
+                        //    }
 
-                            if (results[i].disabled === false) {
-                                // there is an item enabled
-                                isAllItemDisabled = false;
-                            }
-                        }
+                        //    if (results[i].disabled === false) {
+                        //        // there is an item enabled
+                        //        isAllItemDisabled = false;
+                        //    }
+                        //}
 
-                        if ($("#IsActive").is(":checked") === true && selectedItemIndex !== -1) {
-                            if (isAllItemDisabled === true) {
-                                // clear the selected value
-                                results[selectedItemIndex].selected = false;
-                            }
+                        //if ($("#IsActive").is(":checked") === true && selectedItemIndex !== -1) {
+                        //    if (isAllItemDisabled === true) {
+                        //        // clear the selected value
+                        //        results[selectedItemIndex].selected = false;
+                        //    }
 
-                            // Allow user to re-select the old value
-                            results[selectedItemIndex].disabled = false;
-                        }
+                        //    // Allow user to re-select the old value
+                        //    results[selectedItemIndex].disabled = false;
+                        //}
 
                         $(".payment-transaction-select").select2().empty();
                         $(".payment-transaction-select").select2({
                             width: "100%",
                             data: results
                         });
+
+                        var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
+                        if (selectedPaymentTransactionId !== "0") {
+                            $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
+                        }
                     }
                 });
             });
@@ -131,6 +133,7 @@ var bankAccountForm = {
 
     reinitValidation: function ($form) {
         $form.removeData("validator").removeData("unobtrusiveValidation");
+
         $.validator.unobtrusive.parse($form);
         $form.validate();
     },
@@ -215,37 +218,13 @@ var bankAccountForm = {
         }
     },
 
-    config: {
-        attributes: true,
-        childList: true
-    },
-
     waitTime: 5000,
 
     countTimeInSeconds: 5,
 
-    mutationObserve: function () {
-        var targetNode = $(".bank-account-form")[0];
-
-        // Callback function to execute when mutations are observed
-        var callback = function (mutationsList) {
-            mutationsList.forEach(function (object) {
-                if (object.type === "childList" || object.type === "attributes") {
-                    bankAccountForm.checkFormError();
-                }
-            });
-        };
-
-        // Create an observer instance linked to the callback function
-        var observer = new MutationObserver(callback);
-
-        // Start observing the target node for configured mutations
-        if (targetNode !== undefined) {
-            observer.observe(targetNode, bankAccountForm.config);
-        }
-    },
-
     checkFormError: function () {
+        console.log("custom check form for error");
+
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
             $(".bank-account-form .list-message-error").addClass("hidden");
@@ -270,6 +249,41 @@ var bankAccountForm = {
         $(".bank-account-form .button").attr("disabled", true).addClass("disabled");
     }
 };
+
+$.validator.setDefaults({
+    highlight: function (element, errorClass, validClass) {
+        if (element.type === "radio") {
+            this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+        } else {
+            $(element).addClass(errorClass).removeClass(validClass);
+        }
+
+        console.log("custom check form for error");
+
+        if ($(".bank-account-form").find(".field-validation-error").length === 0) {
+            // Valid
+            $(".bank-account-form .list-message-error").addClass("hidden");
+        } else {
+            $(".bank-account-form .list-message-error").removeClass("hidden");
+        }
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        if (element.type === "radio") {
+            this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+        } else {
+            $(element).removeClass(errorClass).addClass(validClass);
+        }
+
+        console.log("custom check form for error");
+
+        if ($(".bank-account-form").find(".field-validation-error").length === 0) {
+            // Valid
+            $(".bank-account-form .list-message-error").addClass("hidden");
+        } else {
+            $(".bank-account-form .list-message-error").removeClass("hidden");
+        }
+    }
+});
 
 $(document).ready(function () {
     bankAccountForm.init();

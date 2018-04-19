@@ -17,6 +17,7 @@
 
                     <div class="modal-body">
                         <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
+                        <input type="hidden" value="@Model.PaymentTransactionId" id="selected-payment-transaction-id" />
 
                         <div asp-validation-summary="ModelOnly"></div>
 
@@ -33,14 +34,14 @@
                         </div>
 
                         @if (Model.IsSuccessful)
-                        {
-                            <input type="hidden" asp-for="IsSuccessful" id="is-successful" />
-                            <div class="-has-icon msg-success">
-                                <span>@Message.CreateBankAccountSuccessedForModal</span>
-                                <span class="count-down-remaining">5</span>
-                                <span>@Message.CreateBankAccountSuccessedDimissTime</span>
-                            </div>
-                        }
+    {
+                    <input type="hidden" asp-for="IsSuccessful" id="is-successful" />
+                    <div class="-has-icon msg-success">
+                        <span>@Message.CreateBankAccountSuccessedForModal</span>
+                        <span class="count-down-remaining">5</span>
+                        <span>@Message.CreateBankAccountSuccessedDimissTime</span>
+                    </div>
+}
 
                         <div class="layout-two-col">
                             <div>
