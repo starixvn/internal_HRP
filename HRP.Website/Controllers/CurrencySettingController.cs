@@ -48,7 +48,7 @@
                 MinMonth = configuration.Value.LaunchMonth,
                 CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria),
                 Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetCurrencyCodesForSettingCriteria { Month = date }),
-                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && date.Month == DateTime.Today.Month
+                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && date.Month == DateTime.Today.Month && date.Year == DateTime.Today.Year
             };
 
             return View(viewModel);
