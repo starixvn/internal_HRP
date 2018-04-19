@@ -1,8 +1,10 @@
 ﻿namespace HRP.Website.Controllers
 {
     using Core.Services;
+    using HRP.Core.Filters;
     using Microsoft.AspNetCore.Mvc;
 
+    [ServiceFilter(typeof(HRPActionFilterAttribute))]
     public class BaseController : Controller
     {
         protected readonly IBaseService baseService;
