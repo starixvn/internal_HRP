@@ -5,6 +5,7 @@
     using System.Security.Cryptography.X509Certificates;
     using HRP.Core.Constants;
     using HRP.Core.Criteria;
+    using HRP.Core.CustomException;
     using HRP.Core.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Caching.Memory;
@@ -99,15 +100,15 @@
         public bool IsCorrectPasswordAccessTheCertificate(string password)
         {
             X509Certificate2 cert = null;
+            string filePath = GetCertificateFilePath();
 
             try
             {
-                string filePath = GetCertificateFilePath();
                 cert = new X509Certificate2(filePath, password);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw new CertificatePasswordException(filePath + "\n" + password + "\n" + ex.Message);
             }
 
             return cert != null;
