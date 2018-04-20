@@ -33,6 +33,11 @@
             this.exportExcelService = exportExcelService;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> BankIn()
         {

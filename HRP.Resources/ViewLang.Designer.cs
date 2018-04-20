@@ -2572,6 +2572,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type of Payment.
+        /// </summary>
+        public static string TypeOfPayment {
+            get {
+                return ResourceManager.GetString("TypeOfPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit Amount.
         /// </summary>
         public static string UnitAmount {

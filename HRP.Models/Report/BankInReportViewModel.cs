@@ -15,5 +15,8 @@
         [Display(Name = nameof(ViewLang.MonthYear), ResourceType = typeof(ViewLang))]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime SelectedTime { get; set; }
+
+        [Display(Name = nameof(ViewLang.TypeOfPayment), ResourceType = typeof(ViewLang))]
+        public PaymentType TypeOfPayment { get; set; }
     }
 }

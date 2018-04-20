@@ -1032,4 +1032,7 @@
   <data name="DirectBanking" xml:space="preserve">
     <value>Direct Banking</value>
   </data>
+  <data name="TypeOfPayment" xml:space="preserve">
+    <value>Type of Payment</value>
+  </data>
 </root>
