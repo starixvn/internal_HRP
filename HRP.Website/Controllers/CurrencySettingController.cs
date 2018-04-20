@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Filters;
@@ -17,7 +16,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
-    [HRPAuthorize]
     public class CurrencySettingController : BaseController
     {
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
@@ -63,7 +61,7 @@
                 ExchangeRateMonth = selectedTime,
                 UpdatedBy = sessionService.UserId
             };
-           
+
             var result = await baseService.ExecuteNonQueryAsync(criteria);
             return Json(result);
         }

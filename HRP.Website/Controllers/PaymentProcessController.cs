@@ -23,7 +23,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    [HRPAuthorize]
     public class PaymentProcessController : BaseController
     {
         private readonly IHostingEnvironment hostingEnvironment;

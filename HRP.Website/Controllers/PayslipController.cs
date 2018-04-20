@@ -15,7 +15,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    [HRPAuthorize]
     public class PayslipController : BaseController
     {
         private readonly IPayslipService payslipService;

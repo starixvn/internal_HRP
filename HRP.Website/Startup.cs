@@ -32,6 +32,7 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ////string encryptedPassword = Cryptography.EncryptPasswordOfConnectionString("Data Source=10.18.200.114;Initial Catalog=bodb_HRP;User Id=internalteam;Password=@357$abc^FFZ%");
             Dictionary<string, string> connections = Configuration
                 .GetSection("ConnectionStrings")
                 .GetChildren()

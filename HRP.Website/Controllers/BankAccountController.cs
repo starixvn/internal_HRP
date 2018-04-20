@@ -14,7 +14,6 @@
     using Models.BankAccount;
     using Services;
 
-    [HRPAuthorize]
     public class BankAccountController : BaseController
     {
         private readonly IBankAccountService bankAccountService;

@@ -8,14 +8,13 @@
     using Core.Filters;
     using Core.Services;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Report;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
-    using Services.Interfaces;
+    using Models.Report;
     using Services;
+    using Services.Interfaces;
 
-    [HRPAuthorize]
     public class ReportController : BaseController
     {
         private readonly IReportService reportService;

@@ -5,7 +5,6 @@ namespace HRP.Website.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BCrypt.Net;
-    using Core.Constants;
     using Core.Enumerations;
     using Core.Filters;
     using Core.Model;

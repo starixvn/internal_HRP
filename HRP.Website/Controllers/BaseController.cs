@@ -4,6 +4,7 @@
     using HRP.Core.Filters;
     using Microsoft.AspNetCore.Mvc;
 
+    [HRPAuthorize]
     [ServiceFilter(typeof(HRPActionFilterAttribute))]
     public class BaseController : Controller
     {

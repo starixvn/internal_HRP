@@ -20,7 +20,6 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
 
-    [HRPAuthorize]
     public class DataConfigurationController : BaseController
     {
         private readonly IDataConfigurationService dataConfigurationService;

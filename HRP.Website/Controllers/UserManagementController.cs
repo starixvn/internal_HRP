@@ -17,7 +17,6 @@
     using Models.UserPermisson;
     using Services;
 
-    [HRPAuthorize]
     public class UserManagementController : BaseController
     {
         private readonly IFunctionService functionService;
@@ -144,7 +143,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && !viewModel.IsSystemAdmin;
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && (!viewModel.IsSystemAdmin || sessionService.IsSystemAdmin);
 
             return View(viewModel);
         }

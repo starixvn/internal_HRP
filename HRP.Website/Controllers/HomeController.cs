@@ -1,10 +1,8 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using Core.Filters;
     using HRP.Core.Services;
     using Microsoft.AspNetCore.Mvc;
 
-    [HRPAuthorize]
     public class HomeController : BaseController
     {
         public HomeController(

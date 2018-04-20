@@ -18,7 +18,6 @@
     using Resources;
     using Services;
 
-    [HRPAuthorize]
     public class EmployeeController : BaseController
     {
         private readonly IEmployeeService employeeService;
@@ -361,7 +360,7 @@
             var result = await baseService.GetDataAsync<int>(new CheckEmployeePayrollChangedInMonthCriteria { Month = month, EmployeeId = employeeId });
             return Json(result.Any());
         }
-        
+
         private IEnumerable<MultiSelectViewModel> GetHierarchyCompanies(IEnumerable<CompanyTree> companyTrees, string departmentIds)
         {
             var divisions = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Divison);
