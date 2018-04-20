@@ -9,8 +9,8 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
+    using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Mvc;
-    using Models;
     using Models.BankAccount;
     using Services;
 
@@ -43,9 +43,9 @@
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
-            Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
+            EmployeeBasicInfo employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
             viewModel.CompanyId = employee.CompanyId;
-            viewModel.EmployeeName = employee.NickName;
+            viewModel.EmployeeName = employee.Nickname;
 
             viewModel.BankTypeResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
             viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
@@ -209,9 +209,9 @@
 
         private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel)
         {
-            Employee employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
+            EmployeeBasicInfo employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
 
-            viewModel.NickName = employee.NickName;
+            viewModel.NickName = employee.Nickname;
 
             if (viewModel.BankTypeId == default(int))
             {

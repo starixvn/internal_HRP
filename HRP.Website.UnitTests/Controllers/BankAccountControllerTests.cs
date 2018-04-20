@@ -8,9 +8,9 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
+    using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Models;
     using Models.BankAccount;
     using NSubstitute;
     using Services;
@@ -37,12 +37,11 @@
                 CompanyId = 1,
                 IsActive = null,
                 BankTypeId = null,
-
             };
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
             refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
@@ -61,7 +60,7 @@
             ////Assert.True(viewModelResult.BankAccountsLimitReached);
             Assert.IsType<SelectList>(viewModelResult.BankTypes);
             Assert.NotNull(viewModelResult.BankAccounts);
-            Assert.Equal(employee.NickName, viewModelResult.EmployeeName);
+            Assert.Equal(employee.Nickname, viewModelResult.EmployeeName);
         }
 
         #region Create Bank Account in Payroll
@@ -73,10 +72,10 @@
             var controller = GetBankAccountController();
             var resources = GetResources();
 
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
 
             ArrangeForCreateBankAccount(employee, resources);
@@ -97,10 +96,10 @@
             var controller = GetBankAccountController();
             var resources = GetResources();
 
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
 
             var viewModel = new CreateBankAccountViewModel();
@@ -123,10 +122,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             var result = new CommandResult
             {
@@ -151,10 +150,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             var result = new CommandResult
             {
@@ -183,10 +182,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             ArrangeForCreateBankAccount(employee, resources);
 
@@ -197,7 +196,7 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
             Assert.True(model.HaveHostPermission);
-            Assert.Equal(employee.NickName, model.NickName);
+            Assert.Equal(employee.Nickname, model.NickName);
         }
 
         [Fact]
@@ -206,10 +205,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             var viewModel = new CreateBankAccountViewModel();
             ArrangeForCreateBankAccount(employee, resources);
@@ -230,10 +229,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             var result = new CommandResult
             {
@@ -258,10 +257,10 @@
             // Arrange
             var controller = GetBankAccountController();
             var resources = GetResources();
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
-                NickName = "hunter.tran"
+                Nickname = "hunter.tran"
             };
             var result = new CommandResult
             {
@@ -398,7 +397,7 @@
 
         #region Helpers
 
-        private void ArrangeForCreateBankAccount(Employee employee, IEnumerable<ReferenceResourceModel> resources)
+        private void ArrangeForCreateBankAccount(EmployeeBasicInfo employee, IEnumerable<ReferenceResourceModel> resources)
         {
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
 

@@ -29,14 +29,14 @@
         public async Task GetEmployeeBasicInfoByIdAsync_WhenCalled_ReturnAsExpectedEmployee()
         {
             // Arrange
-            var employee = new Employee
+            var employee = new EmployeeBasicInfo
             {
                 EmployeeId = 1,
                 EmployeeCode = "111",
                 FullName = "trinh dang thang"
             };
             var employeeService = GetEmployeeService();
-            baseService.GetDataEntityAsync<Employee>(Arg.Any<GetEmployeeBasicInfoByIdCriteria>()).Returns(employee);
+            baseService.GetDataEntityAsync<EmployeeBasicInfo>(Arg.Any<GetEmployeeBasicInfoByIdCriteria>()).Returns(employee);
 
             // Act
             var actual = await employeeService.GetEmployeeBasicInfoByIdAsync(1);

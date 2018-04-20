@@ -39,14 +39,14 @@
             this.employeeRepository = employeeRepository ?? new EmployeeRepository();
         }
 
-        public async Task<Employee> GetEmployeeBasicInfoByIdAsync(int employeeId)
+        public async Task<EmployeeBasicInfo> GetEmployeeBasicInfoByIdAsync(int employeeId)
         {
             var criteria = new GetEmployeeBasicInfoByIdCriteria
             {
                 EmployeeId = employeeId
             };
 
-            return await baseService.GetDataEntityAsync<Employee>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<EmployeeBasicInfo>(criteria).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel)
