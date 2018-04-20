@@ -1,7 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System.IO;
-    using System.IO.Compression;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Filters;
@@ -17,15 +15,18 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
+        private readonly IZipFileWrapper zipFileWrapper;
         private readonly ICertificateService certificateService;
 
         public CertificateController(
             ISessionService sessionService,
             IBaseService baseService,
+            IZipFileWrapper zipFileWrapper,
             ICertificateService certificateService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
+            this.zipFileWrapper = zipFileWrapper;
             this.certificateService = certificateService;
         }
 
@@ -103,6 +104,35 @@
             return View(viewModel);
         }
 
+        [HttpPost]
+        public IActionResult ChangePassword(ChangeCertificatePasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.OldPassword))
+                {
+                    CommandResult commandResult = certificateService.ChangePasswordAccessTheCertificate(viewModel.OldPassword, viewModel.Password);
+
+                    if (commandResult.IsSuccessful)
+                    {
+                        viewModel.IsIsSuccessful = commandResult.IsSuccessful;
+                        certificateService.CachePasswordAccessTheCertificate(viewModel.Password);
+                    }
+                    else
+                    {
+                        viewModel.IsIsSuccessful = commandResult.IsSuccessful;
+                        viewModel.MessageResult = commandResult.Message;
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(nameof(viewModel.Password), Message.PasswordNotMatch);
+                }
+            }
+
+            return View(viewModel);
+        }
+
         public IActionResult FileNotFound()
         {
             ViewData["IsSystemAdmin"] = sessionService.IsSystemAdmin;
@@ -113,15 +143,7 @@
         {
             string filePath = certificateService.GetCertificateFilePath();
 
-            using (var ms = new MemoryStream())
-            {
-                using (var archive = new ZipArchive(ms, ZipArchiveMode.Create, true))
-                {
-                    archive.CreateEntryFromFile(filePath, "HRP.pfx", CompressionLevel.Fastest);
-                }
-
-                return File(ms.ToArray(), MimeType.ZIP, "HRP.zip");
-            }
+            return File(zipFileWrapper.CopyFileToByteArray(filePath, "HRP.pfx"), MimeType.ZIP, "HRP.zip");
         }
 
         private async Task UpdateIsGeneratedCertificate()
