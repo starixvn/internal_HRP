@@ -24,14 +24,6 @@
 
         public string NRICNo { get; set; }
 
-        public string PassportNo { get; set; }
-
-        public DateTime DateIssue { get; set; }
-
-        public DateTime ExpiredDate { get; set; }
-
-        public string PlaceOfIssue { get; set; }
-
         public string OverseasPhoneNo { get; set; }
 
         public string LocalPhoneNo { get; set; }
@@ -39,6 +31,14 @@
         public string OtherPhoneNo { get; set; }
 
         public string Skype { get; set; }
+
+        public string PassportNo { get; set; }
+
+        public DateTime DateIssue { get; set; }
+
+        public DateTime ExpiredDate { get; set; }
+
+        public string PlaceOfIssue { get; set; }
 
         public string PersonalEmail { get; set; }
 
