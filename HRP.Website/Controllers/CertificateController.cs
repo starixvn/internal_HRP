@@ -93,6 +93,16 @@
             return View(viewModel);
         }
 
+        public IActionResult ChangePassword()
+        {
+            var viewModel = new ChangeCertificatePasswordViewModel
+            {
+                IsSystemAdmin = sessionService.IsSystemAdmin
+            };
+
+            return View(viewModel);
+        }
+
         public IActionResult FileNotFound()
         {
             ViewData["IsSystemAdmin"] = sessionService.IsSystemAdmin;

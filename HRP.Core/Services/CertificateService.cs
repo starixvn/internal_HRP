@@ -2,10 +2,10 @@
 {
     using System;
     using System.IO;
+    using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using HRP.Core.Constants;
     using HRP.Core.Criteria;
-    using HRP.Core.CustomException;
     using HRP.Core.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Caching.Memory;
@@ -70,7 +70,7 @@
                 string filePath = GetCertificateFilePath();
                 File.WriteAllBytes(filePath, certData);
             }
-            catch (Exception ex)
+            catch (CryptographicException ex)
             {
                 commandResult.Code = 1;
                 commandResult.Message = ex.Message;
@@ -100,15 +100,15 @@
         public bool IsCorrectPasswordAccessTheCertificate(string password)
         {
             X509Certificate2 cert = null;
-            string filePath = GetCertificateFilePath();
 
             try
             {
+                string filePath = GetCertificateFilePath();
                 cert = new X509Certificate2(filePath, password);
             }
-            catch (Exception ex)
+            catch
             {
-                throw new CertificatePasswordException(filePath + "\n" + password + "\n" + ex.Message);
+                return false;
             }
 
             return cert != null;
@@ -118,7 +118,7 @@
         {
             var cacheExpirationOptions = new MemoryCacheEntryOptions
             {
-                AbsoluteExpiration = DateTime.Now.AddMinutes(1),
+                AbsoluteExpiration = DateTime.Now.AddHours(1),
                 Priority = CacheItemPriority.Normal
             };
             memoryCache.Set(CacheKeys.PasswordAccessTheCertificate, password, cacheExpirationOptions);
@@ -137,7 +137,7 @@
                 var cert = new X509Certificate2(filePath, oldPassword, X509KeyStorageFlags.Exportable);
                 File.WriteAllBytes(filePath, cert.Export(X509ContentType.Pfx, password));
             }
-            catch (Exception ex)
+            catch (CryptographicException ex)
             {
                 commandResult.Code = 1;
                 commandResult.Message = ex.Message;

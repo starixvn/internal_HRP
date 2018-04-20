@@ -99,9 +99,12 @@ namespace HRP.Core.Services
 
                 return new X509Certificate2(filePath, password, flags);
             }
-            catch (Exception ex)
+            catch (CryptographicException ex)
             {
-                throw new CertificatePasswordException(ex.Message);
+                throw new CertificatePasswordException(
+                    ex.Message + Environment.NewLine + ex.Source
+                    + Environment.NewLine + ex.TargetSite
+                    + Environment.NewLine + ex.StackTrace);
             }
         }
     }
