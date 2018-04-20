@@ -26,26 +26,24 @@
         var $currency = $('#BasicSalary_CurrencyId');
         var oldCurrency = $('#BasicSalary_OldCurrencyId').val();
 
-        return (oldSalary !== '' && (Number($basicSalary.val()) !== Number(oldSalary) || oldElementValue !== '')) || (oldCurrency !== '' && ($currency.val() !== oldCurrency || oldElementValue !== '' ));
+        return (oldSalary !== '' && (Number($basicSalary.val()) !== Number(oldSalary) || oldElementValue !== '')) || (oldCurrency !== '' && ($currency.val() !== oldCurrency || oldElementValue !== ''));
     }
 
     function calculateBasicSalary() {
         var totalAmountCurrency = $('#BasicSalary_CurrencyId').val();
         var $basicSalary = $('#BasicSalary_Salary');
 
-        if (totalAmountCurrency === '' || isNaN($basicSalary.val()))
-            return;
-
-        var totalAmount = new BigNumber(Number($basicSalary.val()));
-
-        if ($basicSalary.val() !== '')
-            $basicSalary.val(totalAmount.toString());
-
         var selectedAutoCalculate = $('input[name="BasicSalary.AutoCalculateOn"]:checked');
         var parent = selectedAutoCalculate.closest('.group-complex');
         var autoCalculateCurrency = $('select.basic-salary-calculate', parent).val();
-        if (autoCalculateCurrency === '')
+        var $autoCalculatedElement = $('input.basic-salary-calculate[type="text"]', parent);
+
+        if (totalAmountCurrency === '' || $basicSalary.val() === '' || autoCalculateCurrency === '') {
+            $autoCalculatedElement.val('');
             return;
+        }  
+
+        var totalAmount = new BigNumber(Number($basicSalary.val()));
 
         $('input[name="BasicSalary.AutoCalculateOn"]:not(:checked)').each(function (i, e) {
             var parent = $(e).closest('.group-complex');
@@ -61,7 +59,6 @@
         });
 
         totalAmount = totalAmount.mul(Number($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val())).roundWithCurrency(0, autoCalculateCurrency);
-        var $autoCalculatedElement = $('input.basic-salary-calculate[type="text"]', parent);
         $autoCalculatedElement.val(totalAmount.toString());
 
         if ($('#payroll-form').data('validator')) {
@@ -73,20 +70,21 @@
         var totalAmountCurrency = $('#Allowance_CurrencyId').val();
         var totalAmount = new BigNumber(Number($('#allowance-total-amount').val()));
 
-        if (totalAmountCurrency === '')
-            return;
-
         var selectedAutoCalculate = $('input[name="Allowance.AutoCalculateOn"]:checked');
         var parent = selectedAutoCalculate.closest('.group-complex');
         var autoCalculateCurrency = $('select.allowance-calculate', parent).val();
-        if (autoCalculateCurrency === '')
+        var $autoCalculatedElement = $('input.allowance-calculate', parent);
+
+        if (autoCalculateCurrency === '' || totalAmountCurrency === '') {
+            $autoCalculatedElement.val('');
             return;
+        }
 
         $('input[name="Allowance.AutoCalculateOn"]:not(:checked)').each(function (i, e) {
             var parent = $(e).closest('.group-complex');
             var currency = $('select.allowance-calculate', parent).val();
             if (currency !== '') {
-                var $element = $('input.allowance-calculate[type="text"]', parent);
+                var $element = $('input.allowance-calculate', parent);
                 if ($element.val() !== '' && !isNaN($element.val())) {
                     var amount = new BigNumber($element.val());
                     var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + totalAmountCurrency + '"]').val());
@@ -97,7 +95,6 @@
 
         totalAmount = totalAmount.mul($('input[data-from-currency="' + totalAmountCurrency + '"][data-to-currency="' + autoCalculateCurrency + '"]').val()).roundWithCurrency(0, autoCalculateCurrency);
 
-        var $autoCalculatedElement = $('input.allowance-calculate[type="text"]', parent);
         $autoCalculatedElement.val(totalAmount.toString());
         if ($('#payroll-form').data('validator')) {
             $autoCalculatedElement.valid();
@@ -146,6 +143,7 @@
         if (allowanceCurrency === '') {
             $('#allowance-total-amount').val('');
             $('.allowance-convert-amount').val('');
+            $('input.allowance-calculate[readonly]').val('');
             return;
         }
 
@@ -226,7 +224,7 @@
             removeMaskOnSubmit: true
         });
 
-        $('input.basic-salary-calculate, input.allowance-calculate, #allowance-total-amount').inputmask({
+        $('input.basic-salary-calculate, input.allowance-calculate, #allowance-total-amount, #BasicSalary_Salary').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 0,
@@ -336,7 +334,8 @@
 
         var classNames = ['basic-salary-ebanking', 'basic-salary-directbanking1', 'basic-salary-directbanking2',
             'basic-salary-cash', 'allowance-directbanking1', 'allowance-directbanking2', 'allowance-cash',
-            'subsistence', 'home-passage', 'housing', 'mobile-phone', 'hpi', 'duty-meal', 'secondment', 'others'];
+            'subsistence', 'home-passage', 'housing', 'mobile-phone', 'hpi', 'duty-meal', 'secondment', 'others',
+            'rooming-charges', 'fitness-first'];
 
         classNames.forEach(function (className) {
             $.validator.addClassRules(className, {
@@ -393,17 +392,29 @@
                 },
                 'BasicSalary.Salary': {
                     required: function (element) {
-                        return $('#BasicSalary_CurrencyId').val() !== ''
+                        settingValues = $('.basic-salary-calculate, #BasicSalary_CurrencyId').map(function (i, element) {
+                            if (element.value !== '') {
+                                return element.value
+                            }
+                        });
+
+                        return settingValues.length > 0;
                     }
                 },
                 'BasicSalary.CurrencyId': {
                     required: function (element) {
-                        return $('#BasicSalary_Salary').val() !== ''
+                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary').map(function (i, element) {
+                            if (element.value !== '') {
+                                return element.value
+                            }
+                        });
+
+                        return settingValues.length > 0;
                     }
                 },
                 'Allowance.CurrencyId': {
                     required: function (element) {
-                        var allowanceDetailValues = $('.allowance-detail-calculate').map(function (i, element) {
+                        var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value
                             }
@@ -414,7 +425,7 @@
                 },
                 'AllowanceTotal': {
                     required: function (element) {
-                        var allowanceDetailValues = $('.allowance-detail-calculate').map(function (i, element) {
+                        var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value
                             }
@@ -458,16 +469,36 @@
             }
         });
 
+        $('#BasicSalary_Salary, #BasicSalary_CurrencyId').on('change', function (e) {
+            roundingAmount(e.target, 0);
+            validatedInvalidRelatedElements(e.target);
+            calculateBasicSalary();
+        });
+
         $('.basic-salary-calculate').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
             calculateBasicSalary();
+
+            $('#BasicSalary_Salary, #BasicSalary_CurrencyId').each(function (i, element) {
+                var $element = $(element);
+                if ($element.hasClass('input-validation-error')) {
+                    $element.valid();
+                }
+            });
         });
 
         $('.allowance-calculate').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
             calculateAmountForBanks();
+
+            $('#allowance-total-amount, #Allowance_CurrencyId').each(function (i, element) {
+                var $element = $(element);
+                if ($element.hasClass('input-validation-error')) {
+                    $element.valid();
+                }
+            });
         });
 
         $('.allowance-detail-calculate').on('change', function (e) {
@@ -484,7 +515,7 @@
                 $totalAmountCurrency.valid();
             }
 
-            var allowanceCurrency = $('#Allowance_CurrencyId').val();
+            var allowanceCurrency = $totalAmountCurrency.val();
             if (allowanceCurrency === '') {
                 return;
             }
@@ -494,6 +525,7 @@
         });
 
         $('.deduction-calculate').on('change', function (e) {
+            validatedInvalidRelatedElements(e.target);
             roundingAmount(e.target, 2);
         });
 
