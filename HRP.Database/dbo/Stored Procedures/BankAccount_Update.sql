@@ -35,20 +35,21 @@ BEGIN
 		,@endRun DATETIME
 		,@duration INT
 
-	--IF EXISTS (
-	--		SELECT 1
-	--		FROM [dbo].[BankAccount] WITH (NOLOCK)
-	--		WHERE [PaymentTransactionId] = @PaymentTransactionId
-	--			AND [EmployeeId] = @EmployeeId
-	--			AND [BankType] = @BankType
-	--			AND [Id] <> @Id
-	--		)
-	--BEGIN
-	--	SET @ErrCode = 1
-	--	SET @ErrMsg = N'Account Name already exists. Please enter another value.'
+	IF EXISTS (
+			SELECT 1
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
+			WHERE [PaymentTransactionId] = @PaymentTransactionId
+				AND [EmployeeId] = @EmployeeId
+				AND [BankType] = @BankType
+				AND [IsActive] = @IsActive
+				AND [Id] <> @Id
+			)
+	BEGIN
+		SET @ErrCode = 1
+		SET @ErrMsg = N'Payment Transaction already exists. Please choose another value.'
 
-	--	RETURN
-	--END
+		RETURN
+	END
 
 	IF EXISTS (
 			SELECT 1

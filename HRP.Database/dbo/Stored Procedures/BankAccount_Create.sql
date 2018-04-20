@@ -41,10 +41,11 @@ BEGIN
 			WHERE [PaymentTransactionId] = @PaymentTransactionId
 				AND [EmployeeId] = @EmployeeId
 				AND [BankType] = @BankType
+				AND [IsActive] = @IsActive
 			)
 	BEGIN
 		SET @ErrCode = 1
-		SET @ErrMsg = N'Payment Transaction already exists. Please enter another value.'
+		SET @ErrMsg = N'Payment Transaction already exists. Please choose another value.'
 
 		RETURN
 	END
