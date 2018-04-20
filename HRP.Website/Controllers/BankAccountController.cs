@@ -215,9 +215,8 @@
 
             if (viewModel.BankTypeId == default(int))
             {
-                // 1: e-Banking: Branch and Address are required.
-                // 2: Direct Banking: Branch and Address are NOT required.
-                viewModel.BankTypeId = 1;
+                // Default: Ebanking
+                viewModel.BankTypeId = (int)BankTypes.Ebanking;
             }
 
             IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
