@@ -8,42 +8,9 @@ namespace HRP.Repositories
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class EmployeeRepository : IEmployeeRepository
     {
-        public CreateEmployeeViewModel GetPersonalDetails(ICriteria criteria)
-        {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                using (IMultiResultReader multi = db.QueryMultiple(criteria))
-                {
-                    var employee = multi.ReadFirstOrDefault<CreateEmployeeViewModel>();
-
-                    if (employee != null && employee.EmployeeId > 0)
-                    {
-                        var emergencyContact = multi.ReadFirstOrDefault<EmergencyContact>();
-                        var genderList = multi.Read<ReferenceResourceModel>();
-                        var nationalityList = multi.Read<ReferenceResourceModel>();
-                        var maritalStatusList = multi.Read<ReferenceResourceModel>();
-                        var noOfChildrenList = multi.Read<ReferenceResourceModel>();
-
-                        employee.EmergencyContact = emergencyContact;
-                        employee.GenderList = GetSelectList(genderList);
-                        employee.NationalityList = GetSelectList(nationalityList);
-                        employee.MaritalStatusList = GetSelectList(maritalStatusList);
-                        employee.NoOfChildrenList = GetSelectList(noOfChildrenList);
-
-                        return employee;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-
         public CreateEmploymentViewModel GetDataToCreateEmployment(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
@@ -130,11 +97,6 @@ namespace HRP.Repositories
         private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {
             return refResources.Where(x => x.RefName == refName);
-        }
-
-        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
-        {
-            return new SelectList(refResource, "ResourceId", "Value");
         }
     }
 }

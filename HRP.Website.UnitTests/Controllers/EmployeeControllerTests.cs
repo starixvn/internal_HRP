@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -14,6 +15,7 @@
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Routing;
     using Models.EmployeeManagement.Payroll;
     using NSubstitute;
@@ -149,22 +151,43 @@
 
         #region CreateEmployee
 
-        //[Fact]
-        //public async Task CreateEmployee_CheckViewResult_ReturnAsExpected()
-        //{
-        //    // Arrange
-        //    var viewName = "CreateEmployee";
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.GetDataToCreateEmployeeAsync().Returns(new CreateEmployeeViewModel());
+        [Fact]
+        public async Task CreateEmployee_CheckViewResult_ReturnExpectedCreateEmployeeViewModel()
+        {
+            // Arrange
+            var tuple = new Tuple<SelectList, SelectList, SelectList, SelectList>(
+                    new SelectList(new List<string> { "item1" }, "val1", "text1"),
+                    new SelectList(new List<string> { "item2" }, "val2", "text2"),
+                    new SelectList(new List<string> { "item3" }, "val3", "text3"),
+                    new SelectList(new List<string> { "item4" }, "val4", "text4")
+                );
 
-        //    // Act
-        //    var actual = await employeeController.CreateEmployee();
+            var employeeController = GetEmployeeController();
+            employeeService.GetDataToCreateEmployeeAsync().Returns(tuple);
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<ViewResult>(actual);
-        //    Assert.IsAssignableFrom<CreateEmployeeViewModel>(viewResult.Model);
-        //    Assert.Equal(viewName, viewResult.ViewName);
-        //}
+            // Act
+            var actual = await employeeController.CreateEmployee();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsType<CreateEmployeeViewModel>(viewResult.Model);
+            Assert.Equal("CreateEmployee", viewResult.ViewName);
+            Assert.Equal(tuple.Item1.Items, viewModel.GenderList.Items);
+            Assert.Equal(tuple.Item1.DataTextField, viewModel.GenderList.DataTextField);
+            Assert.Equal(tuple.Item1.DataValueField, viewModel.GenderList.DataValueField);
+
+            Assert.Equal(tuple.Item2.Items, viewModel.NationalityList.Items);
+            Assert.Equal(tuple.Item2.DataTextField, viewModel.NationalityList.DataTextField);
+            Assert.Equal(tuple.Item2.DataValueField, viewModel.NationalityList.DataValueField);
+
+            Assert.Equal(tuple.Item3.Items, viewModel.MaritalStatusList.Items);
+            Assert.Equal(tuple.Item3.DataTextField, viewModel.MaritalStatusList.DataTextField);
+            Assert.Equal(tuple.Item3.DataValueField, viewModel.MaritalStatusList.DataValueField);
+
+            Assert.Equal(tuple.Item4.Items, viewModel.NoOfChildrenList.Items);
+            Assert.Equal(tuple.Item4.DataTextField, viewModel.NoOfChildrenList.DataTextField);
+            Assert.Equal(tuple.Item4.DataValueField, viewModel.NoOfChildrenList.DataValueField);
+        }
 
         [Fact]
         public void CreatePersonalDetails_InvalidProfilePicture_ReturnExpectedErrors()
@@ -230,113 +253,154 @@
 
         #endregion CreateEmployee
 
-        //#region UpdateEmployee
+        #region UpdateEmployee
 
-        //[Fact]
-        //public void UpdateEmployee_WhenViewModelIsNull_ReturnRedirectToPageNotFound()
-        //{
-        //    // Arrange
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.GetPersonalDetailsAsync(Arg.Any<int>()).Returns(x => null);
+        [Fact]
+        public async Task UpdateEmployee_WhenEmployeeIsNull_ReturnRedirectToPageNotFound()
+        {
+            // Arrange
+            var id = 12;
+            Employee employee = null;
+            var employeeController = GetEmployeeController();
+            employeeService.GetEmployeeByIdAsync(Arg.Is<int>(x => x == id)).Returns(employee);
 
-        //    // Act
-        //    var result = employeeController.UpdateEmployeeAsync(0);
+            // Act
+            var result = await employeeController.UpdateEmployee(id);
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<RedirectToActionResult>(result);
-        //    Assert.Equal("Error", viewResult.ControllerName);
-        //    Assert.Equal("PageNotFound", viewResult.ActionName);
-        //}
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
 
-        //[Fact]
-        //public void UpdateEmployee_WhenViewModelHasValue_ReturnViewResultWithCreateEmployeeViewModel()
-        //{
-        //    // Arrange
-        //    var expected = new CreateEmployeeViewModel();
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.GetPersonalDetailsAsync(Arg.Any<int>()).Returns(expected);
+        [Fact]
+        public async Task UpdateEmployee_WhenEmployeeNotNull_ReturnViewResultWithCreateEmployeeViewModel()
+        {
+            // Arrange
+            var id = 99;
+            var employee = MockEmployee();
+            var tuple = MockTupleSelectList();
+            var contact = new EmergencyContact
+            {
+                EmployeeId = 11,
+                Address = "asdasd"
+            };
 
-        //    // Act
-        //    var result = employeeController.UpdateEmployeeAsync(99);
+            var employeeController = GetEmployeeController();
+            employeeService.GetEmployeeByIdAsync(Arg.Is<int>(x => x == id)).Returns(employee);
+            employeeService.GetEmergencyContactByEmployeeIdAsync(Arg.Is<int>(x => x == id)).Returns(contact);
+            employeeService.GetDataToCreateEmployeeAsync().Returns(tuple);
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<ViewResult>(result);
-        //    Assert.Equal(expected, viewResult.ViewData.Model);
-        //}
+            // Act
+            var result = await employeeController.UpdateEmployee(id);
 
-        //[Fact]
-        //public async Task UpdatePersonalDetails_InvalidProfilePicture_ReturnJsonResultWithErrorList()
-        //{
-        //    // Arrange
-        //    var model = new CreateEmployeeViewModel();
-        //    var commandResult = new CommandResult();
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var viewModel = Assert.IsType<CreateEmployeeViewModel>(viewResult.Model);
+            Assert.Equal("UpdateEmployee", viewResult.ViewName);
+            Assert.Equal(employee.EmployeeId, viewModel.EmployeeId);
+            Assert.Equal(employee.Nickname, viewModel.Nickname);
+            Assert.Equal(employee.FullName, viewModel.FullName);
+            Assert.Equal(employee.Gender, viewModel.Gender);
+            Assert.Equal(employee.DateOfBirth, viewModel.DateOfBirth);
+            Assert.Equal(employee.PlaceOfBirth, viewModel.PlaceOfBirth);
+            Assert.Equal(employee.Nationality, viewModel.Nationality);
+            Assert.Equal(employee.NRICNo, viewModel.NRICNo);
+            Assert.Equal(employee.MaritalStatus, viewModel.MaritalStatus);
+            Assert.Equal(employee.NoOfChildren, viewModel.NoOfChildren);
+            Assert.Equal(employee.OverseasPhoneNo, viewModel.OverseasPhoneNo);
+            Assert.Equal(employee.LocalPhoneNo, viewModel.LocalPhoneNo);
+            Assert.Equal(employee.OtherPhoneNo, viewModel.OtherPhoneNo);
+            Assert.Equal(employee.PassportNo, viewModel.PassportNo);
+            Assert.Equal(employee.DateIssue, viewModel.DateIssue);
+            Assert.Equal(employee.ExpiredDate, viewModel.ExpiredDate);
+            Assert.Equal(employee.PlaceOfIssue, viewModel.PlaceOfIssue);
+            Assert.Equal(employee.Skype, viewModel.Skype);
+            Assert.Equal(employee.PersonalEmail, viewModel.PersonalEmail);
+            Assert.Equal(employee.PermanentAddress, viewModel.PermanentAddress);
+            Assert.Equal(employee.ResidenceAddress, viewModel.ResidenceAddress);
+            Assert.Equal(employee.MailingAddress, viewModel.MailingAddress);
+            Assert.Equal(employee.ProfilePic, viewModel.ProfilePic);
+            Assert.Equal(employee.IsHost, viewModel.IsHost);
+            Assert.Equal(tuple.Item1, viewModel.GenderList);
+            Assert.Equal(tuple.Item2, viewModel.NationalityList);
+            Assert.Equal(tuple.Item3, viewModel.MaritalStatusList);
+            Assert.Equal(tuple.Item4, viewModel.NoOfChildrenList);
+        }
 
-        //    // Act
-        //    var result = await employeeController.UpdatePersonalDetails(model);
+        [Fact]
+        public async Task UpdatePersonalDetails_InvalidProfilePicture_ReturnJsonResultWithErrorList()
+        {
+            // Arrange
+            var model = new CreateEmployeeViewModel();
+            var commandResult = new CommandResult();
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<JsonResult>(result);
-        //    var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
-        //    Assert.False((bool)wrapper["isSuccessful"]);
-        //    var errors = (Dictionary<string, string>)(wrapper["errors"]);
-        //    Assert.Collection(
-        //        errors,
-        //        kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
-        //    );
-        //}
+            // Act
+            var result = await employeeController.UpdatePersonalDetails(model);
 
-        //[Fact]
-        //public async Task UpdatePersonalDetails_ValidProfilePictureAndModelStateIsInvalid_ReturnJsonResultWithErrorList()
-        //{
-        //    // Arrange
-        //    var model = new CreateEmployeeViewModel();
-        //    var commandResult = new CommandResult { Code = 0 };
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
-        //    employeeController.ModelState.AddModelError("nickname", "required");
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+            Assert.False((bool)wrapper["isSuccessful"]);
+            var errors = (Dictionary<string, string>)(wrapper["errors"]);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
+            );
+        }
 
-        //    // Act
-        //    var result = await employeeController.UpdatePersonalDetails(model);
+        [Fact]
+        public async Task UpdatePersonalDetails_ValidProfilePictureAndModelStateIsInvalid_ReturnJsonResultWithErrorList()
+        {
+            // Arrange
+            var model = new CreateEmployeeViewModel();
+            var commandResult = new CommandResult { Code = 0 };
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(commandResult);
+            employeeController.ModelState.AddModelError("nickname", "required");
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<JsonResult>(result);
-        //    var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
-        //    Assert.False((bool)wrapper["isSuccessful"]);
-        //    var errors = (Dictionary<string, string>)(wrapper["errors"]);
-        //    Assert.Collection(
-        //        errors,
-        //        kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
-        //    );
-        //}
+            // Act
+            var result = await employeeController.UpdatePersonalDetails(model);
 
-        //[Fact]
-        //public async Task UpdatePersonalDetails_ModelStateIsValid_ReturnJsonResultWithMessage()
-        //{
-        //    // Arrange
-        //    var expected = new CommandResult
-        //    {
-        //        Code = 0,
-        //        Message = "Successful."
-        //    };
-        //    var model = new CreateEmployeeViewModel();
-        //    var employeeController = GetEmployeeController();
-        //    employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
-        //    employeeService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+            Assert.False((bool)wrapper["isSuccessful"]);
+            var errors = (Dictionary<string, string>)(wrapper["errors"]);
+            Assert.Collection(
+                errors,
+                kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
+            );
+        }
 
-        //    // Act
-        //    var result = await employeeController.UpdatePersonalDetails(model);
+        [Fact]
+        public async Task UpdatePersonalDetails_ModelStateIsValid_ReturnJsonResultWithMessage()
+        {
+            // Arrange
+            var expected = new CommandResult
+            {
+                Code = 0,
+                Message = "Successful."
+            };
+            var model = new CreateEmployeeViewModel();
+            var employeeController = GetEmployeeController();
+            employeeService.CheckValidPicture(Arg.Any<IFormFile>()).Returns(new CommandResult { Code = 0 });
+            employeeService.UpdatePersonalDetailsAsync(Arg.Any<CreateEmployeeViewModel>()).Returns(expected);
 
-        //    // Assert
-        //    var viewResult = Assert.IsType<JsonResult>(result);
-        //    var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
+            // Act
+            var result = await employeeController.UpdatePersonalDetails(model);
 
-        //    Assert.True((bool)wrapper["isSuccessful"]);
-        //    Assert.IsType<string>(wrapper["message"]);
-        //}
+            // Assert
+            var viewResult = Assert.IsType<JsonResult>(result);
+            var wrapper = (IDictionary<string, object>)new RouteValueDictionary(viewResult.Value);
 
-        //#endregion UpdateEmployee
+            Assert.True((bool)wrapper["isSuccessful"]);
+            Assert.IsType<string>(wrapper["message"]);
+        }
+
+        #endregion UpdateEmployee
 
         #region CreateEmployment
 
@@ -960,6 +1024,59 @@
             };
 
             return new Tuple<List<CompanyTree>, List<MultiSelectViewModel>, string>(expectedCompanyList, expected, departmentIds);
+        }
+
+        private Employee MockEmployee()
+        {
+            return new Employee
+            {
+                EmployeeId = 12,
+                FullName = "full",
+                Nickname = "nick",
+                Gender = 22,
+                DateOfBirth = DateTime.Today,
+                PlaceOfBirth = "VN",
+                Nationality = 1,
+                NRICNo = "1234",
+                MaritalStatus = 3,
+                NoOfChildren = 2,
+                OverseasPhoneNo = "122234",
+                LocalPhoneNo = "331234",
+                OtherPhoneNo = "551234",
+                PassportNo = "441234",
+                DateIssue = DateTime.Today.AddDays(-2),
+                ExpiredDate = DateTime.Today.AddDays(2),
+                PlaceOfIssue = "UK",
+                Skype = "zuck",
+                PersonalEmail = "a@gnil.com",
+                PermanentAddress = "123 address",
+                ResidenceAddress = "4423 address",
+                MailingAddress = "b@gmail.com",
+                ProfilePic = "1.jpg",
+                IsHost = false
+            };
+        }
+
+        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
+        {
+            return new SelectList(refResource, "ResourceId", "Value");
+        }
+
+        private Tuple<SelectList, SelectList, SelectList, SelectList> MockTupleSelectList()
+        {
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
+                new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
+                new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
+                new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
+            };
+            var genderSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
+            var nationalSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
+            var maritalStatusSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
+            var noOfChildrenSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
+
+            return new Tuple<SelectList, SelectList, SelectList, SelectList>(genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
         }
 
         #endregion Helpers

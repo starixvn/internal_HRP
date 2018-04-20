@@ -3,12 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria.EmergencyContact;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.EmployeeManagement;
@@ -16,6 +18,7 @@
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
 
@@ -168,7 +171,7 @@
 
         #endregion UpdatePersonalDetailsAsync
 
-        #region GetPersonalDetails
+        #region GetEmployeeByIdAsync
 
         [Fact]
         public async Task GetEmployeeByIdAsync_WhenCalled_ReturnExpectedEmployee()
@@ -188,61 +191,84 @@
             Assert.Equal(employee, actual);
         }
 
-        #endregion GetPersonalDetails
+        #endregion GetEmployeeByIdAsync
 
-        //#region GetDataToCreateEmployeeAsync
+        #region GetEmergencyContactByEmployeeIdAsync
 
-        //[Fact]
-        //public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedViewModel()
-        //{
-        //    // Arrange
-        //    var expected = new List<ReferenceResourceModel>();
-        //    var employeeService = GetEmployeeService();
-        //    baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
+        [Fact]
+        public async Task GetEmergencyContactByEmployeeIdAsync_WhenCalled_ReturnExpectedEmergencyContact()
+        {
+            // Arrange
+            var employeeId = 11;
+            var contact = new EmergencyContact
+            {
+                EmployeeId = 11,
+                Address = "asdasd"
+            };
+            var employeeService = GetEmployeeService();
+            baseService.GetDataEntityAsync<EmergencyContact>
+                (Arg.Is<GetEmergencyContactByEmployeeIdCriteria>(x => x.EmployeeId == employeeId))
+                .Returns(contact);
 
-        //    // Act
-        //    var actual = await employeeService.GetDataToCreateEmployeeAsync();
+            // Act
+            var actual = await employeeService.GetEmergencyContactByEmployeeIdAsync(employeeId);
 
-        //    // Assert
-        //    Assert.IsType<CreateEmployeeViewModel>(actual);
-        //    Assert.Equal(0, actual.EmployeeId);
-        //    Assert.Null(actual.FullName);
-        //    Assert.Null(actual.Nickname);
-        //    Assert.Equal(0, actual.Gender);
-        //    Assert.Equal(DateTime.MinValue, actual.DateOfBirth);
-        //    Assert.Null(actual.PlaceOfBirth);
-        //    Assert.Equal(0, actual.Nationality);
-        //    Assert.Null(actual.NRICNo);
-        //    Assert.Equal(0, actual.MaritalStatus);
-        //    Assert.Equal(0, actual.NoOfChildren);
-        //    Assert.Null(actual.OverseasPhoneNo);
-        //    Assert.Null(actual.LocalPhoneNo);
-        //    Assert.Null(actual.OtherPhoneNo);
-        //    Assert.Null(actual.PassportNo);
-        //    Assert.Equal(DateTime.MinValue, actual.DateIssue);
-        //    Assert.Equal(DateTime.MinValue, actual.ExpiredDate);
-        //    Assert.Null(actual.PlaceOfIssue);
-        //    Assert.Null(actual.Skype);
-        //    Assert.Null(actual.PersonalEmail);
-        //    Assert.Null(actual.PermanentAddress);
-        //    Assert.Null(actual.ResidenceAddress);
-        //    Assert.Null(actual.MailingAddress);
-        //    Assert.Null(actual.ProfilePic);
-        //    Assert.Null(actual.ProfilePicture);
-        //    Assert.False(actual.IsHost);
-        //    Assert.Equal(0, actual.EmergencyContact.EmployeeId);
-        //    Assert.Null(actual.EmergencyContact.Name);
-        //    Assert.Null(actual.EmergencyContact.Relationship);
-        //    Assert.Null(actual.EmergencyContact.Address);
-        //    Assert.Null(actual.EmergencyContact.PhoneNo1);
-        //    Assert.Null(actual.EmergencyContact.PhoneNo2);
-        //    Assert.Empty(actual.GenderList);
-        //    Assert.Empty(actual.NationalityList);
-        //    Assert.Empty(actual.MaritalStatusList);
-        //    Assert.Empty(actual.NoOfChildrenList);
-        //}
+            // Assert
+            Assert.Equal(contact, actual);
+        }
 
-        //#endregion GetDataToCreateEmployeeAsync
+        #endregion GetEmergencyContactByEmployeeIdAsync
+
+        #region GetDataToCreateEmployeeAsync
+
+        [Fact]
+        public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedTuple()
+        {
+            // Arrange
+            var refNames = string.Format(
+                 "{0},{1},{2},{3}",
+                 ReferenceResource.Gender,
+                 ReferenceResource.Nationality,
+                 ReferenceResource.MaritalStatus,
+                 ReferenceResource.NoOfChildren);
+            var expected = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
+                new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
+                new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
+                new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
+            };
+            var genderSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
+            var nationalSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
+            var maritalStatusSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
+            var noOfChildrenSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
+
+            var employeeService = GetEmployeeService();
+            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Is<GetRefResourceByNamesCriteria>(x => x.RefNames.Equals(refNames))).Returns(expected);
+
+            // Act
+            var actual = await employeeService.GetDataToCreateEmployeeAsync();
+
+            // Assert
+            Assert.IsType<Tuple<SelectList, SelectList, SelectList, SelectList>>(actual);
+            Assert.Equal(genderSelectList.DataValueField, actual.Item1.DataValueField);
+            Assert.Equal(genderSelectList.DataTextField, actual.Item1.DataTextField);
+            Assert.Equal(genderSelectList.Items, actual.Item1.Items);
+
+            Assert.Equal(nationalSelectList.DataValueField, actual.Item2.DataValueField);
+            Assert.Equal(nationalSelectList.DataTextField, actual.Item2.DataTextField);
+            Assert.Equal(nationalSelectList.Items, actual.Item2.Items);
+
+            Assert.Equal(maritalStatusSelectList.DataValueField, actual.Item3.DataValueField);
+            Assert.Equal(maritalStatusSelectList.DataTextField, actual.Item3.DataTextField);
+            Assert.Equal(maritalStatusSelectList.Items, actual.Item3.Items);
+
+            Assert.Equal(noOfChildrenSelectList.DataValueField, actual.Item4.DataValueField);
+            Assert.Equal(noOfChildrenSelectList.DataTextField, actual.Item4.DataTextField);
+            Assert.Equal(noOfChildrenSelectList.Items, actual.Item4.Items);
+        }
+
+        #endregion GetDataToCreateEmployeeAsync
 
         #region CheckValidPicture
 
@@ -590,6 +616,11 @@
                 FullName = "full",
                 Nickname = "nick"
             };
+        }
+
+        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
+        {
+            return new SelectList(refResource, "ResourceId", "Value");
         }
 
         #endregion Helper
