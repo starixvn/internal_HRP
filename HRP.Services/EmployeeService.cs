@@ -1,5 +1,6 @@
 ﻿namespace HRP.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -8,8 +9,8 @@
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria.EmergencyContact;
     using HRP.Criteria.Employee;
-    using HRP.Models;
     using HRP.Models.EmployeeManagement;
     using HRP.Repositories;
     using HRP.Resources;
@@ -213,7 +214,7 @@
             return commandResult;
         }
 
-        public CreateEmployeeViewModel GetPersonalDetails(int employeeId)
+        public async Task<Employee> GetEmployeeByIdAsync(int employeeId)
         {
             var criteria = new GetEmployeeByIdCriteria
             {
@@ -221,17 +222,25 @@
                 UserId = sessionService.UserId,
                 FunctionKey = FunctionKey.EmployeeProfile
             };
-            CreateEmployeeViewModel employee = null;
 
-            if (criteria.IsValid())
-            {
-                employee = employeeRepository.GetPersonalDetails(criteria);
-            }
+            var employee = await baseService.GetDataEntityAsync<Employee>(criteria).ConfigureAwait(false);
 
             return employee;
         }
 
-        public async Task<CreateEmployeeViewModel> GetDataToCreateEmployeeAsync()
+        public async Task<EmergencyContact> GetEmergencyContactByEmployeeIdAsync(int employeeId)
+        {
+            var criteria = new GetEmergencyContactByEmployeeIdCriteria
+            {
+                EmployeeId = employeeId
+            };
+
+            var contact = await baseService.GetDataEntityAsync<EmergencyContact>(criteria).ConfigureAwait(false);
+
+            return contact;
+        }
+
+        public async Task<Tuple<SelectList, SelectList, SelectList, SelectList>> GetDataToCreateEmployeeAsync()
         {
             var refNames = string.Format(
                  "{0},{1},{2},{3}",
@@ -240,19 +249,12 @@
                  ReferenceResource.MaritalStatus,
                  ReferenceResource.NoOfChildren);
             var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refNames, IsActive = true }).ConfigureAwait(false);
-            var listGender = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
-            var listNational = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
-            var listMaritalStatus = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
-            var listNoOfChildren = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
-            var viewModel = new CreateEmployeeViewModel
-            {
-                GenderList = listGender,
-                NationalityList = listNational,
-                MaritalStatusList = listMaritalStatus,
-                NoOfChildrenList = listNoOfChildren
-            };
+            var genderSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
+            var nationalSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
+            var maritalStatusSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
+            var noOfChildrenSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
 
-            return viewModel;
+            return new Tuple<SelectList, SelectList, SelectList, SelectList>(genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
         }
 
         public CommandResult CheckValidPicture(IFormFile file)

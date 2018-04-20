@@ -97,7 +97,19 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployee()
         {
-            CreateEmployeeViewModel viewModel = await employeeService.GetDataToCreateEmployeeAsync();
+            var tuple = await employeeService.GetDataToCreateEmployeeAsync();
+            var genderSelectList = tuple.Item1;
+            var nationalSelectList = tuple.Item2;
+            var maritalStatusSelectList = tuple.Item3;
+            var noOfChildrenSelectList = tuple.Item4;
+
+            var viewModel = new CreateEmployeeViewModel
+            {
+                GenderList = genderSelectList,
+                NationalityList = nationalSelectList,
+                MaritalStatusList = maritalStatusSelectList,
+                NoOfChildrenList = noOfChildrenSelectList
+            };
 
             return View("CreateEmployee", viewModel);
         }
@@ -149,14 +161,54 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployee(int id)
+        public async Task<IActionResult> UpdateEmployee(int id)
         {
-            var viewModel = employeeService.GetPersonalDetails(id);
+            var employee = await employeeService.GetEmployeeByIdAsync(id);
 
-            if (viewModel == null)
+            if (employee == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
+
+            var tuple = await employeeService.GetDataToCreateEmployeeAsync();
+            var genderSelectList = tuple.Item1;
+            var nationalSelectList = tuple.Item2;
+            var maritalStatusSelectList = tuple.Item3;
+            var noOfChildrenSelectList = tuple.Item4;
+            var emergencyContact = await employeeService.GetEmergencyContactByEmployeeIdAsync(id);
+
+            var viewModel = new CreateEmployeeViewModel
+            {
+                EmployeeId = employee.EmployeeId,
+                Nickname = employee.Nickname,
+                FullName = employee.FullName,
+                Gender = employee.Gender,
+                DateOfBirth = employee.DateOfBirth,
+                PlaceOfBirth = employee.PlaceOfBirth,
+                Nationality = employee.Nationality,
+                NRICNo = employee.NRICNo,
+                MaritalStatus = employee.MaritalStatus,
+                NoOfChildren = employee.NoOfChildren,
+                OverseasPhoneNo = employee.OverseasPhoneNo,
+                LocalPhoneNo = employee.LocalPhoneNo,
+                OtherPhoneNo = employee.OtherPhoneNo,
+                PassportNo = employee.PassportNo,
+                DateIssue = employee.DateIssue,
+                ExpiredDate = employee.ExpiredDate,
+                PlaceOfIssue = employee.PlaceOfIssue,
+                Skype = employee.Skype,
+                PersonalEmail = employee.PersonalEmail,
+                PermanentAddress = employee.PermanentAddress,
+                ResidenceAddress = employee.ResidenceAddress,
+                MailingAddress = employee.MailingAddress,
+                ProfilePic = employee.ProfilePic,
+                IsHost = employee.IsHost,
+                EmergencyContact = emergencyContact,
+                GenderList = genderSelectList,
+                NationalityList = nationalSelectList,
+                MaritalStatusList = maritalStatusSelectList,
+                NoOfChildrenList = noOfChildrenSelectList
+            };
 
             return View("UpdateEmployee", viewModel);
         }

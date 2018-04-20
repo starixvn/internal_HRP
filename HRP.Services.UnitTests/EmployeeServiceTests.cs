@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
@@ -169,91 +170,79 @@
 
         #region GetPersonalDetails
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void GetPersonalDetails_EmployeeIdIsInvalid_ReturnNull(int employeeId)
-        {
-            // Arrange
-            var employeeService = GetEmployeeService();
-
-            // Act
-            var actual = employeeService.GetPersonalDetails(employeeId);
-
-            // Assert
-            Assert.Null(actual);
-        }
-
         [Fact]
-        public void GetPersonalDetails_EmployeeIdIsValid_ReturnAsExpectedViewModel()
+        public async Task GetEmployeeByIdAsync_WhenCalled_ReturnExpectedEmployee()
         {
             // Arrange
-            var expected = new CreateEmployeeViewModel();
+            var employeeId = 11;
+            var employee = MockEmployee();
             var employeeService = GetEmployeeService();
-            employeeRepository.GetPersonalDetails(Arg.Any<GetEmployeeByIdCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<Employee>
+                (Arg.Is<GetEmployeeByIdCriteria>(x => x.EmployeeId == employeeId && x.UserId == sessionService.UserId && x.FunctionKey == FunctionKey.EmployeeProfile))
+                .Returns(employee);
 
             // Act
-            var actual = employeeService.GetPersonalDetails(1);
+            var actual = await employeeService.GetEmployeeByIdAsync(employeeId);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(employee, actual);
         }
 
         #endregion GetPersonalDetails
 
-        #region GetDataToCreateEmployeeAsync
+        //#region GetDataToCreateEmployeeAsync
 
-        [Fact]
-        public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedViewModel()
-        {
-            // Arrange
-            var expected = new List<ReferenceResourceModel>();
-            var employeeService = GetEmployeeService();
-            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
+        //[Fact]
+        //public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedViewModel()
+        //{
+        //    // Arrange
+        //    var expected = new List<ReferenceResourceModel>();
+        //    var employeeService = GetEmployeeService();
+        //    baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
-            // Act
-            var actual = await employeeService.GetDataToCreateEmployeeAsync();
+        //    // Act
+        //    var actual = await employeeService.GetDataToCreateEmployeeAsync();
 
-            // Assert
-            Assert.IsType<CreateEmployeeViewModel>(actual);
-            Assert.Equal(0, actual.EmployeeId);
-            Assert.Null(actual.FullName);
-            Assert.Null(actual.Nickname);
-            Assert.Equal(0, actual.Gender);
-            Assert.Equal(DateTime.MinValue, actual.DateOfBirth);
-            Assert.Null(actual.PlaceOfBirth);
-            Assert.Equal(0, actual.Nationality);
-            Assert.Null(actual.NRICNo);
-            Assert.Equal(0, actual.MaritalStatus);
-            Assert.Equal(0, actual.NoOfChildren);
-            Assert.Null(actual.OverseasPhoneNo);
-            Assert.Null(actual.LocalPhoneNo);
-            Assert.Null(actual.OtherPhoneNo);
-            Assert.Null(actual.PassportNo);
-            Assert.Equal(DateTime.MinValue, actual.DateIssue);
-            Assert.Equal(DateTime.MinValue, actual.ExpiredDate);
-            Assert.Null(actual.PlaceOfIssue);
-            Assert.Null(actual.Skype);
-            Assert.Null(actual.PersonalEmail);
-            Assert.Null(actual.PermanentAddress);
-            Assert.Null(actual.ResidenceAddress);
-            Assert.Null(actual.MailingAddress);
-            Assert.Null(actual.ProfilePic);
-            Assert.Null(actual.ProfilePicture);
-            Assert.False(actual.IsHost);
-            Assert.Equal(0, actual.EmergencyContact.EmployeeId);
-            Assert.Null(actual.EmergencyContact.Name);
-            Assert.Null(actual.EmergencyContact.Relationship);
-            Assert.Null(actual.EmergencyContact.Address);
-            Assert.Null(actual.EmergencyContact.PhoneNo1);
-            Assert.Null(actual.EmergencyContact.PhoneNo2);
-            Assert.Empty(actual.GenderList);
-            Assert.Empty(actual.NationalityList);
-            Assert.Empty(actual.MaritalStatusList);
-            Assert.Empty(actual.NoOfChildrenList);
-        }
+        //    // Assert
+        //    Assert.IsType<CreateEmployeeViewModel>(actual);
+        //    Assert.Equal(0, actual.EmployeeId);
+        //    Assert.Null(actual.FullName);
+        //    Assert.Null(actual.Nickname);
+        //    Assert.Equal(0, actual.Gender);
+        //    Assert.Equal(DateTime.MinValue, actual.DateOfBirth);
+        //    Assert.Null(actual.PlaceOfBirth);
+        //    Assert.Equal(0, actual.Nationality);
+        //    Assert.Null(actual.NRICNo);
+        //    Assert.Equal(0, actual.MaritalStatus);
+        //    Assert.Equal(0, actual.NoOfChildren);
+        //    Assert.Null(actual.OverseasPhoneNo);
+        //    Assert.Null(actual.LocalPhoneNo);
+        //    Assert.Null(actual.OtherPhoneNo);
+        //    Assert.Null(actual.PassportNo);
+        //    Assert.Equal(DateTime.MinValue, actual.DateIssue);
+        //    Assert.Equal(DateTime.MinValue, actual.ExpiredDate);
+        //    Assert.Null(actual.PlaceOfIssue);
+        //    Assert.Null(actual.Skype);
+        //    Assert.Null(actual.PersonalEmail);
+        //    Assert.Null(actual.PermanentAddress);
+        //    Assert.Null(actual.ResidenceAddress);
+        //    Assert.Null(actual.MailingAddress);
+        //    Assert.Null(actual.ProfilePic);
+        //    Assert.Null(actual.ProfilePicture);
+        //    Assert.False(actual.IsHost);
+        //    Assert.Equal(0, actual.EmergencyContact.EmployeeId);
+        //    Assert.Null(actual.EmergencyContact.Name);
+        //    Assert.Null(actual.EmergencyContact.Relationship);
+        //    Assert.Null(actual.EmergencyContact.Address);
+        //    Assert.Null(actual.EmergencyContact.PhoneNo1);
+        //    Assert.Null(actual.EmergencyContact.PhoneNo2);
+        //    Assert.Empty(actual.GenderList);
+        //    Assert.Empty(actual.NationalityList);
+        //    Assert.Empty(actual.MaritalStatusList);
+        //    Assert.Empty(actual.NoOfChildrenList);
+        //}
 
-        #endregion GetDataToCreateEmployeeAsync
+        //#endregion GetDataToCreateEmployeeAsync
 
         #region CheckValidPicture
 
@@ -591,6 +580,16 @@
             file.Length.Returns(1024);
 
             return file;
+        }
+
+        private Employee MockEmployee()
+        {
+            return new Employee
+            {
+                EmployeeId = 12,
+                FullName = "full",
+                Nickname = "nick"
+            };
         }
 
         #endregion Helper
