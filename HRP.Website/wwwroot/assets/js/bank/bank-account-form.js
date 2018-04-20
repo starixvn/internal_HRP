@@ -18,51 +18,47 @@ var bankAccountForm = {
                     $("#BankTypeId").val() +
                     "&employeeId=" +
                     $("#EmployeeId").val();
-                    //"&paymentTransactionId=" +
-                    //$("#PaymentTransactionId").val();
 
                 $.ajax({
                     url: ajaxUrl,
                     method: "get",
                     success: function (results) {
-                        //var selectedItemIndex = -1;
-                        //var isAllItemDisabled = true;
-                        //for (var i = 0, l = results.length; i < l; i++) {
-                        //    if (results[i].selected === true) {
-                        //        selectedItemIndex = i;
-                        //    }
-
-                        //    if (results[i].disabled === false) {
-                        //        // there is an item enabled
-                        //        isAllItemDisabled = false;
-                        //    }
-                        //}
-
-                        //if ($("#IsActive").is(":checked") === true && selectedItemIndex !== -1) {
-                        //    if (isAllItemDisabled === true) {
-                        //        // clear the selected value
-                        //        results[selectedItemIndex].selected = false;
-                        //    }
-
-                        //    // Allow user to re-select the old value
-                        //    results[selectedItemIndex].disabled = false;
-                        //}
-
                         $(".payment-transaction-select").select2().empty();
                         $(".payment-transaction-select").select2({
                             width: "100%",
                             data: results
                         });
 
-                        var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
-                        if (selectedPaymentTransactionId !== "0") {
-                            $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
-                        }
+                        //var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
+                        //if (selectedPaymentTransactionId !== "0") {
+                        //    $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
+                        //}
                     }
                 });
             });
 
-        $(".change-payment-transaction").trigger("change");
+        var ajaxUrl = $(".payment-transaction-select").data("url") +
+            "?bankTypeId=" +
+            $("#BankTypeId").val() +
+            "&employeeId=" +
+            $("#EmployeeId").val();
+
+        $.ajax({
+            url: ajaxUrl,
+            method: "get",
+            success: function (results) {
+                $(".payment-transaction-select").select2().empty();
+                $(".payment-transaction-select").select2({
+                    width: "100%",
+                    data: results
+                });
+
+                var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
+                if (selectedPaymentTransactionId !== "0") {
+                    $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
+                }
+            }
+        });
     },
 
     checkIfRequired: function (desiredvalue, relatedFieldName) {
