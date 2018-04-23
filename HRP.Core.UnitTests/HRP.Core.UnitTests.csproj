@@ -383,6 +383,7 @@
     <Compile Include="CustomValidations\GenericCompareAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredIfRealtedFieldHasValueAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredNoneOrAllAttributeTests.cs" />
+    <Compile Include="Filters\HRPActionFilterAttributeTests.cs" />
     <Compile Include="Filters\HRPAuthorizeAttributeTests.cs" />
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />
     <Compile Include="Middlewares\ErrorHandlingMiddlewareTests.cs" />

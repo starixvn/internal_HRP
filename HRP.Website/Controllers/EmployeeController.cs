@@ -39,7 +39,7 @@
             int? employeeId,
             string displayName)
         {
-            EmployeeManagementViewModel viewModel = new EmployeeManagementViewModel
+            var viewModel = new EmployeeManagementViewModel
             {
                 DepartmentIds = departmentIds,
                 EmploymentStatusIds = employmentStatusIds,
