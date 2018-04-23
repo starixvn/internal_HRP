@@ -310,7 +310,7 @@
                     monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
                     monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
                     monthlySalary.CashAmount = basicSalary.CashAmount;
-                    if (basicSalary.EbankingCurrencyId.HasValue)
+                    if (basicSalary.DirectBanking1CurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking2 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking1CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking1CurrencyId.Value, 0);
@@ -327,7 +327,7 @@
                     monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
                     monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
                     monthlySalary.CashAmount = basicSalary.CashAmount;
-                    if (basicSalary.EbankingCurrencyId.HasValue)
+                    if (basicSalary.DirectBanking2CurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - cash, basicSalary.CurrencyId, basicSalary.DirectBanking2CurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.DirectBanking2CurrencyId.Value, 0);
@@ -344,7 +344,7 @@
                     monthlySalary.EbankingAmount = basicSalary.EbankingAmount;
                     monthlySalary.DirectBanking1Amount = basicSalary.DirectBanking1Amount;
                     monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
-                    if (basicSalary.EbankingCurrencyId.HasValue)
+                    if (basicSalary.CashCurrencyId.HasValue)
                     {
                         amount = ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
                         amount = RoundAmountWithCurrency(amount, basicSalary.CashCurrencyId.Value, 0);
