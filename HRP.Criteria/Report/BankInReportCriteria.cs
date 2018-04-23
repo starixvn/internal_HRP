@@ -9,7 +9,11 @@
 
         public int CompanyId { get; set; }
 
-        public override string GetSettingKey() => "Report_GetBankInByMonthAndCompanyId";
+        public int PaymentType { get; set; }
+
+        public string PaymentTransactions { get; set; }
+
+        public override string GetSettingKey() => "Report_GetBankIn";
 
         public override bool IsValid() => CompanyId > 0;
     }

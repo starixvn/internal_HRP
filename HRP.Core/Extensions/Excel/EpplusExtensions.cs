@@ -8,7 +8,9 @@
 
     public static class EpplusExtensions
     {
-        public static ExcelRangeBase LoadFromCollectionFiltered<T>(this ExcelRangeBase excelRangeBase, IEnumerable<T> collection)
+        public static ExcelRangeBase LoadFromCollectionFiltered<T>(
+            this ExcelRangeBase excelRangeBase,
+            IEnumerable<T> collection)
             where T : class
         {
             var result = typeof(T)

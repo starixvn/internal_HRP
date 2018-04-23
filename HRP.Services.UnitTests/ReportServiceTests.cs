@@ -25,12 +25,11 @@
             reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new BankInReport());
 
             // Act
-            var actual = await reportService.GetBankInAsync(0, DateTime.Now);
+            var actual = await reportService.GetBankInAsync(0, DateTime.Now, PaymentType.Allowances, "");
 
             Assert.Null(actual.EBankingBankIns);
-            Assert.Null(actual.DirectBanking1BankIns);
-            Assert.Null(actual.DirectBanking2BankIns);
             Assert.Null(actual.CashBankIns);
+            Assert.Null(actual.SelectedPaymentTransactions);
         }
 
         [Fact]
@@ -52,11 +51,10 @@
             var bankInReport = new BankInReport
             {
                 EBankingBankIns = bankInData,
-                DirectBanking1BankIns = bankInData,
-                DirectBanking2BankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
-                ReportedMonth = reportedMonth
+                ReportedMonth = reportedMonth,
+                SelectedPaymentTransactions = new List<string>(new[] {"EuroBank1"})
             };
 
             reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(bankInReport);
@@ -64,17 +62,9 @@
             cryptoService.Decrypt(Arg.Any<string>()).Returns("1");
 
             // Act
-            var actual = await reportService.GetBankInAsync(1, DateTime.Now);
+            var actual = await reportService.GetBankInAsync(1, DateTime.Now, PaymentType.BasicSalary, "1-1");
 
             Assert.All(actual.EBankingBankIns, x =>
-            {
-                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
-            });
-            Assert.All(actual.DirectBanking1BankIns, x =>
-            {
-                Assert.Equal(salaryDescrypted, x.AmountDecrypted);
-            });
-            Assert.All(actual.DirectBanking2BankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
             });
@@ -84,6 +74,7 @@
             });
             Assert.Equal(companyName, actual.CompanyName);
             Assert.Equal(reportedMonth, actual.ReportedMonth);
+            Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
         }
 
         #region Helpers

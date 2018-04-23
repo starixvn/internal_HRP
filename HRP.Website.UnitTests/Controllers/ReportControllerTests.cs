@@ -20,6 +20,7 @@
         private IReportService reportService;
         private IHostingEnvironment hostingEnvironment;
         private IExportExcelService exportExcelService;
+        private IRefResourceService refResourceService;
 
         [Fact]
         public async Task BankIn_WhenCalled_ReturnExpectedView()
@@ -77,15 +78,13 @@
             var bankInReport = new BankInReport
             {
                 EBankingBankIns = bankInData,
-                DirectBanking1BankIns = bankInData,
-                DirectBanking2BankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
                 ReportedMonth = reportedMonth
             };
 
             var reportController = GetReportController();
-            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>()).Returns(bankInReport);
+            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
 
             //Act
             var actual = await reportController.GetBankInReport(bankInReportViewModel);
@@ -126,6 +125,11 @@
             return Substitute.For<IExportExcelService>();
         }
 
+        private IRefResourceService FakeRefResourceService()
+        {
+            return Substitute.For<IRefResourceService>();
+        }
+
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
@@ -133,13 +137,15 @@
             reportService = FakeReportService();
             exportExcelService = FakeExportExcelService();
             hostingEnvironment = FakeHostingEnviroment();
+            refResourceService = FakeRefResourceService();
 
             return new ReportController(
                 baseService,
                 sessionService,
                 hostingEnvironment,
                 exportExcelService,
-                reportService);
+                reportService,
+                refResourceService);
         }
 
         #endregion Helpers

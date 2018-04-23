@@ -37,6 +37,10 @@
                         $("#selected-payment-transactions").val(selectedValue);
                     }
                 });
+
+                var selectedValue =
+                    $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");
+                $("#selected-payment-transactions").val(selectedValue);
             }
         });
     }

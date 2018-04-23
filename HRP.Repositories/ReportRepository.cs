@@ -16,10 +16,9 @@
                     var bankInReport = new BankInReport
                     {
                         EBankingBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                        DirectBanking1BankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                        DirectBanking2BankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
                         CashBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                        CompanyName = await results.ReadSingleAsync<string>().ConfigureAwait(false)
+                        CompanyName = await results.ReadSingleAsync<string>().ConfigureAwait(false),
+                        SelectedPaymentTransactions = await results.ReadAsync<string>().ConfigureAwait(false)
                     };
 
                     return bankInReport;

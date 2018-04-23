@@ -31,19 +31,28 @@
             this.reportRepository = reportRepository ?? new ReportRepository();
         }
 
-        public async Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime)
+        public async Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions)
         {
             var criteria = new BankInReportCriteria
             {
                 CompanyId = companyId,
-                Month = selectedTime
+                Month = selectedTime,
+                PaymentTransactions = selectedPaymentTransactions,
+                PaymentType = (int)typeOfPayment
             };
 
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
 
+            ////var bankInReport = new BankInReport
+            ////{
+            ////    EBankingBankIns = await baseService.GetDataAsync<BankIn>(criteria).ConfigureAwait(false)
+            ////};
+
+            ////DecryptBankInAmount(bankInReport.EBankingBankIns);
+
             DecryptBankInAmount(bankInData.EBankingBankIns);
-            DecryptBankInAmount(bankInData.DirectBanking1BankIns);
-            DecryptBankInAmount(bankInData.DirectBanking2BankIns);
+            ////DecryptBankInAmount(bankInData.DirectBanking1BankIns);
+            ////DecryptBankInAmount(bankInData.DirectBanking2BankIns);
             DecryptBankInAmount(bankInData.CashBankIns);
 
             return bankInData;

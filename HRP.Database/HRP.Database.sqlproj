@@ -261,5 +261,7 @@
     <Build Include="dbo\Stored Procedures\MonthlyPayroll_Get.sql" />
     <Build Include="dbo\Stored Procedures\Employment_GetAllEmployeeCodeByCompanyId.sql" />
     <Build Include="dbo\Stored Procedures\Company_GetByFunctionKey.sql" />
+    <Build Include="dbo\Functions\SplitString.sql" />
+    <Build Include="dbo\Stored Procedures\Report_GetBankIn.sql" />
   </ItemGroup>
 </Project>

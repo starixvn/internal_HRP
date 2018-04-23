@@ -98,7 +98,11 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> GetBankInReport(BankInReportViewModel viewModel)
         {
-            var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
+            var bankInData = await reportService.GetBankInAsync(
+                viewModel.CompanyId,
+                viewModel.SelectedTime,
+                viewModel.TypeOfPayment,
+                viewModel.SelectedPaymentTransactions);
 
             FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\BankIn.xlsx");
 
@@ -109,6 +113,7 @@
                 var fileContent = exportExcelService.ExportBankInReports(
                     viewModel.SelectedTime,
                     fileInfo,
+                    viewModel.TypeOfPayment,
                     bankInData);
 
                 result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_BankingDetails.xlsx");

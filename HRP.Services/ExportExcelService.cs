@@ -42,29 +42,29 @@
             return memory;
         }
 
-        public byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, BankInReport data)
+        public byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 
                 // Set company name
-                worksheet.Cells["C2"].Value = data.CompanyName;
+                worksheet.Cells["D2"].Value = data.CompanyName;
 
                 // Set month
-                worksheet.Cells["C3"].Value = selectedTime.ToString("MMMM yyyy");
+                worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
 
-                var startRow = 9;
+                // Set payment type
+                worksheet.Cells["D4"].Value = typeOfPayment.ToString();
+
+                // Set selected payment transaction
+                worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+
+                var startRow = 10;
 
                 // EBanking
                 var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
                 startRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
-
-                var directBanking1GroupedByBank = data.DirectBanking1BankIns.GroupBy(x => x.BankName);
-                startRow = RenderReportRowsForBankIns(directBanking1GroupedByBank, worksheet, startRow);
-
-                var directBanking2GroupedByBank = data.DirectBanking2BankIns.GroupBy(x => x.BankName);
-                startRow = RenderReportRowsForBankIns(directBanking2GroupedByBank, worksheet, startRow);
 
                 var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
                 RenderReportRowsForBankIns(cashGroupedByBank, worksheet, startRow);
@@ -87,20 +87,34 @@
                 // group by currency
 
                 var bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
+
                 foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
                 {
-                    worksheet.Cells[rowIndex, 2].LoadFromCollectionFiltered(grouping.ToList());
+                    int count = 0;
+                    var bankInRows = grouping.ToList();
+                    foreach (var bankIn in bankInRows)
+                    {
+                        worksheet.Cells[rowIndex, 2].Value = ++count;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, 4].Value = bankIn.Nickname;
+                        worksheet.Cells[rowIndex, 5].Value = bankIn.PaymentTransaction;
+                        worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
+                        worksheet.Cells[rowIndex, 7].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, 8].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
+
+                        rowIndex++;
+                    }
 
                     // Create sumary row for a bank
-                    rowIndex = rowIndex + grouping.Count();
-                    var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 5];
+                    var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 7];
                     summaryRow.Merge = true;
 
                     // TODO: move to resource when user confirmed
                     summaryRow.Value = string.Format("Total ({0})", grouping.Key);
 
-                    worksheet.Cells[rowIndex, 6].FormulaR1C1 =
-                        $"=SUM(R{(rowIndex - grouping.Count())}C6:R{rowIndex - 1}C6)";
+                    worksheet.Cells[rowIndex, 8].FormulaR1C1 =
+                        $"=SUM(R{(rowIndex - grouping.Count())}C8:R{rowIndex - 1}C8)";
 
                     rowIndex++;
                 }

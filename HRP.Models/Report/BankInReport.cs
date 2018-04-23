@@ -12,14 +12,11 @@
 
         public IEnumerable<BankIn> EBankingBankIns { get; set; }
 
-        public IEnumerable<BankIn> DirectBanking1BankIns { get; set; }
-
-        public IEnumerable<BankIn> DirectBanking2BankIns { get; set; }
-
         public IEnumerable<BankIn> CashBankIns { get; set; }
 
-        public bool IsExportable => EBankingBankIns.Any() || DirectBanking1BankIns.Any()
-                                                            || DirectBanking2BankIns.Any()
-                                                            || CashBankIns.Any();
+        public IEnumerable<string> SelectedPaymentTransactions { get; set; }
+
+        public bool IsExportable => (EBankingBankIns != null && EBankingBankIns.Any())
+                                    || (CashBankIns != null && CashBankIns.Any());
     }
 }
