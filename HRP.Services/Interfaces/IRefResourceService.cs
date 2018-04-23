@@ -10,7 +10,6 @@
 
         IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string refName,
-            bool? isActive = true);
+            string refName);
     }
 }

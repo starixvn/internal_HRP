@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Model;
     using Core.Services;
     using HRP.Core.Criteria;
-    using HRP.Core.Model;
 
     public class RefResourceService : IRefResourceService
     {
@@ -37,8 +37,7 @@
 
         public IEnumerable<ReferenceResourceModel> FilterReferenceResources(
             IEnumerable<ReferenceResourceModel> refResources,
-            string refName,
-            bool? isActive = true)
+            string refName)
         {
             IEnumerable<ReferenceResourceModel> referenceResources = new List<ReferenceResourceModel>();
 

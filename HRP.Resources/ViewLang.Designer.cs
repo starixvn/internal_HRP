@@ -1969,6 +1969,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment Transactions.
+        /// </summary>
+        public static string PaymentTransactions {
+            get {
+                return ResourceManager.GetString("PaymentTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payslip.
         /// </summary>
         public static string Payslip {

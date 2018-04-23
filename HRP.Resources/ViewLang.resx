@@ -1035,4 +1035,7 @@
   <data name="TypeOfPayment" xml:space="preserve">
     <value>Type of Payment</value>
   </data>
+  <data name="PaymentTransactions" xml:space="preserve">
+    <value>Payment Transactions</value>
+  </data>
 </root>

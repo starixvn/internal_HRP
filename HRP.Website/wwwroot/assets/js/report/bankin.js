@@ -2,6 +2,7 @@
     init: function() {
         bankin.initSelect2();
         bankin.initDatetimepicker();
+        bankin.initPaymentTransactionFanexMultiSelect();
     },
 
     initSelect2: function() {
@@ -20,6 +21,24 @@
             function() {
                 $(this).siblings(".datetimepicker").data("DateTimePicker").show();
             });
+    },
+
+    initPaymentTransactionFanexMultiSelect: function() {
+        $.ajax({
+            url: $("#get-payment-transactions-url").attr("href"),
+            success: function(result) {
+                $("#payment-transactions-multiselect").fanexMultiSelect({
+                    listData: result,
+                    useCustomCheckAllText: true,
+                    customCheckAllText: "All",
+                    onCheck: function() {
+                        var selectedValue =
+                            $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");
+                        $("#selected-payment-transactions").val(selectedValue);
+                    }
+                });
+            }
+        });
     }
 }
 

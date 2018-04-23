@@ -1,7 +1,9 @@
 ﻿namespace HRP.Website.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
@@ -20,22 +22,62 @@
         private readonly IReportService reportService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
+        private readonly IRefResourceService refResourceService;
 
         public ReportController(
             IBaseService baseService,
             ISessionService sessionService,
             IHostingEnvironment hostingEnvironment,
             IExportExcelService exportExcelService,
-            IReportService reportService) : base(baseService, sessionService)
+            IReportService reportService,
+            IRefResourceService refResourceService) : base(baseService, sessionService)
         {
             this.reportService = reportService;
             this.hostingEnvironment = hostingEnvironment;
             this.exportExcelService = exportExcelService;
+            this.refResourceService = refResourceService;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public async Task<IActionResult> GetPaymentTransactions()
+        {
+            var refResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[]
+            {
+                ReferenceResource.PaymentTransactionDirectBanking,
+                ReferenceResource.PaymentTransactionEbanking,
+                ReferenceResource.PaymentTransactionCash
+            });
+
+            var paymentOptions = new List<MultiSelectViewModel>();
+
+            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
+                refResources,
+                ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
+                {
+                Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                Text = x.Value
+            }));
+            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
+                refResources,
+                ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
+                {
+                Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                Text = x.Value
+            }));
+            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
+                refResources,
+                ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
+                {
+                Value = $"{3}-{x.ResourceId}",
+                Text = x.Value
+            }));
+
+            return Json(paymentOptions);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
@@ -57,7 +99,7 @@
         {
             var bankInData = await reportService.GetBankInAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
-            FileInfo fileInfo = new FileInfo(hostingEnvironment.WebRootPath + "\\ExcelTemplates\\BankIn.xlsx");
+            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\BankIn.xlsx");
 
             IActionResult result = RedirectToAction("BankIn");
 

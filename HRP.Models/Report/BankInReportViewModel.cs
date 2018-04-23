@@ -18,5 +18,10 @@
 
         [Display(Name = nameof(ViewLang.TypeOfPayment), ResourceType = typeof(ViewLang))]
         public PaymentType TypeOfPayment { get; set; }
+
+        [Display(Name = nameof(ViewLang.PaymentTransactions), ResourceType = typeof(ViewLang))]
+        public string SelectedPaymentTransactions { get; set; }
+
+        public MultiSelectList PaymentTransactions { get; set; }
     }
 }
