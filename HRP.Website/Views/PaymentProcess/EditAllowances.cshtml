@@ -195,8 +195,8 @@
 
                 <div class="group-complex -alw-layout-add">
                     <div class="text-specific">@ViewLang.TotalAdd</div>
-                    <input type="hidden" id="total-addition" disabled>
-                    <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled>
+                    <input type="hidden" id="total-addition" asp-for="Allowance.AdditionAmount">
+                    <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled asp-for="Allowance.AdditionAmountDisplay">
                 </div>
             </div>
             <div class="deduction">
@@ -239,8 +239,8 @@
 
                 <div class="group-complex -alw-layout-deduction-2">
                     <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
-                    <input type="hidden" id="total-deduction">
-                    <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled>
+                    <input type="hidden" id="total-deduction" asp-for="Allowance.DeductionAmount">
+                    <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled asp-for="Allowance.DeductionAmountDisplay">
                 </div>
             </div>
         </div>

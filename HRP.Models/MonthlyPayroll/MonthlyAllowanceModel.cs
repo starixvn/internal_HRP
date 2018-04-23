@@ -76,6 +76,14 @@
 
         public string TotalNetAmount { get; set; }
 
+        public string AdditionAmount { get; set; }
+
+        public string DeductionAmount { get; set; }
+
+        public string AdditionAmountDisplay { get; set; }
+
+        public string DeductionAmountDisplay { get; set; }
+
         [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 

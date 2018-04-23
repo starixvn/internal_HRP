@@ -48,6 +48,10 @@
 
         public MonthlyPayrollStatus Status { get; set; }
 
+        public string AdditionAmount { get; set; }
+
+        public string DeductionAmount { get; set; }
+
         public override string GetSettingKey() => "MonthlyPayroll_UpdateAllowances";
 
         public override bool IsValid() => PayrollId > 0 && UserId > 0;

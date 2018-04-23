@@ -352,9 +352,6 @@
         workingDays = $('#EmployeeInfo_WorkingDays').val();
         daysInMonth = $('#DaysInMonth').val();
 
-        calculateTotalAddition();
-        calculateTotalDeduction();
-
         initSelect2();
         initInputMask();
 

@@ -238,6 +238,8 @@
                 TotalNetAmount = cryptoService.Encrypt(viewModel.Allowance.TotalNetAmount),
                 DSTNetSalaryCurrencyId = viewModel.Allowance.DSTNetSalaryCurrencyId,
                 DSTNetSalaryAmount = cryptoService.Encrypt(viewModel.Allowance.DSTNetSalaryAmount),
+                AdditionAmount = cryptoService.Encrypt(viewModel.Allowance.AdditionAmount),
+                DeductionAmount = cryptoService.Encrypt(viewModel.Allowance.DeductionAmount),
                 AllowanceAddition = allowanceAdditionXml,
                 AllowanceDeduction = allowanceDeductionXml,
                 UserId = userId,
@@ -420,10 +422,12 @@
                 var dutyMealAddition = allowanceAdditions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
                 decimal.TryParse(dutyMealAddition.NetAllowance, out decimal dutyMealAdditionAmount);
                 totalAmount = totalAmount + dutyMealAdditionAmount;
+                monthlyAllowance.AdditionAmount = dutyMealAdditionAmount.ToString(CultureInfo.InvariantCulture);
 
                 var dutyMealDeduction = allowanceDeductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
                 decimal.TryParse(dutyMealDeduction.NetAllowance, out decimal dutyMealDeductionAmount);
                 totalAmount = totalAmount - dutyMealDeductionAmount;
+                monthlyAllowance.DeductionAmount = dutyMealDeductionAmount.ToString(CultureInfo.InvariantCulture);
 
                 monthlyAllowance.TotalAmount = RoundAmountWithCurrency(totalAmount, monthlyAllowance.CurrencyId.Value, 0).ToString(CultureInfo.InvariantCulture);
                 CalculateAutoAllowance(currencyExchangeRates, monthlyAllowance);
@@ -666,6 +670,21 @@
             allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
             allowance.TotalNetAmount = cryptoService.Decrypt(allowance.TotalNetAmount);
             allowance.DSTNetSalaryAmount = cryptoService.Decrypt(allowance.DSTNetSalaryAmount);
+            allowance.AdditionAmount = cryptoService.Decrypt(allowance.AdditionAmount);
+            allowance.DeductionAmount = cryptoService.Decrypt(allowance.DeductionAmount);
+
+            if (allowance.CurrencyId.HasValue)
+            {
+                if (!string.IsNullOrEmpty(allowance.AdditionAmount))
+                {
+                    allowance.AdditionAmountDisplay = RoundAmountWithCurrency(decimal.Parse(allowance.AdditionAmount), allowance.CurrencyId.Value, 0).ToString(CultureInfo.InvariantCulture);
+                }
+
+                if (!string.IsNullOrEmpty(allowance.DeductionAmount))
+                {
+                    allowance.DeductionAmountDisplay = RoundAmountWithCurrency(decimal.Parse(allowance.DeductionAmount), allowance.CurrencyId.Value, 0).ToString(CultureInfo.InvariantCulture);
+                }
+            }
         }
 
         private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)

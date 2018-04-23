@@ -565,6 +565,8 @@
             allowance.CashAmount = cryptoService.Encrypt(allowance.CashAmount);
             allowance.DSTNetSalaryAmount = cryptoService.Encrypt(allowance.DSTNetSalaryAmount);
             allowance.TotalNetAmount = cryptoService.Encrypt(allowance.TotalNetAmount);
+            allowance.AdditionAmount = cryptoService.Encrypt(allowance.AdditionAmount);
+            allowance.DeductionAmount = cryptoService.Encrypt(allowance.DeductionAmount);
         }
 
         private void EncryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)
