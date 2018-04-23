@@ -21,7 +21,5 @@
 
         [Display(Name = nameof(ViewLang.PaymentTransactions), ResourceType = typeof(ViewLang))]
         public string SelectedPaymentTransactions { get; set; }
-
-        public MultiSelectList PaymentTransactions { get; set; }
     }
 }
