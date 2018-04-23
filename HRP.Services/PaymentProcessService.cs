@@ -324,57 +324,8 @@
                 var monthlyBasicSalary = dataModel.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
                 if (monthlyBasicSalary != null)
                 {
-                    //// Calculate Salary
-                    var salaryAdditions = Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
-                        .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
-                        {
-                            EmployeeId = payroll.EmployeeId,
-                            Type = (int)x
-                        });
-                    var salaryDeductions = Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
-                        .Select(x => new MonthlySalaryDeductionModel
-                        {
-                            EmployeeId = payroll.EmployeeId,
-                            Type = (int)x
-                        });
-                    var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
-                    var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
-                    DecryptMonthlyBasicSalary(monthlyBasicSalary);
-
-                    monthlyPayrollService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
-                    monthlyPayrollService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
-
-                    EncryptMonthlyBasicSalary(monthlyBasicSalary);
-                    EncryptMonthlySalary(monthlySalary);
-                    EncryptMonthlySalaryAddition(backPay);
-                    monthlySalaries.Add(monthlySalary);
-                    monthlySalaryAdditions.AddRange(salaryAdditions);
-                    monthlySalaryAdditions.Add(backPay);
-                    monthlySalaryDeductions.AddRange(salaryDeductions);
-
-                    //// Calculate Allowance
-                    var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
-                    var monthlyAttendance = dataModel.MonthlyAttendance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
-                    var monthlyDSTNetSalary = dataModel.MonthlyDSTNetSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
-                    var actualWorkingDay = monthlyAttendance?.ActualWorkingDay ?? monthlyBasicSalary.WorkingDays;
-                    DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
-                    DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
-
-                    monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
-                    var allowanceAdditions = monthlyPayrollService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
-                        actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-                    var allowanceDeductions = monthlyPayrollService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,
-                        actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-                    var allowance = monthlyPayrollService.InitializeMonthlyAllowance(monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
-                        dataModel.CurrencyExchangeRate, monthlyDSTNetSalary);
-
-                    EncryptMonthlyBasicAllowance(monthlyBasicAllowance);
-                    EncryptMonthlyAllowance(allowance);
-                    EncryptMonthlyAllowanceAdditions(allowanceAdditions);
-                    EncryptMonthlyAllowanceDeductions(allowanceDeductions);
-                    monthlyAllowances.Add(allowance);
-                    monthlyAllowanceAdditions.AddRange(allowanceAdditions);
-                    monthlyAllowanceDeductions.AddRange(allowanceDeductions);
+                    GenerateEmployeeBasicSalary(month, dataModel, monthlySalaries, monthlySalaryAdditions, monthlySalaryDeductions, payroll, monthlyBasicSalary);
+                    GenerateEmployeeAllowance(month, dataModel, monthlyAllowances, monthlyAllowanceAdditions, monthlyAllowanceDeductions, payroll, monthlyBasicSalary);
                 }
             }
 
@@ -398,6 +349,74 @@
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             return commandResult;
+        }
+
+        private void GenerateEmployeeBasicSalary(DateTime month
+            , GeneratePayrollModel dataModel
+            , List<MonthlySalaryModel> monthlySalaries
+            , List<MonthlySalaryAdditionModel> monthlySalaryAdditions
+            , List<MonthlySalaryDeductionModel> monthlySalaryDeductions
+            , MonthlyPayroll payroll
+            , MonthlyBasicSalaryModel monthlyBasicSalary)
+        {
+            var salaryAdditions = Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
+                .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
+                {
+                    EmployeeId = payroll.EmployeeId,
+                    Type = (int)x
+                });
+            var salaryDeductions = Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
+                .Select(x => new MonthlySalaryDeductionModel
+                {
+                    EmployeeId = payroll.EmployeeId,
+                    Type = (int)x
+                });
+            var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
+            var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
+            DecryptMonthlyBasicSalary(monthlyBasicSalary);
+
+            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
+            monthlyPayrollService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
+
+            EncryptMonthlyBasicSalary(monthlyBasicSalary);
+            EncryptMonthlySalary(monthlySalary);
+            EncryptMonthlySalaryAddition(backPay);
+            monthlySalaries.Add(monthlySalary);
+            monthlySalaryAdditions.AddRange(salaryAdditions);
+            monthlySalaryAdditions.Add(backPay);
+            monthlySalaryDeductions.AddRange(salaryDeductions);
+        }
+
+        private void GenerateEmployeeAllowance(DateTime month
+            , GeneratePayrollModel dataModel
+            , List<MonthlyAllowanceModel> monthlyAllowances
+            , List<MonthlyAllowanceAdditionModel> monthlyAllowanceAdditions
+            , List<MonthlyAllowanceDeductionModel> monthlyAllowanceDeductions
+            , MonthlyPayroll payroll
+            , MonthlyBasicSalaryModel monthlyBasicSalary)
+        {
+            var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
+            var monthlyAttendance = dataModel.MonthlyAttendance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
+            var monthlyDSTNetSalary = dataModel.MonthlyDSTNetSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
+            var actualWorkingDay = monthlyAttendance?.ActualWorkingDay ?? monthlyBasicSalary.WorkingDays;
+            DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
+            DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
+
+            monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
+            var allowanceAdditions = monthlyPayrollService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
+                actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
+            var allowanceDeductions = monthlyPayrollService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,
+                actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
+            var allowance = monthlyPayrollService.InitializeMonthlyAllowance(monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
+                dataModel.CurrencyExchangeRate, monthlyDSTNetSalary);
+
+            EncryptMonthlyBasicAllowance(monthlyBasicAllowance);
+            EncryptMonthlyAllowance(allowance);
+            EncryptMonthlyAllowanceAdditions(allowanceAdditions);
+            EncryptMonthlyAllowanceDeductions(allowanceDeductions);
+            monthlyAllowances.Add(allowance);
+            monthlyAllowanceAdditions.AddRange(allowanceAdditions);
+            monthlyAllowanceDeductions.AddRange(allowanceDeductions);
         }
 
         public async Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month)
@@ -480,10 +499,6 @@
             addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
         }
 
-        /// <summary>
-        /// Allowance Encrypt/Decrypt
-        /// </summary>
-        /// <param name="allowance"></param>
         private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel allowance)
         {
             if (allowance == null)
