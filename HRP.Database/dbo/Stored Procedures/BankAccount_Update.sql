@@ -35,6 +35,19 @@ BEGIN
 		,@endRun DATETIME
 		,@duration INT
 
+	DECLARE @CompanyId INT
+	SELECT @CompanyId = CompanyId
+	FROM Employment
+	WHERE EmployeeId = @EmployeeId
+
+	-- Check Permission on Company
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UpdatedBy, @CompanyId, 'EmployeeBankDetails') <> 2 -- don't have host permission
+	BEGIN
+		SET @ErrCode = 1
+		SET @ErrMsg = N'You don''t have permission to update bank account for this employee'
+		RETURN
+	END
+
 	IF EXISTS (
 			SELECT 1
 			FROM [dbo].[BankAccount] WITH (NOLOCK)

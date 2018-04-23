@@ -9,22 +9,22 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Models.EmployeeManagement;
     using Microsoft.AspNetCore.Mvc;
     using Models.BankAccount;
+    using Models.EmployeeManagement;
     using Services;
 
     public class BankAccountController : BaseController
     {
         private readonly IBankAccountService bankAccountService;
         private readonly IEmployeeService employeeService;
-        private readonly IRefResourceService refResourceService;
 
         private readonly string[] refNames =
         {
             ReferenceResource.BankType,
             ReferenceResource.TypeOfBankAccount
         };
+        private readonly IRefResourceService refResourceService;
 
         public BankAccountController(
             IBaseService baseService,
@@ -56,42 +56,16 @@
             return View(viewModel);
         }
 
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> GetEmployeeBankAccounts(int bankTypeId, int employeeId)
-        {
-            var criteria = new SearchBankAccountCriteria
-            {
-                EmployeeId = employeeId,
-                BankTypeId = bankTypeId,
-                IsActive = true
-            };
-
-            var result = await baseService.GetDataAsync<BankAccount>(criteria);
-            return Json(result.Select(x => new { id = x.BankAccountId, text = x.PaymentTransaction }));
-        }
-
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> GetPaymentTransactions(int bankTypeId, int employeeId, int paymentTransactionId = 0)
-        {
-            var refResourceName = bankTypeId == (int)BankTypes.Ebanking
-                ? ReferenceResource.PaymentTransactionEbanking
-                : ReferenceResource.PaymentTransactionDirectBanking;
-
-            var results = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
-
-            return Json(results.Select(x => new
-            {
-                id = x.ResourceId,
-                text = x.Value,
-                selected = x.ResourceId == paymentTransactionId
-            }));
-        }
-
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> CreateBankAccount(int employeeId, int bankTypeId = 1)
         {
+            bool isHost = await IsUserHavePermissionOnEmployee(employeeId);
+
+            if (!isHost)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
             var viewModel = new CreateBankAccountViewModel
             {
                 EmployeeId = employeeId,
@@ -122,6 +96,27 @@
             return View(viewModel);
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, int bankType)
+        {
+            bool isHost = await IsUserHavePermissionOnEmployee(employeeId);
+
+            if (!isHost)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            var viewModel = new CreateBankAccountViewModel
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankType
+            };
+
+            await PrepareCreateBankAccountViewModel(viewModel);
+
+            return PartialView("_CreateBankAccountInPayroll", viewModel);
+        }
+
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> CreateBankAccountInPayroll(CreateBankAccountViewModel viewModel)
@@ -142,23 +137,16 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, int bankType)
-        {
-            var viewModel = new CreateBankAccountViewModel
-            {
-                EmployeeId = employeeId,
-                BankTypeId = bankType
-            };
-
-            await PrepareCreateBankAccountViewModel(viewModel);
-
-            return PartialView("_CreateBankAccountInPayroll", viewModel);
-        }
-
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> EditBankAccount(int bankAccountId)
         {
             BankAccount bankAccount = await bankAccountService.GetBankAccountByIdAsync(bankAccountId);
+
+            bool isHost = await IsUserHavePermissionOnEmployee(bankAccount.EmployeeId);
+
+            if (!isHost)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
 
             var viewModel = new EditBankAccountViewModel
             {
@@ -204,6 +192,49 @@
             viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> GetEmployeeBankAccounts(int bankTypeId, int employeeId)
+        {
+            var criteria = new SearchBankAccountCriteria
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankTypeId,
+                IsActive = true
+            };
+
+            var result = await baseService.GetDataAsync<BankAccount>(criteria);
+            return Json(result.Select(x => new { id = x.BankAccountId, text = x.PaymentTransaction }));
+        }
+
+        [HttpGet]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
+        public async Task<IActionResult> GetPaymentTransactions(int bankTypeId, int employeeId, int paymentTransactionId = 0)
+        {
+            var refResourceName = bankTypeId == (int)BankTypes.Ebanking
+                ? ReferenceResource.PaymentTransactionEbanking
+                : ReferenceResource.PaymentTransactionDirectBanking;
+
+            var results = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
+
+            return Json(results.Select(x => new
+            {
+                id = x.ResourceId,
+                text = x.Value,
+                selected = x.ResourceId == paymentTransactionId
+            }));
+        }
+
+        private async Task<bool> IsUserHavePermissionOnEmployee(int employeeId)
+        {
+            var employeeBasicInfo = await employeeService.GetEmployeeBasicInfoByIdAsync(employeeId);
+
+            return sessionService.HasPermissionOnCompany(
+                employeeBasicInfo.CompanyId,
+                FunctionKey.EmployeeBankDetails,
+                Policy.Host);
         }
 
         private async Task PrepareCreateBankAccountViewModel(BaseFormBankAccountViewModel viewModel)

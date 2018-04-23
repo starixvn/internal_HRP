@@ -8,10 +8,10 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Models.EmployeeManagement;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc;
     using Models.BankAccount;
+    using Models.EmployeeManagement;
     using NSubstitute;
     using Services;
     using Website.Controllers;
@@ -416,6 +416,16 @@
             refResourceService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(new List<ReferenceResourceModel>());
+
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
         }
 
         private static IEnumerable<ReferenceResourceModel> GetResources()

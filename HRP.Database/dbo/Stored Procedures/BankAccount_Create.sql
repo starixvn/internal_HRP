@@ -35,6 +35,19 @@ BEGIN
 		,@endRun DATETIME
 		,@duration INT
 
+	DECLARE @CompanyId INT
+	SELECT @CompanyId = CompanyId
+	FROM Employment
+	WHERE EmployeeId = @EmployeeId
+
+	-- Check Permission on Company
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@CreatedBy, @CompanyId, 'EmployeeBankDetails') <> 2 -- don't have host permission
+	BEGIN
+		SET @ErrCode = 1
+		SET @ErrMsg = N'You don''t have permission to create bank account for this employee'
+		RETURN
+	END
+
 	IF EXISTS (
 			SELECT 1
 			FROM [dbo].[BankAccount] WITH (NOLOCK)
@@ -44,7 +57,7 @@ BEGIN
 				AND [IsActive] = @IsActive
 			)
 	BEGIN
-		SET @ErrCode = 1
+		SET @ErrCode = 2
 		SET @ErrMsg = N'Payment Transaction already exists. Please choose another value.'
 
 		RETURN
@@ -58,7 +71,7 @@ BEGIN
 				AND [BankType] = @BankType
 			)
 	BEGIN
-		SET @ErrCode = 2
+		SET @ErrCode = 3
 		SET @ErrMsg = N'Account Number already exists. Please enter another value.'
 
 		RETURN
@@ -77,7 +90,7 @@ BEGIN
 	--		AND @IsActive = 1
 	--		)
 	--BEGIN
-	--	SET @ErrCode = 3
+	--	SET @ErrCode = 4
 	--	SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot create more bank account.'
 
 	--	RETURN
