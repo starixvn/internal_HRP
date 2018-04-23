@@ -81,7 +81,10 @@ namespace HRP.Core.Services
 
         protected virtual void Dispose(bool disposing)
         {
-            cert2.Dispose();
+            if (cert2 != null)
+            {
+                cert2.Dispose();
+            }
         }
 
         private X509Certificate2 InitCertificate()

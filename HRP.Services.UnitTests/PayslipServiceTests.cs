@@ -49,7 +49,8 @@
             // Arrange
             var payslips = new List<PayslipModel>
             {
-                new PayslipModel { PayrollId = 1, FullName = "thang", Nickname = "tim.trinh" }
+                new PayslipModel { PayrollId = 1, IDNo = "DAR111", FullName = "thang", Nickname = "tim.trinh",
+                    Section = "HR", Email = "tim.trinh@starixsoft.com", Phone = "123", IsSent = true }
             };
             var payslipService = GetPayslipService();
             baseService.GetDataAsync<PayslipModel>(Arg.Any<GetPayslipCriteria>()).Returns(payslips);

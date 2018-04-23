@@ -191,6 +191,121 @@
 
         #endregion Password
 
+        #region ChangePassword
+
+        [Fact]
+        public void ChangePassword_WhenCalled_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetCertificateController();
+            sessionService.IsSystemAdmin = true;
+
+            // Act
+            var actual = controller.ChangePassword();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Null(viewModel.OldPassword);
+            Assert.Null(viewModel.Password);
+            Assert.True(viewModel.IsSystemAdmin);
+            Assert.False(viewModel.IsIsSuccessful);
+            Assert.Null(viewModel.MessageResult);
+        }
+
+        [Fact]
+        public void ChangePasswordPost_ModelStateInvalid_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var viewModel = new ChangeCertificatePasswordViewModel();
+            var controller = GetCertificateController();
+            controller.ModelState.AddModelError("password", "required");
+
+            // Act
+            var actual = controller.ChangePassword(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.False(viewResult.ViewData.ModelState.IsValid);
+            Assert.True(viewResult.ViewData.ModelState.Count == 1);
+
+            Assert.Equal(viewModel, viewModelResult);
+        }
+
+        [Fact]
+        public void ChangePasswordPost_IncorrectPassword_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var viewModel = new ChangeCertificatePasswordViewModel();
+            var controller = GetCertificateController();
+            certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(false);
+
+            // Act
+            var actual = controller.ChangePassword(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.False(viewResult.ViewData.ModelState.IsValid);
+            Assert.True(viewResult.ViewData.ModelState.Count == 1);
+
+            Assert.Equal(viewModel, viewModelResult);
+        }
+
+        [Fact]
+        public void ChangePasswordPost_Unsuccessfully_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var commandResult = new CommandResult();
+            var viewModel = new ChangeCertificatePasswordViewModel();
+            var controller = GetCertificateController();
+            certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
+            certificateService.ChangePasswordAccessTheCertificate(viewModel.OldPassword, viewModel.Password).Returns(commandResult);
+
+            // Act
+            var actual = controller.ChangePassword(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Equal(viewModel.OldPassword, viewModelResult.OldPassword);
+            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
+            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
+            Assert.Equal(commandResult.Message, viewModelResult.MessageResult);
+        }
+
+        [Fact]
+        public void ChangePasswordPost_Successfully_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var commandResult = new CommandResult { Code = 0 };
+            var viewModel = new ChangeCertificatePasswordViewModel();
+            var controller = GetCertificateController();
+            certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
+            certificateService.ChangePasswordAccessTheCertificate(viewModel.OldPassword, viewModel.Password).Returns(commandResult);
+
+            // Act
+            var actual = controller.ChangePassword(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Equal(viewModel.OldPassword, viewModelResult.OldPassword);
+            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
+            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
+            Assert.Null(viewModelResult.MessageResult);
+
+            certificateService.Received(1).CachePasswordAccessTheCertificate(viewModel.Password);
+        }
+
+        #endregion ChangePassword
+
         [Fact]
         public void Download_WhenCalled_ReturnAsExpectedFile()
         {
@@ -208,6 +323,22 @@
             var fileStream = Assert.IsType<FileContentResult>(actual);
             Assert.Equal(MimeType.ZIP, fileStream.ContentType);
             Assert.Equal("HRP.zip", fileStream.FileDownloadName);
+        }
+
+        [Fact]
+        public void FileNotFound_WhenCalled_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetCertificateController();
+            sessionService.IsSystemAdmin = true;
+
+            // Act
+            var actual = controller.FileNotFound();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+            Assert.Equal(true, viewResult.ViewData["IsSystemAdmin"]);
         }
 
         #region Helpers
