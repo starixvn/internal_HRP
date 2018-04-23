@@ -867,33 +867,50 @@
 
         private static void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
         {
-            decimal.TryParse(monthlyPayrollBasicAllowance.TotalAmount, out decimal totalAmount);
-            var currencyId = monthlyPayrollBasicAllowance.CurrencyId ?? 0;
-            var directbanking1CurrencyId = monthlyPayrollBasicAllowance.DirectBanking1CurrencyId ?? 0;
-            var directbanking2CurrencyId = monthlyPayrollBasicAllowance.DirectBanking2CurrencyId ?? 0;
-            var cashCurrencyId = monthlyPayrollBasicAllowance.CashCurrencyId ?? 0;
+            decimal.TryParse(monthlyPayrollBasicAllowance.TotalAmount, out decimal totalAmount);        
 
-            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking1Amount, directbanking1CurrencyId, currencyId);
-            var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking2Amount, directbanking2CurrencyId, currencyId);
-            var cash = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.CashAmount, cashCurrencyId, currencyId);
+            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking1Amount, 
+                monthlyPayrollBasicAllowance.DirectBanking1CurrencyId, monthlyPayrollBasicAllowance.CurrencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking2Amount,
+                monthlyPayrollBasicAllowance.DirectBanking2CurrencyId, monthlyPayrollBasicAllowance.CurrencyId);
+            var cash = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.CashAmount, monthlyPayrollBasicAllowance.CashCurrencyId, monthlyPayrollBasicAllowance.CurrencyId);
 
             switch (monthlyPayrollBasicAllowance.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    directBanking1 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId),
-                        directbanking1CurrencyId, 0);
-                    monthlyPayrollBasicAllowance.DirectBanking1Amount = directBanking1.ToString(CultureInfo.InvariantCulture);
+                    if(monthlyPayrollBasicAllowance.DirectBanking1CurrencyId.HasValue)
+                    {
+                        directBanking1 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.DirectBanking1CurrencyId),
+                            monthlyPayrollBasicAllowance.DirectBanking1CurrencyId.Value, 0);
+
+                        monthlyPayrollBasicAllowance.DirectBanking1Amount = directBanking1.ToString(CultureInfo.InvariantCulture);
+                    }
+
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
-                    directBanking2 = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId),
-                        directbanking2CurrencyId, 0);
-                    monthlyPayrollBasicAllowance.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
+                    if (monthlyPayrollBasicAllowance.DirectBanking2CurrencyId.HasValue)
+                    {
+                        directBanking2 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.DirectBanking2CurrencyId),
+                            monthlyPayrollBasicAllowance.DirectBanking2CurrencyId.Value, 0);
+
+                        monthlyPayrollBasicAllowance.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture); 
+                    }
+
                     break;
 
                 case PayrollAutoCalculateOn.Cash:
-                    cash = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId, 0);
-                    monthlyPayrollBasicAllowance.CashAmount = cash.ToString(CultureInfo.InvariantCulture);
+                    if (monthlyPayrollBasicAllowance.CashCurrencyId.HasValue)
+                    {
+                        cash = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.CashCurrencyId), 
+                            monthlyPayrollBasicAllowance.CashCurrencyId.Value, 0);
+
+                        monthlyPayrollBasicAllowance.CashAmount = cash.ToString(CultureInfo.InvariantCulture); 
+                    }
+
                     break;
 
                 default:
@@ -904,31 +921,47 @@
         private static void CalculateAutoAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
         {
             decimal.TryParse(monthlyAllowance.TotalAmount, out decimal totalAmount);
-            var currencyId = monthlyAllowance.CurrencyId ?? 0;
-            var directbanking1CurrencyId = monthlyAllowance.DirectBanking1CurrencyId ?? 0;
-            var directbanking2CurrencyId = monthlyAllowance.DirectBanking2CurrencyId ?? 0;
-            var cashCurrencyId = monthlyAllowance.CashCurrencyId ?? 0;
 
-            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyAllowance.DirectBanking1Amount, directbanking1CurrencyId, currencyId);
-            var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyAllowance.DirectBanking2Amount, directbanking2CurrencyId, currencyId);
-            var cash = ConvertAmount(currencyExchangeRates, monthlyAllowance.CashAmount, cashCurrencyId, currencyId);
+            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyAllowance.DirectBanking1Amount,
+                monthlyAllowance.DirectBanking1CurrencyId, monthlyAllowance.CurrencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyAllowance.DirectBanking2Amount,
+                monthlyAllowance.DirectBanking2CurrencyId, monthlyAllowance.CurrencyId);
+            var cash = ConvertAmount(currencyExchangeRates, monthlyAllowance.CashAmount, monthlyAllowance.CashCurrencyId, monthlyAllowance.CurrencyId);
             decimal autoAmount;
 
             switch (monthlyAllowance.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, currencyId, directbanking1CurrencyId), directbanking1CurrencyId, 0);
-                    monthlyAllowance.DirectBanking1Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    if(monthlyAllowance.DirectBanking1CurrencyId.HasValue)
+                    {
+                        autoAmount = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, monthlyAllowance.CurrencyId, monthlyAllowance.DirectBanking1CurrencyId), 
+                            monthlyAllowance.DirectBanking1CurrencyId.Value, 0);
+                        monthlyAllowance.DirectBanking1Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    }
+
                     break;
 
                 case PayrollAutoCalculateOn.DirectBanking2:
-                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, currencyId, directbanking2CurrencyId), directbanking2CurrencyId, 0);
-                    monthlyAllowance.DirectBanking2Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    if (monthlyAllowance.DirectBanking2CurrencyId.HasValue)
+                    {
+                        autoAmount = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, monthlyAllowance.CurrencyId, monthlyAllowance.DirectBanking2CurrencyId),
+                            monthlyAllowance.DirectBanking2CurrencyId.Value, 0);
+                        monthlyAllowance.DirectBanking2Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    }
+                    
                     break;
 
                 case PayrollAutoCalculateOn.Cash:
-                    autoAmount = RoundAmountWithCurrency(ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, currencyId, cashCurrencyId), cashCurrencyId, 0);
-                    monthlyAllowance.CashAmount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    if (monthlyAllowance.CashCurrencyId.HasValue)
+                    {
+                        autoAmount = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, monthlyAllowance.CurrencyId, monthlyAllowance.CashCurrencyId),
+                            monthlyAllowance.CashCurrencyId.Value, 0);
+                        monthlyAllowance.CashAmount = autoAmount.ToString(CultureInfo.InvariantCulture);
+                    }
+                    
                     break;
 
                 default:
