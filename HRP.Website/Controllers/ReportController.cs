@@ -9,6 +9,7 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
+    using HRP.Criteria.Report;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -160,6 +161,19 @@
             viewModel.Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("GenerateReport", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HttpGet]
+        public async Task<IActionResult> GetDynamicEmployeeReport(DateTime month, int companyId, string selectedItems)
+        {
+            var employeeDatas = await baseService.GetDataAsync<DynamicReportEmployeeModel>(new GetEmployeeDataForDynamicReportCriteria { CompanyId = companyId, Month = month });
+
+            var columns = await baseService.GetDataAsync<DynamicReportColumnModel>(new GetSelectedColumnsCriteria { SelectedIds = selectedItems });
+
+            var data = exportExcelService.ExportDynamicReport(employeeDatas, columns);
+
+            return File(data, MimeType.XLSX, $"Report_{month.ToString("MM-yyyy")}_{companyId}.xlsx");
         }
     }
 }

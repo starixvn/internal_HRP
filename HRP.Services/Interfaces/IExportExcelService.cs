@@ -14,5 +14,7 @@
         Stream ExportSalaryAllowanceReport(string templatePath, IEnumerable<DynamicReportModel> records);
 
         byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, BankInReport data);
+
+        byte[] ExportDynamicReport(IEnumerable<DynamicReportEmployeeModel> records, IEnumerable<DynamicReportColumnModel> columns);
     }
 }

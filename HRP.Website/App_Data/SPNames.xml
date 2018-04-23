@@ -67,8 +67,7 @@
     <Setting Key="JobGrade_Create" SpName="JobGrade_Create" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="JobGrade_GetById" SpName="JobGrade_GetById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="JobGrade_Update" SpName="JobGrade_Update" DbName="bodb_HRP" Plain="0"></Setting>
-  </Function>
-  <Function Name="Country">
+  </Function><Function Name="Country">
     <Setting Key="Country_GetAll" SpName="Country_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Country_Create" SpName="Country_Create" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Country_GetById" SpName="Country_GetById" DbName="bodb_HRP" Plain="0"></Setting>
@@ -185,5 +184,7 @@
   <Function Name="Report">
     <Setting Key="Report_GetBankInByMonthAndCompanyId" SpName="Report_GetBankInByMonthAndCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Report_GetDataForDynamicReport" SpName="Report_GetDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetEmployeeDataForDynamicReport" SpName="Report_GetEmployeeDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetSelectedColumns" SpName="Report_GetSelectedColumns" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

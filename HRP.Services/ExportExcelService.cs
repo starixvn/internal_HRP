@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using Core.Extensions.Excel;
+    using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
     using NPOI.XSSF.UserModel;
@@ -14,6 +15,13 @@
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
     {
+        private readonly ICryptoService cryptoService;
+
+        public ExportExcelService(ICryptoService cryptoService)
+        {
+            this.cryptoService = cryptoService;
+        }
+
         public Stream GetPayDetails(Stream fileStream)
         {
             var workbook = new XSSFWorkbook(fileStream);
@@ -173,6 +181,49 @@
                 memory.Position = 0;
 
                 return memory;
+            }
+        }
+
+        public byte[] ExportDynamicReport(IEnumerable<DynamicReportEmployeeModel> records, IEnumerable<DynamicReportColumnModel> columns)
+        {         
+            using (var package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
+
+                // Write header
+                var col = 1;
+                foreach (var column in columns)
+                {
+                    worksheet.Cells[1, col].Value = column.HeaderName;
+                    col++;
+                }
+
+                // Write Data
+                var row = 2;
+                foreach (var record in records)
+                {
+                    col = 1;
+                    foreach (var column in columns)
+                    {
+                        var propertyInfo = record.GetType().GetProperty(column.ColumnName);
+
+                        if (column.IsEncrypted)
+                        {
+                            var decryptedValue = cryptoService.Decrypt(propertyInfo.GetValue(record).ToString());
+                            worksheet.Cells[row, col].Value = decryptedValue;
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
+                        }
+
+                        col++;
+                    }
+
+                    row++;
+                }
+
+                return package.GetAsByteArray();
             }
         }
     }
