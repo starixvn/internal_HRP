@@ -33,6 +33,8 @@ BEGIN
 		,[AutoCalculateOn]
 		,[TotalNetAmount]
 		,[Status]
+		,[AdditionAmount]
+		,[DeductionAmount]
 	FROM [dbo].[MonthlyAllowance] AS ma WITH(NOLOCK)
 	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = ma.CurrencyId
 	LEFT JOIN dbo.Currency AS dst WITH (NOLOCK) ON dst.CurrencyId = ma.DSTNetSalaryCurrencyId

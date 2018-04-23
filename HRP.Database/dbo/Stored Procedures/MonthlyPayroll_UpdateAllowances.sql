@@ -16,6 +16,8 @@
 	,@AutoCalculateOn VARCHAR(30)
 	,@TotalNetAmount VARCHAR(MAX) = NULL
 	,@Status TINYINT = NULL
+	,@AdditionAmount VARCHAR(MAX) = NULL
+	,@DeductionAmount VARCHAR(MAX) = NULL
 	,@AllowanceAddition VARCHAR(MAX)
 	,@AllowanceDeduction VARCHAR(MAX)
 	,@UserId INT
@@ -32,6 +34,21 @@ Updated:
  */
 BEGIN
 	SET NOCOUNT ON
+
+	DECLARE @companyId INT
+
+	SELECT @companyId = e.CompanyId
+	FROM dbo.Employment AS e WITH (NOLOCK)
+	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK)
+	ON e.EmployeeId = mp.EmployeeId AND mp.PayrollId = @PayrollId
+
+	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @companyId, 'PaymentProcess') <> 2
+	BEGIN
+		SET @ErrCode = 1
+		SET @ErrMsg = 'You dont have permission to update this employee payroll'
+
+		RETURN
+	END
 
 	DECLARE @startRun DATETIME = GETDATE()
 		,@endRun DATETIME
@@ -122,6 +139,8 @@ BEGIN
 				,[AutoCalculateOn] AS '@aco'
 				,[TotalNetAmount] AS '@tna'
 				,[Status] AS '@st'
+				,[AdditionAmount] AS '@aa'
+				,[DeductionAmount] AS '@da'
 				,(
 					SELECT maa.[Type] AS '@t'
 						,maa.UnitAmount AS '@ua'
@@ -166,6 +185,8 @@ BEGIN
 		,[AutoCalculateOn] = @AutoCalculateOn
 		,[TotalNetAmount] = @TotalNetAmount
 		,[Status] = @Status
+		,[AdditionAmount] = @AdditionAmount
+		,[DeductionAmount] = @DeductionAmount
 	FROM [dbo].[MonthlyAllowance] AS ma WITH (ROWLOCK, UPDLOCK)
 	WHERE ma.PayrollId = @PayrollId
 
@@ -205,6 +226,8 @@ BEGIN
 				,[AutoCalculateOn] AS '@aco'
 				,[TotalNetAmount] AS '@tna'
 				,[Status] AS '@st'
+				,[AdditionAmount] AS '@aa'
+				,[DeductionAmount] AS '@da'
 				,(
 					SELECT maa.[Type] AS '@t'
 						,maa.UnitAmount AS '@ua'
@@ -246,6 +269,3 @@ BEGIN
 	DROP TABLE #addition
 	DROP TABLE #deduction
 END
-
-GO
-

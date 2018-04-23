@@ -80,8 +80,10 @@
 
         public string DeductionAmount { get; set; }
 
+        [XmlIgnore]
         public string AdditionAmountDisplay { get; set; }
 
+        [XmlIgnore]
         public string DeductionAmountDisplay { get; set; }
 
         [XmlIgnore]

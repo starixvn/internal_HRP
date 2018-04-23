@@ -2,7 +2,6 @@
 CREATE PROCEDURE [dbo].[PaymentProcess_CreateMonthlyAllowance] @Month DATE
 	,@AllowanceXMLDoc NVARCHAR(MAX)
 	,@UpdatedBy INT = 0
-AS
 /*
 Created: 20180322@Raymond.Le
 Task: Create Monthly Allowance
@@ -33,11 +32,9 @@ BEGIN
 		,[TotalAmount] VARCHAR(MAX)
 		,[DirectBanking1CurrencyId] INT
 		,[DirectBanking1Amount] VARCHAR(MAX)
-		,[DirectBanking1BankTypeId] TINYINT
 		,[DirectBanking1AccountId] INT
 		,[DirectBanking2CurrencyId] INT
 		,[DirectBanking2Amount] VARCHAR(MAX)
-		,[DirectBanking2BankTypeId] TINYINT
 		,[DirectBanking2AccountId] INT
 		,[CashCurrencyId] INT
 		,[CashAmount] VARCHAR(MAX)
@@ -47,6 +44,8 @@ BEGIN
 		,[AutoCalculateOn] VARCHAR(30)
 		,[TotalNetAmount] VARCHAR(MAX)
 		,[Status] TINYINT
+		,[AdditionAmount] VARCHAR(MAX)
+		,[DeductionAmount] VARCHAR(MAX)
 		)
 
 	CREATE TABLE #tblOldLogData (
@@ -55,11 +54,9 @@ BEGIN
 		,[TotalAmount] VARCHAR(MAX)
 		,[DirectBanking1CurrencyId] INT
 		,[DirectBanking1Amount] VARCHAR(MAX)
-		,[DirectBanking1BankTypeId] TINYINT
 		,[DirectBanking1AccountId] INT
 		,[DirectBanking2CurrencyId] INT
 		,[DirectBanking2Amount] VARCHAR(MAX)
-		,[DirectBanking2BankTypeId] TINYINT
 		,[DirectBanking2AccountId] INT
 		,[CashCurrencyId] INT
 		,[CashAmount] VARCHAR(MAX)
@@ -69,6 +66,8 @@ BEGIN
 		,[AutoCalculateOn] VARCHAR(30)
 		,[TotalNetAmount] VARCHAR(MAX)
 		,[Status] TINYINT
+		,[AdditionAmount] VARCHAR(MAX)
+		,[DeductionAmount] VARCHAR(MAX)
 		)
 
 	-- Convert XMLDoc to table
@@ -83,11 +82,9 @@ BEGIN
 		,[TotalAmount]
 		,[DirectBanking1CurrencyId]
 		,[DirectBanking1Amount]
-		,[DirectBanking1BankTypeId]
 		,[DirectBanking1AccountId]
 		,[DirectBanking2CurrencyId]
 		,[DirectBanking2Amount]
-		,[DirectBanking2BankTypeId]
 		,[DirectBanking2AccountId]
 		,[CashCurrencyId]
 		,[CashAmount]
@@ -97,17 +94,17 @@ BEGIN
 		,[AutoCalculateOn]
 		,[TotalNetAmount]
 		,[Status]
+		,[AdditionAmount]
+		,[DeductionAmount]
 		)
 	SELECT mp.PayrollId
 		,NULLIF(ISNULL(Data.[CurrencyId], ''), '')
 		,Data.[TotalAmount]
 		,NULLIF(ISNULL(Data.[DirectBanking1CurrencyId], ''), '')
 		,Data.[DirectBanking1Amount]
-		,NULLIF(ISNULL(Data.[DirectBanking1BankTypeId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking1AccountId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking2CurrencyId], ''), '')
 		,Data.[DirectBanking2Amount]
-		,NULLIF(ISNULL(Data.[DirectBanking2BankTypeId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking2AccountId], ''), '')
 		,NULLIF(ISNULL(Data.[CashCurrencyId], ''), '')
 		,Data.[CashAmount]
@@ -117,17 +114,17 @@ BEGIN
 		,Data.[AutoCalculateOn]
 		,Data.[TotalNetAmount]
 		,Data.[Status]
+		,Data.[AdditionAmount]
+		,Data.[DeductionAmount]
 	FROM OPENXML(@iDoc, '/Root/Row', 1) WITH (
 			EmployeeId INT
 			,[CurrencyId] VARCHAR(50)
 			,[TotalAmount] VARCHAR(MAX)
 			,[DirectBanking1CurrencyId] VARCHAR(50)
 			,[DirectBanking1Amount] VARCHAR(MAX)
-			,[DirectBanking1BankTypeId] VARCHAR(50)
 			,[DirectBanking1AccountId] VARCHAR(50)
 			,[DirectBanking2CurrencyId] VARCHAR(50)
 			,[DirectBanking2Amount] VARCHAR(MAX)
-			,[DirectBanking2BankTypeId] VARCHAR(50)
 			,[DirectBanking2AccountId] VARCHAR(50)
 			,[CashCurrencyId] VARCHAR(50)
 			,[CashAmount] VARCHAR(MAX)
@@ -137,6 +134,8 @@ BEGIN
 			,[AutoCalculateOn] VARCHAR(30)
 			,[TotalNetAmount] VARCHAR(MAX)
 			,[Status] TINYINT
+			,[AdditionAmount] VARCHAR(MAX)
+			,[DeductionAmount] VARCHAR(MAX)
 			) AS Data
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON mp.EmployeeId = Data.EmployeeId
 		AND mp.[Month] = @Month
@@ -151,11 +150,9 @@ BEGIN
 			,[TotalAmount]
 			,[DirectBanking1CurrencyId]
 			,[DirectBanking1Amount]
-			,[DirectBanking1BankTypeId]
 			,[DirectBanking1AccountId]
 			,[DirectBanking2CurrencyId]
 			,[DirectBanking2Amount]
-			,[DirectBanking2BankTypeId]
 			,[DirectBanking2AccountId]
 			,[CashCurrencyId]
 			,[CashAmount]
@@ -165,8 +162,10 @@ BEGIN
 			,[AutoCalculateOn]
 			,[TotalNetAmount]
 			,[Status]
+			,[AdditionAmount]
+			,[DeductionAmount]
 		FROM #tblTempMonthlyAllowance WITH (NOLOCK)
-		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1BankTypeId], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2BankTypeId], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status])
+		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status], [AdditionAmount], [DeductionAmount])
 		ON a.PayrollId = val.PayrollId
 	WHEN MATCHED
 		THEN
@@ -175,11 +174,9 @@ BEGIN
 				,a.[TotalAmount] = val.[TotalAmount]
 				,a.DirectBanking1CurrencyId = val.DirectBanking1CurrencyId
 				,a.DirectBanking1Amount = val.DirectBanking1Amount
-				,a.[DirectBanking1BankTypeId] = val.[DirectBanking1BankTypeId]
 				,a.[DirectBanking1AccountId] = val.[DirectBanking1AccountId]
 				,a.DirectBanking2CurrencyId = val.DirectBanking2CurrencyId
 				,a.DirectBanking2Amount = val.DirectBanking2Amount
-				,a.[DirectBanking2BankTypeId] = val.[DirectBanking2BankTypeId]
 				,a.[DirectBanking2AccountId] = val.[DirectBanking2AccountId]
 				,a.CashCurrencyId = val.CashCurrencyId
 				,a.CashAmount = val.CashAmount
@@ -189,6 +186,8 @@ BEGIN
 				,a.AutoCalculateOn = val.AutoCalculateOn
 				,a.[TotalNetAmount] = val.[TotalNetAmount]
 				,a.[Status] = val.[Status]
+				,a.[AdditionAmount] = val.[AdditionAmount]
+				,a.[DeductionAmount] = val.[DeductionAmount]
 	WHEN NOT MATCHED
 		THEN
 			INSERT (
@@ -197,11 +196,9 @@ BEGIN
 				,[TotalAmount]
 				,[DirectBanking1CurrencyId]
 				,[DirectBanking1Amount]
-				,[DirectBanking1BankTypeId]
 				,[DirectBanking1AccountId]
 				,[DirectBanking2CurrencyId]
 				,[DirectBanking2Amount]
-				,[DirectBanking2BankTypeId]
 				,[DirectBanking2AccountId]
 				,[CashCurrencyId]
 				,[CashAmount]
@@ -211,6 +208,8 @@ BEGIN
 				,[AutoCalculateOn]
 				,[TotalNetAmount]
 				,[Status]
+				,[AdditionAmount]
+				,[DeductionAmount]
 				)
 			VALUES (
 				val.PayrollId
@@ -218,11 +217,9 @@ BEGIN
 				,val.[TotalAmount]
 				,val.[DirectBanking1CurrencyId]
 				,val.[DirectBanking1Amount]
-				,val.[DirectBanking1BankTypeId]
 				,val.[DirectBanking1AccountId]
 				,val.[DirectBanking2CurrencyId]
 				,val.[DirectBanking2Amount]
-				,val.[DirectBanking2BankTypeId]
 				,val.[DirectBanking2AccountId]
 				,val.[CashCurrencyId]
 				,val.[CashAmount]
@@ -232,17 +229,17 @@ BEGIN
 				,val.[AutoCalculateOn]
 				,val.[TotalNetAmount]
 				,val.[Status]
+				,val.[AdditionAmount]
+				,val.[DeductionAmount]
 				)
 	OUTPUT DELETED.PayrollId
 		,DELETED.[CurrencyId]
 		,DELETED.[TotalAmount]
 		,DELETED.[DirectBanking1CurrencyId]
 		,DELETED.[DirectBanking1Amount]
-		,DELETED.[DirectBanking1BankTypeId]
 		,DELETED.[DirectBanking1AccountId]
 		,DELETED.[DirectBanking2CurrencyId]
 		,DELETED.[DirectBanking2Amount]
-		,DELETED.[DirectBanking2BankTypeId]
 		,DELETED.[DirectBanking2AccountId]
 		,DELETED.[CashCurrencyId]
 		,DELETED.[CashAmount]
@@ -252,7 +249,9 @@ BEGIN
 		,DELETED.[AutoCalculateOn]
 		,DELETED.[TotalNetAmount]
 		,DELETED.[Status]
-	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1BankTypeId], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2BankTypeId], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status]);
+		,DELETED.[AdditionAmount]
+		,DELETED.[DeductionAmount]
+	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status],[AdditionAmount],[DeductionAmount]);
 
 	--WRITE LOG
 	SELECT @maxLength = Count(1)
@@ -266,11 +265,9 @@ BEGIN
 					,o.[TotalAmount] AS '@ta'
 					,o.[DirectBanking1CurrencyId] AS '@d1ci'
 					,o.[DirectBanking1Amount] AS '@d1a'
-					,o.[DirectBanking1BankTypeId] AS '@d1bi'
 					,o.[DirectBanking1AccountId] AS '@d1ai'
 					,o.[DirectBanking2CurrencyId] AS '@d2ci'
 					,o.[DirectBanking2Amount] AS '@d2a'
-					,o.[DirectBanking2BankTypeId] AS '@d2bi'
 					,o.[DirectBanking2AccountId] AS '@d2ai'
 					,o.[CashCurrencyId] AS '@cci'
 					,o.[CashAmount] AS '@ca'
@@ -280,6 +277,8 @@ BEGIN
 					,o.[AutoCalculateOn] AS '@aco'
 					,o.[TotalNetAmount] AS '@tna'
 					,o.[Status] AS '@s'
+					,o.[AdditionAmount] AS '@aa'
+					,o.[DeductionAmount] AS '@da'
 				FROM #tblOldLogData AS o WITH (NOLOCK)
 				INNER JOIN #tblTempMonthlyAllowance AS t WITH (NOLOCK) ON o.PayrollId = t.PayrollId
 				WHERE t.RowNum = @i
@@ -294,11 +293,9 @@ BEGIN
 					,t.[TotalAmount] AS '@ta'
 					,t.[DirectBanking1CurrencyId] AS '@d1ci'
 					,t.[DirectBanking1Amount] AS '@d1a'
-					,t.[DirectBanking1BankTypeId] AS '@d1bi'
 					,t.[DirectBanking1AccountId] AS '@d1ai'
 					,t.[DirectBanking2CurrencyId] AS '@d2ci'
 					,t.[DirectBanking2Amount] AS '@d2a'
-					,t.[DirectBanking2BankTypeId] AS '@d2bi'
 					,t.[DirectBanking2AccountId] AS '@d2ai'
 					,t.[CashCurrencyId] AS '@cci'
 					,t.[CashAmount] AS '@ca'
@@ -308,6 +305,8 @@ BEGIN
 					,t.[AutoCalculateOn] AS '@aco'
 					,t.[TotalNetAmount] AS '@tna'
 					,t.[Status] AS '@s'
+					,t.[AdditionAmount] AS '@aa'
+					,t.[DeductionAmount] AS '@da'
 				FROM #tblTempMonthlyAllowance AS t WITH (NOLOCK)
 				WHERE RowNum = @i
 				FOR XML PATH('r')
