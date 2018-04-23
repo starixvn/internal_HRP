@@ -433,11 +433,6 @@
 
         private void DecryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)
         {
-            if (basicSalary == null)
-            {
-                return;
-            }
-
             basicSalary.Salary = cryptoService.Decrypt(basicSalary.Salary);
             basicSalary.OldSalary = cryptoService.Decrypt(basicSalary.OldSalary);
             basicSalary.EbankingAmount = cryptoService.Decrypt(basicSalary.EbankingAmount);
@@ -449,11 +444,6 @@
 
         private void EncryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)
         {
-            if (basicSalary == null)
-            {
-                return;
-            }
-
             basicSalary.Salary = cryptoService.Encrypt(basicSalary.Salary);
             basicSalary.OldSalary = cryptoService.Encrypt(basicSalary.OldSalary);
             basicSalary.EbankingAmount = cryptoService.Encrypt(basicSalary.EbankingAmount);
