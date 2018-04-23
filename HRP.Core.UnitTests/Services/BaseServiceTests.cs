@@ -1,5 +1,6 @@
 ﻿namespace HRP.Core.UnitTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
@@ -114,6 +115,106 @@
         }
 
         #endregion GetDataEntityAsync
+
+        #region FetchMultipleAsync
+
+        [Fact]
+        public async Task FetchMultipleAsync_CriteriaIsNull_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int>(null);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsync_CriteriaIsInvalid_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(false);
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int>(criteria);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsync_CriteriaIsValid_ReturnExpectedData()
+        {
+            // Arrange
+            var expected = new Tuple<IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 });
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            dynamicRepository.FetchMultipleAsync<int, int>(criteria).Returns(expected);
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int>(criteria);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsyncThird_CriteriaIsNull_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int>(null);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+            Assert.Empty(actual.Item3);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsyncThird_CriteriaIsInvalid_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(false);
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int>(criteria);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+            Assert.Empty(actual.Item3);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsyncThird_CriteriaIsValid_ReturnExpectedData()
+        {
+            // Arrange
+            var expected = new Tuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            dynamicRepository.FetchMultipleAsync<int, int, int>(criteria).Returns(expected);
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int>(criteria);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion FetchMultipleAsync
 
         #region ExecuteNonQueryAsync
 

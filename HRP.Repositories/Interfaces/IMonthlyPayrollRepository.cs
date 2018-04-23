@@ -10,8 +10,6 @@
     {
         Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria);
 
-        Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(ICriteria criteria);
-
         Task<Tuple<MonthlyPayrollFilterInfoModel,
             MonthlyBasicSalaryModel,
             MonthlySalaryModel,

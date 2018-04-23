@@ -46,27 +46,6 @@
             }
         }
 
-        public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(ICriteria criteria)
-        {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
-            {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
-                {
-                    var monhtlyPayrolls = await multi.ReadAsync<MonthlyPayrollEmployeeInfoViewModel>().ConfigureAwait(false);
-                    var basicSalaries = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
-                    var allowances = await multi.ReadAsync<MonthlyPayrollBasicSalaryViewModel>().ConfigureAwait(false);
-
-                    foreach (MonthlyPayrollEmployeeInfoViewModel monhtlyPayroll in monhtlyPayrolls)
-                    {
-                        monhtlyPayroll.BasicSalary = basicSalaries.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
-                        monhtlyPayroll.Allowance = allowances.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
-                    }
-
-                    return monhtlyPayrolls;
-                }
-            }
-        }
-
         public async Task<Tuple<MonthlyPayrollFilterInfoModel,
             MonthlyBasicSalaryModel,
             MonthlySalaryModel,

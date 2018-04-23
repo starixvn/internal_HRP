@@ -59,7 +59,6 @@
 
         public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
         {
-            IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>();
             var criteria = new GetMonthlyPayrollCriteria
             {
                 UserId = sessionService.UserId,
@@ -72,11 +71,21 @@
                 WorkingDays = viewModel.WorkingDays
             };
 
-            if (criteria.IsValid())
+            Tuple<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>,
+                IEnumerable<MonthlyPayrollBasicSalaryViewModel>,
+                IEnumerable<MonthlyPayrollBasicSalaryViewModel>> tuple = await baseService.FetchMultipleAsync<
+                    MonthlyPayrollEmployeeInfoViewModel,
+                    MonthlyPayrollBasicSalaryViewModel,
+                    MonthlyPayrollBasicSalaryViewModel>(criteria).ConfigureAwait(false);
+
+            IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = tuple.Item1;
+            foreach (MonthlyPayrollEmployeeInfoViewModel monhtlyPayroll in monthlyPayrolls)
             {
-                monthlyPayrolls = await monthlyPayrollRepository.GetMonthlyPayrollAsync(criteria).ConfigureAwait(false);
-                DecryptMonthlyPayroll(monthlyPayrolls);
+                monhtlyPayroll.BasicSalary = tuple.Item2.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
+                monhtlyPayroll.Allowance = tuple.Item3.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
             }
+
+            DecryptMonthlyPayroll(monthlyPayrolls);
 
             return monthlyPayrolls;
         }

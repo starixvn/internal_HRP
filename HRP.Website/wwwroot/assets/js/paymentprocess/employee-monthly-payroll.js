@@ -13,7 +13,7 @@ var monthlyPayroll = (function ($) {
     function initDataTable() {
         $('#monthly-payroll-table').dataTable({
             ordering: true,
-            order: [[1, 'asc']],
+            order: [],
             lengthMenu: [commonFunctions.pagerRanges, commonFunctions.pagerRanges],
             dom: 't<".clearfix"<".pull-left" l><".pull-right" ip>>',
             info: false,
