@@ -927,7 +927,7 @@
             var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyAllowance.DirectBanking2Amount,
                 monthlyAllowance.DirectBanking2CurrencyId, monthlyAllowance.CurrencyId);
             var cash = ConvertAmount(currencyExchangeRates, monthlyAllowance.CashAmount, monthlyAllowance.CashCurrencyId, monthlyAllowance.CurrencyId);
-            decimal autoAmount;
+            decimal autoAmount = 0;
 
             switch (monthlyAllowance.AutoCalculateOn)
             {
