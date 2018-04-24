@@ -10,6 +10,7 @@
     using Interfaces;
     using Models.Report;
     using OfficeOpenXml;
+    using OfficeOpenXml.Style;
 
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
@@ -46,7 +47,10 @@
                 startRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                 var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
-                RenderReportRowsForBankIns(cashGroupedByBank, worksheet, startRow);
+                startRow = RenderReportRowsForBankIns(cashGroupedByBank, worksheet, startRow);
+
+                // Format for list bank ins
+                worksheet.Cells[$"B9:I{startRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 worksheet.Cells.AutoFitColumns();
 
@@ -69,11 +73,11 @@
 
                 foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
                 {
-                    int count = 0;
+                    ////int count = 0;
                     var bankInRows = grouping.ToList();
                     foreach (var bankIn in bankInRows)
                     {
-                        worksheet.Cells[rowIndex, 2].Value = ++count;
+                        worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
                         worksheet.Cells[rowIndex, 3].Value = bankIn.BeneficiaryName;
                         worksheet.Cells[rowIndex, 4].Value = bankIn.Nickname;
                         worksheet.Cells[rowIndex, 5].Value = bankIn.PaymentTransaction;
@@ -85,17 +89,17 @@
                         rowIndex++;
                     }
 
-                    // Create sumary row for a bank
-                    var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 7];
-                    summaryRow.Merge = true;
+                    ////// Create sumary row for a bank
+                    ////var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 7];
+                    ////summaryRow.Merge = true;
 
-                    // TODO: move to resource when user confirmed
-                    summaryRow.Value = string.Format("Total ({0})", grouping.Key);
+                    ////// TODO: move to resource when user confirmed
+                    ////summaryRow.Value = string.Format("Total ({0})", grouping.Key);
 
-                    worksheet.Cells[rowIndex, 8].FormulaR1C1 =
-                        $"=SUM(R{(rowIndex - grouping.Count())}C8:R{rowIndex - 1}C8)";
+                    ////worksheet.Cells[rowIndex, 8].FormulaR1C1 =
+                    ////    $"=SUM(R{(rowIndex - grouping.Count())}C8:R{rowIndex - 1}C8)";
 
-                    rowIndex++;
+                    ////rowIndex++;
                 }
             }
 
