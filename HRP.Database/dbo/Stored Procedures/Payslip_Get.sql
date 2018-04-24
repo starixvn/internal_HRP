@@ -18,11 +18,6 @@ BEGIN
 
 	DECLARE @functionKey VARCHAR(50) = 'Payslip'
 
-	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, @functionKey) <> 2
-	BEGIN
-		RETURN
-	END
-
 	SELECT DISTINCT mp.PayrollId
 		,c.Code + em.EmployeeCode AS IDNo
 		,emp.Nickname
@@ -48,7 +43,11 @@ BEGIN
 		AND YEAR(mp.[Month]) = YEAR(@Month)
 		INNER JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
 		INNER JOIN dbo.MonthlyAllowance AS ma WITH (NOLOCK) ON mp.PayrollId = ma.PayrollId
+		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
+		AND uf.UserId = @UserId
+		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+		AND f.FunctionKey = @functionKey
 		LEFT JOIN dbo.Payslip AS payslip WITH (NOLOCK) ON mp.PayrollId = payslip.PayrollId
 	WHERE @IsSent IS NULL
-		OR @IsSent = payslip.IsSent
+		OR @IsSent = ISNULL(payslip.IsSent, 0)
 END

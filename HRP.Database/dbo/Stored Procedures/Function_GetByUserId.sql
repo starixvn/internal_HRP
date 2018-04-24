@@ -23,6 +23,23 @@ BEGIN
 		,uf.IsHost
 	FROM dbo.UserFunction AS uf WITH (NOLOCK)
 		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+	WHERE uf.CompanyId < 0
+		AND uf.UserId = @UserId
+		AND f.IsActive = 1
+	
+	UNION
+	SELECT uf.FunctionId
+		,f.[Name]
+		,f.FunctionKey
+		,f.IsReadOnly
+		,f.ParentId
+		,uf.CompanyId
+		,uf.IsRead
+		,uf.IsHost
+	FROM dbo.UserFunction AS uf WITH (NOLOCK)
+		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
+		AND c.IsActive = 1
 	WHERE uf.UserId = @UserId
 		AND f.IsActive = 1
 END

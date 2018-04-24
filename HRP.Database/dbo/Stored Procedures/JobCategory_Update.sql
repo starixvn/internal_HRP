@@ -42,6 +42,37 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if JobCategory is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.JobCategory WITH (NOLOCK)
+			WHERE JobCategoryId = @JobCategoryId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM (
+					SELECT 1 AS i
+					FROM dbo.GradeLevel WITH (NOLOCK)
+					WHERE JobCategoryId = @JobCategoryId
+					
+					UNION
+					
+					SELECT 1 AS i
+					FROM dbo.Employment WITH (NOLOCK)
+					WHERE JobCategoryId = @JobCategoryId
+					) u
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT JobCategoryId AS '@jid'
 				,Name AS '@n'

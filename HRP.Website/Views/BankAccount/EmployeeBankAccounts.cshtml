@@ -15,7 +15,7 @@
         <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" asp-append-version="true" href="~/assets/bundles/bank/css/bank.min.css"/>
+        <link rel="stylesheet" asp-append-version="true" href="~/assets/bundles/bank/css/bank.min.css" />
     </environment>
 }
 
@@ -77,20 +77,10 @@
     <div class="pull-left">
         @if (Model.HaveHostPermission)
         {
-            @*if (Model.BankAccountsLimitReached)
-            {
-                <a class="button -add create-user" data-toggle="modal" data-target="#bank-account-limit-reached-modal">
-                    <span class="icon-add"></span>
-                    @ViewLang.CreateNewBankAccount
-                </a>
-            }
-            else
-            {*@
-                <a class="button -add create-user" asp-action="CreateBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
-                    <span class="icon-add"></span>
-                    @ViewLang.CreateNewBankAccount
-                </a>
-            //}
+            <a class="button -add create-user" asp-action="CreateBankAccount" asp-controller="BankAccount" asp-route-employeeId="@Model.EmployeeId">
+                <span class="icon-add"></span>
+                @ViewLang.CreateNewBankAccount
+            </a>
         }
     </div>
 

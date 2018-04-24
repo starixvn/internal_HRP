@@ -54,6 +54,7 @@ BEGIN
 		INNER JOIN dbo.Employee AS emp WITH (NOLOCK) ON mp.EmployeeId = emp.EmployeeId
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
+		AND c.CompanyId = @CompanyId
 	ORDER BY mp.PayrollId
 
 	SELECT mp.PayrollId

@@ -27,9 +27,40 @@ BEGIN
 		SELECT DISTINCT f.FunctionId
 		FROM dbo.[Function] AS f WITH (NOLOCK)
 			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON f.FunctionId = uf.FunctionId
+			AND uf.CompanyId < 0
 			INNER JOIN dbo.[User] AS u WITH (NOLOCK) ON uf.UserId = u.UserId
 			AND u.IsActive = 1
 		WHERE u.UserId = @UserId
 			AND f.IsActive = 1
+			AND (
+				uf.IsRead = 1
+				OR uf.IsHost = 1
+				)
+		) AS f ON menu.FunctionId = f.FunctionId
+	
+	UNION
+	SELECT menu.MenuId
+		,menu.[Name]
+		,menu.[Description]
+		,menu.Link
+		,menu.ParentId
+		,menu.FunctionId
+		,menu.DisplayOrder
+		,menu.IsActive
+	FROM dbo.Menu AS menu WITH (NOLOCK)
+		INNER JOIN (
+		SELECT DISTINCT f.FunctionId
+		FROM dbo.[Function] AS f WITH (NOLOCK)
+			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON f.FunctionId = uf.FunctionId
+			INNER JOIN dbo.[User] AS u WITH (NOLOCK) ON uf.UserId = u.UserId
+			AND u.IsActive = 1
+			INNER JOIN dbo.Company AS c WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
+			AND c.IsActive = 1
+		WHERE u.UserId = @UserId
+			AND f.IsActive = 1
+			AND (
+				uf.IsRead = 1
+				OR uf.IsHost = 1
+				)
 		) AS f ON menu.FunctionId = f.FunctionId
 END

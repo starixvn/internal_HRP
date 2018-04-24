@@ -48,6 +48,37 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if Cost Center is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.CostCenter WITH (NOLOCK)
+			WHERE CostCenterId = @CostCenterId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM (
+					SELECT 1 AS i
+					FROM dbo.Section WITH (NOLOCK)
+					WHERE CostCenterId = @CostCenterId
+					
+					UNION
+					
+					SELECT 1 AS i
+					FROM dbo.Employment WITH (NOLOCK)
+					WHERE CostCenterId = @CostCenterId
+					) u
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT CostCenterId AS '@cid'
 				,Code AS '@c'

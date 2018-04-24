@@ -24,6 +24,7 @@
             ReferenceResource.BankType,
             ReferenceResource.TypeOfBankAccount
         };
+
         private readonly IRefResourceService refResourceService;
 
         public BankAccountController(
@@ -49,9 +50,6 @@
             viewModel.BankTypeResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
             viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-
-            ////viewModel.BankAccountsLimitReached =
-            ////    await baseService.GetDataEntityAsync<bool>(new CheckBankAccountLimitReachedCriteria { EmployeeId = employee.EmployeeId });
 
             return View(viewModel);
         }

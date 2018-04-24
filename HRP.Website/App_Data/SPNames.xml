@@ -128,7 +128,7 @@
     <Setting Key="Employee_GetByEmployeeId" SpName="Employee_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByIDNo" SpName="Employee_GetSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees_xtest" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_CheckEmployeePayrollChangedInMonth" SpName="Employee_CheckEmployeePayrollChangedInMonth" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetDepartment" SpName="Employee_GetDepartment" DbName="bodb_HRP" Plain="0"></Setting>
@@ -147,7 +147,6 @@
     <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Update" SpName="BankAccount_Update" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="BankAccount_Search" SpName="BankAccount_Search" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="BankAccount_CheckLimitReached" SpName="BankAccount_CheckLimitReached" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="EmployeePayroll">
     <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>

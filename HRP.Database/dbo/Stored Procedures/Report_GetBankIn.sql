@@ -92,6 +92,7 @@ BEGIN
 			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3 
 			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
+			AND RefResource.ResourceId = MonthlySalary.CashAccountId
 
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
@@ -155,6 +156,7 @@ BEGIN
 			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3 
 			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
+			AND RefResource.ResourceId = MonthlyAllowance.CashAccountId
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -176,6 +178,9 @@ BEGIN
 			WHEN #SelectedPaymentTransactions.BankTypeId = 2 THEN 'PaymentTransactionDirectBanking'
 			ELSE 'PaymentTransactionCash'
 		END = RefResource.RefName
+
+	SELECT *
+	FROM #MinimalMonthly
 	
 	DROP TABLE #SelectedPaymentTransactions
 	DROP TABLE #MinimalMonthly

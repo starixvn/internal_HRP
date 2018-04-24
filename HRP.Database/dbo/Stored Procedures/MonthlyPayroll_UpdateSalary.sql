@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateSalary] @UserId INT
+﻿
+CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateSalary] @UserId INT
 	,@PayrollId INT
 	,@CompanyId SMALLINT
 	,@Month DATE
@@ -309,6 +310,3 @@ BEGIN
 
 	DROP TABLE #tblDeduction
 END
-
-GO
-

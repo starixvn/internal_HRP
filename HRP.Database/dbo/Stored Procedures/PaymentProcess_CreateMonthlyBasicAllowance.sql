@@ -61,7 +61,7 @@ BEGIN
 		,[CreatedBy] INT
 		,[CreatedDate] DATETIME
 		,[AfterAdjustmentAmount] VARCHAR(MAX)
-		,[Reason] VARCHAR(20)
+		,[Reason] VARCHAR(200)
 		)
 
 	CREATE TABLE #tblOldLogData (
@@ -98,7 +98,7 @@ BEGIN
 		,[CreatedBy] INT
 		,[CreatedDate] DATETIME
 		,[AfterAdjustmentAmount] VARCHAR(MAX)
-		,[Reason] VARCHAR(20)
+		,[Reason] VARCHAR(200)
 		)
 
 	-- Convert XMLDoc to table
@@ -209,7 +209,7 @@ BEGIN
 			,[FitnessFirstAmount] VARCHAR(MAX)
 			,[AutoCalculateOn] VARCHAR(30)
 			,[AfterAdjustmentAmount] VARCHAR(MAX)
-			,[Reason] VARCHAR(20)
+			,[Reason] VARCHAR(200)
 			) AS Data
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON mp.EmployeeId = Data.EmployeeId
 		AND mp.[Month] = @Month

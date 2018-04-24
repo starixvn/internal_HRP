@@ -42,6 +42,37 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if Company is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Company AS c WITH (NOLOCK)
+			WHERE c.CompanyId = @CompanyId
+				AND c.IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM (
+					SELECT 1 AS i
+					FROM dbo.Division WITH (NOLOCK)
+					WHERE CompanyId = @CompanyId
+					
+					UNION
+					
+					SELECT 1 AS i
+					FROM dbo.Employment WITH (NOLOCK)
+					WHERE CompanyId = @CompanyId
+					) u
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT c.CompanyId AS '@cid'
 				,c.Code AS '@c'
@@ -55,12 +86,15 @@ BEGIN
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
 	UPDATE [dbo].Company
-	WITH (ROWLOCK,UPDLOCK)
+	WITH (
+			ROWLOCK
+			,UPDLOCK
+			)
+
 	SET Code = @Code
 		,Name = @Name
 		,IsActive = @IsActive
 	WHERE CompanyId = @CompanyId
-
 	--Write Log
 	SET @xml = (
 			SELECT c.CompanyId AS '@cid'

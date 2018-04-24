@@ -45,6 +45,25 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if RefResource item is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.RefResource WITH (NOLOCK)
+			WHERE RefName = @RefName
+				AND ResourceId = @ResourceId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF dbo.fnc_CheckRefResourceItemIsUsed(@RefName, @ResourceId) = 1
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT RefResourceId AS '@rrid'
 				,RefName AS '@rn'
@@ -60,14 +79,18 @@ BEGIN
 			)
 	SET @oldLogData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
-	UPDATE [dbo].RefResource WITH (	ROWLOCK,UPDLOCK	)
+	UPDATE [dbo].RefResource
+	WITH (
+			ROWLOCK
+			,UPDLOCK
+			)
+
 	SET Value = @Value
 		,[Description] = @Description
 		,IsActive = @IsActive
 		,@RefResourceId = RefResourceId
 	WHERE RefName = @RefName
 		AND ResourceId = @ResourceId
-
 	--Write Log
 	SET @xml = (
 			SELECT RefResourceId AS '@rrid'

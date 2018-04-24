@@ -2,6 +2,7 @@
 CREATE PROCEDURE [dbo].[PaymentProcess_CreateMonthlyAllowance] @Month DATE
 	,@AllowanceXMLDoc NVARCHAR(MAX)
 	,@UpdatedBy INT = 0
+AS
 /*
 Created: 20180322@Raymond.Le
 Task: Create Monthly Allowance

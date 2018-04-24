@@ -1,12 +1,11 @@
 ﻿
-CREATE PROCEDURE [dbo].[MonthlyPayroll_GetDataFilterForIndexPage] @UserId INT
-	,@Month DATE
+CREATE PROCEDURE [dbo].[MonthlyPayroll_GetHierarchyCompany] @UserId INT
 	,@CompanyId SMALLINT
 	,@CostCenterIds VARCHAR(MAX) = NULL
 AS
 /*
-Created: 20180228@Tim.Trinh
-Task: get data for index page
+Created: 20180423@Tim.Trinh
+Task: get hierarchy company
 DB: bodb_HRP
 Original:
 
@@ -17,8 +16,6 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @functionKey VARCHAR(50) = 'PaymentProcess'
-		,@startDate DATE
-		,@dueDate DATE
 
 	CREATE TABLE #tblCostCenterId (Id SMALLINT)
 
@@ -35,10 +32,6 @@ BEGIN
 		,DepartmentId SMALLINT
 		,Checked BIT
 		)
-	
-	SELECT @startDate = StartDate
-		,@dueDate = DueDate
-	FROM dbo.fnc_GetPaymentProcessDuration(@Month)
 
 	INSERT INTO #tblCostCenterId (Id)
 	SELECT val
@@ -76,7 +69,7 @@ BEGIN
 			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
 			AND f.FunctionKey = @functionKey
 			AND f.IsActive = 1
-			LEFT JOIN #tblCostCenterId AS tbl WITH (NOLOCK) ON cc.CostCenterId = cc.CostCenterId
+			LEFT JOIN #tblCostCenterId AS tbl WITH (NOLOCK) ON cc.CostCenterId = tbl.Id
 		WHERE cc.IsActive = 1
 	END
 	ELSE
@@ -132,21 +125,6 @@ BEGIN
 		FROM #tblCostCenter WITH (NOLOCK)
 		) AS data ON dept.DepartmentId = data.DepartmentId
 	WHERE dept.IsActive = 1
-
-	-- get data filter
-	SELECT CompanyId
-		,Code AS CompanyCode
-		,STUFF((
-				SELECT ',' + CAST(CostCenterId AS VARCHAR(20))
-				FROM #tblCostCenter WITH (NOLOCK)
-				WHERE Checked = 1
-				ORDER BY CostCenterId
-				FOR XML PATH('')
-				), 1, 1, '') AS CostCenterIds
-		,@startDate AS StartDate
-		,@dueDate AS DueDate
-	FROM dbo.Company WITH (NOLOCK)
-	WHERE CompanyId = @CompanyId
 
 	-- get division
 	SELECT div.DivisionId AS Value

@@ -42,6 +42,37 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if Country is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Country WITH (NOLOCK)
+			WHERE CountryId = @CountryId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM (
+					SELECT 1 AS i
+					FROM dbo.City WITH (NOLOCK)
+					WHERE CountryId = @CountryId
+					
+					UNION
+					
+					SELECT 1 AS i
+					FROM dbo.Employment WITH (NOLOCK)
+					WHERE CountryId = @CountryId
+					) u
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT CountryId AS '@cid'
 				,Code AS '@c'

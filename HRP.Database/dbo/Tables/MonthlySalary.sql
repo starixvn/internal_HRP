@@ -7,11 +7,9 @@
     [EbankingAccountId]        INT           NULL,
     [DirectBanking1CurrencyId] INT           NULL,
     [DirectBanking1Amount]     VARCHAR (MAX) NULL,
-    [DirectBanking1BankTypeId] TINYINT       NULL,
     [DirectBanking1AccountId]  INT           NULL,
     [DirectBanking2CurrencyId] INT           NULL,
     [DirectBanking2Amount]     VARCHAR (MAX) NULL,
-    [DirectBanking2BankTypeId] TINYINT       NULL,
     [DirectBanking2AccountId]  INT           NULL,
     [CashCurrencyId]           INT           NULL,
     [CashAmount]               VARCHAR (MAX) NULL,
@@ -22,4 +20,6 @@
     [Status]                   TINYINT       NULL,
     CONSTRAINT [PK_MonthlySalary] PRIMARY KEY CLUSTERED ([PayrollId] ASC)
 );
+
+
 

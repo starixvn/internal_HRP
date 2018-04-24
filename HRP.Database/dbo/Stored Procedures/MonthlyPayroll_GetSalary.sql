@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_GetSalaryToUpdate] @UserId INT
+﻿
+CREATE PROCEDURE [dbo].[MonthlyPayroll_GetSalary] @UserId INT
 	,@PayrollId INT
 AS
 /*
@@ -19,9 +20,6 @@ BEGIN
 		,@companyId SMALLINT
 		,@policy TINYINT
 		,@month DATE
-		,@startDate DATE
-		,@dueDate DATE
-		,@today DATE = GETDATE()
 		,@contraCoBankAccountType TINYINT = 3
 
 	SELECT @companyId = em.CompanyId
@@ -31,10 +29,6 @@ BEGIN
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
 	WHERE mp.PayrollId = @PayrollId
 
-	SELECT @startDate = StartDate
-		,@dueDate = DueDate
-	FROM dbo.fnc_GetPaymentProcessDuration(@month)
-
 	-- Check permission
 	SELECT @policy = dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @companyId, @functionKey)
 
@@ -42,29 +36,6 @@ BEGIN
 	BEGIN
 		RETURN
 	END
-
-	SELECT mp.PayrollId
-		,emp.EmployeeId
-		,emp.FullName
-		,emp.Nickname
-		,c.Code + em.EmployeeCode AS IDNo
-		,em.CompanyId
-		,c.Code AS CompanyCode
-		,cc.Code AS CostCenter
-		,@startDate AS StartDate
-		,@dueDate AS DueDate
-		,(CASE 
-			WHEN @today BETWEEN @startDate
-					AND @dueDate
-				AND @policy = 2 THEN 1
-			ELSE 0 END
-			) AS IsHost
-	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-		INNER JOIN dbo.Employee AS emp WITH (NOLOCK) ON mp.EmployeeId = emp.EmployeeId
-		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
-		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
-		INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON em.CostCenterId = cc.CostCenterId
-	WHERE mp.PayrollId = @PayrollId
 
 	SELECT mbs.PayrollId
 		,mbs.CurrencyId
@@ -118,13 +89,14 @@ BEGIN
 		,[Status]
 	FROM dbo.MonthlySalary AS ms WITH (NOLOCK)
 		LEFT JOIN dbo.BankAccount AS eba WITH (NOLOCK) ON ms.EbankingAccountId = eba.Id
-		LEFT JOIN dbo.RefResource AS refeb WITH (NOLOCK) ON eba.PaymentTransactionId = refeb.ResourceId AND refeb.RefName = 'PaymentTransactionEbanking'
-
+		LEFT JOIN dbo.RefResource AS refeb WITH (NOLOCK) ON eba.PaymentTransactionId = refeb.ResourceId
+		AND refeb.RefName = 'PaymentTransactionEbanking'
 		LEFT JOIN dbo.BankAccount AS badb1 WITH (NOLOCK) ON ms.DirectBanking1AccountId = badb1.Id
-		LEFT JOIN dbo.RefResource AS refdb1 WITH (NOLOCK) ON badb1.PaymentTransactionId = refdb1.ResourceId AND refdb1.RefName = 'PaymentTransactionDirectBanking'
-
+		LEFT JOIN dbo.RefResource AS refdb1 WITH (NOLOCK) ON badb1.PaymentTransactionId = refdb1.ResourceId
+		AND refdb1.RefName = 'PaymentTransactionDirectBanking'
 		LEFT JOIN dbo.BankAccount AS badb2 WITH (NOLOCK) ON ms.DirectBanking2AccountId = badb2.Id
-		LEFT JOIN dbo.RefResource AS refdb2 WITH (NOLOCK) ON badb2.PaymentTransactionId = refdb2.ResourceId AND refdb2.RefName = 'PaymentTransactionDirectBanking'	
+		LEFT JOIN dbo.RefResource AS refdb2 WITH (NOLOCK) ON badb2.PaymentTransactionId = refdb2.ResourceId
+		AND refdb2.RefName = 'PaymentTransactionDirectBanking'
 	WHERE ms.PayrollId = @PayrollId
 
 	SELECT msa.PayrollId
@@ -151,6 +123,3 @@ BEGIN
 	WHERE ref.RefName = 'MonthlySalaryDeductionType'
 	ORDER BY ref.ResourceId
 END
-
-GO
-

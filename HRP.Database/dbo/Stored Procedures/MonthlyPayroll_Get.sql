@@ -2,7 +2,7 @@
 CREATE PROCEDURE [dbo].[MonthlyPayroll_Get] @UserId INT
 	,@Month DATE
 	,@CompanyId SMALLINT
-	,@CostCenterIds VARCHAR(MAX)
+	,@CostCenterIds VARCHAR(MAX) = NULL
 	,@EmployeeId INT = NULL
 	,@Employee NVARCHAR(70) = NULL
 	,@IDNo VARCHAR(30) = NULL
@@ -20,7 +20,7 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @paymentProcess VARCHAR(50) = 'PaymentProcess'
+	DECLARE @functionKey VARCHAR(50) = 'PaymentProcess'
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
@@ -45,9 +45,32 @@ BEGIN
 		,@dueDate = DueDate
 	FROM dbo.fnc_GetPaymentProcessDuration(@Month)
 
-	INSERT INTO #tblCostCenterId (Id)
-	SELECT val
-	FROM dbo.strSplit(@CostCenterIds, ',')
+	IF @CostCenterIds IS NULL
+	BEGIN
+		INSERT INTO #tblCostCenterId (Id)
+		SELECT DISTINCT cc.CostCenterId
+		FROM dbo.CostCenter AS cc WITH (NOLOCK)
+			INNER JOIN dbo.Department AS dept WITH (NOLOCK) ON cc.DepartmentId = dept.DepartmentId
+			AND dept.IsActive = 1
+			INNER JOIN dbo.Division AS div WITH (NOLOCK) ON dept.DivisionId = div.DivisionId
+			AND div.IsActive = 1
+			INNER JOIN dbo.Company AS c WITH (NOLOCK) ON div.CompanyId = c.CompanyId
+			AND c.CompanyId = @CompanyId
+			AND c.IsActive = 1
+			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
+			AND uf.UserId = @UserId
+			AND uf.IsRead = 1
+			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+			AND f.FunctionKey = @functionKey
+			AND f.IsActive = 1
+		WHERE cc.IsActive = 1
+	END
+	ELSE
+	BEGIN
+		INSERT INTO #tblCostCenterId (Id)
+		SELECT val
+		FROM dbo.strSplit(@CostCenterIds, ',')
+	END
 
 	INSERT INTO #tblMonthlyPayroll (
 		PayrollId
@@ -105,7 +128,7 @@ BEGIN
 				) AS Policy
 		FROM dbo.UserFunction AS uf WITH (NOLOCK)
 			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
-			AND f.FunctionKey = @paymentProcess
+			AND f.FunctionKey = @functionKey
 			AND f.IsActive = 1
 		WHERE uf.UserId = @UserId
 			AND uf.CompanyId = @CompanyId
@@ -136,6 +159,7 @@ BEGIN
 		,Policy
 		,[Status]
 	FROM #tblMonthlyPayroll WITH (NOLOCK)
+	ORDER BY IDNo
 
 	SELECT mp.PayrollId
 		,ms.CurrencyId

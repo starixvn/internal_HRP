@@ -32,7 +32,9 @@
     [CreatedBy]                INT           NULL,
     [CreatedDate]              DATETIME      NULL,
     [AfterAdjustmentAmount]    VARCHAR (MAX) NULL,
-    [Reason]                   VARCHAR (20)  NULL,
+    [Reason]                   VARCHAR (200) NULL,
     CONSTRAINT [PK_MonthlyBasicAllowance_1] PRIMARY KEY CLUSTERED ([PayrollId] ASC)
 );
+
+
 

@@ -80,10 +80,10 @@ CREATE PROCEDURE [dbo].[Employee_CreateEmployee] @EmployeeId INT OUTPUT
 	,@SSSNo VARCHAR(50) = NULL
 	,@HealthInsNo VARCHAR(50) = NULL
 	,@HDMFNo VARCHAR(50) = NULL
-	,@WorkPermitCompanyId SMALLINT
-	,@Type1 TINYINT
-	,@StartDateType1 DATE
-	,@EndDateType1 DATE
+	,@WorkPermitCompanyId SMALLINT = NULL
+	,@Type1 TINYINT = NULL
+	,@StartDateType1 DATE = NULL
+	,@EndDateType1 DATE = NULL
 	,@Type2 TINYINT = NULL
 	,@StartDateType2 DATE = NULL
 	,@EndDateType2 DATE = NULL

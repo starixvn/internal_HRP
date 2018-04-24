@@ -8,8 +8,8 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.BankAccount;
     using Models.EmployeeManagement;
     using NSubstitute;
@@ -47,7 +47,6 @@
             refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-            baseService.GetDataEntityAsync<bool>(Arg.Any<CheckBankAccountLimitReachedCriteria>()).Returns(true);
 
             // Test
             var actual = await controller.EmployeeBankAccounts(viewModel);
@@ -57,7 +56,6 @@
             var viewModelResult = Assert.IsType<EmployeeBankAccountsViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.True(viewModelResult.HaveHostPermission);
-            ////Assert.True(viewModelResult.BankAccountsLimitReached);
             Assert.IsType<SelectList>(viewModelResult.BankTypes);
             Assert.NotNull(viewModelResult.BankAccounts);
             Assert.Equal(employee.Nickname, viewModelResult.EmployeeName);

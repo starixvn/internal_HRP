@@ -36,11 +36,9 @@ BEGIN
 		,[EbankingAccountId] INT
 		,[DirectBanking1CurrencyId] INT
 		,[DirectBanking1Amount] VARCHAR(MAX)
-		,[DirectBanking1BankTypeId] TINYINT
 		,[DirectBanking1AccountId] INT
 		,[DirectBanking2CurrencyId] INT
 		,[DirectBanking2Amount] VARCHAR(MAX)
-		,[DirectBanking2BankTypeId] TINYINT
 		,[DirectBanking2AccountId] INT
 		,[CashCurrencyId] INT
 		,[CashAmount] VARCHAR(MAX)
@@ -60,11 +58,9 @@ BEGIN
 		,[EbankingAccountId] INT
 		,[DirectBanking1CurrencyId] INT
 		,[DirectBanking1Amount] VARCHAR(MAX)
-		,[DirectBanking1BankTypeId] TINYINT
 		,[DirectBanking1AccountId] INT
 		,[DirectBanking2CurrencyId] INT
 		,[DirectBanking2Amount] VARCHAR(MAX)
-		,[DirectBanking2BankTypeId] TINYINT
 		,[DirectBanking2AccountId] INT
 		,[CashCurrencyId] INT
 		,[CashAmount] VARCHAR(MAX)
@@ -90,11 +86,9 @@ BEGIN
 		,[EbankingAccountId]
 		,[DirectBanking1CurrencyId]
 		,[DirectBanking1Amount]
-		,[DirectBanking1BankTypeId]
 		,[DirectBanking1AccountId]
 		,[DirectBanking2CurrencyId]
 		,[DirectBanking2Amount]
-		,[DirectBanking2BankTypeId]
 		,[DirectBanking2AccountId]
 		,[CashCurrencyId]
 		,[CashAmount]
@@ -112,11 +106,9 @@ BEGIN
 		,NULLIF(ISNULL(Data.[EbankingAccountId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking1CurrencyId], ''), '')
 		,Data.[DirectBanking1Amount]
-		,NULLIF(ISNULL(Data.[DirectBanking1BankTypeId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking1AccountId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking2CurrencyId], ''), '')
 		,Data.[DirectBanking2Amount]
-		,NULLIF(ISNULL(Data.[DirectBanking2BankTypeId], ''), '')
 		,NULLIF(ISNULL(Data.[DirectBanking2AccountId], ''), '')
 		,NULLIF(ISNULL(Data.[CashCurrencyId], ''), '')
 		,Data.[CashAmount]
@@ -134,11 +126,9 @@ BEGIN
 			,[EbankingAccountId] VARCHAR(50)
 			,[DirectBanking1CurrencyId] VARCHAR(50)
 			,[DirectBanking1Amount] VARCHAR(MAX)
-			,[DirectBanking1BankTypeId] VARCHAR(50)
 			,[DirectBanking1AccountId] VARCHAR(50)
 			,[DirectBanking2CurrencyId] VARCHAR(50)
 			,[DirectBanking2Amount] VARCHAR(MAX)
-			,[DirectBanking2BankTypeId] VARCHAR(50)
 			,[DirectBanking2AccountId] VARCHAR(50)
 			,[CashCurrencyId] VARCHAR(50)
 			,[CashAmount] VARCHAR(MAX)
@@ -164,11 +154,9 @@ BEGIN
 			,[EbankingAccountId]
 			,[DirectBanking1CurrencyId]
 			,[DirectBanking1Amount]
-			,[DirectBanking1BankTypeId]
 			,[DirectBanking1AccountId]
 			,[DirectBanking2CurrencyId]
 			,[DirectBanking2Amount]
-			,[DirectBanking2BankTypeId]
 			,[DirectBanking2AccountId]
 			,[CashCurrencyId]
 			,[CashAmount]
@@ -178,7 +166,7 @@ BEGIN
 			,[DeductionAmount]
 			,[Status]
 		FROM #tblTempMonthlySalary WITH (NOLOCK)
-		) AS val([PayrollId], [CurrencyId], [Salary], [EbankingCurrencyId], [EbankingAmount], [EbankingAccountId], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1BankTypeId], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2BankTypeId], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [AutoCalculateOn], [AdditionAmount], [DeductionAmount], [Status])
+		) AS val([PayrollId], [CurrencyId], [Salary], [EbankingCurrencyId], [EbankingAmount], [EbankingAccountId], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [AutoCalculateOn], [AdditionAmount], [DeductionAmount], [Status])
 		ON s.PayrollId = val.PayrollId
 	WHEN MATCHED
 		THEN
@@ -190,11 +178,9 @@ BEGIN
 				,s.[EbankingAccountId] = val.[EbankingAccountId]
 				,s.[DirectBanking1CurrencyId] = val.[DirectBanking1CurrencyId]
 				,s.[DirectBanking1Amount] = val.[DirectBanking1Amount]
-				,s.[DirectBanking1BankTypeId] = val.[DirectBanking1BankTypeId]
 				,s.[DirectBanking1AccountId] = val.[DirectBanking1AccountId]
 				,s.[DirectBanking2CurrencyId] = val.[DirectBanking2CurrencyId]
 				,s.[DirectBanking2Amount] = val.[DirectBanking2Amount]
-				,s.[DirectBanking2BankTypeId] = val.[DirectBanking2BankTypeId]
 				,s.[DirectBanking2AccountId] = val.[DirectBanking2AccountId]
 				,s.[CashCurrencyId] = val.[CashCurrencyId]
 				,s.[CashAmount] = val.[CashAmount]
@@ -214,11 +200,9 @@ BEGIN
 				,[EbankingAccountId]
 				,[DirectBanking1CurrencyId]
 				,[DirectBanking1Amount]
-				,[DirectBanking1BankTypeId]
 				,[DirectBanking1AccountId]
 				,[DirectBanking2CurrencyId]
 				,[DirectBanking2Amount]
-				,[DirectBanking2BankTypeId]
 				,[DirectBanking2AccountId]
 				,[CashCurrencyId]
 				,[CashAmount]
@@ -237,11 +221,9 @@ BEGIN
 				,val.[EbankingAccountId]
 				,val.[DirectBanking1CurrencyId]
 				,val.[DirectBanking1Amount]
-				,val.[DirectBanking1BankTypeId]
 				,val.[DirectBanking1AccountId]
 				,val.[DirectBanking2CurrencyId]
 				,val.[DirectBanking2Amount]
-				,val.[DirectBanking2BankTypeId]
 				,val.[DirectBanking2AccountId]
 				,val.[CashCurrencyId]
 				,val.[CashAmount]
@@ -259,11 +241,9 @@ BEGIN
 		,DELETED.[EbankingAccountId]
 		,DELETED.[DirectBanking1CurrencyId]
 		,DELETED.[DirectBanking1Amount]
-		,DELETED.[DirectBanking1BankTypeId]
 		,DELETED.[DirectBanking1AccountId]
 		,DELETED.[DirectBanking2CurrencyId]
 		,DELETED.[DirectBanking2Amount]
-		,DELETED.[DirectBanking2BankTypeId]
 		,DELETED.[DirectBanking2AccountId]
 		,DELETED.[CashCurrencyId]
 		,DELETED.[CashAmount]
@@ -272,7 +252,7 @@ BEGIN
 		,DELETED.[AdditionAmount]
 		,DELETED.[DeductionAmount]
 		,DELETED.[Status]
-	INTO #tblOldLogData([PayrollId], [CurrencyId], [Salary], [EbankingCurrencyId], [EbankingAmount], [EbankingAccountId], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1BankTypeId], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2BankTypeId], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [AutoCalculateOn], [AdditionAmount], [DeductionAmount], [Status]);
+	INTO #tblOldLogData([PayrollId], [CurrencyId], [Salary], [EbankingCurrencyId], [EbankingAmount], [EbankingAccountId], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [AutoCalculateOn], [AdditionAmount], [DeductionAmount], [Status]);
 
 	--WRITE LOG
 	SELECT @maxLength = Count(1)
@@ -289,11 +269,9 @@ BEGIN
 					,o.[EbankingAccountId] AS '@eai'
 					,o.DirectBanking1CurrencyId AS '@d1ci'
 					,o.DirectBanking1Amount AS '@d1a'
-					,o.[DirectBanking1BankTypeId] AS '@d1bi'
 					,o.[DirectBanking1AccountId] AS '@d1ai'
 					,o.DirectBanking2CurrencyId AS '@d2ci'
 					,o.DirectBanking2Amount AS '@d2a'
-					,o.[DirectBanking2BankTypeId] AS '@d2bi'
 					,o.[DirectBanking2AccountId] AS '@d2ai'
 					,o.CashCurrencyId AS '@cci'
 					,o.CashAmount AS '@ca'
@@ -319,11 +297,9 @@ BEGIN
 					,t.[EbankingAccountId] AS '@eai'
 					,t.DirectBanking1CurrencyId AS '@d1ci'
 					,t.DirectBanking1Amount AS '@d1a'
-					,t.[DirectBanking1BankTypeId] AS '@d1bi'
 					,t.[DirectBanking1AccountId] AS '@d1ai'
 					,t.DirectBanking2CurrencyId AS '@d2ci'
 					,t.DirectBanking2Amount AS '@d2a'
-					,t.[DirectBanking2BankTypeId] AS '@d2bi'
 					,t.[DirectBanking2AccountId] AS '@d2ai'
 					,t.CashCurrencyId AS '@cci'
 					,t.CashAmount AS '@ca'

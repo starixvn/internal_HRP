@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
+﻿
+
+CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
 	@PayrollId INT
 	,@CurrencyId INT = NULL
 	,@TotalAmount VARCHAR(MAX) = NULL

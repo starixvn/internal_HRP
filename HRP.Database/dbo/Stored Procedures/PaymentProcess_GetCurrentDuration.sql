@@ -1,5 +1,5 @@
 ﻿
-create PROCEDURE [dbo].[PaymentProcess_GetCurrentDuration] 
+CREATE PROCEDURE [dbo].[PaymentProcess_GetCurrentDuration] 
 AS
 /*
 Created: 20180328@Raymond.Le
@@ -35,13 +35,13 @@ BEGIN
 				AND @lastDueDate
 			)
 	BEGIN
-		SELECT @lastStartDate AS [Month]
+		SELECT @firstDayOfLastMonth AS [Month]
 			,@lastStartDate AS StartDate
 			,@lastDueDate AS DueDate
 	END
 	ELSE
 	BEGIN
-		SELECT @currentStartDate AS [Month]
+		SELECT @firstDayOfCurrentMonth AS [Month]
 			,@currentStartDate AS StartDate
 			,@currentDueDate AS DueDate
 	END

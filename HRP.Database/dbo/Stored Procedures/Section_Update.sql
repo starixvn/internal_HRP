@@ -48,6 +48,28 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if Section is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Section WITH (NOLOCK)
+			WHERE SectionId = @SectionId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM dbo.Employment WITH (NOLOCK)
+				WHERE SectionId = @SectionId
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT SectionId AS '@sid'
 				,Code AS '@c'

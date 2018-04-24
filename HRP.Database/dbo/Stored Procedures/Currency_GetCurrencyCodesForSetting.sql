@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[Currency_GetCurrencyCodesForSetting]
+﻿
+CREATE PROCEDURE [dbo].[Currency_GetCurrencyCodesForSetting]
 	@Month DATE
 AS
 /*

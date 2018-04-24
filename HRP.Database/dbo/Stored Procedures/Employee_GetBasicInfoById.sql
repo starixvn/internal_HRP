@@ -20,7 +20,6 @@ BEGIN
 		,epm.EmployeeCode
 		,epm.CompanyId
 		,e.MailingAddress
-
 	FROM dbo.Employee AS e WITH (NOLOCK)
 	INNER JOIN dbo.Employment AS epm WITH (NOLOCK) ON e.EmployeeId = epm.EmployeeId
 	WHERE e.EmployeeId = @EmployeeId

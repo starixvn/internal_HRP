@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[Employee_GetPayroll] @EmployeeId INT
+﻿
+CREATE PROCEDURE [dbo].[Employee_GetPayroll] @EmployeeId INT
 	,@UserId INT
 AS
 /*
@@ -123,7 +124,3 @@ BEGIN
 	FROM dbo.EmployeePayrollDeduction AS epd WITH (NOLOCK)
 	WHERE epd.EmployeeId = @EmployeeId
 END
-
-GO
-
-

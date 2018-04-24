@@ -47,7 +47,7 @@ BEGIN
 		,AfterAdjustmentReason NVARCHAR(200)
 		,CreatedBy INT
 		,CreatedDate DATETIME
-		)
+	)
 
 	CREATE TABLE #tblOldLogData (
 		PayrollId INT
@@ -69,7 +69,7 @@ BEGIN
 		,AfterAdjustmentReason NVARCHAR(200)
 		,CreatedBy INT
 		,CreatedDate DATETIME
-		)
+	)
 
 	-- Convert XMLDoc to table
 	SET @startRun = GETDATE()

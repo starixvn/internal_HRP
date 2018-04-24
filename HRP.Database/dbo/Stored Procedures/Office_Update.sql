@@ -48,6 +48,28 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if Office is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.Office WITH (NOLOCK)
+			WHERE OfficeId = @OfficeId
+				AND IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM dbo.Employment WITH (NOLOCK)
+				WHERE OfficeId = @OfficeId	
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT OfficeId AS '@oid'
 				,Code AS '@c'

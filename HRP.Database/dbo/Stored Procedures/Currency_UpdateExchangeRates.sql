@@ -44,8 +44,7 @@ BEGIN
 		,ExchangeRate DECIMAL(10, 5)
 		)
 
-	EXEC sp_xml_preparedocument @idoc OUTPUT
-		,@ExchangeRates
+	EXEC sp_xml_preparedocument @idoc OUTPUT, @ExchangeRates
 
 	INSERT INTO #ExchangeRate (
 		FromCurrencyId
@@ -57,48 +56,34 @@ BEGIN
 		,ExchangeRate
 	FROM OPENXML(@idoc, '/Root/Row', 1) WITH (FromCurrencyId INT, ToCurrencyId INT, ExchangeRate DECIMAL(10, 5)) AS data
 
-	-- Delete not set exchange rate
-	DELETE cur
-	FROM dbo.CurrencyExchangeRate AS cur
-		INNER JOIN #ExchangeRate AS er WITH (NOLOCK) ON MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
-		AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth)
-		AND cur.FromCurrencyId = er.FromCurrencyId
-		AND cur.ToCurrencyId = er.ToCurrencyId
-	WHERE er.ExchangeRate = 0
-
-	-- Update
-	UPDATE cur
-	SET cur.ExchangeRate = er.ExchangeRate
-	FROM dbo.CurrencyExchangeRate AS cur
-		INNER JOIN #ExchangeRate AS er WITH (NOLOCK) ON MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
-		AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth)
-		AND cur.FromCurrencyId = er.FromCurrencyId
-		AND cur.ToCurrencyId = er.ToCurrencyId
-	WHERE er.ExchangeRate > 0
-		AND cur.ExchangeRate <> er.ExchangeRate
-
-	--Insert new exchange rates
-	INSERT INTO dbo.CurrencyExchangeRate (
-		ExchangeRateMonth
-		,FromCurrencyId
-		,ToCurrencyId
-		,ExchangeRate
-		)
-	SELECT @ExchangeRateMonth
-		,er.FromCurrencyId
-		,er.ToCurrencyId
-		,er.ExchangeRate
-	FROM #ExchangeRate AS er WITH (NOLOCK)
-	WHERE er.ExchangeRate > 0
-		AND NOT EXISTS (
-			SELECT 1
-			FROM dbo.CurrencyExchangeRate AS cur WITH (NOLOCK)
-			WHERE MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
-				AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth)
-				AND cur.FromCurrencyId = er.FromCurrencyId
-				AND cur.ToCurrencyId = er.ToCurrencyId
+	IF EXISTS (SELECT 1 FROM dbo.CurrencyExchangeRate cur WHERE MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
+		AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth))
+	BEGIN
+		-- Update
+		UPDATE cur
+		SET cur.ExchangeRate = er.ExchangeRate
+		FROM dbo.CurrencyExchangeRate AS cur WITH (ROWLOCK, UPDLOCK)
+			INNER JOIN #ExchangeRate AS er WITH (NOLOCK) ON MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
+			AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth)
+			AND cur.FromCurrencyId = er.FromCurrencyId
+			AND cur.ToCurrencyId = er.ToCurrencyId
+	END
+	ELSE
+	BEGIN
+		--Insert new exchange rates
+		INSERT INTO dbo.CurrencyExchangeRate (
+			ExchangeRateMonth
+			,FromCurrencyId
+			,ToCurrencyId
+			,ExchangeRate
 			)
-
+		SELECT @ExchangeRateMonth
+			,er.FromCurrencyId
+			,er.ToCurrencyId
+			,er.ExchangeRate
+		FROM #ExchangeRate AS er WITH (NOLOCK)
+	END
+		
 	-- write log after update
 	SET @xml = (
 			SELECT c.ExchangeRateMonth AS '@erm'

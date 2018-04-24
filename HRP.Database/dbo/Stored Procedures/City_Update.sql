@@ -48,6 +48,37 @@ BEGIN
 		RETURN
 	END
 
+	-- Check if City is using when change to InActive
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.City AS c WITH (NOLOCK)
+			WHERE c.CityId = @CityId
+				AND c.IsActive = 1
+				AND @IsActive = 0
+			)
+	BEGIN
+		IF EXISTS (
+				SELECT 1
+				FROM (
+					SELECT 1 AS i
+					FROM dbo.Office WITH (NOLOCK)
+					WHERE CityId = @CityId
+					
+					UNION
+					
+					SELECT 1 AS i
+					FROM dbo.Employment WITH (NOLOCK)
+					WHERE CityId = @CityId
+					) u
+				)
+		BEGIN
+			SET @ErrCode = 1
+			SET @ErrMsg = 'You can not inactive an item which is in used'
+
+			RETURN
+		END
+	END
+
 	SET @xml = (
 			SELECT CityId AS '@ciid'
 				,Code AS '@c'

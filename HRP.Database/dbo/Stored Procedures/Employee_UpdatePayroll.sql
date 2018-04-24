@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
+﻿
+CREATE PROCEDURE [dbo].[Employee_UpdatePayroll] @EmployeeId INT
 	,@Salary VARCHAR(MAX) = NULL
 	,@IsSalaryChanged BIT
 	,@CurrencyId INT = NULL
@@ -464,6 +465,3 @@ BEGIN
 		,@OldData = @oldLogData
 		,@Duration = @Duration
 END
-
-GO
-
