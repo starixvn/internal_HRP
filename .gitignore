@@ -256,3 +256,4 @@ _Pvt_Extensions
 /HRP.Database/HRP.Database.jfm
 /HRP.Website/wwwroot/assets/bundles/main.min.css
 /HRP.Website/wwwroot/js/*.min.js
+*.scmp

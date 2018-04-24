@@ -9,14 +9,14 @@
     using Core.Enumerations;
     using Core.Filters;
     using Core.Services;
-    using HRP.Criteria.Report;
+    using Criteria.Report;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Models;
+    using Microsoft.AspNetCore.Mvc;
     using Models.Report;
-    using Services;
+    using Models;
     using Services.Interfaces;
+    using Services;
 
     public class ReportController : BaseController
     {

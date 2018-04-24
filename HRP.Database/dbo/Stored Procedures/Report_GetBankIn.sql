@@ -62,11 +62,14 @@ BEGIN
 		    INNER JOIN Currency WITH(NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
 		    INNER JOIN Employee WITH(NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 		    INNER JOIN Employment WITH(NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN RefResource WITH (NOLOCK) ON 
-			CASE
-				WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
-				ELSE 'PaymentTransactionDirectBanking'
-			END = RefResource.RefName AND RefResource.ResourceId = BankAccount.PaymentTransactionId
+			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName = 
+				CASE
+					WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
+					ELSE 'PaymentTransactionDirectBanking'
+				END
+			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
+			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId IN (1,2) 
+			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -87,6 +90,9 @@ BEGIN
 		    INNER JOIN Employee WITH(NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 		    INNER JOIN Employment WITH(NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
+			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3 
+			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
+
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -119,11 +125,14 @@ BEGIN
 		    INNER JOIN Currency WITH(NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
 		    INNER JOIN Employee WITH(NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 		    INNER JOIN Employment WITH(NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN RefResource WITH (NOLOCK) ON 
-			CASE
-				WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
-				ELSE 'PaymentTransactionDirectBanking'
-			END = RefResource.RefName AND RefResource.ResourceId = BankAccount.PaymentTransactionId
+			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName =
+				CASE
+					WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
+					ELSE 'PaymentTransactionDirectBanking'
+				END
+			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
+			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId IN (1,2) 
+			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -144,6 +153,8 @@ BEGIN
 		    INNER JOIN Employee WITH(NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 		    INNER JOIN Employment WITH(NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
+			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3 
+			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -155,6 +166,7 @@ BEGIN
 	FROM Company
 	WHERE CompanyId = @CompanyId
 	
+	-- Get Payment transactions that have data and selected by user
 	SELECT RefResource.[Value]
 	FROM RefResource 
 	INNER JOIN #SelectedPaymentTransactions ON RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
@@ -162,7 +174,7 @@ BEGIN
 		CASE
 			WHEN #SelectedPaymentTransactions.BankTypeId = 1 THEN 'PaymentTransactionEbanking'
 			WHEN #SelectedPaymentTransactions.BankTypeId = 2 THEN 'PaymentTransactionDirectBanking'
-			ELSE 'PaymentTransactionDirectCash'
+			ELSE 'PaymentTransactionCash'
 		END = RefResource.RefName
 	
 	DROP TABLE #SelectedPaymentTransactions
