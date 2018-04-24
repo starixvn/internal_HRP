@@ -96,6 +96,19 @@
             return reports;
         }
 
+        public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
+        {
+            var criteria = new GetDataForMonthlyPayrollReport
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
+
+            return report;
+        }
+
         private void DecryptBankInAmount(IEnumerable<BankIn> bankIns)
         {
             if (bankIns != null && bankIns.Any())

@@ -95,11 +95,11 @@
                 Items = refResourceService.FilterReferenceResources(
                     refResources,
                     ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
-                {
-                    Value = $"{3}-{x.ResourceId}",
-                    Text = x.Value,
-                    ParentId = "3"
-                }).ToList()
+                    {
+                        Value = $"{3}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = "3"
+                    }).ToList()
             });
 
             return Json(paymentOptions);
@@ -147,16 +147,15 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public IActionResult PayDetails()
+        public async Task<IActionResult> GetMonthlyPayrollReport(DateTime month, int companyId)
         {
-            string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\1. Pay Details.xlsx";
-            var path = Path.Combine(sWebRootFolder, sFileName);
-            var templateStream = new FileStream(path, FileMode.Open);
+            string webRootFolder = hostingEnvironment.WebRootPath;
+            string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
+            var templatePath = Path.Combine(webRootFolder, fileName);
+            var report = await reportService.GetDataForMonthlyPayrollReportAsync(month, companyId);
+            var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-            var stream = exportExcelService.GetPayDetails(templateStream);
-
-            return File(stream, MimeType.XLSX, Path.GetFileName(path));
+            return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{month.ToString("MM-yyyy")}_{companyId}.xlsx");
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]

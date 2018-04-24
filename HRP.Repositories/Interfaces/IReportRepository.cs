@@ -7,5 +7,7 @@
     public interface IReportRepository
     {
         Task<BankInReport> GetDataForBankInReportAsync(ICriteria criteria);
+
+        Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(ICriteria criteria);
     }
 }

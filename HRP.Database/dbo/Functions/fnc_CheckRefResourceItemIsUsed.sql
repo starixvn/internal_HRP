@@ -228,6 +228,30 @@ BEGIN
 	END
 
 	--------------------------
+	IF @RefName = 'PaymentTransactionEbanking'
+	BEGIN
+		-- Check is used
+		SELECT @isUsed = 1
+		FROM dbo.BankAccount AS ba WITH (NOLOCK)
+		WHERE ba.BankType = 1
+			AND ba.PaymentTransactionId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
+	IF @RefName = 'PaymentTransactionDirectBanking'
+	BEGIN
+		-- Check is used
+		SELECT @isUsed = 1
+		FROM dbo.BankAccount AS ba WITH (NOLOCK)
+		WHERE ba.BankType = 2
+			AND ba.PaymentTransactionId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
 	DECLARE @month DATE
 		,@firstDayOfCurrentMonth DATE
 		,@firstDayOfLastMonth DATE
@@ -280,66 +304,6 @@ BEGIN
 				AND (
 					a.CashAccountId = @ResourceId
 					OR s.CashAccountId = @ResourceId
-					)
-			) u
-
-		RETURN @isUsed
-	END
-
-	--------------------------
-	IF @RefName = 'ContraCoAccount'
-	BEGIN
-		-- Check is used
-		SELECT @isUsed = 1
-		FROM (
-			SELECT 1 AS i
-			FROM dbo.EmployeePayrollAllowance WITH (NOLOCK)
-			WHERE (
-					DirectBanking1BankTypeId = 3
-					AND DirectBanking1AccountId = @ResourceId
-					)
-				OR (
-					DirectBanking2BankTypeId = 3
-					AND DirectBanking2AccountId = @ResourceId
-					)
-			
-			UNION
-			
-			SELECT 1 AS i
-			FROM dbo.EmployeePayrollBasicSalary WITH (NOLOCK)
-			WHERE (
-					DirectBanking1BankTypeId = 3
-					AND DirectBanking1AccountId = @ResourceId
-					)
-				OR (
-					DirectBanking2BankTypeId = 3
-					AND DirectBanking2AccountId = @ResourceId
-					)
-			
-			UNION
-			
-			SELECT 1 AS i
-			FROM dbo.MonthlyPayroll AS p WITH (NOLOCK)
-			LEFT JOIN dbo.MonthlyAllowance AS a WITH (NOLOCK) ON p.PayrollId = a.PayrollId
-			LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON p.PayrollId = s.PayrollId
-			WHERE p.[Month] = @month
-				AND (
-					(
-						a.DirectBanking1BankTypeId = 3
-						AND a.DirectBanking1AccountId = @ResourceId
-						)
-					OR (
-						a.DirectBanking2BankTypeId = 3
-						AND a.DirectBanking2AccountId = @ResourceId
-						)
-					OR (
-						s.DirectBanking1BankTypeId = 3
-						AND s.DirectBanking1AccountId = @ResourceId
-						)
-					OR (
-						s.DirectBanking2BankTypeId = 3
-						AND s.DirectBanking2AccountId = @ResourceId
-						)
 					)
 			) u
 

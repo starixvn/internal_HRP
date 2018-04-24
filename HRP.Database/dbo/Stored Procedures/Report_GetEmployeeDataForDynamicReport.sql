@@ -33,7 +33,22 @@ BEGIN
 	ELSE NULL END AS 'BasicSalaryDeductionCurrency'
 	,ms.Salary AS 'NetAmount'
 	,msc.CurrencyCode AS 'NetCurrency'
-
+	,mba.SubsistenceAmount
+	,sstc.CurrencyCode AS 'SubsistenceCurrency'
+	,mba.HousingAmount
+	,hc.CurrencyCode AS 'HousingCurrency'
+	,mba.HomePassageAmount
+	,hpc.CurrencyCode AS 'HomePassageCurrency'
+	,mba.DutyMealAmount
+	,dmc.CurrencyCode AS 'DutyMealCurrency'
+	,mba.HPIAmount
+	,hpic.CurrencyCode AS 'HPICurrency'
+	,mba.MobilePhoneAmount
+	,mpc.CurrencyCode AS 'MobilePhoneCurrency'
+	,mba.OthersAmount
+	,otc.CurrencyCode AS 'OthersCurrency'
+	,mba.SecondmentAmount
+	,smc.CurrencyCode AS 'SecondmentCurrency'
 	FROM dbo.Employee AS e WITH (NOLOCK)
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
 	INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
@@ -47,6 +62,16 @@ BEGIN
 
 	INNER JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
 	LEFT JOIN dbo.Currency AS mbsc WITH (NOLOCK) ON mbs.CurrencyId = mbsc.CurrencyId
+
+	INNER JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
+	LEFT JOIN dbo.Currency AS sstc WITH (NOLOCK) ON mba.SubsistenceCurrencyId = sstc.CurrencyId
+	LEFT JOIN dbo.Currency AS hc WITH (NOLOCK) ON mba.HousingCurrencyId = hc.CurrencyId
+	LEFT JOIN dbo.Currency AS hpc WITH (NOLOCK) ON mba.HomePassageCurrencyId = hpc.CurrencyId
+	LEFT JOIN dbo.Currency AS dmc WITH (NOLOCK) ON mba.DutyMealCurrencyId = dmc.CurrencyId
+	LEFT JOIN dbo.Currency AS hpic WITH (NOLOCK) ON mba.HPICurrencyId = hpic.CurrencyId
+	LEFT JOIN dbo.Currency AS mpc WITH (NOLOCK) ON mba.MobilePhoneCurrencyId = mpc.CurrencyId
+	LEFT JOIN dbo.Currency AS otc WITH (NOLOCK) ON mba.OthersCurrencyId = otc.CurrencyId
+	LEFT JOIN dbo.Currency AS smc WITH (NOLOCK) ON mba.SecondmentCurrencyId = smc.CurrencyId
 
 
 	WHERE em.CompanyId = @CompanyId AND YEAR(mp.Month) = YEAR(@Month) AND MONTH(mp.Month) = MONTH(@Month)

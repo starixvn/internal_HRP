@@ -5,12 +5,10 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
-    using Core.Extensions;
-    using Core.Extensions.Excel;
+    using HRP.Core.Extensions;
     using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
-    using NPOI.XSSF.UserModel;
     using OfficeOpenXml;
 
     [ExcludeFromCodeCoverage]
@@ -21,26 +19,6 @@
         public ExportExcelService(ICryptoService cryptoService)
         {
             this.cryptoService = cryptoService;
-        }
-
-        public Stream GetPayDetails(Stream fileStream)
-        {
-            var workbook = new XSSFWorkbook(fileStream);
-            var templateSheet = workbook.GetSheetAt(0);
-            var sheet = workbook.CreateSheet("Pay Details");
-
-            for (var i = 0; i < 9; i++)
-            {
-                sheet.CopyRow(templateSheet, i, i, 0, int.MaxValue - 1);
-            }
-
-            var memory = new MemoryStream();
-            sheet.Workbook.RemoveSheetAt(0);
-            sheet.CreateFreezePane(4, 9);
-            sheet.Workbook.Write(memory);
-            memory.Position = 0;
-
-            return memory;
         }
 
         public byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data)
@@ -170,7 +148,7 @@
             }
         }
 
-        public Stream ExportSalaryAllowanceReport(string templatePath, IEnumerable<DynamicReportModel> records)
+        public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report)
         {
             using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
             using (var package = new ExcelPackage())
@@ -183,24 +161,45 @@
 
                 // Write Data
                 var row = 9;
-                foreach (var record in records)
+                var sNo = 1;
+                foreach (var employee in report.Employees)
                 {
+                    var monthlyBasicSalary = report.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                    var monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                    var monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                    var monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+
                     templateWorksheet.Cells[9, 1, 9, 46].Copy(worksheet.Cells[row, 1, row, 46]);
+                    worksheet.Cells[row, 2].Value = sNo;
+                    worksheet.Cells[row, 3].Value = employee.DivisionCode;
+                    worksheet.Cells[row, 4].Value = employee.DepartmentCode;
+                    worksheet.Cells[row, 5].Value = employee.CostCenterCode;
+                    worksheet.Cells[row, 6].Value = employee.SectionCode;
+                    worksheet.Cells[row, 7].Value = employee.EmployeeCode;
+                    worksheet.Cells[row, 8].Value = employee.FullName;
+                    worksheet.Cells[row, 9].Value = employee.Nickname;
 
-                    worksheet.Cells[row, 1].Value = record.FullName;
-                    worksheet.Cells[row, 2].Value = record.Nickname;
+                    worksheet.Cells[row, 10].Value = monthlyBasicSalary.CurrencyCode;
+                    worksheet.Cells[row, 11].Value = cryptoService.Decrypt(monthlyBasicSalary.Salary);
+                    worksheet.Cells[row, 12].Value = cryptoService.Decrypt(monthlySalary.Salary);
+
+                    worksheet.Cells[row, 23].Value = monthlyBasicAllowance.CurrencyCode;
+                    worksheet.Cells[row, 24].Value = cryptoService.Decrypt(monthlyBasicAllowance.SubsistenceAmount);
+
+                    worksheet.Cells[row, 42].Value = cryptoService.Decrypt(monthlyAllowance.TotalAmount);
+                    worksheet.Cells[row, 45].Value = cryptoService.Decrypt(monthlyAllowance.DSTNetSalaryAmount);
+                    worksheet.Cells[row, 46].Value = cryptoService.Decrypt(monthlyAllowance.TotalNetAmount);
+
                     row++;
+                    sNo++;
                 }
-                var memory = new MemoryStream();
-                package.SaveAs(memory);
-                memory.Position = 0;
 
-                return memory;
+                return package.GetAsByteArray();
             }
         }
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportEmployeeModel> records, IEnumerable<DynamicReportColumnModel> columns)
-        {         
+        {
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");

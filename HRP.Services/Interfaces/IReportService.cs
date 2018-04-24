@@ -15,5 +15,7 @@
         IEnumerable<ColumnGroup> GetAvailableColumnsList();
 
         Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(GenerateReportViewModel viewModel);
+
+        Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId);
     }
 }

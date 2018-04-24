@@ -24,6 +24,10 @@
 
         public string DepartmentCode { get; set; }
 
+        public string CostCenterCode { get; set; }
+
+        public string SectionCode { get; set; }
+
         public string JobTitle { get; set; }
 
         public string EmployeeStatus { get; set; }

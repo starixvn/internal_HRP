@@ -148,7 +148,6 @@
     <Build Include="dbo\Stored Procedures\Section_Create.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetSelectedColumns.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetEmployeeDataForDynamicReport.sql" />
-    <Build Include="dbo\Stored Procedures\Report_GetDataForSalaryAllowanceReport.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForDynamicReport.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetBankIn.sql" />
     <Build Include="dbo\Stored Procedures\RefResource_Update.sql" />
@@ -274,5 +273,6 @@
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountsByEmpId.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountById.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_Create.sql" />
+    <Build Include="dbo\Stored Procedures\Report_GetDataForMonthlyPayrollReport.sql" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Report_GetDataForSalaryAllowanceReport] @CompanyId SMALLINT
+CREATE PROCEDURE [dbo].Report_GetDataForMonthlyPayrollReport @CompanyId SMALLINT
 	,@Month DATE
 AS
 /*
@@ -52,9 +52,11 @@ BEGIN
 	-- Get monthly Basic salary
 	SELECT ei.EmployeeId
 		,bs.CurrencyId
+		,c.CurrencyCode
 		,bs.Salary
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyBasicSalary AS bs WITH (NOLOCK) ON bs.PayrollId = ei.PayrollId
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON bs.CurrencyId = c.CurrencyId
 
 	-- Get monthly salary
 	SELECT ei.EmployeeId
