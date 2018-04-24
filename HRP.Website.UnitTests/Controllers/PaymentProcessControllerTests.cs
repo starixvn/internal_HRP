@@ -672,33 +672,29 @@
             var companyId = 1;
             var employeeId = 31;
             var month = DateTime.Now;
-            var model = new EmployeeMonthlyPayrollViewModel();
+            var filterInfo = new MonthlyPayrollFilterInfoModel();
             var employeePayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>
             {
                 new MonthlyPayrollEmployeeInfoViewModel { }
             };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetDataFilterForIndexPageAsync(month, companyId, Arg.Any<string>()).Returns(model);
-            monthlyPayrollService.GetMonthlyPayrollAsync(model).Returns(employeePayrolls);
+            monthlyPayrollService.GetFilterInfoAsync(companyId, month).Returns(filterInfo);
+            monthlyPayrollService.GetMonthlyPayrollAsync(Arg.Any<EmployeeMonthlyPayrollViewModel>()).Returns(employeePayrolls);
 
             // Act
             var actual = await controller.EmployeeMonthlyPayroll(companyId, month, employeeId, null, null, null);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<EmployeeMonthlyPayrollViewModel>(viewResult.Model);
+            var viewModelResult = Assert.IsAssignableFrom<EmployeeMonthlyPayrollViewModel>(viewResult.Model);
             Assert.Equal("MonthlyPayroll", viewResult.ViewName);
-            Assert.Equal(model.CompanyId, viewModel.CompanyId);
-            Assert.Equal(model.CompanyCode, viewModel.CompanyCode);
-            Assert.Equal(month, viewModel.Month);
-            Assert.Equal(employeeId, viewModel.EmployeeId);
-            Assert.Null(viewModel.Employee);
-            Assert.Null(viewModel.IDNo);
-            Assert.Equal(employeePayrolls, viewModel.Employees);
-            Assert.Equal(model.StartDate, viewModel.StartDate);
-            Assert.Equal(model.DueDate, viewModel.DueDate);
-            Assert.Equal(model.WorkingDays, viewModel.WorkingDays);
+            Assert.Equal(filterInfo, viewModelResult.FilterInfo);
+            Assert.Equal(month, viewModelResult.Month);
+            Assert.Equal(employeeId, viewModelResult.EmployeeId);
+            Assert.Null(viewModelResult.Employee);
+            Assert.Null(viewModelResult.IDNo);
+            Assert.Equal(employeePayrolls, viewModelResult.Employees);
         }
 
         #endregion EmployeeMonthlyPayroll

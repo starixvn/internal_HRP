@@ -187,19 +187,15 @@
                 EbankingCurrencyId = viewModel.MonthlySalary.EbankingCurrencyId,
                 EbankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EbankingAmount),
                 EbankingAccountId = viewModel.MonthlySalary.EbankingAccountId,
-
                 DirectBanking1CurrencyId = viewModel.MonthlySalary.DirectBanking1CurrencyId,
                 DirectBanking1Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking1Amount),
                 DirectBanking1AccountId = viewModel.MonthlySalary.DirectBanking1AccountId,
-
                 DirectBanking2CurrencyId = viewModel.MonthlySalary.DirectBanking2CurrencyId,
                 DirectBanking2Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking2Amount),
                 DirectBanking2AccountId = viewModel.MonthlySalary.DirectBanking2AccountId,
-
                 CashCurrencyId = viewModel.MonthlySalary.CashCurrencyId,
                 CashAmount = cryptoService.Encrypt(viewModel.MonthlySalary.CashAmount),
                 CashAccountId = viewModel.MonthlySalary.CashAccountId,
-
                 AdditionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.AdditionAmount),
                 DeductionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.DeductionAmount),
                 AutoCalculateOn = viewModel.MonthlySalary.AutoCalculateOn.ToString(),
@@ -221,29 +217,14 @@
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2.OrderBy(x => x.Type).ToList(),
                 Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4,
+                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowanceModel(),
                 EmployeeInfo = result.Item5
             };
 
-            if (model.BasicAllowance != null)
-            {
-                DecryptMonthlyBasicAllowance(model.BasicAllowance);
-            }
-
-            if (model.Allowance != null)
-            {
-                DecryptMonthlyAllowance(model.Allowance);
-            }
-
-            if (model.Additions != null)
-            {
-                DecryptMonthlyAllowanceAdditions(model.Additions);
-            }
-
-            if (model.Deductions != null)
-            {
-                DecryptMonthlyAllowanceDeductions(model.Deductions);
-            }
+            DecryptMonthlyBasicAllowance(model.BasicAllowance);
+            DecryptMonthlyAllowance(model.Allowance);
+            DecryptMonthlyAllowanceAdditions(model.Additions);
+            DecryptMonthlyAllowanceDeductions(model.Deductions);
 
             return model;
         }
@@ -482,7 +463,6 @@
             DateTime? groupEndDate)
         {
             decimal totalAmount = 0;
-
             if (!monthlyPayrollBasicAllowance.CurrencyId.HasValue)
             {
                 return;
@@ -527,19 +507,14 @@
             MonthlyPayrollBasicAllowanceModel basicAllowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
-            var additions = new List<MonthlyAllowanceAdditionModel>();
-            var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();
-
-            foreach (var type in types)
-            {
-                additions.Add(new MonthlyAllowanceAdditionModel
+            var additions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
+                .Select(x => new MonthlyAllowanceAdditionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
-                    Type = (int)type,
-                    CurrencyId = GetCurrencyBaseOnAllowanceType(type, basicAllowance)
+                    Type = (int)x,
+                    CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
                 });
-            }
 
             if (standardWorkingDays < actualWorkingDays)
             {
@@ -549,7 +524,6 @@
 
                 var unitAmount = dutyMealAmount / standardWorkingDays;
                 var totalAmount = unitAmount * dutyMeal.NoOfDays;
-
                 dutyMeal.UnitAmount = unitAmount.ToString(CultureInfo.InvariantCulture);
                 dutyMeal.TotalAmount = totalAmount.ToString();
 
@@ -569,19 +543,14 @@
             MonthlyPayrollBasicAllowanceModel basicAllowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
-            var deductions = new List<MonthlyAllowanceDeductionModel>();
-            var types = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>();
-
-            foreach (var type in types)
-            {
-                deductions.Add(new MonthlyAllowanceDeductionModel
+            var deductions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
+                .Select(x => new MonthlyAllowanceDeductionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
-                    Type = (int)type,
-                    CurrencyId = GetCurrencyBaseOnAllowanceType(type, basicAllowance)
+                    Type = (int)x,
+                    CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
                 });
-            }
 
             if (standardWorkingDays > actualWorkingDays)
             {
@@ -591,7 +560,6 @@
 
                 var unitAmount = dutyMealAmount / standardWorkingDays;
                 var totalAmount = unitAmount * dutyMeal.NoOfDays;
-
                 dutyMeal.UnitAmount = unitAmount.ToString(CultureInfo.InvariantCulture);
                 dutyMeal.TotalAmount = totalAmount.ToString();
 
@@ -622,10 +590,8 @@
             if (amount != 0)
             {
                 var reason = new StringBuilder();
-                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode);
-
                 string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
-
+                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode);
                 reason.Append(dateCommencementReason);
 
                 monthlyPayrollBasicAllowance.Reason = reason.ToString();
@@ -1029,7 +995,6 @@
         private static int GetDifferenceMonth(DateTime past, DateTime now)
         {
             int monthsApart = 12 * (past.Year - now.Year) + past.Month - now.Month;
-
             return Math.Abs(monthsApart);
         }
 
@@ -1048,7 +1013,6 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            decimal amount;
 
             if (basicSetting.SalaryChangeReason == BasicSalaryChangeReason.AnnualIncrement)
             {
@@ -1060,7 +1024,7 @@
                     && GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth) == 0
                     && oldSalary != newSalary)
                 {
-                    amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
+                    decimal amount = (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
                         + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1));
                     amount = RoundAmountWithCurrency(amount, currencyId);
                     basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
@@ -1095,7 +1059,6 @@
                     int daysInMonth = DateTime.DaysInMonth(basicSetting.EffectiveDate.Value.Year, basicSetting.EffectiveDate.Value.Month);
                     amount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * (monthDiff - 1));
-
                     basicSetting.AfterAdjustmentAmount = RoundAmountWithCurrency(newSalary, currencyId).ToString(CultureInfo.InvariantCulture);
 
                     amount = RoundAmountWithCurrency(amount, currencyId);
@@ -1130,7 +1093,6 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-
             decimal amount = newSalary / daysInMonth * (endDay - startDay + 1);
             amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyId ?? 0);
             basicSetting.AfterAdjustmentAmount = amount.ToString(CultureInfo.InvariantCulture);
@@ -1150,14 +1112,8 @@
             var reason = new StringBuilder();
             if (differenceAmount != 0)
             {
-                reason.AppendFormat(
-                    "{0} {1} ({2}).",
-                    differenceAmount > 0 ? "Added" : "Deducted",
-                    Math.Abs(differenceAmount),
-                    basicSetting.CurrencyCode);
-
                 string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
-
+                reason.AppendFormat("{0} {1} ({2}).", differenceAmount > 0 ? "Added" : "Deducted", Math.Abs(differenceAmount), basicSetting.CurrencyCode);
                 reason.Append(dateCommencementReason);
 
                 switch (basicSetting.SalaryChangeReason)

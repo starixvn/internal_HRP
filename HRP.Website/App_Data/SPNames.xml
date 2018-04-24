@@ -130,7 +130,6 @@
     <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees_xtest" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="Employee_GetDataFilterForIndexPage" SpName="Employee_GetDataFilterForIndexPage" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_CheckEmployeePayrollChangedInMonth" SpName="Employee_CheckEmployeePayrollChangedInMonth" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetDepartment" SpName="Employee_GetDepartment" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Employee_GetEmployeeStatus" SpName="Employee_GetEmployeeStatus" DbName="bodb_HRP" Plain="0"></Setting>
@@ -166,7 +165,6 @@
     <Setting Key="PaymentProcess_GenerateMonthlyPayroll" SpName="PaymentProcess_GenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Monthly Payroll">
-    <Setting Key="MonthlyPayroll_GetDataFilterForIndexPage" SpName="MonthlyPayroll_GetDataFilterForIndexPage" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_Get" SpName="MonthlyPayroll_Get" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByName" SpName="MonthlyPayroll_GetEmployeeSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByIDNo" SpName="MonthlyPayroll_GetEmployeeSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
