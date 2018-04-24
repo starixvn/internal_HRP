@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new BankInReportCriteria();
-            var expected = "Report_GetBankInByMonthAndCompanyId";
+            var expected = "Report_GetBankIn";
 
             // Act
             var actual = criteria.GetSettingKey();
