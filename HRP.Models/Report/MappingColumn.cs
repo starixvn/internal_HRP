@@ -5,5 +5,7 @@
         public string PropertyName { get; set; }
 
         public string HeaderName { get; set; }
+
+        public bool IsEncrypted { get; set; }
     }
 }

@@ -13,6 +13,6 @@
 
         byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data);
 
-        byte[] ExportDynamicReport(IEnumerable<DynamicReportEmployeeModel> records, IEnumerable<DynamicReportColumnModel> columns);
+        byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds);
     }
 }

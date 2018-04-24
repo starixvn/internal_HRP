@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using HRP.Core.Extensions;
+    using HRP.Core.Enumerations;
     using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
@@ -108,41 +109,41 @@
 
         public Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel)
         {
-            var selectedGroups = viewModel.ColumnGroupIds.Select(x => ColumnsDictionary.Columns[x]);
-            var headers = selectedGroups.SelectMany(x => x.Columns);
+            //var selectedGroups = viewModel.ColumnGroupIds.Select(x => ColumnsDictionary.Columns[(DynamicReportItem)x]);
+            //var headers = selectedGroups.SelectMany(x => x.Columns);
 
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
 
-                // Write header
-                var col = 1;
-                foreach (var header in headers)
-                {
-                    worksheet.Cells[1, col].Value = header.HeaderName;
-                    col++;
-                }
+                //// Write header
+                //var col = 1;
+                //foreach (var header in headers)
+                //{
+                //    worksheet.Cells[1, col].Value = header.HeaderName;
+                //    col++;
+                //}
 
-                // Write Data
-                var row = 2;
-                foreach (var record in records)
-                {
-                    col = 1;
-                    foreach (var header in headers)
-                    {
-                        var propertyInfo = record.GetType().GetProperty(header.PropertyName);
+                //// Write Data
+                //var row = 2;
+                //foreach (var record in records)
+                //{
+                //    col = 1;
+                //    foreach (var header in headers)
+                //    {
+                //        var propertyInfo = record.GetType().GetProperty(header.PropertyName);
 
-                        worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
-                        if (propertyInfo.PropertyType == typeof(DateTime))
-                        {
-                            worksheet.Cells[row, col].Style.Numberformat.Format = "MM/dd/yyyy";
-                        }
+                //        worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
+                //        if (propertyInfo.PropertyType == typeof(DateTime))
+                //        {
+                //            worksheet.Cells[row, col].Style.Numberformat.Format = "MM/dd/yyyy";
+                //        }
 
-                        col++;
-                    }
+                //        col++;
+                //    }
 
-                    row++;
-                }
+                //    row++;
+                //}
 
                 var memory = new MemoryStream();
                 package.SaveAs(memory);
@@ -202,8 +203,11 @@
             }
         }
 
-        public byte[] ExportDynamicReport(IEnumerable<DynamicReportEmployeeModel> records, IEnumerable<DynamicReportColumnModel> columns)
+        public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {
+            var selectedGroups = ColumnsDictionary.Columns.Where(x => selectedIds.Any(s => s == (int) x.Key )).SelectMany(x => x.Value);
+            var columns = selectedGroups.SelectMany(x => x.Columns);
+
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
@@ -223,11 +227,11 @@
                     col = 1;
                     foreach (var column in columns)
                     {
-                        var propertyInfo = record.GetType().GetProperty(column.ColumnName);
+                        var propertyInfo = record.GetType().GetProperty(column.PropertyName);
 
                         if (column.IsEncrypted)
                         {
-                            var decryptedValue = cryptoService.Decrypt(propertyInfo.GetValue(record).ToString());
+                            var decryptedValue = cryptoService.Decrypt(propertyInfo.GetValue(record)?.ToString());
                             worksheet.Cells[row, col].Value = decryptedValue;
                         }
                         else

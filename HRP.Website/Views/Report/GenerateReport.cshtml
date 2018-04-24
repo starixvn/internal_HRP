@@ -1,4 +1,5 @@
-﻿@using HRP.Models.Report
+﻿@using HRP.Core.Enumerations
+@using HRP.Models.Report
 @using HRP.Resources
 @model GenerateReportViewModel
 
@@ -16,10 +17,10 @@
 
 <form class="search-form" asp-action="GenerateReport" method="post">
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">
-        <span asp-validation-for="CommonError" class="message"></span>
+        <span asp-validation-for="CompanyId" class="message"></span>
+        <span asp-validation-for="SelectedTime" class="message"></span>
+        <span asp-validation-for="SelectedIds" class="message"></span>
     </div>
-
-    <input type="hidden" asp-for="CommonError" />
 
     <div class="w-100"></div>
     <div class="group">
@@ -37,31 +38,7 @@
 
     <div class="group">
         <label class="text">Available Columns</label>
-        <select class="control select2" asp-for="ColumnGroupIds" asp-items="@Model.ColumnGroups"></select>
-    </div>
-    <div class="w-100"></div>
-    <div class="group-control">
-        <label>
-            <input type="checkbox" asp-for="IsHasFullName" checked />
-            <span>IsHasFullName</span>
-        </label>
-    </div>
-    <div class="group-control">
-        <label>
-            <input type="checkbox" asp-for="IsHasNickName" checked />
-            <span>IsHasNickName</span>
-        </label>
-    </div>
-    <div class="group-control">
-        <label>
-            <input type="checkbox" asp-for="IsHasGender" />
-            <span>IsHasGender</span>
-        </label>
-    </div>
-
-    <label asp-for="IsHasFullName"></label>
-    <div class="group">
-        <button type="submit" class="button -primary">@ViewLang.Submit</button>
+        <select class="control" multiple asp-for="SelectedIds" asp-items="@Html.GetEnumSelectList<DynamicReportItem>()"></select>
     </div>
 </form>
 

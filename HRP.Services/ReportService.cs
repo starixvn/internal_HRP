@@ -72,29 +72,8 @@
 
         public IEnumerable<ColumnGroup> GetAvailableColumnsList()
         {
-            return ColumnsDictionary.Columns.Values.OrderBy(x => x.GroupName);
-        }
-
-        public async Task<IEnumerable<DynamicReportModel>> GetDataForDynamicReportAsync(
-            GenerateReportViewModel viewModel)
-        {
-            var criteria = new GetDataForDynamicReportCriteria
-            {
-                CompanyId = viewModel.CompanyId,
-                Month = viewModel.SelectedTime,
-                IsHasIDNo = viewModel.IsHasIDNo,
-                IsHasFullName = viewModel.IsHasFullName,
-                IsHasNickName = viewModel.IsHasNickName,
-                IsHasGender = viewModel.IsHasGender,
-                IsHasDateOfBirth = viewModel.IsHasDateOfBirth,
-                IsHasPlaceOfBirth = viewModel.IsHasPlaceOfBirth,
-                IsHasNationality = viewModel.IsHasNationality
-            };
-
-            var reports = await baseService.GetDataAsync<DynamicReportModel>(criteria).ConfigureAwait(false);
-
-            return reports;
-        }
+            return ColumnsDictionary.Columns.Values.SelectMany(x => x).OrderBy(x => x.GroupName);
+        }     
 
         public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
         {

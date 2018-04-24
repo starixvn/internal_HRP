@@ -162,12 +162,10 @@
         public async Task<IActionResult> GenerateReport()
         {
             var companies = await reportService.GetCompaniesAsync();
-            var columns = reportService.GetAvailableColumnsList();
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
                 Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                ColumnGroups = new SelectList(columns, nameof(ColumnGroup.GroupId), nameof(ColumnGroup.GroupName))
             };
 
             return View("GenerateReport", viewModel);
@@ -179,29 +177,17 @@
         {
             if (ModelState.IsValid)
             {
-                var records = await reportService.GetDataForDynamicReportAsync(viewModel);
-                var stream = exportExcelService.ExportDynamicReport(records, viewModel);
+                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria { CompanyId = viewModel.CompanyId, Month = viewModel.SelectedTime });
 
-                return File(stream, MimeType.XLSX, "Dynamic Report.xlsx");
+                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds);
+
+                return File(data, MimeType.XLSX, $"Report_{viewModel.SelectedTime.ToString("MM-yyyy")}_Company-{viewModel.CompanyId}.xlsx");
             }
 
             var companies = await reportService.GetCompaniesAsync();
             viewModel.Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("GenerateReport", viewModel);
-        }
-
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        [HttpGet]
-        public async Task<IActionResult> GetDynamicEmployeeReport(DateTime month, int companyId, string selectedItems)
-        {
-            var employeeDatas = await baseService.GetDataAsync<DynamicReportEmployeeModel>(new GetEmployeeDataForDynamicReportCriteria { CompanyId = companyId, Month = month });
-
-            var columns = await baseService.GetDataAsync<DynamicReportColumnModel>(new GetSelectedColumnsCriteria { SelectedIds = selectedItems });
-
-            var data = exportExcelService.ExportDynamicReport(employeeDatas, columns);
-
-            return File(data, MimeType.XLSX, $"Report_{month.ToString("MM-yyyy")}_{companyId}.xlsx");
         }
     }
 }
