@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Core.Constants;
     using Core.Enumerations;
+    using Core.Extensions;
     using Core.Filters;
     using Core.Services;
     using Criteria.Report;
@@ -56,27 +57,50 @@
 
             var paymentOptions = new List<MultiSelectViewModel>();
 
-            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
-                refResources,
-                ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
+            paymentOptions.Add(new MultiSelectViewModel
+            {
+                Value = ((int)BankTypes.DirectBanking).ToString(),
+                Text = BankTypes.DirectBanking.GetDisplayName(),
+                ParentId = "0",
+                Items = refResourceService.FilterReferenceResources(
+                    refResources,
+                    ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
+                    {
+                        Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = ((int)BankTypes.DirectBanking).ToString()
+                    }).ToList()
+            });
+
+            paymentOptions.Add(new MultiSelectViewModel
+            {
+                Value = ((int)BankTypes.Ebanking).ToString(),
+                Text = BankTypes.Ebanking.GetDisplayName(),
+                ParentId = "0",
+                Items = refResourceService.FilterReferenceResources(
+                    refResources,
+                    ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
+                    {
+                        Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = ((int)BankTypes.Ebanking).ToString()
+                    }).ToList()
+            });
+
+            paymentOptions.Add(new MultiSelectViewModel
+            {
+                Value = "3",
+                Text = "Cash",
+                ParentId = "0",
+                Items = refResourceService.FilterReferenceResources(
+                    refResources,
+                    ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
                 {
-                Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
-                Text = x.Value
-            }));
-            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
-                refResources,
-                ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
-                {
-                Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
-                Text = x.Value
-            }));
-            paymentOptions.AddRange(refResourceService.FilterReferenceResources(
-                refResources,
-                ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
-                {
-                Value = $"{3}-{x.ResourceId}",
-                Text = x.Value
-            }));
+                    Value = $"{3}-{x.ResourceId}",
+                    Text = x.Value,
+                    ParentId = "3"
+                }).ToList()
+            });
 
             return Json(paymentOptions);
         }

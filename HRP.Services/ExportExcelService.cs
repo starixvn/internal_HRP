@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using Core.Extensions;
     using Core.Extensions.Excel;
     using HRP.Core.Services;
     using Interfaces;
@@ -55,7 +56,7 @@
                 worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
 
                 // Set payment type
-                worksheet.Cells["D4"].Value = typeOfPayment.ToString();
+                worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
 
                 // Set selected payment transaction
                 worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
