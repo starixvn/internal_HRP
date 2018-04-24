@@ -23,6 +23,64 @@
         private ICryptoService cryptoService;
         private IMonthlyPayrollRepository monthlyPayrollRepository;
 
+        [Fact]
+        public async Task GetFilterInfoAsync_WhenCalled_ReturnAsExpectedFilterInfo()
+        {
+            // Arrange
+            var filterInfo = new MonthlyPayrollFilterInfoModel();
+            var service = GetMonthlyPayrollService();
+            baseService.GetDataEntityAsync<MonthlyPayrollFilterInfoModel>(Arg.Any<GetFilterInfoCriteria>()).Returns(filterInfo);
+
+            // Act
+            var actual = await service.GetFilterInfoAsync(1, DateTime.Today);
+
+            // Assert
+            Assert.Equal(filterInfo, actual);
+        }
+
+        [Fact]
+        public async Task GetHierarchyCompanyAsync_WhenCalled_ReturnAsExpectedHierarchy()
+        {
+            // Arrange
+            var divisions = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "1", Text = "DAR", Checked = true }
+            };
+            var departments = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "2", Text = "DAR", Checked = true, ParentId = "1" }
+            };
+            var costCenters = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "3", Text = "DAR", Checked = true, ParentId = "2" }
+            };
+            var tuple = new Tuple<
+                IEnumerable<MultiSelectViewModel>,
+                IEnumerable<MultiSelectViewModel>,
+                IEnumerable<MultiSelectViewModel>>(divisions, departments, costCenters);
+            var service = GetMonthlyPayrollService();
+            baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(Arg.Any<GetHierarchyCompanyCriteria>()).Returns(tuple);
+
+            // Act
+            var actual = await service.GetHierarchyCompanyAsync(1, "1,2");
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(divisions.First().Value, actual.First().Value);
+            Assert.Equal(divisions.First().Text, actual.First().Text);
+            Assert.Equal(divisions.First().Checked, actual.First().Checked);
+
+            Assert.Single(actual.First().Items);
+            Assert.Equal(departments.First().Value, actual.First().Items.First().Value);
+            Assert.Equal(departments.First().Text, actual.First().Items.First().Text);
+            Assert.Equal(departments.First().Checked, actual.First().Items.First().Checked);
+
+            Assert.Single(actual.First().Items.First().Items);
+            Assert.Equal(costCenters.First().Value, actual.First().Items.First().Items.First().Value);
+            Assert.Equal(costCenters.First().Text, actual.First().Items.First().Items.First().Text);
+            Assert.Equal(costCenters.First().Checked, actual.First().Items.First().Items.First().Checked);
+        }
+
         #region GetMonthlyPayrollAsync
 
         [Fact]
