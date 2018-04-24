@@ -22,8 +22,8 @@ BEGIN
 	
 	CREATE TABLE #PaymentTransactionValues (Pair NVARCHAR(5))
 	INSERT INTO #PaymentTransactionValues (Pair)
-	SELECT *
-	FROM dbo.SplitString(@PaymentTransactions, ',')
+	SELECT val
+	FROM dbo.strSplit(@PaymentTransactions, ',')
 
 	INSERT INTO #SelectedPaymentTransactions (BankTypeId, PaymentTransactionId)
 	SELECT SUBSTRING(Pair, 1, 1), SUBSTRING(Pair, 3,LEN(Pair) -2)
@@ -69,7 +69,8 @@ BEGIN
 				END
 			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId IN (1,2) 
-			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
+			AND #SelectedPaymentTransactions.PaymentTransactionId = RefResource.ResourceId
+			AND #SelectedPaymentTransactions.BankTypeId = BankAccount.BankType
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -133,7 +134,8 @@ BEGIN
 				END
 			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId IN (1,2) 
-			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
+			AND #SelectedPaymentTransactions.PaymentTransactionId = RefResource.ResourceId
+			AND #SelectedPaymentTransactions.BankTypeId = BankAccount.BankType
 		WHERE	YEAR(MonthlyPayroll.Month) = YEAR(@month)
 		    AND MONTH(MonthlyPayroll.Month) = MONTH(@month)
 		    AND Employment.CompanyId = @CompanyId
@@ -178,9 +180,6 @@ BEGIN
 			WHEN #SelectedPaymentTransactions.BankTypeId = 2 THEN 'PaymentTransactionDirectBanking'
 			ELSE 'PaymentTransactionCash'
 		END = RefResource.RefName
-
-	SELECT *
-	FROM #MinimalMonthly
 	
 	DROP TABLE #SelectedPaymentTransactions
 	DROP TABLE #MinimalMonthly
