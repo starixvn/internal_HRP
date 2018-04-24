@@ -23,54 +23,6 @@
         private ICryptoService cryptoService;
         private IMonthlyPayrollRepository monthlyPayrollRepository;
 
-        #region GetDataFilterForIndexPageAsync
-
-        [Theory]
-        [InlineData(1, 0)]
-        [InlineData(0, 1)]
-        [InlineData(0, 0)]
-        public async Task GetDataFilterForIndexPageAsync_ParamsAreInvalid_ReturnDefaultViewModel(int userId, int companyId)
-        {
-            // Arrange
-            var monthlyPayrollService = GetMonthlyPayrollService();
-            sessionService.UserId = userId;
-
-            // Act
-            var actual = await monthlyPayrollService.GetDataFilterForIndexPageAsync(Arg.Any<DateTime>(), companyId, Arg.Any<string>());
-
-            // Assert
-            Assert.IsType<EmployeeMonthlyPayrollViewModel>(actual);
-            Assert.Equal(DateTime.MinValue, actual.Month);
-            Assert.Equal(0, actual.CompanyId);
-            Assert.Null(actual.CompanyCode);
-            Assert.Null(actual.CostCenterIds);
-            Assert.Null(actual.EmployeeId);
-            Assert.Null(actual.WorkingDays);
-            Assert.Empty(actual.HierarchyCompanyJson);
-            Assert.Empty(actual.Employees);
-            Assert.Empty(actual.HierarchyCompanies);
-        }
-
-        [Fact]
-        public async Task GetDataFilterForIndexPageAsync_ParamsAreValid_ReturnAsExpectedViewModel()
-        {
-            // Arrange
-            var viewModel = new EmployeeMonthlyPayrollViewModel
-            {
-                CostCenterIds = "1,2"
-            };
-            var monthlyPayrollService = GetMonthlyPayrollService();
-            monthlyPayrollRepository.GetDataFilterForIndexPageAsync(Arg.Any<GetDataFilterForIndexPageCriteria>()).Returns(viewModel);
-
-            // Act
-            var actual = await monthlyPayrollService.GetDataFilterForIndexPageAsync(Arg.Any<DateTime>(), 1, Arg.Any<string>());
-
-            // Assert
-            Assert.Equal(viewModel, actual);
-        }
-
-        #endregion GetDataFilterForIndexPageAsync
-
         #region GetMonthlyPayrollAsync
 
         [Fact]

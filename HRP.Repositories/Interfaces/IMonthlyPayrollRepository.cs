@@ -8,8 +8,6 @@
 
     public interface IMonthlyPayrollRepository
     {
-        Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(ICriteria criteria);
-
         Task<Tuple<MonthlyPayrollFilterInfoModel,
             MonthlyBasicSalaryModel,
             MonthlySalaryModel,

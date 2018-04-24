@@ -281,12 +281,17 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            EmployeeMonthlyPayrollViewModel viewModel = await monthlyPayrollService.GetDataFilterForIndexPageAsync(month, companyId, costCenterIds);
-            viewModel.Month = month;
-            viewModel.EmployeeId = employeeId;
-            viewModel.Employee = employee;
-            viewModel.IDNo = idNo;
-            viewModel.WorkingDays = workingDays;
+            var viewModel = new EmployeeMonthlyPayrollViewModel
+            {
+                Month = month,
+                CompanyId = companyId,
+                EmployeeId = employeeId,
+                Employee = employee,
+                IDNo = idNo,
+                CostCenterIds = costCenterIds,
+                WorkingDays = workingDays
+            };
+            viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month);
             viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
 
             return View("MonthlyPayroll", viewModel);
@@ -375,6 +380,14 @@
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
+        public async Task<IActionResult> GetHierarchyCompany(int companyId, string costCenterIds)
+        {
+            IEnumerable<MultiSelectViewModel> hierarchy = await monthlyPayrollService.GetHierarchyCompanyAsync(companyId, costCenterIds);
+
+            return Json(hierarchy);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]

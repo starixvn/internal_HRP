@@ -208,6 +208,31 @@ var monthlyPayroll = (function ($) {
         });
     }
 
+    function initCostCenterMultiSelect() {
+        $.ajax({
+            url: commonFunctions.rootURL + 'PaymentProcess/GetHierarchyCompany',
+            dataType: 'json',
+            data: {
+                companyId: $('#CompanyId').val(),
+                costCenterIds: $("#CostCenterIds").val()
+            },
+            success: function (result) {
+                $("#CostCenterMultiSelect").fanexMultiSelect({
+                    listData: result,
+                    useCustomCheckAllText: true,
+                    customCheckAllText: "All",
+                    onCheck: function () {
+                        var costCenterIds = $("#CostCenterMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#CostCenterIds").val(costCenterIds);
+                    }
+                });
+
+                var costCenterIds = $("#CostCenterMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                $("#CostCenterIds").val(costCenterIds);
+            }
+        });
+    }
+
     function registerEventSubmitForm() {
         $('form.search-form').on('submit', function (e) {
             var costCenterIds = $("#CostCenterIds").val();
@@ -237,22 +262,15 @@ var monthlyPayroll = (function ($) {
 
     return {
         initModule: initModule,
-        initDataTable: initDataTable
+        initDataTable: initDataTable,
+        initCostCenterMultiSelect: initCostCenterMultiSelect
     };
 }(jQuery));
 
 $(document).ready(function () {
     monthlyPayroll.initModule();
 
-    $("#CostCenterMultiSelect").fanexMultiSelect({
-        listData: jQuery.parseJSON($('#HierarchyCompanyJson').text()),
-        useCustomCheckAllText: true,
-        customCheckAllText: "All",
-        onCheck: function () {
-            var costCenterIds = $("#CostCenterMultiSelect").fanexMultiSelect('getItems', true).join(',');
-            $("#CostCenterIds").val(costCenterIds);
-        }
-    });
+    monthlyPayroll.initCostCenterMultiSelect();
 });
 
 if (document.readyState === 'loading') {

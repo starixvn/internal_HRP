@@ -38,23 +38,51 @@
             this.monthlyPayrollRepository = monthlyPayrollRepository ?? new MonthlyPayrollRepository();
         }
 
-        public async Task<EmployeeMonthlyPayrollViewModel> GetDataFilterForIndexPageAsync(DateTime month, int companyId, string costCenterIds)
+        public async Task<MonthlyPayrollFilterInfoModel> GetFilterInfoAsync(int companyId, DateTime month, int? payrollId = null)
         {
-            var criteria = new GetDataFilterForIndexPageCriteria
+            var criteria = new GetFilterInfoCriteria
             {
                 UserId = sessionService.UserId,
+                CompanyId = companyId,
                 Month = month,
+                PayrollId = payrollId
+            };
+
+            return await baseService.GetDataEntityAsync<MonthlyPayrollFilterInfoModel>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<MultiSelectViewModel>> GetHierarchyCompanyAsync(int companyId, string costCenterIds)
+        {
+            var criteria = new GetHierarchyCompanyCriteria
+            {
+                UserId = sessionService.UserId,
                 CompanyId = companyId,
                 CostCenterIds = costCenterIds
             };
-            var viewModel = new EmployeeMonthlyPayrollViewModel();
 
-            if (criteria.IsValid())
+            Tuple<IEnumerable<MultiSelectViewModel>, IEnumerable<MultiSelectViewModel>, IEnumerable<MultiSelectViewModel>> tuple =
+                await baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(criteria).ConfigureAwait(false);
+
+            IEnumerable<MultiSelectViewModel> hierarchy = tuple.Item1.Select(division => new MultiSelectViewModel
             {
-                viewModel = await monthlyPayrollRepository.GetDataFilterForIndexPageAsync(criteria).ConfigureAwait(false);
-            }
+                Value = division.Value,
+                Text = division.Text,
+                Checked = division.Checked,
+                Items = tuple.Item2.Where(dept => dept.ParentId == division.Value).Select(dept => new MultiSelectViewModel
+                {
+                    Value = dept.Value,
+                    Text = dept.Text,
+                    Checked = dept.Checked,
+                    Items = tuple.Item3.Where(costcenter => costcenter.ParentId == dept.Value).Select(costcenter => new MultiSelectViewModel
+                    {
+                        Value = costcenter.Value,
+                        Text = costcenter.Text,
+                        Checked = costcenter.Checked
+                    }).ToList()
+                }).ToList()
+            });
 
-            return viewModel;
+            return hierarchy;
         }
 
         public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
@@ -876,9 +904,9 @@
 
         private static void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
         {
-            decimal.TryParse(monthlyPayrollBasicAllowance.TotalAmount, out decimal totalAmount);        
+            decimal.TryParse(monthlyPayrollBasicAllowance.TotalAmount, out decimal totalAmount);
 
-            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking1Amount, 
+            var directBanking1 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking1Amount,
                 monthlyPayrollBasicAllowance.DirectBanking1CurrencyId, monthlyPayrollBasicAllowance.CurrencyId);
             var directBanking2 = ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DirectBanking2Amount,
                 monthlyPayrollBasicAllowance.DirectBanking2CurrencyId, monthlyPayrollBasicAllowance.CurrencyId);
@@ -887,7 +915,7 @@
             switch (monthlyPayrollBasicAllowance.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    if(monthlyPayrollBasicAllowance.DirectBanking1CurrencyId.HasValue)
+                    if (monthlyPayrollBasicAllowance.DirectBanking1CurrencyId.HasValue)
                     {
                         directBanking1 = RoundAmountWithCurrency(
                             ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.DirectBanking1CurrencyId),
@@ -905,7 +933,7 @@
                             ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.DirectBanking2CurrencyId),
                             monthlyPayrollBasicAllowance.DirectBanking2CurrencyId.Value, 0);
 
-                        monthlyPayrollBasicAllowance.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture); 
+                        monthlyPayrollBasicAllowance.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
                     }
 
                     break;
@@ -914,10 +942,10 @@
                     if (monthlyPayrollBasicAllowance.CashCurrencyId.HasValue)
                     {
                         cash = RoundAmountWithCurrency(
-                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.CashCurrencyId), 
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, monthlyPayrollBasicAllowance.CurrencyId, monthlyPayrollBasicAllowance.CashCurrencyId),
                             monthlyPayrollBasicAllowance.CashCurrencyId.Value, 0);
 
-                        monthlyPayrollBasicAllowance.CashAmount = cash.ToString(CultureInfo.InvariantCulture); 
+                        monthlyPayrollBasicAllowance.CashAmount = cash.ToString(CultureInfo.InvariantCulture);
                     }
 
                     break;
@@ -941,10 +969,10 @@
             switch (monthlyAllowance.AutoCalculateOn)
             {
                 case PayrollAutoCalculateOn.DirectBanking1:
-                    if(monthlyAllowance.DirectBanking1CurrencyId.HasValue)
+                    if (monthlyAllowance.DirectBanking1CurrencyId.HasValue)
                     {
                         autoAmount = RoundAmountWithCurrency(
-                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, monthlyAllowance.CurrencyId, monthlyAllowance.DirectBanking1CurrencyId), 
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, monthlyAllowance.CurrencyId, monthlyAllowance.DirectBanking1CurrencyId),
                             monthlyAllowance.DirectBanking1CurrencyId.Value, 0);
                         monthlyAllowance.DirectBanking1Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
                     }
@@ -959,7 +987,7 @@
                             monthlyAllowance.DirectBanking2CurrencyId.Value, 0);
                         monthlyAllowance.DirectBanking2Amount = autoAmount.ToString(CultureInfo.InvariantCulture);
                     }
-                    
+
                     break;
 
                 case PayrollAutoCalculateOn.Cash:
@@ -970,7 +998,7 @@
                             monthlyAllowance.CashCurrencyId.Value, 0);
                         monthlyAllowance.CashAmount = autoAmount.ToString(CultureInfo.InvariantCulture);
                     }
-                    
+
                     break;
 
                 default:

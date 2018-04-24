@@ -40,10 +40,9 @@
     <div class="group">
         <label class="text">@ViewLang.Company</label>
         <select class="control js-select2" disabled>
-            <option value="@Model.CompanyId" selected="selected">@Model.CompanyCode</option>
+            <option value="@Model.CompanyId" selected="selected">@Model.FilterInfo.CompanyCode</option>
         </select>
     </div>
-    <div class="hidden" id="HierarchyCompanyJson">@Model.HierarchyCompanyJson</div>
 
     <div class="group">
         <label class="text">@ViewLang.IDNo</label>
@@ -79,8 +78,8 @@
 </div>
 <div class="payment-duration">
     <div class="date"><span class="required">*</span> @ViewLang.ThePaymentProcessDuration</div>
-    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.StartDate)</strong></div>
-    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.DueDate)</strong></div>
+    <div class="date">@ViewLang.StartDate: <strong>@Html.DisplayFor(x => x.FilterInfo.StartDate)</strong></div>
+    <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.FilterInfo.DueDate)</strong></div>
 </div>
 
 <div class="top-header -only-search-box">
@@ -279,7 +278,8 @@
                             @if (employee.Policy != Policy.None)
                             {
                                 <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
-                                   asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month" asp-route-companyId="@Model.CompanyId"
+                                   asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month"
+                                   asp-route-companyId="@Model.CompanyId"
                                    asp-route-employeeId="@Model.EmployeeId"
                                    asp-route-employee="@Model.Employee"
                                    asp-route-idNo="@Model.IDNo"
