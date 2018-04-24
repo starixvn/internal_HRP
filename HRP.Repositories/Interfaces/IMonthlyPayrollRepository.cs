@@ -8,8 +8,7 @@
 
     public interface IMonthlyPayrollRepository
     {
-        Task<Tuple<MonthlyPayrollFilterInfoModel,
-            MonthlyBasicSalaryModel,
+        Task<Tuple<MonthlyBasicSalaryModel,
             MonthlySalaryModel,
             IEnumerable<MonthlySalaryAdditionModel>,
             IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(ICriteria criteria);
@@ -17,7 +16,6 @@
         Task<Tuple<MonthlyAllowanceModel,
             IEnumerable<MonthlyAllowanceAdditionModel>,
             IEnumerable<MonthlyAllowanceDeductionModel>,
-            MonthlyPayrollBasicAllowanceModel,
-            MonthlyPayrollFilterInfoModel>> GetMonthlyAllowancesAsync(ICriteria criteria);
+            MonthlyPayrollBasicAllowanceModel>> GetMonthlyAllowancesAsync(ICriteria criteria);
     }
 }

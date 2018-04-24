@@ -8,7 +8,7 @@
 
         public int PayrollId { get; set; }
 
-        public override string GetSettingKey() => "MonthlyPayroll_GetSalaryToUpdate";
+        public override string GetSettingKey() => "MonthlyPayroll_GetSalary";
 
         public override bool IsValid() => UserId > 0 && PayrollId > 0;
     }

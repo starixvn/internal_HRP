@@ -881,12 +881,10 @@
             var companyId = 1;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
-            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
                 .Returns(new MonthlyAllowancesViewModel
                 {
-                    Allowance = new MonthlyAllowanceModel(),
-                    EmployeeInfo = new MonthlyPayrollFilterInfoModel()
+                    Allowance = new MonthlyAllowanceModel()
                 });
             baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());

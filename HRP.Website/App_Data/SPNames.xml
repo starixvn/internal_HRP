@@ -168,7 +168,7 @@
     <Setting Key="MonthlyPayroll_Get" SpName="MonthlyPayroll_Get" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByName" SpName="MonthlyPayroll_GetEmployeeSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByIDNo" SpName="MonthlyPayroll_GetEmployeeSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
-    <Setting Key="MonthlyPayroll_GetSalaryToUpdate" SpName="MonthlyPayroll_GetSalaryToUpdate" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetSalary" SpName="MonthlyPayroll_GetSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_UpdateSalary" SpName="MonthlyPayroll_UpdateSalary" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_GetAllowances" SpName="MonthlyPayroll_GetAllowances" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="MonthlyPayroll_UpdateAllowances" SpName="MonthlyPayroll_UpdateAllowances" DbName="bodb_HRP" Plain="0"></Setting>

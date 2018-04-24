@@ -325,6 +325,7 @@
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
             var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentTransactionCash, IsActive = true });
             viewModel.Month = month;
+            viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
             viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
@@ -415,6 +416,7 @@
             }
 
             var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            viewModel.EmployeeInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
             viewModel.CompanyId = companyId;
             viewModel.Filter = filter;
             viewModel.DaysInMonth = DateTime.DaysInMonth(month.Year, month.Month);

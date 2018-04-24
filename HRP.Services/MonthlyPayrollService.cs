@@ -127,8 +127,7 @@
                 UserId = sessionService.UserId
             };
 
-            Tuple<MonthlyPayrollFilterInfoModel,
-                MonthlyBasicSalaryModel,
+            Tuple<MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
                 IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlyPayrollRepository.GetMonthlySalaryAsync(criteria).ConfigureAwait(false);
@@ -137,11 +136,10 @@
             {
                 viewModel = new EditMonthlySalaryViewModel
                 {
-                    FilterInfo = monthlySalary.Item1,
-                    MonthlyBasicSalary = monthlySalary.Item2,
-                    MonthlySalary = monthlySalary.Item3,
-                    Additions = monthlySalary.Item4.ToList(),
-                    Deductions = monthlySalary.Item5.ToList()
+                    MonthlyBasicSalary = monthlySalary.Item1,
+                    MonthlySalary = monthlySalary.Item2,
+                    Additions = monthlySalary.Item3.ToList(),
+                    Deductions = monthlySalary.Item4.ToList()
                 };
                 DecryptAndRoudingAmountMonthlySalary(viewModel);
             }
@@ -217,8 +215,7 @@
                 Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
                 Additions = result.Item2.OrderBy(x => x.Type).ToList(),
                 Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowanceModel(),
-                EmployeeInfo = result.Item5
+                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowanceModel()
             };
 
             DecryptMonthlyBasicAllowance(model.BasicAllowance);

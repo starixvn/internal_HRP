@@ -30,13 +30,11 @@
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
-            var filterInfo = new MonthlyPayrollFilterInfoModel();
             var monthlyBasicSalary = new MonthlyBasicSalaryModel();
             var monthlySalary = new MonthlySalaryModel();
             var additions = new List<MonthlySalaryAdditionModel>();
             var deductions = new List<MonthlySalaryDeductionModel>();
-            multiResultReader.ReadFirstOrDefaultAsync<MonthlyPayrollFilterInfoModel>().Returns(filterInfo);
-            multiResultReader.ReadFirstAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
+            multiResultReader.ReadFirstOrDefaultAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
             multiResultReader.ReadFirstAsync<MonthlySalaryModel>().Returns(monthlySalary);
             multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(additions);
             multiResultReader.ReadAsync<MonthlySalaryDeductionModel>().Returns(deductions);
@@ -47,11 +45,10 @@
             var actual = await repository.GetMonthlySalaryAsync(criteria);
 
             // Assert
-            Assert.Equal(filterInfo, actual.Item1);
-            Assert.Equal(monthlyBasicSalary, actual.Item2);
-            Assert.Equal(monthlySalary, actual.Item3);
-            Assert.Equal(additions, actual.Item4);
-            Assert.Equal(deductions, actual.Item5);
+            Assert.Equal(monthlyBasicSalary, actual.Item1);
+            Assert.Equal(monthlySalary, actual.Item2);
+            Assert.Equal(additions, actual.Item3);
+            Assert.Equal(deductions, actual.Item4);
         }
 
         #endregion GetMonthlySalaryAsync
@@ -59,6 +56,7 @@
         [Fact]
         public async Task GetMonthlyAllowancesAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
         {
+            // Arrange
             var additions = new List<MonthlyAllowanceAdditionModel>
             {
                 new MonthlyAllowanceAdditionModel
@@ -88,12 +86,10 @@
 
             var allowance = new MonthlyAllowanceModel();
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
-            var employeeInfo = new MonthlyPayrollFilterInfoModel();
 
             var multiResultReader = FakeMultipleResultReader();
             multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
             multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
-            multiResultReader.ReadFirstOrDefault<MonthlyPayrollFilterInfoModel>().Returns(employeeInfo);
 
             multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
             multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
@@ -102,13 +98,14 @@
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
+            // Act
             var actual = await repository.GetMonthlyAllowancesAsync(criteria);
 
+            // Assert
             Assert.NotNull(actual.Item1);
             Assert.NotEmpty(actual.Item2);
             Assert.NotEmpty(actual.Item3);
             Assert.NotNull(actual.Item4);
-            Assert.NotNull(actual.Item5);
         }
 
         #region Helpers

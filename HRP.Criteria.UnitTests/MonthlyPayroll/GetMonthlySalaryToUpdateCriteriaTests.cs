@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new GetMonthlySalaryToEditCriteria();
-            var expected = "MonthlyPayroll_GetSalaryToUpdate";
+            var expected = "MonthlyPayroll_GetSalary";
 
             // Act
             var actual = criteria.GetSettingKey();

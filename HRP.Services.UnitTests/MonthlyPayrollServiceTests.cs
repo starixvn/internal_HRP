@@ -143,11 +143,10 @@
         public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsNotExisted_ReturnNull()
         {
             // Arrange
-            var tupe = new Tuple<MonthlyPayrollFilterInfoModel,
-                MonthlyBasicSalaryModel,
+            var tupe = new Tuple<MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(null, null, null, null, null);
+                IEnumerable<MonthlySalaryDeductionModel>>(null, null, null, null);
             var monthlyPayrollService = GetMonthlyPayrollService();
             monthlyPayrollRepository.GetMonthlySalaryAsync(Arg.Any<GetMonthlySalaryToEditCriteria>()).Returns(tupe);
 
@@ -163,12 +162,10 @@
         {
             // Arrange
             var plainText = "1234";
-            var tuple = new Tuple<MonthlyPayrollFilterInfoModel,
-                MonthlyBasicSalaryModel,
+            var tuple = new Tuple<MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyPayrollFilterInfoModel(),
-                    new MonthlyBasicSalaryModel { WorkingDays = 10 },
+                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
                     new MonthlySalaryModel(),
                     new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
@@ -180,33 +177,33 @@
             var actual = await monthlyPayrollService.GetMonthlySalaryAsync(1);
 
             // Assert
-            Assert.Equal(tuple.Item2.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
-            Assert.Equal(tuple.Item2.Salary, actual.MonthlyBasicSalary.Salary);
-            Assert.Equal(tuple.Item2.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
+            Assert.Equal(tuple.Item1.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
+            Assert.Equal(tuple.Item1.Salary, actual.MonthlyBasicSalary.Salary);
+            Assert.Equal(tuple.Item1.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
             Assert.Equal(123.4M, actual.MonthlyBasicSalary.SalaryPerDay);
-            Assert.Equal(tuple.Item2.EbankingCurrencyCode, actual.MonthlyBasicSalary.EbankingCurrencyCode);
+            Assert.Equal(tuple.Item1.EbankingCurrencyCode, actual.MonthlyBasicSalary.EbankingCurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.EbankingAmount);
-            Assert.Equal(tuple.Item2.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);
+            Assert.Equal(tuple.Item1.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.DirectBanking1Amount);
-            Assert.Equal(tuple.Item2.DirectBanking2CurrencyCode, actual.MonthlyBasicSalary.DirectBanking2CurrencyCode);
+            Assert.Equal(tuple.Item1.DirectBanking2CurrencyCode, actual.MonthlyBasicSalary.DirectBanking2CurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.DirectBanking2Amount);
-            Assert.Equal(tuple.Item2.CashCurrencyCode, actual.MonthlyBasicSalary.CashCurrencyCode);
+            Assert.Equal(tuple.Item1.CashCurrencyCode, actual.MonthlyBasicSalary.CashCurrencyCode);
             Assert.Equal(plainText, actual.MonthlyBasicSalary.CashAmount);
-            Assert.Equal(tuple.Item2.AutoCalculateOn, actual.MonthlyBasicSalary.AutoCalculateOn);
+            Assert.Equal(tuple.Item1.AutoCalculateOn, actual.MonthlyBasicSalary.AutoCalculateOn);
 
-            Assert.Equal(tuple.Item3.CurrencyId, actual.MonthlySalary.CurrencyId);
-            Assert.Equal(tuple.Item3.Salary, actual.MonthlySalary.Salary);
-            Assert.Equal(tuple.Item3.EbankingCurrencyId, actual.MonthlySalary.EbankingCurrencyId);
-            Assert.Equal(tuple.Item3.EbankingAccountId, actual.MonthlySalary.EbankingAccountId);
+            Assert.Equal(tuple.Item2.CurrencyId, actual.MonthlySalary.CurrencyId);
+            Assert.Equal(tuple.Item2.Salary, actual.MonthlySalary.Salary);
+            Assert.Equal(tuple.Item2.EbankingCurrencyId, actual.MonthlySalary.EbankingCurrencyId);
+            Assert.Equal(tuple.Item2.EbankingAccountId, actual.MonthlySalary.EbankingAccountId);
             Assert.Equal(plainText, actual.MonthlySalary.EbankingAmount);
-            Assert.Equal(tuple.Item3.DirectBanking1CurrencyId, actual.MonthlySalary.DirectBanking1CurrencyId);
-            Assert.Equal(tuple.Item3.DirectBanking1AccountId, actual.MonthlySalary.DirectBanking1AccountId);
+            Assert.Equal(tuple.Item2.DirectBanking1CurrencyId, actual.MonthlySalary.DirectBanking1CurrencyId);
+            Assert.Equal(tuple.Item2.DirectBanking1AccountId, actual.MonthlySalary.DirectBanking1AccountId);
             Assert.Equal(plainText, actual.MonthlySalary.DirectBanking1Amount);
-            Assert.Equal(tuple.Item3.DirectBanking2CurrencyId, actual.MonthlySalary.DirectBanking2CurrencyId);
-            Assert.Equal(tuple.Item3.DirectBanking2AccountId, actual.MonthlySalary.DirectBanking2AccountId);
+            Assert.Equal(tuple.Item2.DirectBanking2CurrencyId, actual.MonthlySalary.DirectBanking2CurrencyId);
+            Assert.Equal(tuple.Item2.DirectBanking2AccountId, actual.MonthlySalary.DirectBanking2AccountId);
             Assert.Equal(plainText, actual.MonthlySalary.DirectBanking2Amount);
-            Assert.Equal(tuple.Item3.CashCurrencyId, actual.MonthlySalary.CashCurrencyId);
-            Assert.Equal(tuple.Item3.CashAccountId, actual.MonthlySalary.CashAccountId);
+            Assert.Equal(tuple.Item2.CashCurrencyId, actual.MonthlySalary.CashCurrencyId);
+            Assert.Equal(tuple.Item2.CashAccountId, actual.MonthlySalary.CashAccountId);
             Assert.Equal(plainText, actual.MonthlySalary.CashAmount);
 
             Assert.Collection(
@@ -299,6 +296,7 @@
         [Fact]
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
+            // Arrange
             var allowance = new MonthlyAllowanceModel();
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
             var additions = new List<MonthlyAllowanceAdditionModel>
@@ -328,21 +326,21 @@
                 }
             };
 
-            var info = new MonthlyPayrollFilterInfoModel();
-
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel, MonthlyPayrollFilterInfoModel>
-                (allowance, additions, deductions, basicAllowance, info));
+                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
+                (allowance, additions, deductions, basicAllowance));
 
+            // Act
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);
+
+            // Assert
             Assert.NotNull(actual);
             Assert.NotNull(actual.Allowance);
             Assert.NotNull(actual.Additions);
             Assert.NotNull(actual.Deductions);
             Assert.NotNull(actual.BasicAllowance);
-            Assert.NotNull(actual.EmployeeInfo);
         }
 
         [Fact]
