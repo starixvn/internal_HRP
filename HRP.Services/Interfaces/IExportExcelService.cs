@@ -7,8 +7,6 @@
 
     public interface IExportExcelService
     {
-        Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel);
-
         byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report);
 
         byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data);

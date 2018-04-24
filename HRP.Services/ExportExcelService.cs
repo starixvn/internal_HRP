@@ -6,7 +6,6 @@
     using System.IO;
     using System.Linq;
     using HRP.Core.Extensions;
-    using HRP.Core.Enumerations;
     using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
@@ -107,52 +106,6 @@
             return rowIndex;
         }
 
-        public Stream ExportDynamicReport(IEnumerable<DynamicReportModel> records, GenerateReportViewModel viewModel)
-        {
-            //var selectedGroups = viewModel.ColumnGroupIds.Select(x => ColumnsDictionary.Columns[(DynamicReportItem)x]);
-            //var headers = selectedGroups.SelectMany(x => x.Columns);
-
-            using (var package = new ExcelPackage())
-            {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
-
-                //// Write header
-                //var col = 1;
-                //foreach (var header in headers)
-                //{
-                //    worksheet.Cells[1, col].Value = header.HeaderName;
-                //    col++;
-                //}
-
-                //// Write Data
-                //var row = 2;
-                //foreach (var record in records)
-                //{
-                //    col = 1;
-                //    foreach (var header in headers)
-                //    {
-                //        var propertyInfo = record.GetType().GetProperty(header.PropertyName);
-
-                //        worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
-                //        if (propertyInfo.PropertyType == typeof(DateTime))
-                //        {
-                //            worksheet.Cells[row, col].Style.Numberformat.Format = "MM/dd/yyyy";
-                //        }
-
-                //        col++;
-                //    }
-
-                //    row++;
-                //}
-
-                var memory = new MemoryStream();
-                package.SaveAs(memory);
-                memory.Position = 0;
-
-                return memory;
-            }
-        }
-
         public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report)
         {
             using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
@@ -205,7 +158,7 @@
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {
-            var selectedGroups = ColumnsDictionary.Columns.Where(x => selectedIds.Any(s => s == (int) x.Key )).SelectMany(x => x.Value);
+            var selectedGroups = ColumnsDictionary.Columns.Where(x => selectedIds.Any(s => s == (int)x.Key)).SelectMany(x => x.Value);
             var columns = selectedGroups.SelectMany(x => x.Columns);
 
             using (var package = new ExcelPackage())

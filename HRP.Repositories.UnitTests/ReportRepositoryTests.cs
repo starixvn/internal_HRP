@@ -4,6 +4,9 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Models.Currency;
+    using HRP.Models.EmployeeManagement;
+    using HRP.Models.MonthlyPayroll;
     using Models.Report;
     using NSubstitute;
     using Xunit;
@@ -28,7 +31,7 @@
         public async Task GetDataForBankInReportAsync_WhenCalled_ReturnAsExpected()
         {
             // Arrange
-            var multiResultReader = FakeMultipleResultReader();
+            var multiResultReader = FakeMultiResultReader();
             var criteria = FakeCriteria();
 
             multiResultReader.ReadAsync<BankIn>().Returns(new List<BankIn>());
@@ -43,11 +46,46 @@
             Assert.IsType<BankInReport>(actual);
         }
 
-        #endregion
+        [Fact]
+        public async Task GetDataForMonthlyPayrollReportAsync_WhenCalled_ReturnMonthlyPayrollReport()
+        {
+            // Arrange
+            var employees = new List<EmployeeBasicInfo>();
+            var monthlyBasicSalary = new List<MonthlyBasicSalaryModel>();
+            var monthlySalary = new List<MonthlySalaryModel>();
+            var monthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel>();
+            var monthlyAllowance = new List<MonthlyAllowanceModel>();
+            var currencyExchangeRate = new List<CurrencyExchangeRateModel>();
+
+            var criteria = FakeCriteria();
+            var multiResult = FakeMultiResultReader();
+            objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
+            multiResult.ReadAsync<EmployeeBasicInfo>().Returns(employees);
+            multiResult.ReadAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
+            multiResult.ReadAsync<MonthlySalaryModel>().Returns(monthlySalary);
+            multiResult.ReadAsync<MonthlyPayrollBasicAllowanceModel>().Returns(monthlyBasicAllowance);
+            multiResult.ReadAsync<MonthlyAllowanceModel>().Returns(monthlyAllowance);
+            multiResult.ReadAsync<CurrencyExchangeRateModel>().Returns(currencyExchangeRate);
+            var reportRepository = new ReportRepository();
+
+            // Act
+            var actual = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria);
+
+            // Assert
+            Assert.IsType<MonthlyPayrollReport>(actual);
+            Assert.Equal(employees, actual.Employees);
+            Assert.Equal(monthlyBasicSalary, actual.MonthlyBasicSalary);
+            Assert.Equal(monthlySalary, actual.MonthlySalary);
+            Assert.Equal(monthlyBasicAllowance, actual.MonthlyBasicAllowance);
+            Assert.Equal(monthlyAllowance, actual.MonthlyAllowance);
+            Assert.Equal(currencyExchangeRate, actual.CurrencyExchangeRate);
+        }
+
+        #endregion Unit Tests
 
         #region Helpers
 
-        private static IMultiResultReader FakeMultipleResultReader()
+        private static IMultiResultReader FakeMultiResultReader()
         {
             return Substitute.For<IMultiResultReader>();
         }
@@ -60,6 +98,6 @@
             return criteria;
         }
 
-        #endregion
+        #endregion Helpers
     }
 }
