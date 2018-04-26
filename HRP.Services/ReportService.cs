@@ -43,16 +43,7 @@
 
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
 
-            ////var bankInReport = new BankInReport
-            ////{
-            ////    EBankingBankIns = await baseService.GetDataAsync<BankIn>(criteria).ConfigureAwait(false)
-            ////};
-
-            ////DecryptBankInAmount(bankInReport.EBankingBankIns);
-
             DecryptBankInAmount(bankInData.EBankingBankIns);
-            ////DecryptBankInAmount(bankInData.DirectBanking1BankIns);
-            ////DecryptBankInAmount(bankInData.DirectBanking2BankIns);
             DecryptBankInAmount(bankInData.CashBankIns);
 
             return bankInData;

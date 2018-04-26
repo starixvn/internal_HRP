@@ -45,13 +45,13 @@
 
                 // EBanking
                 var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
-                var currentRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
+                var currentRow = RenderReportRowsForDirectBankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                 var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
-                currentRow = RenderReportRowsForBankIns(cashGroupedByBank, worksheet, currentRow);
+                currentRow = RenderReportRowsForDirectBankingBankIns(cashGroupedByBank, worksheet, currentRow);
 
                 // Format for list bank ins
-                worksheet.Cells[$"B9:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[$"B9:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 // summary for banking
                 currentRow = currentRow + 1;
@@ -104,32 +104,12 @@
 
                 // EBanking
                 var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
-                var currentRow = RenderReportRowsForEuroBankIns(ebankingGroupedByBank, worksheet, startRow);
-
-                var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
-                currentRow = RenderReportRowsForEuroBankIns(cashGroupedByBank, worksheet, currentRow);
+                var currentRow = RenderReportRowsForEbankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                 // Format for list bank ins
-                worksheet.Cells[$"B9:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[$"B9:O{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                ////// summary for banking
-                ////currentRow = currentRow + 1;
-                ////var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
-
-                ////currentRow = RenderSummaryRowForBankIns(
-                ////    worksheet,
-                ////    currentRow,
-                ////    Message.GrandTotalBankIn,
-                ////    eBankingCurrencies);
-
-                ////// summary for cash
-                ////currentRow = currentRow + 1;
-                ////var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
-                ////RenderSummaryRowForBankIns(
-                ////    worksheet,
-                ////    currentRow,
-                ////    Message.GrandTotalCash,
-                ////    cashCurrencies);
+                RenderFlatternedRows(ebankingGroupedByBank, worksheet, currentRow, startRow);
 
                 worksheet.Cells.AutoFitColumns();
 
@@ -137,7 +117,122 @@
             }
         }
 
-        private static int RenderReportRowsForEuroBankIns(
+        private static void RenderFlatternedRows(
+            IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
+            ExcelWorksheet worksheet,
+            int currentRow,
+            int startRow)
+        {
+            currentRow++;
+            worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.BackgroundColor.SetColor(1, 189, 215, 238);
+            worksheet.Cells[currentRow++, 2].Value = "Company";
+            worksheet.Cells[currentRow++, 2].Value = "Bank";
+            worksheet.Cells[currentRow++, 2].Value = "EUR Account No.";
+            worksheet.Cells[currentRow++, 2].Value = "COST";
+
+            currentRow++;
+            worksheet.Cells[currentRow, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, 2].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+            worksheet.Cells[currentRow++, 2].Value = "Payment Purpose";
+
+            currentRow++;
+
+            foreach (IGrouping<string, BankIn> grouping in bankInsGroupedByBank)
+            {
+                var bankInRows = grouping.ToList();
+                var bankInIndex = -1;
+                foreach (var bankIn in bankInRows)
+                {
+                    bankInIndex++;
+
+                    //Staff No.
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Staff No.";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.EmployeeId;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Beneficiary
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Beneficiary";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.BeneficiaryName;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Account No.
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Account No. ";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.AccountNumber;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Bank Name
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Bank Name";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.BankName;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Branch
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Branch";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.BankBranch;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Address
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Address";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.BankAddress;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //SWIFT Codes
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "SWIFT Codes";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.BankSwiftCode;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Currency
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Currency";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.CurrencyCode;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Amount
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Amount";
+                    worksheet.Cells[currentRow, 4].Value = bankIn.AmountDecrypted;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    //Value Date
+                    currentRow++;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Value Date";
+                    worksheet.Cells[currentRow, 4].Formula = $"=IF(ISBLANK($L${bankInIndex + startRow}),\"\",$L${bankInIndex + startRow})";
+                    worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "yyyy-mm-dd";
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+
+                    currentRow++;
+                }
+            }
+        }
+
+        private static int RenderReportRowsForEbankingBankIns(
             IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
             ExcelWorksheet worksheet,
             int startRow)
@@ -152,18 +247,19 @@
 
                 foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
                 {
-                    ////int count = 0;
                     var bankInRows = grouping.ToList();
                     foreach (var bankIn in bankInRows)
                     {
                         worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.BeneficiaryName;
-                        worksheet.Cells[rowIndex, 4].Value = bankIn.Nickname;
-                        worksheet.Cells[rowIndex, 5].Value = bankIn.PaymentTransaction;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.EmployeeId;
+                        worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, 5].Value = bankIn.AccountNumber;
                         worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
-                        worksheet.Cells[rowIndex, 7].Value = bankIn.AccountNumber;
-                        worksheet.Cells[rowIndex, 8].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
+                        worksheet.Cells[rowIndex, 7].Value = bankIn.BankBranch;
+                        worksheet.Cells[rowIndex, 8].Value = bankIn.BankAddress;
+                        worksheet.Cells[rowIndex, 9].Value = bankIn.BankSwiftCode;
+                        worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
+                        worksheet.Cells[rowIndex, 11].Value = bankIn.AmountDecrypted;
 
                         rowIndex++;
                     }
@@ -203,7 +299,7 @@
             return currentRow - 1;
         }
 
-        private static int RenderReportRowsForBankIns(
+        private static int RenderReportRowsForDirectBankingBankIns(
             IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
             ExcelWorksheet worksheet,
             int startRow)
@@ -223,28 +319,17 @@
                     foreach (var bankIn in bankInRows)
                     {
                         worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.BeneficiaryName;
-                        worksheet.Cells[rowIndex, 4].Value = bankIn.Nickname;
-                        worksheet.Cells[rowIndex, 5].Value = bankIn.PaymentTransaction;
-                        worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
-                        worksheet.Cells[rowIndex, 7].Value = bankIn.AccountNumber;
-                        worksheet.Cells[rowIndex, 8].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.EmployeeId;
+                        worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, 5].Value = bankIn.Nickname;
+                        worksheet.Cells[rowIndex, 6].Value = bankIn.PaymentTransaction;
+                        worksheet.Cells[rowIndex, 7].Value = bankIn.BankName;
+                        worksheet.Cells[rowIndex, 8].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, 9].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
 
                         rowIndex++;
                     }
-
-                    ////// Create sumary row for a bank
-                    ////var summaryRow = worksheet.Cells[rowIndex, 2, rowIndex, 7];
-                    ////summaryRow.Merge = true;
-
-                    ////// TODO: move to resource when user confirmed
-                    ////summaryRow.Value = string.Format("Total ({0})", grouping.Key);
-
-                    ////worksheet.Cells[rowIndex, 8].FormulaR1C1 =
-                    ////    $"=SUM(R{(rowIndex - grouping.Count())}C8:R{rowIndex - 1}C8)";
-
-                    ////rowIndex++;
                 }
             }
 
