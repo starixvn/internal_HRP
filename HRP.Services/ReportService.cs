@@ -73,11 +73,11 @@
         public IEnumerable<ColumnGroup> GetAvailableColumnsList()
         {
             return ColumnsConfirguration.Columns.Values.SelectMany(x => x).OrderBy(x => x.GroupName);
-        }     
+        }
 
         public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
         {
-            var criteria = new GetDataForMonthlyPayrollReport
+            var criteria = new GetDataForMonthlyPayrollReportCriteria
             {
                 CompanyId = companyId,
                 Month = month

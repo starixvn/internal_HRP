@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Core.Services;
     using Fanex.Data.Repository;
+    using HRP.Criteria.Report;
     using Models.Report;
     using NSubstitute;
     using Repositories;
@@ -54,7 +55,7 @@
                 CashBankIns = bankInData,
                 CompanyName = companyName,
                 ReportedMonth = reportedMonth,
-                SelectedPaymentTransactions = new List<string>(new[] {"EuroBank1"})
+                SelectedPaymentTransactions = new List<string>(new[] { "EuroBank1" })
             };
 
             reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(bankInReport);
@@ -75,6 +76,25 @@
             Assert.Equal(companyName, actual.CompanyName);
             Assert.Equal(reportedMonth, actual.ReportedMonth);
             Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
+        }
+
+        [Fact]
+        public async Task GetDataForMonthlyPayrollReportAsync_WhenCalled_ReturnMonthlyPayrollReport()
+        {
+            // Arrange
+            var report = new MonthlyPayrollReport();
+            var month = DateTime.Today;
+            var companyId = 21;
+            var reportService = GetReportService();
+            reportRepository.GetDataForMonthlyPayrollReportAsync(Arg.Is<GetDataForMonthlyPayrollReportCriteria>(x => x.CompanyId == companyId && x.Month == month))
+                            .Returns(report);
+
+            // Act
+            var actual = await reportService.GetDataForMonthlyPayrollReportAsync(month, companyId);
+
+            // Assert
+            Assert.IsType<MonthlyPayrollReport>(actual);
+            Assert.Equal(report, actual);
         }
 
         #region Helpers

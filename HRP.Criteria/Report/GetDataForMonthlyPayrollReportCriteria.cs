@@ -3,7 +3,7 @@
     using System;
     using Fanex.Data.Repository;
 
-    public class GetDataForMonthlyPayrollReport : CriteriaBase
+    public class GetDataForMonthlyPayrollReportCriteria : CriteriaBase
     {
         public int CompanyId { get; set; }
 
