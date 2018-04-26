@@ -21,12 +21,22 @@ BEGIN
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
+		,@totalEmps INT = 0
 
 	SELECT @startDate = StartDate
 		,@dueDate = DueDate
 	FROM dbo.fnc_GetPaymentProcessDuration(@Month)
 
 	SELECT @policy = dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, @functionKey)
+
+	SELECT @totalEmps = COUNT(1)
+	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
+		INNER JOIN dbo.Employee AS emp WITH (NOLOCK) ON mp.EmployeeId = emp.EmployeeId
+		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
+	WHERE MONTH(mp.[Month]) = MONTH(@Month)
+		AND YEAR(mp.[Month]) = YEAR(@Month)
+		AND c.CompanyId = @CompanyId
 
 	SELECT TOP 1 mp.PayrollId
 		,emp.EmployeeId
@@ -39,6 +49,7 @@ BEGIN
 		,@startDate AS StartDate
 		,@dueDate AS DueDate
 		,mbs.WorkingDays
+		,@totalEmps AS TotalEmployees
 		,(CASE 
 			WHEN @today BETWEEN @startDate
 					AND @dueDate
@@ -50,8 +61,9 @@ BEGIN
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
 		INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON em.CostCenterId = cc.CostCenterId
-		INNER JOIN dbo.MonthlyBasicSalary AS mbs ON mp.PayrollId = mbs.PayrollId
+		LEFT JOIN dbo.MonthlyBasicSalary AS mbs ON mp.PayrollId = mbs.PayrollId
 	WHERE ISNULL(@PayrollId, mp.PayrollId) = mp.PayrollId
 		AND c.CompanyId = @CompanyId
-		AND mp.[Month] = @Month
+		AND MONTH(mp.[Month]) = MONTH(@Month)
+		AND YEAR(mp.[Month]) = YEAR(@Month)
 END

@@ -34,10 +34,10 @@ BEGIN
 		,@startRun DATETIME = GETDATE()
 		,@endRun DATETIME
 		,@duration INT
+		,@CompanyId INT
 
-	DECLARE @CompanyId INT
 	SELECT @CompanyId = CompanyId
-	FROM Employment
+	FROM dbo.Employment WITH (NOLOCK)
 	WHERE EmployeeId = @EmployeeId
 
 	-- Check Permission on Company
@@ -45,6 +45,7 @@ BEGIN
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = N'You don''t have permission to update bank account for this employee'
+
 		RETURN
 	END
 
@@ -78,41 +79,6 @@ BEGIN
 
 		RETURN
 	END
-
-	--DECLARE @totalActiveAccountInBankType INT = 0
-	--	,@isAccountChangeBankType BIT = 0
-	--	,@isAccountChangeStatus BIT = 0
-
-	--SELECT @totalActiveAccountInBankType = COUNT(Id)
-	--FROM [dbo].[BankAccount] WITH (NOLOCK)
-	--WHERE [EmployeeId] = @EmployeeId
-	--	AND [BankType] = @BankType
-	--	AND [IsActive] = 1
-
-	--SELECT @isAccountChangeBankType = 1
-	--FROM [dbo].[BankAccount] WITH (NOLOCK)
-	--WHERE [Id] = @Id
-	--	AND [BankType] <> @BankType
-
-	--SELECT @isAccountChangeStatus = 1
-	--FROM [dbo].[BankAccount] WITH (NOLOCK)
-	--WHERE [Id] = @Id
-	--	AND [IsActive] <> @IsActive
-
-	--IF (
-	--		@totalActiveAccountInBankType >= 3
-	--		AND @IsActive = 1
-	--		AND (
-	--			@isAccountChangeBankType = 1
-	--			OR @isAccountChangeStatus = 1
-	--			)
-	--		)
-	--BEGIN
-	--	SET @ErrCode = 3
-	--	SET @ErrMsg = N'This employee has reached the limit of number bank accounts'
-
-	--	RETURN
-	--END
 
 	SET @xml = (
 			SELECT Id AS '@id'

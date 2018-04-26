@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[BankAccount_Create] 
-	@Id INT = 0
+CREATE PROCEDURE [dbo].[BankAccount_Create] @Id INT = 0
 	,@EmployeeId INT
 	,@BankType INT = 1
 	,@BankName NVARCHAR(70)
@@ -34,10 +33,10 @@ BEGIN
 		,@startRun DATETIME = GETDATE()
 		,@endRun DATETIME
 		,@duration INT
-
 	DECLARE @CompanyId INT
+
 	SELECT @CompanyId = CompanyId
-	FROM Employment
+	FROM dbo.Employment WITH (NOLOCK)
 	WHERE EmployeeId = @EmployeeId
 
 	-- Check Permission on Company
@@ -45,6 +44,7 @@ BEGIN
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = N'You don''t have permission to create bank account for this employee'
+
 		RETURN
 	END
 
@@ -76,26 +76,7 @@ BEGIN
 
 		RETURN
 	END
-
-	--DECLARE @totalActiveAccountInBankType INT = 0;
-
-	--SELECT @totalActiveAccountInBankType = COUNT(Id)
-	--FROM [dbo].[BankAccount] WITH (NOLOCK)
-	--WHERE [EmployeeId] = @EmployeeId
-	--	AND [BankType] = @BankType
-	--	AND [IsActive] = 1
-
-	--IF (
-	--		@totalActiveAccountInBankType >= 3
-	--		AND @IsActive = 1
-	--		)
-	--BEGIN
-	--	SET @ErrCode = 4
-	--	SET @ErrMsg = N'This employee has reached the limit of number bank accounts. You cannot create more bank account.'
-
-	--	RETURN
-	--END
-
+	
 	INSERT INTO [dbo].[BankAccount] (
 		[EmployeeId]
 		,[BankType]
@@ -138,7 +119,7 @@ BEGIN
 				,AccountType AS '@at'
 				,BeneficiaryName AS '@bene'
 				,IsActive AS '@ia'
-			FROM [dbo].[BankAccount]
+			FROM [dbo].[BankAccount] WITH (NOLOCK)
 			WHERE Id = @BankAccountId
 			FOR XML PATH('r')
 				,TYPE

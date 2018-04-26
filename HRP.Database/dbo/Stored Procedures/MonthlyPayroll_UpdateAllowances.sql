@@ -1,7 +1,5 @@
 ﻿
-
-CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] 
-	@PayrollId INT
+CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] @PayrollId INT
 	,@CurrencyId INT = NULL
 	,@TotalAmount VARCHAR(MAX) = NULL
 	,@DirectBanking1CurrencyId INT = NULL
@@ -41,8 +39,8 @@ BEGIN
 
 	SELECT @companyId = e.CompanyId
 	FROM dbo.Employment AS e WITH (NOLOCK)
-	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-	ON e.EmployeeId = mp.EmployeeId AND mp.PayrollId = @PayrollId
+		INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
+		AND mp.PayrollId = @PayrollId
 
 	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @companyId, 'PaymentProcess') <> 2
 	BEGIN
@@ -64,7 +62,7 @@ BEGIN
 	CREATE TABLE #addition (
 		PayrollId INT
 		,[Type] TINYINT
-		,NoOfDays DECIMAL(6, 2)
+		,NoOfDays DECIMAL(6, 2) NULL
 		,UnitAmount VARCHAR(MAX)
 		,TotalAmount VARCHAR(MAX)
 		,NetAllowance VARCHAR(MAX)
@@ -74,7 +72,7 @@ BEGIN
 	CREATE TABLE #deduction (
 		PayrollId INT
 		,[Type] TINYINT
-		,NoOfDays DECIMAL(6, 2)
+		,NoOfDays DECIMAL(6, 2) NULL
 		,UnitAmount VARCHAR(MAX)
 		,TotalAmount VARCHAR(MAX)
 		,NetAllowance VARCHAR(MAX)
@@ -96,14 +94,17 @@ BEGIN
 		,NetAllowance
 		,CurrencyId
 		)
-	SELECT PayrollId
+	SELECT @PayrollId
 		,[Type]
-		,NoOfDays
+		,CASE 
+			WHEN ISNUMERIC(NoOfDays) <> 1 THEN NULL
+			ELSE NoOfDays
+			END
 		,UnitAmount
 		,TotalAmount
 		,NetAllowance
 		,CurrencyId
-	FROM OPENXML(@idocAddition, '/Root/Row', 1) WITH dbo.MonthlyAllowanceAddition AS data
+	FROM OPENXML(@idocAddition, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
 
 	INSERT INTO #deduction (
 		PayrollId
@@ -114,15 +115,18 @@ BEGIN
 		,NetAllowance
 		,CurrencyId
 		)
-	SELECT PayrollId
+	SELECT @PayrollId
 		,[Type]
-		,NoOfDays
+		,CASE 
+			WHEN ISNUMERIC(NoOfDays) <> 1 THEN NULL
+			ELSE NoOfDays
+			END
 		,UnitAmount
 		,TotalAmount
 		,NetAllowance
 		,CurrencyId
-	FROM OPENXML(@idocDeduction, '/Root/Row', 1) WITH dbo.MonthlyAllowanceDeduction AS data
-	
+	FROM OPENXML(@idocDeduction, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
+
 	SET @xml = (
 			SELECT [PayrollId] AS '@pi'
 				,[CurrencyId] AS '@ci'
@@ -152,8 +156,9 @@ BEGIN
 						,maa.CurrencyId AS '@ci'
 					FROM dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK)
 					WHERE maa.PayrollId = @PayrollId
-					FOR XML PATH('maa') ,TYPE
-				) AS 'maas'
+					FOR XML PATH('maa')
+						,TYPE
+					) AS 'maas'
 				,(
 					SELECT mad.[Type] AS '@t'
 						,mad.UnitAmount AS '@ua'
@@ -163,11 +168,13 @@ BEGIN
 						,mad.CurrencyId AS '@ci'
 					FROM dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK)
 					WHERE mad.PayrollId = @PayrollId
-					FOR XML PATH('mad') ,TYPE
-				) AS 'mads'
+					FOR XML PATH('mad')
+						,TYPE
+					) AS 'mads'
 			FROM [dbo].[MonthlyAllowance] WITH (NOLOCK)
 			WHERE PayrollId = @PayrollId
-			FOR XML PATH('r') ,TYPE
+			FOR XML PATH('r')
+				,TYPE
 			)
 	SET @logDataOld = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 
@@ -197,19 +204,19 @@ BEGIN
 		,maa.NoOfDays = a.NoOfDays
 		,maa.TotalAmount = a.TotalAmount
 		,maa.NetAllowance = a.NetAllowance
-	FROM dbo.MonthlyAllowanceAddition maa WITH (ROWLOCK, UPDLOCK)
-		INNER JOIN #addition a ON maa.PayrollId = a.PayrollId
-		AND maa.Type = a.Type
+	FROM dbo.MonthlyAllowanceAddition AS maa WITH (ROWLOCK, UPDLOCK)
+		INNER JOIN #addition AS a ON maa.PayrollId = a.PayrollId
+		AND maa.[Type] = a.[Type]
 
 	UPDATE mad
 	SET mad.UnitAmount = d.UnitAmount
 		,mad.NoOfDays = d.NoOfDays
 		,mad.TotalAmount = d.TotalAmount
 		,mad.NetAllowance = d.NetAllowance
-	FROM dbo.MonthlyAllowanceDeduction mad WITH (ROWLOCK, UPDLOCK)
-		INNER JOIN #deduction d ON mad.PayrollId = d.PayrollId
-		AND mad.Type = d.Type
-	
+	FROM dbo.MonthlyAllowanceDeduction AS mad WITH (ROWLOCK, UPDLOCK)
+		INNER JOIN #deduction AS d ON mad.PayrollId = d.PayrollId
+		AND mad.[Type] = d.[Type]
+
 	SET @xml = (
 			SELECT [PayrollId] AS '@pi'
 				,[CurrencyId] AS '@ci'
@@ -239,8 +246,9 @@ BEGIN
 						,maa.CurrencyId AS '@ci'
 					FROM dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK)
 					WHERE maa.PayrollId = @PayrollId
-					FOR XML PATH('maa'),TYPE
-				) AS 'maas'
+					FOR XML PATH('maa')
+						,TYPE
+					) AS 'maas'
 				,(
 					SELECT mad.[Type] AS '@t'
 						,mad.UnitAmount AS '@ua'
@@ -250,13 +258,14 @@ BEGIN
 						,mad.CurrencyId AS '@ci'
 					FROM dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK)
 					WHERE mad.PayrollId = @PayrollId
-					FOR XML PATH('mad'),TYPE
-				) AS 'mads'
+					FOR XML PATH('mad')
+						,TYPE
+					) AS 'mads'
 			FROM [dbo].[MonthlyAllowance] WITH (NOLOCK)
 			WHERE PayrollId = @PayrollId
-			FOR XML PATH('r'), TYPE
+			FOR XML PATH('r')
+				,TYPE
 			)
-
 	SET @logData = REPLACE(CONVERT(NVARCHAR(max), @xml), '" />', '"/"')
 	SET @endRun = GETDATE()
 	SET @duration = DATEDIFF(millisecond, @startRun, @endRun)
@@ -269,5 +278,6 @@ BEGIN
 		,@Duration = @Duration
 
 	DROP TABLE #addition
+
 	DROP TABLE #deduction
 END

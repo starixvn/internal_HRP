@@ -37,6 +37,8 @@ BEGIN
 		,FullName NVARCHAR(70)
 		,CostCenter NVARCHAR(50)
 		,WorkingDays TINYINT
+		,HasSettingSalary BIT
+		,HasSettingAllowance BIT
 		,Policy TINYINT
 		,[Status] TINYINT
 		)
@@ -81,6 +83,8 @@ BEGIN
 		,FullName
 		,CostCenter
 		,WorkingDays
+		,HasSettingSalary
+		,HasSettingAllowance
 		,Policy
 		,[Status]
 		)
@@ -92,6 +96,26 @@ BEGIN
 		,emp.FullName
 		,cc.Code AS CostCenter
 		,mbs.WorkingDays
+		,(CASE 
+			WHEN ISNULL(ms.EbankingCurrencyId, '') = ''
+				AND ISNULL(ms.EbankingAmount, '') = ''
+				AND ISNULL(ms.DirectBanking1CurrencyId, '') = ''
+				AND ISNULL(ms.DirectBanking1Amount, '') = ''
+				AND ISNULL(ms.DirectBanking2CurrencyId, '') = ''
+				AND ISNULL(ms.DirectBanking2Amount, '') = ''
+				AND ISNULL(ms.CashCurrencyId, '') = ''
+				AND ISNULL(ms.CashAmount, '') = '' THEN 0
+			ELSE 1 END
+			) AS HasSettingSalary
+		,(CASE 
+			WHEN ISNULL(ma.DirectBanking1CurrencyId, '') = ''
+				AND ISNULL(ma.DirectBanking1Amount, '') = ''
+				AND ISNULL(ma.DirectBanking2CurrencyId, '') = ''
+				AND ISNULL(ma.DirectBanking2Amount, '') = ''
+				AND ISNULL(ma.CashCurrencyId, '') = ''
+				AND ISNULL(ma.CashAmount, '') = '' THEN 0
+			ELSE 1 END
+			) AS HasSettingAllowance
 		,(CASE 
 			WHEN @today BETWEEN @startDate
 					AND @dueDate THEN policy.Policy
@@ -115,10 +139,10 @@ BEGIN
 		INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON emp.EmployeeId = mp.EmployeeId
 		AND MONTH(mp.[Month]) = MONTH(@Month)
 		AND YEAR(mp.[Month]) = YEAR(@Month)
-		INNER JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
+		LEFT JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
 		AND ISNULL(@WorkingDays, mbs.WorkingDays) = mbs.WorkingDays
-		INNER JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
-		INNER JOIN dbo.MonthlyAllowance AS ma WITH (NOLOCK) ON mp.PayrollId = ma.PayrollId
+		LEFT JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
+		LEFT JOIN dbo.MonthlyAllowance AS ma WITH (NOLOCK) ON mp.PayrollId = ma.PayrollId
 		INNER JOIN (
 		SELECT uf.CompanyId
 			,(CASE 
@@ -156,10 +180,14 @@ BEGIN
 		,FullName
 		,CostCenter
 		,WorkingDays
+		,HasSettingSalary
+		,HasSettingAllowance
 		,Policy
 		,[Status]
 	FROM #tblMonthlyPayroll WITH (NOLOCK)
-	ORDER BY IDNo
+	ORDER BY HasSettingSalary
+		,HasSettingAllowance
+		,IDNo
 
 	SELECT mp.PayrollId
 		,ms.CurrencyId

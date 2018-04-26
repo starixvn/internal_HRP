@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[MonthlyPayroll_GetCompaniesHavePayrollForCurrentMonth] 
+CREATE PROCEDURE [dbo].[MonthlyPayroll_GetCompaniesHavePayrollForCurrentMonth]
 AS
 /*
  Created: 20180411@EltonTon
@@ -15,9 +15,13 @@ BEGIN
 	DECLARE @currentDate DATE = GETDATE()
 
 	SELECT c.Code
-	FROM dbo.Company c WITH (NOLOCK)
-	WHERE EXISTS (SELECT 1
-				  FROM dbo.Employment e WITH (NOLOCK) INNER JOIN dbo.MonthlyPayroll mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
-				  AND YEAR(@currentDate) = YEAR(mp.Month) AND MONTH(@currentDate) = MONTH(mp.Month)
-				  WHERE e.CompanyId = c.CompanyId)
+	FROM dbo.Company AS c WITH (NOLOCK)
+	WHERE EXISTS (
+			SELECT 1
+			FROM dbo.Employment AS e WITH (NOLOCK)
+				INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
+				AND YEAR(@currentDate) = YEAR(mp.[Month])
+				AND MONTH(@currentDate) = MONTH(mp.[Month])
+			WHERE e.CompanyId = c.CompanyId
+			)
 END

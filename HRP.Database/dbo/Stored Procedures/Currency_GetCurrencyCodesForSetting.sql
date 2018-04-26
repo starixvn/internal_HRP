@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Currency_GetCurrencyCodesForSetting]
-	@Month DATE
+CREATE PROCEDURE [dbo].[Currency_GetCurrencyCodesForSetting] @Month DATE
 AS
 /*
 Created: 20180405@Elton.Ton
@@ -16,34 +15,52 @@ BEGIN
 
 	DECLARE @currentDate DATE = GETDATE()
 
-	IF MONTH(@currentDate) = MONTH(@Month) AND YEAR(@currentDate) = YEAR(@Month)
+	IF MONTH(@currentDate) = MONTH(@Month)
+		AND YEAR(@currentDate) = YEAR(@Month)
 	BEGIN
 		SELECT c.CurrencyId
-		,c.CurrencyCode
+			,c.CurrencyCode
 		FROM dbo.Currency AS c WITH (NOLOCK)
-		WHERE EXISTS (SELECT 1 FROM dbo.CurrencyExchangeRate AS cer 
-						WHERE MONTH(cer.ExchangeRateMonth) = MONTH(@Month) AND YEAR(cer.ExchangeRateMonth) = YEAR(@Month)
-						AND (cer.FromCurrencyId = c.CurrencyId OR cer.ToCurrencyId = c.CurrencyId))
-		OR c.IsActive = 1
+		WHERE EXISTS (
+				SELECT 1
+				FROM dbo.CurrencyExchangeRate AS cer WITH (NOLOCK)
+				WHERE MONTH(cer.ExchangeRateMonth) = MONTH(@Month)
+					AND YEAR(cer.ExchangeRateMonth) = YEAR(@Month)
+					AND (
+						cer.FromCurrencyId = c.CurrencyId
+						OR cer.ToCurrencyId = c.CurrencyId
+						)
+				)
+			OR c.IsActive = 1
+		ORDER BY c.[Order]
+	END
+	ELSE IF (
+			MONTH(@currentDate) < MONTH(@Month)
+			AND YEAR(@currentDate) = YEAR(@Month)
+			)
+		OR YEAR(@currentDate) < YEAR(@Month)
+	BEGIN
+		SELECT c.CurrencyId
+			,c.CurrencyCode
+		FROM dbo.Currency AS c WITH (NOLOCK)
+		WHERE c.IsActive = 1
 		ORDER BY c.[Order]
 	END
 	ELSE
-		IF (MONTH(@currentDate) < MONTH(@Month) AND YEAR(@currentDate) = YEAR(@Month)) OR YEAR(@currentDate) < YEAR(@Month)
-		BEGIN
-			SELECT c.CurrencyId
+	BEGIN
+		SELECT c.CurrencyId
 			,c.CurrencyCode
-			FROM dbo.Currency AS c WITH (NOLOCK)
-			WHERE c.IsActive = 1
-			ORDER BY c.[Order]
-		END
-		ELSE
-		BEGIN
-			SELECT c.CurrencyId
-			,c.CurrencyCode
-			FROM dbo.Currency AS c WITH (NOLOCK)
-			WHERE EXISTS (SELECT 1 FROM dbo.CurrencyExchangeRate AS cer 
-							WHERE MONTH(cer.ExchangeRateMonth) = MONTH(@Month) AND YEAR(cer.ExchangeRateMonth) = YEAR(@Month)
-							AND (cer.FromCurrencyId = c.CurrencyId OR cer.ToCurrencyId = c.CurrencyId))
-			ORDER BY c.[Order]
-		END
+		FROM dbo.Currency AS c WITH (NOLOCK)
+		WHERE EXISTS (
+				SELECT 1
+				FROM dbo.CurrencyExchangeRate AS cer WITH (NOLOCK)
+				WHERE MONTH(cer.ExchangeRateMonth) = MONTH(@Month)
+					AND YEAR(cer.ExchangeRateMonth) = YEAR(@Month)
+					AND (
+						cer.FromCurrencyId = c.CurrencyId
+						OR cer.ToCurrencyId = c.CurrencyId
+						)
+				)
+		ORDER BY c.[Order]
+	END
 END

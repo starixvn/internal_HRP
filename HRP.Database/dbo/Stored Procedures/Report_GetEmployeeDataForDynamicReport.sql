@@ -50,20 +50,20 @@ BEGIN
 	,mba.SecondmentAmount
 	,smc.CurrencyCode AS 'SecondmentCurrency'
 	FROM dbo.Employee AS e WITH (NOLOCK)
-	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
 	INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
 	INNER JOIN dbo.Division AS d WITH (NOLOCK) on em.DivisionId = d.DivisionId
 	INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) on em.CostCenterId = cc.CostCenterId
 	INNER JOIN dbo.Department AS dm WITH (NOLOCK) ON em.DepartmentId = dm.DepartmentId
 	INNER JOIN dbo.Section AS s WITH (NOLOCK) ON em.SectionId = s.SectionId
+	LEFT JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
 
-	INNER JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
+	LEFT JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
 	LEFT JOIN dbo.Currency AS msc WITH (NOLOCK) ON ms.CurrencyId = msc.CurrencyId
 
-	INNER JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
+	LEFT JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
 	LEFT JOIN dbo.Currency AS mbsc WITH (NOLOCK) ON mbs.CurrencyId = mbsc.CurrencyId
 
-	INNER JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
+	LEFT JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
 	LEFT JOIN dbo.Currency AS sstc WITH (NOLOCK) ON mba.SubsistenceCurrencyId = sstc.CurrencyId
 	LEFT JOIN dbo.Currency AS hc WITH (NOLOCK) ON mba.HousingCurrencyId = hc.CurrencyId
 	LEFT JOIN dbo.Currency AS hpc WITH (NOLOCK) ON mba.HomePassageCurrencyId = hpc.CurrencyId

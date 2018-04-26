@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].Report_GetDataForMonthlyPayrollReport @CompanyId SMALLINT
+CREATE PROCEDURE [dbo].[Report_GetDataForMonthlyPayrollReport] @CompanyId SMALLINT
 	,@Month DATE
 AS
 /*
@@ -115,9 +115,14 @@ BEGIN
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate
 		,r.FromCurrencyId
+		,c1.CurrencyCode AS FromCurrencyCode
 		,r.ToCurrencyId
+		,c2.CurrencyCode AS ToCurrencyCode
 	FROM dbo.CurrencyExchangeRate AS r WITH (NOLOCK)
+	LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON r.FromCurrencyId = c1.CurrencyId
+	LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON r.ToCurrencyId = c2.CurrencyId
 	WHERE r.ExchangeRateMonth = @Month
+	ORDER BY c2.[Order]
 
 	DROP TABLE #tblEmployeeInfo
 END

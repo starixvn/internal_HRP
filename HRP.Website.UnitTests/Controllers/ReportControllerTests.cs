@@ -31,7 +31,7 @@
             var reportController = GetReportController();
 
             //Act
-            var actual = await reportController.BankIn();
+            var actual = await reportController.DirectBanking();
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -52,7 +52,7 @@
             var reportController = GetReportController();
 
             //Act
-            var actual = await reportController.GetBankInReport(bankInReportViewModel);
+            var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
 
             //Assert
             Assert.IsType<RedirectToActionResult>(actual);
@@ -89,7 +89,7 @@
             reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
 
             //Act
-            var actual = await reportController.GetBankInReport(bankInReportViewModel);
+            var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
 
             //Assert
             Assert.IsType<FileContentResult>(actual);
