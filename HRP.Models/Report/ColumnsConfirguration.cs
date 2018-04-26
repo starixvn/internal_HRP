@@ -3,8 +3,11 @@
     using System.Collections.Generic;
     using HRP.Core.Enumerations;
 
-    public static class ColumnsDictionary
+    public static class ColumnsConfirguration
     {
+        private const string personalDetails = "Personal Details";
+
+
         private static readonly Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>> columns = new Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>>
         {
             {

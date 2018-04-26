@@ -511,7 +511,7 @@
                     EmployeeId = basicAllowance.EmployeeId,
                     Type = (int)x,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
-                });
+                }).ToList();
 
             if (standardWorkingDays < actualWorkingDays)
             {
@@ -547,7 +547,7 @@
                     EmployeeId = basicAllowance.EmployeeId,
                     Type = (int)x,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
-                });
+                }).ToList();
 
             if (standardWorkingDays > actualWorkingDays)
             {

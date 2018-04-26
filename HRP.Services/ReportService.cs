@@ -72,7 +72,7 @@
 
         public IEnumerable<ColumnGroup> GetAvailableColumnsList()
         {
-            return ColumnsDictionary.Columns.Values.SelectMany(x => x).OrderBy(x => x.GroupName);
+            return ColumnsConfirguration.Columns.Values.SelectMany(x => x).OrderBy(x => x.GroupName);
         }     
 
         public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)

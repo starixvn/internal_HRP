@@ -158,7 +158,7 @@
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {
-            var selectedGroups = ColumnsDictionary.Columns.Where(x => selectedIds.Any(s => s == (int)x.Key)).SelectMany(x => x.Value);
+            var selectedGroups = ColumnsConfirguration.Columns.Where(x => selectedIds.Any(s => s == (int) x.Key )).SelectMany(x => x.Value);
             var columns = selectedGroups.SelectMany(x => x.Columns);
 
             using (var package = new ExcelPackage())
