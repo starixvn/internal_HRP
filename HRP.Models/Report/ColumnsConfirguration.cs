@@ -1,14 +1,13 @@
 ﻿namespace HRP.Models.Report
 {
     using System.Collections.Generic;
-    using HRP.Core.Enumerations;
 
     public static class ColumnsConfirguration
     {
-        private static readonly Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>> columns = new Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>>
+        private static readonly Dictionary<int, IEnumerable<ColumnGroup>> columns = new Dictionary<int, IEnumerable<ColumnGroup>>
         {
             {
-                DynamicReportItem.IDNo,
+                1,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -27,7 +26,7 @@
                 }
             },
             {
-                DynamicReportItem.FullName,
+                2,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -46,7 +45,7 @@
                 }
             },
             {
-                DynamicReportItem.Nickname,
+                3,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -65,7 +64,7 @@
                 }
             },
             {
-                DynamicReportItem.Division,
+                4,
                 new List<ColumnGroup>
                 {
                    new ColumnGroup
@@ -83,7 +82,7 @@
                 }
             },
             {
-                DynamicReportItem.Department,
+                5,
                 new List<ColumnGroup>
                 {
                    new ColumnGroup
@@ -102,7 +101,7 @@
                 }
             },
             {
-                DynamicReportItem.CostCenter,
+                6,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -121,7 +120,7 @@
                 }
             },
             {
-                DynamicReportItem.ActualBasicSalary,
+                7,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -146,7 +145,7 @@
                 }
             },
             {
-                DynamicReportItem.BasicSalary,
+                8,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -171,7 +170,7 @@
                 }
             },
             {
-                DynamicReportItem.BasicSalaryAddition,
+                9,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -196,7 +195,7 @@
                 }
             },
             {
-                DynamicReportItem.BasicSalaryDeduction,
+                10,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -221,7 +220,7 @@
                 }
             },
             {
-                DynamicReportItem.BasicSalaryNet,
+                11,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -246,7 +245,7 @@
                 }
             },
             {
-                DynamicReportItem.Allowances,
+                12,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
@@ -405,6 +404,6 @@
             }
         };
 
-        public static Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>> Columns { get => columns; }
+        public static Dictionary<int, IEnumerable<ColumnGroup>> Columns { get => columns; }
     }
 }

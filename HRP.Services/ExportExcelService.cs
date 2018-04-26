@@ -303,7 +303,7 @@
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {
-            var selectedGroups = ColumnsConfirguration.Columns.Where(x => selectedIds.Any(s => s == (int) x.Key )).SelectMany(x => x.Value);
+            var selectedGroups = selectedIds.SelectMany(x => ColumnsConfirguration.Columns[x]);
             var columns = selectedGroups.SelectMany(x => x.Columns);
 
             using (var package = new ExcelPackage())
