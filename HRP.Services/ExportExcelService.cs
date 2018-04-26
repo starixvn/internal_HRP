@@ -11,6 +11,7 @@
     using Models.Report;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
+    using Resources;
 
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
@@ -44,18 +45,61 @@
 
                 // EBanking
                 var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
-                startRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
+                var currentRow = RenderReportRowsForBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                 var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
-                startRow = RenderReportRowsForBankIns(cashGroupedByBank, worksheet, startRow);
+                currentRow = RenderReportRowsForBankIns(cashGroupedByBank, worksheet, currentRow);
 
                 // Format for list bank ins
-                worksheet.Cells[$"B9:I{startRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[$"B9:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                // summary for banking
+                currentRow = currentRow + 1;
+                var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
+
+                currentRow = RenderSummaryRowForBankIns(
+                    worksheet,
+                    currentRow,
+                    Message.GrandTotalBankIn,
+                    eBankingCurrencies);
+
+                // summary for cash
+                currentRow = currentRow + 1;
+                var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
+                RenderSummaryRowForBankIns(
+                    worksheet,
+                    currentRow,
+                    Message.GrandTotalCash,
+                    cashCurrencies);
 
                 worksheet.Cells.AutoFitColumns();
 
                 return xlPackage.GetAsByteArray();
             }
+        }
+
+        private static int RenderSummaryRowForBankIns(
+            ExcelWorksheet worksheet,
+            int currentRow,
+            string summaryText,
+            IEnumerable<IGrouping<string, BankIn>> bankInCurrencies)
+        {
+            var beginRow = currentRow;
+            foreach (var currency in bankInCurrencies)
+            {
+                worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
+                worksheet.Cells[$"H{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
+                currentRow++;
+            }
+
+            worksheet.Cells[$"B{beginRow}:G{currentRow - 1}"].Merge = true;
+            worksheet.Cells[$"B{beginRow}"].Value = summaryText;
+            worksheet.Cells[$"B{beginRow}"].Style.VerticalAlignment =
+                ExcelVerticalAlignment.Center;
+
+            worksheet.Cells[$"B{beginRow}:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            return currentRow - 1;
         }
 
         private static int RenderReportRowsForBankIns(

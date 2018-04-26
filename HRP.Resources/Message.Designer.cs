@@ -943,6 +943,24 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grand Total (Bank In).
+        /// </summary>
+        public static string GrandTotalBankIn {
+            get {
+                return ResourceManager.GetString("GrandTotalBankIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grand Total (Cash).
+        /// </summary>
+        public static string GrandTotalCash {
+            get {
+                return ResourceManager.GetString("GrandTotalCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} must be greater than {1}..
         /// </summary>
         public static string GreaterThanCompare {

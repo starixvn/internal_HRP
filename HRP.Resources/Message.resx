@@ -795,4 +795,10 @@
   <data name="EmployeeHasNoBasicSalarySetting" xml:space="preserve">
     <value>This employee has no Payroll setting on Basic Salary.</value>
   </data>
+  <data name="GrandTotalBankIn" xml:space="preserve">
+    <value>Grand Total (Bank In)</value>
+  </data>
+  <data name="GrandTotalCash" xml:space="preserve">
+    <value>Grand Total (Cash)</value>
+  </data>
 </root>
