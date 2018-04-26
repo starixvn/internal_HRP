@@ -291,7 +291,8 @@
 
                                 @if (employee.Policy == Policy.Host)
                                 {
-                                    <a class="js-menuItem-presetMonthlyPayroll" href="javascript:;" data-employeeId="@employee.EmployeeId">@ViewLang.Preset</a>
+                                    <a class="js-menuItem-presetMonthlyPayroll" href="javascript:;" data-employeeId="@employee.EmployeeId">
+                                     <span class="icon-preset"></span> @ViewLang.Preset</a>
                                 }
                             </div>
                         }
