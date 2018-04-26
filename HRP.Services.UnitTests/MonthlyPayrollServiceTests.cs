@@ -501,6 +501,7 @@
         [Fact]
         public void InitializeMonthlyAllowance_ValidDate_ReturnModel()
         {
+            // Arrage
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
 
@@ -531,14 +532,17 @@
 
             var expectedTotalAmount = "1800";
 
+            // Act
             var result = monthlyPayrollService.InitializeMonthlyAllowance(basicAllowance, allowanceAdditions, allowanceDeductions, currencyExchangeRates, dstNetSalary);
 
+            // Assert
             Assert.Equal(expectedTotalAmount, result.TotalAmount);
         }
 
         [Fact]
         public void InitializeAllowanceAdditions_ValidData_ReturnExpectedModel()
         {
+            // Arrange
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
             var standardWorkingDays = 22;
@@ -563,8 +567,10 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
+            // Act
             var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAlloance, currencyExchangeRates);
 
+            // Assert
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
             Assert.NotNull(dutyMeal);
