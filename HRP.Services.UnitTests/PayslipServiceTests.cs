@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Criteria;
     using HRP.Criteria.Payslip;
@@ -50,7 +51,7 @@
             var payslips = new List<PayslipModel>
             {
                 new PayslipModel { PayrollId = 1, IDNo = "DAR111", FullName = "thang", Nickname = "tim.trinh",
-                    Section = "HR", Email = "tim.trinh@starixsoft.com", Phone = "123", IsSent = true }
+                    Section = "HR", Email = "tim.trinh@starixsoft.com", Phone = "123", IsSent = true, PayrollStatus = MonthlyPayrollStatus.Default }
             };
             var payslipService = GetPayslipService();
             baseService.GetDataAsync<PayslipModel>(Arg.Any<GetPayslipCriteria>()).Returns(payslips);

@@ -46,11 +46,11 @@
 
             if (exceptionType == typeof(CertificateNotFoundException))
             {
-                context.Response.Redirect("/certificate/FileNotFound");
+                context.Response.Redirect("/SystemSecurity/FileNotFound");
             }
             else if (exceptionType == typeof(CertificatePasswordException))
             {
-                context.Response.Redirect("/certificate/password");
+                context.Response.Redirect("/SystemSecurity/password");
             }
             else
             {

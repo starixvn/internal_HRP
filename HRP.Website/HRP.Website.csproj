@@ -83,11 +83,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Certificate\FileNotFound.cshtml" />
-    <None Include="Views\Certificate\Generate.cshtml" />
-    <None Include="Views\Certificate\Password.cshtml" />
-    <None Include="wwwroot\assets\styles\pages\certificate\certificate.css.map" />
-    <None Include="wwwroot\assets\styles\pages\certificate\certificate.scss" />
+    <None Include="Views\SystemSecurity\FileNotFound.cshtml" />
+    <None Include="Views\SystemSecurity\Generate.cshtml" />
+    <None Include="Views\SystemSecurity\Password.cshtml" />
+    <None Include="wwwroot\assets\styles\pages\systemsecurity\certificate.css.map" />
+    <None Include="wwwroot\assets\styles\pages\systemsecurity\certificate.scss" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shBrushGroovy.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shCore.js" />
     <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shLegacy.js" />

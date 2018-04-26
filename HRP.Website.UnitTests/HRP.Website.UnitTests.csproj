@@ -387,7 +387,7 @@
     <Compile Include="Controllers\AccountControllerTests.cs" />
     <Compile Include="Controllers\AuthControllerTests.cs" />
     <Compile Include="Controllers\BankAccountControllerTests.cs" />
-    <Compile Include="Controllers\CertificateControllerTests.cs" />
+    <Compile Include="Controllers\SystemSecurityControllerTests.cs" />
     <Compile Include="Controllers\CurrencySettingControllerTests.cs" />
     <Compile Include="Controllers\DataConfigurationControllerTests.cs" />
     <Compile Include="Controllers\EmployeeControllerTests.cs" />

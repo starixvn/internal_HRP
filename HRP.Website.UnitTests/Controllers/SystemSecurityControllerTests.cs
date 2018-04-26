@@ -11,7 +11,7 @@
     using NSubstitute;
     using Xunit;
 
-    public class CertificateControllerTests
+    public class SystemSecurityControllerTests
     {
         private ISessionService sessionService;
         private IBaseService baseService;
@@ -24,7 +24,7 @@
         public void Generate_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             sessionService.IsSystemAdmin = true;
 
             // Act
@@ -45,7 +45,7 @@
         {
             // Arrange
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
 
             // Act
@@ -65,7 +65,7 @@
             // Arrange
             var commandResult = new CommandResult();
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.GenerateSelfSignedCertificate(viewModel.Password).Returns(commandResult);
 
             // Act
@@ -86,7 +86,7 @@
             // Arrange
             var commandResult = new CommandResult { Code = 0 };
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.GenerateSelfSignedCertificate(viewModel.Password).Returns(commandResult);
 
             // Act
@@ -112,7 +112,7 @@
         public void Password_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             sessionService.IsSystemAdmin = true;
 
             // Act
@@ -133,7 +133,7 @@
         {
             // Arrange
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
 
             // Act
@@ -154,7 +154,7 @@
         {
             // Arrange
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(false);
 
             // Act
@@ -175,7 +175,7 @@
         {
             // Arrange
             var viewModel = new GenerateCertificateViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
 
             // Act
@@ -197,7 +197,7 @@
         public void ChangePassword_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             sessionService.IsSystemAdmin = true;
 
             // Act
@@ -219,7 +219,7 @@
         {
             // Arrange
             var viewModel = new ChangeCertificatePasswordViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
 
             // Act
@@ -240,7 +240,7 @@
         {
             // Arrange
             var viewModel = new ChangeCertificatePasswordViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(false);
 
             // Act
@@ -262,7 +262,7 @@
             // Arrange
             var commandResult = new CommandResult();
             var viewModel = new ChangeCertificatePasswordViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
             certificateService.ChangePasswordAccessTheCertificate(viewModel.OldPassword, viewModel.Password).Returns(commandResult);
 
@@ -285,7 +285,7 @@
             // Arrange
             var commandResult = new CommandResult { Code = 0 };
             var viewModel = new ChangeCertificatePasswordViewModel();
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
             certificateService.ChangePasswordAccessTheCertificate(viewModel.OldPassword, viewModel.Password).Returns(commandResult);
 
@@ -312,7 +312,7 @@
             // Arrange
             var sourceFileName = "D:\\HRP.pfx";
             var entryName = "HRP.pfx";
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             certificateService.GetCertificateFilePath().Returns(sourceFileName);
             zipFileWrapper.CopyFileToByteArray(sourceFileName, entryName).Returns(new byte[] { 0xFF, 0x00 });
 
@@ -329,7 +329,7 @@
         public void FileNotFound_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetCertificateController();
+            var controller = GetSystemSecurityController();
             sessionService.IsSystemAdmin = true;
 
             // Act
@@ -370,13 +370,13 @@
             return service;
         }
 
-        private CertificateController GetCertificateController()
+        private SystemSecurityController GetSystemSecurityController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             zipFileWrapper = FakeZipFileWrapper();
             certificateService = FakeCertificateService();
-            var controller = new CertificateController(sessionService, baseService, zipFileWrapper, certificateService);
+            var controller = new SystemSecurityController(sessionService, baseService, zipFileWrapper, certificateService);
 
             return controller;
         }

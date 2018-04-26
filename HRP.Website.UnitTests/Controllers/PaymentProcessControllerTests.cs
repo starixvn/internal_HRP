@@ -824,7 +824,7 @@
         #endregion EditBasicSalary
 
         [Fact]
-        public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnExpectedEmployees()
+        public async Task GetEmployeeSuggestionByName_WhenCalled_ReturnAsExpectedEmployees()
         {
             // Arrange
             var expected = new List<EmployeeSuggestionViewModel>
@@ -843,7 +843,7 @@
         }
 
         [Fact]
-        public async Task GetEmployeeSuggestionByIDNo_WhenCalled_ReturnExpectedEmployees()
+        public async Task GetEmployeeSuggestionByIDNo_WhenCalled_ReturnAsExpectedEmployees()
         {
             // Arrange
             var expected = new List<EmployeeSuggestionViewModel>
@@ -855,6 +855,22 @@
 
             // Act
             var actual = await controller.GetEmployeeSuggestionByIDNo(1, "DAR111");
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetHierarchyCompany_WhenCalled_ReturnAsExpectedHierarchy()
+        {
+            // Arrange
+            var expected = new List<MultiSelectViewModel>();
+            var controller = GetPaymentProcessController();
+            monthlyPayrollService.GetHierarchyCompanyAsync(1, "1,2").Returns(expected);
+
+            // Act
+            var actual = await controller.GetHierarchyCompany(1, "1,2");
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

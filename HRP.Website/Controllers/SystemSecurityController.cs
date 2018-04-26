@@ -11,14 +11,14 @@
     using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
-    public class CertificateController : Controller
+    public class SystemSecurityController : Controller
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly IZipFileWrapper zipFileWrapper;
         private readonly ICertificateService certificateService;
 
-        public CertificateController(
+        public SystemSecurityController(
             ISessionService sessionService,
             IBaseService baseService,
             IZipFileWrapper zipFileWrapper,

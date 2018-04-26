@@ -1,15 +1,18 @@
-﻿@model HRP.Models.Certificate.GenerateCertificateViewModel
+﻿@using HRP.Models.Certificate
+@model GenerateCertificateViewModel
 
 @{
     Layout = "_LoginLayout";
 }
 
 @section Styles {
-    <link href="~/assets/styles/pages/certificate/certificate.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/systemsecurity/certificate.css" rel="stylesheet" />
 }
 
 <section class="block">
-
+    <div class="circle-large">
+        <span class="icon-otp"></span>
+    </div>
     @if (Model.IsSystemAdmin)
     {
         <h1 class="title">Generate Certificate</h1>
@@ -19,12 +22,12 @@
             <div class="msg-success -has-icon">
                 Generate successful. Please download....
             </div>
-            <a class="button -primary" asp-controller="certificate" asp-action="download">Download</a>
+            <a class="button -primary" asp-controller="SystemSecurity" asp-action="download">Download</a>
             <a class="button -primary" asp-controller="home" asp-action="index">Back to Home</a>
         }
         else
         {
-            <form asp-controller="Certificate" asp-action="Generate" method="POST">
+            <form asp-controller="SystemSecurity" asp-action="Generate" method="POST">
                 <input hidden asp-for="IsSystemAdmin" />
 
                 <span asp-validation-for="Password" class="msg-error"></span>
@@ -47,9 +50,11 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     </environment>
 }

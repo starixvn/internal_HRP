@@ -41,12 +41,12 @@
             }
             else if (!certificateService.IsGeneratedCertificate())
             {
-                context.Result = new RedirectResult("/certificate/generate");
+                context.Result = new RedirectResult("/SystemSecurity/generate");
                 return;
             }
             else if (!certificateService.IsExistedCertificate())
             {
-                context.Result = new RedirectResult("/certificate/FileNotFound");
+                context.Result = new RedirectResult("/SystemSecurity/FileNotFound");
                 return;
             }
             else
@@ -55,7 +55,7 @@
 
                 if (string.IsNullOrEmpty(password) || !certificateService.IsCorrectPasswordAccessTheCertificate(password))
                 {
-                    context.Result = new RedirectResult("/certificate/password");
+                    context.Result = new RedirectResult("/SystemSecurity/password");
                     return;
                 }
             }

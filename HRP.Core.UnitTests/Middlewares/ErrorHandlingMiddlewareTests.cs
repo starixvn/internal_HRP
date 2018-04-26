@@ -45,7 +45,7 @@
 
             // Assert
             Assert.Equal((int)HttpStatusCode.Found, context.Response.StatusCode);
-            Assert.Equal("/certificate/FileNotFound", context.Response.Headers.Values.First().ToString());
+            Assert.Equal("/SystemSecurity/FileNotFound", context.Response.Headers.Values.First().ToString());
         }
 
         [Fact]
@@ -63,7 +63,7 @@
 
             // Assert
             Assert.Equal((int)HttpStatusCode.Found, context.Response.StatusCode);
-            Assert.Equal("/certificate/password", context.Response.Headers.Values.First().ToString());
+            Assert.Equal("/SystemSecurity/password", context.Response.Headers.Values.First().ToString());
         }
 
         [Fact]

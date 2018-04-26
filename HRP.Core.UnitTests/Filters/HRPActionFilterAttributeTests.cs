@@ -83,7 +83,7 @@
 
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/certificate/generate", redirectResult.Url);
+            Assert.Equal("/SystemSecurity/generate", redirectResult.Url);
         }
 
         [Fact]
@@ -116,7 +116,7 @@
 
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/certificate/FileNotFound", redirectResult.Url);
+            Assert.Equal("/SystemSecurity/FileNotFound", redirectResult.Url);
         }
 
         [Fact]
@@ -150,7 +150,7 @@
 
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/certificate/password", redirectResult.Url);
+            Assert.Equal("/SystemSecurity/password", redirectResult.Url);
         }
 
         [Fact]
@@ -185,7 +185,7 @@
 
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/certificate/password", redirectResult.Url);
+            Assert.Equal("/SystemSecurity/password", redirectResult.Url);
         }
 
         [Fact]
