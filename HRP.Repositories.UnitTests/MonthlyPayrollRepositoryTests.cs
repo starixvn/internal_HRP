@@ -35,7 +35,7 @@
             var additions = new List<MonthlySalaryAdditionModel>();
             var deductions = new List<MonthlySalaryDeductionModel>();
             multiResultReader.ReadFirstOrDefaultAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
-            multiResultReader.ReadFirstAsync<MonthlySalaryModel>().Returns(monthlySalary);
+            multiResultReader.ReadFirstOrDefaultAsync<MonthlySalaryModel>().Returns(monthlySalary);
             multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(additions);
             multiResultReader.ReadAsync<MonthlySalaryDeductionModel>().Returns(deductions);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);

@@ -22,5 +22,7 @@
         public string CompanyCode { get; set; }
         public int WorkingDays { get; set; }
         public bool IsHost { get; set; }
+
+        public int TotalEmployees { get; set; }
     }
 }

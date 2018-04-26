@@ -19,7 +19,7 @@
                 using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
                     var monthlyBasicSalary = await multi.ReadFirstOrDefaultAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
-                    var monthlySalary = await multi.ReadFirstAsync<MonthlySalaryModel>().ConfigureAwait(false);
+                    var monthlySalary = await multi.ReadFirstOrDefaultAsync<MonthlySalaryModel>().ConfigureAwait(false);
                     var additions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
                     var deductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
 

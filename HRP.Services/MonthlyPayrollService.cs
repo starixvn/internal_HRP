@@ -109,8 +109,8 @@
             IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = tuple.Item1;
             foreach (MonthlyPayrollEmployeeInfoViewModel monhtlyPayroll in monthlyPayrolls)
             {
-                monhtlyPayroll.BasicSalary = tuple.Item2.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
-                monhtlyPayroll.Allowance = tuple.Item3.First(x => x.PayrollId == monhtlyPayroll.PayrollId);
+                monhtlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monhtlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
+                monhtlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monhtlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
             }
 
             DecryptMonthlyPayroll(monthlyPayrolls);
@@ -137,7 +137,7 @@
                 viewModel = new EditMonthlySalaryViewModel
                 {
                     MonthlyBasicSalary = monthlySalary.Item1,
-                    MonthlySalary = monthlySalary.Item2,
+                    MonthlySalary = monthlySalary.Item2 ?? new MonthlySalaryModel(),
                     Additions = monthlySalary.Item3.ToList(),
                     Deductions = monthlySalary.Item4.ToList()
                 };
