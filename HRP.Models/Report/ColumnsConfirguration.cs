@@ -5,9 +5,6 @@
 
     public static class ColumnsConfirguration
     {
-        private const string personalDetails = "Personal Details";
-
-
         private static readonly Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>> columns = new Dictionary<DynamicReportItem, IEnumerable<ColumnGroup>>
         {
             {
@@ -121,7 +118,7 @@
                            }
                         }
                     }
-                }              
+                }
             },
             {
                 DynamicReportItem.ActualBasicSalary,
@@ -146,7 +143,7 @@
                            }
                         }
                     }
-                }              
+                }
             },
             {
                 DynamicReportItem.BasicSalary,
@@ -172,7 +169,6 @@
                         }
                     }
                 }
-        
             },
             {
                 DynamicReportItem.BasicSalaryAddition,
@@ -198,7 +194,6 @@
                         }
                     }
                 }
-                
             },
             {
                 DynamicReportItem.BasicSalaryDeduction,
@@ -223,7 +218,7 @@
                            }
                         }
                     }
-                }                
+                }
             },
             {
                 DynamicReportItem.BasicSalaryNet,
@@ -248,7 +243,7 @@
                            }
                         }
                     }
-                } 
+                }
             },
             {
                 DynamicReportItem.Allowances,
