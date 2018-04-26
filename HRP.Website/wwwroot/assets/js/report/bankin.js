@@ -26,12 +26,15 @@
     initPaymentTransactionFanexMultiSelect: function() {
         $.ajax({
             url: $("#get-payment-transactions-url").attr("href"),
+            data: {
+                banktype: $("#banktype").val()
+            },
             success: function(result) {
                 $("#payment-transactions-multiselect").fanexMultiSelect({
                     listData: result,
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
-                    showFilter: true,
+                    showFilter: true,                    
                     onCheck: function() {
                         var selectedValue =
                             $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");

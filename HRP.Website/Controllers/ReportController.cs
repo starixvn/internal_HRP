@@ -46,7 +46,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GetPaymentTransactions()
+        public async Task<IActionResult> GetPaymentTransactions(BankTypes banktype)
         {
             var refResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[]
             {
@@ -57,70 +57,77 @@
 
             var paymentOptions = new List<MultiSelectViewModel>();
 
-            paymentOptions.Add(new MultiSelectViewModel
+            if (banktype == BankTypes.Ebanking)
             {
-                Value = ((int)BankTypes.DirectBanking).ToString(),
-                Text = BankTypes.DirectBanking.GetDisplayName(),
-                ParentId = "0",
-                Items = refResourceService.FilterReferenceResources(
-                    refResources,
-                    ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
-                    {
-                        Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
-                        Text = x.Value,
-                        ParentId = ((int)BankTypes.DirectBanking).ToString()
-                    }).ToList()
-            });
-
-            paymentOptions.Add(new MultiSelectViewModel
-            {
-                Value = ((int)BankTypes.Ebanking).ToString(),
-                Text = BankTypes.Ebanking.GetDisplayName(),
-                ParentId = "0",
-                Items = refResourceService.FilterReferenceResources(
-                    refResources,
-                    ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
+                paymentOptions.Add(new MultiSelectViewModel
+                {
+                    Value = ((int)BankTypes.Ebanking).ToString(),
+                    Text = BankTypes.Ebanking.GetDisplayName(),
+                    ParentId = "0",
+                    Items = refResourceService.FilterReferenceResources(
+                        refResources,
+                        ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
                     {
                         Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
                         Text = x.Value,
                         ParentId = ((int)BankTypes.Ebanking).ToString()
                     }).ToList()
-            });
+                });
+            }
 
-            paymentOptions.Add(new MultiSelectViewModel
+            if (banktype == BankTypes.DirectBanking)
             {
-                Value = "3",
-                Text = "Cash",
-                ParentId = "0",
-                Items = refResourceService.FilterReferenceResources(
-                    refResources,
-                    ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
+                paymentOptions.Add(new MultiSelectViewModel
+                {
+                    Value = ((int)BankTypes.DirectBanking).ToString(),
+                    Text = BankTypes.DirectBanking.GetDisplayName(),
+                    ParentId = "0",
+                    Items = refResourceService.FilterReferenceResources(
+                        refResources,
+                        ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
+                    {
+                        Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = ((int)BankTypes.DirectBanking).ToString()
+                    }).ToList()
+                });
+
+                paymentOptions.Add(new MultiSelectViewModel
+                {
+                    Value = "3",
+                    Text = "Cash",
+                    ParentId = "0",
+                    Items = refResourceService.FilterReferenceResources(
+                        refResources,
+                        ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
                     {
                         Value = $"{3}-{x.ResourceId}",
                         Text = x.Value,
                         ParentId = "3"
                     }).ToList()
-            });
+                });
+            }
 
             return Json(paymentOptions);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> BankIn()
+        public async Task<IActionResult> DirectBanking()
         {
             var companies = await reportService.GetCompaniesAsync();
 
             var viewModel = new BankInReportViewModel
             {
                 Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                BankType = BankTypes.DirectBanking
             };
 
             return View(viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GetBankInReport(BankInReportViewModel viewModel)
+        public async Task<IActionResult> GetDirectBankingReport(BankInReportViewModel viewModel)
         {
             var bankInData = await reportService.GetBankInAsync(
                 viewModel.CompanyId,
@@ -128,19 +135,61 @@
                 viewModel.TypeOfPayment,
                 viewModel.SelectedPaymentTransactions);
 
-            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\BankIn.xlsx");
+            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\DirectBanking.xlsx");
 
-            IActionResult result = RedirectToAction("BankIn");
+            IActionResult result = RedirectToAction("DirectBanking");
 
             if (bankInData != null && bankInData.IsExportable)
             {
-                var fileContent = exportExcelService.ExportBankInReports(
+                var fileContent = exportExcelService.ExportDirectBankingReports(
                     viewModel.SelectedTime,
                     fileInfo,
                     viewModel.TypeOfPayment,
                     bankInData);
 
-                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_BankingDetails.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_DirectBankingDetails.xlsx");
+            }
+
+            return result;
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public async Task<IActionResult> Ebanking()
+        {
+            var companies = await reportService.GetCompaniesAsync();
+
+            var viewModel = new BankInReportViewModel
+            {
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                SelectedTime = DateTime.Now,
+                BankType = BankTypes.Ebanking
+            };
+
+            return View(viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public async Task<IActionResult> GetEbankingReport(BankInReportViewModel viewModel)
+        {
+            var bankInData = await reportService.GetBankInAsync(
+                viewModel.CompanyId,
+                viewModel.SelectedTime,
+                viewModel.TypeOfPayment,
+                viewModel.SelectedPaymentTransactions);
+
+            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\Ebanking.xlsx");
+
+            IActionResult result = RedirectToAction("Ebanking");
+
+            if (bankInData != null && bankInData.IsExportable)
+            {
+                var fileContent = exportExcelService.ExportEbankingReports(
+                    viewModel.SelectedTime,
+                    fileInfo,
+                    viewModel.TypeOfPayment,
+                    bankInData);
+
+                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_EbankingDetails.xlsx");
             }
 
             return result;

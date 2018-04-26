@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Core.Enumerations;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
@@ -18,6 +19,8 @@
 
         [Display(Name = nameof(ViewLang.TypeOfPayment), ResourceType = typeof(ViewLang))]
         public PaymentType TypeOfPayment { get; set; }
+
+        public BankTypes BankType { get; set; }
 
         [Display(Name = nameof(ViewLang.PaymentTransactions), ResourceType = typeof(ViewLang))]
         public string SelectedPaymentTransactions { get; set; }

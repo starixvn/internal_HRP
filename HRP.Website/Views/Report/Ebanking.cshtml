@@ -3,7 +3,7 @@
 @model BankInReportViewModel
 
 @{
-    ViewData["Title"] = $"{ViewLang.Report} - Bank In";
+    ViewData["Title"] = $"{ViewLang.Report} - Ebanking";
 }
 
 @section Styles {
@@ -22,8 +22,9 @@
     <script src="~/assets/js/report/bankin.js"></script>
 }
 
-<form class="search-form" asp-action="GetBankInReport" asp-controller="Report" method="get">
+<form class="search-form" asp-action="GetEbankingReport" asp-controller="Report" method="get">
     <a asp-controller="Report" asp-action="GetPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>
+    <input asp-for="BankType" type="hidden" id="banktype" />
 
     <div class="group">
         <label asp-for="CompanyId" class="text"></label>

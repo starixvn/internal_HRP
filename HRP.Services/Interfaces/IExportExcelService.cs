@@ -9,7 +9,13 @@
     {
         byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report);
 
-        byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data);
+        byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data);
+
+        byte[] ExportEbankingReports(
+            DateTime selectedTime,
+            FileInfo fileInfo,
+            PaymentType typeOfPayment,
+            BankInReport data);
 
         byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds);
     }

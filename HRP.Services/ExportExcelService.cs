@@ -23,7 +23,7 @@
             this.cryptoService = cryptoService;
         }
 
-        public byte[] ExportBankInReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data)
+        public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
@@ -76,6 +76,101 @@
 
                 return xlPackage.GetAsByteArray();
             }
+        }
+
+        public byte[] ExportEbankingReports(
+            DateTime selectedTime,
+            FileInfo fileInfo,
+            PaymentType typeOfPayment,
+            BankInReport data)
+        {
+            using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
+            {
+                ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
+
+                // Set company name
+                worksheet.Cells["D2"].Value = data.CompanyName;
+
+                // Set month
+                worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
+
+                // Set payment type
+                worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
+
+                // Set selected payment transaction
+                worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+
+                var startRow = 10;
+
+                // EBanking
+                var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                var currentRow = RenderReportRowsForEuroBankIns(ebankingGroupedByBank, worksheet, startRow);
+
+                var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
+                currentRow = RenderReportRowsForEuroBankIns(cashGroupedByBank, worksheet, currentRow);
+
+                // Format for list bank ins
+                worksheet.Cells[$"B9:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                ////// summary for banking
+                ////currentRow = currentRow + 1;
+                ////var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
+
+                ////currentRow = RenderSummaryRowForBankIns(
+                ////    worksheet,
+                ////    currentRow,
+                ////    Message.GrandTotalBankIn,
+                ////    eBankingCurrencies);
+
+                ////// summary for cash
+                ////currentRow = currentRow + 1;
+                ////var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
+                ////RenderSummaryRowForBankIns(
+                ////    worksheet,
+                ////    currentRow,
+                ////    Message.GrandTotalCash,
+                ////    cashCurrencies);
+
+                worksheet.Cells.AutoFitColumns();
+
+                return xlPackage.GetAsByteArray();
+            }
+        }
+
+        private static int RenderReportRowsForEuroBankIns(
+            IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
+            ExcelWorksheet worksheet,
+            int startRow)
+        {
+            int rowIndex = startRow;
+
+            foreach (IGrouping<string, BankIn> bankIns in bankInsGroupedByBank)
+            {
+                // group by currency
+
+                var bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
+
+                foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
+                {
+                    ////int count = 0;
+                    var bankInRows = grouping.ToList();
+                    foreach (var bankIn in bankInRows)
+                    {
+                        worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, 4].Value = bankIn.Nickname;
+                        worksheet.Cells[rowIndex, 5].Value = bankIn.PaymentTransaction;
+                        worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
+                        worksheet.Cells[rowIndex, 7].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, 8].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
+
+                        rowIndex++;
+                    }
+                }
+            }
+
+            return rowIndex;
         }
 
         private static int RenderSummaryRowForBankIns(
