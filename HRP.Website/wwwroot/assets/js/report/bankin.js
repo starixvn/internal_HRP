@@ -31,6 +31,7 @@
                     listData: result,
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
+                    showFilter: true,
                     onCheck: function() {
                         var selectedValue =
                             $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");

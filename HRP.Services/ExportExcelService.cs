@@ -5,12 +5,12 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
-    using HRP.Core.Extensions;
+    using Core.Extensions;
     using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
-    using OfficeOpenXml;
     using OfficeOpenXml.Style;
+    using OfficeOpenXml;
     using Resources;
 
     [ExcludeFromCodeCoverage]
@@ -89,6 +89,12 @@
             {
                 worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
                 worksheet.Cells[$"H{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
+                currentRow++;
+            }
+
+            if (beginRow == currentRow)
+            {
+                // the bankInCurrencies have no items
                 currentRow++;
             }
 
