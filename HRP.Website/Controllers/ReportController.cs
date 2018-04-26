@@ -214,7 +214,7 @@
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code),,),
+                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
             };
 
             return View("GenerateReport", viewModel);
