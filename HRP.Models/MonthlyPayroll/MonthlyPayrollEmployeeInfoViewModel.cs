@@ -24,6 +24,10 @@
 
         public int WorkingDays { get; set; }
 
+        public bool HasSettingSalary { get; set; }
+
+        public bool HasSettingAllowance { get; set; }
+
         public MonthlyPayrollStatus Status { get; set; }
 
         public Policy Policy { get; set; }

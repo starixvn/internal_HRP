@@ -174,26 +174,29 @@ var monthlyPayroll = (function ($) {
                 var $element = $(e.currentTarget);
                 var basicSalary = {
                     title: $element.next().find('.js-menuItem-basicSalary').html(),
-                    url: $element.next().find('.js-menuItem-basicSalary').attr('href')
+                    url: $element.next().find('.js-menuItem-basicSalary').attr('href'),
+                    hasSetting: $element.next().find('.js-menuItem-basicSalary').data('hassetting') === 'True'
                 };
                 var allowance = {
                     title: $element.next().find('.js-menuItem-allowance').html(),
-                    url: $element.next().find('.js-menuItem-allowance').attr('href')
+                    url: $element.next().find('.js-menuItem-allowance').attr('href'),
+                    hasSetting: $element.next().find('.js-menuItem-allowance').data('hassetting') === 'True'
                 };
-
-                return {
-                    callback: function (key, options) {
-                        switch (key) {
-                            case 'BasicSalary':
-                                location.href = basicSalary.url;
-                                break;
-
-                            case 'Allowances':
-                                location.href = allowance.url;
-                                break;
-                        }
+                var presetMonthlyPayroll = $element.next().find('.js-menuItem-presetMonthlyPayroll');
+                var items = {
+                    'BasicSalary': {
+                        name: basicSalary.title,
+                        isHtmlName: true
                     },
-                    items: {
+                    'Allowances': {
+                        name: allowance.title,
+                        isHtmlName: true
+                    }
+                };
+                var modalHasNoPayrollSetting = $('#modalHasNoPayrollSetting');
+
+                if (presetMonthlyPayroll.length > 0) {
+                    items = {
                         'BasicSalary': {
                             name: basicSalary.title,
                             isHtmlName: true
@@ -201,8 +204,44 @@ var monthlyPayroll = (function ($) {
                         'Allowances': {
                             name: allowance.title,
                             isHtmlName: true
+                        },
+                        'PresetMonthlyPayroll': {
+                            name: presetMonthlyPayroll.html(),
+                            isHtmlName: true
                         }
-                    }
+                    };
+                }
+
+                return {
+                    callback: function (key, options) {
+                        switch (key) {
+                            case 'BasicSalary':
+                                if (basicSalary.hasSetting) {
+                                    location.href = basicSalary.url;
+                                } else {
+                                    modalHasNoPayrollSetting.find('.no-basic-salary-setting').removeClass('hidden');
+                                    modalHasNoPayrollSetting.find('.no-allowance-setting').addClass('hidden');
+                                    modalHasNoPayrollSetting.modal('show');
+                                }
+                                break;
+
+                            case 'Allowances':
+                                if (allowance.hasSetting) {
+                                    location.href = allowance.url;
+                                } else {
+                                    modalHasNoPayrollSetting.find('.no-basic-salary-setting').addClass('hidden');
+                                    modalHasNoPayrollSetting.find('.no-allowance-setting').removeClass('hidden');
+                                    modalHasNoPayrollSetting.modal('show');
+                                }
+                                break;
+
+                            case 'PresetMonthlyPayroll':
+                                $('#modalPresetPayroll input[name=employeeId]').val(presetMonthlyPayroll.data('employeeid'));
+                                $('#modalPresetPayroll').modal('show');
+                                break;
+                        }
+                    },
+                    items: items
                 };
             }
         });
@@ -263,7 +302,15 @@ var monthlyPayroll = (function ($) {
     return {
         initModule: initModule,
         initDataTable: initDataTable,
-        initCostCenterMultiSelect: initCostCenterMultiSelect
+        initCostCenterMultiSelect: initCostCenterMultiSelect,
+        onPresetSuccess: function (response) {
+            $('#modalPresetPayroll').modal('hide');
+            if (response.isSuccessful) {
+                $('form.search-form').submit();
+            } else {
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
+            }
+        }
     };
 }(jQuery));
 

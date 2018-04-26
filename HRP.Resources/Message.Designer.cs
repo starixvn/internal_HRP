@@ -115,15 +115,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This employee has reached the limit of number bank accounts. You cannot create more bank account..
-        /// </summary>
-        public static string BankAccountLimitReached {
-            get {
-                return ResourceManager.GetString("BankAccountLimitReached", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to BVI Company Change Date is required!.
         /// </summary>
         public static string BVICompanyChangeDateRequired {
@@ -579,6 +570,24 @@ namespace HRP.Resources {
         public static string EmployeeCodeUnique {
             get {
                 return ResourceManager.GetString("EmployeeCodeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This employee has no Payroll setting on Allowances..
+        /// </summary>
+        public static string EmployeeHasNoAllowanceSetting {
+            get {
+                return ResourceManager.GetString("EmployeeHasNoAllowanceSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This employee has no Payroll setting on Basic Salary..
+        /// </summary>
+        public static string EmployeeHasNoBasicSalarySetting {
+            get {
+                return ResourceManager.GetString("EmployeeHasNoBasicSalarySetting", resourceCulture);
             }
         }
         

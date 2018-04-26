@@ -690,9 +690,6 @@
   <data name="EditBankAccount" xml:space="preserve">
     <value>Edit Bank Account</value>
   </data>
-  <data name="BankAccountLimitReached" xml:space="preserve">
-    <value>This employee has reached the limit of number bank accounts. You cannot create more bank account.</value>
-  </data>
   <data name="AccountNameExisted" xml:space="preserve">
     <value>Account Name existed. Please enter another value</value>
   </data>
@@ -791,5 +788,11 @@
   </data>
   <data name="CertificateNotFound" xml:space="preserve">
     <value>Certificate is not found!</value>
+  </data>
+  <data name="EmployeeHasNoAllowanceSetting" xml:space="preserve">
+    <value>This employee has no Payroll setting on Allowances.</value>
+  </data>
+  <data name="EmployeeHasNoBasicSalarySetting" xml:space="preserve">
+    <value>This employee has no Payroll setting on Basic Salary.</value>
   </data>
 </root>
