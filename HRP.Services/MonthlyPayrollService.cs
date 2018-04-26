@@ -277,7 +277,7 @@
 
             decimal backPayAmount = GetBackPayAmount(currencyExchangeRates, workingMonth, basicSetting);
             backPay.UnitAmount = backPay.NetSalary = backPayAmount != 0 ? backPayAmount.ToString(CultureInfo.InvariantCulture) : null;
-            backPay.Description = GetBackPayDescription(backPayAmount, basicSetting.EffectiveDate.Value);
+            backPay.Description = GetBackPayDescription(backPayAmount, basicSetting.EffectiveDate);
         }
 
         public void CalculateMonthlySalary(
@@ -1015,9 +1015,9 @@
             return backPayAmount;
         }
 
-        private static string GetBackPayDescription(decimal backPayAmount, DateTime effectiveDate)
+        private static string GetBackPayDescription(decimal backPayAmount, DateTime? effectiveDate)
         {
-            return backPayAmount == 0 ? string.Empty : string.Format(Message.BackPayDescriptionFormat, effectiveDate.ToString(Constants.DateFormat));
+            return backPayAmount == 0 ? null : string.Format(Message.BackPayDescriptionFormat, effectiveDate.Value.ToString(Constants.DateFormat));
         }
 
         private static void GetAfterAdjustmentReason(
