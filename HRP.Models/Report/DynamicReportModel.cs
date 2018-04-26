@@ -1,7 +1,5 @@
 ﻿namespace HRP.Models.Report
 {
-    using System;
-
     public class DynamicReportModel
     {
         public int EmployeeId { get; set; }
