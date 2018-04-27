@@ -59,20 +59,13 @@
 
             if (banktype == BankTypes.Ebanking)
             {
-                paymentOptions.Add(new MultiSelectViewModel
+                paymentOptions.AddRange(refResourceService.FilterReferenceResources(
+                    refResources,
+                    ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
                 {
-                    Value = ((int)BankTypes.Ebanking).ToString(),
-                    Text = BankTypes.Ebanking.GetDisplayName(),
-                    ParentId = "0",
-                    Items = refResourceService.FilterReferenceResources(
-                        refResources,
-                        ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
-                    {
-                        Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
-                        Text = x.Value,
-                        ParentId = ((int)BankTypes.Ebanking).ToString()
-                    }).ToList()
-                });
+                    Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                    Text = x.Value
+                }));
             }
 
             if (banktype == BankTypes.DirectBanking)

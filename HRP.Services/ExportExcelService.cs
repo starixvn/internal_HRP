@@ -29,17 +29,7 @@
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 
-                // Set company name
-                worksheet.Cells["D2"].Value = data.CompanyName;
-
-                // Set month
-                worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
-
-                // Set payment type
-                worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
-
-                // Set selected payment transaction
-                worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+                WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
 
                 var startRow = 10;
 
@@ -88,17 +78,7 @@
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 
-                // Set company name
-                worksheet.Cells["D2"].Value = data.CompanyName;
-
-                // Set month
-                worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
-
-                // Set payment type
-                worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
-
-                // Set selected payment transaction
-                worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+                WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
 
                 var startRow = 10;
 
@@ -117,6 +97,25 @@
             }
         }
 
+        private static void WriteBankingReportHeader(
+            DateTime selectedTime,
+            PaymentType typeOfPayment,
+            BankInReport data,
+            ExcelWorksheet worksheet)
+        {
+            // Set company name
+            worksheet.Cells["D2"].Value = data.CompanyName;
+
+            // Set month
+            worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
+
+            // Set payment type
+            worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
+
+            // Set selected payment transaction
+            worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+        }
+
         private static void RenderFlatternedRows(
             IEnumerable<IGrouping<string, BankIn>> bankInsGroupedByBank,
             ExcelWorksheet worksheet,
@@ -126,15 +125,15 @@
             currentRow++;
             worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.BackgroundColor.SetColor(1, 189, 215, 238);
-            worksheet.Cells[currentRow++, 2].Value = "Company";
-            worksheet.Cells[currentRow++, 2].Value = "Bank";
-            worksheet.Cells[currentRow++, 2].Value = "EUR Account No.";
-            worksheet.Cells[currentRow++, 2].Value = "COST";
+            worksheet.Cells[currentRow++, 2].Value = ViewLang.Company;
+            worksheet.Cells[currentRow++, 2].Value = ViewLang.Bank;
+            worksheet.Cells[currentRow++, 2].Value = ViewLang.EuroAccountNumber;
+            worksheet.Cells[currentRow++, 2].Value = ViewLang.Cost;
 
             currentRow++;
             worksheet.Cells[currentRow, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[currentRow, 2].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
-            worksheet.Cells[currentRow++, 2].Value = "Payment Purpose";
+            worksheet.Cells[currentRow++, 2].Value = ViewLang.PaymentPurpose;
 
             currentRow++;
 
@@ -147,89 +146,58 @@
                     bankInIndex++;
 
                     //Staff No.
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Staff No.";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.EmployeeId;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.StaffNo, bankIn.EmployeeId);
 
                     //Beneficiary
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Beneficiary";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.BeneficiaryName;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.Beneficiary, bankIn.BeneficiaryName);
 
                     //Account No.
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Account No. ";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.AccountNumber;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.AccountNo, bankIn.AccountNumber);
 
                     //Bank Name
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Bank Name";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.BankName;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.BankName, bankIn.BankName);
 
                     //Branch
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Branch";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.BankBranch;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.BankBranch, bankIn.BankBranch);
 
                     //Address
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Address";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.BankAddress;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.Address, bankIn.BankAddress);
 
                     //SWIFT Codes
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "SWIFT Codes";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.BankSwiftCode;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.SwiftCode, bankIn.BankSwiftCode);
 
                     //Currency
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Currency";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.CurrencyCode;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.Currency, bankIn.CurrencyCode);
 
                     //Amount
-                    currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Amount";
-                    worksheet.Cells[currentRow, 4].Value = bankIn.AmountDecrypted;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.Amount, bankIn.AmountDecrypted);
 
                     //Value Date
                     currentRow++;
                     worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = "Value Date";
-                    worksheet.Cells[currentRow, 4].Formula = $"=IF(ISBLANK($L${bankInIndex + startRow}),\"\",$L${bankInIndex + startRow})";
-                    worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "yyyy-mm-dd";
                     worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = ViewLang.ValueDate;
+                    worksheet.Cells[currentRow, 4].Formula = $"=IF(ISBLANK($L${bankInIndex + startRow}),\"\",$L${bankInIndex + startRow})";
+                    worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "yyyy-mm-dd";
 
                     currentRow++;
                 }
             }
+        }
+
+        private static void WriteFlatternedSection(
+            ExcelWorksheet worksheet,
+            ref int currentRow,
+            string title,
+            object data)
+        {
+            currentRow++;
+            worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
+            worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
+            worksheet.Cells[currentRow, 2, currentRow, 3].Value = title;
+            worksheet.Cells[currentRow, 4].Value = data;
         }
 
         private static int RenderReportRowsForEbankingBankIns(
@@ -278,8 +246,8 @@
             var beginRow = currentRow;
             foreach (var currency in bankInCurrencies)
             {
-                worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
-                worksheet.Cells[$"H{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
+                worksheet.Cells[$"J{currentRow}"].Value = currency.Key;
+                worksheet.Cells[$"I{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
                 currentRow++;
             }
 
@@ -289,12 +257,12 @@
                 currentRow++;
             }
 
-            worksheet.Cells[$"B{beginRow}:G{currentRow - 1}"].Merge = true;
+            worksheet.Cells[$"B{beginRow}:H{currentRow - 1}"].Merge = true;
             worksheet.Cells[$"B{beginRow}"].Value = summaryText;
             worksheet.Cells[$"B{beginRow}"].Style.VerticalAlignment =
                 ExcelVerticalAlignment.Center;
 
-            worksheet.Cells[$"B{beginRow}:I{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"B{beginRow}:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
             return currentRow - 1;
         }

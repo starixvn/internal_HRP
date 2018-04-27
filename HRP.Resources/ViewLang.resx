@@ -1038,4 +1038,25 @@
   <data name="PaymentTransactions" xml:space="preserve">
     <value>Payment Transactions</value>
   </data>
+  <data name="Bank" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="EuroAccountNumber" xml:space="preserve">
+    <value>EUR Account No.</value>
+  </data>
+  <data name="Cost" xml:space="preserve">
+    <value>COST</value>
+  </data>
+  <data name="PaymentPurpose" xml:space="preserve">
+    <value>Payment Purpose</value>
+  </data>
+  <data name="StaffNo" xml:space="preserve">
+    <value>Staff No.</value>
+  </data>
+  <data name="Beneficiary" xml:space="preserve">
+    <value>Beneficiary</value>
+  </data>
+  <data name="ValueDate" xml:space="preserve">
+    <value>Value Date</value>
+  </data>
 </root>

@@ -34,8 +34,8 @@
             return val.GetType()
                        .GetMember(val.ToString())
                        .FirstOrDefault()
-                       ?.GetCustomAttribute<DisplayAttribute>(false)
-                       ?.Name
+                       ?.GetCustomAttribute<DisplayAttribute>(true)
+                       ?.GetName()
                    ?? val.ToString();
         }
     }
