@@ -62,10 +62,10 @@
                 paymentOptions.AddRange(commonService.FilterReferenceResources(
                     refResources,
                     ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
-                {
-                    Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
-                    Text = x.Value
-                }));
+                    {
+                        Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                        Text = x.Value
+                    }));
             }
 
             if (banktype == BankTypes.DirectBanking)
