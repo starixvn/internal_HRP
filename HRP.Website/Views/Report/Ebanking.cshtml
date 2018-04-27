@@ -3,7 +3,7 @@
 @model BankInReportViewModel
 
 @{
-    ViewData["Title"] = $"{ViewLang.Report} - Ebanking";
+    ViewData["Title"] = $"{ViewLang.Report} - {ViewLang.EBanking}";
 }
 
 @section Styles {
@@ -21,6 +21,15 @@
     <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
     <script src="~/assets/js/report/bankin.js"></script>
 }
+
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.Report</li>
+    <li class="like-link">
+        <a asp-controller="Report" asp-action="PaymentTransaction">@ViewLang.PaymentTransactions</a>
+    </li>
+    <li class="active">@ViewLang.EBanking</li>
+</ol>
 
 <form class="search-form" asp-action="GetEbankingReport" asp-controller="Report" method="get">
     <a asp-controller="Report" asp-action="GetPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>

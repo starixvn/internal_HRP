@@ -8,8 +8,8 @@
     using Core.Constants;
     using Core.Services;
     using Criteria.Report;
-    using HRP.Models.Currency;
-    using HRP.Models.MonthlyPayroll;
+    using Models.Currency;
+    using Models.MonthlyPayroll;
     using Models.Report;
     using Repositories;
 

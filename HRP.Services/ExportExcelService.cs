@@ -148,7 +148,7 @@
                     bankInIndex++;
 
                     //Staff No.
-                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.StaffNo, bankIn.EmployeeId);
+                    WriteFlatternedSection(worksheet, ref currentRow, ViewLang.StaffNo, bankIn.IDNo);
 
                     //Beneficiary
                     WriteFlatternedSection(worksheet, ref currentRow, ViewLang.Beneficiary, bankIn.BeneficiaryName);
@@ -221,7 +221,7 @@
                     foreach (var bankIn in bankInRows)
                     {
                         worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.EmployeeId;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.IDNo;
                         worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
                         worksheet.Cells[rowIndex, 5].Value = bankIn.AccountNumber;
                         worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
@@ -289,7 +289,7 @@
                     foreach (var bankIn in bankInRows)
                     {
                         worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.EmployeeId;
+                        worksheet.Cells[rowIndex, 3].Value = bankIn.IDNo;
                         worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
                         worksheet.Cells[rowIndex, 5].Value = bankIn.Nickname;
                         worksheet.Cells[rowIndex, 6].Value = bankIn.PaymentTransaction;

@@ -4,7 +4,7 @@
 
     public class BankIn
     {
-        public int EmployeeId { get; set; }
+        public string IDNo { get; set; }
 
         public string BeneficiaryName { get; set; }
 

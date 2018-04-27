@@ -39,7 +39,7 @@
             this.commonService = commonService;
         }
 
-        public IActionResult Index()
+        public IActionResult PaymentTransaction()
         {
             return View();
         }
