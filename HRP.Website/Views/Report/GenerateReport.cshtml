@@ -7,39 +7,14 @@
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        @* <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />*@
     </environment>
 
     <environment exclude="Development">
-        @*<link href="~/assets/bundles/paymentprocess/css/select-month-company.min.css" rel="stylesheet" />*@
+
     </environment>
 }
 
 <form class="search-form" asp-action="GenerateReport" method="post">
-    <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">
-        <span asp-validation-for="CompanyId" class="message"></span>
-        <span asp-validation-for="SelectedTime" class="message"></span>
-        <span asp-validation-for="SelectedIds" class="message"></span>
-    </div>
-
-    <div class="w-100"></div>
-    <div class="group">
-        <label class="text">@ViewLang.MonthYear</label>
-        <div class="calendar">
-            <input type="text" class="control datetimepicker" asp-for="SelectedTime" />
-            <span class="icon-calendar"></span>
-        </div>
-    </div>
-    <div class="group">
-        <label class="text">@ViewLang.Company</label>
-        <select class="control select2" asp-for="CompanyId" asp-items="@Model.Companies"></select>
-    </div>
-    <div class="w-100"></div>
-
-    <div class="group">
-        <label class="text">Available Columns</label>
-        <select class="control" multiple asp-for="SelectedIds" asp-items="@Html.GetEnumSelectList<DynamicReportItem>()"></select>
-    </div>
 </form>
 
 @section Scripts {
@@ -50,9 +25,7 @@
         <script src="~/lib/moment/moment.js"></script>
         <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
-        @*<script src="~/assets/js/paymentprocess/select-month-company.js"></script>*@
     </environment>
     <environment exclude="Development">
-        @*<script src="~/assets/bundles/paymentprocess/js/select-month-company.min.js"></script>*@
     </environment>
 }
