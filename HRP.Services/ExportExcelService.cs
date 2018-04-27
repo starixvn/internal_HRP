@@ -12,7 +12,6 @@
     using OfficeOpenXml.Style;
     using OfficeOpenXml;
     using Resources;
-    using HRP.Models.Currency;
     using HRP.Core.Constants;
 
     [ExcludeFromCodeCoverage]
@@ -306,6 +305,8 @@
             return rowIndex;
         }
 
+        #region MonthlyPayrollReport
+
         public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report)
         {
             using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
@@ -315,7 +316,7 @@
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Salary & Allowance Report");
 
                 // Write header
-                templateWorksheet.Cells[1, 1, 8, 46].Copy(worksheet.Cells[1, 1, 8, 46]);
+                templateWorksheet.Cells[1, 1, 8, 49].Copy(worksheet.Cells[1, 1, 8, 49]);
 
                 // Write Data
                 var row = 9;
@@ -327,7 +328,7 @@
                     var monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                     var monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
 
-                    templateWorksheet.Cells[9, 1, 9, 46].Copy(worksheet.Cells[row, 1, row, 46]);
+                    templateWorksheet.Cells[9, 1, 9, 49].Copy(worksheet.Cells[row, 1, row, 49]);
                     worksheet.Cells[row, 2].Value = sNo;
                     worksheet.Cells[row, 3].Value = employee.DivisionCode;
                     worksheet.Cells[row, 4].Value = employee.DepartmentCode;
@@ -338,21 +339,44 @@
                     worksheet.Cells[row, 9].Value = employee.Nickname;
 
                     worksheet.Cells[row, 10].Value = monthlyBasicSalary.CurrencyCode;
-                    worksheet.Cells[row, 11].Value = cryptoService.Decrypt(monthlyBasicSalary.Salary);
-                    worksheet.Cells[row, 12].Value = cryptoService.Decrypt(monthlySalary.Salary);
+                    worksheet.Cells[row, 11].Value = ParseToDecimal(monthlyBasicSalary.Salary);
+                    worksheet.Cells[row, 12].Value = monthlyBasicSalary.CurrencyCode;
+                    worksheet.Cells[row, 13].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
 
-                    worksheet.Cells[row, 23].Value = monthlyBasicAllowance.CurrencyCode;
-                    worksheet.Cells[row, 24].Value = cryptoService.Decrypt(monthlyBasicAllowance.SubsistenceAmount);
+                    worksheet.Cells[row, 14].Value = ParseToDecimal(monthlySalary.AdditionAmount);
+                    worksheet.Cells[row, 15].Value = ParseToDecimal(monthlySalary.DeductionAmount);
+                    worksheet.Cells[row, 16].Value = ParseToDecimal(monthlySalary.Salary);
+                    worksheet.Cells[row, 17].Value = monthlySalary.EbankingAmountInMYR;
+                    worksheet.Cells[row, 18].Value = monthlySalary.DirectBanking1AmountInMYR;
+                    worksheet.Cells[row, 19].Value = monthlySalary.DirectBanking2AmountInMYR;
+                    worksheet.Cells[row, 20].Value = monthlySalary.CashAmountInMYR;
+                    worksheet.Cells[row, 21].Value = monthlySalary.SalaryAmountInMYR;
+                    worksheet.Cells[row, 22].Value = monthlySalary.SalaryAmountInUSD;
 
-                    worksheet.Cells[row, 42].Value = cryptoService.Decrypt(monthlyAllowance.TotalAmount);
-                    worksheet.Cells[row, 45].Value = cryptoService.Decrypt(monthlyAllowance.DSTNetSalaryAmount);
-                    worksheet.Cells[row, 46].Value = cryptoService.Decrypt(monthlyAllowance.TotalNetAmount);
+                    worksheet.Cells[row, 24].Value = monthlyBasicAllowance.CurrencyCode;
+                    worksheet.Cells[row, 25].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAmount);
+                    worksheet.Cells[row, 26].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAmount);
+                    worksheet.Cells[row, 27].Value = ParseToDecimal(monthlyBasicAllowance.HousingAmount);
+                    worksheet.Cells[row, 28].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAmount);
+                    worksheet.Cells[row, 29].Value = ParseToDecimal(monthlyBasicAllowance.HPIAmount);
+                    worksheet.Cells[row, 30].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAmount);
+                    worksheet.Cells[row, 31].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAmount);
+                    worksheet.Cells[row, 32].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
+                    worksheet.Cells[row, 33].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
 
+                    worksheet.Cells[row, 43].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
+                    worksheet.Cells[row, 44].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
+                    worksheet.Cells[row, 45].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
+                    worksheet.Cells[row, 46].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
+                    worksheet.Cells[row, 47].Value = ParseToDecimal(monthlyBasicAllowance.FitnessFirstAmount);
+                    worksheet.Cells[row, 48].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
+                    worksheet.Cells[row, 49].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
                     row++;
                     sNo++;
                 }
 
                 WriteCurrencyExchangeTable(row + 1, templateWorksheet, worksheet, report);
+                WriteTotalByCurrencyTable(row + 2, templateWorksheet, worksheet, report);
 
                 return package.GetAsByteArray();
             }
@@ -378,6 +402,54 @@
                 row++;
             }
         }
+
+        private static void WriteTotalByCurrencyTable(int startRow, ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
+        {
+            // Write header
+            templateWorksheet.Cells[18, 10, 18, 49].Copy(worksheet.Cells[startRow, 10, startRow, 49]);
+
+            // Write data
+            var rowWithStyle = templateWorksheet.Cells[19, 10, 19, 49];
+            var row = startRow + 1;
+            foreach (var currency in report.CurrencyList)
+            {
+                rowWithStyle.Copy(worksheet.Cells[row, 10, row, 49]);
+
+                var basicSalaryList = report.MonthlyBasicSalary.Where(x => x.CurrencyId == currency.CurrencyId);
+                var salaryList = report.MonthlySalary.Where(x => x.CurrencyId == currency.CurrencyId);
+
+                worksheet.Cells[row, 10].Value = currency.CurrencyCode;
+                worksheet.Cells[row, 11].Value = basicSalaryList.Sum(x => ParseToDecimal(x.Salary));
+                worksheet.Cells[row, 13].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
+                worksheet.Cells[row, 14].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                worksheet.Cells[row, 15].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                worksheet.Cells[row, 16].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
+
+                if (currency.CurrencyId == Constants.MYRCurrencyId)
+                {
+                    worksheet.Cells[row, 17].Value = report.MonthlySalary.Sum(x => x.EbankingAmountInMYR);
+                    worksheet.Cells[row, 18].Value = report.MonthlySalary.Sum(x => x.DirectBanking1AmountInMYR);
+                    worksheet.Cells[row, 19].Value = report.MonthlySalary.Sum(x => x.DirectBanking2AmountInMYR);
+                    worksheet.Cells[row, 20].Value = report.MonthlySalary.Sum(x => x.CashAmountInMYR);
+                    worksheet.Cells[row, 21].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInMYR);
+                }
+
+                if (currency.CurrencyId == Constants.USDCurrencyId)
+                {
+                    worksheet.Cells[row, 22].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
+                }
+
+                row++;
+            }
+        }
+
+        private static decimal ParseToDecimal(string amount)
+        {
+            decimal.TryParse(amount, out decimal value);
+            return value;
+        }
+
+        #endregion MonthlyPayrollReport
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {

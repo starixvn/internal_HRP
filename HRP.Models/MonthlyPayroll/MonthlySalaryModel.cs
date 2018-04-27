@@ -18,6 +18,12 @@
 
         public string Salary { get; set; }
 
+        [XmlIgnore]
+        public decimal SalaryAmountInMYR { get; set; }
+
+        [XmlIgnore]
+        public decimal SalaryAmountInUSD { get; set; }
+
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? EbankingCurrencyId { get; set; }
@@ -26,6 +32,9 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string EbankingAmount { get; set; }
+
+        [XmlIgnore]
+        public decimal EbankingAmountInMYR { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAmount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
@@ -39,6 +48,9 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string CashAmount { get; set; }
+
+        [XmlIgnore]
+        public decimal CashAmountInMYR { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CashCurrencyId), nameof(CashAmount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
@@ -56,6 +68,9 @@
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking1Amount { get; set; }
 
+        [XmlIgnore]
+        public decimal DirectBanking1AmountInMYR { get; set; }
+
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1CurrencyId), nameof(DirectBanking1Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? DirectBanking1AccountId { get; set; }
@@ -71,6 +86,9 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequried))]
         [Range(0, double.MaxValue, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayroll_InvalidSetting))]
         public string DirectBanking2Amount { get; set; }
+
+        [XmlIgnore]
+        public decimal DirectBanking2AmountInMYR { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]

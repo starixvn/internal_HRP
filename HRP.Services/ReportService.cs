@@ -2,10 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Constants;
     using Core.Services;
     using Criteria.Report;
+    using HRP.Models.Currency;
+    using HRP.Models.MonthlyPayroll;
     using Models.Report;
     using Repositories;
 
@@ -45,19 +49,6 @@
             return ColumnsConfirguration.Columns.Values.SelectMany(x => x).OrderBy(x => x.GroupName);
         }
 
-        public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
-        {
-            var criteria = new GetDataForMonthlyPayrollReportCriteria
-            {
-                CompanyId = companyId,
-                Month = month
-            };
-
-            var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
-
-            return report;
-        }
-
         private void DecryptBankInAmount(IEnumerable<BankIn> bankIns)
         {
             if (bankIns != null && bankIns.Any())
@@ -70,5 +61,169 @@
                 }
             }
         }
+
+        #region MonthlyPayrollReport
+
+        public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
+        {
+            var criteria = new GetDataForMonthlyPayrollReportCriteria
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+
+            var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
+
+            DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);
+            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate);
+            DecryptMonthlyBasicAllowanceListAndConvertAmount(report.MonthlyBasicAllowance, report.CurrencyExchangeRate);
+            DecryptMonthlyAllowanceListAndConvertAmount(report.MonthlyAllowance, report.CurrencyExchangeRate);
+
+            return report;
+        }
+
+        private void DecryptMonthlyBasicSalaryList(IEnumerable<MonthlyBasicSalaryModel> basicSalaryList)
+        {
+            if (basicSalaryList != null && basicSalaryList.Any())
+            {
+                foreach (var basicSalary in basicSalaryList)
+                {
+                    basicSalary.Salary = cryptoService.Decrypt(basicSalary.Salary);
+                    basicSalary.AfterAdjustmentAmount = cryptoService.Decrypt(basicSalary.AfterAdjustmentAmount);
+                }
+            }
+        }
+
+        private void DecryptMonthlySalaryListAndConvertAmount(IEnumerable<MonthlySalaryModel> salaryList, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            if (salaryList != null && salaryList.Any())
+            {
+                foreach (var salary in salaryList)
+                {
+                    salary.Salary = cryptoService.Decrypt(salary.Salary);
+                    salary.EbankingAmount = cryptoService.Decrypt(salary.EbankingAmount);
+                    salary.DirectBanking1Amount = cryptoService.Decrypt(salary.DirectBanking1Amount);
+                    salary.DirectBanking2Amount = cryptoService.Decrypt(salary.DirectBanking2Amount);
+                    salary.CashAmount = cryptoService.Decrypt(salary.CashAmount);
+                    salary.AdditionAmount = cryptoService.Decrypt(salary.AdditionAmount);
+                    salary.DeductionAmount = cryptoService.Decrypt(salary.DeductionAmount);
+
+                    salary.SalaryAmountInMYR = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, Constants.MYRCurrencyId);
+                    salary.SalaryAmountInUSD = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, Constants.USDCurrencyId);
+                    salary.EbankingAmountInMYR = ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, Constants.MYRCurrencyId);
+                    salary.DirectBanking1AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, Constants.MYRCurrencyId);
+                    salary.DirectBanking2AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, Constants.MYRCurrencyId);
+                    salary.CashAmountInMYR = ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, Constants.MYRCurrencyId);
+                }
+            }
+        }
+
+        private void DecryptMonthlyBasicAllowanceListAndConvertAmount(IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList,
+                                                                      IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            if (basicAllowanceList != null && basicAllowanceList.Any())
+            {
+                foreach (var basicAllowance in basicAllowanceList)
+                {
+                    basicAllowance.TotalAmount = cryptoService.Decrypt(basicAllowance.TotalAmount);
+                    basicAllowance.SubsistenceAmount = cryptoService.Decrypt(basicAllowance.SubsistenceAmount);
+                    basicAllowance.HomePassageAmount = cryptoService.Decrypt(basicAllowance.HomePassageAmount);
+                    basicAllowance.HousingAmount = cryptoService.Decrypt(basicAllowance.HousingAmount);
+                    basicAllowance.MobilePhoneAmount = cryptoService.Decrypt(basicAllowance.MobilePhoneAmount);
+                    basicAllowance.HPIAmount = cryptoService.Decrypt(basicAllowance.HPIAmount);
+                    basicAllowance.DutyMealAmount = cryptoService.Decrypt(basicAllowance.DutyMealAmount);
+                    basicAllowance.SecondmentAmount = cryptoService.Decrypt(basicAllowance.SecondmentAmount);
+                    basicAllowance.OthersAmount = cryptoService.Decrypt(basicAllowance.OthersAmount);
+                    basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
+                    basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
+
+                    ConvertMonthlyBasicAllowanceToConversionCurrency(basicAllowance, currencyExchangeRates);
+                }
+            }
+        }
+
+        private void DecryptMonthlyAllowanceListAndConvertAmount(IEnumerable<MonthlyAllowanceModel> allowanceList,
+                                                 IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            if (allowanceList != null && allowanceList.Any())
+            {
+                foreach (var allowance in allowanceList)
+                {
+                    allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
+                    allowance.DSTNetSalaryAmount = cryptoService.Decrypt(allowance.DSTNetSalaryAmount);
+                    allowance.TotalNetAmount = cryptoService.Decrypt(allowance.TotalNetAmount);
+                    allowance.AdditionAmount = cryptoService.Decrypt(allowance.AdditionAmount);
+                    allowance.DeductionAmount = cryptoService.Decrypt(allowance.DeductionAmount);
+
+                    ConvertMonthlyAllowanceToConversionCurrency(allowance, currencyExchangeRates);
+                }
+            }
+        }
+
+        private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            var conversionCurrencyId = basicAllowance.CurrencyId;
+            basicAllowance.SubsistenceAmount = ConvertAmount(currencyExchangeRates, basicAllowance.SubsistenceAmount,
+                            basicAllowance.SubsistenceCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HomePassageAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HomePassageAmount,
+                            basicAllowance.HomePassageCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HousingAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HousingAmount,
+                            basicAllowance.HousingCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.MobilePhoneAmount = ConvertAmount(currencyExchangeRates, basicAllowance.MobilePhoneAmount,
+                            basicAllowance.MobilePhoneCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HPIAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HPIAmount,
+                            basicAllowance.HPICurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.DutyMealAmount = ConvertAmount(currencyExchangeRates, basicAllowance.DutyMealAmount,
+                            basicAllowance.DutyMealCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.SecondmentAmount = ConvertAmount(currencyExchangeRates, basicAllowance.SecondmentAmount,
+                            basicAllowance.SecondmentCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.OthersAmount = ConvertAmount(currencyExchangeRates, basicAllowance.OthersAmount,
+                            basicAllowance.OthersCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.RoomingChargesAmount = ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
+                            basicAllowance.RoomingChargesCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.FitnessFirstAmount = ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
+                            basicAllowance.FitnessFirstCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+
+            basicAllowance.SubsistenceCurrencyId = conversionCurrencyId;
+            basicAllowance.HomePassageCurrencyId = conversionCurrencyId;
+            basicAllowance.HousingCurrencyId = conversionCurrencyId;
+            basicAllowance.MobilePhoneCurrencyId = conversionCurrencyId;
+            basicAllowance.HPICurrencyId = conversionCurrencyId;
+            basicAllowance.DutyMealCurrencyId = conversionCurrencyId;
+            basicAllowance.SecondmentCurrencyId = conversionCurrencyId;
+            basicAllowance.OthersCurrencyId = conversionCurrencyId;
+            basicAllowance.RoomingChargesCurrencyId = conversionCurrencyId;
+            basicAllowance.FitnessFirstCurrencyId = conversionCurrencyId;
+        }
+
+        private static void ConvertMonthlyAllowanceToConversionCurrency(MonthlyAllowanceModel allowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            var conversionCurrencyId = allowance.CurrencyId;
+            allowance.DSTNetSalaryAmount = ConvertAmount(currencyExchangeRates, allowance.DSTNetSalaryAmount,
+                allowance.DSTNetSalaryCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ConvertAmount(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            string amount,
+            int? fromCurrencyId,
+            int? toCurrencyId)
+        {
+            decimal.TryParse(amount, out decimal value);
+            return value * GetExchangeRate(currencyExchangeRates, fromCurrencyId ?? 0, toCurrencyId ?? 0);
+        }
+
+        private static decimal GetExchangeRate(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            int fromCurrencyId,
+            int toCurrencyId)
+        {
+            CurrencyExchangeRateModel currencyExchangeRate =
+                currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
+
+            return currencyExchangeRate?.ExchangeRate ?? 0;
+        }
+
+        #endregion MonthlyPayrollReport
     }
 }
