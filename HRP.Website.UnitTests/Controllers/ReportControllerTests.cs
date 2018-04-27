@@ -3,15 +3,21 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Core.Constants;
+    using Core.Enumerations;
+    using Core.Extensions;
+    using Core.Model;
     using Core.Services;
-    using HRP.Core.Constants;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models.Report;
+    using Models;
+    using Newtonsoft.Json;
     using NSubstitute;
-    using Services;
     using Services.Interfaces;
+    using Services;
     using Website.Controllers;
     using Xunit;
 
@@ -25,7 +31,103 @@
         private ICommonService commonService;
 
         [Fact]
-        public async Task BankIn_WhenCalled_ReturnExpectedView()
+        public async Task GetPaymentTransactions_EBanking_ReturnEbanking()
+        {
+            //Arrange
+            var reportController = GetReportController();
+
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel
+                {
+                    IsActive = true,
+                    RefName = ReferenceResource.PaymentTransactionEbanking,
+                    ResourceId = 1,
+                    Value = "1"
+                }
+            };
+
+            var expected = new List<MultiSelectViewModel>();
+            expected.AddRange(refResources.Select(x => new MultiSelectViewModel
+            {
+                Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                Text = x.Value
+            }));
+
+            refResourceService
+                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
+                .Returns(refResources);
+
+            //Act
+            var actual = await reportController.GetPaymentTransactions(BankTypes.Ebanking);
+
+            //Assert
+            var json = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(
+                JsonConvert.SerializeObject(json.Value),
+                JsonConvert.SerializeObject(expected));
+        }
+
+        [Fact]
+        public async Task GetPaymentTransactions_DirectBanking_ReturnDirectBanking()
+        {
+            //Arrange
+            var reportController = GetReportController();
+
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel
+                {
+                    IsActive = true,
+                    RefName = ReferenceResource.PaymentTransactionEbanking,
+                    ResourceId = 1,
+                    Value = "1"
+                }
+            };
+
+            var expected = new List<MultiSelectViewModel>();
+            expected.Add(new MultiSelectViewModel
+            {
+                Value = ((int)BankTypes.DirectBanking).ToString(),
+                Text = BankTypes.DirectBanking.GetDisplayName(),
+                ParentId = "0",
+                Items = refResources.Select(x => new MultiSelectViewModel
+                {
+                    Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                    Text = x.Value,
+                    ParentId = ((int)BankTypes.DirectBanking).ToString()
+                }).ToList()
+            });
+
+            expected.Add(new MultiSelectViewModel
+            {
+                Value = "3",
+                Text = "Cash",
+                ParentId = "0",
+                Items = refResources.Select(x => new MultiSelectViewModel
+                {
+                    Value = $"{3}-{x.ResourceId}",
+                    Text = x.Value,
+                    ParentId = "3"
+                }).ToList()
+            });
+
+            refResourceService
+                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
+                .Returns(refResources);
+
+            //Act
+            var actual = await reportController.GetPaymentTransactions(BankTypes.DirectBanking);
+
+            //Assert
+            var json = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(
+                JsonConvert.SerializeObject(json.Value),
+                JsonConvert.SerializeObject(expected));
+        }
+
+        [Fact]
+        public async Task DirectBanking_WhenCalled_ReturnExpectedView()
         {
             //Arrange
             var reportController = GetReportController();
@@ -40,7 +142,22 @@
         }
 
         [Fact]
-        public async Task GetBankInReport_InValidParams_ReturnEmpty()
+        public async Task Ebanking_WhenCalled_ReturnExpectedView()
+        {
+            //Arrange
+            var reportController = GetReportController();
+
+            //Act
+            var actual = await reportController.Ebanking();
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<BankInReportViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+        }
+
+        [Fact]
+        public async Task GetDirectBankingReport_InValidParams_ReturnEmpty()
         {
             //Arrage
             var bankInReportViewModel = new BankInReportViewModel
@@ -59,7 +176,7 @@
         }
 
         [Fact]
-        public async Task GetBankInReport_ValidParams_ReturnNull()
+        public async Task GetDirectBankingReport_ValidParams_ReturnNull()
         {
             //Arrage
             var bankInReportViewModel = new BankInReportViewModel
@@ -90,6 +207,62 @@
 
             //Act
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
+
+            //Assert
+            Assert.IsType<FileContentResult>(actual);
+        }
+
+        [Fact]
+        public async Task GetEbankingReport_InValidParams_ReturnEmpty()
+        {
+            //Arrage
+            var bankInReportViewModel = new BankInReportViewModel
+            {
+                CompanyId = 0,
+                SelectedTime = DateTime.Now
+            };
+
+            var reportController = GetReportController();
+
+            //Act
+            var actual = await reportController.GetEbankingReport(bankInReportViewModel);
+
+            //Assert
+            Assert.IsType<RedirectToActionResult>(actual);
+        }
+
+        [Fact]
+        public async Task GetEbankingReport_ValidParams_ReturnNull()
+        {
+            //Arrage
+            var bankInReportViewModel = new BankInReportViewModel
+            {
+                CompanyId = 1,
+                SelectedTime = DateTime.Now
+            };
+
+            var companyName = "Dashword";
+            var reportedMonth = DateTime.Today;
+
+            var bankInData = new List<BankIn>
+            {
+                new BankIn { Amount = "1" },
+                new BankIn { Amount = "1" },
+            };
+
+            var bankInReport = new BankInReport
+            {
+                EBankingBankIns = bankInData,
+                CashBankIns = bankInData,
+                CompanyName = companyName,
+                ReportedMonth = reportedMonth
+            };
+
+            var reportController = GetReportController();
+            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
+
+            //Act
+            var actual = await reportController.GetEbankingReport(bankInReportViewModel);
 
             //Assert
             Assert.IsType<FileContentResult>(actual);
