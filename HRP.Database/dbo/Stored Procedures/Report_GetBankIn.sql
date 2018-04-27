@@ -78,7 +78,7 @@ BEGIN
 			) c(BankCurrencyId, BankAmount, BankAccountId)
 		WHERE BankCurrencyId IS NOT NULL
 
-		SELECT Employee.EmployeeId
+		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,BankAccount.BeneficiaryName
 			,BankAccount.BankName
@@ -95,6 +95,7 @@ BEGIN
 			INNER JOIN dbo.Currency WITH (NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
 			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
 			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = CASE 
 				WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
 				ELSE 'PaymentTransactionDirectBanking'
@@ -110,7 +111,7 @@ BEGIN
 			,Employee.Nickname ASC
 
 		-- Cash
-		SELECT Employee.EmployeeId
+		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,Employee.FullName AS BeneficiaryName
 			,'Cash' AS BankName
@@ -123,6 +124,7 @@ BEGIN
 			INNER JOIN dbo.Currency WITH (NOLOCK) ON MonthlySalary.CashCurrencyId = Currency.CurrencyId
 			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
 			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3
 			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
@@ -159,7 +161,7 @@ BEGIN
 			) c(BankCurrencyId, BankAmount, BankAccountId)
 		WHERE BankCurrencyId IS NOT NULL
 
-		SELECT Employee.EmployeeId
+		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,BankAccount.BeneficiaryName
 			,BankAccount.BankName
@@ -176,6 +178,7 @@ BEGIN
 			INNER JOIN dbo.Currency WITH (NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
 			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
 			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = CASE 
 				WHEN BankAccount.BankType = 1 THEN 'PaymentTransactionEbanking'
 				ELSE 'PaymentTransactionDirectBanking'
@@ -191,7 +194,7 @@ BEGIN
 			,Employee.Nickname ASC
 
 		-- Cash
-		SELECT Employee.EmployeeId
+		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,Employee.FullName AS BeneficiaryName
 			,'Cash' AS BankName
@@ -204,6 +207,7 @@ BEGIN
 			INNER JOIN dbo.Currency WITH (NOLOCK) ON MonthlyAllowance.CashCurrencyId = Currency.CurrencyId
 			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
 			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
 			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
 			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3
 			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
