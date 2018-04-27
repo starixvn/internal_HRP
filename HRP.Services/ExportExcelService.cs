@@ -320,6 +320,8 @@
                 templateWorksheet.Cells[1, 1, 8, 49].Copy(worksheet.Cells[1, 1, 8, 49]);
 
                 // Write Data
+                worksheet.Cells[3, 2].Value = string.Concat(ViewLang.Company, ": ", report.CompanyCode);
+                worksheet.Cells[4, 2].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
                 var row = 9;
                 var sNo = 1;
                 foreach (var employee in report.Employees)
@@ -365,6 +367,7 @@
                     worksheet.Cells[row, 32].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
                     worksheet.Cells[row, 33].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
 
+                    worksheet.Cells[row, 42].Value = ParseToDecimal(monthlyBasicAllowance.AfterAdjustmentAmount);
                     worksheet.Cells[row, 43].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
                     worksheet.Cells[row, 44].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
                     worksheet.Cells[row, 45].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
@@ -418,7 +421,6 @@
 
                 var basicSalaryList = report.MonthlyBasicSalary.Where(x => x.CurrencyId == currency.CurrencyId);
                 var salaryList = report.MonthlySalary.Where(x => x.CurrencyId == currency.CurrencyId);
-
                 worksheet.Cells[row, 10].Value = currency.CurrencyCode;
                 worksheet.Cells[row, 11].Value = basicSalaryList.Sum(x => ParseToDecimal(x.Salary));
                 worksheet.Cells[row, 13].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
@@ -439,6 +441,27 @@
                 {
                     worksheet.Cells[row, 22].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
                 }
+
+                var basicAllowanceList = report.MonthlyBasicAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
+                var allowanceList = report.MonthlyAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
+                worksheet.Cells[row, 25].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAmount));
+                worksheet.Cells[row, 26].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAmount));
+                worksheet.Cells[row, 27].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAmount));
+                worksheet.Cells[row, 28].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.MobilePhoneAmount));
+                worksheet.Cells[row, 29].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HPIAmount));
+                worksheet.Cells[row, 30].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.DutyMealAmount));
+                worksheet.Cells[row, 31].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SecondmentAmount));
+                worksheet.Cells[row, 32].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.OthersAmount));
+                worksheet.Cells[row, 33].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
+
+                worksheet.Cells[row, 42].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
+                worksheet.Cells[row, 43].Value = allowanceList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                worksheet.Cells[row, 44].Value = allowanceList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                worksheet.Cells[row, 45].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
+                worksheet.Cells[row, 46].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.RoomingChargesAmount));
+                worksheet.Cells[row, 47].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.FitnessFirstAmount));
+                worksheet.Cells[row, 48].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
+                worksheet.Cells[row, 49].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
                 row++;
             }

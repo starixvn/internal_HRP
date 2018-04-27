@@ -274,25 +274,33 @@
         {
             // Arrange
             byte[] bytes = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
-            var report = new MonthlyPayrollReport();
-            var month = DateTime.Today;
-            var companyId = 22;
+            var report = new MonthlyPayrollReport
+            {
+                Month = DateTime.Today,
+                CompanyCode = "OW"
+            };
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                CompanyId = 22
+            };
+
             var webRootPath = "abc";
             var fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
             var templatePath = Path.Combine(webRootPath, fileName);
             var reportController = GetReportController();
             hostingEnvironment.WebRootPath.Returns(webRootPath);
-            reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == month), Arg.Is<int>(x => x == companyId)).Returns(report);
+            reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
             exportExcelService.ExportMonthlyPayrollReport(Arg.Is<string>(x => x == templatePath), Arg.Is<MonthlyPayrollReport>(x => x == report)).Returns(bytes);
 
             // Act
-            var actual = await reportController.GetMonthlyPayrollReport(month, companyId);
+            var actual = await reportController.MonthlyPayroll(viewModel);
 
             // Assert
             var fileResult = Assert.IsType<FileContentResult>(actual);
             Assert.Equal(bytes, fileResult.FileContents);
             Assert.Equal(MimeType.XLSX, fileResult.ContentType);
-            Assert.Equal($"MonthlyPayrollReport_{month.ToString("MM-yyyy")}_{companyId}.xlsx", fileResult.FileDownloadName);
+            Assert.Equal($"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx", fileResult.FileDownloadName);
         }
 
         #region Helpers

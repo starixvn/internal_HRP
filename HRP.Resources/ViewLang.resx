@@ -1059,4 +1059,10 @@
   <data name="ValueDate" xml:space="preserve">
     <value>Value Date</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="PayrollMonth" xml:space="preserve">
+    <value>Payroll Month</value>
+  </data>
 </root>

@@ -74,6 +74,9 @@
 
             var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
 
+            report.CompanyCode = report.Employees?.FirstOrDefault().CompanyCode;
+            report.Month = month;
+
             DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);
             DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate);
             DecryptMonthlyBasicAllowanceListAndConvertAmount(report.MonthlyBasicAllowance, report.CurrencyExchangeRate);
@@ -136,6 +139,7 @@
                     basicAllowance.OthersAmount = cryptoService.Decrypt(basicAllowance.OthersAmount);
                     basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
                     basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
+                    basicAllowance.AfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount);
 
                     ConvertMonthlyBasicAllowanceToConversionCurrency(basicAllowance, currencyExchangeRates);
                 }

@@ -1,5 +1,6 @@
 ﻿namespace HRP.Models.Report
 {
+    using System;
     using System.Collections.Generic;
     using HRP.Models.Currency;
     using HRP.Models.Employee;
@@ -20,5 +21,9 @@
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRate { get; set; }
 
         public IEnumerable<Currency> CurrencyList { get; set; }
+
+        public string CompanyCode { get; set; }
+
+        public DateTime Month { get; set; }
     }
 }

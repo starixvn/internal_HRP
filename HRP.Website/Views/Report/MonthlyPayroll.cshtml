@@ -1,0 +1,50 @@
+﻿@using HRP.Models.Report
+@using HRP.Resources
+@model MonthlyPayrollReportViewModel
+
+@{
+    ViewData["Title"] = $"{ViewLang.Report} - Monthly Payroll";
+}
+@section Styles {
+    <environment include="Development">
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
+    </environment>
+
+    <environment exclude="Development">
+    </environment>
+}
+
+<form class="search-form" asp-action="MonthlyPayroll" asp-controller="Report" method="post">
+    <div class="group">
+        <label asp-for="SelectedTime" class="text"></label>
+        <div class="calendar">
+            <input type="text" asp-for="SelectedTime" class="control datetimepicker" />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="group">
+        <label asp-for="CompanyId" class="text"></label>
+        <select asp-for="CompanyId" asp-items="Model.Companies" class="control select2"></select>
+    </div>
+
+    <div class="group">
+        <button type="submit" class="button -primary">@ViewLang.Export</button>
+    </div>
+</form>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/assets/js/report/monthly-payroll.js"></script>
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}

@@ -188,15 +188,29 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GetMonthlyPayrollReport(DateTime month, int companyId)
+        public async Task<IActionResult> MonthlyPayroll()
+        {
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+            };
+
+            return View("MonthlyPayroll", viewModel);
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HttpPost]
+        public async Task<IActionResult> MonthlyPayroll(MonthlyPayrollReportViewModel viewModel)
         {
             string webRootFolder = hostingEnvironment.WebRootPath;
             string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
             var templatePath = Path.Combine(webRootFolder, fileName);
-            var report = await reportService.GetDataForMonthlyPayrollReportAsync(month, companyId);
+            var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
             var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-            return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{month.ToString("MM-yyyy")}_{companyId}.xlsx");
+            return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx");
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]

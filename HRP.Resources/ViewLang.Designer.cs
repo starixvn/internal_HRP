@@ -1276,6 +1276,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field.
         /// </summary>
         public static string Field {
@@ -2019,6 +2028,15 @@ namespace HRP.Resources {
         public static string PaymentTransactions {
             get {
                 return ResourceManager.GetString("PaymentTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payroll Month.
+        /// </summary>
+        public static string PayrollMonth {
+            get {
+                return ResourceManager.GetString("PayrollMonth", resourceCulture);
             }
         }
         
