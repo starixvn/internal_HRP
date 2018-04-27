@@ -1,9 +1,50 @@
 ﻿namespace HRP.Models.Report
 {
     using System.Collections.Generic;
+    using HRP.Core.Constants;
 
     public static class ColumnsConfirguration
     {
+        private static readonly IEnumerable<DynamicReportItem> dynamicReportItems = new List<DynamicReportItem>
+        {
+            new DynamicReportItem
+            {
+                Id = 1,
+                Name = "ID No",
+                Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 2,
+                Name = "Full Name",
+                Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 3,
+                Name = "Nick Name",
+                Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 4,
+                Name = "Division",
+                Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 5,
+                Name = "Department",
+                Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 6,
+                Name = "Cost Center",
+                Group = DynamicReportItemGroup.PersonalDetails
+            }
+        };
+
         private static readonly Dictionary<int, IEnumerable<ColumnGroup>> columns = new Dictionary<int, IEnumerable<ColumnGroup>>
         {
             {
@@ -405,5 +446,7 @@
         };
 
         public static Dictionary<int, IEnumerable<ColumnGroup>> Columns { get => columns; }
+
+        public static IEnumerable<DynamicReportItem> DynamicReportItems => dynamicReportItems;
     }
 }

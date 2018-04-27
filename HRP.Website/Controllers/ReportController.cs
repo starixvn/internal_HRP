@@ -200,7 +200,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GenerateReport()
+        public async Task<IActionResult> DynamicReport()
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             var viewModel = new GenerateReportViewModel
@@ -209,12 +209,12 @@
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
             };
 
-            return View("GenerateReport", viewModel);
+            return View("DynamicReport", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         [HttpPost]
-        public async Task<IActionResult> GenerateReport(GenerateReportViewModel viewModel)
+        public async Task<IActionResult> DynamicReport(GenerateReportViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -228,7 +228,7 @@
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
-            return View("GenerateReport", viewModel);
+            return View("DynamicReport", viewModel);
         }
     }
 }
