@@ -1,26 +1,25 @@
 ﻿namespace HRP.Models.Employee
 {
-    using System.Collections.Generic;
-    using HRP.Core.Model;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class EmploymentBaseViewModel : Employment
     {
-        public IEnumerable<Company> Companies { get; set; } = new List<Company>();
+        public SelectList Companies { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> LocalCompanies { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList LocalCompanies { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> LocalJobTitles { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList LocalJobTitles { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> EmploymentTypes { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList EmploymentTypes { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> EmploymentStatuses { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList EmploymentStatuses { get; set; }
 
-        public IEnumerable<JobCategory> JobCategories { get; set; } = new List<JobCategory>();
+        public SelectList JobCategories { get; set; }
 
-        public IEnumerable<Country> Countries { get; set; } = new List<Country>();
+        public SelectList Countries { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> WorkPermitType1s { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList WorkPermitType1s { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> WorkPermitType2s { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList WorkPermitType2s { get; set; }
     }
 }

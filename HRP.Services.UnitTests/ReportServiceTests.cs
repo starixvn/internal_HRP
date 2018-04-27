@@ -13,8 +13,6 @@
 
     public class ReportServiceTests
     {
-        private IBaseService baseService;
-        private ISessionService sessionService;
         private ICryptoService cryptoService;
         private IReportRepository reportRepository;
 

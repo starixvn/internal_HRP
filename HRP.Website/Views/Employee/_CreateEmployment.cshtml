@@ -23,8 +23,7 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="CompanyId">@ViewLang.BVI</label>
-                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="CompanyId"
-                            asp-items="@(new SelectList(Model.Companies, "CompanyId", "Code"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="CompanyId" asp-items="Model.Companies">
                         <option value=""></option>
                     </select>
                 </div>
@@ -43,8 +42,7 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalCompanyId">@ViewLang.Local</label>
-                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="LocalCompanyId"
-                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="LocalCompanyId" asp-items="Model.LocalCompanies">
                         <option value=""></option>
                     </select>
                 </div>
@@ -82,8 +80,7 @@
             <div class="group-complex -emp-layout1">
                 <div class="component">
                     <label class="text -has-required" asp-for="LocalJobTitleId">@ViewLang.Local</label>
-                    <select class="control js-select2 js-search-suggestion" asp-for="LocalJobTitleId"
-                            asp-items="@(new SelectList(Model.LocalJobTitles, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-search-suggestion" asp-for="LocalJobTitleId" asp-items="Model.LocalJobTitles">
                         <option value=""></option>
                     </select>
                 </div>
@@ -178,8 +175,7 @@
                     <label class="text like-group-title -has-required " asp-for="EmploymentType">
                         <span class="icon-group"></span>@ViewLang.EmploymentType
                     </label>
-                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentType"
-                            asp-items="@(new SelectList(Model.EmploymentTypes, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentType" asp-items="Model.EmploymentTypes">
                         <option value=""></option>
                     </select>
                 </div>
@@ -190,8 +186,7 @@
                     <label class="text like-group-title -has-required" asp-for="EmploymentStatus">
                         <span class="icon-group"></span>@ViewLang.EmploymentStatus
                     </label>
-                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentStatus"
-                            asp-items="@(new SelectList(Model.EmploymentStatuses, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="EmploymentStatus" asp-items="Model.EmploymentStatuses">
                         <option value=""></option>
                     </select>
                 </div>
@@ -207,8 +202,7 @@
                     <label class="text like-group-title -has-required" asp-for="JobCategoryId">
                         <span class="icon-group"></span>@ViewLang.JobCategory
                     </label>
-                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="JobCategoryId"
-                            asp-items="@(new SelectList(Model.JobCategories, "JobCategoryId", "Name"))">
+                    <select class="control js-select2 js-select2-hidesearchbox" asp-for="JobCategoryId" asp-items="Model.JobCategories">
                         <option value=""></option>
                     </select>
                 </div>
@@ -347,8 +341,7 @@
             <div class="group-complex -emp-layout6">
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
-                    <select class="control js-select2 js-search-suggestion" asp-for="CountryId"
-                            asp-items="@(new SelectList(Model.Countries, "CountryId", "Code"))">
+                    <select class="control js-select2 js-search-suggestion" asp-for="CountryId" asp-items="Model.Countries">
                         <option value=""></option>
                     </select>
                 </div>
@@ -369,16 +362,16 @@
             <div class="group-title"><span class="icon-group"></span>@ViewLang.WorkPermit</div>
             <label class="text" asp-for="WorkPermit.LocalCompanyId">@ViewLang.Company</label>
             <div class="group-control">
-                <select class="control width-206 js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="WorkPermit.LocalCompanyId"
-                        asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                <select class="control width-206 js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
+                        asp-for="WorkPermit.LocalCompanyId" asp-items="Model.LocalCompanies">
                     <option value=""></option>
                 </select>
             </div>
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text" asp-for="WorkPermit.Type1">@ViewLang.Type1</label>
-                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="WorkPermit.Type1"
-                            asp-items="@(new SelectList(Model.WorkPermitType1s, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
+                            asp-for="WorkPermit.Type1" asp-items="Model.WorkPermitType1s">
                         <option value=""></option>
                     </select>
                 </div>
@@ -396,8 +389,8 @@
             <div class="group-complex -emp-layout7">
                 <div class="component">
                     <label class="text" asp-for="WorkPermit.Type2">@ViewLang.Type2</label>
-                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="WorkPermit.Type2"
-                            asp-items="@(new SelectList(Model.WorkPermitType2s, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
+                            asp-for="WorkPermit.Type2" asp-items="Model.WorkPermitType2s">
                         <option value=""></option>
                     </select>
                 </div>
@@ -417,15 +410,13 @@
             <div class="group-complex -emp-layout8">
                 <div class="component">
                     <label class="text" asp-for="DST">@ViewLang.DST</label>
-                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DST"
-                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DST" asp-items="Model.LocalCompanies">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="component">
                     <label class="text" asp-for="DBT">@ViewLang.DBT</label>
-                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DBT"
-                            asp-items="@(new SelectList(Model.LocalCompanies, "ResourceId", "Value"))">
+                    <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder" asp-for="DBT" asp-items="Model.LocalCompanies">
                         <option value=""></option>
                     </select>
                 </div>

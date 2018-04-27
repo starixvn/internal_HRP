@@ -319,18 +319,24 @@
             IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
             IEnumerable<Country> coutries = await commonService.GetAllCountryAsync().ConfigureAwait(false);
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> localCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany);
+            IEnumerable<ReferenceResourceModel> localJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle);
+            IEnumerable<ReferenceResourceModel> employmentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType);
+            IEnumerable<ReferenceResourceModel> employmentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus);
+            IEnumerable<ReferenceResourceModel> workPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1);
+            IEnumerable<ReferenceResourceModel> workPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2);
 
             var viewModel = new CreateEmploymentViewModel
             {
-                Companies = companies,
-                JobCategories = jobCategories,
-                Countries = coutries,
-                LocalCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany),
-                LocalJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle),
-                EmploymentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType),
-                EmploymentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus),
-                WorkPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1),
-                WorkPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2)
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                JobCategories = commonService.GetSelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name)),
+                Countries = commonService.GetSelectList(coutries, nameof(Country.CountryId), nameof(Country.Code)),
+                LocalCompanies = commonService.GetSelectList(localCompanies, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                LocalJobTitles = commonService.GetSelectList(localJobTitles, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentTypes = commonService.GetSelectList(employmentTypes, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentStatuses = commonService.GetSelectList(employmentStatuses, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType1s = commonService.GetSelectList(workPermitType1s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType2s = commonService.GetSelectList(workPermitType2s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value))
             };
 
             return viewModel;
@@ -408,6 +414,23 @@
                 ReferenceResource.SectionChangeReason
             };
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> localCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany);
+            IEnumerable<ReferenceResourceModel> localJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle);
+            IEnumerable<ReferenceResourceModel> employmentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType);
+            IEnumerable<ReferenceResourceModel> employmentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus);
+            IEnumerable<ReferenceResourceModel> workPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1);
+            IEnumerable<ReferenceResourceModel> workPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2);
+            IEnumerable<ReferenceResourceModel> companyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyBVIChangeReason);
+            IEnumerable<ReferenceResourceModel> localCompanyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyLocalChangeReason);
+            IEnumerable<ReferenceResourceModel> jobTitleChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobTitleChangeReason);
+            IEnumerable<ReferenceResourceModel> dateCommencementChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DateCommencementChangeReason);
+            IEnumerable<ReferenceResourceModel> idNoChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.EmployeeIDChangeReason);
+            IEnumerable<ReferenceResourceModel> jobCategoryChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobCategoryChangeReason);
+            IEnumerable<ReferenceResourceModel> jobGradeChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobGradeChangeReason);
+            IEnumerable<ReferenceResourceModel> divisionChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DivisionChangeReason);
+            IEnumerable<ReferenceResourceModel> departmentChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DepartmentChangeReason);
+            IEnumerable<ReferenceResourceModel> costCenterChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CostCenterChangeReason);
+            IEnumerable<ReferenceResourceModel> sectionChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.SectionChangeReason);
 
             var viewModel = new UpdateEmploymentViewModel
             {
@@ -490,34 +513,34 @@
                 WorkPermit = employment.WorkPermit,
                 Paymaster = employment.Paymaster,
                 EPA = employment.EPA,
-                Companies = companies,
-                Divisions = divisions,
-                Departments = departments,
-                CostCenters = costCenters,
-                Sections = sections,
-                JobCategories = jobCategories,
-                GradeLevels = gradeLevels,
-                JobGrades = jobGrades,
-                Countries = coutries,
-                Cities = cities,
-                Offices = offices,
-                LocalCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany),
-                LocalJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle),
-                EmploymentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType),
-                EmploymentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus),
-                WorkPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1),
-                WorkPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2),
-                CompanyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyBVIChangeReason),
-                LocalCompanyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyLocalChangeReason),
-                JobTitleChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobTitleChangeReason),
-                DateCommencementChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DateCommencementChangeReason),
-                IDNoChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.EmployeeIDChangeReason),
-                JobCategoryChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobCategoryChangeReason),
-                JobGradeChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobGradeChangeReason),
-                DivisionChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DivisionChangeReason),
-                DepartmentChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DepartmentChangeReason),
-                CostCenterChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CostCenterChangeReason),
-                SectionChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.SectionChangeReason)
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Divisions = commonService.GetSelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code)),
+                Departments = commonService.GetSelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code)),
+                CostCenters = commonService.GetSelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code)),
+                Sections = commonService.GetSelectList(sections, nameof(Section.SectionId), nameof(Section.Code)),
+                JobCategories = commonService.GetSelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name)),
+                GradeLevels = commonService.GetSelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name)),
+                JobGrades = commonService.GetSelectList(jobGrades, nameof(JobGrade.JobGradeId), nameof(JobGrade.Name)),
+                Countries = commonService.GetSelectList(coutries, nameof(Country.CountryId), nameof(Country.Code)),
+                Cities = commonService.GetSelectList(cities, nameof(City.CityId), nameof(City.Code)),
+                Offices = commonService.GetSelectList(offices, nameof(Office.OfficeId), nameof(Office.Code)),
+                LocalCompanies = commonService.GetSelectList(localCompanies, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                LocalJobTitles = commonService.GetSelectList(localJobTitles, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentTypes = commonService.GetSelectList(employmentTypes, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentStatuses = commonService.GetSelectList(employmentStatuses, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType1s = commonService.GetSelectList(workPermitType1s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType2s = commonService.GetSelectList(workPermitType2s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                CompanyChangeReasons = commonService.GetSelectList(companyChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                LocalCompanyChangeReasons = commonService.GetSelectList(localCompanyChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                JobTitleChangeReasons = commonService.GetSelectList(jobTitleChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                DateCommencementChangeReasons = commonService.GetSelectList(dateCommencementChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                IDNoChangeReasons = commonService.GetSelectList(idNoChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                JobCategoryChangeReasons = commonService.GetSelectList(jobCategoryChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                JobGradeChangeReasons = commonService.GetSelectList(jobGradeChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                DivisionChangeReasons = commonService.GetSelectList(divisionChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                DepartmentChangeReasons = commonService.GetSelectList(departmentChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                CostCenterChangeReasons = commonService.GetSelectList(costCenterChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                SectionChangeReasons = commonService.GetSelectList(sectionChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value))
             };
 
             return viewModel;

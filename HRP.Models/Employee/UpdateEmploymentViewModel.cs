@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
-    using HRP.Core.Model;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class UpdateEmploymentViewModel : EmploymentBaseViewModel
     {
@@ -177,42 +177,42 @@
 
         public bool IsHost { get; set; }
 
-        public IEnumerable<JobGrade> JobGrades { get; set; } = new List<JobGrade>();
+        public SelectList JobGrades { get; set; }
 
-        public IEnumerable<GradeLevel> GradeLevels { get; set; } = new List<GradeLevel>();
+        public SelectList GradeLevels { get; set; }
 
-        public IEnumerable<City> Cities { get; set; } = new List<City>();
+        public SelectList Cities { get; set; }
 
-        public IEnumerable<Office> Offices { get; set; } = new List<Office>();
+        public SelectList Offices { get; set; }
 
-        public IEnumerable<Division> Divisions { get; set; } = new List<Division>();
+        public SelectList Divisions { get; set; }
 
-        public IEnumerable<Department> Departments { get; set; } = new List<Department>();
+        public SelectList Departments { get; set; }
 
-        public IEnumerable<Section> Sections { get; set; } = new List<Section>();
+        public SelectList Sections { get; set; }
 
-        public IEnumerable<CostCenter> CostCenters { get; set; } = new List<CostCenter>();
+        public SelectList CostCenters { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> CompanyChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList CompanyChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> LocalCompanyChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList LocalCompanyChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> JobTitleChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList JobTitleChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> IDNoChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList IDNoChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> DateCommencementChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList DateCommencementChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> JobCategoryChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList JobCategoryChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> JobGradeChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList JobGradeChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> DivisionChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList DivisionChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> DepartmentChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList DepartmentChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> CostCenterChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList CostCenterChangeReasons { get; set; }
 
-        public IEnumerable<ReferenceResourceModel> SectionChangeReasons { get; set; } = new List<ReferenceResourceModel>();
+        public SelectList SectionChangeReasons { get; set; }
     }
 }
