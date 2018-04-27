@@ -25,18 +25,18 @@
             ReferenceResource.TypeOfBankAccount
         };
 
-        private readonly IRefResourceService refResourceService;
+        private readonly ICommonService commonService;
 
         public BankAccountController(
             IBaseService baseService,
             IEmployeeService employeeService,
             IBankAccountService bankAccountService,
-            IRefResourceService refResourceService,
+            ICommonService commonService,
             ISessionService sessionService) : base(baseService, sessionService)
         {
             this.employeeService = employeeService;
             this.bankAccountService = bankAccountService;
-            this.refResourceService = refResourceService;
+            this.commonService = commonService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
@@ -47,7 +47,7 @@
             viewModel.CompanyId = employee.CompanyId;
             viewModel.EmployeeName = employee.Nickname;
 
-            viewModel.BankTypeResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
+            viewModel.BankTypeResources = await commonService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
             viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
 
@@ -163,9 +163,9 @@
                 IsActive = bankAccount.IsActive
             };
 
-            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
-            viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
+            viewModel.BankTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            viewModel.BankAccountTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             return View(viewModel);
         }
@@ -185,9 +185,9 @@
                 }
             }
 
-            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
-            viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
+            viewModel.BankTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            viewModel.BankAccountTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
 
             return View(viewModel);
         }
@@ -215,7 +215,7 @@
                 ? ReferenceResource.PaymentTransactionEbanking
                 : ReferenceResource.PaymentTransactionDirectBanking;
 
-            var results = await refResourceService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
+            var results = await commonService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
 
             return Json(results.Select(x => new
             {
@@ -247,9 +247,9 @@
                 viewModel.BankTypeId = (int)BankTypes.Ebanking;
             }
 
-            IEnumerable<ReferenceResourceModel> refResources = await refResourceService.GetReferenceResourcesByNamesAsync(refNames);
-            viewModel.BankTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = refResourceService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
+            viewModel.BankTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.BankType);
+            viewModel.BankAccountTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
         }
     }

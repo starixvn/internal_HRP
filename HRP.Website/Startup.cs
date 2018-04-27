@@ -97,6 +97,7 @@
             services.AddScoped<IPdfRenderService, PdfRenderService>();
             services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<IZipFileWrapper, ZipFileWrapper>();
+            services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
             services.AddScoped<IFunctionService, FunctionService>();
@@ -104,7 +105,6 @@
             services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
             services.AddScoped<IDataConfigurationService, DataConfigurationService>();
-            services.AddScoped<IRefResourceService, RefResourceService>();
             services.AddScoped<IPaymentProcessService, PaymentProcessService>();
             services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
             services.AddScoped<ITemplateReader, TemplateReader>();

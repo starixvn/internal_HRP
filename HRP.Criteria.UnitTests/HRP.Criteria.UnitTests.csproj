@@ -185,7 +185,7 @@
     <Compile Include="Employee\GetEmployeePayrollCriteriaTest.cs" />
     <Compile Include="Employee\GetEmployeeSuggestionByIDNoCriteriaTests.cs" />
     <Compile Include="Employee\GetEmployeeSuggestionByNameCriteriaTests.cs" />
-    <Compile Include="Employee\GetDataToUpdateEmploymentCriteriaTests.cs" />
+    <Compile Include="Employee\GetEmploymentByEmployeeIdCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmployeeCriteriaTests.cs" />
     <Compile Include="Employee\UpdateEmployeePayrollCriteriaTest.cs" />
     <Compile Include="Employee\CreateEmployeeCriteriaTests.cs" />

@@ -22,7 +22,7 @@
         private IReportService reportService;
         private IHostingEnvironment hostingEnvironment;
         private IExportExcelService exportExcelService;
-        private IRefResourceService refResourceService;
+        private ICommonService commonService;
 
         [Fact]
         public async Task BankIn_WhenCalled_ReturnExpectedView()
@@ -153,9 +153,9 @@
             return Substitute.For<IExportExcelService>();
         }
 
-        private IRefResourceService FakeRefResourceService()
+        private ICommonService FakeCommonService()
         {
-            return Substitute.For<IRefResourceService>();
+            return Substitute.For<ICommonService>();
         }
 
         private ReportController GetReportController()
@@ -165,7 +165,7 @@
             reportService = FakeReportService();
             exportExcelService = FakeExportExcelService();
             hostingEnvironment = FakeHostingEnviroment();
-            refResourceService = FakeRefResourceService();
+            commonService = FakeCommonService();
 
             return new ReportController(
                 baseService,
@@ -173,7 +173,7 @@
                 hostingEnvironment,
                 exportExcelService,
                 reportService,
-                refResourceService);
+                commonService);
         }
 
         #endregion Helpers

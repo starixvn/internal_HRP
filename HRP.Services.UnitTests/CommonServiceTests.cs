@@ -6,10 +6,12 @@
     using Core.Services;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
+    using HRP.Criteria;
+    using HRP.Models;
     using NSubstitute;
     using Xunit;
 
-    public class RefResourceServiceTests
+    public class CommonServiceTests
     {
         private IBaseService baseService;
 
@@ -19,7 +21,7 @@
         public async Task GetReferenceResourcesByNames_ParamIsNull_ReturnEmptyListReferenceResources()
         {
             // Arrange
-            var service = GetRefResourceService();
+            var service = GetCommonService();
 
             // Act
             var actual = await service.GetReferenceResourcesByNamesAsync(null);
@@ -32,7 +34,7 @@
         public async Task GetReferenceResourcesByNames_ParamIsNotNull_ReturnAsExpectedReferenceResources()
         {
             // Arrange
-            var expected = FakeRefResources();
+            var expected = GetRefResourcesForTest();
 
             var refNames = new[]
             {
@@ -40,7 +42,7 @@
                 "BankAccountType"
             };
 
-            var service = GetRefResourceService();
+            var service = GetCommonService();
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(expected);
 
             // Act
@@ -58,7 +60,7 @@
         public void FilterReferenceResources_RefResourcesIsNull_ReturnEmptyListReferenceResources()
         {
             // Arrange
-            var service = GetRefResourceService();
+            var service = GetCommonService();
 
             // Act
             var actual = service.FilterReferenceResources(null, null);
@@ -73,7 +75,7 @@
         public void FilterReferenceResources_RefNameIsInvalid_ReturnEmptyListReferenceResources(string refName)
         {
             // Arrange
-            var service = GetRefResourceService();
+            var service = GetCommonService();
 
             // Act
             var actual = service.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), refName);
@@ -86,9 +88,9 @@
         public void FilterReferenceResources_RefResourcesIsNotNullAndRefNameIsValid_ReturnExpectedReferenceResources()
         {
             // Arrange
-            var refResources = FakeRefResources();
+            var refResources = GetRefResourcesForTest();
             var refName = "BankType";
-            var service = GetRefResourceService();
+            var service = GetCommonService();
 
             // Act
             var actual = service.FilterReferenceResources(refResources, refName);
@@ -100,9 +102,41 @@
 
         #endregion FilterReferenceResources
 
+        [Fact]
+        public async Task GetCompanyByFunctionKeyAsync_WhenCalled_ReturnAsExpectedCompanies()
+        {
+            // Arrange
+            var companies = new List<Company>
+            {
+                new Company{ CompanyId = 1 }
+            };
+            var service = GetCommonService();
+            baseService.GetDataAsync<Company>(Arg.Any<GetCompanyByFunctionKeyCriteria>()).Returns(companies);
+
+            // Act
+            var actual = await service.GetCompanyByFunctionKeyAsync("FunctionKey");
+
+            // Assert
+            Assert.Equal(companies, actual);
+        }
+
+        [Fact]
+        public void GetSelectList_WhenCalled_ReturnAsExpectedSelectList()
+        {
+            // Arrange
+            var refResources = GetRefResourcesForTest();
+            var service = GetCommonService();
+
+            // Act
+            var actual = service.GetSelectList(refResources);
+
+            // Assert
+            Assert.Equal(refResources.Count, actual.Count());
+        }
+
         #region Helpers
 
-        private static List<ReferenceResourceModel> FakeRefResources()
+        private List<ReferenceResourceModel> GetRefResourcesForTest()
         {
             return new List<ReferenceResourceModel>
             {
@@ -125,17 +159,26 @@
             };
         }
 
-        private static IBaseService FakeBaseService()
+        private IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private RefResourceService GetRefResourceService()
+        private ISessionService FakeSessionService()
+        {
+            var service = Substitute.For<ISessionService>();
+            service.UserId = 1;
+
+            return service;
+        }
+
+        private CommonService GetCommonService()
         {
             baseService = FakeBaseService();
-            var service = new RefResourceService(baseService);
+            var sessionService = FakeSessionService();
+            var service = new CommonService(baseService, sessionService);
 
             return service;
         }

@@ -22,7 +22,7 @@
         private IBaseService baseService;
         private IEmployeeService employeeService;
         private IBankAccountService bankAccountService;
-        private IRefResourceService refResourceService;
+        private ICommonService commonService;
         private ISessionService sessionService;
 
         [Fact]
@@ -44,7 +44,7 @@
                 Nickname = "hunter.tran"
             };
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
-            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
 
@@ -399,8 +399,8 @@
         {
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
 
-            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
-            refResourceService
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
+            commonService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(new List<ReferenceResourceModel>());
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
@@ -410,8 +410,8 @@
         {
             bankAccountService.GetBankAccountByIdAsync(Arg.Any<int>()).Returns(bankAccount);
 
-            refResourceService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
-            refResourceService
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
+            commonService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(new List<ReferenceResourceModel>());
 
@@ -466,9 +466,9 @@
             FakeSessionService();
             FakeBaseService();
             FakeBankAccountService();
-            FakeRefResourceService();
+            FakeCommonService();
 
-            return new BankAccountController(baseService, employeeService, bankAccountService, refResourceService, sessionService);
+            return new BankAccountController(baseService, employeeService, bankAccountService, commonService, sessionService);
         }
 
         private void FakeEmployeeService()
@@ -491,9 +491,9 @@
             bankAccountService = Substitute.For<IBankAccountService>();
         }
 
-        private void FakeRefResourceService()
+        private void FakeCommonService()
         {
-            refResourceService = Substitute.For<IRefResourceService>();
+            commonService = Substitute.For<ICommonService>();
         }
 
         #endregion Helpers

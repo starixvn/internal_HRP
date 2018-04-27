@@ -12,19 +12,19 @@
     using Core.Services;
     using Criteria.Report;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Report;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
-    using Services.Interfaces;
+    using Models.Report;
     using Services;
+    using Services.Interfaces;
 
     public class ReportController : BaseController
     {
         private readonly IReportService reportService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
-        private readonly IRefResourceService refResourceService;
+        private readonly ICommonService commonService;
 
         public ReportController(
             IBaseService baseService,
@@ -32,12 +32,12 @@
             IHostingEnvironment hostingEnvironment,
             IExportExcelService exportExcelService,
             IReportService reportService,
-            IRefResourceService refResourceService) : base(baseService, sessionService)
+            ICommonService commonService) : base(baseService, sessionService)
         {
             this.reportService = reportService;
             this.hostingEnvironment = hostingEnvironment;
             this.exportExcelService = exportExcelService;
-            this.refResourceService = refResourceService;
+            this.commonService = commonService;
         }
 
         public IActionResult Index()
@@ -48,7 +48,7 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> GetPaymentTransactions(BankTypes banktype)
         {
-            var refResources = await refResourceService.GetReferenceResourcesByNamesAsync(new[]
+            var refResources = await commonService.GetReferenceResourcesByNamesAsync(new[]
             {
                 ReferenceResource.PaymentTransactionDirectBanking,
                 ReferenceResource.PaymentTransactionEbanking,
@@ -59,7 +59,7 @@
 
             if (banktype == BankTypes.Ebanking)
             {
-                paymentOptions.AddRange(refResourceService.FilterReferenceResources(
+                paymentOptions.AddRange(commonService.FilterReferenceResources(
                     refResources,
                     ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
                 {
@@ -75,14 +75,14 @@
                     Value = ((int)BankTypes.DirectBanking).ToString(),
                     Text = BankTypes.DirectBanking.GetDisplayName(),
                     ParentId = "0",
-                    Items = refResourceService.FilterReferenceResources(
+                    Items = commonService.FilterReferenceResources(
                         refResources,
                         ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
-                    {
-                        Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
-                        Text = x.Value,
-                        ParentId = ((int)BankTypes.DirectBanking).ToString()
-                    }).ToList()
+                        {
+                            Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                            Text = x.Value,
+                            ParentId = ((int)BankTypes.DirectBanking).ToString()
+                        }).ToList()
                 });
 
                 paymentOptions.Add(new MultiSelectViewModel
@@ -90,14 +90,14 @@
                     Value = "3",
                     Text = "Cash",
                     ParentId = "0",
-                    Items = refResourceService.FilterReferenceResources(
+                    Items = commonService.FilterReferenceResources(
                         refResources,
                         ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
-                    {
-                        Value = $"{3}-{x.ResourceId}",
-                        Text = x.Value,
-                        ParentId = "3"
-                    }).ToList()
+                        {
+                            Value = $"{3}-{x.ResourceId}",
+                            Text = x.Value,
+                            ParentId = "3"
+                        }).ToList()
                 });
             }
 

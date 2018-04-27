@@ -3,10 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
-    using HRP.Core.Criteria;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -26,6 +24,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
+        private ICommonService commonService;
         private IEmployeeRepository employeeRepository;
 
         [Fact]
@@ -224,47 +223,29 @@
         public async Task GetDataToCreateEmployeeAsync_WhenCalled_ReturnAsExpectedTuple()
         {
             // Arrange
-            var refNames = string.Format(
-                 "{0},{1},{2},{3}",
-                 ReferenceResource.Gender,
-                 ReferenceResource.Nationality,
-                 ReferenceResource.MaritalStatus,
-                 ReferenceResource.NoOfChildren);
-            var expected = new List<ReferenceResourceModel>
+            var refResources = new List<ReferenceResourceModel>
             {
                 new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
                 new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
                 new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
                 new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
             };
-            var genderSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.Gender)));
-            var nationalSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.Nationality)));
-            var maritalStatusSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
-            var noOfChildrenSelectList = GetSelectList(expected.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
+            var expected = new SelectList(refResources, "ResourceId", "Value");
 
             var employeeService = GetEmployeeService();
-            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Is<GetRefResourceByNamesCriteria>(x => x.RefNames.Equals(refNames))).Returns(expected);
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(refResources);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(refResources);
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>()).Returns(expected);
 
             // Act
             var actual = await employeeService.GetDataToCreateEmployeeAsync();
 
             // Assert
             Assert.IsType<Tuple<SelectList, SelectList, SelectList, SelectList>>(actual);
-            Assert.Equal(genderSelectList.DataValueField, actual.Item1.DataValueField);
-            Assert.Equal(genderSelectList.DataTextField, actual.Item1.DataTextField);
-            Assert.Equal(genderSelectList.Items, actual.Item1.Items);
-
-            Assert.Equal(nationalSelectList.DataValueField, actual.Item2.DataValueField);
-            Assert.Equal(nationalSelectList.DataTextField, actual.Item2.DataTextField);
-            Assert.Equal(nationalSelectList.Items, actual.Item2.Items);
-
-            Assert.Equal(maritalStatusSelectList.DataValueField, actual.Item3.DataValueField);
-            Assert.Equal(maritalStatusSelectList.DataTextField, actual.Item3.DataTextField);
-            Assert.Equal(maritalStatusSelectList.Items, actual.Item3.Items);
-
-            Assert.Equal(noOfChildrenSelectList.DataValueField, actual.Item4.DataValueField);
-            Assert.Equal(noOfChildrenSelectList.DataTextField, actual.Item4.DataTextField);
-            Assert.Equal(noOfChildrenSelectList.Items, actual.Item4.Items);
+            Assert.Equal(expected, actual.Item1);
+            Assert.Equal(expected, actual.Item2);
+            Assert.Equal(expected, actual.Item3);
+            Assert.Equal(expected, actual.Item4);
         }
 
         #endregion GetDataToCreateEmployeeAsync
@@ -377,7 +358,7 @@
             return Substitute.For<IBaseService>();
         }
 
-        private static ISessionService FakeSessionService()
+        private ISessionService FakeSessionService()
         {
             var sessionServiceInstance = Substitute.For<ISessionService>();
             sessionServiceInstance.UserId = 99;
@@ -385,19 +366,24 @@
             return sessionServiceInstance;
         }
 
-        private static ICryptoService FakeCryptoService()
+        private ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
         }
 
-        private static IHostingEnvironment FakeHostingEnvironment()
+        private IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private static IEmployeeRepository FakeEmployeeRepository()
+        private IEmployeeRepository FakeEmployeeRepository()
         {
             return Substitute.For<IEmployeeRepository>();
+        }
+
+        private ICommonService FakeCommonService()
+        {
+            return Substitute.For<ICommonService>();
         }
 
         private EmployeeService GetEmployeeService()
@@ -407,7 +393,8 @@
             baseService = FakeBaseService();
             employeeRepository = FakeEmployeeRepository();
             cryptoService = FakeCryptoService();
-            var service = new EmployeeService(hostingEnviroment, baseService, cryptoService, sessionService, employeeRepository);
+            commonService = FakeCommonService();
+            var service = new EmployeeService(hostingEnviroment, baseService, cryptoService, sessionService, commonService, employeeRepository);
 
             return service;
         }
@@ -448,11 +435,6 @@
                 FullName = "full",
                 Nickname = "nick"
             };
-        }
-
-        private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
-        {
-            return new SelectList(refResource, "ResourceId", "Value");
         }
 
         #endregion Helper
