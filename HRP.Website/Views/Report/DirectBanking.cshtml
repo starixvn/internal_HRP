@@ -10,7 +10,7 @@
     <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
     <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
+    <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
 }
 
 @section Scripts {
@@ -47,7 +47,7 @@
     <div class="group">
         <label asp-for="SelectedPaymentTransactions" class="text"></label>
         <input type="hidden" asp-for="SelectedPaymentTransactions" id="selected-payment-transactions" />
-        <select class="control width-200" id="payment-transactions-multiselect"></select>
+        <select class="control company width-200" id="payment-transactions-multiselect"></select>
     </div>
 
     <div class="group">
