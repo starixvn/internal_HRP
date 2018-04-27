@@ -4,29 +4,20 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Core.Constants;
     using Core.Services;
-    using Criteria;
     using Criteria.Report;
-    using Models;
     using Models.Report;
     using Repositories;
 
     public class ReportService : IReportService
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
         private readonly IReportRepository reportRepository;
 
         public ReportService(
-            IBaseService baseService,
-            ISessionService sessionService,
             ICryptoService cryptoService,
             IReportRepository reportRepository = null)
         {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
             this.cryptoService = cryptoService;
             this.reportRepository = reportRepository ?? new ReportRepository();
         }
@@ -47,18 +38,6 @@
             DecryptBankInAmount(bankInData.CashBankIns);
 
             return bankInData;
-        }
-
-        public async Task<IEnumerable<Company>> GetCompaniesAsync()
-        {
-            var criteria = new GetCompanyByFunctionKeyCriteria
-            {
-                UserId = sessionService.UserId,
-                FunctionKey = FunctionKey.Report
-            };
-            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
-
-            return companies;
         }
 
         public IEnumerable<ColumnGroup> GetAvailableColumnsList()

@@ -13,24 +13,26 @@
     using HRP.Models.Payslip;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class PayslipController : BaseController
     {
+        private readonly ICommonService commonService;
         private readonly IPayslipService payslipService;
 
         public PayslipController(
             ISessionService sessionService,
             IBaseService baseService,
+            ICommonService commonService,
             IPayslipService payslipService) : base(baseService, sessionService)
         {
+            this.commonService = commonService;
             this.payslipService = payslipService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
         public async Task<IActionResult> Index(DateTime? month = null, int? companyId = null, bool? isSent = null)
         {
-            IEnumerable<Company> companies = await payslipService.GetCompanyAsync();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Payslip);
             Company company = companies.FirstOrDefault();
             var monthSelected = month ?? DateTime.Today;
             var companyIdSelected = companyId ?? (company != null ? company.CompanyId : 0);
@@ -42,7 +44,7 @@
                 CompanyId = companyIdSelected,
                 IsSent = isSent,
                 Payslips = payslips,
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 IsHost = sessionService.HasPermissionOnCompany(companyIdSelected, FunctionKey.Payslip, Policy.Host)
             };
 

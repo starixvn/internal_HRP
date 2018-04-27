@@ -26,6 +26,7 @@
     public class PaymentProcessController : BaseController
     {
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IMonthlyPayrollService monthlyPayrollService;
 
@@ -33,11 +34,13 @@
             IBaseService baseService,
             ISessionService sessionService,
             IHostingEnvironment hostingEnvironment,
+            ICommonService commonService,
             IPaymentProcessService paymentProcessService,
             IMonthlyPayrollService monthlyPayrollService)
             : base(baseService, sessionService)
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.commonService = commonService;
             this.paymentProcessService = paymentProcessService;
             this.monthlyPayrollService = monthlyPayrollService;
         }
@@ -47,10 +50,11 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
-            var paymentProcess = await paymentProcessService.GetCurrentDuration();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.PaymentProcess);
+            PaymentProcess paymentProcess = await paymentProcessService.GetCurrentDuration();
             var viewModel = new SelectWorkingMonthCompanyViewModel
             {
-                Companies = await paymentProcessService.GetCompanySelectListAsync(),
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = paymentProcess.Month,
                 StartDate = paymentProcess.StartDate,
                 DueDate = paymentProcess.DueDate
@@ -66,7 +70,7 @@
             if (ModelState.IsValid)
             {
                 var isHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
-                var paymentProcess = await paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime);
+                PaymentProcess paymentProcess = await paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime);
 
                 if (isHost && IsInPaymentProcessDuration(paymentProcess))
                 {
@@ -90,7 +94,8 @@
                 }
             }
 
-            viewModel.Companies = await paymentProcessService.GetCompanySelectListAsync();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.PaymentProcess);
+            viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("Index", viewModel);
         }

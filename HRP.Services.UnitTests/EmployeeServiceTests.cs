@@ -235,7 +235,7 @@
             var employeeService = GetEmployeeService();
             commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(refResources);
             commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(refResources);
-            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>()).Returns(expected);
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(expected);
 
             // Act
             var actual = await employeeService.GetDataToCreateEmployeeAsync();

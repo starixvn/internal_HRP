@@ -13,7 +13,6 @@
     using Criteria.Report;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.Report;
     using Services;
@@ -107,11 +106,11 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> DirectBanking()
         {
-            var companies = await reportService.GetCompaniesAsync();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
 
             var viewModel = new BankInReportViewModel
             {
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
                 BankType = BankTypes.DirectBanking
             };
@@ -128,7 +127,7 @@
                 viewModel.TypeOfPayment,
                 viewModel.SelectedPaymentTransactions);
 
-            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\DirectBanking.xlsx");
+            var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\DirectBanking.xlsx");
 
             IActionResult result = RedirectToAction("DirectBanking");
 
@@ -149,11 +148,11 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> Ebanking()
         {
-            var companies = await reportService.GetCompaniesAsync();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
 
             var viewModel = new BankInReportViewModel
             {
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
                 BankType = BankTypes.Ebanking
             };
@@ -170,7 +169,7 @@
                 viewModel.TypeOfPayment,
                 viewModel.SelectedPaymentTransactions);
 
-            FileInfo fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\Ebanking.xlsx");
+            var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\Ebanking.xlsx");
 
             IActionResult result = RedirectToAction("Ebanking");
 
@@ -203,11 +202,11 @@
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
         public async Task<IActionResult> GenerateReport()
         {
-            var companies = await reportService.GetCompaniesAsync();
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
             };
 
             return View("GenerateReport", viewModel);
@@ -226,8 +225,8 @@
                 return File(data, MimeType.XLSX, $"Report_{viewModel.SelectedTime.ToString("MM-yyyy")}_Company-{viewModel.CompanyId}.xlsx");
             }
 
-            var companies = await reportService.GetCompaniesAsync();
-            viewModel.Companies = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("GenerateReport", viewModel);
         }

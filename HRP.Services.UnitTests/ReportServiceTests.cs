@@ -99,19 +99,9 @@
 
         #region Helpers
 
-        private static IBaseService FakeBaseService()
-        {
-            return Substitute.For<IBaseService>();
-        }
-
         private static ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
-        }
-
-        private static ISessionService FakeSessionService()
-        {
-            return Substitute.For<ISessionService>();
         }
 
         private static IReportRepository FakeReportRepository()
@@ -121,12 +111,10 @@
 
         private ReportService GetReportService()
         {
-            baseService = FakeBaseService();
             cryptoService = FakeCryptoService();
-            sessionService = FakeSessionService();
             reportRepository = FakeReportRepository();
 
-            return new ReportService(baseService, sessionService, cryptoService, reportRepository);
+            return new ReportService(cryptoService, reportRepository);
         }
 
         #endregion Helpers

@@ -6,12 +6,9 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Models.PaymentProcess;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IPaymentProcessService
     {
-        Task<SelectList> GetCompanySelectListAsync();
-
         Task<PaymentProcess> GetCurrentDuration();
 
         Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath);

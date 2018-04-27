@@ -64,9 +64,23 @@
             return await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
         }
 
-        public SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResources)
+        public async Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true)
         {
-            return new SelectList(refResources, "ResourceId", "Value");
+            var criteria = new GetAllJobCategoryCriteria { IsActive = isActive };
+
+            return await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true)
+        {
+            var criteria = new GetAllCountryCriteria { IsActive = isActive };
+
+            return await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
+        }
+
+        public SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField)
+        {
+            return new SelectList(items, dataValueField, dataTextField);
         }
     }
 }

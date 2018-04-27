@@ -10,9 +10,7 @@
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Payslip;
-    using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Repositories;
@@ -47,17 +45,6 @@
             this.viewRenderService = viewRenderService;
             this.pdfRenderService = pdfRenderService;
             this.payslipRepository = payslipRepository ?? new PayslipRepository();
-        }
-
-        public async Task<IEnumerable<Company>> GetCompanyAsync()
-        {
-            var criteria = new GetCompanyByFunctionKeyCriteria
-            {
-                UserId = sessionService.UserId,
-                FunctionKey = FunctionKey.Payslip
-            };
-
-            return await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent)

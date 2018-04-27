@@ -246,18 +246,29 @@
 
         public async Task<Tuple<SelectList, SelectList, SelectList, SelectList>> GetDataToCreateEmployeeAsync()
         {
-            string[] refNames =
-                {
-                     ReferenceResource.Gender,
-                     ReferenceResource.Nationality,
-                     ReferenceResource.MaritalStatus,
-                     ReferenceResource.NoOfChildren
-                };
+            string[] refNames = {
+                ReferenceResource.Gender,
+                ReferenceResource.Nationality,
+                ReferenceResource.MaritalStatus,
+                ReferenceResource.NoOfChildren
+            };
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
-            SelectList genderSelectList = commonService.GetSelectList(commonService.FilterReferenceResources(refResources, ReferenceResource.Gender));
-            SelectList nationalSelectList = commonService.GetSelectList(commonService.FilterReferenceResources(refResources, ReferenceResource.Nationality));
-            SelectList maritalStatusSelectList = commonService.GetSelectList(commonService.FilterReferenceResources(refResources, ReferenceResource.MaritalStatus));
-            SelectList noOfChildrenSelectList = commonService.GetSelectList(commonService.FilterReferenceResources(refResources, ReferenceResource.NoOfChildren));
+            SelectList genderSelectList = commonService.GetSelectList(
+                commonService.FilterReferenceResources(refResources, ReferenceResource.Gender),
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
+            SelectList nationalSelectList = commonService.GetSelectList(
+                commonService.FilterReferenceResources(refResources, ReferenceResource.Nationality),
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
+            SelectList maritalStatusSelectList = commonService.GetSelectList(
+                commonService.FilterReferenceResources(refResources, ReferenceResource.MaritalStatus),
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
+            SelectList noOfChildrenSelectList = commonService.GetSelectList(
+                commonService.FilterReferenceResources(refResources, ReferenceResource.NoOfChildren),
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
 
             return new Tuple<SelectList, SelectList, SelectList, SelectList>(genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
         }
@@ -295,34 +306,29 @@
 
         public async Task<CreateEmploymentViewModel> GetDataToCreateEmploymentAsync()
         {
+            string[] refNames = {
+                ReferenceResource.LocalCompany,
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2
+            };
+
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
-
-            ICriteria criteria = new GetAllJobCategoryCriteria { IsActive = true };
-            var jobCategories = await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
-
-            criteria = new GetAllCountryCriteria { IsActive = true };
-            var coutries = await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
-
-            string[] refNames =
-                {
-                    ReferenceResource.LocalCompany,
-                    ReferenceResource.LocalJobTitle,
-                    ReferenceResource.EmploymentType,
-                    ReferenceResource.EmploymentStatus,
-                    ReferenceResource.WorkPermitType1,
-                    ReferenceResource.WorkPermitType2
-                };
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
+            IEnumerable<Country> coutries = await commonService.GetAllCountryAsync().ConfigureAwait(false);
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
 
             var viewModel = new CreateEmploymentViewModel
             {
                 Companies = companies,
+                JobCategories = jobCategories,
+                Countries = coutries,
                 LocalCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany),
                 LocalJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle),
                 EmploymentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType),
                 EmploymentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus),
-                JobCategories = jobCategories,
-                Countries = coutries,
                 WorkPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1),
                 WorkPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2)
             };
@@ -355,6 +361,8 @@
             }
 
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
+            IEnumerable<Country> coutries = await commonService.GetAllCountryAsync().ConfigureAwait(false);
 
             ICriteria criteria = new GetDivisionByCompanyIdCriteria { CompanyId = employment.CompanyId, IsActive = true };
             var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
@@ -368,17 +376,11 @@
             criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = employment.CostCenterId, IsActive = true };
             var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
 
-            criteria = new GetAllJobCategoryCriteria { IsActive = true };
-            var jobCategories = await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
-
             criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = employment.JobCategoryId, IsActive = true };
             var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(true);
 
             criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = employment.GradeLevelId, IsActive = true };
             var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria).ConfigureAwait(false);
-
-            criteria = new GetAllCountryCriteria { IsActive = true };
-            var coutries = await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
 
             criteria = new GetCityByCountryIdCriteria { CountryId = employment.CountryId, IsActive = true };
             var cities = await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
@@ -386,26 +388,25 @@
             criteria = new GetOfficeByCityIdCriteria { CityId = employment.CityId, IsActive = true };
             var offices = await baseService.GetDataAsync<Office>(criteria).ConfigureAwait(false);
 
-            string[] refNames =
-                {
-                    ReferenceResource.LocalCompany,
-                    ReferenceResource.LocalJobTitle,
-                    ReferenceResource.EmploymentType,
-                    ReferenceResource.EmploymentStatus,
-                    ReferenceResource.WorkPermitType1,
-                    ReferenceResource.WorkPermitType2,
-                    ReferenceResource.CompanyBVIChangeReason,
-                    ReferenceResource.CompanyLocalChangeReason,
-                    ReferenceResource.JobTitleChangeReason,
-                    ReferenceResource.DateCommencementChangeReason,
-                    ReferenceResource.EmployeeIDChangeReason,
-                    ReferenceResource.JobCategoryChangeReason,
-                    ReferenceResource.JobGradeChangeReason,
-                    ReferenceResource.DivisionChangeReason,
-                    ReferenceResource.DepartmentChangeReason,
-                    ReferenceResource.CostCenterChangeReason,
-                    ReferenceResource.SectionChangeReason
-                };
+            string[] refNames = {
+                ReferenceResource.LocalCompany,
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2,
+                ReferenceResource.CompanyBVIChangeReason,
+                ReferenceResource.CompanyLocalChangeReason,
+                ReferenceResource.JobTitleChangeReason,
+                ReferenceResource.DateCommencementChangeReason,
+                ReferenceResource.EmployeeIDChangeReason,
+                ReferenceResource.JobCategoryChangeReason,
+                ReferenceResource.JobGradeChangeReason,
+                ReferenceResource.DivisionChangeReason,
+                ReferenceResource.DepartmentChangeReason,
+                ReferenceResource.CostCenterChangeReason,
+                ReferenceResource.SectionChangeReason
+            };
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
 
             var viewModel = new UpdateEmploymentViewModel

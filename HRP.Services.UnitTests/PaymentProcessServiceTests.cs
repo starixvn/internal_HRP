@@ -8,7 +8,6 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
@@ -19,7 +18,6 @@
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using NPOI.SS.UserModel;
     using NSubstitute;
     using Xunit;
@@ -33,25 +31,6 @@
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
         private IMonthlyPayrollService monthlyPayrollService;
-
-        [Fact]
-        public async Task GetCompanySelectListAsync_BaseServiceGetCompanyList_ReturnSelectList()
-        {
-            // Arrange
-            var companies = new List<Company> { MockCompany() };
-            var expected = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
-            var paymentProcessService = GetPaymentProcessService();
-            baseService.GetDataAsync<Company>(Arg.Is<GetCompanyByFunctionKeyCriteria>(x => x.UserId == sessionService.UserId && x.FunctionKey == FunctionKey.PaymentProcess)).Returns(companies);
-
-            // Act
-            var actual = await paymentProcessService.GetCompanySelectListAsync();
-
-            // Assert
-            Assert.IsType<SelectList>(actual);
-            Assert.Equal(expected.DataValueField, actual.DataValueField);
-            Assert.Equal(expected.DataTextField, actual.DataTextField);
-            Assert.Equal(expected.Items, actual.Items);
-        }
 
         [Fact]
         public async Task GetCurrentDuration_WhenCalled_ReturnExpectedPaymenProcessInstance()

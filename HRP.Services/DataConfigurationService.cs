@@ -28,7 +28,8 @@
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
 
-        public DataConfigurationService(IBaseService baseService,
+        public DataConfigurationService(
+            IBaseService baseService,
             ISessionService sessionService)
         {
             this.baseService = baseService;

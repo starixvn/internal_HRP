@@ -12,12 +12,14 @@
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using NSubstitute;
     using Xunit;
 
     public class PayslipControllerTests
     {
         private ISessionService sessionService;
+        private ICommonService commonService;
         private IPayslipService payslipService;
 
         [Fact]
@@ -30,12 +32,14 @@
             {
                 new Company { CompanyId = 1, Code = "DAR" }
             };
+            var selectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var payslips = new List<PayslipModel>
             {
                 new PayslipModel { PayrollId = 1, FullName = "thang", Nickname = "tim.trinh" }
             };
             var payslipController = GetPayslipController();
-            payslipService.GetCompanyAsync().Returns(companies);
+            commonService.GetCompanyByFunctionKeyAsync(Arg.Any<string>()).Returns(companies);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(selectList);
             payslipService.GetPayslipAsync(month, companyId, null).Returns(payslips);
 
             //Act
@@ -163,6 +167,11 @@
             return service;
         }
 
+        private ICommonService FakeCommonService()
+        {
+            return Substitute.For<ICommonService>();
+        }
+
         private IPayslipService FakePayslipService()
         {
             var service = Substitute.For<IPayslipService>();
@@ -174,8 +183,9 @@
         {
             sessionService = FakeSessionService();
             var baseService = FakeBaseService();
+            commonService = FakeCommonService();
             payslipService = FakePayslipService();
-            var controller = new PayslipController(sessionService, baseService, payslipService);
+            var controller = new PayslipController(sessionService, baseService, commonService, payslipService);
 
             return controller;
         }

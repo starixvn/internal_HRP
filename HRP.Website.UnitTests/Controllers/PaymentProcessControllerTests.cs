@@ -35,6 +35,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IHostingEnvironment hostingEnvironment;
+        private ICommonService commonService;
         private IPaymentProcessService paymentProcessService;
         private IMonthlyPayrollService monthlyPayrollService;
 
@@ -52,7 +53,7 @@
 
             var controller = GetPaymentProcessController();
             paymentProcessService.GetCurrentDuration().Returns(paymentProcess);
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(selectList);
 
             // Act
             var actual = await controller.Index();
@@ -74,7 +75,7 @@
             var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var controller = GetPaymentProcessController();
             controller.ModelState.AddModelError(nameof(viewModel.CompanyId), "Missing company id");
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(selectList);
 
             // Act
             var actual = await controller.Index(viewModel);
@@ -110,7 +111,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
             paymentProcessService.GetPaymentProcessAsync(viewModel.CompanyId, viewModel.SelectedTime).Returns(paymentProcess);
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(selectList);
 
             // Act
             var actual = await controller.Index(viewModel);
@@ -241,7 +242,7 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(paramModel.CompanyId, FunctionKey.PaymentProcess, Policy.Host).Returns(isHostOnCompany);
             paymentProcessService.GetPaymentProcessAsync(paramModel.CompanyId, paramModel.SelectedTime).Returns(paymentProcess);
-            paymentProcessService.GetCompanySelectListAsync().Returns(selectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(selectList);
 
             // Act
             var actual = await controller.Index(paramModel);
@@ -951,8 +952,9 @@
             hostingEnvironment = FakeHostingEnvironment();
             paymentProcessService = FakePaymentProcessService();
             monthlyPayrollService = FakeMonthlyPayrollService();
+            commonService = FakeCommonService();
 
-            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, paymentProcessService, monthlyPayrollService);
+            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, commonService, paymentProcessService, monthlyPayrollService);
         }
 
         private ISessionService FakeSessionService()
@@ -972,6 +974,11 @@
         private IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
+        }
+
+        private ICommonService FakeCommonService()
+        {
+            return Substitute.For<ICommonService>();
         }
 
         private IPaymentProcessService FakePaymentProcessService()

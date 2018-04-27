@@ -5,16 +5,13 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
-    using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
@@ -22,7 +19,6 @@
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class PaymentProcessService : IPaymentProcessService
     {
@@ -49,18 +45,6 @@
             this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
             this.fileStream = fileStream ?? new ObjectStream();
-        }
-
-        public async Task<SelectList> GetCompanySelectListAsync()
-        {
-            var criteria = new GetCompanyByFunctionKeyCriteria
-            {
-                UserId = sessionService.UserId,
-                FunctionKey = FunctionKey.PaymentProcess
-            };
-            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
-
-            return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }
 
         public async Task<PaymentProcess> GetCurrentDuration()

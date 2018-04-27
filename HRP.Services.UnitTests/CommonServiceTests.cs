@@ -108,7 +108,7 @@
             // Arrange
             var companies = new List<Company>
             {
-                new Company{ CompanyId = 1 }
+                new Company { CompanyId = 1 }
             };
             var service = GetCommonService();
             baseService.GetDataAsync<Company>(Arg.Any<GetCompanyByFunctionKeyCriteria>()).Returns(companies);
@@ -121,6 +121,42 @@
         }
 
         [Fact]
+        public async Task GetAllJobCategoryAsync_WhenCalled_ReturnAsExpectedJobCategories()
+        {
+            // Arrange
+            var jobCategories = new List<JobCategory>
+            {
+                new JobCategory { JobCategoryId = 1 }
+            };
+            var service = GetCommonService();
+            baseService.GetDataAsync<JobCategory>(Arg.Any<GetAllJobCategoryCriteria>()).Returns(jobCategories);
+
+            // Act
+            var actual = await service.GetAllJobCategoryAsync();
+
+            // Assert
+            Assert.Equal(jobCategories, actual);
+        }
+
+        [Fact]
+        public async Task GetAllCountryAsync_WhenCalled_ReturnAsExpectedJobCategories()
+        {
+            // Arrange
+            var coutries = new List<Country>
+            {
+                new Country { CountryId = 1 }
+            };
+            var service = GetCommonService();
+            baseService.GetDataAsync<Country>(Arg.Any<GetAllCountryCriteria>()).Returns(coutries);
+
+            // Act
+            var actual = await service.GetAllCountryAsync();
+
+            // Assert
+            Assert.Equal(coutries, actual);
+        }
+
+        [Fact]
         public void GetSelectList_WhenCalled_ReturnAsExpectedSelectList()
         {
             // Arrange
@@ -128,7 +164,10 @@
             var service = GetCommonService();
 
             // Act
-            var actual = service.GetSelectList(refResources);
+            var actual = service.GetSelectList(
+                refResources,
+                nameof(ReferenceResourceModel.ResourceId),
+                nameof(ReferenceResourceModel.Value));
 
             // Assert
             Assert.Equal(refResources.Count, actual.Count());

@@ -14,6 +14,10 @@
 
         Task<IEnumerable<Company>> GetCompanyByFunctionKeyAsync(string functionKey);
 
-        SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResources);
+        Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true);
+
+        Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true);
+
+        SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField);
     }
 }

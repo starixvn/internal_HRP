@@ -7,9 +7,7 @@
     using Core.Services;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
-    using HRP.Criteria;
     using HRP.Criteria.Payslip;
-    using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Repositories;
@@ -25,24 +23,6 @@
         private IViewRenderService viewRenderService;
         private IPdfRenderService pdfRenderService;
         private IPayslipRepository payslipRepository;
-
-        [Fact]
-        public async Task GetCompanyAsync_WhenCalled_ReturnsAsExpectedCompanies()
-        {
-            // Arrange
-            var companies = new List<Company>
-            {
-                new Company { CompanyId = 1, Code = "DAR" }
-            };
-            var payslipService = GetPayslipService();
-            baseService.GetDataAsync<Company>(Arg.Is<GetCompanyByFunctionKeyCriteria>(x => x.UserId == sessionService.UserId && x.FunctionKey == "Payslip")).Returns(companies);
-
-            // Act
-            var actual = await payslipService.GetCompanyAsync();
-
-            // Assert
-            Assert.Equal(actual, companies);
-        }
 
         [Fact]
         public async Task GetPayslipAsync_WhenCalled_ReturnsAsExpectedPayslips()
