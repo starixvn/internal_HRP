@@ -54,7 +54,7 @@
                 Text = x.Value
             }));
 
-            refResourceService
+            commonService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(refResources);
 
@@ -85,34 +85,35 @@
                 }
             };
 
-            var expected = new List<MultiSelectViewModel>();
-            expected.Add(new MultiSelectViewModel
+            var expected = new List<MultiSelectViewModel>
             {
-                Value = ((int)BankTypes.DirectBanking).ToString(),
-                Text = BankTypes.DirectBanking.GetDisplayName(),
-                ParentId = "0",
-                Items = refResources.Select(x => new MultiSelectViewModel
+                new MultiSelectViewModel
                 {
-                    Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
-                    Text = x.Value,
-                    ParentId = ((int)BankTypes.DirectBanking).ToString()
-                }).ToList()
-            });
-
-            expected.Add(new MultiSelectViewModel
-            {
-                Value = "3",
-                Text = "Cash",
-                ParentId = "0",
-                Items = refResources.Select(x => new MultiSelectViewModel
+                    Value = ((int)BankTypes.DirectBanking).ToString(),
+                    Text = BankTypes.DirectBanking.GetDisplayName(),
+                    ParentId = "0",
+                    Items = refResources.Select(x => new MultiSelectViewModel
+                    {
+                        Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = ((int)BankTypes.DirectBanking).ToString()
+                    }).ToList()
+                },
+                new MultiSelectViewModel
                 {
-                    Value = $"{3}-{x.ResourceId}",
-                    Text = x.Value,
-                    ParentId = "3"
-                }).ToList()
-            });
+                    Value = "3",
+                    Text = "Cash",
+                    ParentId = "0",
+                    Items = refResources.Select(x => new MultiSelectViewModel
+                    {
+                        Value = $"{3}-{x.ResourceId}",
+                        Text = x.Value,
+                        ParentId = "3"
+                    }).ToList()
+                }
+            };
 
-            refResourceService
+            commonService
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(refResources);
 
