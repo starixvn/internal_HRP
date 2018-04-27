@@ -20,6 +20,10 @@ namespace HRP.Core.Constants
 
         public const int VietnamCurrencyId = 11;
 
+        public const int USDCurrencyId = 10;
+
+        public const int MYRCurrencyId = 4;
+
         public const string RijndaelKey = "8080808080808080";
 
         public const string RijndaelIV = "8080808080808080";

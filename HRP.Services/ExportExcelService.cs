@@ -12,6 +12,8 @@
     using OfficeOpenXml.Style;
     using OfficeOpenXml;
     using Resources;
+    using HRP.Models.Currency;
+    using HRP.Core.Constants;
 
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
@@ -350,7 +352,30 @@
                     sNo++;
                 }
 
+                WriteCurrencyExchangeTable(row + 1, templateWorksheet, worksheet, report);
+
                 return package.GetAsByteArray();
+            }
+        }
+
+        private static void WriteCurrencyExchangeTable(int startRow, ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
+        {
+            // Write header
+            templateWorksheet.Cells[17, 2, 18, 5].Copy(worksheet.Cells[startRow, 2, startRow + 1, 5]);
+
+            // Write data
+            var rowWithStyle = templateWorksheet.Cells[19, 2, 19, 5];
+            var row = startRow + 2;
+            foreach (var currency in report.CurrencyList)
+            {
+                rowWithStyle.Copy(worksheet.Cells[row, 2, row, 5]);
+                var exchangeRateToUSD = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == Constants.USDCurrencyId);
+                var exchangeRateToMYR = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == Constants.MYRCurrencyId);
+
+                worksheet.Cells[row, 2].Value = currency.CurrencyCode;
+                worksheet.Cells[row, 4].Value = exchangeRateToUSD.ExchangeRate;
+                worksheet.Cells[row, 5].Value = exchangeRateToMYR.ExchangeRate;
+                row++;
             }
         }
 

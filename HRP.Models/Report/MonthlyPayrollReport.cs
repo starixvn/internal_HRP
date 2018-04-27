@@ -18,5 +18,7 @@
         public IEnumerable<MonthlyAllowanceModel> MonthlyAllowance { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRate { get; set; }
+
+        public IEnumerable<Currency> CurrencyList { get; set; }
     }
 }
