@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using HRP.Core.Model;
-    using Models.EmployeeManagement.Payroll;
+    using Models.Employee.Payroll;
 
     public interface IEmployeePayrollService
     {

@@ -8,10 +8,9 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Models;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement;
-    using Models.EmployeeManagement.Payroll;
+    using HRP.Models.Employee;
+    using Models.Employee.Payroll;
     using NSubstitute;
     using Xunit;
 

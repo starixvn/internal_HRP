@@ -11,7 +11,7 @@
     using Criteria.BankAccount;
     using Microsoft.AspNetCore.Mvc;
     using Models.BankAccount;
-    using Models.EmployeeManagement;
+    using Models.Employee;
     using Services;
 
     public class BankAccountController : BaseController

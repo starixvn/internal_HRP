@@ -11,15 +11,15 @@
     using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
-    using HRP.Models.EmployeeManagement;
+    using HRP.Models.Employee;
+    using HRP.Models.Employee.Payroll;
+    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Routing;
-    using Models.EmployeeManagement.Payroll;
     using NSubstitute;
-    using Services;
     using Xunit;
 
     public class EmployeeControllerTests
@@ -405,16 +405,16 @@
         #region CreateEmployment
 
         [Fact]
-        public void CreateEmploymentGet_CheckViewResult_ReturnAsExpected()
+        public async Task CreateEmploymentGet_CheckViewResult_ReturnAsExpected()
         {
             //Arrange
             var viewName = "_CreateEmployment";
             var expected = new CreateEmploymentViewModel();
             var employeeController = GetEmployeeController();
-            employeeService.GetDataToCreateEmployment().Returns(new CreateEmploymentViewModel());
+            employeeService.GetDataToCreateEmploymentAsync().Returns(new CreateEmploymentViewModel());
 
             //Act
-            var actual = employeeController.CreateEmployment();
+            var actual = await employeeController.CreateEmployment();
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -468,15 +468,15 @@
         #region UpdateEmployment
 
         [Fact]
-        public void UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
+        public async Task UpdateEmploymentGet_CheckViewName_ReturnExpectedViewName()
         {
             // Arrange
             var expected = "_UpdateEmployment";
             var employeeController = GetEmployeeController();
-            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
+            employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
             // Act
-            var actual = employeeController.UpdateEmployment(1);
+            var actual = await employeeController.UpdateEmployment(1);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -484,14 +484,15 @@
         }
 
         [Fact]
-        public void UpdateEmployment_ViewModelIsNull_ReturnRedirectToPageNotFound()
+        public async Task UpdateEmployment_ViewModelIsNull_ReturnRedirectToPageNotFound()
         {
             // Arrange
+            UpdateEmploymentViewModel employment = null;
             var employeeController = GetEmployeeController();
-            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(x => null);
+            employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(employment);
 
             // Act
-            var result = employeeController.UpdateEmployment(1);
+            var result = await employeeController.UpdateEmployment(1);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -500,7 +501,7 @@
         }
 
         [Fact]
-        public void UpdateEmploymentGet_ViewModelHasValue_ReturnExpectedViewModel()
+        public async Task UpdateEmploymentGet_ViewModelHasValue_ReturnExpectedViewModel()
         {
             // Arrange
             var employeeId = 1;
@@ -509,10 +510,10 @@
                 EmployeeId = employeeId
             };
             var employeeController = GetEmployeeController();
-            employeeService.GetDataToUpdateEmployment(Arg.Any<int>()).Returns(expected);
+            employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var actual = employeeController.UpdateEmployment(employeeId);
+            var actual = await employeeController.UpdateEmployment(employeeId);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);

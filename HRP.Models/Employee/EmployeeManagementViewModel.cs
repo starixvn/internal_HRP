@@ -1,10 +1,9 @@
-﻿namespace HRP.Models.EmployeeManagement
+﻿namespace HRP.Models.Employee
 {
     using System.Collections.Generic;
 
     public class EmployeeManagementViewModel
     {
-
         public bool IsHostCreateEmployee { get; set; }
 
         public string DepartmentIds { get; set; }
@@ -16,6 +15,5 @@
         public string DisplayName { get; set; }
 
         public IEnumerable<EmployeeBasicInfo> Employees { get; set; } = new List<EmployeeBasicInfo>();
-
     }
 }

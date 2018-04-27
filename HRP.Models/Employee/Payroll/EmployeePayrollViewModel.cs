@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.EmployeeManagement.Payroll
+﻿namespace HRP.Models.Employee.Payroll
 {
     using System.Collections.Generic;
     using Currency;

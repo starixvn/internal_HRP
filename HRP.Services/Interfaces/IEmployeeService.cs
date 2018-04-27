@@ -6,7 +6,7 @@
     using Core.Model;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Models.EmployeeManagement;
+    using Models.Employee;
 
     public interface IEmployeeService
     {
@@ -26,9 +26,11 @@
 
         CommandResult CheckValidPicture(IFormFile file);
 
-        CreateEmploymentViewModel GetDataToCreateEmployment();
+        Task<Employment> GetEmploymentByEmployeeIdAsync(int employeeId);
 
-        UpdateEmploymentViewModel GetDataToUpdateEmployment(int employeeId);
+        Task<CreateEmploymentViewModel> GetDataToCreateEmploymentAsync();
+
+        Task<UpdateEmploymentViewModel> GetDataToUpdateEmploymentAsync(int employeeId);
 
         Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);
     }

@@ -13,8 +13,8 @@
     using Criteria.Employee;
     using Microsoft.AspNetCore.Mvc;
     using Models;
-    using Models.EmployeeManagement;
-    using Models.EmployeeManagement.Payroll;
+    using Models.Employee;
+    using Models.Employee.Payroll;
     using Resources;
     using Services;
 
@@ -137,9 +137,9 @@
         [Route("Employee/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public IActionResult CreateEmployment()
+        public async Task<IActionResult> CreateEmployment()
         {
-            CreateEmploymentViewModel viewModel = employeeService.GetDataToCreateEmployment();
+            CreateEmploymentViewModel viewModel = await employeeService.GetDataToCreateEmploymentAsync();
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -240,14 +240,16 @@
         [Route("Employee/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public IActionResult UpdateEmployment(int employeeId)
+        public async Task<IActionResult> UpdateEmployment(int employeeId)
         {
-            UpdateEmploymentViewModel viewModel = employeeService.GetDataToUpdateEmployment(employeeId);
+            UpdateEmploymentViewModel viewModel = await employeeService.GetDataToUpdateEmploymentAsync(employeeId);
 
             if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
+
+            viewModel.IsHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
 
             return PartialView("_UpdateEmployment", viewModel);
         }

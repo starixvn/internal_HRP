@@ -5,13 +5,16 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Fanex.Data.Repository;
     using HRP.Core.Constants;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Core.Services;
+    using HRP.Criteria;
     using HRP.Criteria.EmergencyContact;
     using HRP.Criteria.Employee;
-    using HRP.Models.EmployeeManagement;
+    using HRP.Models;
+    using HRP.Models.Employee;
     using HRP.Repositories;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
@@ -288,44 +291,245 @@
             return result;
         }
 
-        public CreateEmploymentViewModel GetDataToCreateEmployment()
+        public async Task<CreateEmploymentViewModel> GetDataToCreateEmploymentAsync()
         {
-            var viewModel = new CreateEmploymentViewModel();
-            var criteria = new GetDataToCreateEmploymentCriteria
+            ICriteria criteria = new GetCompanyByFunctionKeyCriteria
             {
-                UserId = sessionService.UserId
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.EmployeeProfile
             };
+            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
 
-            if (criteria.IsValid())
+            criteria = new GetAllJobCategoryCriteria { IsActive = true };
+            var jobCategories = await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
+
+            criteria = new GetAllCountryCriteria { IsActive = true };
+            var coutries = await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
+
+            var refNames = string.Format(
+                 "{0},{1},{2},{3},{4},{5}",
+                 ReferenceResource.LocalCompany,
+                 ReferenceResource.LocalJobTitle,
+                 ReferenceResource.EmploymentType,
+                 ReferenceResource.EmploymentStatus,
+                 ReferenceResource.WorkPermitType1,
+                 ReferenceResource.WorkPermitType2);
+            criteria = new GetRefResourceByNamesCriteria { RefNames = refNames, IsActive = true };
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
+
+            var viewModel = new CreateEmploymentViewModel
             {
-                viewModel = employeeRepository.GetDataToCreateEmployment(criteria);
-            }
+                Companies = companies,
+                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
+                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
+                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
+                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
+                JobCategories = jobCategories,
+                Countries = coutries,
+                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
+                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2)
+            };
 
             return viewModel;
         }
 
-        public UpdateEmploymentViewModel GetDataToUpdateEmployment(int employeeId)
+        public async Task<Employment> GetEmploymentByEmployeeIdAsync(int employeeId)
         {
-            var criteria = new GetDataToUpdateEmploymentCriteria
+            var criteria = new GetEmploymentByEmployeeIdCriteria
             {
-                UserId = sessionService.UserId,
                 EmployeeId = employeeId
             };
-            UpdateEmploymentViewModel employment = null;
 
-            if (criteria.IsValid())
+            Employment employment = await employeeRepository.GetEmploymentByEmployeeIdAsync(criteria).ConfigureAwait(false);
+
+            if (employment != null)
             {
-                employment = employeeRepository.GetDataToUpdateEmployment(criteria);
-
-                if (employment != null)
-                {
-                    employment.PDFPassword = cryptoService.Decrypt(employment.PDFPassword);
-                    employment.OldPDFPassword = employment.PDFPassword;
-                    employment.IsHost = sessionService.HasPermissionOnCompany(employment.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
-                }
+                employment.PDFPassword = cryptoService.Decrypt(employment.PDFPassword);
             }
 
             return employment;
+        }
+
+        public async Task<UpdateEmploymentViewModel> GetDataToUpdateEmploymentAsync(int employeeId)
+        {
+            Employment employment = await GetEmploymentByEmployeeIdAsync(employeeId).ConfigureAwait(false);
+
+            if (employment == null)
+            {
+                return null;
+            }
+
+            ICriteria criteria = new GetCompanyByFunctionKeyCriteria
+            {
+                UserId = sessionService.UserId,
+                FunctionKey = FunctionKey.EmployeeProfile
+            };
+            var companies = await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
+
+            criteria = new GetDivisionByCompanyIdCriteria { CompanyId = employment.CompanyId, IsActive = true };
+            var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
+
+            criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = employment.DivisionId, IsActive = true };
+            var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
+
+            criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = employment.DepartmentId, IsActive = true };
+            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
+
+            criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = employment.CostCenterId, IsActive = true };
+            var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
+
+            criteria = new GetAllJobCategoryCriteria { IsActive = true };
+            var jobCategories = await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
+
+            criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = employment.JobCategoryId, IsActive = true };
+            var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(true);
+
+            criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = employment.GradeLevelId, IsActive = true };
+            var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria).ConfigureAwait(false);
+
+            criteria = new GetAllCountryCriteria { IsActive = true };
+            var coutries = await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
+
+            criteria = new GetCityByCountryIdCriteria { CountryId = employment.CountryId, IsActive = true };
+            var cities = await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
+
+            criteria = new GetOfficeByCityIdCriteria { CityId = employment.CityId, IsActive = true };
+            var offices = await baseService.GetDataAsync<Office>(criteria).ConfigureAwait(false);
+
+            var refNames = string.Format(
+                 "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}",
+                 ReferenceResource.LocalCompany,
+                 ReferenceResource.LocalJobTitle,
+                 ReferenceResource.EmploymentType,
+                 ReferenceResource.EmploymentStatus,
+                 ReferenceResource.WorkPermitType1,
+                 ReferenceResource.WorkPermitType2,
+                 ReferenceResource.CompanyBVIChangeReason,
+                 ReferenceResource.CompanyLocalChangeReason,
+                 ReferenceResource.JobTitleChangeReason,
+                 ReferenceResource.DateCommencementChangeReason,
+                 ReferenceResource.EmployeeIDChangeReason,
+                 ReferenceResource.JobCategoryChangeReason,
+                 ReferenceResource.JobGradeChangeReason,
+                 ReferenceResource.DivisionChangeReason,
+                 ReferenceResource.DepartmentChangeReason,
+                 ReferenceResource.CostCenterChangeReason,
+                 ReferenceResource.SectionChangeReason);
+            criteria = new GetRefResourceByNamesCriteria { RefNames = refNames, IsActive = true };
+            var refResources = await baseService.GetDataAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
+
+            var viewModel = new UpdateEmploymentViewModel
+            {
+                EmployeeId = employeeId,
+                CompanyId = employment.CompanyId,
+                OldCompanyId = employment.CompanyId,
+                CompanyChangeDate = employment.CompanyChangeDate,
+                CompanyReasonId = employment.CompanyReasonId,
+                LocalCompanyId = employment.LocalCompanyId,
+                OldLocalCompanyId = employment.LocalCompanyId,
+                LocalCompanyChangeDate = employment.LocalCompanyChangeDate,
+                LocalCompanyReasonId = employment.LocalCompanyReasonId,
+                JobTitle = employment.JobTitle,
+                OldJobTitle = employment.JobTitle,
+                JobTitleChangeDate = employment.JobTitleChangeDate,
+                JobTitleReasonId = employment.JobTitleReasonId,
+                LocalJobTitleId = employment.LocalJobTitleId,
+                OldLocalJobTitleId = employment.LocalJobTitleId,
+                LocalJobTitleChangeDate = employment.LocalJobTitleChangeDate,
+                LocalJobTitleReasonId = employment.LocalJobTitleReasonId,
+                CompanyCode = employment.CompanyCode,
+                EmployeeCode = employment.EmployeeCode,
+                OldEmployeeCode = employment.EmployeeCode,
+                IDNoChangeDate = employment.IDNoChangeDate,
+                IDNoReasonId = employment.IDNoReasonId,
+                EmploymentType = employment.EmploymentType,
+                EmploymentStatus = employment.EmploymentStatus,
+                OldEmploymentStatus = employment.EmploymentStatus,
+                EmploymentStatusChangeDate = employment.EmploymentStatusChangeDate,
+                JobCategoryId = employment.JobCategoryId,
+                OldJobCategoryId = employment.JobCategoryId,
+                JobCategoryChangeDate = employment.JobCategoryChangeDate,
+                JobCategoryReasonId = employment.JobCategoryReasonId,
+                JobGradeId = employment.JobGradeId,
+                OldJobGradeId = employment.JobGradeId,
+                JobGradeChangeDate = employment.JobGradeChangeDate,
+                JobGradeReasonId = employment.JobGradeReasonId,
+                GradeLevelId = employment.GradeLevelId,
+                OldGradeLevelId = employment.GradeLevelId,
+                DivisionId = employment.DivisionId,
+                OldDivisionId = employment.DivisionId,
+                DivisionChangeDate = employment.DivisionChangeDate,
+                DivisionReasonId = employment.DivisionReasonId,
+                DepartmentId = employment.DepartmentId,
+                OldDepartmentId = employment.DepartmentId,
+                DepartmentChangeDate = employment.DepartmentChangeDate,
+                DepartmentReasonId = employment.DepartmentReasonId,
+                CostCenterId = employment.CostCenterId,
+                OldCostCenterId = employment.CostCenterId,
+                CostCenterChangeDate = employment.CostCenterChangeDate,
+                CostCenterReasonId = employment.CostCenterReasonId,
+                SectionId = employment.SectionId,
+                OldSectionId = employment.SectionId,
+                SectionChangeDate = employment.SectionChangeDate,
+                SectionReasonId = employment.SectionReasonId,
+                GroupStartDate = employment.GroupStartDate,
+                OldGroupStartDate = employment.GroupStartDate,
+                GroupEndDate = employment.GroupEndDate,
+                OldGroupEndDate = employment.GroupEndDate,
+                GroupDateReasonId = employment.GroupDateReasonId,
+                CompanyStartDate = employment.CompanyStartDate,
+                OldCompanyStartDate = employment.CompanyStartDate,
+                CompanyEndDate = employment.CompanyEndDate,
+                OldCompanyEndDate = employment.CompanyEndDate,
+                CompanyDateReasonId = employment.CompanyDateReasonId,
+                Email = employment.Email,
+                CountryId = employment.CountryId,
+                CityId = employment.CityId,
+                OfficeId = employment.OfficeId,
+                DST = employment.DST,
+                DBT = employment.DBT,
+                TaxIDNo = employment.TaxIDNo,
+                SSSNo = employment.SSSNo,
+                HealthInsNo = employment.HealthInsNo,
+                HDMFNo = employment.HDMFNo,
+                PDFPassword = employment.PDFPassword,
+                OldPDFPassword = employment.PDFPassword,
+                FullNamePFileAdmin = employment.FullNamePFileAdmin,
+                NicknamePFileAdmin = employment.NicknamePFileAdmin,
+                WorkPermit = employment.WorkPermit,
+                Paymaster = employment.Paymaster,
+                EPA = employment.EPA,
+                Companies = companies,
+                Divisions = divisions,
+                Departments = departments,
+                CostCenters = costCenters,
+                Sections = sections,
+                JobCategories = jobCategories,
+                GradeLevels = gradeLevels,
+                JobGrades = jobGrades,
+                Countries = coutries,
+                Cities = cities,
+                Offices = offices,
+                LocalCompanies = GetRefResourceByName(refResources, ReferenceResource.LocalCompany),
+                LocalJobTitles = GetRefResourceByName(refResources, ReferenceResource.LocalJobTitle),
+                EmploymentTypes = GetRefResourceByName(refResources, ReferenceResource.EmploymentType),
+                EmploymentStatuses = GetRefResourceByName(refResources, ReferenceResource.EmploymentStatus),
+                WorkPermitType1s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType1),
+                WorkPermitType2s = GetRefResourceByName(refResources, ReferenceResource.WorkPermitType2),
+                CompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyBVIChangeReason),
+                LocalCompanyChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CompanyLocalChangeReason),
+                JobTitleChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobTitleChangeReason),
+                DateCommencementChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DateCommencementChangeReason),
+                IDNoChangeReasons = GetRefResourceByName(refResources, ReferenceResource.EmployeeIDChangeReason),
+                JobCategoryChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobCategoryChangeReason),
+                JobGradeChangeReasons = GetRefResourceByName(refResources, ReferenceResource.JobGradeChangeReason),
+                DivisionChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DivisionChangeReason),
+                DepartmentChangeReasons = GetRefResourceByName(refResources, ReferenceResource.DepartmentChangeReason),
+                CostCenterChangeReasons = GetRefResourceByName(refResources, ReferenceResource.CostCenterChangeReason),
+                SectionChangeReasons = GetRefResourceByName(refResources, ReferenceResource.SectionChangeReason)
+            };
+
+            return viewModel;
         }
 
         public async Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel)
@@ -431,6 +635,11 @@
         private static SelectList GetSelectList(IEnumerable<ReferenceResourceModel> refResource)
         {
             return new SelectList(refResource, "ResourceId", "Value");
+        }
+
+        private static IEnumerable<ReferenceResourceModel> GetRefResourceByName(IEnumerable<ReferenceResourceModel> refResources, string refName)
+        {
+            return refResources.Where(x => x.RefName == refName);
         }
 
         private async Task SaveProfilePictureAsync(IFormFile image, string fileName)

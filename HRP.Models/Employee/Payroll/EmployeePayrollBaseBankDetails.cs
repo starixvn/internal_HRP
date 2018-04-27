@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.EmployeeManagement
+﻿namespace HRP.Models.Employee
 {
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;

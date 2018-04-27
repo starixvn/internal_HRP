@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.EmployeeManagement
+﻿namespace HRP.Models.Employee
 {
     using System;
 

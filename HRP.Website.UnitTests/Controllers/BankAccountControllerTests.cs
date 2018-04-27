@@ -11,7 +11,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.BankAccount;
-    using Models.EmployeeManagement;
+    using Models.Employee;
     using NSubstitute;
     using Services;
     using Website.Controllers;

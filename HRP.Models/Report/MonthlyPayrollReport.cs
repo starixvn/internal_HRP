@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using HRP.Models.Currency;
-    using HRP.Models.EmployeeManagement;
+    using HRP.Models.Employee;
     using HRP.Models.MonthlyPayroll;
 
     public class MonthlyPayrollReport
