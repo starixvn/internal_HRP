@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using Core.Constants;
     using Core.Extensions;
     using HRP.Core.Services;
     using Interfaces;
@@ -12,7 +13,6 @@
     using OfficeOpenXml.Style;
     using OfficeOpenXml;
     using Resources;
-    using HRP.Core.Constants;
 
     [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
@@ -137,11 +137,12 @@
             worksheet.Cells[currentRow++, 2].Value = ViewLang.PaymentPurpose;
 
             currentRow++;
+            var bankInIndex = -1;
 
             foreach (IGrouping<string, BankIn> grouping in bankInsGroupedByBank)
             {
                 var bankInRows = grouping.ToList();
-                var bankInIndex = -1;
+
                 foreach (var bankIn in bankInRows)
                 {
                     bankInIndex++;
