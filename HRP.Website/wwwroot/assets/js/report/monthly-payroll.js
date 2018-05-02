@@ -14,6 +14,14 @@
         $('.icon-calendar').on('click', function () {
             $(this).siblings('.datetimepicker').data('DateTimePicker').toggle();
         });
+
+        commonFunctions.showHideValidationSummary($('#filterForm').find('.list-message-error').get(0));
+
+        $('.js-btnExport').on('click', function () {
+            $('#filterForm').validate().showErrors({
+                'CommonError': ''
+            });
+        });
     }
 
     return {

@@ -20,6 +20,8 @@
     using Services;
     using Website.Controllers;
     using Xunit;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using HRP.Models.Employee;
 
     public class ReportControllerTests
     {
@@ -270,12 +272,80 @@
         }
 
         [Fact]
-        public async Task GetMonthlyPayrollReport_WhenCalled_ReturnFileContentResult()
+        public async Task MonthlyPayroll_ModelStateIsValid_ReturnMonthlyPayrollViewResult()
+        {
+            // Arrange
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                CompanyId = 22
+            };
+
+            var companies = new List<Company> { MockCompany() };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var reportController = GetReportController();
+            reportController.ModelState.AddModelError("CompanyId", "Required");
+            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report).Returns(companies);
+            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
+                        .Returns(companySelectList);
+
+            // Act
+            var actual = await reportController.MonthlyPayroll(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
+            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
+            Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
+            Assert.Equal(companySelectList, viewResultModel.Companies);
+            Assert.Equal("Required", viewResult.ViewData.ModelState["CompanyId"].Errors.FirstOrDefault().ErrorMessage);
+        }
+
+        [Fact]
+        public async Task MonthlyPayroll_ReportNotHasAnyEmployees_ReturnMonthlyPayrollViewResult()
+        {
+            // Arrange
+            var report = new MonthlyPayrollReport
+            {
+                Employees = new List<EmployeeBasicInfo>(),
+                Month = DateTime.Today,
+                CompanyCode = "OW"
+            };
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                CompanyId = 22
+            };
+            var companies = new List<Company> { MockCompany() };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+
+            var reportController = GetReportController();
+            reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
+            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report).Returns(companies);
+            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
+                        .Returns(companySelectList);
+
+            // Act
+            var actual = await reportController.MonthlyPayroll(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
+            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
+            Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
+            Assert.Equal(companySelectList, viewResultModel.Companies);
+        }
+
+        [Fact]
+        public async Task MonthlyPayroll_ccc_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
             byte[] bytes = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
             var report = new MonthlyPayrollReport
             {
+                Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 2 } },
                 Month = DateTime.Today,
                 CompanyCode = "OW"
             };
@@ -356,6 +426,17 @@
                 exportExcelService,
                 reportService,
                 commonService);
+        }
+
+        private Company MockCompany()
+        {
+            return new Company
+            {
+                CompanyId = 11,
+                Code = "company",
+                Name = "descC",
+                IsActive = true
+            };
         }
 
         #endregion Helpers

@@ -11,6 +11,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Report;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -204,13 +205,26 @@
         [HttpPost]
         public async Task<IActionResult> MonthlyPayroll(MonthlyPayrollReportViewModel viewModel)
         {
-            string webRootFolder = hostingEnvironment.WebRootPath;
-            string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
-            var templatePath = Path.Combine(webRootFolder, fileName);
-            var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
-            var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
+            if (ModelState.IsValid)
+            {
+                var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
+                if (report.Employees.Any())
+                {
+                    string webRootFolder = hostingEnvironment.WebRootPath;
+                    string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
+                    var templatePath = Path.Combine(webRootFolder, fileName);
+                    var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-            return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx");
+                    return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx");
+                }
+
+                ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
+            }
+
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+
+            return View("MonthlyPayroll", viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]

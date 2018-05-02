@@ -24,6 +24,8 @@
 
 <form class="search-form" asp-action="Index" method="post">
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">
+        <span asp-validation-for="CompanyId" class="message"></span>
+        <span asp-validation-for="SelectedTime" class="message"></span>
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
 

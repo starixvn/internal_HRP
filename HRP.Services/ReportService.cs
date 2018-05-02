@@ -74,7 +74,7 @@
 
             var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
 
-            report.CompanyCode = report.Employees?.FirstOrDefault().CompanyCode;
+            report.CompanyCode = report.Employees?.FirstOrDefault()?.CompanyCode;
             report.Month = month;
 
             DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);

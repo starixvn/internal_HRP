@@ -13,5 +13,7 @@
         public int CompanyId { get; set; }
 
         public SelectList Companies { get; set; }
+
+        public string CommonError { get; set; }
     }
 }
