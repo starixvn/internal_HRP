@@ -14,8 +14,12 @@
     </environment>
 }
 
-<form class="search-form" asp-action="GenerateReport" method="post">
-</form>
+@*<form class="search-form" asp-action="GenerateReport" method="post">
+    <input type="hidden" asp-for="EmployeeStatuses" />
+    <select multiple asp-items="@ViewBag.List">
+
+    </select>
+</form>*@
 
 @section Scripts {
     <environment include="Development">

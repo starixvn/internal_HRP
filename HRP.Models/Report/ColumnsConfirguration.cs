@@ -42,6 +42,12 @@
                 Id = 6,
                 Name = "Cost Center",
                 Group = DynamicReportItemGroup.PersonalDetails
+            },
+            new DynamicReportItem
+            {
+                Id = 7,
+                Name = "Basic Salary",
+                Group = DynamicReportItemGroup.Payroll
             }
         };
 

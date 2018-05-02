@@ -11,11 +11,14 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Report;
+    using HRP.Criteria.Employee;
     using HRP.Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.Report;
+    using Newtonsoft.Json;
     using Services;
     using Services.Interfaces;
 
@@ -231,11 +234,21 @@
         public async Task<IActionResult> DynamicReport()
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            var criteria = new GetEmployeeStatusByUserCriteria
+            {
+                UserId = sessionService.UserId
+            };
+
+            var employeeStatuses = await baseService.GetDataAsync<MultiSelectViewModel>(criteria).ConfigureAwait(false);
+
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                EmployeeStatuses = JsonConvert.SerializeObject(employeeStatuses)
             };
+
+            ViewBag.List = new SelectList(ColumnsConfirguration.DynamicReportItems, "Id", "Name", null, "Group");
 
             return View("DynamicReport", viewModel);
         }
@@ -248,7 +261,7 @@
             {
                 var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria { CompanyId = viewModel.CompanyId, Month = viewModel.SelectedTime });
 
-                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds);
+                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse));
 
                 return File(data, MimeType.XLSX, $"Report_{viewModel.SelectedTime.ToString("MM-yyyy")}_Company-{viewModel.CompanyId}.xlsx");
             }
