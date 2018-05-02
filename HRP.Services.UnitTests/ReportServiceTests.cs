@@ -6,6 +6,8 @@
     using Core.Services;
     using Fanex.Data.Repository;
     using HRP.Criteria.Report;
+    using HRP.Models.Currency;
+    using HRP.Models.MonthlyPayroll;
     using Models.Report;
     using NSubstitute;
     using Repositories;
@@ -80,7 +82,14 @@
         public async Task GetDataForMonthlyPayrollReportAsync_WhenCalled_ReturnMonthlyPayrollReport()
         {
             // Arrange
-            var report = new MonthlyPayrollReport();
+            var report = new MonthlyPayrollReport
+            {
+                MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 3 } },
+                MonthlySalary = new List<MonthlySalaryModel> { new MonthlySalaryModel { EmployeeId = 3 } },
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 3 } },
+                MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 3 } },
+                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
+            };
             var month = DateTime.Today;
             var companyId = 21;
             var reportService = GetReportService();

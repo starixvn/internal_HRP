@@ -22,6 +22,7 @@
     using Xunit;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using HRP.Models.Employee;
+    using HRP.Resources;
 
     public class ReportControllerTests
     {
@@ -271,8 +272,33 @@
             Assert.IsType<FileContentResult>(actual);
         }
 
+        #region MonthlyPayroll
+
         [Fact]
-        public async Task MonthlyPayroll_ModelStateIsValid_ReturnMonthlyPayrollViewResult()
+        public async Task MonthlyPayroll_WhenCalled_ReturnMonthlyPayrollViewResult()
+        {
+            // Arrange
+            var companies = new List<Company> { MockCompany() };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var reportController = GetReportController();
+            reportController.ModelState.AddModelError("CompanyId", "Required");
+            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report).Returns(companies);
+            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
+                        .Returns(companySelectList);
+
+            // Act
+            var actual = await reportController.MonthlyPayroll();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
+            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal(DateTime.Today, viewResultModel.SelectedTime);
+            Assert.Equal(companySelectList, viewResultModel.Companies);
+        }
+
+        [Fact]
+        public async Task MonthlyPayrollPost_ModelStateIsInvalid_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
             var viewModel = new MonthlyPayrollReportViewModel
@@ -303,7 +329,7 @@
         }
 
         [Fact]
-        public async Task MonthlyPayroll_ReportNotHasAnyEmployees_ReturnMonthlyPayrollViewResult()
+        public async Task MonthlyPayrollPost_ReportNotHasAnyEmployees_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
             var report = new MonthlyPayrollReport
@@ -336,10 +362,11 @@
             Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
+            Assert.Equal(Message.PayrollNotGenerated, viewResult.ViewData.ModelState["CommonError"].Errors.FirstOrDefault().ErrorMessage);
         }
 
         [Fact]
-        public async Task MonthlyPayroll_ccc_ReturnMonthlyPayrollViewResult()
+        public async Task MonthlyPayrollPost_ReportHasData_ReturnFileContentResult()
         {
             // Arrange
             byte[] bytes = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
@@ -372,6 +399,8 @@
             Assert.Equal(MimeType.XLSX, fileResult.ContentType);
             Assert.Equal($"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx", fileResult.FileDownloadName);
         }
+
+        #endregion MonthlyPayroll
 
         #region Helpers
 
