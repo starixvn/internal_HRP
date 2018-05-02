@@ -30,6 +30,11 @@ BEGIN
 	WHERE mp.[Month] = @Month
 		AND ep.CompanyId = @CompanyId
 
+	IF NOT EXISTS(SELECT 1 FROM #tblEmployeeInfo) 
+	BEGIN
+		RETURN
+	END
+
 	-- Get employee basic info
 	SELECT ei.EmployeeId
 		,co.Code AS CompanyCode
@@ -54,6 +59,7 @@ BEGIN
 		,bs.CurrencyId
 		,c.CurrencyCode
 		,bs.Salary
+		,bs.AfterAdjustmentAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyBasicSalary AS bs WITH (NOLOCK) ON bs.PayrollId = ei.PayrollId
 	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON bs.CurrencyId = c.CurrencyId
@@ -70,6 +76,8 @@ BEGIN
 		,s.DirectBanking2Amount
 		,s.CashCurrencyId
 		,s.CashAmount
+		,s.AdditionAmount
+		,s.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON s.PayrollId = ei.PayrollId
 
@@ -79,7 +87,7 @@ BEGIN
 		,c.CurrencyCode
 		,ba.TotalAmount
 		,ba.SubsistenceCurrencyId
-		,ba.SecondmentAmount
+		,ba.SubsistenceAmount
 		,ba.HomePassageCurrencyId
 		,ba.HomePassageAmount
 		,ba.HousingCurrencyId
@@ -98,6 +106,7 @@ BEGIN
 		,ba.RoomingChargesAmount
 		,ba.FitnessFirstCurrencyId
 		,ba.FitnessFirstAmount
+		,ba.AfterAdjustmentAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyBasicAllowance AS ba WITH (NOLOCK) ON ba.PayrollId = ei.PayrollId
 	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON ba.CurrencyId = c.CurrencyId
@@ -109,20 +118,26 @@ BEGIN
 		,a.[DSTNetSalaryCurrencyId]
 		,a.[DSTNetSalaryAmount]
 		,a.[TotalNetAmount]
+		,a.AdditionAmount
+		,a.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyAllowance AS a WITH (NOLOCK) ON a.PayrollId = ei.PayrollId
 
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate
 		,r.FromCurrencyId
-		,c1.CurrencyCode AS FromCurrencyCode
 		,r.ToCurrencyId
-		,c2.CurrencyCode AS ToCurrencyCode
 	FROM dbo.CurrencyExchangeRate AS r WITH (NOLOCK)
-	LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON r.FromCurrencyId = c1.CurrencyId
-	LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON r.ToCurrencyId = c2.CurrencyId
 	WHERE r.ExchangeRateMonth = @Month
-	ORDER BY c2.[Order]
+
+	-- Get Currency List
+	SELECT DISTINCT r.FromCurrencyId AS CurrencyId
+		,c.CurrencyCode
+		,c.[Order]
+	FROM dbo.CurrencyExchangeRate AS r WITH (NOLOCK)
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON r.FromCurrencyId = c.CurrencyId
+	WHERE r.ExchangeRateMonth = @Month
+	ORDER BY c.[Order]
 
 	DROP TABLE #tblEmployeeInfo
 END

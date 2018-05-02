@@ -104,7 +104,9 @@ BEGIN
 				AND ISNULL(ms.DirectBanking2CurrencyId, '') = ''
 				AND ISNULL(ms.DirectBanking2Amount, '') = ''
 				AND ISNULL(ms.CashCurrencyId, '') = ''
-				AND ISNULL(ms.CashAmount, '') = '' THEN 0
+				AND ISNULL(ms.CashAmount, '') = '' 
+				AND ISNULL(ms.CurrencyId, '') = ''
+				AND ISNULL(ms.Salary, '') = ''THEN 0
 			ELSE 1 END
 			) AS HasSettingSalary
 		,(CASE 
@@ -113,7 +115,9 @@ BEGIN
 				AND ISNULL(ma.DirectBanking2CurrencyId, '') = ''
 				AND ISNULL(ma.DirectBanking2Amount, '') = ''
 				AND ISNULL(ma.CashCurrencyId, '') = ''
-				AND ISNULL(ma.CashAmount, '') = '' THEN 0
+				AND ISNULL(ma.CashAmount, '') = ''
+				AND ISNULL(ma.CurrencyId, '') = '' 
+				AND ISNULL(ma.TotalAmount, '') = ''THEN 0
 			ELSE 1 END
 			) AS HasSettingAllowance
 		,(CASE 

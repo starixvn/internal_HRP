@@ -211,8 +211,6 @@
     <Build Include="dbo\Stored Procedures\Function_GetByUserId.sql" />
     <Build Include="dbo\Stored Procedures\Function_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Employment_Update.sql" />
-    <Build Include="dbo\Stored Procedures\Employment_GetDataToUpdate.sql" />
-    <Build Include="dbo\Stored Procedures\Employment_GetDataToCreate.sql" />
     <Build Include="dbo\Stored Procedures\Employment_GetByEmployeeId.sql" />
     <Build Include="dbo\Stored Procedures\Employment_GetAllEmployeeCodeByCompanyId.sql" />
     <Build Include="dbo\Stored Procedures\Employment_Create.sql" />
