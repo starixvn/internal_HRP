@@ -272,5 +272,6 @@
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountById.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_Create.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForMonthlyPayrollReport.sql" />
+    <PostDeploy Include="Storage\Menu_PaymentTransactionReports.sql" />
   </ItemGroup>
 </Project>
