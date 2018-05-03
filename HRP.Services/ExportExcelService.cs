@@ -34,34 +34,43 @@
 
                 var startRow = 10;
 
-                // EBanking
-                var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
-                var currentRow = RenderReportRowsForDirectBankingBankIns(ebankingGroupedByBank, worksheet, startRow);
+                if (data.IsExportable)
+                {
+                    // EBanking
+                    var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                    var currentRow = RenderReportRowsForDirectBankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
-                var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
-                currentRow = RenderReportRowsForDirectBankingBankIns(cashGroupedByBank, worksheet, currentRow);
+                    var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
+                    currentRow = RenderReportRowsForDirectBankingBankIns(cashGroupedByBank, worksheet, currentRow);
 
-                // Format for list bank ins
-                worksheet.Cells[$"B9:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    // Format for list bank ins
+                    worksheet.Cells[$"B9:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                // summary for banking
-                currentRow = currentRow + 1;
-                var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
+                    // summary for banking
+                    currentRow = currentRow + 1;
+                    var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
 
-                currentRow = RenderSummaryRowForBankIns(
-                    worksheet,
-                    currentRow,
-                    Message.GrandTotalBankIn,
-                    eBankingCurrencies);
+                    currentRow = RenderSummaryRowForBankIns(
+                        worksheet,
+                        currentRow,
+                        Message.GrandTotalBankIn,
+                        eBankingCurrencies);
 
-                // summary for cash
-                currentRow = currentRow + 1;
-                var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
-                RenderSummaryRowForBankIns(
-                    worksheet,
-                    currentRow,
-                    Message.GrandTotalCash,
-                    cashCurrencies);
+                    // summary for cash
+                    currentRow = currentRow + 1;
+                    var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
+                    RenderSummaryRowForBankIns(
+                        worksheet,
+                        currentRow,
+                        Message.GrandTotalCash,
+                        cashCurrencies);
+                }
+                else
+                {
+                    // There is no data
+                    WriteNoDataMessage(worksheet, $"B{startRow}:J{startRow}");
+                    worksheet.Cells[$"B9:J{startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
 
                 worksheet.Cells.AutoFitColumns();
 
@@ -83,19 +92,36 @@
 
                 var startRow = 10;
 
-                // EBanking
-                var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
-                var currentRow = RenderReportRowsForEbankingBankIns(ebankingGroupedByBank, worksheet, startRow);
+                if (data.IsExportable)
+                {
+                    // EBanking
+                    var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                    var currentRow = RenderReportRowsForEbankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
-                // Format for list bank ins
-                worksheet.Cells[$"B9:O{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    // Format for list bank ins
+                    worksheet.Cells[$"B9:O{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                RenderFlatternedRows(ebankingGroupedByBank, worksheet, currentRow, startRow);
+                    RenderFlatternedRows(ebankingGroupedByBank, worksheet, currentRow, startRow);
+                }
+                else
+                {
+                    // There is no data
+                    WriteNoDataMessage(worksheet, $"B{startRow}:O{startRow}");
+                    worksheet.Cells[$"B9:O{startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
 
                 worksheet.Cells.AutoFitColumns();
 
                 return xlPackage.GetAsByteArray();
             }
+        }
+
+        private static void WriteNoDataMessage(ExcelWorksheet worksheet, string range)
+        {
+            var noDataCells = worksheet.Cells[range];
+            noDataCells.Merge = true;
+            noDataCells.Value = Message.ThereIsNoData;
+            worksheet.Cells[range.Split(':')[0]].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         private static void WriteBankingReportHeader(

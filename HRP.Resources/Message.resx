@@ -801,4 +801,7 @@
   <data name="GrandTotalCash" xml:space="preserve">
     <value>Grand Total (Cash)</value>
   </data>
+  <data name="ThereIsNoData" xml:space="preserve">
+    <value>There is no data</value>
+  </data>
 </root>

@@ -140,7 +140,7 @@
 
             IActionResult result = RedirectToAction("DirectBanking");
 
-            if (bankInData != null && bankInData.IsExportable)
+            if (bankInData != null)
             {
                 var fileContent = exportExcelService.ExportDirectBankingReports(
                     viewModel.SelectedTime,
@@ -180,7 +180,7 @@
 
             IActionResult result = RedirectToAction("Ebanking");
 
-            if (bankInData != null && bankInData.IsExportable)
+            if (bankInData != null)
             {
                 var fileContent = exportExcelService.ExportEbankingReports(
                     viewModel.SelectedTime,
