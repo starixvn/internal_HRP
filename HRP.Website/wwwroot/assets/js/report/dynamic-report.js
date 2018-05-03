@@ -14,11 +14,35 @@
         }
     }
 
+    function getElements() {
+        $selectedIds = $('#SelectedIds');
+        $employeeStatuses = $("#EmployeeStatuses");
+    }
+
+    function initSelect2() {
+        $('#CompanyId').select2({
+            allowClear: true,
+            minimumResultsForSearch: Infinity
+        });
+    }
+
+    function initFanexMultiSelect() {
+        $("#employee-status").fanexMultiSelect({
+            listData: result,
+            useCustomCheckAllText: true,
+            customCheckAllText: "All",
+            onCheck: function () {
+                var selectedValue = $(this).fanexMultiSelect('getItems', true).join(',');
+                $employeeStatuses.val(selectedValue);
+            }
+        });
+    }
+
     function initEvents() {
         $('#btn-select').on('click', function () {
             var $selectedItems = $('#select-list option:selected');
             $selectedItems.detach();
-            $selectedItems.appendTo('#selected-list')
+            $selectedItems.prop('selected', false).appendTo('#selected-list')
         });
 
         $('#btn-deselect').on('click', function () {
@@ -26,31 +50,33 @@
             $selectedItems.detach();
             $selectedItems.each(function (i, element) {
                 var $element = $(element);
-                $element.appendTo($element.data('parent'));
+                $element.prop('selected', false).appendTo($element.data('parent'));
             });
         });
 
         $('#btn-select-all').on('click', function () {
-            $('#select-list .item').detach().appendTo('#selected-list');
+            $('#select-list option').detach().appendTo('#selected-list');
         });
 
         $('#btn-deselect-all').on('click', function () {
-            var $selectedItems = $('#selected-list .item');
+            var $selectedItems = $('#selected-list option');
             $selectedItems.detach();
             $selectedItems.each(function (i, element) {
                 var $element = $(element);
-                $element.appendTo($element.data('parent'));
+                $element.prop('selected', false).appendTo($element.data('parent-id'));
             });
         });
 
         $('#myform').submit(function () {
+            var $options = $('#selected-list options');
             var selectedIds = [];
-            $('#selected-list .item').each(function (i, element) {
-                var $element = $(element);
-                selectedIds.push($element.data('value'));
+
+            $options.each(function (i, element) {
+                selectedIds.push(element.value);
             });
 
             $selectedIds.val(selectedIds.toString());
+            return false;
         });
 
         $('#btn-moveup').on('click', function () {
@@ -63,6 +89,9 @@
     }
 
     function init() {
+        getElements();
+        initSelect2();
+        initFanexMultiSelect();
         initEvents();
     }
 
