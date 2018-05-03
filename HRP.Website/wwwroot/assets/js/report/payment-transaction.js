@@ -1,8 +1,8 @@
-﻿var bankin = {
+﻿var paymentTransaction = {
     init: function() {
-        bankin.initSelect2();
-        bankin.initDatetimepicker();
-        bankin.initPaymentTransactionFanexMultiSelect();
+        paymentTransaction.initSelect2();
+        paymentTransaction.initDatetimepicker();
+        paymentTransaction.initPaymentTransactionFanexMultiSelect();
     },
 
     initSelect2: function() {
@@ -26,15 +26,12 @@
     initPaymentTransactionFanexMultiSelect: function() {
         $.ajax({
             url: $("#get-payment-transactions-url").attr("href"),
-            data: {
-                banktype: $("#banktype").val()
-            },
             success: function(result) {
                 $("#payment-transactions-multiselect").fanexMultiSelect({
                     listData: result,
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
-                    showFilter: true,                    
+                    showFilter: true,
                     onCheck: function() {
                         var selectedValue =
                             $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");
@@ -51,5 +48,5 @@
 }
 
 $(document).ready(function() {
-    bankin.init();
+    paymentTransaction.init();
 });

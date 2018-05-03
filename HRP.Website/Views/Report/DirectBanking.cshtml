@@ -19,7 +19,7 @@
     <script src="~/lib/moment/moment.js"></script>
     <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
     <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-    <script src="~/assets/js/report/bankin.js"></script>
+    <script src="~/assets/js/report/payment-transaction.js" asp-append-version="true"></script>
 }
 
     <ol class="breadcrumb">
@@ -31,7 +31,7 @@
     </ol>
 
 <form class="search-form" asp-action="GetDirectBankingReport" asp-controller="Report" method="get">
-    <a asp-controller="Report" asp-action="GetPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>
+    <a asp-controller="Report" asp-action="GetDirectBankingPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>
     <input asp-for="BankType" type="hidden" id="banktype"/>
 
     <div class="group">

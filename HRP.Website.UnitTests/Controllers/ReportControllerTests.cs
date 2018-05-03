@@ -34,7 +34,7 @@
         private ICommonService commonService;
 
         [Fact]
-        public async Task GetPaymentTransactions_EBanking_ReturnEbanking()
+        public async Task GetEbankingPaymentTransaction_WhenCalled_ReturnEbanking()
         {
             //Arrange
             var reportController = GetReportController();
@@ -45,8 +45,8 @@
                 {
                     IsActive = true,
                     RefName = ReferenceResource.PaymentTransactionEbanking,
-                    ResourceId = 1,
-                    Value = "1"
+                    ResourceId = (int)BankTypes.Ebanking,
+                    Value = ((int)BankTypes.Ebanking).ToString()
                 }
             };
 
@@ -57,12 +57,10 @@
                 Text = x.Value
             }));
 
-            commonService
-                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
-                .Returns(refResources);
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(refResources);
 
             //Act
-            var actual = await reportController.GetPaymentTransactions(BankTypes.Ebanking);
+            var actual = await reportController.GetEbankingPaymentTransactions();
 
             //Assert
             var json = Assert.IsType<JsonResult>(actual);
@@ -72,7 +70,7 @@
         }
 
         [Fact]
-        public async Task GetPaymentTransactions_DirectBanking_ReturnDirectBanking()
+        public async Task GetDirectBankingPaymentTransactions_WhenCalled_ReturnDirectBanking()
         {
             //Arrange
             var reportController = GetReportController();
@@ -82,7 +80,14 @@
                 new ReferenceResourceModel
                 {
                     IsActive = true,
-                    RefName = ReferenceResource.PaymentTransactionEbanking,
+                    RefName = ReferenceResource.PaymentTransactionDirectBanking,
+                    ResourceId = 1,
+                    Value = "1"
+                },
+                new ReferenceResourceModel
+                {
+                    IsActive = true,
+                    RefName = ReferenceResource.PaymentTransactionCash,
                     ResourceId = 1,
                     Value = "1"
                 }
@@ -104,14 +109,14 @@
                 },
                 new MultiSelectViewModel
                 {
-                    Value = "3",
-                    Text = "Cash",
+                    Value = ((int)BankTypes.Cash).ToString(),
+                    Text = BankTypes.Cash.GetDisplayName(),
                     ParentId = "0",
                     Items = refResources.Select(x => new MultiSelectViewModel
                     {
-                        Value = $"{3}-{x.ResourceId}",
+                        Value = $"{(int)BankTypes.Cash}-{x.ResourceId}",
                         Text = x.Value,
-                        ParentId = "3"
+                        ParentId = ((int)BankTypes.Cash).ToString()
                     }).ToList()
                 }
             };
@@ -121,7 +126,7 @@
                 .Returns(refResources);
 
             //Act
-            var actual = await reportController.GetPaymentTransactions(BankTypes.DirectBanking);
+            var actual = await reportController.GetDirectBankingPaymentTransactions();
 
             //Assert
             var json = Assert.IsType<JsonResult>(actual);

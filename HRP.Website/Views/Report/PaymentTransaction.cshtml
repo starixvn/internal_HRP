@@ -1,10 +1,11 @@
 @using HRP.Models.Report
+@using HRP.Resources
 @model BankInReportViewModel
 
 @{
-    ViewData["Title"] = HRP.Resources.ViewLang.Report;
+    ViewData["Title"] = ViewLang.Report;
 }
 
-<a asp-action="DirectBanking" asp-controller="Report">Direct Banking Report</a>
+<a asp-action="DirectBanking" asp-controller="Report">@ViewLang.DirectBankingReport</a>
 <br/>
-<a asp-action="Ebanking" asp-controller="Report">Ebanking Report</a>
+<a asp-action="Ebanking" asp-controller="Report">@ViewLang.EbankingReport</a>

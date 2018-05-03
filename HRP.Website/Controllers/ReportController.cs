@@ -11,8 +11,8 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Report;
-    using HRP.Criteria.Employee;
-    using HRP.Resources;
+    using Criteria.Employee;
+    using Resources;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,6 +28,8 @@
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
         private readonly ICommonService commonService;
+
+        private const string PaymentTransactionOptionRootParentId = "0";
 
         public ReportController(
             IBaseService baseService,
@@ -49,60 +51,68 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
-        public async Task<IActionResult> GetPaymentTransactions(BankTypes banktype)
+        public async Task<IActionResult> GetEbankingPaymentTransactions()
+        {
+            var refResources = await commonService.GetReferenceResourcesByNamesAsync(new[]
+            {
+                ReferenceResource.PaymentTransactionEbanking
+            });
+
+            var paymentOptions = new List<MultiSelectViewModel>();
+            paymentOptions.AddRange(refResources.Select(x => new MultiSelectViewModel
+            {
+                Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
+                Text = x.Value
+            }));
+
+            return Json(paymentOptions);
+        }
+
+
+        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        public async Task<IActionResult> GetDirectBankingPaymentTransactions()
         {
             var refResources = await commonService.GetReferenceResourcesByNamesAsync(new[]
             {
                 ReferenceResource.PaymentTransactionDirectBanking,
-                ReferenceResource.PaymentTransactionEbanking,
                 ReferenceResource.PaymentTransactionCash
             });
 
             var paymentOptions = new List<MultiSelectViewModel>();
 
-            if (banktype == BankTypes.Ebanking)
-            {
-                paymentOptions.AddRange(commonService.FilterReferenceResources(
-                    refResources,
-                    ReferenceResource.PaymentTransactionEbanking).Select(x => new MultiSelectViewModel
-                    {
-                        Value = $"{(int)BankTypes.Ebanking}-{x.ResourceId}",
-                        Text = x.Value
-                    }));
-            }
+            var filteredReferenceResources = commonService.FilterReferenceResources(
+                refResources,
+                ReferenceResource.PaymentTransactionDirectBanking);
 
-            if (banktype == BankTypes.DirectBanking)
+            paymentOptions.Add(new MultiSelectViewModel
             {
-                paymentOptions.Add(new MultiSelectViewModel
+                Value = ((int)BankTypes.DirectBanking).ToString(),
+                Text = BankTypes.DirectBanking.GetDisplayName(),
+                ParentId = PaymentTransactionOptionRootParentId,
+                Items = filteredReferenceResources.Select(x => new MultiSelectViewModel
                 {
-                    Value = ((int)BankTypes.DirectBanking).ToString(),
-                    Text = BankTypes.DirectBanking.GetDisplayName(),
-                    ParentId = "0",
-                    Items = commonService.FilterReferenceResources(
-                        refResources,
-                        ReferenceResource.PaymentTransactionDirectBanking).Select(x => new MultiSelectViewModel
-                        {
-                            Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
-                            Text = x.Value,
-                            ParentId = ((int)BankTypes.DirectBanking).ToString()
-                        }).ToList()
-                });
+                    Value = $"{(int)BankTypes.DirectBanking}-{x.ResourceId}",
+                    Text = x.Value,
+                    ParentId = ((int)BankTypes.DirectBanking).ToString()
+                }).ToList()
+            });
 
-                paymentOptions.Add(new MultiSelectViewModel
+            filteredReferenceResources = commonService.FilterReferenceResources(
+                refResources,
+                ReferenceResource.PaymentTransactionCash);
+
+            paymentOptions.Add(new MultiSelectViewModel
+            {
+                Value = ((int)BankTypes.Cash).ToString(),
+                Text = BankTypes.Cash.GetDisplayName(),
+                ParentId = PaymentTransactionOptionRootParentId,
+                Items = filteredReferenceResources.Select(x => new MultiSelectViewModel
                 {
-                    Value = "3",
-                    Text = "Cash",
-                    ParentId = "0",
-                    Items = commonService.FilterReferenceResources(
-                        refResources,
-                        ReferenceResource.PaymentTransactionCash).Select(x => new MultiSelectViewModel
-                        {
-                            Value = $"{3}-{x.ResourceId}",
-                            Text = x.Value,
-                            ParentId = "3"
-                        }).ToList()
-                });
-            }
+                    Value = $"{(int)BankTypes.Cash}-{x.ResourceId}",
+                    Text = x.Value,
+                    ParentId = ((int)BankTypes.Cash).ToString()
+                }).ToList()
+            });
 
             return Json(paymentOptions);
         }

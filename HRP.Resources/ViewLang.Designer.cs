@@ -880,6 +880,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Banking Report.
+        /// </summary>
+        public static string DirectBankingReport {
+            get {
+                return ResourceManager.GetString("DirectBankingReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discard.
         /// </summary>
         public static string Discard {
@@ -984,6 +993,15 @@ namespace HRP.Resources {
         public static string EBanking {
             get {
                 return ResourceManager.GetString("EBanking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ebanking Report.
+        /// </summary>
+        public static string EbankingReport {
+            get {
+                return ResourceManager.GetString("EbankingReport", resourceCulture);
             }
         }
         

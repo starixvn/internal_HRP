@@ -1065,4 +1065,10 @@
   <data name="PayrollMonth" xml:space="preserve">
     <value>Payroll Month</value>
   </data>
+  <data name="EbankingReport" xml:space="preserve">
+    <value>Ebanking Report</value>
+  </data>
+  <data name="DirectBankingReport" xml:space="preserve">
+    <value>Direct Banking Report</value>
+  </data>
 </root>
