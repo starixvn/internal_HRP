@@ -118,7 +118,7 @@
         {
             var cacheExpirationOptions = new MemoryCacheEntryOptions
             {
-                AbsoluteExpiration = DateTime.Now.AddHours(1),
+                SlidingExpiration = TimeSpan.FromDays(1),
                 Priority = CacheItemPriority.Normal
             };
             memoryCache.Set(CacheKeys.PasswordAccessTheCertificate, password, cacheExpirationOptions);
