@@ -17,23 +17,47 @@
     {
         private readonly ICryptoService cryptoService;
         private readonly IReportRepository reportRepository;
+        private readonly ISessionService sessionService;
 
         public ReportService(
             ICryptoService cryptoService,
+            ISessionService sessionService,
             IReportRepository reportRepository = null)
         {
             this.cryptoService = cryptoService;
+            this.sessionService = sessionService;
             this.reportRepository = reportRepository ?? new ReportRepository();
         }
 
-        public async Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions)
+
+
+        public async Task<BankInReport> GetDirectBankingBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions)
         {
-            var criteria = new BankInReportCriteria
+            var criteria = new GetDataForDirectBankingReportCriteria
             {
+                UserId = sessionService.UserId,
                 CompanyId = companyId,
                 Month = selectedTime,
                 PaymentTransactions = selectedPaymentTransactions,
                 PaymentType = (int)typeOfPayment
+            };
+
+            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
+
+            DecryptBankInAmount(bankInData.EBankingBankIns);
+            DecryptBankInAmount(bankInData.CashBankIns);
+
+            return bankInData;
+        }
+
+        public async Task<BankInReport> GetEbankingBankInAsync(int companyId, DateTime selectedTime, string selectedPaymentTransactions)
+        {
+            var criteria = new GetDataForEbankingReportCriteria
+            {
+                UserId = sessionService.UserId,
+                CompanyId = companyId,
+                Month = selectedTime,
+                PaymentTransactions = selectedPaymentTransactions
             };
 
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);

@@ -45,12 +45,7 @@
             this.commonService = commonService;
         }
 
-        public IActionResult PaymentTransaction()
-        {
-            return View();
-        }
-
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetEbankingPaymentTransactions()
         {
             var refResources = await commonService.GetReferenceResourcesByNamesAsync(new[]
@@ -69,7 +64,7 @@
         }
 
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetDirectBankingPaymentTransactions()
         {
             var refResources = await commonService.GetReferenceResourcesByNamesAsync(new[]
@@ -117,10 +112,10 @@
             return Json(paymentOptions);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> DirectBanking()
         {
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DirectBankingReport);
 
             var viewModel = new BankInReportViewModel
             {
@@ -132,10 +127,10 @@
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetDirectBankingReport(BankInReportViewModel viewModel)
         {
-            var bankInData = await reportService.GetBankInAsync(
+            var bankInData = await reportService.GetDirectBankingBankInAsync(
                 viewModel.CompanyId,
                 viewModel.SelectedTime,
                 viewModel.TypeOfPayment,
@@ -159,28 +154,26 @@
             return result;
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> Ebanking()
         {
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EbankingReport);
 
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now,
-                BankType = BankTypes.Ebanking
+                SelectedTime = DateTime.Now
             };
 
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetEbankingReport(BankInReportViewModel viewModel)
         {
-            var bankInData = await reportService.GetBankInAsync(
+            var bankInData = await reportService.GetEbankingBankInAsync(
                 viewModel.CompanyId,
                 viewModel.SelectedTime,
-                viewModel.TypeOfPayment,
                 viewModel.SelectedPaymentTransactions);
 
             var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\Ebanking.xlsx");

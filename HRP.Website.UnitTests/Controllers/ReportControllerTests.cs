@@ -11,18 +11,18 @@
     using Core.Model;
     using Core.Services;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Employee;
     using Models.Report;
     using Models;
     using Newtonsoft.Json;
     using NSubstitute;
+    using Resources;
     using Services.Interfaces;
     using Services;
     using Website.Controllers;
     using Xunit;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using HRP.Models.Employee;
-    using HRP.Resources;
 
     public class ReportControllerTests
     {
@@ -212,7 +212,7 @@
             };
 
             var reportController = GetReportController();
-            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
+            reportService.GetDirectBankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
 
             //Act
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
@@ -268,7 +268,7 @@
             };
 
             var reportController = GetReportController();
-            reportService.GetBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
+            reportService.GetEbankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(bankInReport);
 
             //Act
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);

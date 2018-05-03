@@ -111,7 +111,9 @@
             worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
 
             // Set payment type
-            worksheet.Cells["D4"].Value = typeOfPayment.GetDisplayName();
+            worksheet.Cells["D4"].Value = typeOfPayment != 0
+                ? typeOfPayment.GetDisplayName()
+                : PaymentType.BasicSalary.GetDisplayName();
 
             // Set selected payment transaction
             worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);

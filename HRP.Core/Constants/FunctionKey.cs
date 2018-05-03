@@ -21,5 +21,9 @@ namespace HRP.Core.Constants
         public const string Payslip = "Payslip";
 
         public const string Report = "Report";
+
+        public const string DirectBankingReport = "DirectBankingReport";
+
+        public const string EbankingReport = "EbankingReport";
     }
 }

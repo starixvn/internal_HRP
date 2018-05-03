@@ -3,9 +3,9 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using HRP.Models.Currency;
-    using HRP.Models.Employee;
-    using HRP.Models.MonthlyPayroll;
+    using Models.Currency;
+    using Models.Employee;
+    using Models.MonthlyPayroll;
     using Models.Report;
 
     public class ReportRepository : IReportRepository

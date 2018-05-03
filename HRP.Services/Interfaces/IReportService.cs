@@ -7,7 +7,16 @@
 
     public interface IReportService
     {
-        Task<BankInReport> GetBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions);
+        Task<BankInReport> GetDirectBankingBankInAsync(
+            int companyId,
+            DateTime selectedTime,
+            PaymentType typeOfPayment,
+            string selectedPaymentTransactions);
+
+        Task<BankInReport> GetEbankingBankInAsync(
+            int companyId,
+            DateTime selectedTime,
+            string selectedPaymentTransactions);
 
         IEnumerable<ColumnGroup> GetAvailableColumnsList();
 

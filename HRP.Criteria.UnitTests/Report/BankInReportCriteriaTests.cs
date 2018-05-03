@@ -4,14 +4,14 @@
     using Criteria.Report;
     using Xunit;
 
-    public class BankInReportCriteriaTests
+    public class GetDataForDirectBankingReportCriteriaTests
     {
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new BankInReportCriteria();
-            var expected = "Report_GetBankIn";
+            var criteria = new GetDataForDirectBankingReportCriteria();
+            var expected = "Report_GetDataForDirectBankingReport";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -26,7 +26,7 @@
         public void IsValid_CompanyId_ReturnExpected(int companyId, bool expectedResult)
         {
             // Arrange
-            var criteria = new BankInReportCriteria
+            var criteria = new GetDataForDirectBankingReportCriteria
             {
                 CompanyId = companyId,
                 Month = DateTime.Now

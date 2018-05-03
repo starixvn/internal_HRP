@@ -49,11 +49,6 @@
     </div>
 
     <div class="group">
-        <label asp-for="TypeOfPayment" class="text"></label>
-        <select asp-for="TypeOfPayment" asp-items="Html.GetEnumSelectList(typeof(PaymentType))" class="control js-select2"></select>
-    </div>
-
-    <div class="group">
         <label asp-for="SelectedPaymentTransactions" class="text"></label>
         <input type="hidden" asp-for="SelectedPaymentTransactions" id="selected-payment-transactions" />
         <select class="control company width-200" id="payment-transactions-multiselect"></select>

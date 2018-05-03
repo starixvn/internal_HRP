@@ -180,7 +180,8 @@
     <Setting Key="Payslip_Update" SpName="Payslip_Update" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Report">
-    <Setting Key="Report_GetBankIn" SpName="Report_GetBankIn" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetDataForDirectBankingReport" SpName="Report_GetDataForDirectBankingReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetDataForEbankingReport" SpName="Report_GetDataForEbankingReport" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Report_GetDataForMonthlyPayrollReport" SpName="Report_GetDataForMonthlyPayrollReport" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Report_GetDataForDynamicReport" SpName="Report_GetDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="Report_GetEmployeeDataForDynamicReport" SpName="Report_GetEmployeeDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
