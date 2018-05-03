@@ -19,6 +19,7 @@
     using HRP.Resources;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
 
     public class DataConfigurationController : BaseController
     {
@@ -88,7 +89,7 @@
                 var commandResult = await dataConfigurationService.CreateCompanyBVIAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                    return JsonResultWithCreatedMessage(item.ItemName);
                 }
                 else
                 {
@@ -97,9 +98,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -134,7 +133,7 @@
                 var commandResult = await dataConfigurationService.UpdateCompanyBVIAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -143,9 +142,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion CompanyBVI
@@ -196,7 +193,7 @@
                 var commandResult = await dataConfigurationService.CreateDivisionAsync(division);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, division.Code) });
+                    return JsonResultWithCreatedMessage(division.Code);
                 }
                 else
                 {
@@ -205,9 +202,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -242,7 +237,7 @@
                 var commandResult = await dataConfigurationService.UpdateDivisionAsync(division);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -251,9 +246,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Division
@@ -304,7 +297,7 @@
                 var commandResult = await dataConfigurationService.CreateDepartmentAsync(department);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, department.Code) });
+                    return JsonResultWithCreatedMessage(department.Code);
                 }
                 else
                 {
@@ -313,9 +306,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -350,7 +341,7 @@
                 var commandResult = await dataConfigurationService.UpdateDepartmentAsync(department);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -359,9 +350,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Department
@@ -412,7 +401,7 @@
                 var commandResult = await dataConfigurationService.CreateCostCenterAsync(costCenter);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, costCenter.Code) });
+                    return JsonResultWithCreatedMessage(costCenter.Code);
                 }
                 else
                 {
@@ -421,9 +410,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -458,7 +445,7 @@
                 var commandResult = await dataConfigurationService.UpdateCostCenterAsync(costCenter);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -467,9 +454,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Cost Center
@@ -520,7 +505,7 @@
                 var commandResult = await dataConfigurationService.CreateSectionAsync(section);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, section.Code) });
+                    return JsonResultWithCreatedMessage(section.Code);
                 }
                 else
                 {
@@ -529,9 +514,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -566,7 +549,7 @@
                 var commandResult = await dataConfigurationService.UpdateSectionAsync(section);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -575,9 +558,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Section
@@ -627,7 +608,7 @@
                 var commandResult = await dataConfigurationService.CreateJobCategoryAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                    return JsonResultWithCreatedMessage(item.ItemName);
                 }
                 else
                 {
@@ -636,9 +617,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -673,7 +652,7 @@
                 var commandResult = await dataConfigurationService.UpdateJobCategoryAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -682,9 +661,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Job Category
@@ -735,7 +712,7 @@
                 var commandResult = await dataConfigurationService.CreateGradeLevelAsync(gradeLevel);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, gradeLevel.Name) });
+                    return JsonResultWithCreatedMessage(gradeLevel.Name);
                 }
                 else
                 {
@@ -744,9 +721,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -781,7 +756,7 @@
                 var commandResult = await dataConfigurationService.UpdateGradeLevelAsync(gradeLevel);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -790,9 +765,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Grade Level
@@ -843,7 +816,7 @@
                 var commandResult = await dataConfigurationService.CreateJobGradeAsync(jobGrade);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, jobGrade.Name) });
+                    return JsonResultWithCreatedMessage(jobGrade.Name);
                 }
                 else
                 {
@@ -852,9 +825,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -889,7 +860,7 @@
                 var commandResult = await dataConfigurationService.UpdateJobGradeAsync(jobGrade);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -898,9 +869,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Job Grade
@@ -950,7 +919,7 @@
                 var commandResult = await dataConfigurationService.CreateCountryAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                    return JsonResultWithCreatedMessage(item.ItemName);
                 }
                 else
                 {
@@ -959,9 +928,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -996,7 +963,7 @@
                 var commandResult = await dataConfigurationService.UpdateCountryAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -1005,9 +972,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Country
@@ -1058,7 +1023,7 @@
                 var commandResult = await dataConfigurationService.CreateCityAsync(city);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, city.Code) });
+                    return JsonResultWithCreatedMessage(city.Code);
                 }
                 else
                 {
@@ -1067,9 +1032,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -1104,7 +1067,7 @@
                 var commandResult = await dataConfigurationService.UpdateCityAsync(city);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -1113,9 +1076,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion City
@@ -1166,7 +1127,7 @@
                 var commandResult = await dataConfigurationService.CreateOfficeAsync(office);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, office.Code) });
+                    return JsonResultWithCreatedMessage(office.Code);
                 }
                 else
                 {
@@ -1175,9 +1136,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -1212,7 +1171,7 @@
                 var commandResult = await dataConfigurationService.UpdateOfficeAsync(office);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -1221,9 +1180,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Office
@@ -1268,7 +1225,7 @@
                 var commandResult = await dataConfigurationService.CreateRefResourceItemAsync(field.RefName, item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                    return JsonResultWithCreatedMessage(item.ItemName);
                 }
                 else
                 {
@@ -1277,9 +1234,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -1313,7 +1268,7 @@
                 var commandResult = await dataConfigurationService.UpdateRefResourceItemAsync(field.RefName, item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -1322,9 +1277,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion RefResource Item
@@ -1374,7 +1327,7 @@
                 var commandResult = await dataConfigurationService.CreateCurrencyAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = string.Format(Message.ItemCreatedSuccessful, item.ItemName) });
+                    return JsonResultWithCreatedMessage(item.ItemName);
                 }
                 else
                 {
@@ -1383,9 +1336,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -1420,7 +1371,7 @@
                 var commandResult = await dataConfigurationService.UpdateCurrencyAsync(item);
                 if (commandResult.IsSuccessful)
                 {
-                    return Json(new { isSuccessful = commandResult.IsSuccessful, message = Message.ItemUpdatedSuccessful });
+                    return JsonResultWithUpdatedMessage();
                 }
                 else
                 {
@@ -1429,9 +1380,7 @@
                 }
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
-
-            return Json(new { isSuccessful = false, errors });
+            return JsonResultWithModelStateErrors(ModelState);
         }
 
         #endregion Currency
@@ -1492,6 +1441,23 @@
             a[0] = char.ToUpper(a[0]);
 
             return new string(a);
+        }
+
+        private IActionResult JsonResultWithCreatedMessage(string itemName)
+        {
+            return Json(new { isSuccessful = true, message = string.Format(Message.ItemCreatedSuccessful, itemName) });
+        }
+
+        private IActionResult JsonResultWithUpdatedMessage()
+        {
+            return Json(new { isSuccessful = true, message = Message.ItemUpdatedSuccessful });
+        }
+
+        private IActionResult JsonResultWithModelStateErrors(ModelStateDictionary modelState)
+        {
+            var errors = modelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+
+            return Json(new { isSuccessful = false, errors });
         }
 
         #endregion Commons

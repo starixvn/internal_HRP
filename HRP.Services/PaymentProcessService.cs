@@ -458,104 +458,92 @@
 
         private void EncryptMonthlySalary(MonthlySalaryModel salary)
         {
-            if (salary == null)
+            if (salary != null)
             {
-                return;
+                salary.Salary = cryptoService.Encrypt(salary.Salary);
+                salary.EbankingAmount = cryptoService.Encrypt(salary.EbankingAmount);
+                salary.DirectBanking1Amount = cryptoService.Encrypt(salary.DirectBanking1Amount);
+                salary.DirectBanking2Amount = cryptoService.Encrypt(salary.DirectBanking2Amount);
+                salary.CashAmount = cryptoService.Encrypt(salary.CashAmount);
+                salary.AdditionAmount = cryptoService.Encrypt(salary.AdditionAmount);
+                salary.DeductionAmount = cryptoService.Encrypt(salary.DeductionAmount);
             }
-
-            salary.Salary = cryptoService.Encrypt(salary.Salary);
-            salary.EbankingAmount = cryptoService.Encrypt(salary.EbankingAmount);
-            salary.DirectBanking1Amount = cryptoService.Encrypt(salary.DirectBanking1Amount);
-            salary.DirectBanking2Amount = cryptoService.Encrypt(salary.DirectBanking2Amount);
-            salary.CashAmount = cryptoService.Encrypt(salary.CashAmount);
-            salary.AdditionAmount = cryptoService.Encrypt(salary.AdditionAmount);
-            salary.DeductionAmount = cryptoService.Encrypt(salary.DeductionAmount);
         }
 
         private void EncryptMonthlySalaryAddition(MonthlySalaryAdditionModel addition)
         {
-            if (addition == null)
+            if (addition != null)
             {
-                return;
+                addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
+                addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
             }
-
-            addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
-            addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
         }
 
         private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel allowance)
         {
-            if (allowance == null)
+            if (allowance != null)
             {
-                return;
+                allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
+                allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
+                allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
+                allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
+                allowance.SubsistenceAmount = cryptoService.Decrypt(allowance.SubsistenceAmount);
+                allowance.HomePassageAmount = cryptoService.Decrypt(allowance.HomePassageAmount);
+                allowance.HousingAmount = cryptoService.Decrypt(allowance.HousingAmount);
+                allowance.MobilePhoneAmount = cryptoService.Decrypt(allowance.MobilePhoneAmount);
+                allowance.HPIAmount = cryptoService.Decrypt(allowance.HPIAmount);
+                allowance.DutyMealAmount = cryptoService.Decrypt(allowance.DutyMealAmount);
+                allowance.SecondmentAmount = cryptoService.Decrypt(allowance.SecondmentAmount);
+                allowance.OthersAmount = cryptoService.Decrypt(allowance.OthersAmount);
+                allowance.RoomingChargesAmount = cryptoService.Decrypt(allowance.RoomingChargesAmount);
+                allowance.FitnessFirstAmount = cryptoService.Decrypt(allowance.FitnessFirstAmount);
+                allowance.AfterAdjustmentAmount = cryptoService.Decrypt(allowance.AfterAdjustmentAmount);
             }
-
-            allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
-            allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
-            allowance.DirectBanking2Amount = cryptoService.Decrypt(allowance.DirectBanking2Amount);
-            allowance.CashAmount = cryptoService.Decrypt(allowance.CashAmount);
-            allowance.SubsistenceAmount = cryptoService.Decrypt(allowance.SubsistenceAmount);
-            allowance.HomePassageAmount = cryptoService.Decrypt(allowance.HomePassageAmount);
-            allowance.HousingAmount = cryptoService.Decrypt(allowance.HousingAmount);
-            allowance.MobilePhoneAmount = cryptoService.Decrypt(allowance.MobilePhoneAmount);
-            allowance.HPIAmount = cryptoService.Decrypt(allowance.HPIAmount);
-            allowance.DutyMealAmount = cryptoService.Decrypt(allowance.DutyMealAmount);
-            allowance.SecondmentAmount = cryptoService.Decrypt(allowance.SecondmentAmount);
-            allowance.OthersAmount = cryptoService.Decrypt(allowance.OthersAmount);
-            allowance.RoomingChargesAmount = cryptoService.Decrypt(allowance.RoomingChargesAmount);
-            allowance.FitnessFirstAmount = cryptoService.Decrypt(allowance.FitnessFirstAmount);
-            allowance.AfterAdjustmentAmount = cryptoService.Decrypt(allowance.AfterAdjustmentAmount);
         }
 
         private void DecryptMonthlyDSTNetSalary(MonthlyDSTNetSalary salary)
         {
-            if (salary == null)
+            if (salary != null)
             {
-                return;
+                salary.NetSalaryReceived = cryptoService.Decrypt(salary.NetSalaryReceived);
             }
-
-            salary.NetSalaryReceived = cryptoService.Decrypt(salary.NetSalaryReceived);
         }
 
         private void EncryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
-            if (basicAllowance == null)
+            if (basicAllowance != null)
             {
-                return;
+                basicAllowance.TotalAmount = cryptoService.Encrypt(basicAllowance.TotalAmount);
+                basicAllowance.DirectBanking1Amount = cryptoService.Encrypt(basicAllowance.DirectBanking1Amount);
+                basicAllowance.DirectBanking2Amount = cryptoService.Encrypt(basicAllowance.DirectBanking2Amount);
+                basicAllowance.CashAmount = cryptoService.Encrypt(basicAllowance.CashAmount);
+                basicAllowance.SubsistenceAmount = cryptoService.Encrypt(basicAllowance.SubsistenceAmount);
+                basicAllowance.HomePassageAmount = cryptoService.Encrypt(basicAllowance.HomePassageAmount);
+                basicAllowance.HousingAmount = cryptoService.Encrypt(basicAllowance.HousingAmount);
+                basicAllowance.MobilePhoneAmount = cryptoService.Encrypt(basicAllowance.MobilePhoneAmount);
+                basicAllowance.HPIAmount = cryptoService.Encrypt(basicAllowance.HPIAmount);
+                basicAllowance.DutyMealAmount = cryptoService.Encrypt(basicAllowance.DutyMealAmount);
+                basicAllowance.SecondmentAmount = cryptoService.Encrypt(basicAllowance.SecondmentAmount);
+                basicAllowance.OthersAmount = cryptoService.Encrypt(basicAllowance.OthersAmount);
+                basicAllowance.RoomingChargesAmount = cryptoService.Encrypt(basicAllowance.RoomingChargesAmount);
+                basicAllowance.FitnessFirstAmount = cryptoService.Encrypt(basicAllowance.FitnessFirstAmount);
+                basicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount);
             }
-
-            basicAllowance.TotalAmount = cryptoService.Encrypt(basicAllowance.TotalAmount);
-            basicAllowance.DirectBanking1Amount = cryptoService.Encrypt(basicAllowance.DirectBanking1Amount);
-            basicAllowance.DirectBanking2Amount = cryptoService.Encrypt(basicAllowance.DirectBanking2Amount);
-            basicAllowance.CashAmount = cryptoService.Encrypt(basicAllowance.CashAmount);
-            basicAllowance.SubsistenceAmount = cryptoService.Encrypt(basicAllowance.SubsistenceAmount);
-            basicAllowance.HomePassageAmount = cryptoService.Encrypt(basicAllowance.HomePassageAmount);
-            basicAllowance.HousingAmount = cryptoService.Encrypt(basicAllowance.HousingAmount);
-            basicAllowance.MobilePhoneAmount = cryptoService.Encrypt(basicAllowance.MobilePhoneAmount);
-            basicAllowance.HPIAmount = cryptoService.Encrypt(basicAllowance.HPIAmount);
-            basicAllowance.DutyMealAmount = cryptoService.Encrypt(basicAllowance.DutyMealAmount);
-            basicAllowance.SecondmentAmount = cryptoService.Encrypt(basicAllowance.SecondmentAmount);
-            basicAllowance.OthersAmount = cryptoService.Encrypt(basicAllowance.OthersAmount);
-            basicAllowance.RoomingChargesAmount = cryptoService.Encrypt(basicAllowance.RoomingChargesAmount);
-            basicAllowance.FitnessFirstAmount = cryptoService.Encrypt(basicAllowance.FitnessFirstAmount);
-            basicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount);
         }
 
         private void EncryptMonthlyAllowance(MonthlyAllowanceModel allowance)
         {
-            if (allowance == null)
+            if (allowance != null)
             {
-                return;
+                allowance.TotalAmount = cryptoService.Encrypt(allowance.TotalAmount);
+                allowance.DirectBanking1Amount = cryptoService.Encrypt(allowance.DirectBanking1Amount);
+                allowance.DirectBanking2Amount = cryptoService.Encrypt(allowance.DirectBanking2Amount);
+                allowance.CashAmount = cryptoService.Encrypt(allowance.CashAmount);
+                allowance.DSTNetSalaryAmount = cryptoService.Encrypt(allowance.DSTNetSalaryAmount);
+                allowance.TotalNetAmount = cryptoService.Encrypt(allowance.TotalNetAmount);
+                allowance.AdditionAmount = cryptoService.Encrypt(allowance.AdditionAmount);
+                allowance.DeductionAmount = cryptoService.Encrypt(allowance.DeductionAmount);
             }
-
-            allowance.TotalAmount = cryptoService.Encrypt(allowance.TotalAmount);
-            allowance.DirectBanking1Amount = cryptoService.Encrypt(allowance.DirectBanking1Amount);
-            allowance.DirectBanking2Amount = cryptoService.Encrypt(allowance.DirectBanking2Amount);
-            allowance.CashAmount = cryptoService.Encrypt(allowance.CashAmount);
-            allowance.DSTNetSalaryAmount = cryptoService.Encrypt(allowance.DSTNetSalaryAmount);
-            allowance.TotalNetAmount = cryptoService.Encrypt(allowance.TotalNetAmount);
-            allowance.AdditionAmount = cryptoService.Encrypt(allowance.AdditionAmount);
-            allowance.DeductionAmount = cryptoService.Encrypt(allowance.DeductionAmount);
         }
 
         private void EncryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)

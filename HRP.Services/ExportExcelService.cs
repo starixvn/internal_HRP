@@ -337,7 +337,7 @@
                     worksheet.Cells[row, 4].Value = employee.DepartmentCode;
                     worksheet.Cells[row, 5].Value = employee.CostCenterCode;
                     worksheet.Cells[row, 6].Value = employee.SectionCode;
-                    worksheet.Cells[row, 7].Value = employee.EmployeeCode;
+                    worksheet.Cells[row, 7].Value = employee.IDNo;
                     worksheet.Cells[row, 8].Value = employee.FullName;
                     worksheet.Cells[row, 9].Value = employee.Nickname;
 
