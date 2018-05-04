@@ -963,4 +963,8 @@ select[multiple] option:hover, select[multiple] option:focus, select[multiple] o
 .list-button-function .button.-next:hover, .list-button-function .button.-prev:hover {
   background-color: #16659c;
 }
+
+.search-form .fanex-multiselect-options {
+  width: 200px !important;
+}
 /*# sourceMappingURL=dynamic-report.css.map */
