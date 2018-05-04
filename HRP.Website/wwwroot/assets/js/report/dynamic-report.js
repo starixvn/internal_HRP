@@ -4,7 +4,7 @@
     function moveUpDown(up) {
         var $selectedItems = $('#selected-list option:selected');
 
-        if ($selectedItems.length == 0)
+        if ($selectedItems.length === 0)
             return;
 
         if (up) {
@@ -56,7 +56,7 @@
         });
 
         $('#btn-select-all').on('click', function () {
-            $('#select-list option').detach().appendTo('#selected-list');
+            $('#select-list option').prop('selected', false).detach().appendTo('#selected-list');
         });
 
         $('#btn-deselect-all').on('click', function () {
