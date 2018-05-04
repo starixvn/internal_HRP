@@ -65,14 +65,14 @@ END
 
 --Insert for EbankingReport function
 DECLARE @EbankingReportFunctionId INT;
-SELECT @DirectBankingReportFunctionId = [Function].FunctionId
+SELECT @EbankingReportFunctionId = [Function].FunctionId
 FROM [Function]
 WHERE [Function].FunctionKey = @EbankingFunctionKey
 
-IF(@DirectBankingReportFunctionId IS NOT NULL)
+IF(@EbankingReportFunctionId IS NOT NULL)
 BEGIN
 	INSERT UserFunction (UserId, FunctionId, CompanyId, IsRead, IsHost)
-	SELECT #SystemAdminIds.UserId,@DirectBankingReportFunctionId AS FunctionId,#CompanyIds.CompanyId,1 AS IsRead, 1 as IsHost
+	SELECT #SystemAdminIds.UserId,@EbankingReportFunctionId AS FunctionId,#CompanyIds.CompanyId,1 AS IsRead, 1 as IsHost
 	FROM #SystemAdminIds, #CompanyIds
 END
 
