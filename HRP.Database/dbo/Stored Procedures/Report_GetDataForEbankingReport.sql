@@ -133,7 +133,7 @@ BEGIN
 	FROM dbo.Company WITH (NOLOCK)
 	WHERE CompanyId = @CompanyId
 
-	-- Get Payment transactions that have data and selected by user
+	-- Get Payment transaction's names that were selected by user
 	SELECT ref.[Value]
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
 		INNER JOIN #SelectedPaymentTransactions AS pt WITH (NOLOCK) ON ref.ResourceId = pt.PaymentTransactionId
