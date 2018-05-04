@@ -4,7 +4,7 @@ CREATE PROCEDURE [dbo].[Report_GetDataForDirectBankingReport]
 	,@Month SMALLDATETIME
 	,@CompanyId INT
 	,@PaymentType INT
-	,@PaymentTransactions NVARCHAR(MAX)
+	,@PaymentTransactions NVARCHAR(MAX) = ''
 AS
 /*
 Created: 20180406@Hunter.Tran
@@ -43,6 +43,7 @@ BEGIN
 	SELECT SUBSTRING(Pair, 1, 1)
 		,SUBSTRING(Pair, 3, LEN(Pair) - 2)
 	FROM #PaymentTransactionValues
+	WHERE LEN(Pair) = 3
 
 	DROP TABLE #PaymentTransactionValues
 
@@ -114,8 +115,8 @@ BEGIN
 		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,Employee.FullName AS BeneficiaryName
-			,'Cash' AS BankName
-			,RefResource.[Value] AS AccountNumber
+			,NULL AS BankName
+			,NULL AS AccountNumber
 			,RefResource.[Value] AS PaymentTransaction
 			,MonthlySalary.CashAmount AS Amount
 			,Currency.CurrencyCode
@@ -194,8 +195,8 @@ BEGIN
 		SELECT Company.Code + Employment.EmployeeCode AS IDNo
 			,Employee.Nickname
 			,Employee.FullName AS BeneficiaryName
-			,'Cash' AS BankName
-			,RefResource.[Value] AS AccountNumber
+			,NULL AS BankName
+			,NULL AS AccountNumber
 			,RefResource.[Value] AS PaymentTransaction
 			,MonthlyAllowance.CashAmount AS Amount
 			,Currency.CurrencyCode
@@ -224,7 +225,12 @@ BEGIN
 	SELECT ref.[Value]
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
 		INNER JOIN #SelectedPaymentTransactions AS pt WITH (NOLOCK) ON ref.ResourceId = pt.PaymentTransactionId
-		AND ref.RefName = 'PaymentTransactionDirectBanking'
+		AND ref.RefName =
+		CASE
+			WHEN pt.BankTypeId = 3
+			THEN 'PaymentTransactionCash'
+			ELSE 'PaymentTransactionDirectBanking'
+		END
 
 	DROP TABLE #SelectedPaymentTransactions
 
