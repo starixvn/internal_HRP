@@ -21,6 +21,7 @@
     using Newtonsoft.Json;
     using Services;
     using Services.Interfaces;
+    using Newtonsoft.Json.Serialization;
 
     public class ReportController : BaseController
     {
@@ -241,13 +242,25 @@
                 UserId = sessionService.UserId
             };
 
-            var employeeStatuses = await baseService.GetDataAsync<MultiSelectViewModel>(criteria).ConfigureAwait(false);
+            var employeeStatusIds = new List<string> { "1", "2" };
+            var employeeStatuses = (await baseService.GetDataAsync<MultiSelectViewModel>(criteria)).ToList();
+            employeeStatuses.ForEach(x => {
+                if(!employeeStatusIds.Any(i => i == x.Value))
+                {
+                    x.Checked = false;
+                }
+            });
 
             var viewModel = new GenerateReportViewModel
             {
                 SelectedTime = DateTime.Today,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                EmployeeStatuses = JsonConvert.SerializeObject(employeeStatuses)
+                EmployeeStatuses = JsonConvert.SerializeObject(employeeStatuses, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }),
+                EmployeeStatusIds = string.Join(",", employeeStatusIds),
+                Items = ColumnsConfirguration.DynamicReportItems.GroupBy(x => x.Group)
             };
 
             ViewBag.List = new SelectList(ColumnsConfirguration.DynamicReportItems, "Id", "Name", null, "Group");

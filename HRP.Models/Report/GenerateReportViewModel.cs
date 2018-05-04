@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class GenerateReportViewModel
@@ -18,6 +19,10 @@
         [Required]
         public string SelectedIds { get; set; }
 
+        public string EmployeeStatusIds { get; set; }
+
         public string EmployeeStatuses { get; set; }
+
+        public IEnumerable<IGrouping<string, DynamicReportItem>> Items { get; set; }
     }
 }

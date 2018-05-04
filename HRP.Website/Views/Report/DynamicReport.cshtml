@@ -1,14 +1,12 @@
-﻿@using HRP.Core.Enumerations
-@using HRP.Models.Report
+﻿@using HRP.Models.Report
 @using HRP.Resources
 @model GenerateReportViewModel
 
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
+        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/assets/styles/fonts/hrp/style.css" rel="stylesheet">
         <link href="~/assets/styles/pages/report/dynamic-report.css" rel="stylesheet" />
     </environment>
@@ -18,71 +16,63 @@
     </environment>
 }
 
-@*<form class="search-form" asp-action="GenerateReport" method="post">
-    <input type="hidden" asp-for="EmployeeStatuses" />
-    <select multiple asp-items="@ViewBag.List">
-
-    </select>
-</form>*@
 <ol class="breadcrumb">
     <li class="active">Report</li>
 </ol>
 
-<form class="search-form" asp-controller="payslip" asp-action="index" method="get">
-     <div class="group">
+<form class="search-form" asp-controller="payslip" asp-action="index" method="post" id="dynamic-report-form">
+    <input type="hidden" asp-for="EmployeeStatuses" />
+    <input type="hidden" asp-for="SelectedIds" />
+    <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select class="control js-select2" asp-for="CompanyId" asp-items="Model.Companies"></select>
+        <select class="control select2" asp-for="CompanyId" asp-items="Model.Companies"></select>
     </div>
     <div class="group">
         <label class="text">Employee Status</label>
-        <select class="control js-select2">
-            <option>All</option>
-        </select>
+        <input type="hidden" asp-for="EmployeeStatusIds" />
+        <select class="control" id="employee-status"></select>
     </div>
     <div class="w-100"></div>
     <div class="group">
         <label class="text blue-txt">List of Data</label>
-        <select multiple>
-           <optgroup label="Personal Detail">
-               <option>Full Name</option>
-               <option>Nickname</option>
-               <option>Gender</option>
-               <option>Date of Birth</option>
-               <option>Place of Birth</option>
-               <option>Nationality</option>
-           </optgroup>
-           <optgroup label="Payroll">
-               <option>Basic Salary</option>
-               <option>e-Banking</option>
-               <option>Direct Banking 1</option>
-           </optgroup>
+        <select multiple id="select-list">
+            @{
+                var index = 1;
+            }
+
+            @foreach (var group in Model.Items)
+            {
+                <optgroup label="@group.Key" id="opt-@index">
+                    @foreach (var item in group)
+                    {
+                        <option data-parent-id="#opt-@index" value="@item.Id">@item.Name</option>
+                    }
+                </optgroup>
+                index++;
+            }
         </select>
     </div>
     <div class="group">
         <ul class="list-button-function">
-            <li><button class="button -last-next"><span class="icon-last-next"></span></button></li>
-            <li><button class="button -next"><span class="icon-next"></span></button></li>
-            <li><button class="button -prev"><span class="icon-back"></span></button></li>
-            <li><button class="button -last-prev"><span class="icon-last-prev"></span></button></li>
+            <li><button type="button" class="button -last-next" id="btn-select-all"><span class="icon-last-next"></span></button></li>
+            <li><button type="button" class="button -next" id="btn-select"><span class="icon-next"></span></button></li>
+            <li><button type="button" class="button -prev" id="btn-deselect"><span class="icon-back"></span></button></li>
+            <li><button type="button" class="button -last-prev" id="btn-deselect-all"><span class="icon-last-prev"></span></button></li>
         </ul>
     </div>
     <div class="group">
         <label class="text blue-txt">Export Data</label>
-        <select multiple>
-               <option>Full Name</option>
-               <option>Nickname</option>
-               <option>Basic Salary</option>
-        </select>
+        <select multiple id="selected-list"></select>
     </div>
     <div class="group">
         <ul class="list-button-function">
-            <li><button class="button -next"><span class="icon-up"></span></button></li>
-            <li><button class="button -prev"><span class="icon-down"></span></button></li>
+            <li><button type="button" class="button -next" id="btn-moveup"><span class="icon-up"></span></button></li>
+            <li><button type="button" class="button -prev" id="btn-movedown"><span class="icon-down"></span></button></li>
         </ul>
     </div>
     <div class="w-100"></div>
     <div class="group">
-        <button type="button" class="button -excel"><span class="icon-excel"></span>Export Excel</button>
+        <button type="submit" class="button -excel"><span class="icon-excel"></span>Export Excel</button>
     </div>
 </form>
 

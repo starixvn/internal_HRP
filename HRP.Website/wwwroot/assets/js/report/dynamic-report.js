@@ -1,5 +1,5 @@
 ﻿var dynamicReport = (function ($) {
-    var $selectedIds;
+    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect;
 
     function moveUpDown(up) {
         var $selectedItems = $('#selected-list option:selected');
@@ -9,31 +9,33 @@
 
         if (up) {
             $selectedItems.first().prev().before($selectedItems);
-        } else if (btnDown) {
+        } else {
             $selectedItems.last().next().after($selectedItems);
         }
     }
 
     function getElements() {
         $selectedIds = $('#SelectedIds');
-        $employeeStatuses = $("#EmployeeStatuses");
+        $employeeStatusIds = $("#EmployeeStatusIds");
+        $employeeStatusMultiSelect = $("#employee-status");
     }
 
     function initSelect2() {
-        $('#CompanyId').select2({
+        $('.select2').select2({
             allowClear: true,
             minimumResultsForSearch: Infinity
         });
     }
 
     function initFanexMultiSelect() {
-        $("#employee-status").fanexMultiSelect({
-            listData: result,
+        $employeeStatusMultiSelect.fanexMultiSelect({
+            listData: JSON.parse($('#EmployeeStatuses').val()),
             useCustomCheckAllText: true,
             customCheckAllText: "All",
             onCheck: function () {
-                var selectedValue = $(this).fanexMultiSelect('getItems', true).join(',');
-                $employeeStatuses.val(selectedValue);
+                debugger;
+                var selectedValue = $employeeStatusMultiSelect.fanexMultiSelect('getItems', true).join(',');
+                $employeeStatusIds.val(selectedValue);
             }
         });
     }
@@ -67,8 +69,8 @@
             });
         });
 
-        $('#myform').submit(function () {
-            var $options = $('#selected-list options');
+        $('#dynamic-report-form').submit(function () {
+            var $options = $('#selected-list option');
             var selectedIds = [];
 
             $options.each(function (i, element) {
@@ -76,6 +78,7 @@
             });
 
             $selectedIds.val(selectedIds.toString());
+            alert(selectedIds.toString());
             return false;
         });
 
@@ -101,5 +104,5 @@
 }(jQuery));
 
 $(document).ready(function () {
-    monthlyPayroll.init();
+    dynamicReport.init();
 });
