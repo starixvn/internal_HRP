@@ -35,7 +35,7 @@
 
     &.-add {
         background-color: $btn-add-bg;
-        color: $btn-add-color;
+        color: $btn-add-color; color: $btn-add-color;
 
         &:hover {
             background-color: $btn-add-bg-hover;
@@ -76,6 +76,15 @@
 
         &:hover {
             background-color: $btn-preset-bg-hover;
+        }
+    }
+
+    &.-excel {
+        background-color: $btn-excel-bg;
+        color: $btn-excel-color;
+
+        &:hover {
+            background-color: $btn-excel-bg-hover;
         }
     }
 }

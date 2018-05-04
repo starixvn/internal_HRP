@@ -266,6 +266,7 @@ input[type="text"][readonly] {
 .button.-add {
   background-color: #1ca041;
   color: #fff;
+  color: #fff;
 }
 
 .button.-add:hover {
@@ -307,6 +308,15 @@ input[type="text"][readonly] {
 
 .button.-preset:hover {
   background-color: #e6700a;
+}
+
+.button.-excel {
+  background-color: #00A659;
+  color: #fff;
+}
+
+.button.-excel:hover {
+  background-color: #008d4b;
 }
 
 button[disabled],

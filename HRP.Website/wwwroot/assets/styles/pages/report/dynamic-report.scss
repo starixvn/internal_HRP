@@ -1,0 +1,66 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../components/forms";
+@import "../../components/textbox";
+@import "../../components/buttons";
+@import "../../components/tables";
+@import "../../components/status";
+@import "../../components/customize-select2";
+
+select[multiple] {
+    height: 300px;
+    width: 210px;
+    padding: 0 6px;
+    optgroup {
+        margin-top: 6px;
+    }
+    option {
+        padding: 6px 6px 7px;
+        margin: 0 -6px;
+        &:hover, &:focus, &:active {
+            background: #DBDBDB;
+        }
+    }
+}
+
+.search-form .group .text.blue-txt {
+    color: #1973b2;
+}
+
+.icon-excel:before {
+    font-size: 18px;
+    position: relative;
+    top: 2px;
+    left: -2px;
+}
+
+.list-button-function{
+    display: flex;
+    height: 300px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    .button {
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 10px;
+        color: #fff;
+        padding: 2px 10px;
+        &.-last-next, &.-last-prev{
+            background: #51758E;
+            &:hover {
+                background-color: darken(#51758E, 5%);
+            }
+        }
+        span:before {
+            font-size: 12px;
+        }
+        &.-next, &.-prev  {
+            background-color: #1973B2;
+            &:hover {
+                background-color: darken(#1973B2, 5%);
+            }
+
+        }
+    }
+}
