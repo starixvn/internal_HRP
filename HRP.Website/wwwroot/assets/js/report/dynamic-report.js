@@ -22,7 +22,6 @@
 
     function initSelect2() {
         $('.select2').select2({
-            allowClear: true,
             minimumResultsForSearch: Infinity
         });
     }

@@ -7,10 +7,10 @@
     {
         public int CompanyId { get; set; }
 
-        public DateTime Month { get; set; }
+        public string EmployeeStatusIds { get; set; }
 
         public override string GetSettingKey() => "Report_GetEmployeeDataForDynamicReport";
 
-        public override bool IsValid() => CompanyId > 0;
+        public override bool IsValid() => CompanyId > 0 && !string.IsNullOrEmpty(EmployeeStatusIds);
     }
 }

@@ -233,7 +233,7 @@
             return View("MonthlyPayroll", viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
         public async Task<IActionResult> DynamicReport()
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
@@ -253,7 +253,6 @@
 
             var viewModel = new GenerateReportViewModel
             {
-                SelectedTime = DateTime.Today,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 EmployeeStatuses = JsonConvert.SerializeObject(employeeStatuses, new JsonSerializerSettings
                 {
@@ -268,20 +267,23 @@
             return View("DynamicReport", viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
         [HttpPost]
         public async Task<IActionResult> DynamicReport(GenerateReportViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria { CompanyId = viewModel.CompanyId, Month = viewModel.SelectedTime });
+                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria {
+                    CompanyId = viewModel.CompanyId,
+                    EmployeeStatusIds = viewModel.EmployeeStatusIds
+                });
 
                 var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse));
 
-                return File(data, MimeType.XLSX, $"Report_{viewModel.SelectedTime.ToString("MM-yyyy")}_Company-{viewModel.CompanyId}.xlsx");
+                return File(data, MimeType.XLSX, $"DynamicReport_Company-{viewModel.CompanyId}.xlsx");
             }
 
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            var companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("DynamicReport", viewModel);

@@ -8,8 +8,6 @@
 
     public class GenerateReportViewModel
     {
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
-        public DateTime SelectedTime { get; set; }
 
         [Required]
         public int CompanyId { get; set; }
