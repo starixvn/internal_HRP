@@ -18,6 +18,9 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @DirectBankingRefName NVARCHAR(50) = 'PaymentTransactionDirectBanking'
+			,@CashRefName NVARCHAR(50) = 'PaymentTransactionCash'
+
 	-- Check Permission on Company
 	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, 'DirectBankingReport') = 0 -- don't have read permission
 	BEGIN
@@ -82,58 +85,58 @@ BEGIN
 			) c(BankCurrencyId, BankAmount, BankAccountId)
 		WHERE BankCurrencyId IS NOT NULL
 
-		SELECT Company.Code + Employment.EmployeeCode AS IDNo
-			,Employee.Nickname
-			,BankAccount.BeneficiaryName
-			,BankAccount.BankName
-			,BankAccount.BankBranch
-			,BankAccount.BankAddress
-			,BankAccount.BankSwiftCode
-			,BankAccount.AccountNumber
-			,RefResource.[Value] AS PaymentTransaction
-			,#MinimalMonthly.BankAmount AS Amount
-			,Currency.CurrencyCode
-		FROM dbo.MonthlyPayroll WITH (NOLOCK)
-			INNER JOIN #MinimalMonthly WITH (NOLOCK) ON MonthlyPayroll.PayrollId = #MinimalMonthly.PayrollId
-			INNER JOIN dbo.BankAccount WITH (NOLOCK) ON BankAccount.Id = #MinimalMonthly.BankAccountId
-			INNER JOIN dbo.Currency WITH (NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
-			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
-			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionDirectBanking'
-			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
-			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 2
-			AND #SelectedPaymentTransactions.PaymentTransactionId = RefResource.ResourceId
-			AND #SelectedPaymentTransactions.BankTypeId = BankAccount.BankType
-		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
-			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
-			AND Employment.CompanyId = @CompanyId
-		ORDER BY BankAccount.BankName ASC
-			,Employee.Nickname ASC
+		SELECT com.Code + ep.EmployeeCode AS IDNo
+			,e.Nickname
+			,ba.BeneficiaryName
+			,ba.BankName
+			,ba.BankBranch
+			,ba.BankAddress
+			,ba.BankSwiftCode
+			,ba.AccountNumber
+			,ref.[Value] AS PaymentTransaction
+			,mm.BankAmount AS Amount
+			,cur.CurrencyCode
+		FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
+			INNER JOIN #MinimalMonthly AS mm WITH (NOLOCK) ON mp.PayrollId = mm.PayrollId
+			INNER JOIN dbo.BankAccount AS ba WITH (NOLOCK) ON ba.Id = mm.BankAccountId
+			INNER JOIN dbo.Currency AS cur WITH (NOLOCK) ON mm.BankCurrencyId = cur.CurrencyId
+			INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
+			INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = mp.EmployeeId
+			INNER JOIN dbo.Company AS com WITH (NOLOCK) ON ep.CompanyId = com.CompanyId
+			INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = @DirectBankingRefName
+			AND ref.ResourceId = ba.PaymentTransactionId
+			INNER JOIN #SelectedPaymentTransactions AS spt ON spt.BankTypeId = 2
+			AND spt.PaymentTransactionId = ref.ResourceId
+			AND spt.BankTypeId = ba.BankType
+		WHERE YEAR(mp.[Month]) = YEAR(@month) 
+			AND MONTH(mp.[Month]) = MONTH(@month)
+			AND ep.CompanyId = @CompanyId
+		ORDER BY ba.BankName ASC
+			,e.Nickname ASC
 
 		-- Cash
-		SELECT Company.Code + Employment.EmployeeCode AS IDNo
-			,Employee.Nickname
-			,Employee.FullName AS BeneficiaryName
+		SELECT com.Code + ep.EmployeeCode AS IDNo
+			,e.Nickname
+			,e.FullName AS BeneficiaryName
 			,NULL AS BankName
 			,NULL AS AccountNumber
-			,RefResource.[Value] AS PaymentTransaction
-			,MonthlySalary.CashAmount AS Amount
-			,Currency.CurrencyCode
-		FROM dbo.MonthlyPayroll WITH (NOLOCK)
-			INNER JOIN dbo.MonthlySalary WITH (NOLOCK) ON MonthlyPayroll.PayrollId = MonthlySalary.PayrollId
-			INNER JOIN dbo.Currency WITH (NOLOCK) ON MonthlySalary.CashCurrencyId = Currency.CurrencyId
-			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
-			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
-			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3
-			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
-			AND RefResource.ResourceId = MonthlySalary.CashAccountId
-		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
-			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
-			AND Employment.CompanyId = @CompanyId
-		ORDER BY Employee.Nickname ASC
+			,ref.[Value] AS PaymentTransaction
+			,ms.CashAmount AS Amount
+			,cur.CurrencyCode
+		FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
+			INNER JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
+			INNER JOIN dbo.Currency AS cur WITH (NOLOCK) ON ms.CashCurrencyId = cur.CurrencyId
+			INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
+			INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = mp.EmployeeId
+			INNER JOIN dbo.Company AS com WITH (NOLOCK) ON ep.CompanyId = com.CompanyId
+			INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = @CashRefName
+			INNER JOIN #SelectedPaymentTransactions AS spt ON spt.BankTypeId = 3
+			AND ref.ResourceId = spt.PaymentTransactionId
+			AND ref.ResourceId = ms.CashAccountId
+		WHERE YEAR(mp.[Month]) = YEAR(@month)
+			AND MONTH(mp.[Month]) = MONTH(@month)
+			AND ep.CompanyId = @CompanyId
+		ORDER BY e.Nickname ASC
 	END
 	ELSE -- Allowances
 	BEGIN
@@ -162,58 +165,58 @@ BEGIN
 			) c(BankCurrencyId, BankAmount, BankAccountId)
 		WHERE BankCurrencyId IS NOT NULL
 
-		SELECT Company.Code + Employment.EmployeeCode AS IDNo
-			,Employee.Nickname
-			,BankAccount.BeneficiaryName
-			,BankAccount.BankName
-			,BankAccount.BankBranch
-			,BankAccount.BankAddress
-			,BankAccount.BankSwiftCode
-			,BankAccount.AccountNumber
-			,RefResource.[Value] AS PaymentTransaction
-			,#MinimalMonthly.BankAmount AS Amount
-			,Currency.CurrencyCode
+		SELECT com.Code + ep.EmployeeCode AS IDNo
+			,e.Nickname
+			,ba.BeneficiaryName
+			,ba.BankName
+			,ba.BankBranch
+			,ba.BankAddress
+			,ba.BankSwiftCode
+			,ba.AccountNumber
+			,ref.[Value] AS PaymentTransaction
+			,mm.BankAmount AS Amount
+			,cur.CurrencyCode
 		FROM dbo.MonthlyPayroll WITH (NOLOCK)
-			INNER JOIN #MinimalMonthly WITH (NOLOCK) ON MonthlyPayroll.PayrollId = #MinimalMonthly.PayrollId
-			INNER JOIN dbo.BankAccount WITH (NOLOCK) ON BankAccount.Id = #MinimalMonthly.BankAccountId
-			INNER JOIN dbo.Currency WITH (NOLOCK) ON #MinimalMonthly.BankCurrencyId = Currency.CurrencyId
-			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
-			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionDirectBanking'
-			AND RefResource.ResourceId = BankAccount.PaymentTransactionId
-			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 2
-			AND #SelectedPaymentTransactions.PaymentTransactionId = RefResource.ResourceId
-			AND #SelectedPaymentTransactions.BankTypeId = BankAccount.BankType
+			INNER JOIN #MinimalMonthly AS mm WITH (NOLOCK) ON MonthlyPayroll.PayrollId = mm.PayrollId
+			INNER JOIN dbo.BankAccount AS ba WITH (NOLOCK) ON ba.Id = mm.BankAccountId
+			INNER JOIN dbo.Currency AS cur WITH (NOLOCK) ON mm.BankCurrencyId = cur.CurrencyId
+			INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = MonthlyPayroll.EmployeeId
+			INNER JOIN dbo.Company AS com WITH (NOLOCK) ON ep.CompanyId = com.CompanyId
+			INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = @DirectBankingRefName
+			AND ref.ResourceId = ba.PaymentTransactionId
+			INNER JOIN #SelectedPaymentTransactions AS spt ON spt.BankTypeId = 2
+			AND spt.PaymentTransactionId = ref.ResourceId
+			AND spt.BankTypeId = ba.BankType
 		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
 			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
-			AND Employment.CompanyId = @CompanyId
-		ORDER BY BankAccount.BankName ASC
-			,Employee.Nickname ASC
+			AND ep.CompanyId = @CompanyId
+		ORDER BY ba.BankName ASC
+			,e.Nickname ASC
 
 		-- Cash
-		SELECT Company.Code + Employment.EmployeeCode AS IDNo
-			,Employee.Nickname
-			,Employee.FullName AS BeneficiaryName
+		SELECT com.Code + ep.EmployeeCode AS IDNo
+			,e.Nickname
+			,e.FullName AS BeneficiaryName
 			,NULL AS BankName
 			,NULL AS AccountNumber
-			,RefResource.[Value] AS PaymentTransaction
-			,MonthlyAllowance.CashAmount AS Amount
-			,Currency.CurrencyCode
-		FROM dbo.MonthlyPayroll WITH (NOLOCK)
-			INNER JOIN dbo.MonthlyAllowance WITH (NOLOCK) ON MonthlyPayroll.PayrollId = MonthlyAllowance.PayrollId
-			INNER JOIN dbo.Currency WITH (NOLOCK) ON MonthlyAllowance.CashCurrencyId = Currency.CurrencyId
-			INNER JOIN dbo.Employee WITH (NOLOCK) ON Employee.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Employment WITH (NOLOCK) ON Employment.EmployeeId = MonthlyPayroll.EmployeeId
-			INNER JOIN dbo.Company WITH (NOLOCK) ON Employment.CompanyId = Company.CompanyId
-			INNER JOIN dbo.RefResource WITH (NOLOCK) ON RefResource.RefName = 'PaymentTransactionCash'
-			INNER JOIN #SelectedPaymentTransactions ON #SelectedPaymentTransactions.BankTypeId = 3
-			AND RefResource.ResourceId = #SelectedPaymentTransactions.PaymentTransactionId
-			AND RefResource.ResourceId = MonthlyAllowance.CashAccountId
-		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
-			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
-			AND Employment.CompanyId = @CompanyId
-		ORDER BY Employee.Nickname ASC
+			,ref.[Value] AS PaymentTransaction
+			,ma.CashAmount AS Amount
+			,cur.CurrencyCode
+		FROM dbo.MonthlyPayroll AS mm WITH (NOLOCK)
+			INNER JOIN dbo.MonthlyAllowance as ma WITH (NOLOCK) ON mm.PayrollId = ma.PayrollId
+			INNER JOIN dbo.Currency AS cur WITH (NOLOCK) ON ma.CashCurrencyId = cur.CurrencyId
+			INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = mm.EmployeeId
+			INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = mm.EmployeeId
+			INNER JOIN dbo.Company AS com WITH (NOLOCK) ON ep.CompanyId = com.CompanyId
+			INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = @CashRefName
+			INNER JOIN #SelectedPaymentTransactions AS spt ON spt.BankTypeId = 3
+			AND ref.ResourceId = spt.PaymentTransactionId
+			AND ref.ResourceId = ma.CashAccountId
+		WHERE YEAR(mm.[Month]) = YEAR(@month)
+			AND MONTH(mm.[Month]) = MONTH(@month)
+			AND ep.CompanyId = @CompanyId
+		ORDER BY e.Nickname ASC
 	END
 
 	-- Company
@@ -224,12 +227,12 @@ BEGIN
 	-- Get Payment transaction's names that were selected by user
 	SELECT ref.[Value]
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
-		INNER JOIN #SelectedPaymentTransactions AS pt WITH (NOLOCK) ON ref.ResourceId = pt.PaymentTransactionId
+		INNER JOIN #SelectedPaymentTransactions AS spt WITH (NOLOCK) ON ref.ResourceId = spt.PaymentTransactionId
 		AND ref.RefName =
 		CASE
-			WHEN pt.BankTypeId = 3
-			THEN 'PaymentTransactionCash'
-			ELSE 'PaymentTransactionDirectBanking'
+			WHEN spt.BankTypeId = 3
+			THEN @CashRefName
+			ELSE @DirectBankingRefName
 		END
 
 	DROP TABLE #SelectedPaymentTransactions
