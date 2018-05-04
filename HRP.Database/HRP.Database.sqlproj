@@ -149,7 +149,6 @@
     <Build Include="dbo\Stored Procedures\Report_GetSelectedColumns.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetEmployeeDataForDynamicReport.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForDynamicReport.sql" />
-    <Build Include="dbo\Stored Procedures\Report_GetBankIn.sql" />
     <Build Include="dbo\Stored Procedures\RefResource_Update.sql" />
     <Build Include="dbo\Stored Procedures\RefResource_GetByNames.sql" />
     <Build Include="dbo\Stored Procedures\RefResource_GetByNameAndId.sql" />
