@@ -66,7 +66,8 @@ BEGIN
 	WHERE mbs.PayrollId = @PayrollId
 
 	SELECT PayrollId
-		,CurrencyId
+		,ms.CurrencyId
+		,c.CurrencyCode
 		,Salary
 		,EbankingCurrencyId
 		,EbankingAmount
@@ -97,6 +98,7 @@ BEGIN
 		LEFT JOIN dbo.BankAccount AS badb2 WITH (NOLOCK) ON ms.DirectBanking2AccountId = badb2.Id
 		LEFT JOIN dbo.RefResource AS refdb2 WITH (NOLOCK) ON badb2.PaymentTransactionId = refdb2.ResourceId
 		AND refdb2.RefName = 'PaymentTransactionDirectBanking'
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON ms.CurrencyId = c.CurrencyId
 	WHERE ms.PayrollId = @PayrollId
 
 	SELECT msa.PayrollId

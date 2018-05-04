@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[Report_GetEmployeeDataForDynamicReport] 
-	@Month DATE
+	@EmployeeStatusIds VARCHAR(200)
 	,@CompanyId INT
 AS
 /*
@@ -21,33 +21,49 @@ BEGIN
 	,dm.Name AS 'Department'
 	,cc.Name AS 'CostCenter'
 	,s.Name AS 'Section'
-	,mbs.AfterAdjustmentAmount AS 'ActualBasicSalaryAmount'
-	,mbsc.CurrencyCode AS 'ActualBasicSalaryCurrency'
-	,mbs.Salary AS 'BasicSalaryAmount'
-	,mbsc.CurrencyCode AS 'BasicSalaryCurrency'
-	,ms.AdditionAmount AS 'BasicSalaryAdditionAmount'
-	,CASE WHEN ms.AdditionAmount IS NOT NULL AND ms.AdditionAmount <> '' THEN msc.CurrencyCode
-	ELSE NULL END AS 'BasicSalaryAdditionCurrency'
-	,ms.DeductionAmount AS 'BasicSalaryDeductionAmount'
-	,CASE WHEN ms.DeductionAmount IS NOT NULL AND ms.DeductionAmount <> '' THEN msc.CurrencyCode
-	ELSE NULL END AS 'BasicSalaryDeductionCurrency'
-	,ms.Salary AS 'NetAmount'
-	,msc.CurrencyCode AS 'NetCurrency'
-	,mba.SubsistenceAmount
+	,epbs.Salary
+	,epbs.CurrencyId
+	,bsc.CurrencyCode AS 'BasicSalaryCurrency'
+	,epbs.EbankingCurrencyId
+	,epbs.EbankingAmount
+	,epbs.DirectBanking1CurrencyId
+	,epbs.DirectBanking1Amount
+	,epbs.DirectBanking2CurrencyId
+	,epbs.DirectBanking2Amount
+	,epbs.CashCurrencyId
+	,epbs.CashAmount
+	,epbs.AutoCalculateOn
+	,epa.CurrencyId
+	,epa.DirectBanking1CurrencyId
+	,epa.DirectBanking1Amount
+	,epa.DirectBanking2CurrencyId
+	,epa.DirectBanking2Amount
+	,epa.CashCurrencyId
+	,epa.CashAmount
+	,epa.AutoCalculateOn
+	,epa.SubsistenceAmount
+	,epa.SubsistenceCurrencyId
 	,sstc.CurrencyCode AS 'SubsistenceCurrency'
-	,mba.HousingAmount
+	,epa.HousingAmount
+	,epa.HousingCurrencyId
 	,hc.CurrencyCode AS 'HousingCurrency'
-	,mba.HomePassageAmount
+	,epa.HomePassageAmount
+	,epa.HomePassageCurrencyId
 	,hpc.CurrencyCode AS 'HomePassageCurrency'
-	,mba.DutyMealAmount
+	,epa.DutyMealAmount
+	,epa.DutyMealCurrencyId
 	,dmc.CurrencyCode AS 'DutyMealCurrency'
-	,mba.HPIAmount
+	,epa.HPIAmount
+	,epa.HPICurrencyId
 	,hpic.CurrencyCode AS 'HPICurrency'
-	,mba.MobilePhoneAmount
+	,epa.MobilePhoneAmount
+	,epa.MobilePhoneCurrencyId
 	,mpc.CurrencyCode AS 'MobilePhoneCurrency'
-	,mba.OthersAmount
+	,epa.OthersAmount
+	,epa.OthersCurrencyId
 	,otc.CurrencyCode AS 'OthersCurrency'
-	,mba.SecondmentAmount
+	,epa.SecondmentAmount
+	,epa.SecondmentCurrencyId
 	,smc.CurrencyCode AS 'SecondmentCurrency'
 	FROM dbo.Employee AS e WITH (NOLOCK)
 	INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
@@ -55,24 +71,24 @@ BEGIN
 	INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) on em.CostCenterId = cc.CostCenterId
 	INNER JOIN dbo.Department AS dm WITH (NOLOCK) ON em.DepartmentId = dm.DepartmentId
 	INNER JOIN dbo.Section AS s WITH (NOLOCK) ON em.SectionId = s.SectionId
-	LEFT JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
 
-	LEFT JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
-	LEFT JOIN dbo.Currency AS msc WITH (NOLOCK) ON ms.CurrencyId = msc.CurrencyId
+	LEFT JOIN dbo.EmployeePayrollBasicSalary AS epbs WITH (NOLOCK) ON e.EmployeeId = epbs.EmployeeId
+	LEFT JOIN dbo.Currency AS bsc WITH (NOLOCK) ON epbs.CurrencyId = bsc.CurrencyId
 
-	LEFT JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
-	LEFT JOIN dbo.Currency AS mbsc WITH (NOLOCK) ON mbs.CurrencyId = mbsc.CurrencyId
+	LEFT JOIN dbo.EmployeePayrollAllowance AS epa WITH (NOLOCK) ON e.EmployeeId = epa.EmployeeId
+	LEFT JOIN dbo.Currency AS sstc WITH (NOLOCK) ON epa.SubsistenceCurrencyId = sstc.CurrencyId
+	LEFT JOIN dbo.Currency AS hc WITH (NOLOCK) ON epa.HousingCurrencyId = hc.CurrencyId
+	LEFT JOIN dbo.Currency AS hpc WITH (NOLOCK) ON epa.HomePassageCurrencyId = hpc.CurrencyId
+	LEFT JOIN dbo.Currency AS dmc WITH (NOLOCK) ON epa.DutyMealCurrencyId = dmc.CurrencyId
+	LEFT JOIN dbo.Currency AS hpic WITH (NOLOCK) ON epa.HPICurrencyId = hpic.CurrencyId
+	LEFT JOIN dbo.Currency AS mpc WITH (NOLOCK) ON epa.MobilePhoneCurrencyId = mpc.CurrencyId
+	LEFT JOIN dbo.Currency AS otc WITH (NOLOCK) ON epa.OthersCurrencyId = otc.CurrencyId
+	LEFT JOIN dbo.Currency AS smc WITH (NOLOCK) ON epa.SecondmentCurrencyId = smc.CurrencyId
 
-	LEFT JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
-	LEFT JOIN dbo.Currency AS sstc WITH (NOLOCK) ON mba.SubsistenceCurrencyId = sstc.CurrencyId
-	LEFT JOIN dbo.Currency AS hc WITH (NOLOCK) ON mba.HousingCurrencyId = hc.CurrencyId
-	LEFT JOIN dbo.Currency AS hpc WITH (NOLOCK) ON mba.HomePassageCurrencyId = hpc.CurrencyId
-	LEFT JOIN dbo.Currency AS dmc WITH (NOLOCK) ON mba.DutyMealCurrencyId = dmc.CurrencyId
-	LEFT JOIN dbo.Currency AS hpic WITH (NOLOCK) ON mba.HPICurrencyId = hpic.CurrencyId
-	LEFT JOIN dbo.Currency AS mpc WITH (NOLOCK) ON mba.MobilePhoneCurrencyId = mpc.CurrencyId
-	LEFT JOIN dbo.Currency AS otc WITH (NOLOCK) ON mba.OthersCurrencyId = otc.CurrencyId
-	LEFT JOIN dbo.Currency AS smc WITH (NOLOCK) ON mba.SecondmentCurrencyId = smc.CurrencyId
-
-
-	WHERE em.CompanyId = @CompanyId AND YEAR(mp.Month) = YEAR(@Month) AND MONTH(mp.Month) = MONTH(@Month)
+	WHERE em.CompanyId = @CompanyId 
+	AND EXISTS (
+			SELECT 1
+			FROM dbo.strSplit('1,2', ',') AS s
+			WHERE em.EmploymentStatus = s.val
+		)
 END

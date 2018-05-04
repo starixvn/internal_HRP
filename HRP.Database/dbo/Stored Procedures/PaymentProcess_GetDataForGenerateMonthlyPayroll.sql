@@ -178,27 +178,25 @@ BEGIN
 		LEFT JOIN #tblLastMonthSalary AS os WITH (NOLOCK) ON bs.EmployeeId = os.EmployeeId
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON bs.EmployeeId = p.EmployeeId
 		LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON bs.CurrencyId = c1.CurrencyId
-		AND c1.IsActive = 1
 		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON bs.[EbankingCurrencyId] = c2.CurrencyId
-		AND c2.IsActive = 1
 		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON bs.[DirectBanking1CurrencyId] = c3.CurrencyId
-		AND c3.IsActive = 1
 		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON bs.[DirectBanking2CurrencyId] = c4.CurrencyId
-		AND c4.IsActive = 1
 		LEFT JOIN dbo.Currency AS c5 WITH (NOLOCK) ON bs.[CashCurrencyId] = c5.CurrencyId
-		AND c5.IsActive = 1
 
 	-- Get MonthlyBasicAllowance
 	SELECT p.[EmployeeId]
-		,a.[CurrencyId]
-		,c.CurrencyCode
+		,ba.[CurrencyId]
+		,c1.CurrencyCode
 		,[DirectBanking1CurrencyId]
+		,c2.CurrencyCode AS DirectBanking1CurrencyCode
 		,[DirectBanking1Amount]
 		,[DirectBanking1AccountId]
 		,[DirectBanking2CurrencyId]
+		,c3.CurrencyCode AS DirectBanking2CurrencyCode
 		,[DirectBanking2Amount]
 		,[DirectBanking2AccountId]
 		,[CashCurrencyId]
+		,c4.CurrencyCode AS CashCurrencyCode
 		,[CashAmount]
 		,[CashAccountId]
 		,[AutoCalculateOn]
@@ -222,10 +220,13 @@ BEGIN
 		,d.RoomingChargesAmount
 		,d.FitnessFirstCurrencyId
 		,d.FitnessFirstAmount
-	FROM [dbo].[EmployeePayrollAllowance] AS a WITH (NOLOCK)
-		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = a.CurrencyId
-		LEFT JOIN dbo.EmployeePayrollDeduction AS d WITH (NOLOCK) ON a.EmployeeId = d.EmployeeId
-		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON a.EmployeeId = p.EmployeeId
+	FROM [dbo].[EmployeePayrollAllowance] AS ba WITH (NOLOCK)
+		LEFT JOIN dbo.EmployeePayrollDeduction AS d WITH (NOLOCK) ON ba.EmployeeId = d.EmployeeId
+		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON ba.EmployeeId = p.EmployeeId
+		LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON ba.CurrencyId = c1.CurrencyId 
+		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON ba.[DirectBanking1CurrencyId] = c2.CurrencyId
+		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON ba.[DirectBanking2CurrencyId] = c3.CurrencyId
+		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON ba.[CashCurrencyId] = c4.CurrencyId
 
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate

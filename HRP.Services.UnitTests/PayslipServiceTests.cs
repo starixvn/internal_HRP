@@ -61,9 +61,9 @@
         }
 
         [Theory]
-        [InlineData(11, "1,000.00")]
-        [InlineData(1, "1,234.00")]
-        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId, string expectedAmount)
+        [InlineData(11, "vnd", "1,000.00")]
+        [InlineData(1, "eur", "1,234.00")]
+        public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId, string currencyCode, string expectedAmount)
         {
             // Arrange
             var plainText = "1234";
@@ -72,7 +72,9 @@
                 new PayslipDetailModel
                 {
                     SalaryCurrencyId = currencyId,
+                    SalaryCurrencyCode = currencyCode,
                     AllowanceCurrencyId = currencyId,
+                    AllowanceCurrencyCode = currencyCode,
                     SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
                     AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },

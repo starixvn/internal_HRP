@@ -665,10 +665,11 @@
         }
 
         [Theory]
-        [InlineData(1, "2000.00", "12000.00")]
-        [InlineData(11, "2000", "12000")]
+        [InlineData(1, "eur", "2000.00", "12000.00")]
+        [InlineData(11, "vnd", "2000", "12000")]
         public void CalculateBackPay_AnnualIncrement_EffectiveMonthGreaterThanWorkingMonth_ReturnAsExpectedBackPayAndAfterAdjustment(
             int currencyId,
+            string currencyCode,
             string backPayAmount,
             string afterAdjustmentAmount)
         {
@@ -684,6 +685,7 @@
                 OldCurrencyId = 1,
                 Salary = "12000",
                 CurrencyId = currencyId,
+                CurrencyCode = currencyCode,
                 SalaryChangeReason = BasicSalaryChangeReason.AnnualIncrement,
                 EffectiveDate = new DateTime(2018, 2, 1)
             };

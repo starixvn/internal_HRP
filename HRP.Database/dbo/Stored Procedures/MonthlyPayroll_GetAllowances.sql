@@ -50,8 +50,10 @@ BEGIN
 		,[UnitAmount]
 		,[TotalAmount]
 		,[NetAllowance]
-		,[CurrencyId]
-	FROM [dbo].[MonthlyAllowanceAddition] WITH (NOLOCK)
+		,a.[CurrencyId]
+		,c.CurrencyCode
+	FROM [dbo].[MonthlyAllowanceAddition] a WITH (NOLOCK)
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
 	WHERE PayrollId = @PayrollId
 	ORDER BY [Type]
 
@@ -61,8 +63,10 @@ BEGIN
 		,[UnitAmount]
 		,[TotalAmount]
 		,[NetAllowance]
-		,[CurrencyId]
-	FROM [dbo].[MonthlyAllowanceDeduction] WITH (NOLOCK)
+		,d.[CurrencyId]
+		,c.CurrencyCode
+	FROM [dbo].[MonthlyAllowanceDeduction] AS d WITH (NOLOCK)
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON d.CurrencyId = c.CurrencyId
 	WHERE PayrollId = @PayrollId
 	ORDER BY [Type]
 
