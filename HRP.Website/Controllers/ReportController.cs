@@ -63,7 +63,6 @@
             return Json(paymentOptions);
         }
 
-
         [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetDirectBankingPaymentTransactions()
         {
@@ -194,7 +193,7 @@
             return result;
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         public async Task<IActionResult> MonthlyPayroll()
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
@@ -207,7 +206,7 @@
             return View("MonthlyPayroll", viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.Report, Policy = Policy.Read)]
+        [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         [HttpPost]
         public async Task<IActionResult> MonthlyPayroll(MonthlyPayrollReportViewModel viewModel)
         {

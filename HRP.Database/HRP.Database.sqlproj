@@ -273,6 +273,8 @@
     <Build Include="dbo\Stored Procedures\BankAccount_Create.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForMonthlyPayrollReport.sql" />
     <PostDeploy Include="Storage\Menu_PaymentTransactionReports.sql" />
+    <Build Include="dbo\Stored Procedures\Report_GetDataForEbankingReport.sql" />
+    <Build Include="dbo\Stored Procedures\Report_GetDataForDirectBankingReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Storage\Function_PaymentTransactionReports.sql" />

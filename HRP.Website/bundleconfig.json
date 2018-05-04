@@ -179,6 +179,14 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/report/css/monthly-payroll.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/assets/styles/pages/employee/employee-management.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
@@ -544,6 +552,22 @@
       "wwwroot/lib/datatables.net-bs/css/dataTables.bootstrap.css",
       "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/assets/styles/pages/employee/bank-details.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/report/js/monthly-payroll.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/assets/js/report/monthly-payroll.js"
     ],
     "minify": {
       "enabled": true,
