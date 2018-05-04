@@ -44,8 +44,11 @@
 
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
 
-            DecryptBankInAmount(bankInData.EBankingBankIns);
-            DecryptBankInAmount(bankInData.CashBankIns);
+            if (bankInData != null)
+            {
+                DecryptBankInAmount(bankInData.EBankingBankIns);
+                DecryptBankInAmount(bankInData.CashBankIns);
+            }
 
             return bankInData;
         }

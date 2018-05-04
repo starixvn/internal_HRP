@@ -16,13 +16,18 @@
             {
                 using (IMultiResultReader results = await database.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var bankInReport = new BankInReport
+                    BankInReport bankInReport = null;
+
+                    if (!results.IsEmptyOrClosed)
                     {
-                        EBankingBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                        CashBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                        CompanyName = await results.ReadSingleAsync<string>().ConfigureAwait(false),
-                        SelectedPaymentTransactions = await results.ReadAsync<string>().ConfigureAwait(false)
-                    };
+                        bankInReport = new BankInReport
+                        {
+                            EBankingBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
+                            CashBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
+                            CompanyName = await results.ReadSingleAsync<string>().ConfigureAwait(false),
+                            SelectedPaymentTransactions = await results.ReadAsync<string>().ConfigureAwait(false)
+                        };
+                    }
 
                     return bankInReport;
                 }
