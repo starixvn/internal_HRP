@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Services;
     using HRP.Models.Currency;
@@ -126,33 +127,7 @@
 
                     if (IsValidRow(row))
                     {
-                        var currentRowNumber = row.RowNum + 1;
-                        var record = new DSTNetSalaryUploading
-                        {
-                            RowNumber = currentRowNumber,
-                            EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
-                            Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
-                            NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
-                        };
-
-                        var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
-                        var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
-                        var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
-#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        if (checkNetSalaryReceived.IsValid)
-#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        {
-                            decimal.TryParse(record.NetSalaryReceived, out decimal salary);
-                            salary = string.Equals(record.Currency, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase) ? Math.Round(salary) : Math.Round(salary, 2);
-                            record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
-                        }
-
-                        AddToDSTNetSalaryValidationResults(checkEmployeeCode);
-                        AddToDSTNetSalaryValidationResults(checkCurrency);
-                        AddToDSTNetSalaryValidationResults(checkNetSalaryReceived);
-
-                        record.NetSalaryReceived = cryptoService.Encrypt(record.NetSalaryReceived);
-                        dstNetSalaryUploading.Add(record);
+                        ValidateDSTNetSalaryRow(row, headers, template);
                     }
                 }
 
@@ -165,6 +140,35 @@
             {
                 return new Failure<DSTNetSalaryTemplate>(Message.ErrorOccuredWhileReadingTemplate);
             }
+        }
+
+        private void ValidateDSTNetSalaryRow(IRow row, ILookup<string, int> headers, DSTNetSalaryTemplate template)
+        {
+            var currentRowNumber = row.RowNum + 1;
+            var record = new DSTNetSalaryUploading
+            {
+                RowNumber = currentRowNumber,
+                EmployeeCode = GetStringValueAtCell(DSTNetSalaryColumn.IDNo, headers, row),
+                Currency = GetStringValueAtCell(DSTNetSalaryColumn.Currency, headers, row),
+                NetSalaryReceived = GetStringValueAtCell(DSTNetSalaryColumn.NetSalaryReceived, headers, row)
+            };
+
+            var checkEmployeeCode = CheckEmployeeCode(record.EmployeeCode, currentRowNumber, template.CompanyCode, template.EmployeeCodeList, dstNetSalaryUploading);
+            var checkCurrency = CheckCurrency(record.Currency, currentRowNumber, template.Currencies);
+            var checkNetSalaryReceived = CheckNetSalaryReceived(record.NetSalaryReceived, currentRowNumber);
+            if (checkNetSalaryReceived.IsValid)
+            {
+                decimal.TryParse(record.NetSalaryReceived, out decimal salary);
+                salary = string.Equals(record.Currency, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase) ? Math.Round(salary) : Math.Round(salary, 2);
+                record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
+            }
+
+            AddToDSTNetSalaryValidationResults(checkEmployeeCode);
+            AddToDSTNetSalaryValidationResults(checkCurrency);
+            AddToDSTNetSalaryValidationResults(checkNetSalaryReceived);
+
+            record.NetSalaryReceived = cryptoService.Encrypt(record.NetSalaryReceived);
+            dstNetSalaryUploading.Add(record);
         }
 
         private static bool IsValidDSTNetSalarySheet(ILookup<string, int> headers)
@@ -197,17 +201,17 @@
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
             else if (!currencies.Any(s => string.Equals(value, s.CurrencyCode, StringComparison.OrdinalIgnoreCase)))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.CurrencyNotExists);
             }
             else
             {
-                result.ResultType = 1;
+                result.ResultType = (int)ValidationResultType.Success;
             }
 
             return result;
@@ -223,17 +227,17 @@
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
             else if (!decimal.TryParse(value, out decimal number))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMustBeANumber, columnName);
             }
             else
             {
-                result.ResultType = 1;
+                result.ResultType = (int)ValidationResultType.Success;
             }
 
             return result;
@@ -251,22 +255,22 @@
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
             else if (!employeeCodeList.Any(s => string.Equals(value, s, StringComparison.OrdinalIgnoreCase)))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.IDNoNotExistIn, companyName);
             }
             else if (checkedRecords.Any(s => string.Equals(value, s.EmployeeCode, StringComparison.OrdinalIgnoreCase)))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = Message.IDNoIsDuplicated;
             }
             else
             {
-                result.ResultType = 1;
+                result.ResultType = (int)ValidationResultType.Success;
             }
 
             return result;
@@ -289,22 +293,22 @@
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
             else if (!double.TryParse(value, out double number))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMustBeANumber, columnName);
             }
             else if (!(number >= 0 && number <= maxValue))
             {
-                result.ResultType = 2;
+                result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMustBeGreaterAndNotExceed, columnName, maxValue);
             }
             else
             {
-                result.ResultType = 1;
+                result.ResultType = (int)ValidationResultType.Success;
             }
 
             return result;

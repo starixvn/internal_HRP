@@ -454,12 +454,12 @@
             return reader;
         }
 
-        private ICryptoService FakeCryptoService()
+        private static ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
         }
 
-        private IRow FakeAttendanceHeaderRow()
+        private static IRow FakeAttendanceHeaderRow()
         {
             var fakeCellIDNo = Substitute.For<ICell>();
             fakeCellIDNo.ColumnIndex.Returns(1);
@@ -477,7 +477,7 @@
             return fakeHeaderRow;
         }
 
-        private IRow FakeRow(int rowIndex, string firstCellValue, string secondCellValue, string thirdCellValue = "")
+        private static IRow FakeRow(int rowIndex, string firstCellValue, string secondCellValue, string thirdCellValue = "")
         {
             var firstRichText = Substitute.For<IRichTextString>();
             firstRichText.String.Returns(firstCellValue);
@@ -520,7 +520,7 @@
             return fakeRow;
         }
 
-        private IRow FakeDSTNetSalaryHeaderRow()
+        private static IRow FakeDSTNetSalaryHeaderRow()
         {
             var fakeCellIDNo = Substitute.For<ICell>();
             fakeCellIDNo.ColumnIndex.Returns(1);

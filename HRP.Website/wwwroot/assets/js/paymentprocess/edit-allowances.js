@@ -35,7 +35,7 @@
 
         $("#total-addition").val(totalAddition.toString());
         $("#total-addition-display").val(totalAddition.roundWithCurrency(0, totalAmountCurrencyId).toString());
-    };
+    }
 
     function calculateTotalDeduction() {
         var totalDeduction = new BigNumber(0);
@@ -45,7 +45,7 @@
 
         $("#total-deduction").val(totalDeduction.toString());
         $("#total-deduction-display").val(totalDeduction.roundWithCurrency(0, totalAmountCurrencyId).toString());
-    };
+    }
 
     function calculateTotalAmount() {
         var totalAmount = new BigNumber(Number($('#BasicAllowance_AfterAdjustmentAmount').val()));
@@ -126,8 +126,8 @@
                 allowMinus: false,
                 groupSeparator: ',',
                 autoUnmask: true,
-                removeMaskOnSubmit: true,
-            })
+                removeMaskOnSubmit: true
+            });
 
         $('.bank-amount-setting, .net-allowance-display, #total-addition-display, #total-deduction-display').inputmask({
             alias: 'numeric',
@@ -136,8 +136,8 @@
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,
-            removeMaskOnSubmit: true,
-        })
+            removeMaskOnSubmit: true
+        });
     }
 
     function initSelect2() {
@@ -194,7 +194,7 @@
             var $relatedElement = $('[data-group="' + dataGroup + '"]').not($element);
             var relatedElementValues = $relatedElement.map(function (i, element) {
                 if (element.value !== '') {
-                    return element.value
+                    return element.value;
                 }
             });
 
@@ -237,7 +237,7 @@
 
     function initEvents() {
         $('.bank-amount-setting:enabled:not([readonly])').on('keydown', function (e) {
-            if (e.keyCode == 189) {
+            if (e.keyCode === 189) {
                 e.preventDefault();
             }
         });
@@ -304,7 +304,7 @@
                     $totalAmount.val(totalAmount.toString());
                     $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
                 } else {
-                    totalAmount = unitAmount
+                    totalAmount = unitAmount;
                     $totalAmount.val(totalAmount.toString());
                     $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
                 }
@@ -315,7 +315,7 @@
                     $netAllowance.val(netAllowance.toString());
                     $netAllowanceDisplay.val(netAllowance.roundWithCurrency(0, totalAmountCurrencyId).toString());
                 } else {
-                    $netAllowance.val('')
+                    $netAllowance.val('');
                     $netAllowanceDisplay.val('');
                 }
             } else {

@@ -317,7 +317,7 @@
                     redirectToPageEmployeeMonthlyPayroll();
                 }
 
-                hideLoadingAnimation();
+               // hideLoadingAnimation();
             },
             error: commonFunctions.handleAjaxError
         });
@@ -356,9 +356,8 @@
                     redirectToPageEmployeeMonthlyPayroll();
                 } else {
                     $(domElement.UploadFilesForm).validate().showErrors(response.errors);
-                }
-
-                hideLoadingAnimation();
+                    hideLoadingAnimation();
+                }               
             },
             error: commonFunctions.handleAjaxError
         });
