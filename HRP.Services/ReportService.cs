@@ -29,8 +29,6 @@
             this.reportRepository = reportRepository ?? new ReportRepository();
         }
 
-
-
         public async Task<BankInReport> GetDirectBankingBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions)
         {
             var criteria = new GetDataForDirectBankingReportCriteria
@@ -104,8 +102,10 @@
             report.CompanyCode = report.Employees?.FirstOrDefault()?.CompanyCode;
             report.Month = month;
 
+            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
+            var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);
-            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate);
+            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate, MYRCurrencyId, USDCurrencyId);
             DecryptMonthlyBasicAllowanceListAndConvertAmount(report.MonthlyBasicAllowance, report.CurrencyExchangeRate);
             DecryptMonthlyAllowanceListAndConvertAmount(report.MonthlyAllowance, report.CurrencyExchangeRate);
 
@@ -124,7 +124,10 @@
             }
         }
 
-        private void DecryptMonthlySalaryListAndConvertAmount(IEnumerable<MonthlySalaryModel> salaryList, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private void DecryptMonthlySalaryListAndConvertAmount(IEnumerable<MonthlySalaryModel> salaryList,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            int? MYRCurrencyId,
+            int? USDCurrencyId)
         {
             if (salaryList != null && salaryList.Any())
             {
@@ -138,12 +141,12 @@
                     salary.AdditionAmount = cryptoService.Decrypt(salary.AdditionAmount);
                     salary.DeductionAmount = cryptoService.Decrypt(salary.DeductionAmount);
 
-                    salary.SalaryAmountInMYR = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, Constants.MYRCurrencyId);
-                    salary.SalaryAmountInUSD = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, Constants.USDCurrencyId);
-                    salary.EbankingAmountInMYR = ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, Constants.MYRCurrencyId);
-                    salary.DirectBanking1AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, Constants.MYRCurrencyId);
-                    salary.DirectBanking2AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, Constants.MYRCurrencyId);
-                    salary.CashAmountInMYR = ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, Constants.MYRCurrencyId);
+                    salary.SalaryAmountInMYR = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, MYRCurrencyId);
+                    salary.SalaryAmountInUSD = ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, USDCurrencyId);
+                    salary.EbankingAmountInMYR = ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, MYRCurrencyId);
+                    salary.DirectBanking1AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, MYRCurrencyId);
+                    salary.DirectBanking2AmountInMYR = ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, MYRCurrencyId);
+                    salary.CashAmountInMYR = ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, MYRCurrencyId);
                 }
             }
         }

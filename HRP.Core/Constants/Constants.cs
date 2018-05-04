@@ -18,11 +18,11 @@ namespace HRP.Core.Constants
 
         public const string TemplateEmailOTPRegistraion = "wwwroot/EmailTemplates/EmailTemplateOTPRegistraion.cshtml";
 
-        public const int VietnamCurrencyId = 11;
+        public const string VNDCurrencyCode = "VND";
 
-        public const int USDCurrencyId = 10;
+        public const string USDCurrencyCode = "USD";
 
-        public const int MYRCurrencyId = 4;
+        public const string MYRCurrencyCode = "MYR";
 
         public const string RijndaelKey = "8080808080808080";
 

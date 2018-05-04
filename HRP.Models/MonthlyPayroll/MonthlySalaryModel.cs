@@ -16,6 +16,8 @@
 
         public int? CurrencyId { get; set; }
 
+        public string CurrencyCode { get; set; }
+
         public string Salary { get; set; }
 
         [XmlIgnore]

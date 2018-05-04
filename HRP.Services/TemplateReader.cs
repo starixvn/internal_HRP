@@ -143,7 +143,7 @@
 #pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         {
                             decimal.TryParse(record.NetSalaryReceived, out decimal salary);
-                            salary = record.Currency.ToLower(CultureInfo.InvariantCulture).Equals("vnd") ? Math.Round(salary) : Math.Round(salary, 2);
+                            salary = string.Equals(record.Currency, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase) ? Math.Round(salary) : Math.Round(salary, 2);
                             record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
                         }
 

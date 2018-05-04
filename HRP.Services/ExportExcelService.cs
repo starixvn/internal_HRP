@@ -421,13 +421,15 @@
             templateWorksheet.Cells[17, 2, 18, 5].Copy(worksheet.Cells[startRow, 2, startRow + 1, 5]);
 
             // Write data
+            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
+            var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             var rowWithStyle = templateWorksheet.Cells[19, 2, 19, 5];
             var row = startRow + 2;
             foreach (var currency in report.CurrencyList)
             {
                 rowWithStyle.Copy(worksheet.Cells[row, 2, row, 5]);
-                var exchangeRateToUSD = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == Constants.USDCurrencyId);
-                var exchangeRateToMYR = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == Constants.MYRCurrencyId);
+                var exchangeRateToUSD = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == USDCurrencyId);
+                var exchangeRateToMYR = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == MYRCurrencyId);
 
                 worksheet.Cells[row, 2].Value = currency.CurrencyCode;
                 worksheet.Cells[row, 4].Value = exchangeRateToUSD.ExchangeRate;
@@ -442,6 +444,8 @@
             templateWorksheet.Cells[18, 10, 18, 49].Copy(worksheet.Cells[startRow, 10, startRow, 49]);
 
             // Write data
+            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
+            var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             var rowWithStyle = templateWorksheet.Cells[19, 10, 19, 49];
             var row = startRow + 1;
             foreach (var currency in report.CurrencyList)
@@ -457,7 +461,7 @@
                 worksheet.Cells[row, 15].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
                 worksheet.Cells[row, 16].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
 
-                if (currency.CurrencyId == Constants.MYRCurrencyId)
+                if (currency.CurrencyId == MYRCurrencyId)
                 {
                     worksheet.Cells[row, 17].Value = report.MonthlySalary.Sum(x => x.EbankingAmountInMYR);
                     worksheet.Cells[row, 18].Value = report.MonthlySalary.Sum(x => x.DirectBanking1AmountInMYR);
@@ -466,7 +470,7 @@
                     worksheet.Cells[row, 21].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInMYR);
                 }
 
-                if (currency.CurrencyId == Constants.USDCurrencyId)
+                if (currency.CurrencyId == USDCurrencyId)
                 {
                     worksheet.Cells[row, 22].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
                 }

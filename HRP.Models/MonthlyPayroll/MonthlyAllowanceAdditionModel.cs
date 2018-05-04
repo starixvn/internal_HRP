@@ -36,6 +36,8 @@
 
         public int? CurrencyId { get; set; }
 
+        public string CurrencyCode { get; set; }
+
         [XmlIgnore]
         public string NetAllowanceToDisplay { get; set; }
     }

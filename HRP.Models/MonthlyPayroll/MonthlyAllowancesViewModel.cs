@@ -36,5 +36,7 @@
         public CachingFilterViewModel Filter { get; set; }
 
         public int DaysInMonth { get; set; }
+
+        public int VNDCurrencyId { get; set; }
     }
 }

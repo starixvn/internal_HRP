@@ -3,16 +3,17 @@
     var $editAllowanceForm;
     var workingDays;
     var daysInMonth;
+    var vietnamCurrencyId;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === '11')
+        if (currency === vietnamCurrencyId)
             return this.div(1000).round().mul(1000);
 
         return this.round(dp);
     };
 
     BigNumber.prototype.toStringWithCurrency = function (currency) {
-        if (currency === '11')
+        if (currency === vietnamCurrencyId)
             return this.toString();
 
         return this.toFixed(2);
@@ -351,6 +352,7 @@
         totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
         workingDays = $('#EmployeeInfo_WorkingDays').val();
         daysInMonth = $('#DaysInMonth').val();
+        vietnamCurrencyId = $('#VietnamCurrencyId').val();
 
         initSelect2();
         initInputMask();

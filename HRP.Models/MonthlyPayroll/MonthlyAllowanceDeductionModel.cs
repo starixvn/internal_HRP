@@ -38,5 +38,7 @@
         public string NetAllowanceToDisplay { get; set; }
 
         public int? CurrencyId { get; set; }
+
+        public string CurrencyCode { get; set; }
     }
 }

@@ -30,5 +30,7 @@
         public bool IsRedirectToEditAllowance { get; set; }
 
         public CachingFilterViewModel CachingFilter { get; set; } = new CachingFilterViewModel();
+
+        public int VNDCurrencyId { get; set; }
     }
 }

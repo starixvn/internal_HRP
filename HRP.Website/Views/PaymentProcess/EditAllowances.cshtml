@@ -92,6 +92,7 @@
       data-ajax-method="post" data-ajax="true" data-ajax-begin="editAllowances.onUpdateBegin" data-ajax-failure="commonFunctions.handleAjaxError"
       data-ajax-success="editAllowances.onUpdateSuccess" data-ajax-complete="editAllowances.onUpdateComplete">
 
+    <input type="hidden" id="VietnamCurrencyId" value="@Model.VNDCurrencyId" />
     <input type="hidden" asp-for="CanEdit" />
     <input type="hidden" asp-for="Month" />
     <input type="hidden" asp-for="CompanyId" />
