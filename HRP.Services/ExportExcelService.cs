@@ -410,6 +410,7 @@
                 WriteCurrencyExchangeTable(row + 1, templateWorksheet, worksheet, report);
                 WriteTotalByCurrencyTable(row + 2, templateWorksheet, worksheet, report);
 
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                 return package.GetAsByteArray();
             }
         }
