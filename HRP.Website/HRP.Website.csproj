@@ -25,10 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App_Data\HRP.pfx" />
     <None Remove="App_Data\SPNames.xml" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="App_Data\HRP.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="App_Data\SPNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -101,9 +106,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.Production.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\Cert\HRP.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\ExcelTemplates\EuroBankIn.xlsx">

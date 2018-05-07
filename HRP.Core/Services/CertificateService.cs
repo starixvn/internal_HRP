@@ -45,7 +45,7 @@
 
         public string GetCertificateFilePath()
         {
-            string filePath = Path.Combine(hostingEnvironment.WebRootPath, Constants.CertificateFilePath, Constants.CertificateFileName);
+            string filePath = Path.Combine(hostingEnvironment.ContentRootPath, Constants.CertificateFilePath, Constants.CertificateFileName);
             return filePath;
         }
 
@@ -104,7 +104,8 @@
             try
             {
                 string filePath = GetCertificateFilePath();
-                cert = new X509Certificate2(filePath, password);
+                var flags = X509KeyStorageFlags.MachineKeySet;
+                cert = new X509Certificate2(filePath, password, flags);
             }
             catch
             {

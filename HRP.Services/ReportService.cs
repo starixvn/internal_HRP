@@ -29,7 +29,11 @@
             this.reportRepository = reportRepository ?? new ReportRepository();
         }
 
-        public async Task<BankInReport> GetDirectBankingBankInAsync(int companyId, DateTime selectedTime, PaymentType typeOfPayment, string selectedPaymentTransactions)
+        public async Task<BankInReport> GetDirectBankingBankInAsync(
+            int companyId,
+            DateTime selectedTime,
+            PaymentType typeOfPayment,
+            string selectedPaymentTransactions)
         {
             var criteria = new GetDataForDirectBankingReportCriteria
             {
@@ -80,8 +84,7 @@
             {
                 foreach (BankIn bankIn in bankIns)
                 {
-                    float parsedValue;
-                    float.TryParse(cryptoService.Decrypt(bankIn.Amount), out parsedValue);
+                    float.TryParse(cryptoService.Decrypt(bankIn.Amount), out float parsedValue);
                     bankIn.AmountDecrypted = parsedValue;
                 }
             }
@@ -116,7 +119,7 @@
         {
             if (basicSalaryList != null && basicSalaryList.Any())
             {
-                foreach (var basicSalary in basicSalaryList)
+                foreach (MonthlyBasicSalaryModel basicSalary in basicSalaryList)
                 {
                     basicSalary.Salary = cryptoService.Decrypt(basicSalary.Salary);
                     basicSalary.AfterAdjustmentAmount = cryptoService.Decrypt(basicSalary.AfterAdjustmentAmount);
@@ -124,14 +127,15 @@
             }
         }
 
-        private void DecryptMonthlySalaryListAndConvertAmount(IEnumerable<MonthlySalaryModel> salaryList,
+        private void DecryptMonthlySalaryListAndConvertAmount(
+            IEnumerable<MonthlySalaryModel> salaryList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             int? MYRCurrencyId,
             int? USDCurrencyId)
         {
             if (salaryList != null && salaryList.Any())
             {
-                foreach (var salary in salaryList)
+                foreach (MonthlySalaryModel salary in salaryList)
                 {
                     salary.Salary = cryptoService.Decrypt(salary.Salary);
                     salary.EbankingAmount = cryptoService.Decrypt(salary.EbankingAmount);
@@ -151,8 +155,9 @@
             }
         }
 
-        private void DecryptMonthlyBasicAllowanceListAndConvertAmount(IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList,
-                                                                      IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private void DecryptMonthlyBasicAllowanceListAndConvertAmount(
+            IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (basicAllowanceList != null && basicAllowanceList.Any())
             {
@@ -176,8 +181,9 @@
             }
         }
 
-        private void DecryptMonthlyAllowanceListAndConvertAmount(IEnumerable<MonthlyAllowanceModel> allowanceList,
-                                                 IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private void DecryptMonthlyAllowanceListAndConvertAmount(
+            IEnumerable<MonthlyAllowanceModel> allowanceList,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (allowanceList != null && allowanceList.Any())
             {
@@ -230,7 +236,9 @@
             basicAllowance.FitnessFirstCurrencyId = conversionCurrencyId;
         }
 
-        private static void ConvertMonthlyAllowanceToConversionCurrency(MonthlyAllowanceModel allowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private static void ConvertMonthlyAllowanceToConversionCurrency(
+            MonthlyAllowanceModel allowance,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = allowance.CurrencyId;
             allowance.DSTNetSalaryAmount = ConvertAmount(currencyExchangeRates, allowance.DSTNetSalaryAmount,

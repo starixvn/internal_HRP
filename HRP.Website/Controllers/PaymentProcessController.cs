@@ -106,7 +106,7 @@
             string sWebRootFolder = hostingEnvironment.WebRootPath;
             string sFileName = @"ExcelTemplates\Template - Attendance (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
-            var stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
+            MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
@@ -117,7 +117,7 @@
             string sWebRootFolder = hostingEnvironment.WebRootPath;
             string sFileName = @"ExcelTemplates\Template - DST Salary (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
-            var stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
+            MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));
         }
@@ -126,7 +126,7 @@
         public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime month)
         {
             var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
-            var paymentProcess = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
+            PaymentProcess paymentProcess = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
 
             if (isHost && IsInPaymentProcessDuration(paymentProcess))
             {
@@ -147,8 +147,8 @@
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PleaseSelectFile);
             }
 
-            var readAttendanceResult = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
-            var readDSTNetSalaryResult = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
+            Result<AttendanceTemplate> readAttendanceResult = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
+            Result<DSTNetSalaryTemplate> readDSTNetSalaryResult = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
             if (readAttendanceResult is Failure<AttendanceTemplate> failureAttendance)
             {
                 ModelState.AddModelError(nameof(viewModel.AttendanceFile), string.Concat(ViewLang.AttendanceFile, ": ", failureAttendance.Message));
@@ -163,8 +163,11 @@
             {
                 var attendanceResult = (Success<AttendanceTemplate>)readAttendanceResult;
                 var dstNetSalaryResult = (Success<DSTNetSalaryTemplate>)readDSTNetSalaryResult;
-                var uploadFiles = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(viewModel.CompanyId, viewModel.SelectedTime,
-                                                                                                attendanceResult.Value, dstNetSalaryResult.Value);
+                CommandResult uploadFiles = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(
+                    viewModel.CompanyId,
+                    viewModel.SelectedTime,
+                    attendanceResult.Value,
+                    dstNetSalaryResult.Value);
 
                 if (uploadFiles.IsSuccessful)
                 {
@@ -181,7 +184,7 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> ValidationFilesResult(int companyId, DateTime month)
         {
-            var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+            UploadAttendanceAndSalaryViewModel viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             return PartialView("_ValidationFilesResult", viewModel);
         }
@@ -189,7 +192,7 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> GetPaymentProcess(int companyId, DateTime month)
         {
-            var processInfo = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
+            PaymentProcess processInfo = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
 
             return Json(processInfo);
         }
@@ -198,10 +201,10 @@
         [HttpPost]
         public async Task<IActionResult> ProcessActionNextToMonthlyPayroll(int companyId, DateTime month)
         {
-            var submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
+            CommandResult submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
             if (submitResult.IsSuccessful)
             {
-                var generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
+                CommandResult generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
                 if (generateResult.IsSuccessful)
                 {
                     return Json(new { isSuccessful = true });
@@ -222,7 +225,7 @@
         [HttpPost]
         public async Task<IActionResult> DeleteUploadedAttendance(int companyId, DateTime month)
         {
-            var deleteResult = await paymentProcessService.DeleteUploadedAttendance(companyId, month);
+            CommandResult deleteResult = await paymentProcessService.DeleteUploadedAttendance(companyId, month);
             if (deleteResult.IsSuccessful)
             {
                 return Json(new { isSuccessful = true });
@@ -238,7 +241,7 @@
         [HttpPost]
         public async Task<IActionResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month)
         {
-            var deleteSalaryResult = await paymentProcessService.DeleteUploadedDSTNetSalary(companyId, month);
+            CommandResult deleteSalaryResult = await paymentProcessService.DeleteUploadedDSTNetSalary(companyId, month);
             if (deleteSalaryResult.IsSuccessful)
             {
                 return Json(new { isSuccessful = true });
@@ -332,8 +335,8 @@
             var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentTransactionCash, IsActive = true });
             viewModel.Month = month;
             viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
-            viewModel.CashAccounts = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
-            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+            viewModel.CashAccounts = commonService.GetSelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+            viewModel.Currencies = commonService.GetSelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
             viewModel.CachingFilter = filter;
             viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
@@ -429,14 +432,14 @@
             viewModel.DaysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-            viewModel.Currencies = new SelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
+            viewModel.Currencies = commonService.GetSelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
 
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetExchangeRateCriteria
             {
                 Month = month.Month,
                 Year = month.Year
             });
-            viewModel.CashAccounts = new SelectList(await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+            viewModel.CashAccounts = commonService.GetSelectList(await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
             {
                 RefNames = ReferenceResource.PaymentTransactionCash,
                 IsActive = true
