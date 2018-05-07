@@ -102,8 +102,7 @@
                 Id = 16,
                 Name = "Passport Place of Issue",
                 Group = DynamicReportItemGroup.PersonalDetails
-            }
-
+            },
             new DynamicReportItem
             {
                 Id = 17,
