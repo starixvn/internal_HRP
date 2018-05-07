@@ -20,13 +20,9 @@ namespace HRP.Repositories
                         employment.WorkPermit = await multi.ReadFirstOrDefaultAsync<WorkPermit>().ConfigureAwait(false);
                         employment.Paymaster = await multi.ReadFirstOrDefaultAsync<Paymaster>().ConfigureAwait(false);
                         employment.EPA = await multi.ReadFirstOrDefaultAsync<EPA>().ConfigureAwait(false);
+                    }
 
-                        return employment;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return employment;
                 }
             }
         }

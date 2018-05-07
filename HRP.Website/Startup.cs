@@ -78,7 +78,6 @@
                 }
             ).AddSessionStateTempDataProvider();
 
-            services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));

@@ -271,13 +271,14 @@
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
-            decimal afterAdjustmentAmount = GetAfterAdjustmentAmount(currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
-            basicSetting.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
-            GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, afterAdjustmentAmount);
+            decimal? afterAdjustmentAmount = GetAfterAdjustmentAmount(currencyExchangeRates, workingMonth, basicSetting, groupStartDate, groupEndDate);
+            basicSetting.AfterAdjustmentAmount = afterAdjustmentAmount.HasValue ? afterAdjustmentAmount.Value.ToString(CultureInfo.InvariantCulture) : null;
+            GetAfterAdjustmentReason(workingMonth, basicSetting, groupStartDate, groupEndDate, afterAdjustmentAmount ?? 0);
 
-            decimal backPayAmount = GetBackPayAmount(currencyExchangeRates, workingMonth, basicSetting);
-            backPay.UnitAmount = backPay.NetSalary = backPayAmount != 0 ? backPayAmount.ToString(CultureInfo.InvariantCulture) : null;
-            backPay.Description = GetBackPayDescription(backPayAmount, basicSetting.EffectiveDate);
+            decimal? backPayAmount = GetBackPayAmount(currencyExchangeRates, workingMonth, basicSetting);
+            backPay.UnitAmount = backPay.NetSalary = backPayAmount.HasValue ? backPayAmount.Value.ToString(CultureInfo.InvariantCulture) : null;
+            backPay.Description = backPayAmount.HasValue && basicSetting.EffectiveDate.HasValue
+                ? string.Format(Message.BackPayDescriptionFormat, basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat)) : null;
         }
 
         public void CalculateMonthlySalary(
@@ -968,32 +969,39 @@
             return Math.Abs(monthsApart);
         }
 
-        private static decimal GetAfterAdjustmentAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+        private static decimal? GetAfterAdjustmentAmount(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting,
             DateTime groupStartDate,
             DateTime? groupEndDate)
         {
-            var currencyId = basicSetting.CurrencyId ?? 0;
-            decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
-            decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
-            int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
-            int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
-            int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
+            decimal? amount = null;
+            if (!string.IsNullOrWhiteSpace(basicSetting.Salary))
+            {
+                var currencyId = basicSetting.CurrencyId ?? 0;
+                decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
+                decimal.TryParse(basicSetting.Salary, out decimal newSalary);
+                oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
+                int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
+                int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
+                int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
 
-            decimal amount = (basicSetting.EffectiveDate.HasValue
-                        && GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth) == 0
-                        && oldSalary != newSalary)
+                amount = (basicSetting.EffectiveDate.HasValue
+                    && GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth) == 0
+                    && oldSalary != newSalary)
                         ? (oldSalary / daysInMonth * (basicSetting.EffectiveDate.Value.Day - startDay))
-                                + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1))
+                            + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1))
                         : newSalary / daysInMonth * (endDay - startDay + 1);
 
-            amount = RoundAmountWithCurrency(amount, basicSetting.CurrencyCode);
+                amount = RoundAmountWithCurrency(amount.Value, basicSetting.CurrencyCode);
+            }
+
             return amount;
         }
 
-        private static decimal GetBackPayAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+        private static decimal? GetBackPayAmount(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
             MonthlyBasicSalaryModel basicSetting)
         {
@@ -1001,26 +1009,24 @@
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             decimal.TryParse(basicSetting.Salary, out decimal newSalary);
             oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
-            decimal backPayAmount = 0;
+            decimal? backPayAmount = null;
 
-            if (basicSetting.SalaryChangeReason == BasicSalaryChangeReason.AnnualIncrement && basicSetting.EffectiveDate.HasValue && oldSalary != newSalary)
+            if (basicSetting.SalaryChangeReason == BasicSalaryChangeReason.AnnualIncrement
+                && basicSetting.EffectiveDate.HasValue
+                && oldSalary != newSalary)
             {
                 int monthDiff = GetDifferenceMonth(basicSetting.EffectiveDate.Value, workingMonth);
                 if (monthDiff > 0)
                 {
                     var daysInMonth = DateTime.DaysInMonth(basicSetting.EffectiveDate.Value.Year, basicSetting.EffectiveDate.Value.Month);
                     backPayAmount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
-                    + ((newSalary - oldSalary) * (monthDiff - 1));
+                        + ((newSalary - oldSalary) * (monthDiff - 1));
+
+                    backPayAmount = RoundAmountWithCurrency(backPayAmount.Value, basicSetting.CurrencyCode);
                 }
             }
 
-            backPayAmount = RoundAmountWithCurrency(backPayAmount, basicSetting.CurrencyCode);
             return backPayAmount;
-        }
-
-        private static string GetBackPayDescription(decimal backPayAmount, DateTime? effectiveDate)
-        {
-            return backPayAmount == 0 ? null : string.Format(Message.BackPayDescriptionFormat, effectiveDate.Value.ToString(Constants.DateFormat));
         }
 
         private static void GetAfterAdjustmentReason(
