@@ -14,7 +14,7 @@ BEGIN
 
 	SELECT TOP 1 @LatestMonth = c.ExchangeRateMonth
 	FROM dbo.CurrencyExchangeRate AS c WITH (NOLOCK)
-	WHERE MONTH(c.ExchangeRateMonth) <= MONTH(GETDATE())
+	WHERE c.ExchangeRateMonth <= GETDATE()
 	ORDER BY c.ExchangeRateMonth DESC
 
 	SELECT c.FromCurrencyId
