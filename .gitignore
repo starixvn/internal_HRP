@@ -257,5 +257,3 @@ _Pvt_Extensions
 /HRP.Website/wwwroot/assets/bundles/main.min.css
 /HRP.Website/wwwroot/js/*.min.js
 *.scmp
-/HRP.Website/wwwroot/assets/bundles/report/css/monthly-payroll.min.css
-/HRP.Website/wwwroot/assets/bundles/report/js/monthly-payroll.min.js
