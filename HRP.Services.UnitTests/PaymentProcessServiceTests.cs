@@ -36,7 +36,6 @@
         public async Task GetCurrentDuration_WhenCalled_ReturnExpectedPaymenProcessInstance()
         {
             // Arrange
-            var month = DateTime.Today;
             var expected = MockPaymentProcess();
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataEntityAsync<PaymentProcess>(Arg.Any<GetCurrentPaymentProcessDurationCriteria>()).Returns(expected);
@@ -101,7 +100,6 @@
         public async Task ReadAttendanceFileAsync_AttendanceFileSizeIsLargerThan5Mb_ReturnFailureResult()
         {
             // Arrange
-            var commandResult = new CommandResult();
             var viewModel = new UploadAttendanceAndSalaryViewModel
             {
                 AttendanceFile = MockExcelFile(1024 * 1024 * 6)
@@ -121,7 +119,6 @@
         public async Task ReadAttendanceFileAsync_AttendanceFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var commandResult = new CommandResult();
             var viewModel = new UploadAttendanceAndSalaryViewModel
             {
                 AttendanceFile = MockTxtFile()
@@ -181,7 +178,6 @@
         public async Task ReadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var commandResult = new CommandResult();
             var viewModel = new UploadAttendanceAndSalaryViewModel
             {
                 DSTNetSalaryFile = MockTxtFile()
@@ -223,47 +219,6 @@
             var result = Assert.IsType<Failure<DSTNetSalaryTemplate>>(actual);
             Assert.Equal(readResult, result);
         }
-
-        //[Fact]
-        //public async Task UploadDSTNetSalaryFileAsync_ReadDSTNetSalaryFileSuccess_ReturnExpectedCommandResult()
-        //{
-        //    // Arrange
-        //    var expected = MockSuccessfulCommandResult();
-        //    var viewModel = MockUploadAttendanceAndSalaryViewModel();
-        //    var employeeCodeList = MockListString();
-        //    var currencies = MockCurrencies();
-        //    var mockReadResult = MockSuccessResultDSTNetSalaryUploading();
-        //    var validationResult = MockListValidationResult();
-        //    var criteria = new CreateDSTNetSalaryUploadingCriteria();
-
-        //    var paymentProcessService = GetPaymentProcessService();
-        //    baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
-        //    baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
-        //    baseService.ExecuteNonQueryAsync(Arg.Do<CreateDSTNetSalaryUploadingCriteria>(x => criteria = x)).Returns(expected);
-
-        //    var sheet = Substitute.For<ISheet>();
-        //    templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
-        //    templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
-        //                                && x.EmployeeCodeList == employeeCodeList
-        //                                && x.CompanyCode == viewModel.CompanyCode
-        //                                && x.Currencies == currencies))
-        //                               .Returns(mockReadResult);
-        //    templateReader.DSTNetSalaryValidationResults.Returns(validationResult);
-
-        //    // Act
-        //    var actual = await paymentProcessService.UploadDSTNetSalaryFileAsync(viewModel);
-
-        //    // Assert
-        //    Assert.IsType<CommandResult>(actual);
-        //    Assert.True(actual.IsSuccessful);
-        //    Assert.Equal(actual, expected);
-        //    Assert.Equal(viewModel.CompanyId, criteria.CompanyId);
-        //    Assert.Equal(viewModel.SelectedTime, criteria.Month);
-        //    Assert.Equal(viewModel.AttendanceFile.FileName, criteria.FileName);
-        //    Assert.Equal(mockReadResult.Value.ToXML().ToString(), criteria.UploadingXMLDoc);
-        //    Assert.Equal(validationResult.ToXML().ToString(), criteria.ResultXMLDoc);
-        //    Assert.Equal(sessionService.UserId, criteria.CreatedBy); ;
-        //}
 
         #endregion ReadDSTNetSalaryFileAsync
 
@@ -587,7 +542,8 @@
             var month = DateTime.Today;
             var employeeId = 1;
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId)).Returns(generatePayrollViewModel);
+            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
+                .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
 
             // Act
@@ -617,11 +573,10 @@
             var month = DateTime.Today;
             var employeeId = 1;
 
-            var mockAllowanceAdditions = Substitute.For<IEnumerable<MonthlyAllowanceAdditionModel>>();
-            var mockAllowanceDeduction = Substitute.For<IEnumerable<MonthlyAllowanceDeductionModel>>();
             var mockAllowance = Substitute.For<MonthlyAllowanceModel>();
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId)).Returns(generatePayrollViewModel);
+            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
+                .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
             monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),
                 Arg.Any<IEnumerable<MonthlyAllowanceAdditionModel>>(),
@@ -759,7 +714,7 @@
 
         private IEnumerable<string> MockListString()
         {
-            return new List<string>()
+            return new List<string>
             {
                 "ahihi",
                 "dbbc"
@@ -781,7 +736,7 @@
 
         private IEnumerable<AttendanceUploading> MockListAttendanceUploading()
         {
-            return new List<AttendanceUploading>()
+            return new List<AttendanceUploading>
             {
                 new AttendanceUploading {
                     RowNumber = 20,
@@ -793,7 +748,7 @@
 
         private IEnumerable<DSTNetSalaryUploading> MockListDSTNetSalaryUploading()
         {
-            return new List<DSTNetSalaryUploading>()
+            return new List<DSTNetSalaryUploading>
             {
                 new DSTNetSalaryUploading {
                     RowNumber = 8,
@@ -816,7 +771,7 @@
 
         private IEnumerable<ValidationResult> MockListValidationResult()
         {
-            return new List<ValidationResult>()
+            return new List<ValidationResult>
             {
                 new ValidationResult {RowNumber = 7, ResultType = 2, Message = "error"},
                 new ValidationResult {RowNumber = 8, ResultType = 2, Message = "error2"}
@@ -829,17 +784,6 @@
             {
                 new Currency {CurrencyCode = "USD"},
                 new Currency {CurrencyCode = "VND"}
-            };
-        }
-
-        private Company MockCompany()
-        {
-            return new Company
-            {
-                CompanyId = 11,
-                Code = "company",
-                Name = "descC",
-                IsActive = true
             };
         }
 

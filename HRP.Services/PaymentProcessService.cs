@@ -295,7 +295,7 @@
 
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
-            var dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false); ////Check if dataModel null
+            GeneratePayrollModel dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
             var monthlySalaries = new List<MonthlySalaryModel>();
             var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
             var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
@@ -303,7 +303,7 @@
             var monthlyAllowanceAdditions = new List<MonthlyAllowanceAdditionModel>();
             var monthlyAllowanceDeductions = new List<MonthlyAllowanceDeductionModel>();
 
-            foreach (var payroll in dataModel.MonthlyPayroll)
+            foreach (MonthlyPayroll payroll in dataModel.MonthlyPayroll)
             {
                 var monthlyBasicSalary = dataModel.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
                 if (monthlyBasicSalary != null)
@@ -335,13 +335,14 @@
             return commandResult;
         }
 
-        private void GenerateEmployeeBasicSalary(DateTime month
-            , GeneratePayrollModel dataModel
-            , List<MonthlySalaryModel> monthlySalaries
-            , List<MonthlySalaryAdditionModel> monthlySalaryAdditions
-            , List<MonthlySalaryDeductionModel> monthlySalaryDeductions
-            , MonthlyPayroll payroll
-            , MonthlyBasicSalaryModel monthlyBasicSalary)
+        private void GenerateEmployeeBasicSalary(
+            DateTime month,
+            GeneratePayrollModel dataModel,
+            List<MonthlySalaryModel> monthlySalaries,
+            List<MonthlySalaryAdditionModel> monthlySalaryAdditions,
+            List<MonthlySalaryDeductionModel> monthlySalaryDeductions,
+            MonthlyPayroll payroll,
+            MonthlyBasicSalaryModel monthlyBasicSalary)
         {
             var salaryAdditions = Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
                 .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
@@ -371,13 +372,14 @@
             monthlySalaryDeductions.AddRange(salaryDeductions);
         }
 
-        private void GenerateEmployeeAllowance(DateTime month
-            , GeneratePayrollModel dataModel
-            , List<MonthlyAllowanceModel> monthlyAllowances
-            , List<MonthlyAllowanceAdditionModel> monthlyAllowanceAdditions
-            , List<MonthlyAllowanceDeductionModel> monthlyAllowanceDeductions
-            , MonthlyPayroll payroll
-            , MonthlyBasicSalaryModel monthlyBasicSalary)
+        private void GenerateEmployeeAllowance(
+            DateTime month,
+            GeneratePayrollModel dataModel,
+            List<MonthlyAllowanceModel> monthlyAllowances,
+            List<MonthlyAllowanceAdditionModel> monthlyAllowanceAdditions,
+            List<MonthlyAllowanceDeductionModel> monthlyAllowanceDeductions,
+            MonthlyPayroll payroll,
+            MonthlyBasicSalaryModel monthlyBasicSalary)
         {
             var monthlyBasicAllowance = dataModel.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
             var monthlyAttendance = dataModel.MonthlyAttendance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
@@ -425,13 +427,8 @@
                 EmployeeId = employeeId
             };
 
-            if (criteria.IsValid())
-            {
-                var result = await paymentProcessRepository.GetDataForGeneratePayroll(criteria).ConfigureAwait(false);
-                return result;
-            }
-
-            return null;
+            GeneratePayrollModel result = await paymentProcessRepository.GetDataForGeneratePayroll(criteria).ConfigureAwait(false);
+            return result;
         }
 
         private void DecryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)

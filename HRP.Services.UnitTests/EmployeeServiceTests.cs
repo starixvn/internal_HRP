@@ -10,6 +10,7 @@
     using HRP.Core.Services;
     using HRP.Criteria.EmergencyContact;
     using HRP.Criteria.Employee;
+    using HRP.Models;
     using HRP.Models.Employee;
     using HRP.Repositories;
     using HRP.Resources;
@@ -343,13 +344,62 @@
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmploymentCriteria>()).Returns(expected);
 
             // Act
-            var actual = await employeeService.UpdateEmploymentAsync(model);
+            await employeeService.UpdateEmploymentAsync(model);
 
             // Assert
             cryptoService.Received().Encrypt(Arg.Any<string>());
         }
 
         #endregion UpdateEmploymentAsync
+
+        [Fact]
+        public async Task GetDataToCreateEmploymentAsync_WhenCalled_ReturnAsExpectedTuple()
+        {
+            // Arrange
+            var companies = new List<Company>
+            {
+                new Company { CompanyId = 1, Code = "DAR" }
+            };
+            var jobCategories = new List<JobCategory>
+            {
+                new JobCategory { JobCategoryId = 1, Name = "Staff" }
+            };
+            var coutries = new List<Country>
+            {
+                new Country { CountryId = 1, Name = "VNM" }
+            };
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
+                new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
+                new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
+                new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
+            };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var jobCategorySelectList = new SelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
+            var countrySelectList = new SelectList(coutries, nameof(Country.CountryId), nameof(Country.Code));
+            var refResourceSelectList = new SelectList(refResources, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+
+            var employeeService = GetEmployeeService();
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<JobCategory>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(jobCategorySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Country>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(countrySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(refResourceSelectList);
+
+            // Act
+            var actual = await employeeService.GetDataToCreateEmploymentAsync();
+
+            // Assert
+            Assert.Equal(companySelectList, actual.Companies);
+            Assert.Equal(jobCategorySelectList, actual.JobCategories);
+            Assert.Equal(countrySelectList, actual.Countries);
+            Assert.Equal(refResourceSelectList, actual.LocalCompanies);
+            Assert.Equal(refResourceSelectList, actual.LocalJobTitles);
+            Assert.Equal(refResourceSelectList, actual.EmploymentTypes);
+            Assert.Equal(refResourceSelectList, actual.EmploymentStatuses);
+            Assert.Equal(refResourceSelectList, actual.WorkPermitType1s);
+            Assert.Equal(refResourceSelectList, actual.WorkPermitType2s);
+        }
 
         #region Helper
 
@@ -358,7 +408,7 @@
             return Substitute.For<IBaseService>();
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var sessionServiceInstance = Substitute.For<ISessionService>();
             sessionServiceInstance.UserId = 99;
@@ -366,22 +416,22 @@
             return sessionServiceInstance;
         }
 
-        private ICryptoService FakeCryptoService()
+        private static ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
         }
 
-        private IHostingEnvironment FakeHostingEnvironment()
+        private static IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private IEmployeeRepository FakeEmployeeRepository()
+        private static IEmployeeRepository FakeEmployeeRepository()
         {
             return Substitute.For<IEmployeeRepository>();
         }
 
-        private ICommonService FakeCommonService()
+        private static ICommonService FakeCommonService()
         {
             return Substitute.For<ICommonService>();
         }

@@ -161,7 +161,7 @@
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
-            var actual = await service.UpdatePayroll(model, 1);
+            await service.UpdatePayroll(model, 1);
 
             // Assert
             cryptoService.Received(18).Encrypt(Arg.Any<string>());

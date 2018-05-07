@@ -102,19 +102,35 @@
             Assert.Equal(expectedAmount, actual.AllowanceAmount);
             Assert.Collection(
                 actual.SalaryAdditions,
-                kvp => { Assert.Equal(plainText, kvp.NetSalary); Assert.Equal(expectedAmount, kvp.NetSalaryDisplay); });
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetSalary);
+                    Assert.Equal(expectedAmount, kvp.NetSalaryDisplay);
+                });
 
             Assert.Collection(
                 actual.SalaryDeductions,
-                kvp => { Assert.Equal(plainText, kvp.NetSalary); Assert.Equal(expectedAmount, kvp.NetSalaryDisplay); });
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetSalary);
+                    Assert.Equal(expectedAmount, kvp.NetSalaryDisplay);
+                });
 
             Assert.Collection(
                 actual.AllowanceAdditions,
-                kvp => { Assert.Equal(plainText, kvp.NetAllowance); Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay); });
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetAllowance);
+                    Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay);
+                });
 
             Assert.Collection(
                 actual.AllowanceDeductions,
-                kvp => { Assert.Equal(plainText, kvp.NetAllowance); Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay); });
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetAllowance);
+                    Assert.Equal(expectedAmount, kvp.NetAllowanceToDisplay);
+                });
         }
 
         #endregion GetPayslipDetailAsync
@@ -133,7 +149,7 @@
             payslipRepository.GetPayslipDetailsAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslips);
 
             // Act
-            var actual = await payslipService.SendPayslipAsync(viewModel);
+            await payslipService.SendPayslipAsync(viewModel);
 
             // Assert
             emailService.Received(2).SendEmail(Arg.Any<MailModel>());

@@ -798,7 +798,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("UnitAmount", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("UnitAmount", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -878,6 +882,8 @@
             Assert.Equal(expected, jsonResult.Value);
         }
 
+        #region EditAllowances
+
         [Fact]
         public async Task EditAllowances_NotHavePermission_RederiectToAccessDenied()
         {
@@ -912,6 +918,71 @@
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<MonthlyAllowancesViewModel>(result.Model);
         }
+
+        [Fact]
+        public async Task EditAllowancesPost_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var viewModel = new MonthlyAllowancesViewModel();
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+
+            // Act
+            var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task EditAllowancesPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
+        {
+            // Arrange
+            var viewModel = new MonthlyAllowancesViewModel();
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            controller.ModelState.AddModelError("UnitAmount", "required");
+
+            // Act
+            var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Collection(
+                errors,
+                kvp =>
+                {
+                    Assert.Equal("UnitAmount", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
+            );
+        }
+
+        [Fact]
+        public async Task EditAllowancesPost_ModelStateIsValid_ReturnAsExpected()
+        {
+            // Arrange
+            var viewModel = new MonthlyAllowancesViewModel();
+            var commandResult = new CommandResult();
+            var controller = GetPaymentProcessController();
+            controller.Url = Substitute.For<IUrlHelper>();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, sessionService.UserId).Returns(commandResult);
+
+            // Act
+            var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult.IsSuccessful, (bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(commandResult.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
+        }
+
+        #endregion EditAllowances
 
         [Fact]
         public async Task Preset_NotHavePermission_RederiectToAccessDenied()
