@@ -7,7 +7,9 @@
     @Html.Partial("_PersonalDetailsForm", Model)
 
     <div class="list-button">
-        <a class="button -second js-btnCancel" href="javascript:;">@ViewLang.Cancel</a>
+        <a class="button -second" asp-controller="employee" asp-action="index"
+            asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
+            asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
         <button class="button -primary" type="submit">@ViewLang.Next</button>
     </div>
 </form>

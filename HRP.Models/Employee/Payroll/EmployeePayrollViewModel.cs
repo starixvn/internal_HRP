@@ -37,5 +37,7 @@
         public bool CanUpdate { get; set; }
 
         public bool HaveHostPermissionOnBankAccounts { get; set; }
+
+        public CachingFilterViewModel CachingFilter { get; set; }
     }
 }

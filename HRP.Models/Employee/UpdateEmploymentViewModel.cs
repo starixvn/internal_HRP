@@ -214,5 +214,7 @@
         public SelectList CostCenterChangeReasons { get; set; }
 
         public SelectList SectionChangeReasons { get; set; }
+
+        public CachingFilterViewModel CachingFilter { get; set; }
     }
 }

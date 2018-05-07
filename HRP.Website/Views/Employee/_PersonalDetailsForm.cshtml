@@ -11,6 +11,11 @@
 
 <div class="form-content">
     <input type="hidden" asp-for="ProfilePic" />
+    <input type="hidden" asp-for="CachingFilter.DepartmentIds" id="Filter_DepartmentIds" />
+    <input type="hidden" asp-for="CachingFilter.EmploymentStatusIds" id="Filter_EmploymentStatusIds" />
+    <input type="hidden" asp-for="CachingFilter.EmployeeId" id="Filter_EmployeeId" />
+    <input type="hidden" asp-for="CachingFilter.EmployeeName" id="Filter_EmployeeName" />
+
     <figure class="profile">
         <div class="change-picture">
             <input type="file" accept="image/x-png,image/jpeg" class="hidden" asp-for="ProfilePicture" />

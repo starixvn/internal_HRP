@@ -112,5 +112,7 @@
         public SelectList MaritalStatusList { get; set; }
 
         public SelectList NoOfChildrenList { get; set; }
+
+        public CachingFilterViewModel CachingFilter { get; set; }
     }
 }

@@ -3,7 +3,7 @@
 var createEmployment = (function ($) {
     var $personalDetailsStep, $employmentStep,
         $personalDetailHeaderTab, $employmentHeaderTab, $employmentContentTab, $createEmploymentForm,
-        $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack, $btnCancel;
+        $companyCodeElement, $employeeCodeElement, $pdfPasswordElement, $btnBack;
 
     function initEventChangeCompanyCode() {
         $companyCodeElement.on('change', function () {
@@ -25,16 +25,21 @@ var createEmployment = (function ($) {
         });
     }
 
-    function displaySuccessMessage() {
+    function displaySuccessMessage(objectId) {
+        var $personalDetailsForm = $('#personalDetailsForm');
         var $element = $createEmploymentForm.find('.msg-success'),
             $countDownElement = $element.find('.count-down');
-        var delay = 5;
+        var delay = 3;
         $element.removeClass('hidden');
 
         var intervalCountDown = setInterval(function () {
             if (delay === 0) {
                 clearInterval(intervalCountDown);
-                $btnCancel.click();
+                window.location.href = commonFunctions.rootURL + 'Employee/Payroll/' + objectId
+                    + '?departmentIds=' + $personalDetailsForm.find('#Filter_DepartmentIds').val()
+                    + '&employmentStatusIds=' + $personalDetailsForm.find('#Filter_EmploymentStatusIds').val()
+                    + '&employeeId=' + $personalDetailsForm.find('#Filter_EmployeeId').val()
+                    + '&displayName=' + $personalDetailsForm.find('#Filter_EmployeeName').val();
             } else {
                 delay--;
                 $countDownElement.html(delay);
@@ -64,7 +69,7 @@ var createEmployment = (function ($) {
                     processData: false,
                     success: function (response) {
                         if (response.isSuccessful) {
-                            displaySuccessMessage();
+                            displaySuccessMessage(response.objectId);
                         } else {
                             if (response.errors) {
                                 $createEmploymentForm.validate().showErrors(response.errors);
@@ -82,10 +87,18 @@ var createEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
+        var $personalDetailsForm = $('#personalDetailsForm');
+
         $.ajax({
             type: 'GET',
             url: commonFunctions.rootURL + 'Employee/Create/Employment',
             dataType: 'html',
+            data: {
+                departmentIds: $personalDetailsForm.find('#Filter_DepartmentIds').val(),
+                employmentStatusIds: $personalDetailsForm.find('#Filter_EmploymentStatusIds').val(),
+                employeeId: $personalDetailsForm.find('#Filter_EmployeeId').val(),
+                employeeName: $personalDetailsForm.find('#Filter_EmployeeName').val()
+            },
             success: function (data) {
                 $employmentContentTab.html(data);
 
@@ -94,10 +107,8 @@ var createEmployment = (function ($) {
                 $employeeCodeElement = $createEmploymentForm.find('#EmployeeCode');
                 $pdfPasswordElement = $createEmploymentForm.find('#PDFPassword');
                 $btnBack = $createEmploymentForm.find('.js-btnBack');
-                $btnCancel = $createEmploymentForm.find('.js-btnCancel');
 
                 employmentCommonFuncs.initForm($createEmploymentForm);
-                commonFunctions.registerEventGoBack($createEmploymentForm.find('.js-btnCancel'));
 
                 initEventChangeCompanyCode();
                 initEventChangeEmployeeCode();

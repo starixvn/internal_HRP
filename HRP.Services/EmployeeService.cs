@@ -164,10 +164,10 @@
             criteria.PDFPassword = cryptoService.Encrypt(employee.PDFPassword);
 
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            commandResult.ObjectId = criteria.EmployeeId;
             if (commandResult.IsSuccessful && employee.ProfilePicture != null)
             {
                 await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString()).ConfigureAwait(false);
-                commandResult.Data = criteria.EmployeeId;
             }
 
             return commandResult;

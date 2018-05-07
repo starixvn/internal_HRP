@@ -14,6 +14,8 @@ namespace HRP.Core.Model
 
         public bool IsSuccessful => Code == 0;
 
+        public int ObjectId { get; set; }
+
         public object Data { get; set; }
     }
 }

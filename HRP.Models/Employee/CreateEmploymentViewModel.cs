@@ -92,5 +92,7 @@
         }
 
         public IFormFile ProfilePicture { get; set; }
+
+        public CachingFilterViewModel CachingFilter { get; set; }
     }
 }

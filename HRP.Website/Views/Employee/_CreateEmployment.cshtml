@@ -10,7 +10,7 @@
 <form id="createEmploymentForm" class="form-information" name="createEmploymentForm" enctype="multipart/form-data">
     <div class="-has-icon msg-success hidden">
         <span>@Message.CreateEmploymentSuccessfully You will be redirected in </span>
-        <span class="count-down">5</span>
+        <span class="count-down">3</span>
         <span> seconds.</span>
     </div>
     <div class="-has-border msg-error hidden"></div>
@@ -587,7 +587,9 @@
     </div>
     <div class="list-button">
         <button type="button" class="button -back js-btnBack">@ViewLang.Back</button>
-        <a class="button -second js-btnCancel" href="javascript:;">@ViewLang.Cancel</a>
+        <a class="button -second" asp-controller="employee" asp-action="index"
+            asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
+            asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
         <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>

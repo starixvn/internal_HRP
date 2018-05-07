@@ -454,14 +454,12 @@
             </div>
         </div>
         <div class="list-button">
+            <a class="button -second" asp-controller="employee" asp-action="index"
+                asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
+                asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
             @if (Model.CanUpdate)
             {
-                <a href="javascript:history.back()" class="button -second">@ViewLang.Cancel</a>
                 <button class="button -primary" type="button" data-loading-text="@ViewLang.Saving ..." id="btn-save">@ViewLang.Save</button>
-            }
-            else
-            {
-                <a href="javascript:history.back()" class="button -second">@ViewLang.Back</a>
             }
         </div>
     </div>

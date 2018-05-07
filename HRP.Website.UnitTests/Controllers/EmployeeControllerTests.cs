@@ -161,12 +161,13 @@
                     new SelectList(new List<string> { "item3" }, "val3", "text3"),
                     new SelectList(new List<string> { "item4" }, "val4", "text4")
                 );
+            var filter = new CachingFilterViewModel();
 
             var employeeController = GetEmployeeController();
             employeeService.GetDataToCreateEmployeeAsync().Returns(tuple);
 
             // Act
-            var actual = await employeeController.CreateEmployee();
+            var actual = await employeeController.CreateEmployee(filter);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -187,6 +188,8 @@
             Assert.Equal(tuple.Item4.Items, viewModel.NoOfChildrenList.Items);
             Assert.Equal(tuple.Item4.DataTextField, viewModel.NoOfChildrenList.DataTextField);
             Assert.Equal(tuple.Item4.DataValueField, viewModel.NoOfChildrenList.DataValueField);
+
+            Assert.Equal(filter, viewModel.CachingFilter);
         }
 
         [Fact]
@@ -207,7 +210,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal(nameof(model.ProfilePicture), kvp.Key);
+                    Assert.Equal(commandResult.Message, kvp.Value);
+                }
             );
         }
 
@@ -230,7 +237,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("nickname", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -261,11 +272,12 @@
             // Arrange
             var id = 12;
             Employee employee = null;
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             employeeService.GetEmployeeByIdAsync(Arg.Is<int>(x => x == id)).Returns(employee);
 
             // Act
-            var result = await employeeController.UpdateEmployee(id);
+            var result = await employeeController.UpdateEmployee(id, filter);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -285,14 +297,14 @@
                 EmployeeId = 11,
                 Address = "asdasd"
             };
-
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             employeeService.GetEmployeeByIdAsync(Arg.Is<int>(x => x == id)).Returns(employee);
             employeeService.GetEmergencyContactByEmployeeIdAsync(Arg.Is<int>(x => x == id)).Returns(contact);
             employeeService.GetDataToCreateEmployeeAsync().Returns(tuple);
 
             // Act
-            var result = await employeeController.UpdateEmployee(id);
+            var result = await employeeController.UpdateEmployee(id, filter);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -326,6 +338,7 @@
             Assert.Equal(tuple.Item2, viewModel.NationalityList);
             Assert.Equal(tuple.Item3, viewModel.MaritalStatusList);
             Assert.Equal(tuple.Item4, viewModel.NoOfChildrenList);
+            Assert.Equal(filter, viewModel.CachingFilter);
         }
 
         [Fact]
@@ -347,7 +360,11 @@
             var errors = (Dictionary<string, string>)(wrapper["errors"]);
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal(nameof(model.ProfilePicture), kvp.Key); Assert.Equal(commandResult.Message, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal(nameof(model.ProfilePicture), kvp.Key);
+                    Assert.Equal(commandResult.Message, kvp.Value);
+                }
             );
         }
 
@@ -371,7 +388,11 @@
             var errors = (Dictionary<string, string>)(wrapper["errors"]);
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("nickname", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("nickname", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -409,17 +430,18 @@
         {
             //Arrange
             var viewName = "_CreateEmployment";
-            var expected = new CreateEmploymentViewModel();
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             employeeService.GetDataToCreateEmploymentAsync().Returns(new CreateEmploymentViewModel());
 
             //Act
-            var actual = await employeeController.CreateEmployment();
+            var actual = await employeeController.CreateEmployment(filter);
 
             //Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            Assert.IsAssignableFrom<CreateEmploymentViewModel>(viewResult.Model);
+            var viewModel = Assert.IsType<CreateEmploymentViewModel>(viewResult.Model);
             Assert.Equal(viewName, viewResult.ViewName);
+            Assert.Equal(filter, viewModel.CachingFilter);
         }
 
         [Fact]
@@ -439,7 +461,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("company", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("company", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -472,11 +498,12 @@
         {
             // Arrange
             var expected = "_UpdateEmployment";
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(new UpdateEmploymentViewModel());
 
             // Act
-            var actual = await employeeController.UpdateEmployment(1);
+            var actual = await employeeController.UpdateEmployment(1, filter);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
@@ -488,11 +515,12 @@
         {
             // Arrange
             UpdateEmploymentViewModel employment = null;
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(employment);
 
             // Act
-            var result = await employeeController.UpdateEmployment(1);
+            var result = await employeeController.UpdateEmployment(1, filter);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
@@ -505,6 +533,7 @@
         {
             // Arrange
             var employeeId = 1;
+            var filter = new CachingFilterViewModel();
             var expected = new UpdateEmploymentViewModel
             {
                 EmployeeId = employeeId
@@ -513,11 +542,12 @@
             employeeService.GetDataToUpdateEmploymentAsync(Arg.Any<int>()).Returns(expected);
 
             // Act
-            var actual = await employeeController.UpdateEmployment(employeeId);
+            var actual = await employeeController.UpdateEmployment(employeeId, filter);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            Assert.IsAssignableFrom<UpdateEmploymentViewModel>(viewResult.Model);
+            var viewModel = Assert.IsType<UpdateEmploymentViewModel>(viewResult.Model);
+            Assert.Equal(filter, viewModel.CachingFilter);
         }
 
         [Fact]
@@ -537,7 +567,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("company", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("company", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -771,11 +805,12 @@
         {
             // Arrange
             var employeeId = 0;
+            var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayrollViewModel>(null));
 
             // Act
-            var actual = await employeeController.Payroll(employeeId);
+            var actual = await employeeController.Payroll(employeeId, filter);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -807,16 +842,18 @@
                     DirectBanking2AccountName = "Account 2",
                 }
             };
+            var filter = new CachingFilterViewModel();
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(viewModel);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
 
             // Act
-            var actual = await employeeController.Payroll(employeeId);
+            var actual = await employeeController.Payroll(employeeId, filter);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
-            Assert.NotNull(viewResult.Model);
+            var viewModelResult = Assert.IsType<EmployeePayrollViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Equal(filter, viewModelResult.CachingFilter);
         }
 
         [Fact]
@@ -867,7 +904,7 @@
         public async Task CheckEmployeePayrollChangedInMonth_ExistChangeInMonth_ReturnTrue()
         {
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<int>(Arg.Any<CheckEmployeePayrollChangedInMonthCriteria>()).Returns(new List<int>() { 1 });
+            baseService.GetDataAsync<int>(Arg.Any<CheckEmployeePayrollChangedInMonthCriteria>()).Returns(new List<int> { 1 });
             // Act
             var actual = await employeeController.CheckEmployeePayrollChangedInMonth(DateTime.Today, 1);
 

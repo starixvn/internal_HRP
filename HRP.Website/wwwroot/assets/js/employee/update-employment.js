@@ -16,20 +16,23 @@ var updateEmployment = (function ($) {
     }
 
     function loadEmploymentForm() {
-        var employeeId = $('#personalDetailsForm #EmployeeId').val();
+        var $personalDetailsForm = $('#personalDetailsForm');
         $.ajax({
             type: 'GET',
             url: commonFunctions.rootURL + 'Employee/Update/Employment',
             dataType: 'html',
             data: {
-                employeeId: employeeId
+                id: $personalDetailsForm.find('#EmployeeId').val(),
+                departmentIds: $personalDetailsForm.find('#Filter_DepartmentIds').val(),
+                employmentStatusIds: $personalDetailsForm.find('#Filter_EmploymentStatusIds').val(),
+                employeeId: $personalDetailsForm.find('#Filter_EmployeeId').val(),
+                employeeName: $personalDetailsForm.find('#Filter_EmployeeName').val()
             },
             success: function (data) {
                 $employmentContentTab.html(data);
 
                 $updateEmploymentForm = $('#updateEmploymentForm');
                 $btnSubmit = $updateEmploymentForm.find('.js-btnSubmit');
-                commonFunctions.registerEventGoBack($updateEmploymentForm.find('.js-btnCancel'));
 
                 if ($updateEmploymentForm.find('#IsHost').prop('checked')) {
                     employmentCommonFuncs.initForm($updateEmploymentForm);

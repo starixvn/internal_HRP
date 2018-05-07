@@ -86,8 +86,8 @@ var employeeList = (function ($) {
     }
 
     function validateSelection() {
-        var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
-        var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
+        var departmentIds = $("#DepartmentIds").val(),
+            employeeStatusIds = $("#EmploymentStatusIds").val();
         if (departmentIds && employeeStatusIds) {
             return true;
         }
@@ -111,8 +111,8 @@ var employeeList = (function ($) {
     }
 
     function showSelectError() {
-        var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
-        var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
+        var departmentIds = $("#DepartmentIds").val(),
+            employeeStatusIds = $("#EmploymentStatusIds").val();
 
         if (!departmentIds) {
             showErrorMessage("#company-validation", "#CompanyMultiSelect");
@@ -162,10 +162,13 @@ var employeeList = (function ($) {
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
                     onCheck: function () {
-                        var selectedValue = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
-                        $("#DepartmentIds").val(selectedValue);
+                        var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#DepartmentIds").val(departmentIds);
                     }
                 });
+
+                var departmentIds = $("#CompanyMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                $("#DepartmentIds").val(departmentIds);
             }
         });
     }
@@ -183,10 +186,13 @@ var employeeList = (function ($) {
                     useCustomCheckAllText: true,
                     customCheckAllText: "All",
                     onCheck: function () {
-                        var selectedValue = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
-                        $("#EmploymentStatusIds").val(selectedValue);
+                        var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                        $("#EmploymentStatusIds").val(employeeStatusIds);
                     }
                 });
+
+                var employeeStatusIds = $("#EmploymentStatusMultiSelect").fanexMultiSelect('getItems', true).join(',');
+                $("#EmploymentStatusIds").val(employeeStatusIds);
             }
         });
     }

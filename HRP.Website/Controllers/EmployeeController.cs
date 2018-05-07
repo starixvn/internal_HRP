@@ -34,7 +34,8 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
-        public async Task<IActionResult> Index(string departmentIds,
+        public async Task<IActionResult> Index(
+            string departmentIds,
             string employmentStatusIds,
             int? employeeId,
             string displayName)
@@ -95,7 +96,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployee()
+        public async Task<IActionResult> CreateEmployee(CachingFilterViewModel filter)
         {
             var tuple = await employeeService.GetDataToCreateEmployeeAsync();
             var genderSelectList = tuple.Item1;
@@ -108,7 +109,8 @@
                 GenderList = genderSelectList,
                 NationalityList = nationalSelectList,
                 MaritalStatusList = maritalStatusSelectList,
-                NoOfChildrenList = noOfChildrenSelectList
+                NoOfChildrenList = noOfChildrenSelectList,
+                CachingFilter = filter
             };
 
             return View("CreateEmployee", viewModel);
@@ -137,9 +139,10 @@
         [Route("Employee/Create/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateEmployment()
+        public async Task<IActionResult> CreateEmployment(CachingFilterViewModel filter)
         {
             CreateEmploymentViewModel viewModel = await employeeService.GetDataToCreateEmploymentAsync();
+            viewModel.CachingFilter = filter;
 
             return PartialView("_CreateEmployment", viewModel);
         }
@@ -161,7 +164,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public async Task<IActionResult> UpdateEmployee(int id)
+        public async Task<IActionResult> UpdateEmployee(int id, CachingFilterViewModel filter)
         {
             var employee = await employeeService.GetEmployeeByIdAsync(id);
 
@@ -207,7 +210,8 @@
                 GenderList = genderSelectList,
                 NationalityList = nationalSelectList,
                 MaritalStatusList = maritalStatusSelectList,
-                NoOfChildrenList = noOfChildrenSelectList
+                NoOfChildrenList = noOfChildrenSelectList,
+                CachingFilter = filter
             };
 
             return View("UpdateEmployee", viewModel);
@@ -240,16 +244,17 @@
         [Route("Employee/Update/Employment")]
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Read)]
-        public async Task<IActionResult> UpdateEmployment(int employeeId)
+        public async Task<IActionResult> UpdateEmployment(int id, CachingFilterViewModel filter)
         {
-            UpdateEmploymentViewModel viewModel = await employeeService.GetDataToUpdateEmploymentAsync(employeeId);
+            UpdateEmploymentViewModel viewModel = await employeeService.GetDataToUpdateEmploymentAsync(id);
 
             if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            viewModel.IsHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeProfile, Core.Enumerations.Policy.Host);
+            viewModel.CachingFilter = filter;
+            viewModel.IsHost = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeProfile, Policy.Host);
 
             return PartialView("_UpdateEmployment", viewModel);
         }
@@ -376,7 +381,7 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
-        public async Task<IActionResult> Payroll(int id)
+        public async Task<IActionResult> Payroll(int id, CachingFilterViewModel filter)
         {
             EmployeePayrollViewModel viewModel = await payrollService.GetEmployeePayroll(id, sessionService.UserId);
 
@@ -385,6 +390,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
+            viewModel.CachingFilter = filter;
             viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
             return View(viewModel);
         }
