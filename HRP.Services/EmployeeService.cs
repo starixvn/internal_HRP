@@ -369,14 +369,12 @@
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
             IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
             IEnumerable<Country> coutries = await commonService.GetAllCountryAsync().ConfigureAwait(false);
+            IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(employment.CompanyId).ConfigureAwait(false);
 
-            ICriteria criteria = new GetDivisionByCompanyIdCriteria { CompanyId = employment.CompanyId, IsActive = true };
-            var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
-
-            criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = employment.DivisionId, IsActive = true };
+            ICriteria criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = employment.DivisionId, IsActive = true };
             var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
 
-            criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = employment.DepartmentId, IsActive = true };
+            criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = employment.DepartmentId, IsActive = true };
             var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
 
             criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = employment.CostCenterId, IsActive = true };

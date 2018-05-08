@@ -86,7 +86,7 @@ var employmentCommonFuncs = (function ($) {
 
             $.ajax({
                 type: 'GET',
-                url: commonFunctions.rootURL + 'Employee/GetCostCenterDepartmentId',
+                url: commonFunctions.rootURL + 'Employee/GetCostCenterByDepartmentId',
                 dataType: 'json',
                 data: {
                     departmentId: departmentId

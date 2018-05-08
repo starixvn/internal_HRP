@@ -8,7 +8,7 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new GetCostCenterDepartmentIdCriteria();
+            var criteria = new GetCostCenterByDepartmentIdCriteria();
             var expected = "CostCenter_GetByDepartmentId";
 
             // Act
@@ -24,7 +24,7 @@
         public void IsValid_DepartmentIdIsInvalid_ReturnFalse(int departmentId)
         {
             // Arrange
-            var criteria = new GetCostCenterDepartmentIdCriteria
+            var criteria = new GetCostCenterByDepartmentIdCriteria
             {
                 DepartmentId = departmentId
             };
@@ -40,7 +40,7 @@
         public void IsValid_DepartmentIdIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetCostCenterDepartmentIdCriteria
+            var criteria = new GetCostCenterByDepartmentIdCriteria
             {
                 DepartmentId = 1
             };

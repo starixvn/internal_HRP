@@ -116,7 +116,6 @@
         Task<CommandResult> UpdateCurrencyAsync(SimpleItem item);
 
         //// Common funcs
-        Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId);
 
         Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId);
 

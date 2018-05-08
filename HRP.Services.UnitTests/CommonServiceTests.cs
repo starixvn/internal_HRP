@@ -121,6 +121,24 @@
         }
 
         [Fact]
+        public async Task GetDivisionByCompanyIdAsync_WhenCalled_ReturnAsExpectedDivisions()
+        {
+            // Arrange
+            var divisions = new List<Division>
+            {
+                new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            var service = GetCommonService();
+            baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(divisions);
+
+            // Act
+            var actual = await service.GetDivisionByCompanyIdAsync(1);
+
+            // Assert
+            Assert.Equal(divisions, actual);
+        }
+
+        [Fact]
         public async Task GetAllJobCategoryAsync_WhenCalled_ReturnAsExpectedJobCategories()
         {
             // Arrange
@@ -198,14 +216,14 @@
             };
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;

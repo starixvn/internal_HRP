@@ -64,6 +64,12 @@
             return await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<Division>> GetDivisionByCompanyIdAsync(int companyId, bool? isActive = true)
+        {
+            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId, IsActive = isActive };
+            return await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true)
         {
             var criteria = new GetAllJobCategoryCriteria { IsActive = isActive };

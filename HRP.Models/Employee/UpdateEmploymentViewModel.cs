@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.Employee
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Core.CustomValidations;
     using HRP.Resources;

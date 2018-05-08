@@ -26,6 +26,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICommonService commonService;
         private IEmployeeService employeeService;
         private IEmployeePayrollService payrollService;
 
@@ -622,7 +623,7 @@
                 new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(expected);
+            commonService.GetDivisionByCompanyIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetDivisionByCompanyId(1);
@@ -671,7 +672,7 @@
         }
 
         [Fact]
-        public async Task GetCostCenterDepartmentId_WhenCalled_ReturnExpectedDivisions()
+        public async Task GetCostCenterByDepartmentId_WhenCalled_ReturnExpectedDivisions()
         {
             // Arrange
             var expected = new List<CostCenter>
@@ -679,10 +680,10 @@
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterDepartmentIdCriteria>()).Returns(expected);
+            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterByDepartmentIdCriteria>()).Returns(expected);
 
             // Act
-            var actual = await employeeController.GetCostCenterDepartmentId(1);
+            var actual = await employeeController.GetCostCenterByDepartmentId(1);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -930,6 +931,13 @@
             return service;
         }
 
+        private static ICommonService FakeCommonService()
+        {
+            var service = Substitute.For<ICommonService>();
+
+            return service;
+        }
+
         private static IEmployeeService FakeEmployeeService()
         {
             var service = Substitute.For<IEmployeeService>();
@@ -948,10 +956,11 @@
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
+            commonService = FakeCommonService();
             employeeService = FakeEmployeeService();
             payrollService = FakeEmployeePayrollServicee();
 
-            var controller = new EmployeeController(baseService, employeeService, payrollService, sessionService);
+            var controller = new EmployeeController(baseService, sessionService, commonService, employeeService, payrollService);
 
             return controller;
         }

@@ -20,15 +20,18 @@
 
     public class EmployeeController : BaseController
     {
+        private readonly ICommonService commonService;
         private readonly IEmployeeService employeeService;
         private readonly IEmployeePayrollService payrollService;
 
         public EmployeeController(
             IBaseService baseService,
+            ISessionService sessionService,
+            ICommonService commonService,
             IEmployeeService employeeService,
-            IEmployeePayrollService payrollService,
-            ISessionService sessionService) : base(baseService, sessionService)
+            IEmployeePayrollService payrollService) : base(baseService, sessionService)
         {
+            this.commonService = commonService;
             this.employeeService = employeeService;
             this.payrollService = payrollService;
         }
@@ -293,9 +296,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetDivisionByCompanyId(int companyId)
         {
-            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId, IsActive = true };
-            var divisions = await baseService.GetDataAsync<Division>(criteria);
-
+            IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(companyId);
             return Json(divisions);
         }
 
@@ -311,9 +312,9 @@
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> GetCostCenterDepartmentId(int departmentId)
+        public async Task<IActionResult> GetCostCenterByDepartmentId(int departmentId)
         {
-            var criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = departmentId, IsActive = true };
+            var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId, IsActive = true };
             var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
 
             return Json(costCenters);

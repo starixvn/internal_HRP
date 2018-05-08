@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -23,13 +24,16 @@
 
     public class DataConfigurationController : BaseController
     {
+        private readonly ICommonService commonService;
         private readonly IDataConfigurationService dataConfigurationService;
 
         public DataConfigurationController(
-            IDataConfigurationService dataConfigurationService,
             ISessionService sessionService,
-            IBaseService baseService) : base(baseService, sessionService)
+            IBaseService baseService,
+            ICommonService commonService,
+            IDataConfigurationService dataConfigurationService) : base(baseService, sessionService)
         {
+            this.commonService = commonService;
             this.dataConfigurationService = dataConfigurationService;
         }
 
@@ -1390,9 +1394,9 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetDivisionSelectListByCompanyId(int companyId)
         {
-            var divisionList = await dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(companyId);
+            IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(companyId, null);
 
-            return PartialView("_SelectListItem", divisionList);
+            return PartialView("_SelectListItem", commonService.GetSelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]

@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetCostCenterDepartmentIdCriteria : CriteriaBase
+    public class GetCostCenterByDepartmentIdCriteria : CriteriaBase
     {
         public int DepartmentId { get; set; }
 

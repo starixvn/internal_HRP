@@ -14,6 +14,8 @@
 
         Task<IEnumerable<Company>> GetCompanyByFunctionKeyAsync(string functionKey);
 
+        Task<IEnumerable<Division>> GetDivisionByCompanyIdAsync(int companyId, bool? isActive = true);
+
         Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true);
 
         Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true);

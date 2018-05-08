@@ -836,14 +836,6 @@
 
         #region Common
 
-        public async Task<SelectList> GetDivisionSelectListByCompanyIdAsync(int companyId)
-        {
-            var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId };
-            var divisions = await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
-
-            return new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
-        }
-
         public async Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId)
         {
             var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId };
@@ -854,7 +846,7 @@
 
         public async Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId)
         {
-            var criteria = new GetCostCenterDepartmentIdCriteria { DepartmentId = departmentId };
+            var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId };
             var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
 
             return new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));

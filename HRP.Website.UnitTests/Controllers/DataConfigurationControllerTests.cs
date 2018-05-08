@@ -29,6 +29,7 @@
     {
         private IBaseService baseService;
         private ISessionService sessionService;
+        private ICommonService commonService;
         private IDataConfigurationService dataConfigurationService;
 
         [Fact]
@@ -2095,7 +2096,7 @@
         {
             // Arrange
             var commandResult = new CommandResult();
-            var office = MockOffice(); ;
+            var office = MockOffice();
             var controller = GetDataConfigurationController();
             dataConfigurationService.CreateOfficeAsync(office).Returns(commandResult);
 
@@ -2367,7 +2368,6 @@
         public async Task UpdateRefResourceItemPost_ModelStateIsInvalid_ReturnJsonResultWithErrors(int fieldId)
         {
             // Arrange
-            var field = FieldsDictionary.Fields[fieldId];
             var item = MockSimpleItem();
             var controller = GetDataConfigurationController();
             controller.ModelState.AddModelError("Item.ItemName", "Required");
@@ -2635,9 +2635,13 @@
         {
             // Arrange
             var id = 21;
-            var divisionSelectList = MockDivisionSelectList();
+            var divisions = new List<Division>
+            {
+                new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            var divisionSelectList = new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(id).Returns(divisionSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Division>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(divisionSelectList);
 
             // Act
             var actual = await controller.GetDivisionSelectListByCompanyId(id);
@@ -2646,9 +2650,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(divisionSelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(divisionSelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(divisionSelectList.Items, viewModel.Items);
+            Assert.Equal(divisionSelectList, viewModel);
         }
 
         [Fact]
@@ -2764,31 +2766,35 @@
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
+            commonService = FakeCommonService();
             dataConfigurationService = FakeDataConfigurationService();
 
-            var controller = new DataConfigurationController(dataConfigurationService, sessionService, baseService);
+            var controller = new DataConfigurationController(sessionService, baseService, commonService, dataConfigurationService);
 
             return controller;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
 
         private static ISessionService FakeSessionService()
         {
-            var sessionServiceInstance = Substitute.For<ISessionService>();
-            sessionServiceInstance.UserId = 79;
+            var service = Substitute.For<ISessionService>();
+            service.UserId = 79;
 
-            return sessionServiceInstance;
+            return service;
+        }
+
+        private static ICommonService FakeCommonService()
+        {
+            return Substitute.For<ICommonService>();
         }
 
         private static IDataConfigurationService FakeDataConfigurationService()
         {
-            var dataConfigurationService = Substitute.For<IDataConfigurationService>();
-
-            return dataConfigurationService;
+            return Substitute.For<IDataConfigurationService>();
         }
 
         private Field MockField()
@@ -2986,13 +2992,6 @@
             var jobCategoryList = new List<JobCategory> { MockJobCategory() };
 
             return new SelectList(jobCategoryList, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
-        }
-
-        private SelectList MockDivisionSelectList()
-        {
-            var divisions = new List<Division> { MockDivision() };
-
-            return new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
         }
 
         private SelectList MockDepartmentSelectList()

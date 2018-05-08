@@ -1527,28 +1527,6 @@
         #region Common
 
         [Fact]
-        public async Task GetDivisionSelectListByCompanyIdAsync_BaseServiceGetDivisionList_ReturnSelectList()
-        {
-            // Arrange
-            var id = 10;
-            var divisions = new List<Division> { MockDivision() };
-            var criteria = new GetDivisionByCompanyIdCriteria();
-            var expected = new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
-            var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<Division>(Arg.Do<GetDivisionByCompanyIdCriteria>(x => criteria = x)).Returns(divisions);
-
-            // Act
-            var actual = await dataConfigurationService.GetDivisionSelectListByCompanyIdAsync(id);
-
-            // Assert
-            Assert.IsType<SelectList>(actual);
-            Assert.Equal(expected.DataValueField, actual.DataValueField);
-            Assert.Equal(expected.DataTextField, actual.DataTextField);
-            Assert.Equal(expected.Items, actual.Items);
-            Assert.Equal(id, criteria.CompanyId);
-        }
-
-        [Fact]
         public async Task GetDepartmentSelectListByDivisionIdAsync_BaseServiceGetDepartmentList_ReturnSelectList()
         {
             // Arrange
@@ -1576,10 +1554,10 @@
             // Arrange
             var id = 12;
             var costCenters = new List<CostCenter> { MockCostCenter() };
-            var criteria = new GetCostCenterDepartmentIdCriteria();
+            var criteria = new GetCostCenterByDepartmentIdCriteria();
             var expected = new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
             var dataConfigurationService = GetDataConfigurationService();
-            baseService.GetDataAsync<CostCenter>(Arg.Do<GetCostCenterDepartmentIdCriteria>(x => criteria = x)).Returns(costCenters);
+            baseService.GetDataAsync<CostCenter>(Arg.Do<GetCostCenterByDepartmentIdCriteria>(x => criteria = x)).Returns(costCenters);
 
             // Act
             var actual = await dataConfigurationService.GetCostCenterSelectListByDepartmentIdAsync(id);
@@ -1728,7 +1706,7 @@
             return dataConfigurationService;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
