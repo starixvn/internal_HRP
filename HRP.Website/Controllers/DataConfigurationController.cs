@@ -694,9 +694,10 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateGradeLevel()
         {
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync(null);
             var viewModel = new CreateGradeLevelViewModel
             {
-                JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
+                JobCategoryList = commonService.GetSelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name)),
                 Field = new Field
                 {
                     FieldName = ViewLang.GradeLevel,
@@ -798,9 +799,10 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateJobGrade()
         {
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync(null);
             var viewModel = new CreateJobGradeViewModel
             {
-                JobCategoryList = await dataConfigurationService.GetJobCategorySelectListAsync(),
+                JobCategoryList = commonService.GetSelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name)),
                 Field = new Field
                 {
                     FieldName = ViewLang.JobGrade,
@@ -1005,9 +1007,10 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateCity()
         {
+            IEnumerable<Country> countries = await commonService.GetAllCountryAsync(null);
             var viewModel = new CreateCityViewModel
             {
-                CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
+                CountryList = commonService.GetSelectList(countries, nameof(Country.CountryId), nameof(Country.Code)),
                 Field = new Field
                 {
                     FieldName = ViewLang.City,
@@ -1109,9 +1112,10 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> CreateOffice()
         {
+            IEnumerable<Country> countries = await commonService.GetAllCountryAsync(null);
             var viewModel = new CreateOfficeViewModel
             {
-                CountryList = await dataConfigurationService.GetCountrySelectListAsync(),
+                CountryList = commonService.GetSelectList(countries, nameof(Country.CountryId), nameof(Country.Code)),
                 Field = new Field
                 {
                     FieldName = ViewLang.Office,
@@ -1395,48 +1399,42 @@
         public async Task<IActionResult> GetDivisionSelectListByCompanyId(int companyId)
         {
             IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(companyId, null);
-
             return PartialView("_SelectListItem", commonService.GetSelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetDepartmentSelectListByDivisionId(int divisionId)
         {
-            var departmentList = await dataConfigurationService.GetDepartmentSelectListByDivisionIdAsync(divisionId);
-
-            return PartialView("_SelectListItem", departmentList);
+            IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(divisionId, null);
+            return PartialView("_SelectListItem", commonService.GetSelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetCostCenterSelectListByDepartmentId(int departmentId)
         {
-            var costCenterList = await dataConfigurationService.GetCostCenterSelectListByDepartmentIdAsync(departmentId);
-
-            return PartialView("_SelectListItem", costCenterList);
+            IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(departmentId, null);
+            return PartialView("_SelectListItem", commonService.GetSelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetSectionSelectListByCostCenterId(int costCenterId)
         {
-            var sectionList = await dataConfigurationService.GetSectionSelectListByCostCenterIdAsync(costCenterId);
-
-            return PartialView("_SelectListItem", sectionList);
+            IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(costCenterId, null);
+            return PartialView("_SelectListItem", commonService.GetSelectList(sections, nameof(Section.SectionId), nameof(Section.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetGradeLevelSelectListByJobCategoryId(int jobCategoryId)
         {
-            var gradeLevelList = await dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(jobCategoryId);
-
-            return PartialView("_SelectListItem", gradeLevelList);
+            IEnumerable<GradeLevel> gradeLevels = await commonService.GetGradeLevelByJobCategoryIdAsync(jobCategoryId, null);
+            return PartialView("_SelectListItem", commonService.GetSelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetCitySelectListByCountryId(int countryId)
         {
-            var cityList = await dataConfigurationService.GetCitySelectListByCountryIdAsync(countryId);
-
-            return PartialView("_SelectListItem", cityList);
+            IEnumerable<City> cities = await commonService.GetCityByCountryIdAsync(countryId, null);
+            return PartialView("_SelectListItem", commonService.GetSelectList(cities, nameof(City.CityId), nameof(City.Code)));
         }
 
         private static string UppercaseFirstLetter(string s)

@@ -70,18 +70,58 @@
             return await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<Department>> GetDepartmentByDivisionIdAsync(int divisionId, bool? isActive = true)
+        {
+            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId, IsActive = isActive };
+            return await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<CostCenter>> GetCostCenterByDepartmentIdAsync(int departmentId, bool? isActive = true)
+        {
+            var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId, IsActive = isActive };
+            return await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Section>> GetSectionByCostCenterIdAsync(int costCenterId, bool? isActive = true)
+        {
+            var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId, IsActive = isActive };
+            return await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<GradeLevel>> GetGradeLevelByJobCategoryIdAsync(int jobCategoryId, bool? isActive = true)
+        {
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId, IsActive = isActive };
+            return await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<JobGrade>> GetJobGradeByGradeLevelIdAsync(int gradeLevelId, bool? isActive = true)
+        {
+            var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId, IsActive = true };
+            return await baseService.GetDataAsync<JobGrade>(criteria).ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true)
         {
             var criteria = new GetAllJobCategoryCriteria { IsActive = isActive };
-
             return await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true)
         {
             var criteria = new GetAllCountryCriteria { IsActive = isActive };
-
             return await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<City>> GetCityByCountryIdAsync(int countryId, bool? isActive = true)
+        {
+            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId, IsActive = isActive };
+            return await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Office>> GetOfficeByCityIdAsync(int cityId, bool? isActive = true)
+        {
+            var criteria = new GetOfficeByCityIdCriteria { CityId = cityId, IsActive = true };
+            return await baseService.GetDataAsync<Office>(criteria).ConfigureAwait(false);
         }
 
         public SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField)

@@ -16,9 +16,23 @@
 
         Task<IEnumerable<Division>> GetDivisionByCompanyIdAsync(int companyId, bool? isActive = true);
 
+        Task<IEnumerable<Department>> GetDepartmentByDivisionIdAsync(int divisionId, bool? isActive = true);
+
+        Task<IEnumerable<CostCenter>> GetCostCenterByDepartmentIdAsync(int departmentId, bool? isActive = true);
+
+        Task<IEnumerable<Section>> GetSectionByCostCenterIdAsync(int costCenterId, bool? isActive = true);
+
+        Task<IEnumerable<GradeLevel>> GetGradeLevelByJobCategoryIdAsync(int jobCategoryId, bool? isActive = true);
+
+        Task<IEnumerable<JobGrade>> GetJobGradeByGradeLevelIdAsync(int gradeLevelId, bool? isActive = true);
+
         Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true);
 
         Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true);
+
+        Task<IEnumerable<City>> GetCityByCountryIdAsync(int countryId, bool? isActive = true);
+
+        Task<IEnumerable<Office>> GetOfficeByCityIdAsync(int cityId, bool? isActive = true);
 
         SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField);
     }

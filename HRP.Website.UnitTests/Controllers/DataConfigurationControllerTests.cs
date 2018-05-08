@@ -1252,9 +1252,10 @@
         public async Task CreateGradeLevel_WhenCalled_ReturnPartialViewWithCreateGradeLevelViewModel()
         {
             // Arrange
-            var jobCategorySelectList = MockJobCategorySelectList();
+            var jobCategories = new List<JobCategory> { MockJobCategory() };
+            var jobCategorySelectList = new SelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetJobCategorySelectListAsync().Returns(jobCategorySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<JobCategory>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(jobCategorySelectList);
 
             // Act
             var actual = await controller.CreateGradeLevel();
@@ -1449,9 +1450,10 @@
         public async Task CreateJobGrade_WhenCalled_ReturnPartialViewWithCreateJobGradeViewModel()
         {
             // Arrange
-            var jobCategorySelectList = MockJobCategorySelectList();
+            var jobCategories = new List<JobCategory> { MockJobCategory() };
+            var jobCategorySelectList = new SelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetJobCategorySelectListAsync().Returns(jobCategorySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<JobCategory>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(jobCategorySelectList);
 
             // Act
             var actual = await controller.CreateJobGrade();
@@ -1840,9 +1842,10 @@
         public async Task CreateCity_WhenCalled_ReturnPartialViewWithCreateDivisionViewModel()
         {
             // Arrange
-            var countrySelectList = MockCountrySelectList();
+            var countries = new List<Country> { MockCountry() };
+            var countrySelectList = new SelectList(countries, nameof(Country.CountryId), nameof(Country.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetCountrySelectListAsync().Returns(countrySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Country>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(countrySelectList);
 
             // Act
             var actual = await controller.CreateCity();
@@ -2037,9 +2040,10 @@
         public async Task CreateOffice_WhenCalled_ReturnPartialViewWithCreateOfficeViewModel()
         {
             // Arrange
-            var countrySelectList = MockCountrySelectList();
+            var countries = new List<Country> { MockCountry() };
+            var countrySelectList = new SelectList(countries, nameof(Country.CountryId), nameof(Country.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetCountrySelectListAsync().Returns(countrySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Country>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(countrySelectList);
 
             // Act
             var actual = await controller.CreateOffice();
@@ -2635,10 +2639,7 @@
         {
             // Arrange
             var id = 21;
-            var divisions = new List<Division>
-            {
-                new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
-            };
+            var divisions = new List<Division> { MockDivision() };
             var divisionSelectList = new SelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code));
             var controller = GetDataConfigurationController();
             commonService.GetSelectList(Arg.Any<IEnumerable<Division>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(divisionSelectList);
@@ -2658,9 +2659,10 @@
         {
             // Arrange
             var id = 22;
-            var departmentSelectList = MockDepartmentSelectList();
+            var departments = new List<Department> { MockDepartment() };
+            var departmentSelectList = new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetDepartmentSelectListByDivisionIdAsync(id).Returns(departmentSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Department>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(departmentSelectList);
 
             // Act
             var actual = await controller.GetDepartmentSelectListByDivisionId(id);
@@ -2669,9 +2671,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(departmentSelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(departmentSelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(departmentSelectList.Items, viewModel.Items);
+            Assert.Equal(departmentSelectList, viewModel);
         }
 
         [Fact]
@@ -2679,9 +2679,10 @@
         {
             // Arrange
             var id = 23;
-            var costCenterSelectList = MockCostCenterSelectList();
+            var costCenters = new List<CostCenter> { MockCostCenter() };
+            var costCenterSelectList = new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetCostCenterSelectListByDepartmentIdAsync(id).Returns(costCenterSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<CostCenter>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(costCenterSelectList);
 
             // Act
             var actual = await controller.GetCostCenterSelectListByDepartmentId(id);
@@ -2690,9 +2691,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(costCenterSelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(costCenterSelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(costCenterSelectList.Items, viewModel.Items);
+            Assert.Equal(costCenterSelectList, viewModel);
         }
 
         [Fact]
@@ -2700,9 +2699,10 @@
         {
             // Arrange
             var id = 24;
-            var sectionSelectList = MockSectionSelectList();
+            var sections = new List<Section> { MockSection() };
+            var sectionSelectList = new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetSectionSelectListByCostCenterIdAsync(id).Returns(sectionSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Section>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sectionSelectList);
 
             // Act
             var actual = await controller.GetSectionSelectListByCostCenterId(id);
@@ -2711,9 +2711,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(sectionSelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(sectionSelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(sectionSelectList.Items, viewModel.Items);
+            Assert.Equal(sectionSelectList, viewModel);
         }
 
         [Fact]
@@ -2721,9 +2719,10 @@
         {
             // Arrange
             var id = 25;
-            var gradeLevelSelectList = MockGradeLevelSelectList();
+            var gradeLevels = new List<GradeLevel> { MockGradeLevel() };
+            var gradeLevelSelectList = new SelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetGradeLevelSelectListByJobCateogryIdAsync(id).Returns(gradeLevelSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<GradeLevel>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(gradeLevelSelectList);
 
             // Act
             var actual = await controller.GetGradeLevelSelectListByJobCategoryId(id);
@@ -2732,9 +2731,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(gradeLevelSelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(gradeLevelSelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(gradeLevelSelectList.Items, viewModel.Items);
+            Assert.Equal(gradeLevelSelectList, viewModel);
         }
 
         [Fact]
@@ -2742,9 +2739,10 @@
         {
             // Arrange
             var id = 20;
-            var citySelectList = MockCitySelectList();
+            var cities = new List<City> { MockCity() };
+            var citySelectList = new SelectList(cities, nameof(City.CityId), nameof(City.Code));
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetCitySelectListByCountryIdAsync(id).Returns(citySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<City>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(citySelectList);
 
             // Act
             var actual = await controller.GetCitySelectListByCountryId(id);
@@ -2753,9 +2751,7 @@
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
             Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(citySelectList.DataValueField, viewModel.DataValueField);
-            Assert.Equal(citySelectList.DataTextField, viewModel.DataTextField);
-            Assert.Equal(citySelectList.Items, viewModel.Items);
+            Assert.Equal(citySelectList, viewModel);
         }
 
         #endregion Commons
@@ -2985,55 +2981,6 @@
             var companies = new List<Company> { MockCompany() };
 
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
-        }
-
-        private SelectList MockJobCategorySelectList()
-        {
-            var jobCategoryList = new List<JobCategory> { MockJobCategory() };
-
-            return new SelectList(jobCategoryList, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
-        }
-
-        private SelectList MockDepartmentSelectList()
-        {
-            var departments = new List<Department> { MockDepartment() };
-
-            return new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
-        }
-
-        private SelectList MockCostCenterSelectList()
-        {
-            var costCenters = new List<CostCenter> { MockCostCenter() };
-
-            return new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
-        }
-
-        private SelectList MockSectionSelectList()
-        {
-            var sections = new List<Section> { MockSection() };
-
-            return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
-        }
-
-        private SelectList MockGradeLevelSelectList()
-        {
-            var gradeLevelList = new List<GradeLevel> { MockGradeLevel() };
-
-            return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
-        }
-
-        private SelectList MockCountrySelectList()
-        {
-            var countries = new List<Country> { MockCountry() };
-
-            return new SelectList(countries, nameof(Country.CountryId), nameof(Country.Code));
-        }
-
-        private SelectList MockCitySelectList()
-        {
-            var cities = new List<City> { MockCity() };
-
-            return new SelectList(cities, nameof(City.CityId), nameof(City.Code));
         }
 
         #endregion Initialization

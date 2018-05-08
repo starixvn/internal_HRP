@@ -4,11 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using Fanex.Data.Repository;
     using HRP.Core.Constants;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.EmergencyContact;
     using HRP.Criteria.Employee;
     using HRP.Models;
@@ -370,27 +368,13 @@
             IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
             IEnumerable<Country> coutries = await commonService.GetAllCountryAsync().ConfigureAwait(false);
             IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(employment.CompanyId).ConfigureAwait(false);
-
-            ICriteria criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = employment.DivisionId, IsActive = true };
-            var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
-
-            criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = employment.DepartmentId, IsActive = true };
-            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
-
-            criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = employment.CostCenterId, IsActive = true };
-            var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
-
-            criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = employment.JobCategoryId, IsActive = true };
-            var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(true);
-
-            criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = employment.GradeLevelId, IsActive = true };
-            var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria).ConfigureAwait(false);
-
-            criteria = new GetCityByCountryIdCriteria { CountryId = employment.CountryId, IsActive = true };
-            var cities = await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
-
-            criteria = new GetOfficeByCityIdCriteria { CityId = employment.CityId, IsActive = true };
-            var offices = await baseService.GetDataAsync<Office>(criteria).ConfigureAwait(false);
+            IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(employment.DivisionId).ConfigureAwait(false);
+            IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(employment.DepartmentId).ConfigureAwait(false);
+            IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(employment.CostCenterId).ConfigureAwait(false);
+            IEnumerable<GradeLevel> gradeLevels = await commonService.GetGradeLevelByJobCategoryIdAsync(employment.JobCategoryId).ConfigureAwait(true);
+            IEnumerable<JobGrade> jobGrades = await commonService.GetJobGradeByGradeLevelIdAsync(employment.GradeLevelId).ConfigureAwait(false);
+            IEnumerable<City> cities = await commonService.GetCityByCountryIdAsync(employment.CountryId).ConfigureAwait(false);
+            IEnumerable<Office> offices = await commonService.GetOfficeByCityIdAsync(employment.CityId).ConfigureAwait(false);
 
             string[] refNames = {
                 ReferenceResource.LocalCompany,

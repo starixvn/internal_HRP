@@ -110,32 +110,149 @@
             {
                 new Company { CompanyId = 1 }
             };
+            var functionKey = "FunctionKey";
+            var criteria = new GetCompanyByFunctionKeyCriteria();
             var service = GetCommonService();
-            baseService.GetDataAsync<Company>(Arg.Any<GetCompanyByFunctionKeyCriteria>()).Returns(companies);
+            baseService.GetDataAsync<Company>(Arg.Do<GetCompanyByFunctionKeyCriteria>(x => criteria = x)).Returns(companies);
 
             // Act
-            var actual = await service.GetCompanyByFunctionKeyAsync("FunctionKey");
+            var actual = await service.GetCompanyByFunctionKeyAsync(functionKey);
 
             // Assert
             Assert.Equal(companies, actual);
+            Assert.Equal(functionKey, criteria.FunctionKey);
         }
 
         [Fact]
         public async Task GetDivisionByCompanyIdAsync_WhenCalled_ReturnAsExpectedDivisions()
         {
             // Arrange
+            var companyId = 1;
             var divisions = new List<Division>
             {
-                new Division { DivisionId = 1, CompanyId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+                new Division { DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
+            var criteria = new GetDivisionByCompanyIdCriteria();
             var service = GetCommonService();
-            baseService.GetDataAsync<Division>(Arg.Any<GetDivisionByCompanyIdCriteria>()).Returns(divisions);
+            baseService.GetDataAsync<Division>(Arg.Do<GetDivisionByCompanyIdCriteria>(x => criteria = x)).Returns(divisions);
 
             // Act
-            var actual = await service.GetDivisionByCompanyIdAsync(1);
+            var actual = await service.GetDivisionByCompanyIdAsync(companyId);
 
             // Assert
             Assert.Equal(divisions, actual);
+            Assert.Equal(companyId, criteria.CompanyId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetDepartmentByDivisionIdAsync_WhenCalled_ReturnAsExpectedDepartments()
+        {
+            // Arrange
+            var divisionId = 1;
+            var departments = new List<Department>
+            {
+                new Department { DepartmentId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            var criteria = new GetDepartmentByDivisionIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<Department>(Arg.Do<GetDepartmentByDivisionIdCriteria>(x => criteria = x)).Returns(departments);
+
+            // Act
+            var actual = await service.GetDepartmentByDivisionIdAsync(divisionId);
+
+            // Assert
+            Assert.Equal(departments, actual);
+            Assert.Equal(divisionId, criteria.DivisionId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetCostCenterByDepartmentIdAsync_WhenCalled_ReturnAsExpectedCostCenters()
+        {
+            // Arrange
+            var departmentId = 1;
+            var costCenters = new List<CostCenter>
+            {
+                new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            var criteria = new GetCostCenterByDepartmentIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<CostCenter>(Arg.Do<GetCostCenterByDepartmentIdCriteria>(x => criteria = x)).Returns(costCenters);
+
+            // Act
+            var actual = await service.GetCostCenterByDepartmentIdAsync(departmentId);
+
+            // Assert
+            Assert.Equal(costCenters, actual);
+            Assert.Equal(departmentId, criteria.DepartmentId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetSectionByCostCenterIdAsync_WhenCalled_ReturnAsExpectedSections()
+        {
+            // Arrange
+            var costCenterId = 1;
+            var sections = new List<Section>
+            {
+                new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
+            };
+            var criteria = new GetSectionByCostCenterIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<Section>(Arg.Do<GetSectionByCostCenterIdCriteria>(x => criteria = x)).Returns(sections);
+
+            // Act
+            var actual = await service.GetSectionByCostCenterIdAsync(costCenterId);
+
+            // Assert
+            Assert.Equal(sections, actual);
+            Assert.Equal(costCenterId, criteria.CostCenterId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetGradeLevelByJobCategoryIdAsync_WhenCalled_ReturnAsExpectedGradeLevels()
+        {
+            // Arrange
+            var jobCategoryId = 1;
+            var gradeLevels = new List<GradeLevel>
+            {
+                new GradeLevel { GradeLevelId = 1, Name = "SM", Description = "Senior Management", IsActive = true }
+            };
+            var criteria = new GetGradeLevelByJobCategoryIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<GradeLevel>(Arg.Do<GetGradeLevelByJobCategoryIdCriteria>(x => criteria = x)).Returns(gradeLevels);
+
+            // Act
+            var actual = await service.GetGradeLevelByJobCategoryIdAsync(jobCategoryId);
+
+            // Assert
+            Assert.Equal(gradeLevels, actual);
+            Assert.Equal(jobCategoryId, criteria.JobCategoryId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetJobGradeByGradeLevelIdAsync_WhenCalled_ReturnAsExpectedJobGrades()
+        {
+            // Arrange
+            var gradeLevelId = 1;
+            var jobGrades = new List<JobGrade>
+            {
+                new JobGrade { JobGradeId = 1, Name = "A1", Description = "A1", IsActive = true }
+            };
+            var criteria = new GetJobGradeByGradeLevelIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<JobGrade>(Arg.Do<GetJobGradeByGradeLevelIdCriteria>(x => criteria = x)).Returns(jobGrades);
+
+            // Act
+            var actual = await service.GetJobGradeByGradeLevelIdAsync(gradeLevelId);
+
+            // Assert
+            Assert.Equal(jobGrades, actual);
+            Assert.Equal(gradeLevelId, criteria.GradeLevelId);
+            Assert.True(criteria.IsActive);
         }
 
         [Fact]
@@ -172,6 +289,50 @@
 
             // Assert
             Assert.Equal(coutries, actual);
+        }
+
+        [Fact]
+        public async Task GetCityByCountryIdAsync_WhenCalled_ReturnAsExpectedCities()
+        {
+            // Arrange
+            var countryId = 1;
+            var cities = new List<City>
+            {
+                new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
+            };
+            var criteria = new GetCityByCountryIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<City>(Arg.Do<GetCityByCountryIdCriteria>(x => criteria = x)).Returns(cities);
+
+            // Act
+            var actual = await service.GetCityByCountryIdAsync(countryId);
+
+            // Assert
+            Assert.Equal(cities, actual);
+            Assert.Equal(countryId, criteria.CountryId);
+            Assert.True(criteria.IsActive);
+        }
+
+        [Fact]
+        public async Task GetOfficeByCityIdAsync_WhenCalled_ReturnAsExpectedOffices()
+        {
+            // Arrange
+            var cityId = 1;
+            var offices = new List<Office>
+            {
+                new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
+            };
+            var criteria = new GetOfficeByCityIdCriteria();
+            var service = GetCommonService();
+            baseService.GetDataAsync<Office>(Arg.Do<GetOfficeByCityIdCriteria>(x => criteria = x)).Returns(offices);
+
+            // Act
+            var actual = await service.GetOfficeByCityIdAsync(cityId);
+
+            // Assert
+            Assert.Equal(offices, actual);
+            Assert.Equal(cityId, criteria.CityId);
+            Assert.True(criteria.IsActive);
         }
 
         [Fact]

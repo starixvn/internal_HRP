@@ -9,7 +9,6 @@
     using Core.Filters;
     using Core.Model;
     using Core.Services;
-    using Criteria;
     using Criteria.Employee;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -304,9 +303,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetDepartmentByDivisionId(int divisionId)
         {
-            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId, IsActive = true };
-            var departments = await baseService.GetDataAsync<Department>(criteria);
-
+            IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(divisionId);
             return Json(departments);
         }
 
@@ -314,9 +311,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetCostCenterByDepartmentId(int departmentId)
         {
-            var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId, IsActive = true };
-            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria);
-
+            IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(departmentId);
             return Json(costCenters);
         }
 
@@ -324,9 +319,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetSectionByCostCenterId(int costCenterId)
         {
-            var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId, IsActive = true };
-            var sections = await baseService.GetDataAsync<Section>(criteria);
-
+            IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(costCenterId);
             return Json(sections);
         }
 
@@ -344,9 +337,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetGradeLevelByJobCategoryId(int jobCategoryId)
         {
-            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId, IsActive = true };
-            var gradeLevels = await baseService.GetDataAsync<GradeLevel>(criteria);
-
+            IEnumerable<GradeLevel> gradeLevels = await commonService.GetGradeLevelByJobCategoryIdAsync(jobCategoryId);
             return Json(gradeLevels);
         }
 
@@ -354,9 +345,7 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetJobGradeByGradeLevelId(int gradeLevelId)
         {
-            var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId, IsActive = true };
-            var jobGrades = await baseService.GetDataAsync<JobGrade>(criteria);
-
+            IEnumerable<JobGrade> jobGrades = await commonService.GetJobGradeByGradeLevelIdAsync(gradeLevelId);
             return Json(jobGrades);
         }
 
@@ -364,20 +353,16 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetCityByCountryId(int countryId)
         {
-            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId, IsActive = true };
-            var sections = await baseService.GetDataAsync<City>(criteria);
-
-            return Json(sections);
+            IEnumerable<City> cities = await commonService.GetCityByCountryIdAsync(countryId);
+            return Json(cities);
         }
 
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> GetOfficeByCityId(int cityId)
         {
-            var criteria = new GetOfficeByCityIdCriteria { CityId = cityId, IsActive = true };
-            var sections = await baseService.GetDataAsync<Office>(criteria);
-
-            return Json(sections);
+            IEnumerable<Office> offices = await commonService.GetOfficeByCityIdAsync(cityId);
+            return Json(offices);
         }
 
         [HttpGet]

@@ -8,7 +8,6 @@
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
     using HRP.Criteria.Employee;
     using HRP.Models;
     using HRP.Models.Employee;
@@ -642,7 +641,7 @@
                 new Department { DepartmentId = 1, DivisionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<Department>(Arg.Any<GetDepartmentByDivisionIdCriteria>()).Returns(expected);
+            commonService.GetDepartmentByDivisionIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetDepartmentByDivisionId(1);
@@ -661,7 +660,7 @@
                 new Section { SectionId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<Section>(Arg.Any<GetSectionByCostCenterIdCriteria>()).Returns(expected);
+            commonService.GetSectionByCostCenterIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetSectionByCostCenterId(1);
@@ -680,7 +679,7 @@
                 new CostCenter { CostCenterId = 1, Code = "SM", Name = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<CostCenter>(Arg.Any<GetCostCenterByDepartmentIdCriteria>()).Returns(expected);
+            commonService.GetCostCenterByDepartmentIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetCostCenterByDepartmentId(1);
@@ -718,7 +717,7 @@
                 new GradeLevel { GradeLevelId = 1, Name = "SM", Description = "Senior Management", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<GradeLevel>(Arg.Any<GetGradeLevelByJobCategoryIdCriteria>()).Returns(expected);
+            commonService.GetGradeLevelByJobCategoryIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetGradeLevelByJobCategoryId(1);
@@ -753,7 +752,7 @@
                 new JobGrade { JobGradeId = 1, Name = "A1", Description = "A1", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<JobGrade>(Arg.Any<GetJobGradeByGradeLevelIdCriteria>()).Returns(expected);
+            commonService.GetJobGradeByGradeLevelIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetJobGradeByGradeLevelId(1);
@@ -772,7 +771,7 @@
                 new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<City>(Arg.Any<GetCityByCountryIdCriteria>()).Returns(expected);
+            commonService.GetCityByCountryIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetCityByCountryId(1);
@@ -791,7 +790,7 @@
                 new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
             };
             var employeeController = GetEmployeeController();
-            baseService.GetDataAsync<Office>(Arg.Any<GetOfficeByCityIdCriteria>()).Returns(expected);
+            commonService.GetOfficeByCityIdAsync(1).Returns(expected);
 
             // Act
             var actual = await employeeController.GetOfficeByCityId(1);

@@ -836,65 +836,11 @@
 
         #region Common
 
-        public async Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId)
-        {
-            var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId };
-            var departments = await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
-
-            return new SelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code));
-        }
-
-        public async Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId)
-        {
-            var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId };
-            var costCenters = await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
-
-            return new SelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code));
-        }
-
-        public async Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId)
-        {
-            var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId };
-            var sections = await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
-
-            return new SelectList(sections, nameof(Section.SectionId), nameof(Section.Code));
-        }
-
-        public async Task<SelectList> GetGradeLevelSelectListByJobCateogryIdAsync(int jobCategoryId)
-        {
-            var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId };
-            var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(false);
-
-            return new SelectList(gradeLevelList, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name));
-        }
-
-        public async Task<SelectList> GetCitySelectListByCountryIdAsync(int countryId)
-        {
-            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId };
-            var cityList = await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
-
-            return new SelectList(cityList, nameof(City.CityId), nameof(City.Code));
-        }
-
         public async Task<SelectList> GetCompanyBVISelectListAsync()
         {
             var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
 
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
-        }
-
-        public async Task<SelectList> GetJobCategorySelectListAsync()
-        {
-            var jobCategoryList = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria()).ConfigureAwait(false);
-
-            return new SelectList(jobCategoryList, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
-        }
-
-        public async Task<SelectList> GetCountrySelectListAsync()
-        {
-            var countryList = await baseService.GetDataAsync<Country>(new GetAllCountryCriteria()).ConfigureAwait(false);
-
-            return new SelectList(countryList, nameof(Country.CountryId), nameof(Country.Code));
         }
 
         #endregion Common

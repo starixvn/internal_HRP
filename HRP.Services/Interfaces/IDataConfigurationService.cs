@@ -117,20 +117,6 @@
 
         //// Common funcs
 
-        Task<SelectList> GetDepartmentSelectListByDivisionIdAsync(int divisionId);
-
-        Task<SelectList> GetCostCenterSelectListByDepartmentIdAsync(int departmentId);
-
-        Task<SelectList> GetSectionSelectListByCostCenterIdAsync(int costCenterId);
-
-        Task<SelectList> GetGradeLevelSelectListByJobCateogryIdAsync(int jobCategoryId);
-
-        Task<SelectList> GetCitySelectListByCountryIdAsync(int countryId);
-
         Task<SelectList> GetCompanyBVISelectListAsync();
-
-        Task<SelectList> GetJobCategorySelectListAsync();
-
-        Task<SelectList> GetCountrySelectListAsync();
     }
 }
