@@ -369,7 +369,7 @@
             }
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
-            monthlySalary.Salary = salary.ToString(CultureInfo.InvariantCulture);
+            monthlySalary.Salary = GetMonthlySalaryAmount(salary, basicSalary.AfterAdjustmentAmount, backPay.NetSalary);
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
@@ -967,6 +967,12 @@
         {
             int monthsApart = 12 * (past.Year - now.Year) + past.Month - now.Month;
             return Math.Abs(monthsApart);
+        }
+
+        private static string GetMonthlySalaryAmount(decimal monthlySalaryAmount, string afterAdjustmentAmount, string backPayAmount)
+        {
+            return !string.IsNullOrWhiteSpace(afterAdjustmentAmount) || !string.IsNullOrWhiteSpace(backPayAmount)
+                ? monthlySalaryAmount.ToString(CultureInfo.InvariantCulture) : null;
         }
 
         private static decimal? GetAfterAdjustmentAmount(
