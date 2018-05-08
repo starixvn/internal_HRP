@@ -1159,8 +1159,350 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.LocalCompanyChangeDate),
-                               HeaderName = "Company Local - Effective Date"
+                               PropertyName = nameof(DynamicReportModel.JobTitle),
+                               HeaderName = "Job Title BVI"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                34,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Title BVI - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobTitleChangeDate),
+                               HeaderName = "Job Title BVI - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                35,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Title BVI - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobTitleReason),
+                               HeaderName = "Job Title BVI - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                36,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Title Local",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.LocalJobTitle),
+                               HeaderName = "Job Title Local"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                37,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Title Local - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.LocalJobTitleChangeDate),
+                               HeaderName = "Job Title Local - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                38,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Title Local - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.LocalJobTitleReason),
+                               HeaderName = "Job Title Local - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                39,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Group - Start Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.GroupStartDate),
+                               HeaderName = "Date Commencement Group - Start Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                40,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Group - End Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.GroupEndDate),
+                               HeaderName = "Date Commencement Group - End Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                41,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Group - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.GroupDateReason),
+                               HeaderName = "Date Commencement Group - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                42,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Company - Start Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CompanyStartDate),
+                               HeaderName = "Date Commencement Company - Start Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                43,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Company - End Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CompanyEndDate),
+                               HeaderName = "Date Commencement Company - End Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                44,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Date Commencement Company - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CompanyReason),
+                               HeaderName = "Date Commencement Company - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                45,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Length Of Service - Group",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.GroupLengthOfService),
+                               HeaderName = "Length Of Service - Group"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                46,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Length Of Service - Company",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CompanyLengthOfService),
+                               HeaderName = "Length Of Service - Company"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                48,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "ID No - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.IDNoChangeDate),
+                               HeaderName = "ID No - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                49,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "ID No - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.IDNoChangeReason),
+                               HeaderName = "ID No - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                50,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Employment Type",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EmploymentType),
+                               HeaderName = "Employment Type"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                51,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Employment Status",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EmploymentStatus),
+                               HeaderName = "Employment Status"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                52,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Employment Status - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EmploymentStatusChangeDate),
+                               HeaderName = "Employment Status - Effective Date"
                            }
                         }
                     }

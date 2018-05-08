@@ -491,7 +491,7 @@
             totalAmount = RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0);
             monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
 
-            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate);
+            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate, currencyExchangeRates);
             CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
@@ -572,14 +572,47 @@
             MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
             DateTime workingMonth,
             DateTime groupStartDate,
-            DateTime? groupEndDate)
+            DateTime? groupEndDate,
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRate)
         {
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
             var afterAdjustmentAmount = RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyCode);
-
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
+
+            monthlyPayrollBasicAllowance.SubsistenceAfterAdjustmentAmount = 
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.SubsistenceCurrencyId, 
+                monthlyPayrollBasicAllowance.SubsistenceAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.HousingAfterAdjustmentAmount = 
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.HousingCurrencyId,
+                monthlyPayrollBasicAllowance.HousingAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.HomePassageAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.HomePassageCurrencyId,
+                monthlyPayrollBasicAllowance.HomePassageAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.MobilePhoneAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.MobilePhoneCurrencyId,
+                monthlyPayrollBasicAllowance.MobilePhoneAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.DutyMealAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.DutyMealCurrencyId,
+                monthlyPayrollBasicAllowance.DutyMealAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.HPIAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.HPICurrencyId,
+                monthlyPayrollBasicAllowance.HPIAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.OthersAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.OthersCurrencyId,
+                monthlyPayrollBasicAllowance.OthersAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
+            monthlyPayrollBasicAllowance.SecondmentAfterAdjustmentAmount =
+                CalculateAfterAdjustmentAllowanceDetail(monthlyPayrollBasicAllowance, monthlyPayrollBasicAllowance.SecondmentCurrencyId,
+                monthlyPayrollBasicAllowance.SecondmentAmount, daysInMonth, startDay, endDay, currencyExchangeRate);
+
             var amount = afterAdjustmentAmount - totalAmount;
             if (amount != 0)
             {
@@ -590,6 +623,21 @@
 
                 monthlyPayrollBasicAllowance.Reason = reason.ToString();
             }
+        }
+
+        private static string CalculateAfterAdjustmentAllowanceDetail(MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, int? allowanceDetailCurrencyId,
+            string allowanceDetailAmount, int daysInMonth, int startDay, int endDay, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRate)
+        {
+            if (allowanceDetailCurrencyId.HasValue)
+            {
+                decimal.TryParse(allowanceDetailAmount, out decimal amount);
+                var afterAdjustmentAmount = amount / daysInMonth * (endDay - startDay + 1);
+                afterAdjustmentAmount = RoundAmountWithCurrency(
+                    ConvertAmount(currencyExchangeRate, afterAdjustmentAmount, allowanceDetailCurrencyId, monthlyPayrollBasicAllowance.CurrencyId), monthlyPayrollBasicAllowance.CurrencyCode);
+                return afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return string.Empty;
         }
 
         private static decimal ConvertAmount(

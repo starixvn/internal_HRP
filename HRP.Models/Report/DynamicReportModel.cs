@@ -77,6 +77,30 @@
 
         public string LocalCompanyReason { get; set; }
 
+        public string JobTitle { get; set; }
+
+        public DateTime? JobTitleChangeDate { get; set; }
+
+        public string JobTitleReason { get; set; }
+
+        public string LocalJobTitle { get; set; }
+
+        public DateTime? LocalJobTitleChangeDate { get; set; }
+
+        public string LocalJobTitleReason { get; set; }
+
+        public DateTime? GroupStartDate { get; set; }
+
+        public DateTime? GroupEndDate { get; set; }
+
+        public string GroupDateReason { get; set; }
+
+        public DateTime? CompanyStartDate { get; set; }
+
+        public DateTime? CompanyEndDate { get; set; }
+
+        public string CompanyDateReason { get; set; }
+
         public string Department { get; set; }
 
         public string Section { get; set; }
@@ -84,6 +108,50 @@
         public string Division { get; set; }
 
         public string CostCenter { get; set; }
+
+        public string GroupLengthOfService
+        {
+            get
+            {
+                if (GroupStartDate.HasValue)
+                {
+                    var endDate = GroupEndDate ?? DateTime.Today;
+                    var totalDays = (endDate - GroupStartDate.Value).TotalDays;
+
+                    return $"{totalDays} day(s)";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string CompanyLengthOfService
+        {
+            get
+            {
+                if (CompanyStartDate.HasValue)
+                {
+                    var endDate = CompanyEndDate ?? DateTime.Today;
+                    var totalDays = (endDate - CompanyStartDate.Value).TotalDays;
+
+                    return $"{totalDays} day(s)";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string IDNo { get; set; }
+
+        public DateTime IDNoChangeDate { get; set; }
+
+        public string IDNoChangeReason { get; set; }
+
+        public string EmploymentType { get; set; }
+
+        public string EmploymentStatus { get; set; }
+
+        public DateTime EmploymentStatusChangeDate { get; set; }
 
         #endregion Employment
 

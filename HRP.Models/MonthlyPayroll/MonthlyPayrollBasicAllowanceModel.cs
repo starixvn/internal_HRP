@@ -47,33 +47,49 @@
 
         public string SubsistenceAmount { get; set; }
 
+        public string SubsistenceAfterAdjustmentAmount { get; set; }
+
         public int? SubsistenceCurrencyId { get; set; }
 
         public string HousingAmount { get; set; }
+
+        public string HousingAfterAdjustmentAmount { get; set; }
 
         public int? HousingCurrencyId { get; set; }
 
         public string HomePassageAmount { get; set; }
 
+        public string HomePassageAfterAdjustmentAmount { get; set; }
+
         public int? HomePassageCurrencyId { get; set; }
 
         public string MobilePhoneAmount { get; set; }
+
+        public string MobilePhoneAfterAdjustmentAmount { get; set; }
 
         public int? MobilePhoneCurrencyId { get; set; }
 
         public string DutyMealAmount { get; set; }
 
+        public string DutyMealAfterAdjustmentAmount { get; set; }
+
         public int? DutyMealCurrencyId { get; set; }
 
         public string HPIAmount { get; set; }
+
+        public string HPIAfterAdjustmentAmount { get; set; }
 
         public int? HPICurrencyId { get; set; }
 
         public string OthersAmount { get; set; }
 
+        public string OthersAfterAdjustmentAmount { get; set; }
+
         public int? OthersCurrencyId { get; set; }
 
         public string SecondmentAmount { get; set; }
+
+        public string SecondmentAfterAdjustmentAmount { get; set; }
 
         public int? SecondmentCurrencyId { get; set; }
 

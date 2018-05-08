@@ -33,6 +33,14 @@
     [CreatedDate]              DATETIME      NULL,
     [AfterAdjustmentAmount]    VARCHAR (MAX) NULL,
     [Reason]                   VARCHAR (200) NULL,
+	[SubsistenceAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[HousingAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[HomePassageAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[MobilePhoneAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[DutyMealAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[HPIAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[OthersAfterAdjustmentAmount] VARCHAR(MAX) NULL,
+	[SecondmentAfterAdjustmentAmount] VARCHAR(MAX) NULL,
     CONSTRAINT [PK_MonthlyBasicAllowance_1] PRIMARY KEY CLUSTERED ([PayrollId] ASC)
 );
 
