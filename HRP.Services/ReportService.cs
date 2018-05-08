@@ -175,6 +175,14 @@
                     basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
                     basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
                     basicAllowance.AfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount);
+                    basicAllowance.DutyMealAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.DutyMealAfterAdjustmentAmount);
+                    basicAllowance.HomePassageAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HomePassageAfterAdjustmentAmount);
+                    basicAllowance.HousingAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HousingAfterAdjustmentAmount);
+                    basicAllowance.HPIAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HPIAfterAdjustmentAmount);
+                    basicAllowance.MobilePhoneAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.MobilePhoneAfterAdjustmentAmount);
+                    basicAllowance.OthersAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.OthersAfterAdjustmentAmount);
+                    basicAllowance.SecondmentAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.SecondmentAfterAdjustmentAmount);
+                    basicAllowance.SubsistenceAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.SubsistenceAfterAdjustmentAmount);
 
                     ConvertMonthlyBasicAllowanceToConversionCurrency(basicAllowance, currencyExchangeRates);
                 }

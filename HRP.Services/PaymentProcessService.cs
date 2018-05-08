@@ -514,6 +514,7 @@
                 basicAllowance.DirectBanking1Amount = cryptoService.Encrypt(basicAllowance.DirectBanking1Amount);
                 basicAllowance.DirectBanking2Amount = cryptoService.Encrypt(basicAllowance.DirectBanking2Amount);
                 basicAllowance.CashAmount = cryptoService.Encrypt(basicAllowance.CashAmount);
+
                 basicAllowance.SubsistenceAmount = cryptoService.Encrypt(basicAllowance.SubsistenceAmount);
                 basicAllowance.HomePassageAmount = cryptoService.Encrypt(basicAllowance.HomePassageAmount);
                 basicAllowance.HousingAmount = cryptoService.Encrypt(basicAllowance.HousingAmount);
@@ -522,9 +523,19 @@
                 basicAllowance.DutyMealAmount = cryptoService.Encrypt(basicAllowance.DutyMealAmount);
                 basicAllowance.SecondmentAmount = cryptoService.Encrypt(basicAllowance.SecondmentAmount);
                 basicAllowance.OthersAmount = cryptoService.Encrypt(basicAllowance.OthersAmount);
+
                 basicAllowance.RoomingChargesAmount = cryptoService.Encrypt(basicAllowance.RoomingChargesAmount);
                 basicAllowance.FitnessFirstAmount = cryptoService.Encrypt(basicAllowance.FitnessFirstAmount);
                 basicAllowance.AfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.AfterAdjustmentAmount);
+
+                basicAllowance.DutyMealAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.DutyMealAfterAdjustmentAmount);
+                basicAllowance.HomePassageAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.HomePassageAfterAdjustmentAmount);
+                basicAllowance.HousingAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.HousingAfterAdjustmentAmount);
+                basicAllowance.HPIAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.HPIAfterAdjustmentAmount);
+                basicAllowance.MobilePhoneAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.MobilePhoneAfterAdjustmentAmount);
+                basicAllowance.OthersAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.OthersAfterAdjustmentAmount);
+                basicAllowance.SecondmentAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.SecondmentAfterAdjustmentAmount);
+                basicAllowance.SubsistenceAfterAdjustmentAmount = cryptoService.Encrypt(basicAllowance.SubsistenceAfterAdjustmentAmount);
             }
         }
 
