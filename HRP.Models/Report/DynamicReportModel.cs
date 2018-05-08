@@ -23,9 +23,9 @@
 
         public string NRICNo { get; set; }
 
-        public int MaritalStatus { get; set; }
+        public string MaritalStatus { get; set; }
 
-        public int NoOfChildren { get; set; }
+        public string NoOfChildren { get; set; }
 
         public string OverseasPhoneNo { get; set; }
 
@@ -101,14 +101,6 @@
 
         public string CompanyDateReason { get; set; }
 
-        public string Department { get; set; }
-
-        public string Section { get; set; }
-
-        public string Division { get; set; }
-
-        public string CostCenter { get; set; }
-
         public string GroupLengthOfService
         {
             get
@@ -152,6 +144,128 @@
         public string EmploymentStatus { get; set; }
 
         public DateTime EmploymentStatusChangeDate { get; set; }
+
+        public string JobCategory { get; set; }
+
+        public DateTime JobCategoryChangeDate { get; set; }
+
+        public string JobCategoryReason { get; set; }
+
+        public string GradeLevel { get; set; }
+
+        public string JobGrade { get; set; }
+
+        public DateTime JobGradeChangeDate { get; set; }
+
+        public string JobGradeReason { get; set; }
+
+        public string Department { get; set; }
+
+        public DateTime DepartmentChangeDate { get; set; }
+
+        public string DepartmentReason { get; set; }
+
+        public string Section { get; set; }
+
+        public DateTime SectionChangeDate { get; set; }
+
+        public string SectionReason { get; set; }
+
+        public string Division { get; set; }
+
+        public DateTime DivisionChangeDate { get; set; }
+
+        public string DivisionReason { get; set; }
+
+        public string CostCenter { get; set; }
+
+        public DateTime CostCenterChangeDate { get; set; }
+
+        public string CostCenterReason { get; set; }
+
+        public string Email { get; set; }
+
+        public string Country { get; set; }
+
+        public string City { get; set; }
+
+        public string Office { get; set; }
+
+        public string WorkPermitCompany { get; set; }
+
+        public string WorkPermitType1 { get; set; }
+
+        public DateTime StartDateType1 { get; set; }
+
+        public DateTime EndDateType1 { get; set; }
+
+        public string WorkPermitType2 { get; set; }
+
+        public DateTime StartDateType2 { get; set; }
+
+        public DateTime EndDateType2 { get; set; }
+
+        public string DSTCompany { get; set; }
+
+        public string DBTCompany { get; set; }
+
+        public string TaxIDNo { get; set; }
+
+        public string SSSNo { get; set; }
+
+        public string HealthInsNo { get; set; }
+
+        public string HDMFNo { get; set; }
+
+        public string FullNamePFileAdmin { get; set; }
+
+        public string NicknamePFileAdmin { get; set; }
+
+        public string FullNameBVISalary { get; set; }
+
+        public string NickNameBVISalary { get; set; }
+
+        public string FullNameBVIAllowance { get; set; }
+
+        public string NickNameBVIAllowance { get; set; }
+
+        public string FullNameLocalSalary { get; set; }
+
+        public string NickNameLocalSalary { get; set; }
+
+        public string FullNameAdministrator { get; set; }
+
+        public string NicknameAdministrator { get; set; }
+
+        public string FullNameEvaluator1 { get; set; }
+
+        public string NicknameEvaluator1 { get; set; }
+
+        public string FullNameEvaluator2 { get; set; }
+
+        public string NicknameEvaluator2 { get; set; }
+
+        public string FullNameReviewer { get; set; }
+
+        public string NicknameReviewer { get; set; }
+
+        public string FullNameManagement { get; set; }
+
+        public string NicknameManagement { get; set; }
+
+        public string FullNameIncrement { get; set; }
+
+        public string NicknameIncrement { get; set; }
+
+        public string FullNameBVIBonus { get; set; }
+
+        public string NicknameBVIBonus { get; set; }
+
+        public string FullNameLocalBonus { get; set; }
+
+        public string NicknameLocalBonus { get; set; }
+
+        public string PDFPassword { get; set; }
 
         #endregion Employment
 

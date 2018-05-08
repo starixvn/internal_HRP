@@ -533,16 +533,22 @@
                     foreach (var column in columns)
                     {
                         var propertyInfo = record.GetType().GetProperty(column.PropertyName);
-
+                        var cell = worksheet.Cells[row, col];
                         if (column.IsEncrypted)
                         {
                             var decryptedValue = cryptoService.Decrypt(propertyInfo.GetValue(record)?.ToString());
-                            worksheet.Cells[row, col].Value = decryptedValue;
+                            cell.Value = decryptedValue;
                         }
                         else
                         {
-                            worksheet.Cells[row, col].Value = propertyInfo.GetValue(record);
+                            cell.Value = propertyInfo.GetValue(record);
+
+                            if (propertyInfo.PropertyType == typeof(DateTime))
+                            {
+                                cell.Style.Numberformat.Format = "dd/MM//yyyy";
+                            }
                         }
+
 
                         col++;
                     }
@@ -550,6 +556,7 @@
                     row++;
                 }
 
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                 return package.GetAsByteArray();
             }
         }

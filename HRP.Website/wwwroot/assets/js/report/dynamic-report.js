@@ -77,8 +77,6 @@
             });
 
             $selectedIds.val(selectedIds.toString());
-            alert(selectedIds.toString());
-            return false;
         });
 
         $('#btn-moveup').on('click', function () {

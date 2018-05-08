@@ -1,542 +1,9 @@
 ﻿namespace HRP.Models.Report
 {
     using System.Collections.Generic;
-    using HRP.Core.Constants;
 
-    public static class ColumnsConfirguration
+    public static partial class ColumnsConfirguration
     {
-        private static readonly IEnumerable<DynamicReportItem> dynamicReportItems = new List<DynamicReportItem>
-        {
-            new DynamicReportItem
-            {
-                Id = 1,
-                Name = "Full Name",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 2,
-                Name = "Nick Name",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 3,
-                Name = "Gender",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 4,
-                Name = "Date of Birth",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 5,
-                Name = "Place of Birth",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 6,
-                Name = "Nationality",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 7,
-                Name = "NRIC No",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 8,
-                Name = "Marital Status",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 9,
-                Name = "No Of Children",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 10,
-                Name = "Telephone Overseas",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 11,
-                Name = "Telephone Local",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 12,
-                Name = "Telephone Other",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 13,
-                Name = "Passport No",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 14,
-                Name = "Passport Date of Issue",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 15,
-                Name = "Passport Expired Date",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 16,
-                Name = "Passport Place of Issue",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 17,
-                Name = "Skype Account",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 18,
-                Name = "Personal Email Address",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 19,
-                Name = "Permanent Address (Overseas)",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 20,
-                Name = "Resident Address (Local)",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 21,
-                Name = "Mailing Address",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 22,
-                Name = "Emergency Contact Name",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 23,
-                Name = "Emergency Contact Relationship",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 24,
-                Name = "Emergency Contact Address",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 25,
-                Name = "Emergency Contact Telephone No1",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 26,
-                Name = "Emergency Contact Telephone No2",
-                Group = DynamicReportItemGroup.PersonalDetails
-            },
-            new DynamicReportItem
-            {
-                Id = 27,
-                Name = "Company BVI",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 28,
-                Name = "Company BVI - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 29,
-                Name = "Company BVI - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 30,
-                Name = "Company Local",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 31,
-                Name = "Company Local - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 32,
-                Name = "Company Local - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 33,
-                Name = "Job Title BVI",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 34,
-                Name = "Job Title BVI - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 35,
-                Name = "Job Title BVI - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 36,
-                Name = "Job Title Local",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 37,
-                Name = "Job Title Local - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 38,
-                Name = "Job Title Local - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 39,
-                Name = "Date Commencement Group - Start Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 40,
-                Name = "Date Commencement Group - End Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 41,
-                Name = "Date Commencement Group - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 42,
-                Name = "Date Commencement Company - Start",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 43,
-                Name = "Date Commencement Company - End",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 44,
-                Name = "Date Commencement Company - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 45,
-                Name = "Length Of Service - Group",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 46,
-                Name = "Length Of Service - Company",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 47,
-                Name = "ID No",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 48,
-                Name = "ID No - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 49,
-                Name = "ID No - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 50,
-                Name = "Employment Type",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 51,
-                Name = "Employment Status",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 52,
-                Name = "Employment Status - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 53,
-                Name = "Job Category",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 54,
-                Name = "Job Category - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 55,
-                Name = "Job Category - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 56,
-                Name = "Grade Level",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 57,
-                Name = "Job Grade",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 58,
-                Name = "Grade Level - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 59,
-                Name = "Grade Level - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 60,
-                Name = "Division",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 61,
-                Name = "Division - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 62,
-                Name = "Division - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 63,
-                Name = "Department",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 64,
-                Name = "Department - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 65,
-                Name = "Department - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 66,
-                Name = "Cost Center",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 67,
-                Name = "Cost Center - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 68,
-                Name = "Cost Center - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 69,
-                Name = "Section",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 70,
-                Name = "Section - Effective Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 71,
-                Name = "Section - Reason",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 72,
-                Name = "Email Address",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 73,
-                Name = "Work Location - Company",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 74,
-                Name = "Work Location - City",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 75,
-                Name = "Work Location - Office",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 76,
-                Name = "Work Permit - Company",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 77,
-                Name = "Work Permit - Type 1",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 78,
-                Name = "Work Permit - Type 1 Start Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 79,
-                Name = "Work Permit - Type 1 End Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 80,
-                Name = "Work Permit - Type 2",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 81,
-                Name = "Work Permit - Type 2 Start Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 82,
-                Name = "Work Permit - Type 2 End Date",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 83,
-                Name = "Tax Declaration - DST",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 84,
-                Name = "Tax Declaration - DBT",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 85,
-                Name = "Local Statutory - Tax ID No",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 86,
-                Name = "Local Statutory - SSS No",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 87,
-                Name = "Local Statutory - Health Ins No",
-                Group = DynamicReportItemGroup.Employement
-            },
-            new DynamicReportItem
-            {
-                Id = 88,
-                Name = "Local Statutory - HDMF No",
-                Group = DynamicReportItemGroup.Employement
-            }
-        };
-
         private static readonly Dictionary<int, IEnumerable<ColumnGroup>> columns = new Dictionary<int, IEnumerable<ColumnGroup>>
         {
             {
@@ -1509,7 +976,140 @@
                 }
             },
             {
-                4,
+                53,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Category",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobCategory),
+                               HeaderName = "Job Category"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                54,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Category - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobCategoryChangeDate),
+                               HeaderName = "Job Category - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                55,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Category - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobCategoryReason),
+                               HeaderName = "Job Category - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                56,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Grade Level",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.GradeLevel),
+                               HeaderName = "Grade Level"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                57,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Job Grade",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobGrade),
+                               HeaderName = "Job Grade"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                58,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Grade Level - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobGradeChangeDate),
+                               HeaderName = "Grade Level - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                59,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Grade Level - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.JobGradeReason),
+                               HeaderName = "Grade Level - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                60,
                 new List<ColumnGroup>
                 {
                    new ColumnGroup
@@ -1527,7 +1127,43 @@
                 }
             },
             {
-                5,
+                61,
+                new List<ColumnGroup>
+                {
+                   new ColumnGroup
+                   {
+                       GroupId = 4,
+                       GroupName = "Division - Effective Date",
+                       Columns = new List<MappingColumn>
+                       {
+                          new MappingColumn{
+                              PropertyName = nameof(DynamicReportModel.DivisionChangeDate),
+                              HeaderName = "Division - Effective Date"
+                          }
+                       }
+                   }
+                }
+            },
+            {
+                62,
+                new List<ColumnGroup>
+                {
+                   new ColumnGroup
+                   {
+                       GroupId = 4,
+                       GroupName = "Division - Reason",
+                       Columns = new List<MappingColumn>
+                       {
+                          new MappingColumn{
+                              PropertyName = nameof(DynamicReportModel.DivisionReason),
+                              HeaderName = "Division - Reason"
+                          }
+                       }
+                   }
+                }
+            },
+            {
+                63,
                 new List<ColumnGroup>
                 {
                    new ColumnGroup
@@ -1546,12 +1182,50 @@
                 }
             },
             {
-                6,
+                64,
+                new List<ColumnGroup>
+                {
+                   new ColumnGroup
+                   {
+                       GroupId = 5,
+                       GroupName = "Department - Effective Date",
+                       Columns = new List<MappingColumn>
+                       {
+                          new MappingColumn
+                          {
+                              PropertyName = nameof(DynamicReportModel.DepartmentChangeDate),
+                              HeaderName = "Department - Effective Date"
+                          }
+                       }
+                   }
+                }
+            },
+            {
+                65,
+                new List<ColumnGroup>
+                {
+                   new ColumnGroup
+                   {
+                       GroupId = 5,
+                       GroupName = "Department - Reason",
+                       Columns = new List<MappingColumn>
+                       {
+                          new MappingColumn
+                          {
+                              PropertyName = nameof(DynamicReportModel.DepartmentReason),
+                              HeaderName = "Department - Reason"
+                          }
+                       }
+                   }
+                }
+            },
+            {
+                66,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
                     {
-                        GroupId = 6,
+                        GroupId = 1,
                         GroupName = "Cost Center",
                         Columns = new List<MappingColumn>
                         {
@@ -1565,192 +1239,917 @@
                 }
             },
             {
-                7,
+                67,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
                     {
-                        GroupId = 7,
-                        GroupName = "Basic Salary",
+                        GroupId = 1,
+                        GroupName = "Cost Center - Effective Date",
                         Columns = new List<MappingColumn>
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.Salary),
-                               HeaderName = "Actual Basic Salary Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.CurrencyCode),
-                               HeaderName = "Actual Basic Salary Currency",
+                               PropertyName = nameof(DynamicReportModel.CostCenterChangeDate),
+                               HeaderName = "Cost Center - Effective Date"
                            }
                         }
                     }
                 }
             },
             {
-                12,
+                68,
                 new List<ColumnGroup>
                 {
                     new ColumnGroup
                     {
-                        GroupId = 12,
-                        GroupName = "Subsistence",
+                        GroupId = 1,
+                        GroupName = "Cost Center - Reason",
                         Columns = new List<MappingColumn>
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
-                               HeaderName = "Subsistence Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.SubsistenceCurrency),
-                               HeaderName = "Subsistence Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "HomePassage",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HomePassageAmount),
-                               HeaderName = "HomePassage Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HomePassageCurrency),
-                               HeaderName = "HomePassage Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "Housing",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HousingAmount),
-                               HeaderName = "Housing Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HousingCurrency),
-                               HeaderName = "HomePassage Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "Mobile Phone",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
-                               HeaderName = "Mobile Phone Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.MobilePhoneCurrency),
-                               HeaderName = "Mobile Phone Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "HPI",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HPIAmount),
-                               HeaderName = "HPI Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.HPICurrency),
-                               HeaderName = "HPI Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "Duty Meal",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.DutyMealAmount),
-                               HeaderName = "Duty Meal Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.DutyMealCurrency),
-                               HeaderName = "Duty Meal Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "Secondment",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.SecondmentAmount),
-                               HeaderName = "Secondment Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.SecondmentCurrency),
-                               HeaderName = "Secondment Currency",
-                           }
-                        }
-                    },
-                    new ColumnGroup
-                    {
-                        GroupId = 12,
-                        GroupName = "Others",
-                        Columns = new List<MappingColumn>
-                        {
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.OthersAmount),
-                               HeaderName = "Others Amount",
-                               IsEncrypted = true
-                           },
-                           new MappingColumn
-                           {
-                               PropertyName = nameof(DynamicReportModel.OthersCurrency),
-                               HeaderName = "Others Currency",
+                               PropertyName = nameof(DynamicReportModel.CostCenterReason),
+                               HeaderName = "Cost Center - Reason"
                            }
                         }
                     }
                 }
-            }
+            },
+            {
+                69,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Section",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Section),
+                               HeaderName = "Section"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                70,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Section - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SectionChangeDate),
+                               HeaderName = "Section - Effective Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                71,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Section - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SectionReason),
+                               HeaderName = "Section - Reason"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                72,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Email Address",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Email),
+                               HeaderName = "Email Address"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                73,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Location - Country",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Country),
+                               HeaderName = "Work Location - Country"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                74,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Location - City",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.City),
+                               HeaderName = "Work Location - City"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                75,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Location - Office",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Office),
+                               HeaderName = "Work Location - Office"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                76,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Company",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.WorkPermitCompany),
+                               HeaderName = "Work Permit - Company"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                77,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 1",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.WorkPermitType1),
+                               HeaderName = "Work Permit - Type 1"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                78,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 1 Start Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.StartDateType1),
+                               HeaderName = "Work Permit - Type 1 Start Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                79,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 1 End Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EndDateType1),
+                               HeaderName = "Work Permit - Type 1 End Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                80,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 2",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.WorkPermitType2),
+                               HeaderName = "Work Permit - Type 2"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                81,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 2 Start Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.StartDateType2),
+                               HeaderName = "Work Permit - Type 1 Start Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                82,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Work Permit - Type 2 End Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EndDateType2),
+                               HeaderName = "Work Permit - Type 2 End Date"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                83,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Tax Declaration - DST",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DSTCompany),
+                               HeaderName = "Tax Declaration - DST"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                84,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Tax Declaration - DBT",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DBTCompany),
+                               HeaderName = "Tax Declaration - DBT"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                85,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Local Statutory - Tax ID No",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.TaxIDNo),
+                               HeaderName = "Local Statutory - Tax ID No"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                86,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Local Statutory - SSS No",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SSSNo),
+                               HeaderName = "Local Statutory - SSS No"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                87,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Local Statutory - Health Ins No",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HealthInsNo),
+                               HeaderName = "Local Statutory - Health Ins No"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                88,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Local Statutory - HDMF No",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HDMFNo),
+                               HeaderName = "Local Statutory - HDMF No"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                89,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "P-File Admin",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNamePFileAdmin),
+                               HeaderName = "P-File Admin - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknamePFileAdmin),
+                               HeaderName = "P-File Admin - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                90,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Paymaster - BVI Salary",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameBVISalary),
+                               HeaderName = "Paymaster - BVI Salary - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NickNameBVISalary),
+                               HeaderName = "Paymaster - BVI Salary - Nick Name"
+                           }
+
+                        }
+                    }
+                }
+            },
+            {
+                91,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Paymaster - BVI Allowance",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameBVIAllowance),
+                               HeaderName = "Paymaster - BVI Allowance - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NickNameBVIAllowance),
+                               HeaderName = "Paymaster - BVI Allowance - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                92,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Paymaster - Local Salary",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameLocalSalary),
+                               HeaderName = "Paymaster - Local Salary - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NickNameLocalSalary),
+                               HeaderName = "Paymaster - Local Salary - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                93,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Administrator",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameAdministrator),
+                               HeaderName = "EPA - Administrator - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameAdministrator),
+                               HeaderName = "EPA - Administrator - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                94,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Evaluator #1",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameEvaluator1),
+                               HeaderName = "EPA - Evaluator #1 - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameEvaluator1),
+                               HeaderName = "EPA - Evaluator #1 - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                95,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Evaluator #2",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameEvaluator2),
+                               HeaderName = "EPA - Evaluator #2 - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameEvaluator2),
+                               HeaderName = "EPA - Evaluator #2 - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                96,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Reviewer",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameReviewer),
+                               HeaderName = "EPA - Reviewer - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameReviewer),
+                               HeaderName = "EPA - Reviewer - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                97,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Management",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameManagement),
+                               HeaderName = "EPA - Management - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameManagement),
+                               HeaderName = "EPA - Management - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                98,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Increment",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameIncrement),
+                               HeaderName = "EPA - Increment - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameIncrement),
+                               HeaderName = "EPA - Increment - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                99,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - BVI Bonus",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameBVIBonus),
+                               HeaderName = "EPA - BVI Bonus - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameBVIBonus),
+                               HeaderName = "EPA - BVI Bonus - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                100,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "EPA - Local Bonus",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FullNameLocalBonus),
+                               HeaderName = "EPA - Local Bonus - Full Name"
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.NicknameLocalBonus),
+                               HeaderName = "EPA - Local Bonus - Nick Name"
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                101,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "PDF Password",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.PDFPassword),
+                               HeaderName = "PDF Password",
+                               IsEncrypted = true
+                           }
+                        }
+                    }
+                }
+            },
+            //{
+            //    -4,
+            //    new List<ColumnGroup>
+            //    {
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 7,
+            //            GroupName = "Basic Salary",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.DBTCompany),
+            //                   HeaderName = "Actual Basic Salary Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.CurrencyCode),
+            //                   HeaderName = "Actual Basic Salary Currency",
+            //               }
+            //            }
+            //        }
+            //    }
+            //},
+            //{
+            //    12,
+            //    new List<ColumnGroup>
+            //    {
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Subsistence",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
+            //                   HeaderName = "Subsistence Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.SubsistenceCurrency),
+            //                   HeaderName = "Subsistence Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "HomePassage",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HomePassageAmount),
+            //                   HeaderName = "HomePassage Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HomePassageCurrency),
+            //                   HeaderName = "HomePassage Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Housing",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HousingAmount),
+            //                   HeaderName = "Housing Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HousingCurrency),
+            //                   HeaderName = "HomePassage Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Mobile Phone",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
+            //                   HeaderName = "Mobile Phone Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.MobilePhoneCurrency),
+            //                   HeaderName = "Mobile Phone Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "HPI",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HPIAmount),
+            //                   HeaderName = "HPI Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.HPICurrency),
+            //                   HeaderName = "HPI Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Duty Meal",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.DutyMealAmount),
+            //                   HeaderName = "Duty Meal Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.DutyMealCurrency),
+            //                   HeaderName = "Duty Meal Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Secondment",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.SecondmentAmount),
+            //                   HeaderName = "Secondment Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.SecondmentCurrency),
+            //                   HeaderName = "Secondment Currency",
+            //               }
+            //            }
+            //        },
+            //        new ColumnGroup
+            //        {
+            //            GroupId = 12,
+            //            GroupName = "Others",
+            //            Columns = new List<MappingColumn>
+            //            {
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.OthersAmount),
+            //                   HeaderName = "Others Amount",
+            //                   IsEncrypted = true
+            //               },
+            //               new MappingColumn
+            //               {
+            //                   PropertyName = nameof(DynamicReportModel.OthersCurrency),
+            //                   HeaderName = "Others Currency",
+            //               }
+            //            }
+            //        }
+            //    }
+            //}
         };
 
         public static Dictionary<int, IEnumerable<ColumnGroup>> Columns { get => columns; }
-
-        public static IEnumerable<DynamicReportItem> DynamicReportItems => dynamicReportItems;
     }
 }
