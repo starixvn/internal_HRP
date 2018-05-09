@@ -22,6 +22,7 @@
     using Services;
     using Services.Interfaces;
     using Newtonsoft.Json.Serialization;
+    using HRP.Criteria;
 
     public class ReportController : BaseController
     {
@@ -216,12 +217,14 @@
                 var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
                 if (report.Employees.Any())
                 {
+                    var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
+                    report.Company = company;
                     string webRootFolder = hostingEnvironment.WebRootPath;
                     string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
                     var templatePath = Path.Combine(webRootFolder, fileName);
                     var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-                    return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx");
+                    return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
                 }
 
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
@@ -244,8 +247,9 @@
 
             var employeeStatusIds = new List<string> { "1", "2" };
             var employeeStatuses = (await baseService.GetDataAsync<MultiSelectViewModel>(criteria)).ToList();
-            employeeStatuses.ForEach(x => {
-                if(!employeeStatusIds.Any(i => i == x.Value))
+            employeeStatuses.ForEach(x =>
+            {
+                if (!employeeStatusIds.Any(i => i == x.Value))
                 {
                     x.Checked = false;
                 }
@@ -273,7 +277,8 @@
         {
             if (ModelState.IsValid)
             {
-                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria {
+                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria
+                {
                     CompanyId = viewModel.CompanyId,
                     EmployeeStatusIds = viewModel.EmployeeStatusIds
                 });

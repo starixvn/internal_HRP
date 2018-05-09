@@ -30,7 +30,10 @@ BEGIN
 	WHERE mp.[Month] = @Month
 		AND ep.CompanyId = @CompanyId
 
-	IF NOT EXISTS(SELECT 1 FROM #tblEmployeeInfo) 
+	IF NOT EXISTS (
+			SELECT 1
+			FROM #tblEmployeeInfo
+			)
 	BEGIN
 		RETURN
 	END
@@ -107,6 +110,14 @@ BEGIN
 		,ba.FitnessFirstCurrencyId
 		,ba.FitnessFirstAmount
 		,ba.AfterAdjustmentAmount
+		,ba.[SubsistenceAfterAdjustmentAmount]
+		,ba.[HousingAfterAdjustmentAmount]
+		,ba.[HomePassageAfterAdjustmentAmount]
+		,ba.[MobilePhoneAfterAdjustmentAmount]
+		,ba.[DutyMealAfterAdjustmentAmount]
+		,ba.[HPIAfterAdjustmentAmount]
+		,ba.[OthersAfterAdjustmentAmount]
+		,ba.[SecondmentAfterAdjustmentAmount]
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyBasicAllowance AS ba WITH (NOLOCK) ON ba.PayrollId = ei.PayrollId
 	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON ba.CurrencyId = c.CurrencyId

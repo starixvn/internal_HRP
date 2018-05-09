@@ -101,8 +101,6 @@
             };
 
             var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
-
-            report.CompanyCode = report.Employees?.FirstOrDefault()?.CompanyCode;
             report.Month = month;
 
             var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;

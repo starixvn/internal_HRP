@@ -22,7 +22,7 @@
 
         public IEnumerable<Currency> CurrencyList { get; set; }
 
-        public string CompanyCode { get; set; }
+        public Company Company { get; set; }
 
         public DateTime Month { get; set; }
     }

@@ -62,6 +62,14 @@ BEGIN
 		,[CreatedDate] DATETIME
 		,[AfterAdjustmentAmount] VARCHAR(MAX)
 		,[Reason] VARCHAR(200)
+		,[SubsistenceAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HousingAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HomePassageAfterAdjustmentAmount] VARCHAR(MAX)
+		,[MobilePhoneAfterAdjustmentAmount] VARCHAR(MAX)
+		,[DutyMealAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HPIAfterAdjustmentAmount] VARCHAR(MAX)
+		,[OthersAfterAdjustmentAmount] VARCHAR(MAX)
+		,[SecondmentAfterAdjustmentAmount] VARCHAR(MAX)
 		)
 
 	CREATE TABLE #tblOldLogData (
@@ -99,6 +107,14 @@ BEGIN
 		,[CreatedDate] DATETIME
 		,[AfterAdjustmentAmount] VARCHAR(MAX)
 		,[Reason] VARCHAR(200)
+		,[SubsistenceAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HousingAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HomePassageAfterAdjustmentAmount] VARCHAR(MAX)
+		,[MobilePhoneAfterAdjustmentAmount] VARCHAR(MAX)
+		,[DutyMealAfterAdjustmentAmount] VARCHAR(MAX)
+		,[HPIAfterAdjustmentAmount] VARCHAR(MAX)
+		,[OthersAfterAdjustmentAmount] VARCHAR(MAX)
+		,[SecondmentAfterAdjustmentAmount] VARCHAR(MAX)
 		)
 
 	-- Convert XMLDoc to table
@@ -142,6 +158,14 @@ BEGIN
 		,[CreatedDate]
 		,[AfterAdjustmentAmount]
 		,[Reason]
+		,[SubsistenceAfterAdjustmentAmount]
+		,[HousingAfterAdjustmentAmount]
+		,[HomePassageAfterAdjustmentAmount]
+		,[MobilePhoneAfterAdjustmentAmount]
+		,[DutyMealAfterAdjustmentAmount]
+		,[HPIAfterAdjustmentAmount]
+		,[OthersAfterAdjustmentAmount]
+		,[SecondmentAfterAdjustmentAmount]
 		)
 	SELECT mp.PayrollId
 		,NULLIF(ISNULL(Data.[CurrencyId], ''), '')
@@ -177,6 +201,14 @@ BEGIN
 		,GETDATE()
 		,Data.[AfterAdjustmentAmount]
 		,Data.[Reason]
+		,Data.[SubsistenceAfterAdjustmentAmount]
+		,Data.[HousingAfterAdjustmentAmount]
+		,Data.[HomePassageAfterAdjustmentAmount]
+		,Data.[MobilePhoneAfterAdjustmentAmount]
+		,Data.[DutyMealAfterAdjustmentAmount]
+		,Data.[HPIAfterAdjustmentAmount]
+		,Data.[OthersAfterAdjustmentAmount]
+		,Data.[SecondmentAfterAdjustmentAmount]
 	FROM OPENXML(@iDoc, '/Root/Row', 1) WITH (
 			EmployeeId INT
 			,[CurrencyId] VARCHAR(50)
@@ -210,6 +242,14 @@ BEGIN
 			,[AutoCalculateOn] VARCHAR(30)
 			,[AfterAdjustmentAmount] VARCHAR(MAX)
 			,[Reason] VARCHAR(200)
+			,[SubsistenceAfterAdjustmentAmount] VARCHAR(MAX)
+			,[HousingAfterAdjustmentAmount] VARCHAR(MAX)
+			,[HomePassageAfterAdjustmentAmount] VARCHAR(MAX)
+			,[MobilePhoneAfterAdjustmentAmount] VARCHAR(MAX)
+			,[DutyMealAfterAdjustmentAmount] VARCHAR(MAX)
+			,[HPIAfterAdjustmentAmount] VARCHAR(MAX)
+			,[OthersAfterAdjustmentAmount] VARCHAR(MAX)
+			,[SecondmentAfterAdjustmentAmount] VARCHAR(MAX)
 			) AS Data
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON mp.EmployeeId = Data.EmployeeId
 		AND mp.[Month] = @Month
@@ -253,8 +293,16 @@ BEGIN
 			,[CreatedDate]
 			,[AfterAdjustmentAmount]
 			,[Reason]
+			,[SubsistenceAfterAdjustmentAmount]
+			,[HousingAfterAdjustmentAmount]
+			,[HomePassageAfterAdjustmentAmount]
+			,[MobilePhoneAfterAdjustmentAmount]
+			,[DutyMealAfterAdjustmentAmount]
+			,[HPIAfterAdjustmentAmount]
+			,[OthersAfterAdjustmentAmount]
+			,[SecondmentAfterAdjustmentAmount]
 		FROM #tblTempMonthlyBasicAllowance WITH (NOLOCK)
-		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking2CurrencyId], [DirectBanking2Amount], [CashCurrencyId], [CashAmount], [SubsistenceCurrencyId], [SubsistenceAmount], [HomePassageCurrencyId], [HomePassageAmount], [HousingCurrencyId], [HousingAmount], [MobilePhoneCurrencyId], [MobilePhoneAmount], [HPICurrencyId], [HPIAmount], [DutyMealCurrencyId], [DutyMealAmount], [SecondmentCurrencyId], [SecondmentAmount], [OthersCurrencyId], [OthersAmount], [RoomingChargesCurrencyId], [RoomingChargesAmount], [FitnessFirstCurrencyId], [FitnessFirstAmount], [AutoCalculateOn], [CreatedBy], [CreatedDate], [AfterAdjustmentAmount], [Reason])
+		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking2CurrencyId], [DirectBanking2Amount], [CashCurrencyId], [CashAmount], [SubsistenceCurrencyId], [SubsistenceAmount], [HomePassageCurrencyId], [HomePassageAmount], [HousingCurrencyId], [HousingAmount], [MobilePhoneCurrencyId], [MobilePhoneAmount], [HPICurrencyId], [HPIAmount], [DutyMealCurrencyId], [DutyMealAmount], [SecondmentCurrencyId], [SecondmentAmount], [OthersCurrencyId], [OthersAmount], [RoomingChargesCurrencyId], [RoomingChargesAmount], [FitnessFirstCurrencyId], [FitnessFirstAmount], [AutoCalculateOn], [CreatedBy], [CreatedDate], [AfterAdjustmentAmount], [Reason], [SubsistenceAfterAdjustmentAmount], [HousingAfterAdjustmentAmount], [HomePassageAfterAdjustmentAmount], [MobilePhoneAfterAdjustmentAmount], [DutyMealAfterAdjustmentAmount], [HPIAfterAdjustmentAmount], [OthersAfterAdjustmentAmount], [SecondmentAfterAdjustmentAmount])
 		ON ba.PayrollId = val.PayrollId
 	WHEN MATCHED
 		THEN
@@ -292,6 +340,14 @@ BEGIN
 				,ba.CreatedDate = val.CreatedDate
 				,ba.AfterAdjustmentAmount = val.AfterAdjustmentAmount
 				,ba.[Reason] = val.[Reason]
+				,ba.[SubsistenceAfterAdjustmentAmount] = val.[SubsistenceAfterAdjustmentAmount]
+				,ba.[HousingAfterAdjustmentAmount] = val.[HousingAfterAdjustmentAmount]
+				,ba.[HomePassageAfterAdjustmentAmount] = val.[HomePassageAfterAdjustmentAmount]
+				,ba.[MobilePhoneAfterAdjustmentAmount] = val.[MobilePhoneAfterAdjustmentAmount]
+				,ba.[DutyMealAfterAdjustmentAmount] = val.[DutyMealAfterAdjustmentAmount]
+				,ba.[HPIAfterAdjustmentAmount] = val.[HPIAfterAdjustmentAmount]
+				,ba.[OthersAfterAdjustmentAmount] = val.[OthersAfterAdjustmentAmount]
+				,ba.[SecondmentAfterAdjustmentAmount] = val.[SecondmentAfterAdjustmentAmount]
 	WHEN NOT MATCHED
 		THEN
 			INSERT (
@@ -329,6 +385,14 @@ BEGIN
 				,[CreatedDate]
 				,[AfterAdjustmentAmount]
 				,[Reason]
+				,[SubsistenceAfterAdjustmentAmount]
+				,[HousingAfterAdjustmentAmount]
+				,[HomePassageAfterAdjustmentAmount]
+				,[MobilePhoneAfterAdjustmentAmount]
+				,[DutyMealAfterAdjustmentAmount]
+				,[HPIAfterAdjustmentAmount]
+				,[OthersAfterAdjustmentAmount]
+				,[SecondmentAfterAdjustmentAmount]
 				)
 			VALUES (
 				val.PayrollId
@@ -365,6 +429,14 @@ BEGIN
 				,val.[CreatedDate]
 				,val.[AfterAdjustmentAmount]
 				,val.[Reason]
+				,val.[SubsistenceAfterAdjustmentAmount]
+				,val.[HousingAfterAdjustmentAmount]
+				,val.[HomePassageAfterAdjustmentAmount]
+				,val.[MobilePhoneAfterAdjustmentAmount]
+				,val.[DutyMealAfterAdjustmentAmount]
+				,val.[HPIAfterAdjustmentAmount]
+				,val.[OthersAfterAdjustmentAmount]
+				,val.[SecondmentAfterAdjustmentAmount]
 				)
 	OUTPUT DELETED.PayrollId
 		,DELETED.[CurrencyId]
@@ -400,7 +472,15 @@ BEGIN
 		,DELETED.[CreatedDate]
 		,DELETED.[AfterAdjustmentAmount]
 		,DELETED.[Reason]
-	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking2CurrencyId], [DirectBanking2Amount], [CashCurrencyId], [CashAmount], [SubsistenceCurrencyId], [SubsistenceAmount], [HomePassageCurrencyId], [HomePassageAmount], [HousingCurrencyId], [HousingAmount], [MobilePhoneCurrencyId], [MobilePhoneAmount], [HPICurrencyId], [HPIAmount], [DutyMealCurrencyId], [DutyMealAmount], [SecondmentCurrencyId], [SecondmentAmount], [OthersCurrencyId], [OthersAmount], [RoomingChargesCurrencyId], [RoomingChargesAmount], [FitnessFirstCurrencyId], [FitnessFirstAmount], [AutoCalculateOn], [CreatedBy], [CreatedDate], [AfterAdjustmentAmount], [Reason]);
+		,DELETED.[SubsistenceAfterAdjustmentAmount]
+		,DELETED.[HousingAfterAdjustmentAmount]
+		,DELETED.[HomePassageAfterAdjustmentAmount]
+		,DELETED.[MobilePhoneAfterAdjustmentAmount]
+		,DELETED.[DutyMealAfterAdjustmentAmount]
+		,DELETED.[HPIAfterAdjustmentAmount]
+		,DELETED.[OthersAfterAdjustmentAmount]
+		,DELETED.[SecondmentAfterAdjustmentAmount]
+	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking2CurrencyId], [DirectBanking2Amount], [CashCurrencyId], [CashAmount], [SubsistenceCurrencyId], [SubsistenceAmount], [HomePassageCurrencyId], [HomePassageAmount], [HousingCurrencyId], [HousingAmount], [MobilePhoneCurrencyId], [MobilePhoneAmount], [HPICurrencyId], [HPIAmount], [DutyMealCurrencyId], [DutyMealAmount], [SecondmentCurrencyId], [SecondmentAmount], [OthersCurrencyId], [OthersAmount], [RoomingChargesCurrencyId], [RoomingChargesAmount], [FitnessFirstCurrencyId], [FitnessFirstAmount], [AutoCalculateOn], [CreatedBy], [CreatedDate], [AfterAdjustmentAmount], [Reason], [SubsistenceAfterAdjustmentAmount], [HousingAfterAdjustmentAmount], [HomePassageAfterAdjustmentAmount], [MobilePhoneAfterAdjustmentAmount], [DutyMealAfterAdjustmentAmount], [HPIAfterAdjustmentAmount], [OthersAfterAdjustmentAmount], [SecondmentAfterAdjustmentAmount]);
 
 	--WRITE LOG
 	SELECT @maxLength = Count(1)
@@ -443,6 +523,14 @@ BEGIN
 					,o.[CreatedDate] AS '@cd'
 					,o.[AfterAdjustmentAmount] AS '@aaa'
 					,o.[Reason] AS '@r'
+					,o.[SubsistenceAfterAdjustmentAmount] AS '@suaaa'
+					,o.[HousingAfterAdjustmentAmount] AS '@haaa'
+					,o.[HomePassageAfterAdjustmentAmount] AS '@hpaaa'
+					,o.[MobilePhoneAfterAdjustmentAmount] AS '@mpaaa'
+					,o.[DutyMealAfterAdjustmentAmount] AS '@dmaaa'
+					,o.[HPIAfterAdjustmentAmount] AS '@hpiaaa'
+					,o.[OthersAfterAdjustmentAmount] AS '@oaaa'
+					,o.[SecondmentAfterAdjustmentAmount] AS '@seaaa'
 				FROM #tblOldLogData AS o WITH (NOLOCK)
 				INNER JOIN #tblTempMonthlyBasicAllowance AS t WITH (NOLOCK) ON o.PayrollId = t.PayrollId
 				WHERE t.RowNum = @i
@@ -486,6 +574,14 @@ BEGIN
 					,t.[CreatedDate] AS '@cd'
 					,t.[AfterAdjustmentAmount] AS '@aaa'
 					,t.[Reason] AS '@r'
+					,t.[SubsistenceAfterAdjustmentAmount] AS '@suaaa'
+					,t.[HousingAfterAdjustmentAmount] AS '@haaa'
+					,t.[HomePassageAfterAdjustmentAmount] AS '@hpaaa'
+					,t.[MobilePhoneAfterAdjustmentAmount] AS '@mpaaa'
+					,t.[DutyMealAfterAdjustmentAmount] AS '@dmaaa'
+					,t.[HPIAfterAdjustmentAmount] AS '@hpiaaa'
+					,t.[OthersAfterAdjustmentAmount] AS '@oaaa'
+					,t.[SecondmentAfterAdjustmentAmount] AS '@seaaa'
 				FROM #tblTempMonthlyBasicAllowance AS t WITH (NOLOCK)
 				WHERE RowNum = @i
 				FOR XML PATH('r')

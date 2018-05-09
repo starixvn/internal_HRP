@@ -23,6 +23,7 @@
     using Services;
     using Website.Controllers;
     using Xunit;
+    using HRP.Criteria;
 
     public class ReportControllerTests
     {
@@ -340,8 +341,7 @@
             var report = new MonthlyPayrollReport
             {
                 Employees = new List<EmployeeBasicInfo>(),
-                Month = DateTime.Today,
-                CompanyCode = "OW"
+                Month = DateTime.Today
             };
             var viewModel = new MonthlyPayrollReportViewModel
             {
@@ -375,12 +375,13 @@
         {
             // Arrange
             byte[] bytes = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
+            var company = new Company { Code = "OW", Name = "One Work" };
             var report = new MonthlyPayrollReport
             {
                 Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 2 } },
-                Month = DateTime.Today,
-                CompanyCode = "OW"
+                Month = DateTime.Today
             };
+
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
@@ -393,6 +394,7 @@
             var reportController = GetReportController();
             hostingEnvironment.WebRootPath.Returns(webRootPath);
             reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
+            baseService.GetDataEntityAsync<Company>(Arg.Is<GetCompanyByIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(company);
             exportExcelService.ExportMonthlyPayrollReport(Arg.Is<string>(x => x == templatePath), Arg.Is<MonthlyPayrollReport>(x => x == report)).Returns(bytes);
 
             // Act
@@ -402,7 +404,7 @@
             var fileResult = Assert.IsType<FileContentResult>(actual);
             Assert.Equal(bytes, fileResult.FileContents);
             Assert.Equal(MimeType.XLSX, fileResult.ContentType);
-            Assert.Equal($"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.CompanyCode}.xlsx", fileResult.FileDownloadName);
+            Assert.Equal($"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx", fileResult.FileDownloadName);
         }
 
         #endregion MonthlyPayroll

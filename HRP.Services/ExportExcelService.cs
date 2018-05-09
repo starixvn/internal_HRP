@@ -348,10 +348,10 @@
                 templateWorksheet.Cells[1, 1, 8, 49].Copy(worksheet.Cells[1, 1, 8, 49]);
 
                 // Write Data
-                worksheet.Cells[3, 2].Value = string.Concat(ViewLang.Company, ": ", report.CompanyCode);
+                worksheet.Cells[3, 2].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
                 worksheet.Cells[4, 2].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
                 var row = 9;
-                var sNo = 1;
+                var serialNo = 1;
                 foreach (var employee in report.Employees)
                 {
                     var monthlyBasicSalary = report.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
@@ -360,7 +360,7 @@
                     var monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
 
                     templateWorksheet.Cells[9, 1, 9, 49].Copy(worksheet.Cells[row, 1, row, 49]);
-                    worksheet.Cells[row, 2].Value = sNo;
+                    worksheet.Cells[row, 2].Value = serialNo;
                     worksheet.Cells[row, 3].Value = employee.DivisionCode;
                     worksheet.Cells[row, 4].Value = employee.DepartmentCode;
                     worksheet.Cells[row, 5].Value = employee.CostCenterCode;
@@ -413,7 +413,7 @@
                     worksheet.Cells[row, 48].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
                     worksheet.Cells[row, 49].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
                     row++;
-                    sNo++;
+                    serialNo++;
                 }
 
                 WriteCurrencyExchangeTable(row + 1, templateWorksheet, worksheet, report);
@@ -566,7 +566,6 @@
                                 cell.Style.Numberformat.Format = "dd/MM//yyyy";
                             }
                         }
-
 
                         col++;
                     }
