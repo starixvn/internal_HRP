@@ -900,7 +900,7 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
 select[multiple] {
   height: 300px;
-  width: 210px;
+  width: 326px;
   padding: 0 6px;
 }
 
