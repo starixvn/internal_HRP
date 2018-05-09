@@ -1965,189 +1965,554 @@
                     }
                 }
             },
-            //{
-            //    -4,
-            //    new List<ColumnGroup>
-            //    {
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 7,
-            //            GroupName = "Basic Salary",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.DBTCompany),
-            //                   HeaderName = "Actual Basic Salary Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.CurrencyCode),
-            //                   HeaderName = "Actual Basic Salary Currency",
-            //               }
-            //            }
-            //        }
-            //    }
-            //},
-            //{
-            //    12,
-            //    new List<ColumnGroup>
-            //    {
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Subsistence",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
-            //                   HeaderName = "Subsistence Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.SubsistenceCurrency),
-            //                   HeaderName = "Subsistence Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "HomePassage",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HomePassageAmount),
-            //                   HeaderName = "HomePassage Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HomePassageCurrency),
-            //                   HeaderName = "HomePassage Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Housing",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HousingAmount),
-            //                   HeaderName = "Housing Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HousingCurrency),
-            //                   HeaderName = "HomePassage Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Mobile Phone",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
-            //                   HeaderName = "Mobile Phone Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.MobilePhoneCurrency),
-            //                   HeaderName = "Mobile Phone Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "HPI",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HPIAmount),
-            //                   HeaderName = "HPI Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.HPICurrency),
-            //                   HeaderName = "HPI Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Duty Meal",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.DutyMealAmount),
-            //                   HeaderName = "Duty Meal Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.DutyMealCurrency),
-            //                   HeaderName = "Duty Meal Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Secondment",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.SecondmentAmount),
-            //                   HeaderName = "Secondment Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.SecondmentCurrency),
-            //                   HeaderName = "Secondment Currency",
-            //               }
-            //            }
-            //        },
-            //        new ColumnGroup
-            //        {
-            //            GroupId = 12,
-            //            GroupName = "Others",
-            //            Columns = new List<MappingColumn>
-            //            {
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.OthersAmount),
-            //                   HeaderName = "Others Amount",
-            //                   IsEncrypted = true
-            //               },
-            //               new MappingColumn
-            //               {
-            //                   PropertyName = nameof(DynamicReportModel.OthersCurrency),
-            //                   HeaderName = "Others Currency",
-            //               }
-            //            }
-            //        }
-            //    }
-            //}
+            {
+                102,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CurrencyCode),
+                               HeaderName = "Basic Salary - Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Salary),
+                               HeaderName = "Basic Salary - Amount",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                103,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - Effective Date",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EffectiveDate),
+                               HeaderName = "Basic Salary - Effective Date",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                104,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - Reason",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.Reason),
+                               HeaderName = "Basic Salary - Reason",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                105,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Standard Working Day",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.WorkingDays),
+                               HeaderName = "Standard Working Day",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                106,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - E-banking",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EbankingCurrencyCode),
+                               HeaderName = "Basic Salary - E-banking Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EbankingAmount),
+                               HeaderName = "Basic Salary - E-banking Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.EbankingAccount),
+                               HeaderName = "Basic Salary - E-banking Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                107,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - Direct Banking 1",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking1CurrencyCode),
+                               HeaderName = "Basic Salary - Direct Banking 1 Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking1Amount),
+                               HeaderName = "Basic Salary - Direct Banking 1 Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking1Account),
+                               HeaderName = "Basic Salary - Direct Banking 1 Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                108,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - Direct Banking 2",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking2CurrencyCode),
+                               HeaderName = "Basic Salary - Direct Banking 2 Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking2Amount),
+                               HeaderName = "Basic Salary - Direct Banking 2 Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DirectBanking2Account),
+                               HeaderName = "Basic Salary - Direct Banking 1 Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                109,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Basic Salary - Cash",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CashCurrencyCode),
+                               HeaderName = "Basic Salary - Cash Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CashAmount),
+                               HeaderName = "Basic Salary - Cash Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.CashAccount),
+                               HeaderName = "Basic Salary - Cash Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                110,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Allowance",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceCurrencyCode),
+                               HeaderName = "Allowance Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceAmount),
+                               HeaderName = "Allowance Amount",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                111,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Allowance- Direct Banking 1",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking1CurrencyCode),
+                               HeaderName = "Allowance - Direct Banking 1 Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking1Amount),
+                               HeaderName = "Allowance - Direct Banking 1 Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking1Account),
+                               HeaderName = "Allowance - Direct Banking 1 Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                112,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Allowance - Direct Banking 2",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking2CurrencyCode),
+                               HeaderName = "Allowance - Direct Banking 2 Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking2Amount),
+                               HeaderName = "Allowance - Direct Banking 2 Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceDirectBanking2Account),
+                               HeaderName = "Allowance - Direct Banking 1 Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                113,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Allowance - Cash",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceCashCurrencyCode),
+                               HeaderName = "Allowance - Cash Currency",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceCashAmount),
+                               HeaderName = "Allowance - Cash Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.AllowanceCashAccount),
+                               HeaderName = "Allowance - Cash Account",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                114,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Subsistence",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
+                               HeaderName = "Subsistence Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SubsistenceCurrencyCode),
+                               HeaderName = "Subsistence Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                115,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "HomePassage",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HomePassageAmount),
+                               HeaderName = "HomePassage Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HomePassageCurrencyCode),
+                               HeaderName = "HomePassage Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                116,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Housing",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HousingAmount),
+                               HeaderName = "Housing Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HousingCurrencyCode),
+                               HeaderName = "Housing Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                117,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 11,
+                        GroupName = "Mobile Phone",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
+                               HeaderName = "Mobile Phone Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.MobilePhoneCurrencyCode),
+                               HeaderName = "Mobile Phone Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                118,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "HPI",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HPIAmount),
+                               HeaderName = "HPI Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.HPICurrencyCode),
+                               HeaderName = "HPI Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                119,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Duty Meal",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DutyMealAmount),
+                               HeaderName = "Duty Meal Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.DutyMealCurrencyCode),
+                               HeaderName = "Duty Meal Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                120,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Secondment",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SecondmentAmount),
+                               HeaderName = "Secondment Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.SecondmentCurrencyCode),
+                               HeaderName = "Secondment Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                121,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Others",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.OthersAmount),
+                               HeaderName = "Others Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.OthersCurrencyCode),
+                               HeaderName = "Others Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                122,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Rooming Charge",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.RoomingChargesAmount),
+                               HeaderName = "Rooming Charge Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.RoomingChargesCurrencyCode),
+                               HeaderName = "Rooming Charge Currency",
+                           }
+                        }
+                    }
+                }
+            },
+            {
+                123,
+                new List<ColumnGroup>
+                {
+                    new ColumnGroup
+                    {
+                        GroupId = 1,
+                        GroupName = "Fitness Club Membership",
+                        Columns = new List<MappingColumn>
+                        {
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FitnessFirstAmount),
+                               HeaderName = "Fitness Club Membership Amount",
+                           },
+                           new MappingColumn
+                           {
+                               PropertyName = nameof(DynamicReportModel.FitnessFirstCurrencyCode),
+                               HeaderName = "Fitness Club Membership Currency",
+                           }
+                        }
+                    }
+                }
+            }
         };
 
         public static Dictionary<int, IEnumerable<ColumnGroup>> Columns { get => columns; }

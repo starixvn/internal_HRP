@@ -32,7 +32,6 @@
             useCustomCheckAllText: true,
             customCheckAllText: "All",
             onCheck: function () {
-                debugger;
                 var selectedValue = $employeeStatusMultiSelect.fanexMultiSelect('getItems', true).join(',');
                 $employeeStatusIds.val(selectedValue);
             }

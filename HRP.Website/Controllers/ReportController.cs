@@ -275,6 +275,11 @@
         [HttpPost]
         public async Task<IActionResult> DynamicReport(GenerateReportViewModel viewModel)
         {
+            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
             if (ModelState.IsValid)
             {
                 var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria

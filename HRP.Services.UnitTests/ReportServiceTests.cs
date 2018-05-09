@@ -18,6 +18,7 @@
         private ICryptoService cryptoService;
         private IReportRepository reportRepository;
         private ISessionService sessionService;
+        private IBaseService baseService;
 
         [Fact]
         public async Task GetDirectBankingBankInAsync_InValidParams_ReturnEmpty()
@@ -182,13 +183,19 @@
             return Substitute.For<IReportRepository>();
         }
 
+        private static IBaseService FakeBaseService()
+        {
+            return Substitute.For<IBaseService>();
+        }
+
         private ReportService GetReportService()
         {
             cryptoService = FakeCryptoService();
             reportRepository = FakeReportRepository();
             sessionService = FakeSessionService();
+            baseService = FakeBaseService();
 
-            return new ReportService(cryptoService, sessionService, reportRepository);
+            return new ReportService(cryptoService, sessionService, baseService, reportRepository);
         }
 
         #endregion Helpers

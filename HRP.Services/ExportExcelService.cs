@@ -559,12 +559,12 @@
                         }
                         else
                         {
-                            cell.Value = propertyInfo.GetValue(record);
+                            cell.Value = propertyInfo.GetValue(record);                           
+                        }
 
-                            if (propertyInfo.PropertyType == typeof(DateTime))
-                            {
-                                cell.Style.Numberformat.Format = "dd/MM//yyyy";
-                            }
+                        if (propertyInfo.PropertyType == typeof(DateTime))
+                        {
+                            cell.Style.Numberformat.Format = "dd/MM//yyyy";
                         }
 
                         col++;

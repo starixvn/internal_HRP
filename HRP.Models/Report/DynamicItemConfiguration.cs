@@ -606,6 +606,138 @@
                 Id = 101,
                 Name = "PDF Password",
                 Group = DynamicReportItemGroup.Employement
+            },
+            new DynamicReportItem
+            {
+                Id = 102,
+                Name = "Basic Salary",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 103,
+                Name = "Basic Salary - Effective Date",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 104,
+                Name = "Basic Salary - Reason",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 105,
+                Name = "Standard Working Day",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 106,
+                Name = "Basic Salary - E-banking",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 107,
+                Name = "Basic Salary - Direct Banking 1",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 108,
+                Name = "Basic Salary - Direct Banking 2",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 109,
+                Name = "Basic Salary - Cash",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 110,
+                Name = "Allowance",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 111,
+                Name = "Allowance - Direct Banking 1",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 112,
+                Name = "Allowance - Direct Banking 2",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 113,
+                Name = "Allowance - Cash",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 114,
+                Name = "Subsistence",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 115,
+                Name = "Home Passage",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 116,
+                Name = "Housing",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 117,
+                Name = "Mobile Phone",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 118,
+                Name = "HPI",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 119,
+                Name = "Duty Meal",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 120,
+                Name = "Secondment",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 121,
+                Name = "Others",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 122,
+                Name = "Rooming Charge",
+                Group = DynamicReportItemGroup.Payroll
+            },
+            new DynamicReportItem
+            {
+                Id = 123,
+                Name = "Fitness Club Membership",
+                Group = DynamicReportItemGroup.Payroll
             }
         };
 

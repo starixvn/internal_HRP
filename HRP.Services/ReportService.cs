@@ -8,6 +8,8 @@
     using Core.Constants;
     using Core.Services;
     using Criteria.Report;
+    using HRP.Core.Enumerations;
+    using HRP.Criteria;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;
@@ -18,15 +20,18 @@
         private readonly ICryptoService cryptoService;
         private readonly IReportRepository reportRepository;
         private readonly ISessionService sessionService;
+        private readonly IBaseService baseService;
 
         public ReportService(
             ICryptoService cryptoService,
             ISessionService sessionService,
+            IBaseService baseService,
             IReportRepository reportRepository = null)
         {
             this.cryptoService = cryptoService;
             this.sessionService = sessionService;
             this.reportRepository = reportRepository ?? new ReportRepository();
+            this.baseService = baseService;
         }
 
         public async Task<BankInReport> GetDirectBankingBankInAsync(
@@ -261,6 +266,15 @@
             return value * GetExchangeRate(currencyExchangeRates, fromCurrencyId ?? 0, toCurrencyId ?? 0);
         }
 
+        private static decimal ConvertAmount(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            decimal amount,
+            int? fromCurrencyId,
+            int? toCurrencyId)
+        {
+            return amount * GetExchangeRate(currencyExchangeRates, fromCurrencyId ?? 0, toCurrencyId ?? 0);
+        }
+
         private static decimal GetExchangeRate(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             int fromCurrencyId,
@@ -272,6 +286,191 @@
             return currencyExchangeRate?.ExchangeRate ?? 0;
         }
 
+        private static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2)
+        {
+            if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
+            {
+                return Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000;
+            }
+
+            return Math.Round(amount, digits, MidpointRounding.AwayFromZero);
+        }
+
         #endregion MonthlyPayrollReport
+
+        public async Task<IEnumerable<DynamicReportModel>> GetEmployeeDataForDynamicReport(int companyId, string employeeStatusIds)
+        {
+            var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria
+            {
+                CompanyId = companyId,
+                EmployeeStatusIds = employeeStatusIds
+            }).ConfigureAwait(false);
+
+            var currencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria()).ConfigureAwait(false);
+
+            foreach (var data in employeeDatas)
+            {
+                DecryptEmployeeData(data);
+                CalculateAutoSalary(data, currencyExchangeRates);
+                CalculateAutoAllowance(data, currencyExchangeRates);
+            }
+
+            return employeeDatas;
+        }
+
+        private static void CalculateAutoAllowance(DynamicReportModel data, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            if (!data.AllowanceCurrencyId.HasValue)
+            {
+                return;
+            }
+
+            var currencyId = data.AllowanceCurrencyId.Value;
+            decimal totalAmount = 0;
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.SubsistenceAmount, data.SubsistenceCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.HomePassageAmount, data.HomePassageCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.HousingAmount, data.HousingCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.MobilePhoneAmount, data.MobilePhoneCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.HPIAmount, data.HPICurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.DutyMealAmount, data.DutyMealCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.SecondmentAmount, data.SecondmentCurrencyId, currencyId);
+
+            totalAmount += ConvertAmount(currencyExchangeRates, data.OthersAmount, data.OthersCurrencyId, currencyId);
+
+            totalAmount = RoundAmountWithCurrency(totalAmount, data.CurrencyCode, 0);
+            data.AllowanceAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
+
+            var directBanking1 = ConvertAmount(currencyExchangeRates, data.AllowanceDirectBanking1Amount,
+               data.AllowanceDirectBanking1CurrencyId, data.AllowanceCurrencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, data.AllowanceDirectBanking2Amount,
+                data.AllowanceDirectBanking2CurrencyId, data.AllowanceCurrencyId);
+            var cash = ConvertAmount(currencyExchangeRates, data.AllowanceCashAmount, data.AllowanceCashCurrencyId, data.AllowanceCurrencyId);
+
+            switch (data.AllowanceAutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    if (data.DirectBanking1CurrencyId.HasValue)
+                    {
+                        directBanking1 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, data.AllowanceCurrencyId, data.AllowanceDirectBanking1CurrencyId),
+                            data.AllowanceDirectBanking1CurrencyCode, 0);
+
+                        data.AllowanceDirectBanking1Amount = directBanking1.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    if (data.DirectBanking2CurrencyId.HasValue)
+                    {
+                        directBanking2 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, data.AllowanceCurrencyId, data.AllowanceDirectBanking2CurrencyId),
+                            data.AllowanceDirectBanking2CurrencyCode, 0);
+
+                        data.AllowanceDirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    if (data.CashCurrencyId.HasValue)
+                    {
+                        cash = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, data.AllowanceCurrencyId, data.AllowanceCashCurrencyId),
+                            data.AllowanceCashCurrencyCode, 0);
+
+                        data.AllowanceCashAmount = cash.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                default:
+                    return;
+            }
+        }
+
+        private static void CalculateAutoSalary(DynamicReportModel data, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        {
+            decimal.TryParse(data.Salary, out decimal totalAmount);
+
+            var directBanking1 = ConvertAmount(currencyExchangeRates, data.DirectBanking1Amount,
+                data.DirectBanking1CurrencyId, data.CurrencyId);
+            var directBanking2 = ConvertAmount(currencyExchangeRates, data.DirectBanking2Amount,
+                data.DirectBanking2CurrencyId, data.CurrencyId);
+            var cash = ConvertAmount(currencyExchangeRates, data.CashAmount, data.CashCurrencyId, data.CurrencyId);
+
+            switch (data.AutoCalculateOn)
+            {
+                case PayrollAutoCalculateOn.DirectBanking1:
+                    if (data.DirectBanking1CurrencyId.HasValue)
+                    {
+                        directBanking1 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, data.CurrencyId, data.DirectBanking1CurrencyId),
+                            data.DirectBanking1CurrencyCode, 0);
+
+                        data.DirectBanking1Amount = directBanking1.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                case PayrollAutoCalculateOn.DirectBanking2:
+                    if (data.DirectBanking2CurrencyId.HasValue)
+                    {
+                        directBanking2 = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, data.CurrencyId, data.DirectBanking2CurrencyId),
+                            data.DirectBanking2CurrencyCode, 0);
+
+                        data.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                case PayrollAutoCalculateOn.Cash:
+                    if (data.CashCurrencyId.HasValue)
+                    {
+                        cash = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, data.CurrencyId, data.CashCurrencyId),
+                            data.CashCurrencyCode, 0);
+
+                        data.CashAmount = cash.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
+                default:
+                    return;
+            }
+        }
+
+        private void DecryptEmployeeData(DynamicReportModel data)
+        {
+            data.Salary = cryptoService.Decrypt(data.Salary);
+            data.EbankingAmount = cryptoService.Decrypt(data.EbankingAmount);
+            data.DirectBanking1Amount = cryptoService.Decrypt(data.DirectBanking1Amount);
+            data.DirectBanking2Amount = cryptoService.Decrypt(data.DirectBanking2Amount);
+            data.CashAmount = cryptoService.Decrypt(data.CashAmount);
+
+            data.AllowanceDirectBanking1Amount = cryptoService.Decrypt(data.DirectBanking1Amount);
+            data.AllowanceDirectBanking2Amount = cryptoService.Decrypt(data.DirectBanking2Amount);
+            data.AllowanceCashAmount = cryptoService.Decrypt(data.CashAmount);
+            data.SubsistenceAmount = cryptoService.Decrypt(data.SubsistenceAmount);
+            data.HomePassageAmount = cryptoService.Decrypt(data.HomePassageAmount);
+            data.HousingAmount = cryptoService.Decrypt(data.HousingAmount);
+            data.MobilePhoneAmount = cryptoService.Decrypt(data.MobilePhoneAmount);
+            data.HPIAmount = cryptoService.Decrypt(data.HPIAmount);
+            data.DutyMealAmount = cryptoService.Decrypt(data.DutyMealAmount);
+            data.SecondmentAmount = cryptoService.Decrypt(data.SecondmentAmount);
+            data.OthersAmount = cryptoService.Decrypt(data.OthersAmount);
+
+            data.RoomingChargesAmount = cryptoService.Decrypt(data.RoomingChargesAmount);
+            data.FitnessFirstAmount = cryptoService.Decrypt(data.FitnessFirstAmount);
+        }
     }
 }

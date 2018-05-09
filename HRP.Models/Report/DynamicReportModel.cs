@@ -275,84 +275,132 @@
 
         public string CurrencyCode { get; set; }
 
+        public DateTime EffectiveDate { get; set; }
+
+        public string Reason { get; set; }
+
+        public int WorkingDays { get; set; }
+
         public int? EbankingCurrencyId { get; set; }
+
+        public string EbankingCurrencyCode { get; set; }
 
         public string EbankingAmount { get; set; }
 
-        public int? EbankingAccountId { get; set; }
+        public string EbankingAccount { get; set; }
 
         public int? DirectBanking1CurrencyId { get; set; }
 
+        public string DirectBanking1CurrencyCode { get; set; }
+
         public string DirectBanking1Amount { get; set; }
 
-        public int? DirectBanking1AccountId { get; set; }
+        public string DirectBanking1Account { get; set; }
 
         public int? DirectBanking2CurrencyId { get; set; }
 
+        public string DirectBanking2CurrencyCode { get; set; }
+
         public string DirectBanking2Amount { get; set; }
 
-        public int? DirectBanking2AccountId { get; set; }
+        public string DirectBanking2Account { get; set; }
 
         public int? CashCurrencyId { get; set; }
 
+        public string CashCurrencyCode { get; set; }
+
         public string CashAmount { get; set; }
 
-        public int? CashAccountId { get; set; }
+        public string CashAccount { get; set; }
 
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         public int? AllowanceCurrencyId { get; set; }
 
+        public string AllowanceCurrencyCode { get; set; }
+
+        public string AllowanceAmount { get; set; }
+
         public int? AllowanceDirectBanking1CurrencyId { get; set; }
+
+        public string AllowanceDirectBanking1CurrencyCode { get; set; }
 
         public string AllowanceDirectBanking1Amount { get; set; }
 
-        public int? AllowanceDirectBanking1AccountId { get; set; }
+        public string AllowanceDirectBanking1Account { get; set; }
 
         public int? AllowanceDirectBanking2CurrencyId { get; set; }
 
+        public string AllowanceDirectBanking2CurrencyCode { get; set; }
+
         public string AllowanceDirectBanking2Amount { get; set; }
 
-        public int? AllowanceDirectBanking2AccountId { get; set; }
+        public string AllowanceDirectBanking2Account { get; set; }
 
         public int? AllowanceCashCurrencyId { get; set; }
 
+        public string AllowanceCashCurrencyCode { get; set; }
+
         public string AllowanceCashAmount { get; set; }
 
-        public int? AllowanceCashAccountId { get; set; }
+        public string AllowanceCashAccount { get; set; }
 
         public PayrollAutoCalculateOn AllowanceAutoCalculateOn { get; set; }
 
         public string SubsistenceAmount { get; set; }
 
-        public string SubsistenceCurrency { get; set; }
+        public int? SubsistenceCurrencyId { get; set; }
+
+        public string SubsistenceCurrencyCode { get; set; }
 
         public string HousingAmount { get; set; }
 
-        public string HousingCurrency { get; set; }
+        public int? HousingCurrencyId { get; set; }
+
+        public string HousingCurrencyCode { get; set; }
 
         public string HomePassageAmount { get; set; }
 
-        public string HomePassageCurrency { get; set; }
+        public int? HomePassageCurrencyId { get; set; }
+
+        public string HomePassageCurrencyCode { get; set; }
 
         public string DutyMealAmount { get; set; }
 
-        public string DutyMealCurrency { get; set; }
+        public int? DutyMealCurrencyId { get; set; }
+
+        public string DutyMealCurrencyCode { get; set; }
 
         public string HPIAmount { get; set; }
 
-        public string HPICurrency { get; set; }
+        public int? HPICurrencyId { get; set; }
+
+        public string HPICurrencyCode { get; set; }
 
         public string MobilePhoneAmount { get; set; }
 
-        public string MobilePhoneCurrency { get; set; }
+        public int? MobilePhoneCurrencyId { get; set; }
+
+        public string MobilePhoneCurrencyCode { get; set; }
 
         public string OthersAmount { get; set; }
 
-        public string OthersCurrency { get; set; }
+        public int? OthersCurrencyId { get; set; }
+
+        public string OthersCurrencyCode { get; set; }
 
         public string SecondmentAmount { get; set; }
 
-        public string SecondmentCurrency { get; set; }
+        public int? SecondmentCurrencyId { get; set; }
+
+        public string SecondmentCurrencyCode { get; set; }
+
+        public string RoomingChargesCurrencyCode { get; set; }
+
+        public string RoomingChargesAmount { get; set; }
+
+        public string FitnessFirstCurrencyCode { get; set; }
+
+        public string FitnessFirstAmount { get; set; }
     }
 }
