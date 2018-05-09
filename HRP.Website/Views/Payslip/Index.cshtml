@@ -4,7 +4,9 @@
 @using HRP.Models.Payslip
 
 @model PayslipViewModel
+
 @{
+    ViewData["Title"] = ViewLang.Payslip;
     var disabled = Model.IsHost ? string.Empty : "disabled";
 }
 

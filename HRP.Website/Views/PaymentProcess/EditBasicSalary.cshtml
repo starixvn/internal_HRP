@@ -4,6 +4,7 @@
 @model EditMonthlySalaryViewModel
 
 @{
+    ViewData["Title"] = Model.FilterInfo.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary;
     var bankTypes = Html.GetEnumSelectList<BankTypes>().Where(x => int.Parse(x.Value) != (int)BankTypes.Ebanking);
 }
 

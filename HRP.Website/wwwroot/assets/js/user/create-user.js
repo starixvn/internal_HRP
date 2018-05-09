@@ -7,7 +7,7 @@
 
     function displaySuccessMessage(username, redirectTo) {
         var alert = $('#create-user-alert');
-        var delay = 5;
+        var delay = 3;
         var textAlert = username + ' account has been created successfully. You will be redirected in ';
         alert.removeClass('hidden');
         $('#alert-message', alert).text(textAlert + delay + ' seconds.');

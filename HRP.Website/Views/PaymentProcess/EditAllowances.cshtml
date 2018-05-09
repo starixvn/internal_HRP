@@ -2,6 +2,10 @@
 @using HRP.Resources
 @model HRP.Models.MonthlyPayroll.MonthlyAllowancesViewModel
 
+@{ 
+    ViewData["Title"] = Model.CanEdit ? ViewLang.EditMonthlyAllowances : ViewLang.ViewMonthlyAllowances;
+}
+
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />

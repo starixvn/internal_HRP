@@ -40,9 +40,9 @@
     $('#showPassword').on('click', function () {
         var value = $(this).prop("checked");
         if (value) {
-            $('#change-password-form input[type=password').attr("type", "text");
+            $('#change-password-form input[type=password]').attr("type", "text");
         } else {
-            $('#change-password-form input[type=text').attr("type", "password");
+            $('#change-password-form input[type=text]').attr("type", "password");
         }
     });
 

@@ -6,6 +6,7 @@
 
 @{
     var rowNumber = 1;
+    ViewData["Title"] = ViewLang.UserManagement;
 }
 
 @section Styles {
@@ -21,7 +22,7 @@
 }
 
 <ol class="breadcrumb">
-    <li class="like-link">Configuration</li>
+    <li class="like-link">@ViewLang.Configuration</li>
     <li class="active">@ViewLang.UserManagement</li>
 </ol>
 <form class="search-form" asp-action="Index" asp-controller="UserManagement" method="get">

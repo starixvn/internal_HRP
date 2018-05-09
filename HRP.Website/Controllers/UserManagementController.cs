@@ -143,7 +143,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && (!viewModel.IsSystemAdmin || sessionService.IsSystemAdmin);
+            viewModel.CanEdit = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && !viewModel.IsSystemAdmin;
 
             return View(viewModel);
         }

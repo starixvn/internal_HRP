@@ -1071,4 +1071,7 @@
   <data name="DirectBankingReport" xml:space="preserve">
     <value>Direct Banking Report</value>
   </data>
+  <data name="PayslipDetails" xml:space="preserve">
+    <value>Payslip Details</value>
+  </data>
 </root>

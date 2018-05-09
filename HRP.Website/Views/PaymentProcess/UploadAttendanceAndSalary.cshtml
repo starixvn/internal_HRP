@@ -2,7 +2,9 @@
 @using HRP.Resources
 @using HRP.Models.PaymentProcess
 @model UploadAttendanceAndSalaryViewModel
+
 @{
+    ViewData["Title"] = ViewLang.UploadFiles;
     var isEmptyAttendanceFilename = string.IsNullOrWhiteSpace(Model.AttendanceFileName);
     var isEmptyDSTNetSalaryFilename = string.IsNullOrWhiteSpace(Model.DSTNetSalaryFileName);
 }

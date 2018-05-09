@@ -18,6 +18,7 @@
 }
 
 @{
+    ViewData["Title"] = ViewLang.EditEmployeePayroll;
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyId), "CurrencyId", "CurrencyCode");
 }
 

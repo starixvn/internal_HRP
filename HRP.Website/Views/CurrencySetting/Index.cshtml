@@ -2,6 +2,10 @@
 @using HRP.Models.Currency
 @model CurrencySettingViewModel
 
+@{ 
+    ViewData["Title"] = ViewLang.CurrencySetting;
+}
+
 @section Styles {
     <environment include="Development">
         <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />

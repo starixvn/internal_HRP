@@ -10,7 +10,7 @@
         clearTimeout(timer);
         timer = setTimeout(function () {
             $element.text('').addClass('hidden');
-        }, 5000);
+        }, 3000);
     }
 
     function showSuccessMessage($element, message) {
@@ -21,13 +21,13 @@
 
             timer = setTimeout(function () {
                 $element.text('').addClass('hidden');
-            }, 5000);
+            }, 3000);
         } else {
             $element.removeClass('hidden');
 
             timer = setTimeout(function () {
                 $element.addClass('hidden');
-            }, 5000);
+            }, 3000);
         }
     }
 

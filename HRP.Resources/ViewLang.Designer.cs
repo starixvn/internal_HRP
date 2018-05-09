@@ -2068,6 +2068,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payslip Details.
+        /// </summary>
+        public static string PayslipDetails {
+            get {
+                return ResourceManager.GetString("PayslipDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp..
         /// </summary>
         public static string PayslipNote {

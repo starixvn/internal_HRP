@@ -23,11 +23,11 @@
             <div asp-validation-summary="ModelOnly" class="msg-error -has-icon"></div>
             <div class="group">
                 <span class="icon-user"></span>
-                <input asp-for="Username" class="form-control" placeholder="Username">
+                <input asp-for="Username" class="form-control" placeholder="Username" />
             </div>
             <div class="group">
                 <span class="icon-password"></span>
-                <input asp-for="Password" class="form-control" placeholder="Password">
+                <input asp-for="Password" class="form-control" placeholder="Password" />
             </div>
 
             <div class="group">
@@ -35,7 +35,7 @@
             </div>
         </form>
         <div class="footer">
-            <a class="link" href="ForgotPassword">@ViewLang.ForgotPassword?</a>
+            <a class="link" asp-controller="Auth" asp-action="ForgotPassword">@ViewLang.ForgotPassword?</a>
         </div>
     </section>
     <input hidden value="@Constants.RijndaelKey" id="RijndaelKey" />
