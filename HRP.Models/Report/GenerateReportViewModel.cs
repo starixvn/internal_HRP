@@ -21,6 +21,6 @@
 
         public string EmployeeStatuses { get; set; }
 
-        public IEnumerable<IGrouping<string, DynamicReportItem>> Items { get; set; }
+        public IEnumerable<DynamicReportGroup> Groups { get; set; }
     }
 }

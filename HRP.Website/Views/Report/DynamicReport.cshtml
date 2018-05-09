@@ -37,19 +37,14 @@
     <div class="group">
         <label class="text blue-txt">List of Data</label>
         <select multiple id="select-list">
-            @{
-                var index = 1;
-            }
-
-            @foreach (var group in Model.Items)
+            @foreach (var group in Model.Groups)
             {
-                <optgroup label="@group.Key" id="opt-@index">
-                    @foreach (var item in group)
+                <optgroup label="@group.Name" id="opt-@group.GroupdId">
+                    @foreach (var item in group.Items)
                     {
-                        <option data-parent-id="#opt-@index" value="@item.Id">@item.Name</option>
+                        <option data-parent-id="#opt-@group.GroupdId" value="@item.Id">@item.Name</option>
                     }
                 </optgroup>
-                index++;
             }
         </select>
     </div>

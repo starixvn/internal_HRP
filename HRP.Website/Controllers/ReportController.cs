@@ -263,10 +263,9 @@
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 }),
                 EmployeeStatusIds = string.Join(",", employeeStatusIds),
-                Items = ColumnsConfirguration.DynamicReportItems.GroupBy(x => x.Group)
+                Groups = ColumnsConfirguration.DynamicReportGroups
             };
 
-            ViewBag.List = new SelectList(ColumnsConfirguration.DynamicReportItems, "Id", "Name", null, "Group");
 
             return View("DynamicReport", viewModel);
         }
@@ -282,11 +281,7 @@
 
             if (ModelState.IsValid)
             {
-                var employeeDatas = await baseService.GetDataAsync<DynamicReportModel>(new GetEmployeeDataForDynamicReportCriteria
-                {
-                    CompanyId = viewModel.CompanyId,
-                    EmployeeStatusIds = viewModel.EmployeeStatusIds
-                });
+                var employeeDatas = await reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds);
 
                 var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse));
 
