@@ -2285,14 +2285,14 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
-                               HeaderName = "Subsistence Amount",
+                               PropertyName = nameof(DynamicReportModel.SubsistenceCurrencyCode),
+                               HeaderName = "Subsistence Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.SubsistenceCurrencyCode),
-                               HeaderName = "Subsistence Currency",
-                           }
+                               PropertyName = nameof(DynamicReportModel.SubsistenceAmount),
+                               HeaderName = "Subsistence Amount",
+                           }                           
                         }
                     }
                 }
@@ -2309,13 +2309,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HomePassageAmount),
-                               HeaderName = "HomePassage Amount",
+                               PropertyName = nameof(DynamicReportModel.HomePassageCurrencyCode),
+                               HeaderName = "HomePassage Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HomePassageCurrencyCode),
-                               HeaderName = "HomePassage Currency",
+                               PropertyName = nameof(DynamicReportModel.HomePassageAmount),
+                               HeaderName = "HomePassage Amount",
                            }
                         }
                     }
@@ -2333,13 +2333,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HousingAmount),
-                               HeaderName = "Housing Amount",
+                               PropertyName = nameof(DynamicReportModel.HousingCurrencyCode),
+                               HeaderName = "Housing Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HousingCurrencyCode),
-                               HeaderName = "Housing Currency",
+                               PropertyName = nameof(DynamicReportModel.HousingAmount),
+                               HeaderName = "Housing Amount",
                            }
                         }
                     }
@@ -2357,13 +2357,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
-                               HeaderName = "Mobile Phone Amount",
+                               PropertyName = nameof(DynamicReportModel.MobilePhoneCurrencyCode),
+                               HeaderName = "Mobile Phone Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.MobilePhoneCurrencyCode),
-                               HeaderName = "Mobile Phone Currency",
+                               PropertyName = nameof(DynamicReportModel.MobilePhoneAmount),
+                               HeaderName = "Mobile Phone Amount",
                            }
                         }
                     }
@@ -2381,13 +2381,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HPIAmount),
-                               HeaderName = "HPI Amount",
+                               PropertyName = nameof(DynamicReportModel.HPICurrencyCode),
+                               HeaderName = "HPI Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.HPICurrencyCode),
-                               HeaderName = "HPI Currency",
+                               PropertyName = nameof(DynamicReportModel.HPIAmount),
+                               HeaderName = "HPI Amount",
                            }
                         }
                     }
@@ -2405,13 +2405,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.DutyMealAmount),
-                               HeaderName = "Duty Meal Amount",
+                               PropertyName = nameof(DynamicReportModel.DutyMealCurrencyCode),
+                               HeaderName = "Duty Meal Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.DutyMealCurrencyCode),
-                               HeaderName = "Duty Meal Currency",
+                               PropertyName = nameof(DynamicReportModel.DutyMealAmount),
+                               HeaderName = "Duty Meal Amount",
                            }
                         }
                     }
@@ -2429,13 +2429,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.SecondmentAmount),
-                               HeaderName = "Secondment Amount",
+                               PropertyName = nameof(DynamicReportModel.SecondmentCurrencyCode),
+                               HeaderName = "Secondment Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.SecondmentCurrencyCode),
-                               HeaderName = "Secondment Currency",
+                               PropertyName = nameof(DynamicReportModel.SecondmentAmount),
+                               HeaderName = "Secondment Amount",
                            }
                         }
                     }
@@ -2453,13 +2453,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.OthersAmount),
-                               HeaderName = "Others Amount",
+                               PropertyName = nameof(DynamicReportModel.OthersCurrencyCode),
+                               HeaderName = "Others Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.OthersCurrencyCode),
-                               HeaderName = "Others Currency",
+                               PropertyName = nameof(DynamicReportModel.OthersAmount),
+                               HeaderName = "Others Amount",
                            }
                         }
                     }
@@ -2501,13 +2501,13 @@
                         {
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.FitnessFirstAmount),
-                               HeaderName = "Fitness Club Membership Amount",
+                               PropertyName = nameof(DynamicReportModel.FitnessFirstCurrencyCode),
+                               HeaderName = "Fitness Club Membership Currency",
                            },
                            new MappingColumn
                            {
-                               PropertyName = nameof(DynamicReportModel.FitnessFirstCurrencyCode),
-                               HeaderName = "Fitness Club Membership Currency",
+                               PropertyName = nameof(DynamicReportModel.FitnessFirstAmount),
+                               HeaderName = "Fitness Club Membership Amount",
                            }
                         }
                     }

@@ -457,9 +457,9 @@
             data.DirectBanking2Amount = cryptoService.Decrypt(data.DirectBanking2Amount);
             data.CashAmount = cryptoService.Decrypt(data.CashAmount);
 
-            data.AllowanceDirectBanking1Amount = cryptoService.Decrypt(data.DirectBanking1Amount);
-            data.AllowanceDirectBanking2Amount = cryptoService.Decrypt(data.DirectBanking2Amount);
-            data.AllowanceCashAmount = cryptoService.Decrypt(data.CashAmount);
+            data.AllowanceDirectBanking1Amount = cryptoService.Decrypt(data.AllowanceDirectBanking1Amount);
+            data.AllowanceDirectBanking2Amount = cryptoService.Decrypt(data.AllowanceDirectBanking2Amount);
+            data.AllowanceCashAmount = cryptoService.Decrypt(data.AllowanceCashAmount);
             data.SubsistenceAmount = cryptoService.Decrypt(data.SubsistenceAmount);
             data.HomePassageAmount = cryptoService.Decrypt(data.HomePassageAmount);
             data.HousingAmount = cryptoService.Decrypt(data.HousingAmount);

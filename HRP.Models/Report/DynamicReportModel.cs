@@ -279,7 +279,7 @@
 
         public string Reason { get; set; }
 
-        public int WorkingDays { get; set; }
+        public int? WorkingDays { get; set; }
 
         public int? EbankingCurrencyId { get; set; }
 

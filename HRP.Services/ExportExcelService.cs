@@ -536,7 +536,8 @@
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
 
                 // Write header
-                var col = 1;
+                worksheet.Cells[1, 1].Value = "ID No";
+                var col = 2;
                 foreach (var column in columns)
                 {
                     worksheet.Cells[1, col].Value = column.HeaderName;
@@ -547,7 +548,9 @@
                 var row = 2;
                 foreach (var record in records)
                 {
-                    col = 1;
+                    worksheet.Cells[row, 1].Value = record.IDNo;
+                    col = 2;
+
                     foreach (var column in columns)
                     {
                         var propertyInfo = record.GetType().GetProperty(column.PropertyName);
