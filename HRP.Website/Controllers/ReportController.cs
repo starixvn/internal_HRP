@@ -10,19 +10,17 @@
     using Core.Extensions;
     using Core.Filters;
     using Core.Services;
-    using Criteria.Report;
     using Criteria.Employee;
-    using Resources;
+    using HRP.Criteria;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.Report;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+    using Resources;
     using Services;
     using Services.Interfaces;
-    using Newtonsoft.Json.Serialization;
-    using HRP.Criteria;
 
     public class ReportController : BaseController
     {
@@ -245,7 +243,7 @@
                 UserId = sessionService.UserId
             };
 
-            var employeeStatusIds = new List<string> { "1", "2" };
+            var employeeStatusIds = new List<string> { EmploymentStatus.Probation.ToString(), EmploymentStatus.Confirmed.ToString() };
             var employeeStatuses = (await baseService.GetDataAsync<MultiSelectViewModel>(criteria)).ToList();
             employeeStatuses.ForEach(x =>
             {
@@ -266,7 +264,6 @@
                 Groups = ColumnsConfirguration.DynamicReportGroups
             };
 
-
             return View("DynamicReport", viewModel);
         }
 
@@ -283,9 +280,9 @@
             {
                 var employeeDatas = await reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds);
 
-                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse));
+                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds?.Split(',').Select(int.Parse) ?? Enumerable.Empty<int>());
 
-                return File(data, MimeType.XLSX, $"DynamicReport_Company-{viewModel.CompanyId}.xlsx");
+                return File(data, MimeType.XLSX, $"DynamicReport.xlsx");
             }
 
             var companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);

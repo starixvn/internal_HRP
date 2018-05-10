@@ -24,6 +24,7 @@
     using Website.Controllers;
     using Xunit;
     using HRP.Criteria;
+    using HRP.Criteria.Employee;
 
     public class ReportControllerTests
     {
@@ -408,6 +409,94 @@
         }
 
         #endregion MonthlyPayroll
+
+        [Fact]
+        public async Task DynamicReport_WhenCalled_ReturnExpectedViewResult()
+        {
+            var reportController = GetReportController();
+            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report)
+                .Returns(new List<Company>
+                {
+                    new Company { CompanyId = 1, Name = "DAR" }
+                });
+
+            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(new List<MultiSelectViewModel>());
+
+            var actual = await reportController.DynamicReport();
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsType<GenerateReportViewModel>(viewResult.Model);
+            Assert.False(string.IsNullOrEmpty(viewModel.EmployeeStatusIds));
+        }
+
+        [Fact]
+        public async Task DynamicReport_ValidModel_ReturnFile()
+        {
+            var viewModel = new GenerateReportViewModel
+            {
+                CompanyId = 1,
+                EmployeeStatusIds = "1,2",
+                SelectedIds = "1"
+            };
+
+            var employeeDatas = new List<DynamicReportModel>()
+            {
+                new DynamicReportModel
+                {
+                    IDNo = "DAR001"
+                }
+            };
+
+            var reportController = GetReportController();
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
+            reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds).Returns(employeeDatas);
+            exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse)).Returns(new byte[10]);
+
+            var actual = await reportController.DynamicReport(viewModel);
+            Assert.IsType<FileContentResult>(actual);
+        }
+
+        [Fact]
+        public async Task DynamicReport_InvalidModel_ReturnExpectedViewResult()
+        {
+            var viewModel = new GenerateReportViewModel
+            {
+                CompanyId = 1,
+                EmployeeStatusIds = "1,2",
+                SelectedIds = "1"
+            };
+
+            var reportController = GetReportController();
+            reportController.ModelState.AddModelError(nameof(viewModel.CompanyId), "Missing company id");
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
+            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report)
+               .Returns(new List<Company>
+               {
+                    new Company { CompanyId = 1, Name = "DAR" }
+               });
+
+            var actual = await reportController.DynamicReport(viewModel);
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.IsType<GenerateReportViewModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public async Task DynamicReport_DontHavePermissionOnCompany_RedirectToAccessDenied()
+        {
+            var viewModel = new GenerateReportViewModel
+            {
+                CompanyId = 1,
+                EmployeeStatusIds = "1,2",
+                SelectedIds = "1"
+            };
+
+            var reportController = GetReportController();
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(false);
+
+            var actual = await reportController.DynamicReport(viewModel);
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("AccessDenied", redirectResult.ActionName);
+            Assert.Equal("Error", redirectResult.ControllerName);
+        }
 
         #region Helpers
 

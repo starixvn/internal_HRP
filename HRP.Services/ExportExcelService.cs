@@ -10,8 +10,8 @@
     using HRP.Core.Services;
     using Interfaces;
     using Models.Report;
-    using OfficeOpenXml.Style;
     using OfficeOpenXml;
+    using OfficeOpenXml.Style;
     using Resources;
 
     [ExcludeFromCodeCoverage]
@@ -528,13 +528,11 @@
 
         public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
         {
-            var selectedGroups = selectedIds.SelectMany(x => ColumnsConfirguration.Columns[x]);
-            var columns = selectedGroups.SelectMany(x => x.Columns);
-
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
-
+                var selectedGroups = selectedIds.SelectMany(x => ColumnsConfirguration.Columns[x]);
+                var columns = selectedGroups.SelectMany(x => x.Columns);
                 // Write header
                 worksheet.Cells[1, 1].Value = "ID No";
                 var col = 2;
@@ -554,16 +552,10 @@
                     foreach (var column in columns)
                     {
                         var propertyInfo = record.GetType().GetProperty(column.PropertyName);
+                        var propertyValue = propertyInfo.GetValue(record);
                         var cell = worksheet.Cells[row, col];
-                        if (column.IsEncrypted)
-                        {
-                            var decryptedValue = cryptoService.Decrypt(propertyInfo.GetValue(record)?.ToString());
-                            cell.Value = decryptedValue;
-                        }
-                        else
-                        {
-                            cell.Value = propertyInfo.GetValue(record);                           
-                        }
+
+                        cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
 
                         if (propertyInfo.PropertyType == typeof(DateTime))
                         {
@@ -577,6 +569,7 @@
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
                 return package.GetAsByteArray();
             }
         }

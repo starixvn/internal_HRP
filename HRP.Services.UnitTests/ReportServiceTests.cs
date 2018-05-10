@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Services;
-    using Fanex.Data.Repository;
     using Criteria.Report;
+    using Fanex.Data.Repository;
+    using HRP.Core.Enumerations;
+    using HRP.Criteria;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;
@@ -164,6 +167,93 @@
             // Assert
             Assert.IsType<MonthlyPayrollReport>(actual);
             Assert.Equal(report, actual);
+        }
+
+        public static IEnumerable<object[]> GetEmployeeDatas()
+        {
+            yield return new object[]
+            {
+                new DynamicReportModel
+                {
+                    Salary = "1000",
+                    CurrencyId = 1,
+                    AutoCalculateOn = PayrollAutoCalculateOn.Ebanking,
+                    EbankingCurrencyId = 1,
+                    AllowanceCurrencyId = 1,
+                    DutyMealCurrencyId = 1,
+                    DutyMealAmount = "1000",
+                    AllowanceDirectBanking1CurrencyId = 1,
+                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1
+                }
+            };
+
+            yield return new object[]
+            {
+                new DynamicReportModel
+                {
+                    Salary = "1000",
+                    CurrencyId = 1,
+                    AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1,
+                    DirectBanking1CurrencyId = 1,
+                    AllowanceCurrencyId = 1,
+                    DutyMealCurrencyId = 1,
+                    DutyMealAmount = "1000",
+                    AllowanceDirectBanking1CurrencyId = 1,
+                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.DirectBanking1
+                }
+            };
+
+            yield return new object[]
+            {
+                 new DynamicReportModel
+                {
+                    Salary = "1000",
+                    CurrencyId = 1,
+                    AutoCalculateOn = PayrollAutoCalculateOn.DirectBanking2,
+                    DirectBanking2CurrencyId = 1,
+                    AllowanceCurrencyId = 1,
+                    DutyMealCurrencyId = 1,
+                    DutyMealAmount = "1000",
+                    AllowanceDirectBanking2CurrencyId = 1,
+                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.DirectBanking2
+                }
+            };
+
+            yield return new object[]
+            {
+                new DynamicReportModel
+                {
+                    Salary = "1000",
+                    CurrencyId = 1,
+                    AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                    CashCurrencyId = 1,
+                    AllowanceCurrencyId = 1,
+                    DutyMealCurrencyId = 1,
+                    DutyMealAmount = "1000",
+                    AllowanceCashCurrencyId = 1,
+                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.Cash
+                }
+            };
+        }
+
+        [Theory, MemberData(nameof(GetEmployeeDatas))]
+        public async Task GetEmployeeDataForDynamicReportAsync_WhenCalled_ReturnEmployeeDatas(DynamicReportModel model)
+        {
+            var reportService = GetReportService();
+            var datas = new List<DynamicReportModel>
+            {
+                model
+            };
+            baseService.GetDataAsync<DynamicReportModel>(Arg.Any<GetEmployeeDataForDynamicReportCriteria>()).Returns(datas);
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetLatestExchangeRatesCriteria>())
+                .Returns(new List<CurrencyExchangeRateModel> { new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 } });
+            cryptoService.Decrypt("1000").Returns("1000");
+            cryptoService.Decrypt(string.Empty).Returns(string.Empty);
+            cryptoService.Decrypt(null).Returns(string.Empty);
+
+            var actual = await reportService.GetEmployeeDataForDynamicReport(1, "1,2");
+
+            Assert.Equal(datas.Count, actual.Count());
         }
 
         #region Helpers
