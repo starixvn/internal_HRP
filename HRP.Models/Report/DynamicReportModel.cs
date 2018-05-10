@@ -23,6 +23,8 @@
 
         public string NRICNo { get; set; }
 
+        public string PersonalEmail { get; set; }
+
         public string MaritalStatus { get; set; }
 
         public string NoOfChildren { get; set; }
@@ -34,6 +36,7 @@
         public string PassportNo { get; set; }
 
         public string OtherPhoneNo { get; set; }
+
         public DateTime ExpiredDate { get; set; }
 
         public DateTime DateIssue { get; set; }
