@@ -559,7 +559,7 @@
 
                         if (propertyInfo.PropertyType == typeof(DateTime))
                         {
-                            cell.Style.Numberformat.Format = "dd/MM//yyyy";
+                            cell.Style.Numberformat.Format = "dd/MM/yyyy";
                         }
 
                         col++;
