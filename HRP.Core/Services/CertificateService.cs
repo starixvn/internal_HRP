@@ -46,7 +46,7 @@
 
         public string GetCertificateFilePath()
         {
-            string filePath = @"D:\\HRP.pfx";
+            string filePath = Path.Combine(hostingEnvironment.ContentRootPath, Constants.CertificateFilePath, Constants.CertificateFileName);
             return filePath;
         }
 
