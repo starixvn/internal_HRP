@@ -29,10 +29,10 @@ var bankAccountForm = {
                             data: results
                         });
 
-                        //var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
-                        //if (selectedPaymentTransactionId !== "0") {
-                        //    $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
-                        //}
+                        var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
+                        if (selectedPaymentTransactionId !== "0") {
+                            $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
+                        }
                     }
                 });
             });

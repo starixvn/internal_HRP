@@ -31,7 +31,6 @@
         {
             return new CreateBankAccountCriteria
             {
-                Id = 1,
                 EmployeeId = 1,
                 BankType = 1,
                 BankName = "Test",
@@ -84,10 +83,6 @@
                 criteria = GetBaseCriteria();
                 criteria.CreatedBy = 0;
                 data.Add(TheoryDatum.Factory(criteria, false));
-
-                criteria = GetBaseCriteria();
-                criteria.Id = 0;
-                data.Add(TheoryDatum.Factory(criteria, true));
 
                 criteria = GetBaseCriteria();
                 data.Add(TheoryDatum.Factory(criteria, true));

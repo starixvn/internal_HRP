@@ -2,6 +2,8 @@
 {
     public class EditBankAccountCriteria : BankAccountBaseCriteria
     {
+        public int Id { get; set; }
+
         public int UpdatedBy { get; set; }
 
         public override string GetSettingKey() => "BankAccount_Update";

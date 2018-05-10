@@ -2,8 +2,6 @@
 {
     public abstract class BankAccountBaseCriteria : CommandBaseCriteria
     {
-        public int Id { get; set; }
-
         public int PaymentTransactionId { get; set; }
 
         public string AccountNumber { get; set; }
@@ -32,16 +30,6 @@
             {
                 return false;
             }
-
-            ////if (string.IsNullOrEmpty(BankBranch))
-            ////{
-            ////    return false;
-            ////}
-
-            ////if (string.IsNullOrEmpty(BankAddress))
-            ////{
-            ////    return false;
-            ////}
 
             if (PaymentTransactionId == 0)
             {

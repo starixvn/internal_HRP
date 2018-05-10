@@ -1,6 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[BankAccount_Create] @Id INT = 0
-	,@EmployeeId INT
+CREATE PROCEDURE [dbo].[BankAccount_Create] @EmployeeId INT
 	,@BankType INT = 1
 	,@BankName NVARCHAR(70)
 	,@BankBranch NVARCHAR(70) = NULL
