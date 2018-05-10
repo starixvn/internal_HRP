@@ -187,6 +187,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The protection password has been successfully changed. You should download and keep the new certificate physical file..
+        /// </summary>
+        public static string ChangeTheProtectionPasswordSuccessfully {
+            get {
+                return ResourceManager.GetString("ChangeTheProtectionPasswordSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City is required!.
         /// </summary>
         public static string CityRequired {

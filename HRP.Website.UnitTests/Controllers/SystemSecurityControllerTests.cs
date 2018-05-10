@@ -1,13 +1,16 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.RefResource;
-    using HRP.Models.Certificate;
+    using HRP.Models.SystemSecurity;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
 
@@ -15,8 +18,28 @@
     {
         private ISessionService sessionService;
         private IBaseService baseService;
-        private IZipFileWrapper zipFileWrapper;
         private ICertificateService certificateService;
+
+        [Fact]
+        public void Index_WhenCalled_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetSystemSecurityController();
+            sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
+
+            // Act
+            var actual = controller.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Null(viewModel.OldPassword);
+            Assert.Null(viewModel.Password);
+            Assert.True(viewModel.IsHost);
+            Assert.False(viewModel.IsSuccessful);
+            Assert.Null(viewModel.MessageResult);
+        }
 
         #region Generate
 
@@ -25,7 +48,7 @@
         {
             // Arrange
             var controller = GetSystemSecurityController();
-            sessionService.IsSystemAdmin = true;
+            sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
 
             // Act
             var actual = controller.Generate();
@@ -35,8 +58,8 @@
             var viewModel = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.Password);
-            Assert.True(viewModel.IsSystemAdmin);
-            Assert.False(viewModel.IsIsSuccessful);
+            Assert.True(viewModel.IsHost);
+            Assert.False(viewModel.IsSuccessful);
             Assert.Null(viewModel.MessageResult);
         }
 
@@ -75,8 +98,8 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
             Assert.Equal(viewModel.Password, viewModelResult.Password);
-            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
-            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
+            Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
+            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsSuccessful);
             Assert.Equal(commandResult.Message, viewModelResult.MessageResult);
         }
 
@@ -96,8 +119,8 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
             Assert.Equal(viewModel.Password, viewModelResult.Password);
-            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
-            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
+            Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
+            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsSuccessful);
             Assert.Null(viewModelResult.MessageResult);
 
             certificateService.Received(1).CachePasswordAccessTheCertificate(viewModel.Password);
@@ -113,26 +136,24 @@
         {
             // Arrange
             var controller = GetSystemSecurityController();
-            sessionService.IsSystemAdmin = true;
+            sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
 
             // Act
             var actual = controller.Password();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
+            var viewModel = Assert.IsAssignableFrom<InputPasswordViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.Password);
-            Assert.True(viewModel.IsSystemAdmin);
-            Assert.False(viewModel.IsIsSuccessful);
-            Assert.Null(viewModel.MessageResult);
+            Assert.True(viewModel.IsHost);
         }
 
         [Fact]
         public void PasswordPost_ModelStateInvalid_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var viewModel = new GenerateCertificateViewModel();
+            var viewModel = new InputPasswordViewModel();
             var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
 
@@ -141,7 +162,7 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
+            var viewModelResult = Assert.IsAssignableFrom<InputPasswordViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.False(viewResult.ViewData.ModelState.IsValid);
             Assert.True(viewResult.ViewData.ModelState.Count == 1);
@@ -153,7 +174,7 @@
         public void PasswordPost_IncorrectPassword_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var viewModel = new GenerateCertificateViewModel();
+            var viewModel = new InputPasswordViewModel();
             var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(false);
 
@@ -162,11 +183,10 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
+            var viewModelResult = Assert.IsAssignableFrom<InputPasswordViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.False(viewResult.ViewData.ModelState.IsValid);
             Assert.True(viewResult.ViewData.ModelState.Count == 1);
-
             Assert.Equal(viewModel, viewModelResult);
         }
 
@@ -174,7 +194,7 @@
         public void PasswordPost_CorrectPassword_ReturnRedirectToHome()
         {
             // Arrange
-            var viewModel = new GenerateCertificateViewModel();
+            var viewModel = new InputPasswordViewModel();
             var controller = GetSystemSecurityController();
             certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
 
@@ -194,28 +214,7 @@
         #region ChangePassword
 
         [Fact]
-        public void ChangePassword_WhenCalled_ReturnAsExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetSystemSecurityController();
-            sessionService.IsSystemAdmin = true;
-
-            // Act
-            var actual = controller.ChangePassword();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
-            Assert.Null(viewResult.ViewName);
-            Assert.Null(viewModel.OldPassword);
-            Assert.Null(viewModel.Password);
-            Assert.True(viewModel.IsSystemAdmin);
-            Assert.False(viewModel.IsIsSuccessful);
-            Assert.Null(viewModel.MessageResult);
-        }
-
-        [Fact]
-        public void ChangePasswordPost_ModelStateInvalid_ReturnAsExpectedViewResult()
+        public void ChangePasswordPost_ModelStateInvalid_ReturnAsExpectedErrors()
         {
             // Arrange
             var viewModel = new ChangeCertificatePasswordViewModel();
@@ -226,17 +225,21 @@
             var actual = controller.ChangePassword(viewModel);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
-            Assert.Null(viewResult.ViewName);
-            Assert.False(viewResult.ViewData.ModelState.IsValid);
-            Assert.True(viewResult.ViewData.ModelState.Count == 1);
-
-            Assert.Equal(viewModel, viewModelResult);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Collection(
+                errors,
+                kvp =>
+                {
+                    Assert.Equal("password", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
+            );
         }
 
         [Fact]
-        public void ChangePasswordPost_IncorrectPassword_ReturnAsExpectedViewResult()
+        public void ChangePasswordPost_IncorrectPassword_ReturnAsExpectedErrors()
         {
             // Arrange
             var viewModel = new ChangeCertificatePasswordViewModel();
@@ -247,17 +250,21 @@
             var actual = controller.ChangePassword(viewModel);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
-            Assert.Null(viewResult.ViewName);
-            Assert.False(viewResult.ViewData.ModelState.IsValid);
-            Assert.True(viewResult.ViewData.ModelState.Count == 1);
-
-            Assert.Equal(viewModel, viewModelResult);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Collection(
+                errors,
+                kvp =>
+                {
+                    Assert.Equal(nameof(viewModel.Password), kvp.Key);
+                    Assert.Equal("This password don't match. Try again?", kvp.Value);
+                }
+            );
         }
 
         [Fact]
-        public void ChangePasswordPost_Unsuccessfully_ReturnAsExpectedViewResult()
+        public void ChangePasswordPost_Unsuccessfully_ReturnAsExpected()
         {
             // Arrange
             var commandResult = new CommandResult();
@@ -270,17 +277,12 @@
             var actual = controller.ChangePassword(viewModel);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
-            Assert.Equal(viewModel.OldPassword, viewModelResult.OldPassword);
-            Assert.Equal(viewModel.Password, viewModelResult.Password);
-            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
-            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
-            Assert.Equal(commandResult.Message, viewModelResult.MessageResult);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
         }
 
         [Fact]
-        public void ChangePasswordPost_Successfully_ReturnAsExpectedViewResult()
+        public void ChangePasswordPost_Successfully_ReturnAsExpected()
         {
             // Arrange
             var commandResult = new CommandResult { Code = 0 };
@@ -293,13 +295,8 @@
             var actual = controller.ChangePassword(viewModel);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModelResult = Assert.IsAssignableFrom<ChangeCertificatePasswordViewModel>(viewResult.Model);
-            Assert.Equal(viewModel.OldPassword, viewModelResult.OldPassword);
-            Assert.Equal(viewModel.Password, viewModelResult.Password);
-            Assert.Equal(viewModel.IsSystemAdmin, viewModelResult.IsSystemAdmin);
-            Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsIsSuccessful);
-            Assert.Null(viewModelResult.MessageResult);
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
 
             certificateService.Received(1).CachePasswordAccessTheCertificate(viewModel.Password);
         }
@@ -310,19 +307,16 @@
         public void Download_WhenCalled_ReturnAsExpectedFile()
         {
             // Arrange
-            var sourceFileName = "D:\\HRP.pfx";
-            var entryName = "HRP.pfx";
             var controller = GetSystemSecurityController();
-            certificateService.GetCertificateFilePath().Returns(sourceFileName);
-            zipFileWrapper.CopyFileToByteArray(sourceFileName, entryName).Returns(new byte[] { 0xFF, 0x00 });
+            certificateService.CopyCertificateFileToByteArray().Returns(new byte[] { 0xFF, 0x00 });
 
             // Act
             var actual = controller.Download();
 
             // Assert
             var fileStream = Assert.IsType<FileContentResult>(actual);
-            Assert.Equal(MimeType.ZIP, fileStream.ContentType);
-            Assert.Equal("HRP.zip", fileStream.FileDownloadName);
+            Assert.Equal(MimeType.PFX, fileStream.ContentType);
+            Assert.Equal("HRP.pfx", fileStream.FileDownloadName);
         }
 
         [Fact]
@@ -330,7 +324,7 @@
         {
             // Arrange
             var controller = GetSystemSecurityController();
-            sessionService.IsSystemAdmin = true;
+            sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
 
             // Act
             var actual = controller.FileNotFound();
@@ -338,12 +332,12 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.Null(viewResult.ViewName);
-            Assert.Equal(true, viewResult.ViewData["IsSystemAdmin"]);
+            Assert.Equal(true, viewResult.ViewData["IsHost"]);
         }
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -351,19 +345,14 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private IZipFileWrapper FakeZipFileWrapper()
-        {
-            return Substitute.For<IZipFileWrapper>();
-        }
-
-        private ICertificateService FakeCertificateService()
+        private static ICertificateService FakeCertificateService()
         {
             var service = Substitute.For<ICertificateService>();
 
@@ -374,9 +363,8 @@
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
-            zipFileWrapper = FakeZipFileWrapper();
             certificateService = FakeCertificateService();
-            var controller = new SystemSecurityController(sessionService, baseService, zipFileWrapper, certificateService);
+            var controller = new SystemSecurityController(sessionService, baseService, certificateService);
 
             return controller;
         }

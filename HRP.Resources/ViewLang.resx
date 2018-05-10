@@ -1074,4 +1074,16 @@
   <data name="PayslipDetails" xml:space="preserve">
     <value>Payslip Details</value>
   </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="ChangeTheProtectionPassword" xml:space="preserve">
+    <value>Change the protection password</value>
+  </data>
+  <data name="DownloadCertificate" xml:space="preserve">
+    <value>Download Certificate</value>
+  </data>
+  <data name="SecuritySetting" xml:space="preserve">
+    <value>Security Setting</value>
+  </data>
 </root>

@@ -1,19 +1,19 @@
 ﻿@{
     Layout = "_LoginLayout";
     ViewData["Title"] = "File Not Found";
-    var isSystemAdmin = ViewData["IsSystemAdmin"] != null && bool.Parse(ViewData["IsSystemAdmin"].ToString());
+    var isHost = ViewData["IsHost"] != null && bool.Parse(ViewData["IsHost"].ToString());
 }
 
 <section class="block">
     <div class="circle-large">
         <span class="icon-otp"></span>
     </div>
-    @if (isSystemAdmin)
+    @if (isHost)
     {
-        <h1 class="title">File not found.</h1>
+        <h1 class="title">The certificate file not found.</h1>
     }
     else
     {
-        <h1 class="title">File not found. Please contact your system administrator!</h1>
+        <h1 class="title">The certificate file not found. Please contact your system administrator!</h1>
     }
 </section>

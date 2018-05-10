@@ -439,6 +439,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change the protection password.
+        /// </summary>
+        public static string ChangeTheProtectionPassword {
+            get {
+                return ResourceManager.GetString("ChangeTheProtectionPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check.
         /// </summary>
         public static string Check {
@@ -921,6 +930,24 @@ namespace HRP.Resources {
         public static string DontShowAgain {
             get {
                 return ResourceManager.GetString("DontShowAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Certificate.
+        /// </summary>
+        public static string DownloadCertificate {
+            get {
+                return ResourceManager.GetString("DownloadCertificate", resourceCulture);
             }
         }
         
@@ -2388,6 +2415,15 @@ namespace HRP.Resources {
         public static string SectionChangeReason {
             get {
                 return ResourceManager.GetString("SectionChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security Setting.
+        /// </summary>
+        public static string SecuritySetting {
+            get {
+                return ResourceManager.GetString("SecuritySetting", resourceCulture);
             }
         }
         

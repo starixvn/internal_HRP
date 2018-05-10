@@ -8,6 +8,8 @@ namespace HRP.Core.Constants
 
         public const string CurrencySetting = "CurrencySetting";
 
+        public const string SecuritySetting = "SecuritySetting";
+
         public const string EmployeeManagement = "EmployeeManagement";
 
         public const string EmployeeProfile = "EmployeeProfile";

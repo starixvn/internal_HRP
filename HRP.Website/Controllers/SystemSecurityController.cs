@@ -1,12 +1,14 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
+    using HRP.Core.Enumerations;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.RefResource;
-    using HRP.Models.Certificate;
+    using HRP.Models.SystemSecurity;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,48 +17,56 @@
     {
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
-        private readonly IZipFileWrapper zipFileWrapper;
         private readonly ICertificateService certificateService;
 
         public SystemSecurityController(
             ISessionService sessionService,
             IBaseService baseService,
-            IZipFileWrapper zipFileWrapper,
             ICertificateService certificateService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
-            this.zipFileWrapper = zipFileWrapper;
             this.certificateService = certificateService;
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
+        public IActionResult Index()
+        {
+            var viewModel = new ChangeCertificatePasswordViewModel
+            {
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host)
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Generate()
         {
             var viewModel = new GenerateCertificateViewModel
             {
-                IsSystemAdmin = sessionService.IsSystemAdmin
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host)
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
         public async Task<IActionResult> Generate(GenerateCertificateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 CommandResult commandResult = certificateService.GenerateSelfSignedCertificate(viewModel.Password);
+                viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (commandResult.IsSuccessful)
                 {
-                    viewModel.IsIsSuccessful = commandResult.IsSuccessful;
                     certificateService.CachePasswordAccessTheCertificate(viewModel.Password);
 
                     await UpdateIsGeneratedCertificate();
                 }
                 else
                 {
-                    viewModel.IsIsSuccessful = commandResult.IsSuccessful;
                     viewModel.MessageResult = commandResult.Message;
                 }
             }
@@ -66,16 +76,17 @@
 
         public IActionResult Password()
         {
-            var viewModel = new GenerateCertificateViewModel
+            var viewModel = new InputPasswordViewModel
             {
-                IsSystemAdmin = sessionService.IsSystemAdmin
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host)
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Password(GenerateCertificateViewModel viewModel)
+        [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
+        public IActionResult Password(InputPasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -94,17 +105,8 @@
             return View(viewModel);
         }
 
-        public IActionResult ChangePassword()
-        {
-            var viewModel = new ChangeCertificatePasswordViewModel
-            {
-                IsSystemAdmin = sessionService.IsSystemAdmin
-            };
-
-            return View(viewModel);
-        }
-
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
         public IActionResult ChangePassword(ChangeCertificatePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -115,14 +117,10 @@
 
                     if (commandResult.IsSuccessful)
                     {
-                        viewModel.IsIsSuccessful = commandResult.IsSuccessful;
                         certificateService.CachePasswordAccessTheCertificate(viewModel.Password);
                     }
-                    else
-                    {
-                        viewModel.IsIsSuccessful = commandResult.IsSuccessful;
-                        viewModel.MessageResult = commandResult.Message;
-                    }
+
+                    return Json(commandResult);
                 }
                 else
                 {
@@ -130,20 +128,22 @@
                 }
             }
 
-            return View(viewModel);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
         }
 
         public IActionResult FileNotFound()
         {
-            ViewData["IsSystemAdmin"] = sessionService.IsSystemAdmin;
+            ViewData["IsHost"] = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host);
             return View();
         }
 
+        [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
         public IActionResult Download()
         {
-            string filePath = certificateService.GetCertificateFilePath();
+            byte[] certData = certificateService.CopyCertificateFileToByteArray();
 
-            return File(zipFileWrapper.CopyFileToByteArray(filePath, "HRP.pfx"), MimeType.ZIP, "HRP.zip");
+            return File(certData, MimeType.PFX, Constants.CertificateFileName);
         }
 
         private async Task UpdateIsGeneratedCertificate()

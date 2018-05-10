@@ -18,6 +18,8 @@
 
         void CachePasswordAccessTheCertificate(string password);
 
+        byte[] CopyCertificateFileToByteArray();
+
         CommandResult ChangePasswordAccessTheCertificate(string oldPassword, string password);
     }
 }

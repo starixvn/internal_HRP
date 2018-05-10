@@ -95,7 +95,6 @@
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IPdfRenderService, PdfRenderService>();
             services.AddScoped<ICertificateService, CertificateService>();
-            services.AddScoped<IZipFileWrapper, ZipFileWrapper>();
             services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();

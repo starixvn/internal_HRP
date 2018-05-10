@@ -147,6 +147,16 @@
             return commandResult;
         }
 
+        public byte[] CopyCertificateFileToByteArray()
+        {
+            string filePath = GetCertificateFilePath();
+            string password = GetPasswordAccessTheCertificate();
+            var cert = new X509Certificate2(filePath, password, X509KeyStorageFlags.Exportable);
+            byte[] certData = cert.Export(X509ContentType.Pfx, password);
+
+            return certData;
+        }
+
         private static X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, int keyStrength = 2048)
         {
             // Generating Random Numbers
