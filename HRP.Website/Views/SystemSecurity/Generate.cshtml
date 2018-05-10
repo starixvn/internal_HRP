@@ -1,4 +1,5 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Constants
+@using HRP.Resources
 @using HRP.Models.SystemSecurity
 @model GenerateCertificateViewModel
 
@@ -11,7 +12,7 @@
     <link href="~/assets/styles/pages/systemsecurity/certificate.css" rel="stylesheet" />
 }
 
-<section class="block">
+<section class="block certificate">
     <div class="circle-large">
         <span class="icon-otp"></span>
     </div>
@@ -20,11 +21,16 @@
         if (Model.IsSuccessful)
         {
             <h1 class="title">Download The Certificate</h1>
-            <p>
-                You can choose to download the certificate physical file from here.
-                Keep the certificate physical file will help you to recovery the data in bad situations.
-            </p>
-            <div class="list-button">
+            <div class="intro">
+                <p>
+                    You can choose to download the certificate physical file from here.
+                    Keep the certificate physical file will help you to recovery the data in bad situations.
+                </p>
+                <p class="text-special">
+                    * File Name: @Constants.CertificateFileName
+                </p>
+            </div>
+            <div class="group list-button">
                 <a class="button -back" asp-controller="home" asp-action="index">Back to Home</a>
                 <a class="button -primary" asp-controller="SystemSecurity" asp-action="download">@ViewLang.Download</a>
             </div>
@@ -44,7 +50,9 @@
             <form asp-controller="SystemSecurity" asp-action="Generate" method="POST">
                 <input hidden asp-for="IsHost" />
 
-                <span asp-validation-for="Password" class="msg-error"></span>
+                <div class="group">
+                    <span asp-validation-for="Password" class="msg-error"></span>
+                </div>
                 <div class="group">
                     <span class="icon-password"></span>
                     <input type="text" asp-for="Password" class="form-control" placeholder="Password" />

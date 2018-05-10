@@ -28,6 +28,7 @@
         private const string SignatureAlgorithm = "SHA256WithRSA";
         private const string SubjectName = "CN=HRP";
         private const string IssuerName = "CN=HRP";
+        private const int KeyStrength = 2048;
 
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IMemoryCache memoryCache;
@@ -45,7 +46,7 @@
 
         public string GetCertificateFilePath()
         {
-            string filePath = Path.Combine(hostingEnvironment.ContentRootPath, Constants.CertificateFilePath, Constants.CertificateFileName);
+            string filePath = @"D:\\HRP.pfx";
             return filePath;
         }
 
@@ -65,7 +66,7 @@
 
             try
             {
-                X509Certificate2 cert = GenerateSelfSignedCertificate(SubjectName, IssuerName);
+                X509Certificate2 cert = GenerateSelfSignedCertificate();
                 byte[] certData = cert.Export(X509ContentType.Pfx, password);
                 string filePath = GetCertificateFilePath();
                 File.WriteAllBytes(filePath, certData);
@@ -157,7 +158,7 @@
             return certData;
         }
 
-        private static X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, int keyStrength = 2048)
+        private static X509Certificate2 GenerateSelfSignedCertificate()
         {
             // Generating Random Numbers
             var randomGenerator = new CryptoApiRandomGenerator();
@@ -174,8 +175,8 @@
             certificateGenerator.SetSignatureAlgorithm(SignatureAlgorithm);
 
             // Issuer and Subject Name
-            var subjectDN = new X509Name(subjectName);
-            var issuerDN = new X509Name(issuerName);
+            var subjectDN = new X509Name(SubjectName);
+            var issuerDN = new X509Name(IssuerName);
             certificateGenerator.SetIssuerDN(issuerDN);
             certificateGenerator.SetSubjectDN(subjectDN);
 
@@ -188,7 +189,7 @@
 
             // Subject Public Key
             AsymmetricCipherKeyPair subjectKeyPair;
-            var keyGenerationParameters = new KeyGenerationParameters(random, keyStrength);
+            var keyGenerationParameters = new KeyGenerationParameters(random, KeyStrength);
             var keyPairGenerator = new RsaKeyPairGenerator();
             keyPairGenerator.Init(keyGenerationParameters);
             subjectKeyPair = keyPairGenerator.GenerateKeyPair();

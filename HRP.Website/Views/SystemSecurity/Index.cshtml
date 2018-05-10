@@ -1,4 +1,5 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Constants
+@using HRP.Resources
 @using HRP.Models.SystemSecurity
 @model ChangeCertificatePasswordViewModel
 
@@ -30,7 +31,10 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="DownloadTab">
-            <a class="button -primary" asp-controller="SystemSecurity" asp-action="download">@ViewLang.Download</a>
+            <div class="download-file">
+                <p class="text-special">* File Name: @Constants.CertificateFileName</p>
+                <a class="button -primary" asp-controller="SystemSecurity" asp-action="download">@ViewLang.Download</a>
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="ChangePasswordTab">
             @Html.Partial("_ChangePassword", Model)
