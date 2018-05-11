@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Extensions;
@@ -289,6 +290,52 @@
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("DynamicReport", viewModel);
+        }
+
+        public string Init()
+        {
+            var root = new XElement("Root");
+            var columns = ColumnsConfirguration.Columns;
+            foreach (var group in ColumnsConfirguration.DynamicReportGroups)
+            {
+                var groupElement = new XElement("Group");
+                groupElement.SetAttributeValue("GroupdId", group.GroupdId);
+                groupElement.SetAttributeValue("Name", group.Name);
+
+                foreach (var item in group.Items)
+                {
+                    var itemElement = new XElement("Item");
+                    itemElement.SetAttributeValue("Id", item.Id);
+                    itemElement.SetAttributeValue("Name", item.Name);
+
+                    var columnGroups = columns[item.Id];
+
+                    foreach (var columnGroup in columnGroups)
+                    {
+                        var columnGroupElement = new XElement("ColumnGroup");
+                        columnGroupElement.SetAttributeValue("GroupId", columnGroup.GroupId);
+                        columnGroupElement.SetAttributeValue("GroupName", columnGroup.GroupName);
+
+                        foreach (var mappingColumn in columnGroup.Columns)
+                        {
+                            var mappingColumnElement = new XElement("MappingColumn");
+                            mappingColumnElement.SetAttributeValue("PropertyName", mappingColumn.PropertyName);
+                            mappingColumnElement.SetAttributeValue("HeaderName", mappingColumn.HeaderName);
+                            mappingColumnElement.SetAttributeValue("IsEncrypted", mappingColumn.IsEncrypted);
+
+                            columnGroupElement.Add(mappingColumnElement);
+                        }
+
+                        itemElement.Add(columnGroupElement);
+                    }
+
+                    groupElement.Add(itemElement);
+                }
+
+                root.Add(groupElement);
+            }
+
+            return root.ToString();
         }
     }
 }

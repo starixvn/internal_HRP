@@ -8,6 +8,6 @@
 
         public string GroupName { get; set; }
 
-        public IList<MappingColumn> Columns { get; set; }
+        public IEnumerable<MappingColumn> Columns { get; set; }
     }
 }

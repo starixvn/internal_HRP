@@ -1,4 +1,6 @@
-﻿namespace HRP.Models.Report
+﻿using System.Collections.Generic;
+
+namespace HRP.Models.Report
 {
     public class DynamicReportItem
     {

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRP.Services", "HRP.Services\HRP.Services.csproj", "{A82B603F-A59E-4C3A-8A28-4DD415F741E8}"
 EndProject
@@ -32,7 +32,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Models.UnitTests", "HRP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{91298549-D7F1-44D3-AFC1-A00E126AFFDA}"
 	ProjectSection(SolutionItems) = preProject
+		SonarQube\Alpha-Before-LoginCSharp.ruleset = SonarQube\Alpha-Before-LoginCSharp.ruleset
 		SonarQube\HRPCSharp.ruleset = SonarQube\HRPCSharp.ruleset
+		SonarQube\SMSHRMCSharp.ruleset = SonarQube\SMSHRMCSharp.ruleset
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 	EndProjectSection
 EndProject
