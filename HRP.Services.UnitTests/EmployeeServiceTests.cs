@@ -401,6 +401,149 @@
             Assert.Equal(refResourceSelectList, actual.WorkPermitType2s);
         }
 
+        #region GetEmploymentByEmployeeIdAsync
+
+        [Fact]
+        public async Task GetEmploymentByEmployeeIdAsync_EmployeeIsNotExist_ReturnNull()
+        {
+            // Arrange
+            Employment employment = null;
+            var employeeService = GetEmployeeService();
+            employeeRepository.GetEmploymentByEmployeeIdAsync(Arg.Any<GetEmploymentByEmployeeIdCriteria>()).Returns(employment);
+
+            // Act
+            var actual = await employeeService.GetEmploymentByEmployeeIdAsync(1);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task GetEmploymentByEmployeeIdAsync_EmployeeIsExist_ReturnAsExpected()
+        {
+            // Arrange
+            var employment = new Employment();
+            var employeeService = GetEmployeeService();
+            employeeRepository.GetEmploymentByEmployeeIdAsync(Arg.Any<GetEmploymentByEmployeeIdCriteria>()).Returns(employment);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns("123");
+
+            // Act
+            var actual = await employeeService.GetEmploymentByEmployeeIdAsync(1);
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(employment.CompanyId, actual.CompanyId);
+            Assert.Equal(employment.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(employment.JobTitle, actual.JobTitle);
+            Assert.Equal(employment.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(employment.CompanyCode, actual.CompanyCode);
+            Assert.Equal(employment.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(employment.EmploymentType, actual.EmploymentType);
+            Assert.Equal(employment.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(employment.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(employment.JobGradeId, actual.JobGradeId);
+            Assert.Equal(employment.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(employment.DivisionId, actual.DivisionId);
+            Assert.Equal(employment.DepartmentId, actual.DepartmentId);
+            Assert.Equal(employment.CostCenterId, actual.CostCenterId);
+            Assert.Equal(employment.SectionId, actual.SectionId);
+            Assert.Equal(employment.Email, actual.Email);
+            Assert.Equal(employment.CountryId, actual.CountryId);
+            Assert.Equal(employment.CityId, actual.CityId);
+            Assert.Equal(employment.OfficeId, actual.OfficeId);
+            Assert.Equal(employment.WorkPermit, actual.WorkPermit);
+            Assert.Equal(employment.Paymaster, actual.Paymaster);
+            Assert.Equal(employment.EPA, actual.EPA);
+            Assert.Equal("123", actual.PDFPassword);
+        }
+
+        #endregion GetEmploymentByEmployeeIdAsync
+
+        #region GetDataToUpdateEmploymentAsync
+
+        [Fact]
+        public async Task GetDataToUpdateEmploymentAsync_EmployeeIsNotExist_ReturnNull()
+        {
+            // Arrange
+            Employment employment = null;
+            var employeeService = GetEmployeeService();
+            employeeRepository.GetEmploymentByEmployeeIdAsync(Arg.Any<GetEmploymentByEmployeeIdCriteria>()).Returns(employment);
+
+            // Act
+            var actual = await employeeService.GetDataToUpdateEmploymentAsync(1);
+
+            // Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public async Task GetDataToUpdateEmploymentAsync_EmployeeIsExist_ReturnAsExpected()
+        {
+            // Arrange
+            var employment = new Employment();
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
+                new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
+                new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
+                new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
+            };
+            var refResourceSelectList = new SelectList(refResources, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+
+            var employeeService = GetEmployeeService();
+            employeeRepository.GetEmploymentByEmployeeIdAsync(Arg.Any<GetEmploymentByEmployeeIdCriteria>()).Returns(employment);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns("123");
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(refResourceSelectList);
+
+            // Act
+            var actual = await employeeService.GetDataToUpdateEmploymentAsync(1);
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal(employment.CompanyId, actual.CompanyId);
+            Assert.Equal(employment.LocalCompanyId, actual.LocalCompanyId);
+            Assert.Equal(employment.JobTitle, actual.JobTitle);
+            Assert.Equal(employment.LocalJobTitleId, actual.LocalJobTitleId);
+            Assert.Equal(employment.CompanyCode, actual.CompanyCode);
+            Assert.Equal(employment.EmployeeCode, actual.EmployeeCode);
+            Assert.Equal(employment.EmploymentType, actual.EmploymentType);
+            Assert.Equal(employment.EmploymentStatus, actual.EmploymentStatus);
+            Assert.Equal(employment.JobCategoryId, actual.JobCategoryId);
+            Assert.Equal(employment.JobGradeId, actual.JobGradeId);
+            Assert.Equal(employment.GradeLevelId, actual.GradeLevelId);
+            Assert.Equal(employment.DivisionId, actual.DivisionId);
+            Assert.Equal(employment.DepartmentId, actual.DepartmentId);
+            Assert.Equal(employment.CostCenterId, actual.CostCenterId);
+            Assert.Equal(employment.SectionId, actual.SectionId);
+            Assert.Equal(employment.Email, actual.Email);
+            Assert.Equal(employment.CountryId, actual.CountryId);
+            Assert.Equal(employment.CityId, actual.CityId);
+            Assert.Equal(employment.OfficeId, actual.OfficeId);
+            Assert.Equal(employment.WorkPermit, actual.WorkPermit);
+            Assert.Equal(employment.Paymaster, actual.Paymaster);
+            Assert.Equal(employment.EPA, actual.EPA);
+            Assert.Equal("123", actual.PDFPassword);
+            Assert.Equal(refResourceSelectList, actual.LocalCompanies);
+            Assert.Equal(refResourceSelectList, actual.LocalJobTitles);
+            Assert.Equal(refResourceSelectList, actual.EmploymentTypes);
+            Assert.Equal(refResourceSelectList, actual.EmploymentStatuses);
+            Assert.Equal(refResourceSelectList, actual.WorkPermitType1s);
+            Assert.Equal(refResourceSelectList, actual.WorkPermitType2s);
+            Assert.Equal(refResourceSelectList, actual.CompanyChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.LocalCompanyChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.JobTitleChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.DateCommencementChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.IDNoChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.JobCategoryChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.JobGradeChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.DivisionChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.DepartmentChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.CostCenterChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.SectionChangeReasons);
+        }
+
+        #endregion GetDataToUpdateEmploymentAsync
+
         #region Helper
 
         private static IBaseService FakeBaseService()
