@@ -13,136 +13,32 @@
                 Name = DynamicReportItemGroup.PersonalDetails,
                 Items = new List<DynamicReportItem>
                 {
-                    new DynamicReportItem
-                    {
-                        Id = 1,
-                        Name = "Full Name",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 2,
-                        Name = "Nick Name",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 3,
-                        Name = "Gender",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 4,
-                        Name = "Date of Birth",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 5,
-                        Name = "Place of Birth",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 6,
-                        Name = "Nationality",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 7,
-                        Name = "NRIC No",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 8,
-                        Name = "Marital Status",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 9,
-                        Name = "No Of Children",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 10,
-                        Name = "Telephone Overseas",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 11,
-                        Name = "Telephone Local",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 12,
-                        Name = "Telephone Other",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 13,
-                        Name = "Passport No",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 14,
-                        Name = "Passport Date of Issue",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 15,
-                        Name = "Passport Expired Date",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 16,
-                        Name = "Passport Place of Issue",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 17,
-                        Name = "Skype Account",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 18,
-                        Name = "Personal Email Address",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 19,
-                        Name = "Permanent Address (Overseas)",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 20,
-                        Name = "Resident Address (Local)",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 21,
-                        Name = "Mailing Address",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 22,
-                        Name = "Emergency Contact Name",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 23,
-                        Name = "Emergency Contact Relationship",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 24,
-                        Name = "Emergency Contact Address",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 25,
-                        Name = "Emergency Contact Telephone No1",
-                    },
-                    new DynamicReportItem
-                    {
-                        Id = 26,
-                        Name = "Emergency Contact Telephone No2",
-                    }
+                    new DynamicReportItem(1, "Full Name"),
+                    new DynamicReportItem(2, "Nick Name"),
+                    new DynamicReportItem(3, "Gender"),
+                    new DynamicReportItem(4, "Date of Birth"),
+                    new DynamicReportItem(5, "Place of Birth"),
+                    new DynamicReportItem(6, "Nationality"),
+                    new DynamicReportItem(7, "NRIC No"),
+                    new DynamicReportItem(8, "Marital Status"),
+                    new DynamicReportItem(9, "Marital Status"),
+                    new DynamicReportItem(10, "Telephone Overseas"),
+                    new DynamicReportItem(11, "Telephone Local"),
+                    new DynamicReportItem(12, "Telephone Other"),
+                    new DynamicReportItem(13, "Passport No"),
+                    new DynamicReportItem(14, "Passport Date of Issue"),
+                    new DynamicReportItem(15, "Passport Expired Date"),
+                    new DynamicReportItem(16, "Passport Place of Issue"),
+                    new DynamicReportItem(17, "Skype Account"),
+                    new DynamicReportItem(18, "Personal Email Address"),
+                    new DynamicReportItem(19, "Permanent Address (Overseas)"),
+                    new DynamicReportItem(20, "Resident Address (Local)"),
+                    new DynamicReportItem(21, "Mailing Address"),
+                    new DynamicReportItem(22, "Emergency Contact Name"),
+                    new DynamicReportItem(23, "Emergency Contact Relationship"),
+                    new DynamicReportItem(24, "Emergency Contact Address"),
+                    new DynamicReportItem(25, "Emergency Contact Telephone No1"),
+                    new DynamicReportItem(26, "Emergency Contact Telephone No1")
                 }
             },
             new DynamicReportGroup
