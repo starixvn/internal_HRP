@@ -15,7 +15,8 @@
                 yield return new MappingColumn
                 {
                     PropertyName = element.Attribute("PropertyName").Value,
-                    HeaderName = element.Attribute("HeaderName").Value
+                    HeaderName = element.Attribute("HeaderName").Value,
+                    IsEncrypted = bool.Parse(element.Attribute("IsEncrypted").Value)
                 };
             }
         }
