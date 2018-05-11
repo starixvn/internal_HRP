@@ -5,14 +5,12 @@
 @section Styles {
     <environment include="Development">
         <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
         <link href="~/assets/styles/fonts/hrp/style.css" rel="stylesheet">
         <link href="~/assets/styles/pages/report/dynamic-report.css" rel="stylesheet" />
     </environment>
-
     <environment exclude="Development">
-
+        <link href="~/assets/bundles/report/css/dynamic-report.min.css" rel="stylesheet" />
     </environment>
 }
 
@@ -77,11 +75,11 @@
     <environment include="Development">
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
         <script src="~/assets/js/report/dynamic-report.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/assets/bundles/report/js/dynamic-report.min.js"></script>
     </environment>
 }

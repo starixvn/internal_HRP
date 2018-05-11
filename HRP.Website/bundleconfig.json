@@ -199,6 +199,19 @@
     }
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/report/css/dynamic-report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/pages/report/dynamic-report.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
@@ -581,6 +594,20 @@
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/assets/js/systemsecurity/change-password.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/report/js/dynamic-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/assets/js/report/dynamic-report.js"
     ],
     "minify": {
       "enabled": true,
