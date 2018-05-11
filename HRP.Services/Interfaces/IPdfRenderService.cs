@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.Services
+﻿namespace HRP.Services
 {
     public interface IPdfRenderService
     {

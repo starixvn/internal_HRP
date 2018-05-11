@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.Services
+﻿namespace HRP.Services
 {
     using System.IO;
     using System.Text;
