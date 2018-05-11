@@ -30,6 +30,6 @@ namespace HRP.Core.Constants
 
         public const string CertificateFilePath = "App_Data";
 
-        public const string CertificateFileName = "HRP.pfx";
+        public const string CertificateFileName = "SecretKey.pfx";
     }
 }

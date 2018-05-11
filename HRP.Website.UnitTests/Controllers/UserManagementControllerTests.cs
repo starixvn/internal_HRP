@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -29,9 +30,11 @@
             // Arrange
             var users = new List<UserModel>
             {
-                new UserModel { UserId = 1, Username = "tim.trinh", FullName = "thang", Email = "tim.trinh@gmail.com", IsActive = true },
-                new UserModel { UserId = 2, Username = "hunter.tran", FullName = "tuan", Email = "hunter.tran@gmail.com", IsActive = false },
-                new UserModel { UserId = 3, Username = "raymond.le", FullName = "quang", Email = "raymond.le@gmail.com", IsActive = true }
+                new UserModel
+                {
+                    UserId = 1, Username = "tim.trinh", FullName = "thang", Email = "tim.trinh@gmail.com", IsActive = true,
+                    Phone = "123", CreatedBy = "admin", CreatedDate = new DateTime(), IsSystemAdmin = true
+                }
             };
             var userController = GetUserManagementController();
             baseService.GetDataAsync<UserModel>(Arg.Any<GetUsersCriteria>()).Returns(users);

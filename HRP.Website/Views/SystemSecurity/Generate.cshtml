@@ -43,6 +43,8 @@
                 <p>
                     You're here because this is the first time the system is launched.
                     Please set the password used to access the certificate.
+                </p>
+                <p>
                     Password must be at least 8 and maximum 50 characters,
                     including UPPER/lowercase and numbers, and must be remember carefully and safely by yourself.
                 </p>
@@ -55,7 +57,7 @@
                 </div>
                 <div class="group">
                     <span class="icon-password"></span>
-                    <input type="text" asp-for="Password" class="form-control" placeholder="Password" />
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password" />
                 </div>
 
                 <div class="group">
@@ -66,7 +68,17 @@
     }
     else
     {
-        <h1 class="title">The certificate file not found. Please contact your system administrator!</h1>
+        <h1 class="title">Authorization Required</h1>
+        <div class="intro">
+            <p class="bold">Dear User,</p>
+            <p>
+                You cannot access to system because it hasn't launched by the super admin.
+                Please contact the super admin if there is any concerns. Thanks.
+            </p>
+        </div>
+        <div class="footer">
+            <a class="link action-back" asp-controller="auth" asp-action="login">Back to Login</a>
+        </div>
     }
 </section>
 

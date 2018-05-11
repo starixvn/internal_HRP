@@ -316,7 +316,7 @@
             // Assert
             var fileStream = Assert.IsType<FileContentResult>(actual);
             Assert.Equal(MimeType.PFX, fileStream.ContentType);
-            Assert.Equal("HRP.pfx", fileStream.FileDownloadName);
+            Assert.Equal("SecretKey.pfx", fileStream.FileDownloadName);
         }
 
         [Fact]

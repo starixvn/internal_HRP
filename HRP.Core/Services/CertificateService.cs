@@ -14,6 +14,7 @@
     using Org.BouncyCastle.Asn1.X509;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.Generators;
+    using Org.BouncyCastle.Crypto.Operators;
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Crypto.Prng;
     using Org.BouncyCastle.Math;
@@ -25,7 +26,6 @@
 
     public class CertificateService : ICertificateService
     {
-        private const string SignatureAlgorithm = "SHA256WithRSA";
         private const string SubjectName = "CN=HRP";
         private const string IssuerName = "CN=HRP";
         private const int KeyStrength = 2048;
@@ -171,9 +171,6 @@
             var serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
             certificateGenerator.SetSerialNumber(serialNumber);
 
-            // Signature Algorithm
-            certificateGenerator.SetSignatureAlgorithm(SignatureAlgorithm);
-
             // Issuer and Subject Name
             var subjectDN = new X509Name(SubjectName);
             var issuerDN = new X509Name(IssuerName);
@@ -197,10 +194,15 @@
             certificateGenerator.SetPublicKey(subjectKeyPair.Public);
 
             // Generating the Certificate
-            var issuerKeyPair = subjectKeyPair;
+            AsymmetricCipherKeyPair issuerKeyPair = subjectKeyPair;
+
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(
+                PkcsObjectIdentifiers.Sha512WithRsaEncryption.ToString(),
+                issuerKeyPair.Private,
+                random);
 
             // selfsign certificate
-            var certificate = certificateGenerator.Generate(issuerKeyPair.Private, random);
+            var certificate = certificateGenerator.Generate(signatureFactory);
 
             // correcponding private key
             PrivateKeyInfo info = PrivateKeyInfoFactory.CreatePrivateKeyInfo(subjectKeyPair.Private);
@@ -208,13 +210,13 @@
             // merge into X509Certificate2
             var x509 = new X509Certificate2(certificate.GetEncoded());
 
-            var seq = (Asn1Sequence)Asn1Object.FromByteArray(info.PrivateKey.GetDerEncoded());
+            var seq = (Asn1Sequence)Asn1Object.FromByteArray(info.ParsePrivateKey().GetDerEncoded());
             if (seq.Count != 9)
             {
                 throw new PemException("malformed sequence in RSA private key");
             }
 
-            var rsa = new RsaPrivateKeyStructure(seq);
+            var rsa = RsaPrivateKeyStructure.GetInstance(seq);
             var rsaparams = new RsaPrivateCrtKeyParameters(
                 rsa.Modulus,
                 rsa.PublicExponent,

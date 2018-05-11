@@ -25,12 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="App_Data\HRP.pfx" />
+    <None Remove="App_Data\SecretKey.pfx" />
     <None Remove="App_Data\SPNames.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="App_Data\HRP.pfx">
+    <Content Include="App_Data\SecretKey.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
