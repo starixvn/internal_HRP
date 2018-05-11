@@ -126,52 +126,72 @@ BEGIN
     ,eepa.FullNameLocalBonus
     ,eepa.NicknameLocalBonus
 	,em.PDFPassword
-
-	--,epbs.Salary
-	--,epbs.CurrencyId
-	--,bsc.CurrencyCode AS 'BasicSalaryCurrency'
-	--,epbs.EbankingCurrencyId
-	--,epbs.EbankingAmount
-	--,epbs.DirectBanking1CurrencyId
-	--,epbs.DirectBanking1Amount
-	--,epbs.DirectBanking2CurrencyId
-	--,epbs.DirectBanking2Amount
-	--,epbs.CashCurrencyId
-	--,epbs.CashAmount
-	--,epbs.AutoCalculateOn
-	--,epa.CurrencyId
-	--,epa.DirectBanking1CurrencyId
-	--,epa.DirectBanking1Amount
-	--,epa.DirectBanking2CurrencyId
-	--,epa.DirectBanking2Amount
-	--,epa.CashCurrencyId
-	--,epa.CashAmount
-	--,epa.AutoCalculateOn
-	--,epa.SubsistenceAmount
-	--,epa.SubsistenceCurrencyId
-	--,sstc.CurrencyCode AS 'SubsistenceCurrency'
-	--,epa.HousingAmount
-	--,epa.HousingCurrencyId
-	--,hc.CurrencyCode AS 'HousingCurrency'
-	--,epa.HomePassageAmount
-	--,epa.HomePassageCurrencyId
-	--,hpc.CurrencyCode AS 'HomePassageCurrency'
-	--,epa.DutyMealAmount
-	--,epa.DutyMealCurrencyId
-	--,dmc.CurrencyCode AS 'DutyMealCurrency'
-	--,epa.HPIAmount
-	--,epa.HPICurrencyId
-	--,hpic.CurrencyCode AS 'HPICurrency'
-	--,epa.MobilePhoneAmount
-	--,epa.MobilePhoneCurrencyId
-	--,mpc.CurrencyCode AS 'MobilePhoneCurrency'
-	--,epa.OthersAmount
-	--,epa.OthersCurrencyId
-	--,otc.CurrencyCode AS 'OthersCurrency'
-	--,epa.SecondmentAmount
-	--,epa.SecondmentCurrencyId
-	--,smc.CurrencyCode AS 'SecondmentCurrency'
-	
+	,epbs.Salary
+	,epbs.CurrencyId
+	,bsc.CurrencyCode AS 'CurrencyCode'
+	,epbsh.EffectiveDate
+	,epbsh.Reason
+	,epbs.WorkingDays
+	,epbs.EbankingCurrencyId
+	,bsec.CurrencyCode AS 'EbankingCurrencyCode'
+	,epbs.EbankingAmount
+	,ebaRef.Value AS 'EbankingAccount'
+	,epbs.DirectBanking1CurrencyId
+	,bsd1c.CurrencyCode AS 'DirectBanking1CurrencyCode'
+	,epbs.DirectBanking1Amount
+	,db1aRef.Value AS 'DirectBanking1Account'
+	,epbs.DirectBanking2CurrencyId
+	,bsd2c.CurrencyCode AS 'DirectBanking2CurrencyCode'
+	,epbs.DirectBanking2Amount
+	,db2aRef.Value AS 'DirectBanking2Account'
+	,epbs.CashCurrencyId
+	,bscc.CurrencyCode AS 'CashCurrencyCode'
+	,epbs.CashAmount
+	,caRef.Value AS 'CashAccount'
+	,epbs.AutoCalculateOn
+	,epa.CurrencyId AS 'AllowanceCurrencyId'
+	,epac.CurrencyCode AS 'AllowanceCurrencyCode'
+	,epa.DirectBanking1CurrencyId AS 'AllowanceDirectBanking1CurrencyId'
+	,epad1c.CurrencyCode AS 'AllowanceDirectBanking1CurrencyCode'
+	,epa.DirectBanking1Amount AS 'AllowanceDirectBanking1Amount'
+	,epadb1aRef.Value AS 'AllowanceDirectBanking1Account'
+	,epa.DirectBanking2CurrencyId AS 'AllowanceDirectBanking2CurrencyId'
+	,epad2c.CurrencyCode AS 'AllowanceDirectBanking2CurrencyCode'
+	,epa.DirectBanking2Amount AS 'AllowanceDirectBanking2Amount'
+	,epadb2aRef.Value AS 'AllowanceDirectBanking2Account'
+	,epa.CashCurrencyId AS 'AllowanceCashCurrencyId'
+	,epacc.CurrencyCode AS 'AllowanceCashCurrencyCode'
+	,epa.CashAmount AS 'AllowanceCashAmount'
+	,epacaRef.Value AS 'AllowanceCashAccount'
+	,epa.AutoCalculateOn AS 'AllowanceAutoCalculateOn'
+	,epa.SubsistenceAmount
+	,epa.SubsistenceCurrencyId
+	,sstc.CurrencyCode AS 'SubsistenceCurrencyCode'
+	,epa.HousingAmount
+	,epa.HousingCurrencyId
+	,hc.CurrencyCode AS 'HousingCurrencyCode'
+	,epa.HomePassageAmount
+	,epa.HomePassageCurrencyId
+	,hpc.CurrencyCode AS 'HomePassageCurrencyCode'
+	,epa.DutyMealAmount
+	,epa.DutyMealCurrencyId
+	,dmc.CurrencyCode AS 'DutyMealCurrencyCode'
+	,epa.HPIAmount
+	,epa.HPICurrencyId
+	,hpic.CurrencyCode AS 'HPICurrencyCode'
+	,epa.MobilePhoneAmount
+	,epa.MobilePhoneCurrencyId
+	,mpc.CurrencyCode AS 'MobilePhoneCurrencyCode'
+	,epa.OthersAmount
+	,epa.OthersCurrencyId
+	,otc.CurrencyCode AS 'OthersCurrencyCode'
+	,epa.SecondmentAmount
+	,epa.SecondmentCurrencyId
+	,smc.CurrencyCode AS 'SecondmentCurrencyCode'
+	,epdrmc.CurrencyCode AS 'RoomingChargesCurrencyCode'
+	,epd.RoomingChargesAmount
+	,epdffc.CurrencyCode AS 'FitnessFirstCurrencyCode'
+	,epd.FitnessFirstAmount
 	FROM dbo.Employee AS e WITH (NOLOCK)
 	INNER JOIN dbo.RefResource AS genderRef WITH (NOLOCK) ON e.Gender = genderRef.ResourceId AND genderRef.RefName = 'Gender'
 	INNER JOIN dbo.RefResource AS nationRef WITH (NOLOCK) ON e.Nationality = nationRef.ResourceId AND nationRef.RefName = 'Nationality'
@@ -229,6 +249,21 @@ BEGIN
 	LEFT JOIN dbo.Currency AS bsd1c WITH (NOLOCK) ON epbs.DirectBanking1CurrencyId = bsd1c.CurrencyId
 	LEFT JOIN dbo.Currency AS bsd2c WITH (NOLOCK) ON epbs.DirectBanking2CurrencyId = bsd2c.CurrencyId
 	LEFT JOIN dbo.Currency AS bscc WITH (NOLOCK) ON epbs.CashCurrencyId = bscc.CurrencyId
+	LEFT JOIN dbo.BankAccount AS eba WITH (NOLOCK) ON epbs.EbankingAccountId = eba.Id
+	LEFT JOIN dbo.RefResource ebaRef WITH (NOLOCK) ON eba.PaymentTransactionId = ebaRef.ResourceId AND ebaRef.RefName = 'PaymentTransactionEbanking'
+	LEFT JOIN dbo.BankAccount AS db1a WITH (NOLOCK) ON epbs.DirectBanking1AccountId = db1a.Id
+	LEFT JOIN dbo.RefResource db1aRef WITH (NOLOCK) ON db1a.PaymentTransactionId = db1aRef.ResourceId AND db1aRef.RefName = 'PaymentTransactionDirectBanking'
+	LEFT JOIN dbo.BankAccount AS db2a WITH (NOLOCK) ON DirectBanking2AccountId = db2a.Id
+	LEFT JOIN dbo.RefResource db2aRef WITH (NOLOCK) ON db2a.PaymentTransactionId = db2aRef.ResourceId AND db2aRef.RefName = 'PaymentTransactionDirectBanking'
+	LEFT JOIN dbo.RefResource caRef WITH (NOLOCK) ON epbs.CashAccountId = caRef.ResourceId AND caRef.RefName = 'PaymentTransactionCash'	
+	OUTER APPLY (
+		SELECT TOP 1 EffectiveDate
+		,rr.Value AS 'Reason'
+		FROM dbo.EmployeePayrollBasicSalaryHistory epbsh WITH (NOLOCK)
+		LEFT JOIN dbo.RefResource AS rr WITH (NOLOCK) ON epbsh.ReasonId = rr.ResourceId AND rr.RefName = 'BasicSalaryChangeReason'
+		WHERE EmployeeId = epbs.EmployeeId
+		ORDER BY HistoryId DESC
+	) AS epbsh
 
 	LEFT JOIN dbo.EmployeePayrollAllowance AS epa WITH (NOLOCK) ON e.EmployeeId = epa.EmployeeId
 	LEFT JOIN dbo.Currency AS epac WITH (NOLOCK) ON epa.CurrencyId = epac.CurrencyId
@@ -243,7 +278,15 @@ BEGIN
 	LEFT JOIN dbo.Currency AS mpc WITH (NOLOCK) ON epa.MobilePhoneCurrencyId = mpc.CurrencyId
 	LEFT JOIN dbo.Currency AS otc WITH (NOLOCK) ON epa.OthersCurrencyId = otc.CurrencyId
 	LEFT JOIN dbo.Currency AS smc WITH (NOLOCK) ON epa.SecondmentCurrencyId = smc.CurrencyId
+	LEFT JOIN dbo.BankAccount AS epadb1a WITH (NOLOCK) ON epa.DirectBanking1AccountId = epadb1a.Id
+	LEFT JOIN dbo.RefResource epadb1aRef WITH (NOLOCK) ON epadb1a.PaymentTransactionId = epadb1aRef.ResourceId AND epadb1aRef.RefName = 'PaymentTransactionDirectBanking'
+	LEFT JOIN dbo.BankAccount AS epadb2a WITH (NOLOCK) ON epa.DirectBanking2AccountId = epadb2a.Id
+	LEFT JOIN dbo.RefResource epadb2aRef WITH (NOLOCK) ON epadb2a.PaymentTransactionId = epadb2aRef.ResourceId AND epadb2aRef.RefName = 'PaymentTransactionDirectBanking'
+	LEFT JOIN dbo.RefResource epacaRef WITH (NOLOCK) ON epa.CashAccountId = epacaRef.ResourceId AND epacaRef.RefName = 'PaymentTransactionCash'
 
+	LEFT JOIN dbo.EmployeePayrollDeduction epd WITH (NOLOCK) on e.EmployeeId = epd.EmployeeId
+	LEFT JOIN dbo.Currency AS epdrmc WITH (NOLOCK) ON epd.RoomingChargesCurrencyId = epdrmc.CurrencyId
+	LEFT JOIN dbo.Currency AS epdffc WITH (NOLOCK) ON epd.FitnessFirstCurrencyId = epdffc.CurrencyId
 	WHERE em.CompanyId = @CompanyId 
 	AND EXISTS (
 			SELECT 1

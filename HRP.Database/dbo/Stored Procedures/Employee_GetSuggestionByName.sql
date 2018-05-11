@@ -14,15 +14,18 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @functionKey VARCHAR(50) = 'EmployeeManagement'
+
 	SELECT DISTINCT TOP 10 emp.EmployeeId
 		,emp.Nickname
 		,emp.FullName
 	FROM dbo.Employee AS emp WITH (NOLOCK)
 		INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON emp.EmployeeId = e.EmployeeId
-		LEFT JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON uf.CompanyId = e.CompanyId
-	WHERE @UserId = uf.UserId
-		AND uf.FunctionId = 5
+		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON uf.CompanyId = e.CompanyId
 		AND uf.IsRead = 1
+		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+		AND f.FunctionKey = @functionKey
+	WHERE uf.UserId = @UserId
 		AND (
 			emp.Nickname LIKE '%' + @Name + '%'
 			OR emp.FullName LIKE '%' + @Name + '%'
