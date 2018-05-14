@@ -1,7 +1,5 @@
 ﻿namespace HRP.Models.Report
 {
-    using Core.Extensions.Excel;
-
     public class BankIn
     {
         public string IDNo { get; set; }
@@ -22,7 +20,6 @@
 
         public string AccountNumber { get; set; }
 
-        [EpplusIgnore]
         public string Amount { get; set; }
 
         public float AmountDecrypted { get; set; }
