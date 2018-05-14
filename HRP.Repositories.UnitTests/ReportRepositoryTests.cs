@@ -50,7 +50,7 @@
         public async Task GetDataForMonthlyPayrollReportAsync_WhenCalled_ReturnMonthlyPayrollReport()
         {
             // Arrange
-            var employees = new List<EmployeeBasicInfo>();
+            var employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { CostCenterCode = "CC", SectionCode = "SC" } };
             var monthlyBasicSalary = new List<MonthlyBasicSalaryModel>();
             var monthlySalary = new List<MonthlySalaryModel>();
             var monthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel>();

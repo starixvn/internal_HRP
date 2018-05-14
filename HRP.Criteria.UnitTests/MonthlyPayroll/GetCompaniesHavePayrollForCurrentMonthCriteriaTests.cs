@@ -15,5 +15,18 @@
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void IsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetCompaniesHavePayrollForCurrentMonthCriteria();
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
+        }
     }
 }

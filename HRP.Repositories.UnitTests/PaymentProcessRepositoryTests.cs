@@ -58,7 +58,11 @@
         public async Task GetDataForGeneratePayroll_WhenCalled_ReturnGeneratePayrollModelAsync()
         {
             // Arrange
-            var expected = new GeneratePayrollModel();
+            var expected = new GeneratePayrollModel
+            {
+                MonthlyDSTNetSalary = new List<MonthlyDSTNetSalary> { new MonthlyDSTNetSalary { EmployeeId = 11, Month = DateTime.Today } },
+                MonthlyAttendance = new List<MonthlyAttendance> { new MonthlyAttendance { EmployeeId = 11, Month = DateTime.Today, ActualWorkingDay = 23 } }
+            };
             var criteria = FakeCriteria();
             var multiResult = FakeMultiResultReader();
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
