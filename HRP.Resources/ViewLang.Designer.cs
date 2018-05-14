@@ -2212,6 +2212,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset All.
+        /// </summary>
+        public static string PresetAll {
+            get {
+                return ResourceManager.GetString("PresetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Probation.
         /// </summary>
         public static string Probation {

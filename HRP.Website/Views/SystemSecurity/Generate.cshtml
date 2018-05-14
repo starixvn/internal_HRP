@@ -59,6 +59,12 @@
                     <span class="icon-password"></span>
                     <input type="password" asp-for="Password" class="form-control" placeholder="Password" />
                 </div>
+                <div class="group">
+                    <label>
+                        <input id="ShowPassword" type="checkbox" class="form-controll" />
+                        <span>@ViewLang.ShowPassword</span>
+                    </label>
+                </div>
 
                 <div class="group">
                     <input type="submit" value="Generate" class="button -primary" />
@@ -91,4 +97,15 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     </environment>
+    <script>
+        $(document).ready(function () {
+            $('#ShowPassword').on('click', function () {
+                if ($(this).prop('checked')) {
+                    $('#Password').attr('type', 'text');
+                } else {
+                    $('#Password').attr('type', 'password');
+                }
+            });
+        });
+    </script>
 }

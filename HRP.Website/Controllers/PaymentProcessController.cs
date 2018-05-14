@@ -508,7 +508,21 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> PresetAllMonthlyPayroll(int companyId, DateTime month)
+        {
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
 
             return Json(result);
         }

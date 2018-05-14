@@ -29,9 +29,9 @@
 
     public class PaymentProcessControllerTests
     {
-        private DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        private DateTime dueDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month));
-        private DateTime selectedTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 14);
+        private static DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        private static DateTime dueDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month));
+        private static DateTime selectedTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 14);
         private IBaseService baseService;
         private ISessionService sessionService;
         private IHostingEnvironment hostingEnvironment;
@@ -231,7 +231,6 @@
         {
             // Arrange
             var selectList = MockCompanySelectList();
-            var viewModel = MockSelectWorkingMonthCompanyViewModel();
             var paymentProcess = new PaymentProcess
             {
                 StartDate = DateTime.Parse(startDate),
@@ -249,7 +248,6 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewData = Assert.IsType<SelectWorkingMonthCompanyViewModel>(viewResult.ViewData.Model);
             Assert.Equal("Index", viewResult.ViewName);
             Assert.Equal(Message.PayrollNotGenerated, viewResult.ViewData.ModelState["CommonError"].Errors.First().ErrorMessage);
         }
@@ -532,7 +530,6 @@
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var returnValue = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
-            var errors = (IDictionary<string, string>)returnValue["errors"];
             Assert.True((bool)returnValue["isSuccessful"]);
         }
 
@@ -984,35 +981,85 @@
 
         #endregion EditAllowances
 
+        #region Preset
+
         [Fact]
         public async Task Preset_NotHavePermission_RederiectToAccessDenied()
         {
+            // Arrange
             var companyId = 1;
             var employeeId = 1;
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(false);
 
+            // Act
             var actual = await controller.Preset(companyId, employeeId, DateTime.Today);
 
+            // Assert
             var result = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Error", result.ControllerName);
             Assert.Equal("AccessDenied", result.ActionName);
         }
 
         [Fact]
-        public async Task Preset_HavePermission_ReturnExpectedCommandResult()
+        public async Task Preset_HavePermission_ReturnAsExpectedCommandResult()
         {
+            // Arrange
             var companyId = 1;
             var employeeId = 1;
+            var commandResult = new CommandResult { Code = 0 };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
-            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, DateTime.Today, employeeId).Returns(new CommandResult { Code = 0 });
+            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, DateTime.Today, employeeId).Returns(commandResult);
 
+            // Act
             var actual = await controller.Preset(companyId, employeeId, DateTime.Today);
 
+            // Assert
             var result = Assert.IsType<JsonResult>(actual);
-            Assert.NotNull(result.Value);
+            Assert.Equal(commandResult, result.Value);
         }
+
+        #endregion Preset
+
+        #region PresetAllMonthlyPayroll
+
+        [Fact]
+        public async Task PresetAllMonthlyPayroll_NotHavePermission_RederiectToAccessDenied()
+        {
+            // Arrange
+            var companyId = 1;
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(false);
+
+            // Act
+            var actual = await controller.PresetAllMonthlyPayroll(companyId, DateTime.Today);
+
+            // Assert
+            var result = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", result.ControllerName);
+            Assert.Equal("AccessDenied", result.ActionName);
+        }
+
+        [Fact]
+        public async Task PresetAllMonthlyPayroll_HavePermission_ReturnAsExpectedCommandResult()
+        {
+            // Arrange
+            var companyId = 1;
+            var commandResult = new CommandResult { Code = 0 };
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host).Returns(true);
+            paymentProcessService.GenerateMonthlyPayrollAsync(companyId, DateTime.Today, null).Returns(commandResult);
+
+            // Act
+            var actual = await controller.PresetAllMonthlyPayroll(companyId, DateTime.Today);
+
+            // Assert
+            var result = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, result.Value);
+        }
+
+        #endregion PresetAllMonthlyPayroll
 
         #region Helpers
 
@@ -1028,7 +1075,7 @@
             return new PaymentProcessController(baseService, sessionService, hostingEnvironment, commonService, paymentProcessService, monthlyPayrollService);
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -1036,29 +1083,29 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
             return service;
         }
 
-        private IHostingEnvironment FakeHostingEnvironment()
+        private static IHostingEnvironment FakeHostingEnvironment()
         {
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private ICommonService FakeCommonService()
+        private static ICommonService FakeCommonService()
         {
             return Substitute.For<ICommonService>();
         }
 
-        private IPaymentProcessService FakePaymentProcessService()
+        private static IPaymentProcessService FakePaymentProcessService()
         {
             var service = Substitute.For<IPaymentProcessService>();
             return service;
         }
 
-        private IMonthlyPayrollService FakeMonthlyPayrollService()
+        private static IMonthlyPayrollService FakeMonthlyPayrollService()
         {
             var service = Substitute.For<IMonthlyPayrollService>();
             return service;
@@ -1096,22 +1143,22 @@
             };
         }
 
-        private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
+        private static Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
         {
             return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
         }
 
-        private Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
+        private static Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
         {
             return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
         }
 
-        private Success<AttendanceTemplate> MockSuccessResultAttendanceTemplate()
+        private static Success<AttendanceTemplate> MockSuccessResultAttendanceTemplate()
         {
             return new Success<AttendanceTemplate>(null);
         }
 
-        private Success<DSTNetSalaryTemplate> MockSuccessResultDSTNetSalaryTemplate()
+        private static Success<DSTNetSalaryTemplate> MockSuccessResultDSTNetSalaryTemplate()
         {
             return new Success<DSTNetSalaryTemplate>(null);
         }

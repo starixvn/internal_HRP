@@ -304,10 +304,18 @@ var monthlyPayroll = (function ($) {
         initDataTable: initDataTable,
         initCostCenterMultiSelect: initCostCenterMultiSelect,
         onPresetSuccess: function (response) {
-            $('#modalPresetPayroll').modal('hide');
             if (response.isSuccessful) {
                 $('form.search-form').submit();
             } else {
+                $('#modalPresetPayroll').modal('hide');
+                commonFunctions.showErrorMessage($('.msg-error'), response.message);
+            }
+        },
+        onPresetAllSuccess: function (response) {
+            if (response.isSuccessful) {
+                $('form.search-form').submit();
+            } else {
+                $('#modalPresetAllPayroll').modal('hide');
                 commonFunctions.showErrorMessage($('.msg-error'), response.message);
             }
         }

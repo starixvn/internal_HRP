@@ -24,6 +24,8 @@
 
         public int WorkingDays { get; set; }
 
+        public bool IsGenerated { get; set; }
+
         public bool HasSettingSalary { get; set; }
 
         public bool HasSettingAllowance { get; set; }

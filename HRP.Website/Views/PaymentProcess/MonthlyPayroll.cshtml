@@ -3,7 +3,7 @@
 @using HRP.Models.MonthlyPayroll
 @model EmployeeMonthlyPayrollViewModel
 
-@{ 
+@{
     ViewData["Title"] = ViewLang.ViewEmployeeMonthlyPayroll;
 }
 
@@ -90,7 +90,13 @@
     <div><span class="required">*</span> @Model.FilterInfo.TotalEmployees employees have been successfullly generated the Monthly Payroll.</div>
 </div>
 
-<div class="top-header -only-search-box">
+<div class="top-header @(Model.FilterInfo.IsHost ? string.Empty : "-only-search-box")">
+    @if (Model.FilterInfo.IsHost)
+    {
+        <div class="pull-left">
+            <button type="button" class="button -preset" data-toggle="modal" data-target="#modalPresetAllPayroll">@ViewLang.PresetAll</button>
+        </div>
+    }
     <div class="pull-right search-box">
         <input type="search" id="quick-search" class="control" placeholder="@ViewLang.Search" />
         <span class="icon-search"></span>
@@ -141,21 +147,24 @@
             foreach (MonthlyPayrollEmployeeInfoViewModel employee in Model.Employees)
             {
                 decimal amount;
-                <tr>
+                <tr class="@(employee.IsGenerated ? string.Empty : "row-highlight")">
                     <td class="text-center has-icon">
-                        @switch (employee.Status)
+                        @if (employee.IsGenerated)
                         {
-                            case MonthlyPayrollStatus.Default:
-                                <span class="status-default"></span>
-                                break;
+                            switch (employee.Status)
+                            {
+                                case MonthlyPayrollStatus.Default:
+                                    <span class="status-default"></span>
+                                    break;
 
-                            case MonthlyPayrollStatus.Satisfied:
-                                <span class="status-done"></span>
-                                break;
+                                case MonthlyPayrollStatus.Satisfied:
+                                    <span class="status-done"></span>
+                                    break;
 
-                            case MonthlyPayrollStatus.Unsatisfied:
-                                <span class="status-incorrect"></span>
-                                break;
+                                case MonthlyPayrollStatus.Unsatisfied:
+                                    <span class="status-incorrect"></span>
+                                    break;
+                            }
                         }
                     </td>
                     <td>@employee.IDNo</td>
@@ -299,7 +308,8 @@
                                 @if (employee.Policy == Policy.Host)
                                 {
                                     <a class="js-menuItem-presetMonthlyPayroll" href="javascript:;" data-employeeId="@employee.EmployeeId">
-                                     <span class="icon-preset"></span> @ViewLang.Preset</a>
+                                        <span class="icon-preset"></span> @ViewLang.Preset
+                                    </a>
                                 }
                             </div>
                         }
@@ -314,30 +324,57 @@
        asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.Back</a>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modalPresetPayroll">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content -has-title">
-            <div class="modal-header">
-                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                <h4 class="modal-title">@ViewLang.Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-information" asp-action="Preset" method="post" id="preset-form"
-                      data-ajax-method="post" data-ajax="true"
-                      data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetSuccess">
-                    <input type="hidden" name="employeeId" value="" />
-                    <input type="hidden" name="month" value="@Model.Month" />
-                    <input type="hidden" name="companyId" value="@Model.CompanyId" />
-                    <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
-                    <div class="list-button">
-                        <button class="button -primary" type="submit">@ViewLang.Yes</button>
-                        <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
-                    </div>
-                </form>
+@if (Model.FilterInfo.IsHost)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetPayroll">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content -has-title">
+                <div class="modal-header">
+                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-information" asp-controller="paymentprocess" asp-action="Preset" method="post" id="preset-form"
+                          data-ajax-method="post" data-ajax="true"
+                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetSuccess">
+                        <input type="hidden" name="employeeId" value="" />
+                        <input type="hidden" name="month" value="@Model.Month" />
+                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
+                        <div class="list-button">
+                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
+                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetAllPayroll">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content -has-title">
+                <div class="modal-header">
+                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-information" asp-controller="paymentprocess" asp-action="PresetAllMonthlyPayroll" method="post" id="preset-form"
+                          data-ajax-method="post" data-ajax="true"
+                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetAllSuccess">
+                        <input type="hidden" name="month" value="@Model.Month" />
+                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
+                        <div class="list-button">
+                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
+                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modalHasNoPayrollSetting">
     <div class="modal-dialog -small" role="document">
