@@ -383,6 +383,7 @@
     <Compile Include="CustomValidations\GenericCompareAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredIfRealtedFieldHasValueAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredNoneOrAllAttributeTests.cs" />
+    <Compile Include="Enumerations\BankTypesTests.cs" />
     <Compile Include="Filters\HRPActionFilterAttributeTests.cs" />
     <Compile Include="Filters\HRPAuthorizeAttributeTests.cs" />
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />
@@ -412,6 +413,10 @@
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj">
       <Project>{4215e3c1-c316-400c-95a6-ae408b1d0016}</Project>
       <Name>HRP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HRP.Resources\HRP.Resources.csproj">
+      <Project>{215A4555-BCFC-4D3D-B3EB-120721F90643}</Project>
+      <Name>HRP.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
