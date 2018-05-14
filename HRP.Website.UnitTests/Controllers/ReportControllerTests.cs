@@ -10,6 +10,8 @@
     using Core.Extensions;
     using Core.Model;
     using Core.Services;
+    using Criteria.Employee;
+    using Criteria;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
@@ -23,8 +25,6 @@
     using Services;
     using Website.Controllers;
     using Xunit;
-    using HRP.Criteria;
-    using HRP.Criteria.Employee;
 
     public class ReportControllerTests
     {

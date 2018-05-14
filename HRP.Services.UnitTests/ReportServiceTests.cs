@@ -7,8 +7,8 @@
     using Core.Services;
     using Criteria.Report;
     using Fanex.Data.Repository;
-    using HRP.Core.Enumerations;
-    using HRP.Criteria;
+    using Core.Enumerations;
+    using Criteria;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;
@@ -65,8 +65,8 @@
 
             var bankInData = new List<BankIn>
             {
-                new BankIn { Amount = "1" },
-                new BankIn { Amount = "1" },
+                FakeBankInObject(),
+                FakeBankInObject()
             };
 
             var bankInReport = new BankInReport
@@ -88,11 +88,33 @@
             Assert.All(actual.EBankingBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+                Assert.NotNull(x.IDNo);
+                Assert.NotNull(x.BeneficiaryName);
+                Assert.NotNull(x.Nickname);
+                Assert.NotNull(x.PaymentTransaction);
+                Assert.NotNull(x.BankName);
+                Assert.NotNull(x.BankBranch);
+                Assert.NotNull(x.BankAddress);
+                Assert.NotNull(x.BankSwiftCode);
+                Assert.NotNull(x.AccountNumber);
+                Assert.NotNull(x.CurrencyCode);
             });
+
             Assert.All(actual.CashBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+                Assert.NotNull(x.IDNo);
+                Assert.NotNull(x.BeneficiaryName);
+                Assert.NotNull(x.Nickname);
+                Assert.NotNull(x.PaymentTransaction);
+                Assert.NotNull(x.BankName);
+                Assert.NotNull(x.BankBranch);
+                Assert.NotNull(x.BankAddress);
+                Assert.NotNull(x.BankSwiftCode);
+                Assert.NotNull(x.AccountNumber);
+                Assert.NotNull(x.CurrencyCode);
             });
+
             Assert.Equal(companyName, actual.CompanyName);
             Assert.Equal(reportedMonth, actual.ReportedMonth);
             Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
@@ -110,8 +132,8 @@
 
             var bankInData = new List<BankIn>
             {
-                new BankIn { Amount = "1" },
-                new BankIn { Amount = "1" },
+                FakeBankInObject(),
+                FakeBankInObject()
             };
 
             var bankInReport = new BankInReport
@@ -133,11 +155,33 @@
             Assert.All(actual.EBankingBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+                Assert.NotNull(x.IDNo);
+                Assert.NotNull(x.BeneficiaryName);
+                Assert.NotNull(x.Nickname);
+                Assert.NotNull(x.PaymentTransaction);
+                Assert.NotNull(x.BankName);
+                Assert.NotNull(x.BankBranch);
+                Assert.NotNull(x.BankAddress);
+                Assert.NotNull(x.BankSwiftCode);
+                Assert.NotNull(x.AccountNumber);
+                Assert.NotNull(x.CurrencyCode);
             });
+
             Assert.All(actual.CashBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
+                Assert.NotNull(x.IDNo);
+                Assert.NotNull(x.BeneficiaryName);
+                Assert.NotNull(x.Nickname);
+                Assert.NotNull(x.PaymentTransaction);
+                Assert.NotNull(x.BankName);
+                Assert.NotNull(x.BankBranch);
+                Assert.NotNull(x.BankAddress);
+                Assert.NotNull(x.BankSwiftCode);
+                Assert.NotNull(x.AccountNumber);
+                Assert.NotNull(x.CurrencyCode);
             });
+
             Assert.Equal(companyName, actual.CompanyName);
             Assert.Equal(reportedMonth, actual.ReportedMonth);
             Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
@@ -257,6 +301,24 @@
         }
 
         #region Helpers
+
+        private static BankIn FakeBankInObject()
+        {
+            return new BankIn
+            {
+                IDNo = "a",
+                BeneficiaryName = "hunter",
+                Nickname = "hunter.tran",
+                PaymentTransaction = "1",
+                BankName = "Techcombank",
+                BankBranch = "HCM",
+                BankAddress = "1",
+                BankSwiftCode = "QWERTY",
+                AccountNumber = "1",
+                Amount = "1",
+                CurrencyCode = "1"
+            };
+        }
 
         private static ICryptoService FakeCryptoService()
         {
