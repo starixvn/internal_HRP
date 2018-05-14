@@ -107,7 +107,7 @@
             FakeBaseMailService();
 
             // Action
-            var expected = baseMailService.SendEmail(model);
+            baseMailService.SendEmail(model);
 
             // Assert
             baseMailService.Received().GetEmailDeliver();

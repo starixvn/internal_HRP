@@ -139,7 +139,7 @@
             return config;
         }
 
-        private X509Certificate2 GetX509Certificate2()
+        private static X509Certificate2 GetX509Certificate2()
         {
             var resourceName = "HRP.Core.UnitTests.Test.pfx";
             byte[] embeddedCert;
@@ -152,7 +152,7 @@
             return new X509Certificate2(embeddedCert, "123456");
         }
 
-        private CryptoService GetCryptoService(
+        private static CryptoService GetCryptoService(
             IOptionsSnapshot<AppSettingsOptions> config,
             X509Certificate2 cert)
         {

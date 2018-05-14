@@ -29,7 +29,7 @@
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<string> RenderViewToStringAsync(string viewName, object model)
+        public async Task<string> RenderViewToStringAsync<TModel>(string viewName, TModel model)
         {
             var httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
@@ -38,12 +38,12 @@
             {
                 ViewEngineResult viewResult = razorViewEngine.FindView(actionContext, viewName, false);
 
-                if (viewResult.View == null)
+                if (viewResult == null || viewResult.View == null)
                 {
                     throw new ArgumentNullException($"{viewName} does not match any available view");
                 }
 
-                var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+                var viewDictionary = new ViewDataDictionary<TModel>(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
                     Model = model
                 };

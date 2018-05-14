@@ -338,14 +338,14 @@
 
         #region Helpers
 
-        private SessionService GetSessionService(ISession session)
+        private static SessionService GetSessionService(ISession session)
         {
             var service = new SessionService(session);
 
             return service;
         }
 
-        private SessionService GetSessionService(IHttpContextAccessor accessor)
+        private static SessionService GetSessionService(IHttpContextAccessor accessor)
         {
             var service = new SessionService(accessor);
 
