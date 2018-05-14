@@ -17,6 +17,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @functionKey VARCHAR(50) = 'Payslip'
+		,@unsatisfied TINYINT = 2
 
 	SELECT DISTINCT mp.PayrollId
 		,c.Code + em.EmployeeCode AS IDNo
@@ -26,8 +27,8 @@ BEGIN
 		,em.Email
 		,emp.OverseasPhoneNo AS Phone
 		,(CASE 
-			WHEN ms.[Status] > ma.[Status] THEN ms.[Status]
-			ELSE ma.[Status] END
+			WHEN ISNULL(ms.[Status], @unsatisfied) > ISNULL(ma.[Status], @unsatisfied) THEN ISNULL(ms.[Status], @unsatisfied)
+			ELSE ISNULL(ma.[Status], @unsatisfied) END
 			) AS PayrollStatus
 		,payslip.IsSent
 	FROM dbo.Employee AS emp WITH (NOLOCK)
@@ -41,12 +42,12 @@ BEGIN
 		INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON emp.EmployeeId = mp.EmployeeId
 		AND MONTH(mp.[Month]) = MONTH(@Month)
 		AND YEAR(mp.[Month]) = YEAR(@Month)
-		INNER JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
-		INNER JOIN dbo.MonthlyAllowance AS ma WITH (NOLOCK) ON mp.PayrollId = ma.PayrollId
 		INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON uf.CompanyId = c.CompanyId
 		AND uf.UserId = @UserId
 		INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
 		AND f.FunctionKey = @functionKey
+		LEFT JOIN dbo.MonthlySalary AS ms WITH (NOLOCK) ON mp.PayrollId = ms.PayrollId
+		LEFT JOIN dbo.MonthlyAllowance AS ma WITH (NOLOCK) ON mp.PayrollId = ma.PayrollId
 		LEFT JOIN dbo.Payslip AS payslip WITH (NOLOCK) ON mp.PayrollId = payslip.PayrollId
 	WHERE @IsSent IS NULL
 		OR @IsSent = ISNULL(payslip.IsSent, 0)

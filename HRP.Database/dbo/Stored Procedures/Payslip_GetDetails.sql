@@ -46,15 +46,15 @@ BEGIN
 		,acur.CurrencyCode AS AllowanceCurrencyCode
 		,mba.AfterAdjustmentAmount AS AllowanceAmount
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-		INNER JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
-		INNER JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
 		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
-		LEFT JOIN dbo.Currency AS scur WITH (NOLOCK) ON mbs.CurrencyId = scur.CurrencyId
-		LEFT JOIN dbo.Currency AS acur WITH (NOLOCK) ON mba.CurrencyId = acur.CurrencyId
 		INNER JOIN dbo.Employee AS emp WITH (NOLOCK) ON mp.EmployeeId = emp.EmployeeId
 		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
 		AND c.CompanyId = @CompanyId
+		LEFT JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
+		LEFT JOIN dbo.MonthlyBasicAllowance AS mba WITH (NOLOCK) ON mp.PayrollId = mba.PayrollId
+		LEFT JOIN dbo.Currency AS scur WITH (NOLOCK) ON mbs.CurrencyId = scur.CurrencyId
+		LEFT JOIN dbo.Currency AS acur WITH (NOLOCK) ON mba.CurrencyId = acur.CurrencyId
 	ORDER BY mp.PayrollId
 
 	SELECT mp.PayrollId
@@ -67,11 +67,11 @@ BEGIN
 		,msa.[Type]
 
 	SELECT mp.PayrollId
-		,[Type]
-		,NetSalary
+		,msd.[Type]
+		,msd.NetSalary
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
+		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
 		INNER JOIN dbo.MonthlySalaryDeduction AS msd WITH (NOLOCK) ON mp.PayrollId = msd.PayrollId
-		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON msd.PayrollId = tbl.Id
 	ORDER BY mp.PayrollId
 		,msd.[Type]
 

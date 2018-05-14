@@ -21,10 +21,14 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @functionKey VARCHAR(50) = 'PaymentProcess'
+		,@unsatisfied TINYINT = 2
+		,@firstDayOfWorkingMonth DATE
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
 		,@readPolicy TINYINT = 1
+
+	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
 
 	CREATE TABLE #tblCostCenterId (Id SMALLINT)
 
@@ -37,6 +41,7 @@ BEGIN
 		,FullName NVARCHAR(70)
 		,CostCenter NVARCHAR(50)
 		,WorkingDays TINYINT
+		,IsGenerated BIT
 		,HasSettingSalary BIT
 		,HasSettingAllowance BIT
 		,Policy TINYINT
@@ -83,6 +88,7 @@ BEGIN
 		,FullName
 		,CostCenter
 		,WorkingDays
+		,IsGenerated
 		,HasSettingSalary
 		,HasSettingAllowance
 		,Policy
@@ -91,11 +97,15 @@ BEGIN
 	SELECT mp.PayrollId
 		,c.CompanyId
 		,emp.EmployeeId
-		,c.Code + em.EmployeeCode AS IDNo
+		,c.Code + employment.EmployeeCode AS IDNo
 		,emp.Nickname
 		,emp.FullName
 		,cc.Code AS CostCenter
 		,mbs.WorkingDays
+		,(CASE 
+			WHEN mp.PayrollId IS NULL THEN 0
+			ELSE 1 END
+			) AS IsGenerated
 		,(CASE 
 			WHEN ISNULL(ms.EbankingCurrencyId, '') = ''
 				AND ISNULL(ms.EbankingAmount, '') = ''
@@ -104,9 +114,9 @@ BEGIN
 				AND ISNULL(ms.DirectBanking2CurrencyId, '') = ''
 				AND ISNULL(ms.DirectBanking2Amount, '') = ''
 				AND ISNULL(ms.CashCurrencyId, '') = ''
-				AND ISNULL(ms.CashAmount, '') = '' 
+				AND ISNULL(ms.CashAmount, '') = ''
 				AND ISNULL(ms.CurrencyId, '') = ''
-				AND ISNULL(ms.Salary, '') = ''THEN 0
+				AND ISNULL(ms.Salary, '') = '' THEN 0
 			ELSE 1 END
 			) AS HasSettingSalary
 		,(CASE 
@@ -116,8 +126,8 @@ BEGIN
 				AND ISNULL(ma.DirectBanking2Amount, '') = ''
 				AND ISNULL(ma.CashCurrencyId, '') = ''
 				AND ISNULL(ma.CashAmount, '') = ''
-				AND ISNULL(ma.CurrencyId, '') = '' 
-				AND ISNULL(ma.TotalAmount, '') = ''THEN 0
+				AND ISNULL(ma.CurrencyId, '') = ''
+				AND ISNULL(ma.TotalAmount, '') = '' THEN 0
 			ELSE 1 END
 			) AS HasSettingAllowance
 		,(CASE 
@@ -125,22 +135,22 @@ BEGIN
 					AND @dueDate THEN policy.Policy
 			ELSE @readPolicy END
 			) AS Policy
-		,CASE 
-			WHEN ms.[Status] > ma.[Status] THEN ms.[Status]
-			ELSE ma.[Status]
-			END AS [Status]
+		,(CASE 
+			WHEN ISNULL(ms.[Status], @unsatisfied) > ISNULL(ma.[Status], @unsatisfied) THEN ISNULL(ms.[Status], @unsatisfied)
+			ELSE ISNULL(ma.[Status], @unsatisfied) END
+			) AS [Status]
 	FROM dbo.Employee AS emp WITH (NOLOCK)
-		INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON emp.EmployeeId = em.EmployeeId
-		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON em.CompanyId = c.CompanyId
+		INNER JOIN dbo.Employment AS employment WITH (NOLOCK) ON emp.EmployeeId = employment.EmployeeId
+		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON employment.CompanyId = c.CompanyId
 		AND c.CompanyId = @CompanyId
 		INNER JOIN dbo.Division AS di WITH (NOLOCK) ON c.CompanyId = di.CompanyId
-		AND em.DivisionId = di.DivisionId
+		AND employment.DivisionId = di.DivisionId
 		INNER JOIN dbo.Department AS dept WITH (NOLOCK) ON di.DivisionId = dept.DivisionId
-		AND em.DepartmentId = dept.DepartmentId
+		AND employment.DepartmentId = dept.DepartmentId
 		INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON dept.DepartmentId = cc.DepartmentId
-		AND em.CostCenterId = cc.CostCenterId
+		AND employment.CostCenterId = cc.CostCenterId
 		INNER JOIN #tblCostCenterId AS tbl WITH (NOLOCK) ON cc.CostCenterId = tbl.Id
-		INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON emp.EmployeeId = mp.EmployeeId
+		LEFT JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON emp.EmployeeId = mp.EmployeeId
 		AND MONTH(mp.[Month]) = MONTH(@Month)
 		AND YEAR(mp.[Month]) = YEAR(@Month)
 		LEFT JOIN dbo.MonthlyBasicSalary AS mbs WITH (NOLOCK) ON mp.PayrollId = mbs.PayrollId
@@ -174,7 +184,13 @@ BEGIN
 					)
 				)
 			)
-		AND c.Code + em.EmployeeCode LIKE '%' + ISNULL(@IDNo, '') + '%'
+		AND c.Code + employment.EmployeeCode LIKE '%' + ISNULL(@IDNo, '') + '%'
+		AND employment.GroupStartDate IS NOT NULL
+		AND employment.GroupStartDate <= @dueDate
+		AND (
+			employment.GroupEndDate IS NULL
+			OR employment.GroupEndDate > @firstDayOfWorkingMonth
+			)
 
 	SELECT PayrollId
 		,CompanyId
@@ -184,12 +200,14 @@ BEGIN
 		,FullName
 		,CostCenter
 		,WorkingDays
+		,IsGenerated
 		,HasSettingSalary
 		,HasSettingAllowance
 		,Policy
 		,[Status]
 	FROM #tblMonthlyPayroll WITH (NOLOCK)
-	ORDER BY HasSettingSalary
+	ORDER BY IsGenerated
+		,HasSettingSalary
 		,HasSettingAllowance
 		,IDNo
 

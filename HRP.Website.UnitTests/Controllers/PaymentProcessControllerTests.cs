@@ -741,10 +741,12 @@
             var payrollId = 1;
             var month = DateTime.Now;
             var viewModel = new EditMonthlySalaryViewModel();
+            var filterInfo = new MonthlyPayrollFilterInfoModel();
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(viewModel);
+            monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
 
             // Act
@@ -760,6 +762,7 @@
             Assert.Equal(viewModel.Additions, viewModelResult.Additions);
             Assert.Equal(viewModel.Deductions, viewModelResult.Deductions);
             Assert.Equal(currencyExchangeRates, viewModelResult.CurrencyExchangeRates);
+            Assert.Equal(filterInfo, viewModel.FilterInfo);
         }
 
         [Fact]
