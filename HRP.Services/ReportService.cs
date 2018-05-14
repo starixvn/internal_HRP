@@ -214,26 +214,27 @@
         private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = basicAllowance.CurrencyId;
-            basicAllowance.SubsistenceAmount = ConvertAmount(currencyExchangeRates, basicAllowance.SubsistenceAmount,
-                            basicAllowance.SubsistenceCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HomePassageAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HomePassageAmount,
-                            basicAllowance.HomePassageCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HousingAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HousingAmount,
-                            basicAllowance.HousingCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.MobilePhoneAmount = ConvertAmount(currencyExchangeRates, basicAllowance.MobilePhoneAmount,
-                            basicAllowance.MobilePhoneCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HPIAmount = ConvertAmount(currencyExchangeRates, basicAllowance.HPIAmount,
-                            basicAllowance.HPICurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.DutyMealAmount = ConvertAmount(currencyExchangeRates, basicAllowance.DutyMealAmount,
-                            basicAllowance.DutyMealCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.SecondmentAmount = ConvertAmount(currencyExchangeRates, basicAllowance.SecondmentAmount,
-                            basicAllowance.SecondmentCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.OthersAmount = ConvertAmount(currencyExchangeRates, basicAllowance.OthersAmount,
-                            basicAllowance.OthersCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.RoomingChargesAmount = ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
-                            basicAllowance.RoomingChargesCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.FitnessFirstAmount = ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
-                            basicAllowance.FitnessFirstCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            var conversionCurrencyCode = basicAllowance.CurrencyCode;
+            basicAllowance.SubsistenceAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.SubsistenceAmount,
+                            basicAllowance.SubsistenceCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HomePassageAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.HomePassageAmount,
+                            basicAllowance.HomePassageCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HousingAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.HousingAmount,
+                            basicAllowance.HousingCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.MobilePhoneAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.MobilePhoneAmount,
+                            basicAllowance.MobilePhoneCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HPIAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.HPIAmount,
+                            basicAllowance.HPICurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.DutyMealAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.DutyMealAmount,
+                            basicAllowance.DutyMealCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.SecondmentAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.SecondmentAmount,
+                            basicAllowance.SecondmentCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.OthersAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.OthersAmount,
+                            basicAllowance.OthersCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.RoomingChargesAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
+                            basicAllowance.RoomingChargesCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.FitnessFirstAmount = RoundSubitemAmountWithCurrency(ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
+                            basicAllowance.FitnessFirstCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
 
             basicAllowance.SubsistenceCurrencyId = conversionCurrencyId;
             basicAllowance.HomePassageCurrencyId = conversionCurrencyId;
@@ -284,6 +285,16 @@
                 currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
 
             return currencyExchangeRate?.ExchangeRate ?? 0;
+        }
+
+        private static decimal RoundSubitemAmountWithCurrency(decimal amount, string currencyCode, int digits = 2)
+        {
+            if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
+            {
+                return Math.Round(amount, MidpointRounding.AwayFromZero);
+            }
+
+            return Math.Round(amount, digits, MidpointRounding.AwayFromZero);
         }
 
         private static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2)
