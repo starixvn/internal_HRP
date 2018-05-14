@@ -50,7 +50,7 @@
             $selectedItems.detach();
             $selectedItems.each(function (i, element) {
                 var $element = $(element);
-                $element.prop('selected', false).appendTo($element.data('parent'));
+                $element.prop('selected', false).appendTo($element.data('parent-id'));
             });
         });
 

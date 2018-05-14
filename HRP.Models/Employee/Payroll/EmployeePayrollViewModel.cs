@@ -39,5 +39,7 @@
         public bool HaveHostPermissionOnBankAccounts { get; set; }
 
         public CachingFilterViewModel CachingFilter { get; set; }
+
+        public int? VNDCurrencyId { get; set; }
     }
 }

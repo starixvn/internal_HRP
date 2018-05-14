@@ -558,7 +558,7 @@
 
                         cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
 
-                        if (propertyInfo.PropertyType == typeof(DateTime))
+                        if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
                         {
                             cell.Style.Numberformat.Format = "dd/MM/yyyy";
                         }

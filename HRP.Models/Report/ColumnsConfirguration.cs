@@ -10,43 +10,55 @@
 
         private static IEnumerable<MappingColumn> GetMappingColumns(IEnumerable<XElement> elements)
         {
+            var mappingColumns = new List<MappingColumn>();
+
             foreach (var element in elements)
             {
-                yield return new MappingColumn
+                mappingColumns.Add(new MappingColumn
                 {
                     PropertyName = element.Attribute("PropertyName").Value,
                     HeaderName = element.Attribute("HeaderName").Value,
                     IsEncrypted = bool.Parse(element.Attribute("IsEncrypted").Value)
-                };
+                });
             }
+
+            return mappingColumns;
         }
 
         private static IEnumerable<ColumnGroup> GetColumnGroups(IEnumerable<XElement> elements)
         {
+            var columnGroups = new List<ColumnGroup>();
             foreach (var element in elements)
+
             {
-                yield return new ColumnGroup
+                columnGroups.Add(new ColumnGroup
                 {
                     GroupId = int.Parse(element.Attribute("GroupId").Value),
                     GroupName = element.Attribute("GroupName").Value,
                     Columns = GetMappingColumns(element.Elements())
-                };
+                });
             }
+
+            return columnGroups;
         }
 
         private static IEnumerable<DynamicReportItem> GetItems(IEnumerable<XElement> elements)
         {
+            var items = new List<DynamicReportItem>();
+
             foreach (var element in elements)
             {
                 var id = int.Parse(element.Attribute("Id").Value);
                 columns.Add(id, GetColumnGroups(element.Elements("ColumnGroup")));
 
-                yield return new DynamicReportItem
+                items.Add(new DynamicReportItem
                 {
                     Id = id,
                     Name = element.Attribute("Name").Value,
-                };
+                });
             }
+
+            return items;
         }
 
         private static void InitializeConfiguration()

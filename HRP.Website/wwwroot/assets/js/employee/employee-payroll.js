@@ -1,4 +1,6 @@
 ﻿var employeePayroll = (function ($) {
+    var $VNDCurrencyId;
+
     function checkRelatedElementsHaveValue(className, element) {
         return $(className).not(element).serializeArray().filter(function (item) {
             return item.value !== '';
@@ -6,14 +8,14 @@
     }
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === '11')
+        if (currency === $VNDCurrencyId)
             return this.div(1000).round().mul(1000);
 
         return this.round(dp);
     };
 
     BigNumber.prototype.toStringWithCurrency = function (currency) {
-        if (currency === '11')
+        if (currency === $VNDCurrencyId)
             return this.toString();
 
         return this.toFixed(2);
@@ -600,6 +602,8 @@
     }
 
     function init() {
+        var $VNDCurrencyId = $('#VNDCurrencyId').val();
+
         calculateBasicSalary();
         calculateAllowances();
         assignAddBankAccountButton();

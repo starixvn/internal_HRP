@@ -60,6 +60,7 @@
     <input type="hidden" data-val="false" asp-for="CanUpdate" />
     <input type="hidden" data-val="false" asp-for="HaveHostPermissionOnBankAccounts" />
     <input type="hidden" data-val="false" asp-for="BasicSalary.InitFirstTime" />
+    <input type="hidden" data-val="false" asp-for="VNDCurrencyId" />
 
     <div class="list-message-error hidden" id="validation-summary">
     </div>
@@ -286,7 +287,7 @@
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
-                 <label class="bank-type">@ViewLang.DirectBanking</label>
+                <label class="bank-type">@ViewLang.DirectBanking</label>
 
                 <select class="control bank-type-select hidden" disabled>
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
@@ -451,13 +452,13 @@
                 <select class="control deduction-calculate select2 fitness-first" asp-items="currencySelectList" asp-for="Deduction.FitnessFirstCurrencyId" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
                     <option></option>
                 </select>
-                <input type="text" class="control number deduction-calculate fitness-first" asp-for="Deduction.FitnessFirstAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"  />
+                <input type="text" class="control number deduction-calculate fitness-first" asp-for="Deduction.FitnessFirstAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
             </div>
         </div>
         <div class="list-button">
             <a class="button -second" asp-controller="employee" asp-action="index"
-                asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
-                asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
+               asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
+               asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
             @if (Model.CanUpdate)
             {
                 <button class="button -primary" type="button" data-loading-text="@ViewLang.Saving ..." id="btn-save">@ViewLang.Save</button>

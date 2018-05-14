@@ -37,9 +37,9 @@
 
         public string OtherPhoneNo { get; set; }
 
-        public DateTime ExpiredDate { get; set; }
+        public DateTime? ExpiredDate { get; set; }
 
-        public DateTime DateIssue { get; set; }
+        public DateTime? DateIssue { get; set; }
 
         public string PlaceOfIssue { get; set; }
 
@@ -135,7 +135,7 @@
 
         public string IDNo { get; set; }
 
-        public DateTime IDNoChangeDate { get; set; }
+        public DateTime? IDNoChangeDate { get; set; }
 
         public string IDNoChangeReason { get; set; }
 
@@ -143,11 +143,11 @@
 
         public string EmploymentStatus { get; set; }
 
-        public DateTime EmploymentStatusChangeDate { get; set; }
+        public DateTime? EmploymentStatusChangeDate { get; set; }
 
         public string JobCategory { get; set; }
 
-        public DateTime JobCategoryChangeDate { get; set; }
+        public DateTime? JobCategoryChangeDate { get; set; }
 
         public string JobCategoryReason { get; set; }
 
@@ -155,31 +155,31 @@
 
         public string JobGrade { get; set; }
 
-        public DateTime JobGradeChangeDate { get; set; }
+        public DateTime? JobGradeChangeDate { get; set; }
 
         public string JobGradeReason { get; set; }
 
         public string Department { get; set; }
 
-        public DateTime DepartmentChangeDate { get; set; }
+        public DateTime? DepartmentChangeDate { get; set; }
 
         public string DepartmentReason { get; set; }
 
         public string Section { get; set; }
 
-        public DateTime SectionChangeDate { get; set; }
+        public DateTime? SectionChangeDate { get; set; }
 
         public string SectionReason { get; set; }
 
         public string Division { get; set; }
 
-        public DateTime DivisionChangeDate { get; set; }
+        public DateTime? DivisionChangeDate { get; set; }
 
         public string DivisionReason { get; set; }
 
         public string CostCenter { get; set; }
 
-        public DateTime CostCenterChangeDate { get; set; }
+        public DateTime? CostCenterChangeDate { get; set; }
 
         public string CostCenterReason { get; set; }
 
@@ -195,15 +195,15 @@
 
         public string WorkPermitType1 { get; set; }
 
-        public DateTime StartDateType1 { get; set; }
+        public DateTime? StartDateType1 { get; set; }
 
-        public DateTime EndDateType1 { get; set; }
+        public DateTime? EndDateType1 { get; set; }
 
         public string WorkPermitType2 { get; set; }
 
-        public DateTime StartDateType2 { get; set; }
+        public DateTime? StartDateType2 { get; set; }
 
-        public DateTime EndDateType2 { get; set; }
+        public DateTime? EndDateType2 { get; set; }
 
         public string DSTCompany { get; set; }
 
@@ -275,7 +275,7 @@
 
         public string CurrencyCode { get; set; }
 
-        public DateTime EffectiveDate { get; set; }
+        public DateTime? EffectiveDate { get; set; }
 
         public string Reason { get; set; }
 

@@ -10,6 +10,8 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Employee;
+    using HRP.Criteria.Currency;
+    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Employee;
@@ -376,8 +378,12 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
+            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetAllCurrencyCriteria());
+
             viewModel.CachingFilter = filter;
             viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+            viewModel.Currencies = currencies;
+            viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
             return View(viewModel);
         }
 

@@ -135,7 +135,7 @@
   <Group GroupdId="2" Name="Employment">
     <Item Id="27" Name="Company BVI">
       <ColumnGroup GroupId="1" GroupName="Company BVI">
-        <MappingColumn PropertyName="Company" HeaderName="Emergency Contact Telephone No2" IsEncrypted="false" />
+        <MappingColumn PropertyName="Company" HeaderName="Company BVI" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="28" Name="Company BVI - Effective Date">
@@ -145,7 +145,7 @@
     </Item>
     <Item Id="29" Name="Company BVI - Reason">
       <ColumnGroup GroupId="1" GroupName="Company BVI - Reason">
-        <MappingColumn PropertyName="CompanyReason" HeaderName="Company BVI - Effective Date" IsEncrypted="false" />
+        <MappingColumn PropertyName="CompanyReason" HeaderName="Company Reason" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="30" Name="Company Local">
@@ -220,7 +220,7 @@
     </Item>
     <Item Id="44" Name="Date Commencement Company - Reason">
       <ColumnGroup GroupId="1" GroupName="Date Commencement Company - Reason">
-        <MappingColumn PropertyName="CompanyReason" HeaderName="Date Commencement Company - Reason" IsEncrypted="false" />
+        <MappingColumn PropertyName="CompanyDateReason" HeaderName="Date Commencement Company - Reason" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="45" Name="Length Of Service - Group">
@@ -400,7 +400,7 @@
     </Item>
     <Item Id="81" Name="Work Permit - Type 2 Start Date">
       <ColumnGroup GroupId="1" GroupName="Work Permit - Type 2 Start Date">
-        <MappingColumn PropertyName="StartDateType2" HeaderName="Work Permit - Type 1 Start Date" IsEncrypted="false" />
+        <MappingColumn PropertyName="StartDateType2" HeaderName="Work Permit - Type 2 Start Date" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="82" Name="Work Permit - Type 2 End Date">
@@ -556,7 +556,7 @@
       <ColumnGroup GroupId="1" GroupName="Basic Salary - Direct Banking 2">
         <MappingColumn PropertyName="DirectBanking2CurrencyCode" HeaderName="Basic Salary - Direct Banking 2 Currency" IsEncrypted="false" />
         <MappingColumn PropertyName="DirectBanking2Amount" HeaderName="Basic Salary - Direct Banking 2 Amount" IsEncrypted="false" />
-        <MappingColumn PropertyName="DirectBanking2Account" HeaderName="Basic Salary - Direct Banking 1 Account" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking2Account" HeaderName="Basic Salary - Direct Banking 2 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="109" Name="Basic Salary - Cash">
@@ -583,7 +583,7 @@
       <ColumnGroup GroupId="1" GroupName="Allowance - Direct Banking 2">
         <MappingColumn PropertyName="AllowanceDirectBanking2CurrencyCode" HeaderName="Allowance - Direct Banking 2 Currency" IsEncrypted="false" />
         <MappingColumn PropertyName="AllowanceDirectBanking2Amount" HeaderName="Allowance - Direct Banking 2 Amount" IsEncrypted="false" />
-        <MappingColumn PropertyName="AllowanceDirectBanking2Account" HeaderName="Allowance - Direct Banking 1 Account" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking2Account" HeaderName="Allowance - Direct Banking 2 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="113" Name="Allowance - Cash">
@@ -643,8 +643,8 @@
     </Item>
     <Item Id="122" Name="Rooming Charge">
       <ColumnGroup GroupId="1" GroupName="Rooming Charge">
-        <MappingColumn PropertyName="RoomingChargesAmount" HeaderName="Rooming Charge Amount" IsEncrypted="false" />
         <MappingColumn PropertyName="RoomingChargesCurrencyCode" HeaderName="Rooming Charge Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="RoomingChargesAmount" HeaderName="Rooming Charge Amount" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="123" Name="Fitness Club Membership">

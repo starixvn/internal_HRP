@@ -410,7 +410,9 @@
         private static void CalculateAutoSalary(DynamicReportModel data, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             decimal.TryParse(data.Salary, out decimal totalAmount);
-
+            
+            var eBanking = ConvertAmount(currencyExchangeRates, data.EbankingAmount,
+                data.EbankingCurrencyId, data.CurrencyId);
             var directBanking1 = ConvertAmount(currencyExchangeRates, data.DirectBanking1Amount,
                 data.DirectBanking1CurrencyId, data.CurrencyId);
             var directBanking2 = ConvertAmount(currencyExchangeRates, data.DirectBanking2Amount,
@@ -419,11 +421,23 @@
 
             switch (data.AutoCalculateOn)
             {
+                case PayrollAutoCalculateOn.Ebanking:
+                    if (data.EbankingCurrencyId.HasValue)
+                    {
+                        eBanking = RoundAmountWithCurrency(
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash - directBanking1, data.CurrencyId, data.EbankingCurrencyId),
+                            data.EbankingCurrencyCode, 0);
+
+                        data.EbankingAmount = eBanking.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+
                 case PayrollAutoCalculateOn.DirectBanking1:
                     if (data.DirectBanking1CurrencyId.HasValue)
                     {
                         directBanking1 = RoundAmountWithCurrency(
-                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash, data.CurrencyId, data.DirectBanking1CurrencyId),
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking2 - cash - eBanking, data.CurrencyId, data.DirectBanking1CurrencyId),
                             data.DirectBanking1CurrencyCode, 0);
 
                         data.DirectBanking1Amount = directBanking1.ToString(CultureInfo.InvariantCulture);
@@ -435,7 +449,7 @@
                     if (data.DirectBanking2CurrencyId.HasValue)
                     {
                         directBanking2 = RoundAmountWithCurrency(
-                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash, data.CurrencyId, data.DirectBanking2CurrencyId),
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - cash - eBanking, data.CurrencyId, data.DirectBanking2CurrencyId),
                             data.DirectBanking2CurrencyCode, 0);
 
                         data.DirectBanking2Amount = directBanking2.ToString(CultureInfo.InvariantCulture);
@@ -447,7 +461,7 @@
                     if (data.CashCurrencyId.HasValue)
                     {
                         cash = RoundAmountWithCurrency(
-                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2, data.CurrencyId, data.CashCurrencyId),
+                            ConvertAmount(currencyExchangeRates, totalAmount - directBanking1 - directBanking2 - eBanking, data.CurrencyId, data.CashCurrencyId),
                             data.CashCurrencyCode, 0);
 
                         data.CashAmount = cash.ToString(CultureInfo.InvariantCulture);

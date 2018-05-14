@@ -72,22 +72,22 @@ BEGIN
 	,jg.Name AS 'JobGrade'
 	,emh.JobGradeChangeDate
 	,jobGradeChangeReasonRef.Value AS 'JobGradeReason'
-	,d.Name AS 'Division'
+	,d.Code AS 'Division'
 	,emh.DivisionChangeDate
 	,divisionChangeReasonRef.Value AS 'DivisionReason'
-	,dm.Name AS 'Department'
+	,dm.Code AS 'Department'
 	,emh.DepartmentChangeDate
 	,departmentChangeReasonRef.Value AS 'DepartmentReason'
-	,cc.Name AS 'CostCenter'
+	,cc.Code AS 'CostCenter'
 	,emh.CostCenterChangeDate
 	,costcenterChangeReasonRef.Value AS 'CostCenterReason'
-	,s.Name AS 'Section'
+	,s.Code AS 'Section'
 	,emh.SectionChangeDate
 	,sectionChangeReasonRef.Value AS 'SectionReason'
 	,em.Email
-	,co.Name AS 'Country'
-	,ci.Name AS 'City'
-	,office.Name AS 'Office'
+	,co.Code AS 'Country'
+	,ci.Code AS 'City'
+	,office.Code AS 'Office'
 	,wpCompanyRef.Value AS 'WorkPermitCompany'
 	,wpType1Ref.Value AS 'WorkPermitType1'
 	,ewp.StartDateType1
@@ -218,7 +218,6 @@ BEGIN
 	LEFT JOIN dbo.RefResource AS dstCompanyRef WITH (NOLOCK) ON em.DST = dstCompanyRef.ResourceId AND dstCompanyRef.RefName = 'LocalCompany'
 	LEFT JOIN dbo.RefResource AS dbtCompanyRef WITH (NOLOCK) ON em.DBT = dbtCompanyRef.ResourceId AND dbtCompanyRef.RefName = 'LocalCompany'
 
-
 	INNER JOIN dbo.EmploymentHistory AS emh WITH (NOLOCK) ON em.EmployeeId = emh.EmployeeId
 	LEFT JOIN dbo.RefResource AS bviChangeRef WITH (NOLOCK) ON emh.CompanyReasonId = bviChangeRef.ResourceId AND bviChangeRef.RefName = 'CompanyBVIChangeReason'
 	LEFT JOIN dbo.RefResource AS localChangeRef WITH (NOLOCK) ON emh.LocalCompanyReasonId = localChangeRef.ResourceId AND localChangeRef.RefName = 'CompanyLocalChangeReason'
@@ -226,7 +225,7 @@ BEGIN
 	LEFT JOIN dbo.RefResource AS localJobTitleReasonRef WITH (NOLOCK) ON emh.LocalJobTitleReasonId = localJobTitleReasonRef.ResourceId AND localJobTitleReasonRef.RefName = 'JobTitleChangeReason'
 	LEFT JOIN dbo.RefResource AS groupDateReasonRef WITH (NOLOCK) ON emh.GroupDateReasonId = groupDateReasonRef.ResourceId AND groupDateReasonRef.RefName = 'DateCommencementChangeReason'
 	LEFT JOIN dbo.RefResource AS companyDateReasonRef WITH (NOLOCK) ON emh.CompanyDateReasonId = companyDateReasonRef.ResourceId AND companyDateReasonRef.RefName = 'DateCommencementChangeReason'
-	LEFT JOIN dbo.RefResource AS idChangeReasonRef WITH (NOLOCK) ON emh.IDNoReasonId = idChangeReasonRef.ResourceId AND idChangeReasonRef.RefName = 'CompanyIDChangeReason'
+	LEFT JOIN dbo.RefResource AS idChangeReasonRef WITH (NOLOCK) ON emh.IDNoReasonId = idChangeReasonRef.ResourceId AND idChangeReasonRef.RefName = 'EmployeeIDChangeReason'
 	LEFT JOIN dbo.RefResource AS categoryChangeReasonRef WITH (NOLOCK) ON emh.JobCategoryReasonId = categoryChangeReasonRef.ResourceId AND categoryChangeReasonRef.RefName = 'JobCategoryChangeReason'
 	LEFT JOIN dbo.RefResource AS jobGradeChangeReasonRef WITH (NOLOCK) ON emh.JobGradeReasonId = jobGradeChangeReasonRef.ResourceId AND jobGradeChangeReasonRef.RefName = 'JobGradeChangeReason'
 	LEFT JOIN dbo.RefResource AS divisionChangeReasonRef WITH (NOLOCK) ON emh.DivisionReasonId = divisionChangeReasonRef.ResourceId AND divisionChangeReasonRef.RefName = 'DivisionChangeReason'
@@ -241,7 +240,6 @@ BEGIN
 
 	LEFT JOIN dbo.EmploymentPaymaster AS emp WITH (NOLOCK) ON e.EmployeeId = emp.EmployeeId
 	LEFT JOIN dbo.EmploymentEPA AS eepa WITH (NOLOCK) ON e.EmployeeId = eepa.EmployeeId
-
 
 	LEFT JOIN dbo.EmployeePayrollBasicSalary AS epbs WITH (NOLOCK) ON e.EmployeeId = epbs.EmployeeId
 	LEFT JOIN dbo.Currency AS bsc WITH (NOLOCK) ON epbs.CurrencyId = bsc.CurrencyId
