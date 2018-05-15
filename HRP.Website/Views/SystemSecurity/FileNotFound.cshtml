@@ -8,12 +8,8 @@
     <div class="circle-large">
         <span class="icon-otp"></span>
     </div>
-    @if (isHost)
-    {
-        <h1 class="title">The certificate file not found.</h1>
-    }
-    else
-    {
-        <h1 class="title">The certificate file not found. Please contact your system administrator!</h1>
-    }
+    <h1 class="title">The certificate file not found.</h1>
+    <div class="footer">
+        <a class="link action-back" asp-controller="auth" asp-action="logout">Back to Login</a>
+    </div>
 </section>

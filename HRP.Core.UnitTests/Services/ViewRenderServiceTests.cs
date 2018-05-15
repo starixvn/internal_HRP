@@ -25,9 +25,32 @@
             razorViewEngine.FindView(Arg.Any<ActionContext>(), Arg.Any<string>(), false).Returns(viewEngineResult);
 
             // Act & Assert
-            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => service.RenderViewToStringAsync("Index", 1));
-            Assert.Equal("Value cannot be null.\r\nParameter name: Index does not match any available view", ex.Message);
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => service.RenderViewToStringAsync("Index", 1));
+            Assert.Equal("Index does not match any available view", ex.Message);
         }
+
+        ////[Fact]
+        ////public async Task RenderViewToStringAsync_ViewIsExist_ReturnAsExpected()
+        ////{
+        ////    // Arrange
+        ////    var viewHtmlContent = "hello";
+        ////    var resultView = Substitute.For<IView>();
+        ////    resultView.When(x => x.RenderAsync(Arg.Any<ViewContext>())).Do(c =>
+        ////    {
+        ////        var textWriter = c.Arg<TextWriter>();
+        ////        textWriter.Write(viewHtmlContent);
+        ////    });
+        ////    var viewEngineResult = Substitute.For<ViewEngineResult>();
+        ////    viewEngineResult.View.Returns(resultView);
+        ////    var service = GetViewRenderService();
+        ////    razorViewEngine.FindView(Arg.Any<ActionContext>(), Arg.Any<string>(), false).Returns(viewEngineResult);
+
+        ////    // Act
+        ////    var actual = await service.RenderViewToStringAsync("Index", 1);
+
+        ////    // Assert
+        ////    Assert.Equal(viewHtmlContent, actual);
+        ////}
 
         #region Helpers
 

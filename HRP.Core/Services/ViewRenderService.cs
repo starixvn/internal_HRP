@@ -40,7 +40,7 @@
 
                 if (viewResult == null || viewResult.View == null)
                 {
-                    throw new ArgumentNullException($"{viewName} does not match any available view");
+                    throw new InvalidOperationException($"{viewName} does not match any available view");
                 }
 
                 var viewDictionary = new ViewDataDictionary<TModel>(new EmptyModelMetadataProvider(), new ModelStateDictionary())
