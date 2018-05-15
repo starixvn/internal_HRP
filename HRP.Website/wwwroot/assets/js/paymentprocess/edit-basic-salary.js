@@ -122,6 +122,9 @@ var editBasicSalary = (function ($) {
                 var amount = getNumber($parent.find('.js-autoCalculateAmount'));
                 if (amount.length > 0 && !isNaN(amount)) {
                     amount = new BigNumber(amount);
+                    amount = amount.roundAmount(currencyId, 0);
+                    $parent.find('.js-autoCalculateAmount').val(amount);
+
                     exchangeRate = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + currencySettingId + '"]').val());
                     monthlySalary = monthlySalary.minus(amount.mul(exchangeRate));
                 }
@@ -268,6 +271,7 @@ var editBasicSalary = (function ($) {
         $('.js-numberOnly').inputmask({
             alias: 'numeric',
             autoGroup: true,
+            digits: 0,
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,
