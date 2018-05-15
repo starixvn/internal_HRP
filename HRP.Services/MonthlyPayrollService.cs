@@ -359,7 +359,8 @@
                     monthlySalary.DirectBanking2Amount = basicSalary.DirectBanking2Amount;
                     if (basicSalary.CashCurrencyId.HasValue)
                     {
-                        amount = CalculationService.ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, basicSalary.CashCurrencyId.Value);
+                        amount = CalculationService.ConvertAmount(currencyExchangeRates, salaryAmount - ebanking - directBanking1 - directBanking2, basicSalary.CurrencyId, 
+                            basicSalary.CashCurrencyId.Value);
                         amount = CalculationService.RoundAmountWithCurrency(amount, basicSalary.CashCurrencyCode, 0);
                         basicSalary.CashAmount = amount.ToString(CultureInfo.InvariantCulture);
 
