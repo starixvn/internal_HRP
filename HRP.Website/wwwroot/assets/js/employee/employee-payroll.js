@@ -1,5 +1,5 @@
 ﻿var employeePayroll = (function ($) {
-    var $VNDCurrencyId;
+    var vndCurrencyId;
 
     function checkRelatedElementsHaveValue(className, element) {
         return $(className).not(element).serializeArray().filter(function (item) {
@@ -8,14 +8,21 @@
     }
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === $VNDCurrencyId)
+        if (currency === vndCurrencyId)
             return this.div(1000).round().mul(1000);
 
         return this.round(dp);
     };
 
+    BigNumber.prototype.roundAllowanceDetailWithCurrency = function (dp, currency) {
+        if (currency === vndCurrencyId)
+            return this.round(0);
+
+        return this.round(dp);
+    };
+
     BigNumber.prototype.toStringWithCurrency = function (currency) {
-        if (currency === $VNDCurrencyId)
+        if (currency === vndCurrencyId)
             return this.toString();
 
         return this.toFixed(2);
@@ -132,7 +139,7 @@
         if (currency !== '' && !isNaN(amount) && amount !== '') {
             amount = new BigNumber(amount);
             var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
-            var value = amount.mul(exchangeRates).roundWithCurrency(2, allowanceCurrency);
+            var value = amount.mul(exchangeRates).roundAllowanceDetailWithCurrency(2, allowanceCurrency);
             $('.allowance-convert-amount', parent).val(value.toStringWithCurrency(allowanceCurrency));
         }
         else {
@@ -602,7 +609,7 @@
     }
 
     function init() {
-        var $VNDCurrencyId = $('#VNDCurrencyId').val();
+        vndCurrencyId = $('#VNDCurrencyId').val();
 
         calculateBasicSalary();
         calculateAllowances();
