@@ -257,8 +257,8 @@
                 errors,
                 kvp =>
                 {
-                    Assert.Equal(nameof(viewModel.Password), kvp.Key);
-                    Assert.Equal("This password don't match. Try again?", kvp.Value);
+                    Assert.Equal(nameof(viewModel.OldPassword), kvp.Key);
+                    Assert.Equal("The old password you entered is incorrect.", kvp.Value);
                 }
             );
         }

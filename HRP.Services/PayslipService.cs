@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Fanex.MailDeliver.Model;
-    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -159,7 +158,7 @@
             payslip.SalaryAmount = cryptoService.Decrypt(payslip.SalaryAmount);
 
             decimal.TryParse(payslip.SalaryAmount, out decimal basicSalaryAmount);
-            payslip.SalaryAmount = RoundAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyCode, 0).ToString(OddAmountFormat);
+            payslip.SalaryAmount = CalculationService.RoundAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyCode, 0).ToString(OddAmountFormat);
 
             payslip.SalaryAdditions = payslip.SalaryAdditions.Any()
                 ? payslip.SalaryAdditions : Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
@@ -182,7 +181,7 @@
 
                 decimal.TryParse(addition.NetSalary, out amount);
                 additionAmount += amount;
-                addition.NetSalaryDisplay = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode).ToString(OddAmountFormat);
+                addition.NetSalaryDisplay = CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode).ToString(OddAmountFormat);
             }
 
             foreach (MonthlySalaryDeductionModel deduction in payslip.SalaryDeductions)
@@ -191,16 +190,16 @@
 
                 decimal.TryParse(deduction.NetSalary, out amount);
                 deductionAmount += amount;
-                deduction.NetSalaryDisplay = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode).ToString(OddAmountFormat);
+                deduction.NetSalaryDisplay = CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode).ToString(OddAmountFormat);
             }
 
             amount = basicSalaryAmount + additionAmount;
-            payslip.GrossSalaryAmount = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
+            payslip.GrossSalaryAmount = CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
 
             amount = basicSalaryAmount + additionAmount - deductionAmount;
-            payslip.NetSalaryAmount = RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
+            payslip.NetSalaryAmount = CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
 
-            payslip.SalaryDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
+            payslip.SalaryDeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, payslip.SalaryCurrencyCode, 0).ToString(AmountFormat);
         }
 
         private void DescryptAndCalculateMonthlyAllowance(PayslipDetailModel payslip)
@@ -211,7 +210,7 @@
             payslip.AllowanceAmount = cryptoService.Decrypt(payslip.AllowanceAmount);
 
             decimal.TryParse(payslip.AllowanceAmount, out decimal basicAllowanceAmount);
-            payslip.AllowanceAmount = RoundAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyCode, 0).ToString(OddAmountFormat);
+            payslip.AllowanceAmount = CalculationService.RoundAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyCode, 0).ToString(OddAmountFormat);
 
             payslip.AllowanceAdditions = payslip.AllowanceAdditions.Any()
                 ? payslip.AllowanceAdditions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
@@ -234,7 +233,7 @@
 
                 decimal.TryParse(addition.NetAllowance, out amount);
                 additionAmount += amount;
-                addition.NetAllowanceToDisplay = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode).ToString(OddAmountFormat);
+                addition.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode).ToString(OddAmountFormat);
             }
 
             foreach (MonthlyAllowanceDeductionModel deduction in payslip.AllowanceDeductions)
@@ -243,26 +242,16 @@
 
                 decimal.TryParse(deduction.NetAllowance, out amount);
                 deductionAmount += amount;
-                deduction.NetAllowanceToDisplay = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode).ToString(OddAmountFormat);
+                deduction.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode).ToString(OddAmountFormat);
             }
 
             amount = basicAllowanceAmount + additionAmount;
-            payslip.GrossAllowanceAmount = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
+            payslip.GrossAllowanceAmount = CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
 
             amount = basicAllowanceAmount + additionAmount - deductionAmount;
-            payslip.NetAllowanceAmount = RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
+            payslip.NetAllowanceAmount = CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
 
-            payslip.AllowanceDeductionAmount = RoundAmountWithCurrency(deductionAmount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
-        }
-
-        private static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int decimals = 2)
-        {
-            if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
-            {
-                return Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000;
-            }
-
-            return Math.Round(amount, decimals, MidpointRounding.AwayFromZero);
+            payslip.AllowanceDeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, payslip.AllowanceCurrencyCode, 0).ToString(AmountFormat);
         }
     }
 }

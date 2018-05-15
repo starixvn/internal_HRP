@@ -124,7 +124,7 @@
                 }
                 else
                 {
-                    ModelState.AddModelError(nameof(viewModel.Password), Message.PasswordNotMatch);
+                    ModelState.AddModelError(nameof(viewModel.OldPassword), Message.OldPasswordIncorrect);
                 }
             }
 
