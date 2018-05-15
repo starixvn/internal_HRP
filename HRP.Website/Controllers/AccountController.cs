@@ -15,6 +15,7 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using Models;
     using Models.Account;
     using Resources;
@@ -26,17 +27,20 @@ namespace HRP.Website.Controllers
         private readonly ISessionService sessionService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
         private readonly IUserService userService;
+        private readonly IOptionsSnapshot<OtpConfig> otpConfig;
 
         public AccountController(
             ISessionService sessionService,
             IBaseService baseService,
             ITwoFactorAuthenticatorService twoFactorAuthService,
-            IUserService userService)
+            IUserService userService,
+            IOptionsSnapshot<OtpConfig> otpConfig)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.twoFactorAuthService = twoFactorAuthService;
             this.userService = userService;
+            this.otpConfig = otpConfig;
         }
 
         [HRPAuthorize]
@@ -141,6 +145,7 @@ namespace HRP.Website.Controllers
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
+                AppName = otpConfig.Value.AppName,
                 Username = user.Username
             };
 
@@ -171,6 +176,7 @@ namespace HRP.Website.Controllers
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
+                AppName = otpConfig.Value.AppName,
                 Username = user.Username
             };
 

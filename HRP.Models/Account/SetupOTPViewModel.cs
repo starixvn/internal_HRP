@@ -14,8 +14,8 @@
 
         public string Username { get; set; }
 
-        public string SystemName { get; set; }
+        public string AppName { get; set; }
 
-        public string QrCodeText => $"otpauth://totp/{SystemName}:{Username}?secret={TextCode}&issuer={SystemName}";
+        public string QrCodeText => $"otpauth://totp/{AppName}:{Username}?secret={TextCode}&issuer={AppName}";
     }
 }

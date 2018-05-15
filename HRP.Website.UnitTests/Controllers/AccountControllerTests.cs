@@ -7,15 +7,16 @@
     using System.Threading.Tasks;
     using Core.Enumerations;
     using Core.Services;
-    using HRP.Core.Model;
-    using HRP.Criteria;
-    using HRP.Criteria.User;
-    using HRP.Models;
+    using Core.Model;
+    using Criteria;
+    using Criteria.User;
+    using Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
+    using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Primitives;
     using Models.Account;
     using NSubstitute;
@@ -29,6 +30,7 @@
         private ISessionService sessionService;
         private ITwoFactorAuthenticatorService twoFactorAuthService;
         private IUserService userService;
+        private IOptionsSnapshot<OtpConfig> otpConfig;
 
         [Theory]
         [InlineData(AccountTab.Profile)]
@@ -580,7 +582,8 @@
             };
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-            var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService);
+            otpConfig = FakeOtpConfig();
+            var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService, otpConfig);
             accountController.ControllerContext = controllerContext;
             accountController.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
                 .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
@@ -686,14 +689,29 @@
             return Substitute.For<IUserService>();
         }
 
+        private IOptionsSnapshot<OtpConfig> FakeOtpConfig()
+        {
+            var config = new OtpConfig
+            {
+                AppName = "HRP",
+                OtpExpireTime = 0
+            };
+
+            var testOtpConfig = Substitute.For<IOptionsSnapshot<OtpConfig>>();
+            testOtpConfig.Value.Returns(config);
+
+            return testOtpConfig;
+        }
+
         private AccountController GetAccountController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             twoFactorAuthService = FakeTwoFactorAuthenticatorService();
             userService = FakeUserService();
+            otpConfig = FakeOtpConfig();
 
-            return new AccountController(sessionService, baseService, twoFactorAuthService, userService);
+            return new AccountController(sessionService, baseService, twoFactorAuthService, userService, otpConfig);
         }
 
         #endregion Helper
