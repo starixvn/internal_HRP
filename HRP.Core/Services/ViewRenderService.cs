@@ -38,7 +38,7 @@
             {
                 ViewEngineResult viewResult = razorViewEngine.FindView(actionContext, viewName, false);
 
-                if (viewResult == null || viewResult.View == null)
+                if (!viewResult.Success)
                 {
                     throw new InvalidOperationException($"{viewName} does not match any available view");
                 }
