@@ -30,7 +30,7 @@
         {
             // Arrange
             var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var viewModel = new EmployeeBankAccountsViewModel
             {
                 EmployeeId = 1,
@@ -64,45 +64,70 @@
         #region Create Bank Account in Payroll
 
         [Fact]
-        public async Task CreateBankAccountInPayroll_WhenCalled_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
-
+            var employeeId = 1;
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-
-            ArrangeForCreateBankAccount(employee, resources);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(employeeId).Returns(employee);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(false);
 
             // Test
-            var actual = await controller.CreateBankAccountInPayroll(1, 1);
+            var actual = await controller.CreateBankAccountInPayroll(employeeId, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task CreateBankAccountInPayroll_HasPermission_ReturnAsExpectedPartialView()
+        {
+            // Arrange
+            var employeeId = 1;
+            var resources = GetReferenceResourcesForTest();
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+            var controller = GetBankAccountController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            employeeService.GetEmployeeBasicInfoByIdAsync(employeeId).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+
+            // Test
+            var actual = await controller.CreateBankAccountInPayroll(employeeId, 1);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
             var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
             Assert.True(model.HaveHostPermission);
         }
 
         [Fact]
-        public async Task CreateBankAccountInPayroll_InValidModelState_ReturnPartialView()
+        public async Task CreateBankAccountInPayrollPost_InvalidModelState_ReturnAsExpectedPartialView()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
-
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-
             var viewModel = new CreateBankAccountViewModel();
-
-            ArrangeForCreateBankAccount(employee, resources);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
             controller.ModelState.AddModelError("key", "message");
 
             // Test
@@ -110,64 +135,71 @@
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.False(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
         }
 
         [Fact]
-        public async Task CreateBankAccountInPayroll_ValidModelStateCreateError_ReturnPartialView()
+        public async Task CreateBankAccountInPayrollPost_CreateUnsuccessfully_ReturnAsExpectedPartialView()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var commandResult = new CommandResult();
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-            var result = new CommandResult
-            {
-                Code = 0,
-            };
             var viewModel = new CreateBankAccountViewModel();
-            ArrangeForCreateBankAccount(employee, resources);
-            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(commandResult);
 
             // Test
             var actual = await controller.CreateBankAccountInPayroll(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.True(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
+            Assert.Equal(commandResult.IsSuccessful, viewModel.IsSuccessful);
+
+            Assert.False(viewResult.ViewData.ModelState.IsValid);
+            Assert.True(viewResult.ViewData.ModelState.Count == 1);
         }
 
         [Fact]
-        public async Task CreateBankAccountInPayroll_ValidModelStateCreateSuccessful_ReturnPartialView()
+        public async Task CreateBankAccountInPayroll_CreateSuccessfully_ReturnAsExpectedPartialView()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-            var result = new CommandResult
-            {
-                Code = 1,
-            };
+            var commandResult = new CommandResult();
             var viewModel = new CreateBankAccountViewModel();
-            ArrangeForCreateBankAccount(employee, resources);
-            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(commandResult);
 
             // Test
             var actual = await controller.CreateBankAccountInPayroll(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.False(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
+            Assert.Equal(commandResult.IsSuccessful, viewModel.IsSuccessful);
         }
 
         #endregion Create Bank Account in Payroll
@@ -175,41 +207,70 @@
         #region Create Bank Account
 
         [Fact]
-        public async Task CreateBankAccount_WhenCalled_ReturnView()
+        public async Task CreateBankAccount_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var employeeId = 1;
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-            ArrangeForCreateBankAccount(employee, resources);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(employeeId).Returns(employee);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(false);
 
             // Test
-            var actual = await controller.CreateBankAccount(1);
+            var actual = await controller.CreateBankAccount(employeeId);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task CreateBankAccount_HasPermission_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var employeeId = 1;
+            var resources = GetReferenceResourcesForTest();
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+            var controller = GetBankAccountController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            employeeService.GetEmployeeBasicInfoByIdAsync(employeeId).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+
+            // Test
+            var actual = await controller.CreateBankAccount(employeeId);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
             Assert.True(model.HaveHostPermission);
-            Assert.Equal(employee.Nickname, model.NickName);
         }
 
         [Fact]
-        public async Task CreateBankAccount_InValidModelState_ReturnView()
+        public async Task CreateBankAccountPost_InvalidModelState_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
             var viewModel = new CreateBankAccountViewModel();
-            ArrangeForCreateBankAccount(employee, resources);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
             controller.ModelState.AddModelError("key", "message");
 
             // Test
@@ -218,63 +279,71 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.False(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
         }
 
         [Fact]
-        public async Task CreateBankAccount_ValidModelStateCreateError_ReturnView()
+        public async Task CreateBankAccount_CreateUnsuccessfully_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-            var result = new CommandResult
-            {
-                Code = 0,
-            };
+            var commandResult = new CommandResult();
             var viewModel = new CreateBankAccountViewModel();
-            ArrangeForCreateBankAccount(employee, resources);
-            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(commandResult);
 
             // Test
             var actual = await controller.CreateBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.True(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
+            Assert.Equal(commandResult.IsSuccessful, viewModel.IsSuccessful);
+
+            Assert.False(viewResult.ViewData.ModelState.IsValid);
+            Assert.True(viewResult.ViewData.ModelState.Count == 1);
         }
 
         [Fact]
-        public async Task CreateBankAccount_ValidModelStateCreateSuccessful_ReturnView()
+        public async Task CreateBankAccount_CreateSuccessfully_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
                 Nickname = "hunter.tran"
             };
-            var result = new CommandResult
-            {
-                Code = 1,
-            };
+            var commandResult = new CommandResult();
             var viewModel = new CreateBankAccountViewModel();
-            ArrangeForCreateBankAccount(employee, resources);
-            bankAccountService.CreateBankAccountAsync(viewModel).Returns(result);
+            var controller = GetBankAccountController();
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
+            bankAccountService.CreateBankAccountAsync(viewModel).Returns(commandResult);
 
             // Test
             var actual = await controller.CreateBankAccount(viewModel);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
-            Assert.False(viewModel.IsSuccessful);
+            var model = Assert.IsType<CreateBankAccountViewModel>(viewResult.Model);
+            Assert.Equal(model.NickName, employee.Nickname);
+            Assert.Equal(resources, model.BankTypeResources);
+            Assert.Equal(resources, model.BankAccountTypeResources);
+            Assert.Equal(commandResult.IsSuccessful, viewModel.IsSuccessful);
         }
 
         #endregion Create Bank Account
@@ -282,14 +351,36 @@
         #region Edit Bank Account
 
         [Fact]
-        public async Task EditBankAccount_WhenCalled_ReturnView()
+        public async Task EditBankAccount_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+            var bankAccount = new BankAccount();
+            var controller = GetBankAccountController();
+            bankAccountService.GetBankAccountByIdAsync(Arg.Any<int>()).Returns(bankAccount);
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+
+            // Test
+            var actual = await controller.EditBankAccount(1);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
+        public async Task EditBankAccount_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
             var controller = GetBankAccountController();
-            var resources = GetResources();
-
+            var resources = GetReferenceResourcesForTest();
             var bankAccount = new BankAccount();
-
             ArrangeForEditBankAccount(bankAccount, resources);
 
             // Test
@@ -303,16 +394,13 @@
         }
 
         [Fact]
-        public async Task EditBankAccount_InValidModelState_ReturnView()
+        public async Task EditBankAccount_InvalidModelState_ReturnAsExpectedViewResult()
         {
             // Arrange
             var controller = GetBankAccountController();
-            var resources = GetResources();
-
+            var resources = GetReferenceResourcesForTest();
             var bankAccount = new BankAccount();
-
             ArrangeForEditBankAccount(bankAccount, resources);
-
             var viewModel = new EditBankAccountViewModel();
             controller.ModelState.AddModelError("key", "message");
 
@@ -326,11 +414,11 @@
         }
 
         [Fact]
-        public async Task EditBankAccount_ValidModelStateEditSuccessful_ReturnView()
+        public async Task EditBankAccount_EditSuccessfully_ReturnAsExpectedViewResult()
         {
             // Arrange
             var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var bankAccount = new BankAccount();
             var result = new CommandResult
             {
@@ -354,7 +442,7 @@
         {
             // Arrange
             var controller = GetBankAccountController();
-            var resources = GetResources();
+            var resources = GetReferenceResourcesForTest();
             var bankAccount = new BankAccount();
             var result = new CommandResult
             {
@@ -393,18 +481,23 @@
 
         #endregion GetEmployeeBankAccounts
 
-        #region Helpers
-
-        private void ArrangeForCreateBankAccount(EmployeeBasicInfo employee, IEnumerable<ReferenceResourceModel> resources)
+        [Fact]
+        public async Task GetPaymentTransactions_WhenCalled_ReturnAsExpected()
         {
-            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetReferenceResourcesForTest();
+            commonService.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>()).Returns(resources);
 
-            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources);
-            commonService
-                .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
-                .Returns(new List<ReferenceResourceModel>());
-            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            // Test
+            var actual = await controller.GetPaymentTransactions(1, 1, 1);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.NotNull(jsonResult);
         }
+
+        #region Helpers
 
         private void ArrangeForEditBankAccount(BankAccount bankAccount, IEnumerable<ReferenceResourceModel> resources)
         {
@@ -426,7 +519,7 @@
             employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
         }
 
-        private static IEnumerable<ReferenceResourceModel> GetResources()
+        private static IEnumerable<ReferenceResourceModel> GetReferenceResourcesForTest()
         {
             var resources = new List<ReferenceResourceModel>
             {

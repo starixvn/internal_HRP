@@ -215,9 +215,9 @@
                 ? ReferenceResource.PaymentTransactionEbanking
                 : ReferenceResource.PaymentTransactionDirectBanking;
 
-            var results = await commonService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
+            IEnumerable<ReferenceResourceModel> referenceResources = await commonService.GetReferenceResourcesByNamesAsync(new[] { refResourceName });
 
-            return Json(results.Select(x => new
+            return Json(referenceResources.Select(x => new
             {
                 id = x.ResourceId,
                 text = x.Value,

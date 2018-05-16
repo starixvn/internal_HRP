@@ -152,7 +152,7 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -160,19 +160,19 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private ICommonService FakeCommonService()
+        private static ICommonService FakeCommonService()
         {
             return Substitute.For<ICommonService>();
         }
 
-        private IPayslipService FakePayslipService()
+        private static IPayslipService FakePayslipService()
         {
             var service = Substitute.For<IPayslipService>();
 
