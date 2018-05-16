@@ -153,6 +153,7 @@
     <Compile Include="RefResource\GetRefResourceByNameAndIdCriteriaTests.cs" />
     <Compile Include="RefResource\UpdateRefResourceItemCriteriaTests.cs" />
     <Compile Include="Report\BankInReportCriteriaTests.cs" />
+    <Compile Include="Report\GetEmployeeDataForDynamicReportCriteriaTests.cs" />
     <Compile Include="Report\GetDataForEbankingReportCriteriaTests.cs" />
     <Compile Include="Report\GetDataForMonthlyPayrollReportCriteriaTests.cs" />
     <Compile Include="Section\CheckSectionExistsCriteriaTests.cs" />
