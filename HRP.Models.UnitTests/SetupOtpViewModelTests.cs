@@ -11,11 +11,11 @@
             var model = new SetupOtpViewModel
             {
                 TextCode = "TextCode",
-                SystemName = "SystemName",
+                AppName = "AppName",
                 Username = "Username"
             };
 
-            Assert.Equal("otpauth://totp/{SystemName}:{Username}?secret={TextCode}&issuer={SystemName}", model.QrCodeText);
+            Assert.Equal("otpauth://totp/{AppName}:{Username}?secret={TextCode}&issuer={AppName}", model.QrCodeText);
         }
     }
 }
