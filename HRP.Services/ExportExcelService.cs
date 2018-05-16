@@ -407,9 +407,9 @@
 
                     worksheet.Cells[row, 42].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
                     worksheet.Cells[row, 43].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
-                    worksheet.Cells[row, 44].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
-                    worksheet.Cells[row, 45].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
-                    worksheet.Cells[row, 46].Value = ParseToDecimal(monthlyBasicAllowance.FitnessFirstAmount);
+                    worksheet.Cells[row, 44].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
+                    worksheet.Cells[row, 45].Value = ParseToDecimal(monthlyBasicAllowance.FitnessFirstAmount);
+                    worksheet.Cells[row, 46].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
                     worksheet.Cells[row, 47].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
                     worksheet.Cells[row, 48].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
                     row++;
@@ -508,9 +508,9 @@
 
                 worksheet.Cells[row, 42].Value = allowanceList.Sum(x => ParseToDecimal(x.AdditionAmount));
                 worksheet.Cells[row, 43].Value = allowanceList.Sum(x => ParseToDecimal(x.DeductionAmount));
-                worksheet.Cells[row, 44].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
-                worksheet.Cells[row, 45].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.RoomingChargesAmount));
-                worksheet.Cells[row, 46].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.FitnessFirstAmount));
+                worksheet.Cells[row, 44].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.RoomingChargesAmount));
+                worksheet.Cells[row, 45].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.FitnessFirstAmount));
+                worksheet.Cells[row, 46].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
                 worksheet.Cells[row, 47].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
                 worksheet.Cells[row, 48].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
