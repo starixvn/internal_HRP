@@ -15,7 +15,7 @@
                 Username = "Username"
             };
 
-            Assert.Equal("otpauth://totp/{AppName}:{Username}?secret={TextCode}&issuer={AppName}", model.QrCodeText);
+            Assert.Equal("otpauth://totp/AppName:Username?secret=TextCode&issuer=AppName", model.QrCodeText);
         }
     }
 }
