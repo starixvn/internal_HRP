@@ -388,6 +388,7 @@
     <Compile Include="Filters\HRPAuthorizeAttributeTests.cs" />
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />
     <Compile Include="Middlewares\ErrorHandlingMiddlewareTests.cs" />
+    <Compile Include="MockHtmlGenerator.cs" />
     <Compile Include="MockSession.cs" />
     <Compile Include="MockUrlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="Services\CryptoServiceTests.cs" />
     <Compile Include="Services\SessionServiceTests.cs" />
     <Compile Include="Services\ViewRenderServiceTests.cs" />
+    <Compile Include="TagHelpers\RequiredLabelTagHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
