@@ -71,16 +71,6 @@
                             var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrency.CurrencyId && x.ToCurrencyId == toCurrency.CurrencyId);
                             if (Model.CanUpdate)
                             {
-                                //if (isDisabled || fromCurrency.CurrencyCode == Constants.VNDCurrencyCode)
-                                //{
-                                //    disabled = "disabled";
-                                //}
-
-                                //if (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode)
-                                //{
-                                //    disabled = string.Empty;
-                                //}
-
                                 <td>
                                     @if ((!isDisabled && fromCurrency.CurrencyCode != Constants.VNDCurrencyCode) || 
                                         (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode))
