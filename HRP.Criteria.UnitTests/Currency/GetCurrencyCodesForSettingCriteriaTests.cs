@@ -16,5 +16,18 @@
             // Assert
             Assert.Equal("Currency_GetCurrencyCodesForSetting", actual);
         }
+
+        [Fact]
+        public void IsValid_WhenCall_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetCurrencyCodesForSettingCriteria();
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
+        }
     }
 }

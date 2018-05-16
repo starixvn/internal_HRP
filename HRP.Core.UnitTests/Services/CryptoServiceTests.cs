@@ -1,6 +1,5 @@
 ﻿namespace HRP.Core.UnitTests
 {
-    using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -143,7 +142,7 @@
         {
             var resourceName = "HRP.Core.UnitTests.Test.pfx";
             byte[] embeddedCert;
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            using (var stream = typeof(CryptoServiceTests).Assembly.GetManifestResourceStream(resourceName))
             {
                 embeddedCert = new byte[stream.Length];
                 stream.Read(embeddedCert, 0, (int)stream.Length);

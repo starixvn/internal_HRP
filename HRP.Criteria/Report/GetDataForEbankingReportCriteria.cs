@@ -15,6 +15,6 @@
 
         public override string GetSettingKey() => "Report_GetDataForEbankingReport";
 
-        public override bool IsValid() => CompanyId > 0;
+        public override bool IsValid() => UserId > 0 && CompanyId > 0;
     }
 }

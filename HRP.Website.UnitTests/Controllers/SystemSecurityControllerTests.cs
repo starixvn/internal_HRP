@@ -36,6 +36,7 @@
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.OldPassword);
             Assert.Null(viewModel.Password);
+            Assert.Null(viewModel.ConfirmPassword);
             Assert.True(viewModel.IsHost);
             Assert.False(viewModel.IsSuccessful);
             Assert.Null(viewModel.MessageResult);
