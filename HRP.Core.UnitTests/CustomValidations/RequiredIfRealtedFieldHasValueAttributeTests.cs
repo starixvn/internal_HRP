@@ -1,6 +1,5 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.CustomValidations
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -88,8 +87,16 @@
             // Assert
             Assert.Collection(
                 context.Attributes,
-                kvp => { Assert.Equal("data-val", kvp.Key); Assert.Equal("true", kvp.Value); },
-                kvp => { Assert.Equal("data-val-requiredifrelatedfieldhasvalue", kvp.Key); Assert.Equal("Required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("data-val", kvp.Key);
+                    Assert.Equal("true", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-requiredifrelatedfieldhasvalue", kvp.Key);
+                    Assert.Equal("Required", kvp.Value);
+                }
             );
         }
 

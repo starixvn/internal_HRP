@@ -1,6 +1,5 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.CustomValidations
 {
-    using System;
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
     using Microsoft.AspNetCore.Http;
@@ -15,19 +14,6 @@
 
     public class GenericCompareAttributeTests
     {
-        #region AddValidation
-
-        [Fact]
-        public void AddValidation_ContextIsNull_ThrowException()
-        {
-            // Arrange
-            var attribute = new GenericCompareAttribute();
-
-            // Act & Assert
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValidation(null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
-        }
-
         [Theory]
         [InlineData(GenericCompareOperator.None, "")]
         [InlineData(GenericCompareOperator.GreaterThan, "Start Date must be greater than End Date.")]
@@ -53,14 +39,28 @@
             // Assert
             Assert.Collection(
                 context.Attributes,
-                kvp => { Assert.Equal("data-val", kvp.Key); Assert.Equal("true", kvp.Value); },
-                kvp => { Assert.Equal("data-val-comparetopropertyname", kvp.Key); Assert.Equal("EndDate", kvp.Value); },
-                kvp => { Assert.Equal("data-val-genericcompare", kvp.Key); Assert.Equal(errorMessage, kvp.Value); },
-                kvp => { Assert.Equal("data-val-operatorname", kvp.Key); Assert.Equal(oper.ToString(), kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("data-val", kvp.Key);
+                    Assert.Equal("true", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-comparetopropertyname", kvp.Key);
+                    Assert.Equal("EndDate", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-genericcompare", kvp.Key);
+                    Assert.Equal(errorMessage, kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-operatorname", kvp.Key);
+                    Assert.Equal(oper.ToString(), kvp.Value);
+                }
             );
         }
-
-        #endregion AddValidation
 
         private static ClientModelValidationContext GetClientModelValidationContext()
         {

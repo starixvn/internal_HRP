@@ -34,11 +34,6 @@
 
         public void AddValidation(ClientModelValidationContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             MergeAttribute(context.Attributes, "data-val", "true");
             MergeAttribute(context.Attributes, "data-val-genericcompare", GetErrorMessage());
             MergeAttribute(context.Attributes, "data-val-comparetopropertyname", CompareToPropertyName);

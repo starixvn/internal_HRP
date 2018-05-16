@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.CustomValidations
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -87,8 +87,16 @@
             // Assert
             Assert.Collection(
                 context.Attributes,
-                kvp => { Assert.Equal("data-val", kvp.Key); Assert.Equal("true", kvp.Value); },
-                kvp => { Assert.Equal("data-val-requirednoneorall", kvp.Key); Assert.Equal("Required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("data-val", kvp.Key);
+                    Assert.Equal("true", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-requirednoneorall", kvp.Key);
+                    Assert.Equal("Required", kvp.Value);
+                }
             );
         }
 
@@ -113,15 +121,10 @@
 
         private class EmployeePayrollTest
         {
-            [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId), nameof(DirectBanking1BankTypeId) },
-                ErrorMessage = "Required")]
+            [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount) }, ErrorMessage = "Required")]
             public string DirectBanking1CurrencyCode { get; set; }
 
             public string DirectBanking1Amount { get; set; }
-
-            public int? DirectBanking1AccountId { get; set; }
-
-            public int? DirectBanking1BankTypeId { get; set; }
         }
     }
 }

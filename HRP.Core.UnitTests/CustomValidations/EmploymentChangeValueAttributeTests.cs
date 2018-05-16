@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.CustomValidations
 {
     using System;
     using System.Collections.Generic;
@@ -81,17 +81,6 @@
         #region AddValidation
 
         [Fact]
-        public void AddValidation_ContextIsNull_ThrowException()
-        {
-            // Arrange
-            var attribute = new EmploymentChangeValueAttribute();
-
-            // Act & Assert
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValidation(null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: context", ex.Message);
-        }
-
-        [Fact]
         public void AddValidation_ContextIsNotNull_SetsAttributesAsExpected()
         {
             // Arrange
@@ -109,10 +98,26 @@
             // Assert
             Assert.Collection(
                 context.Attributes,
-                kvp => { Assert.Equal("data-val", kvp.Key); Assert.Equal("true", kvp.Value); },
-                kvp => { Assert.Equal("data-val-employmentchange", kvp.Key); Assert.Equal("Required", kvp.Value); },
-                kvp => { Assert.Equal("data-val-newproperty", kvp.Key); Assert.Equal("NewProperty", kvp.Value); },
-                kvp => { Assert.Equal("data-val-oldproperty", kvp.Key); Assert.Equal("OldProperty", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("data-val", kvp.Key);
+                    Assert.Equal("true", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-employmentchange", kvp.Key);
+                    Assert.Equal("Required", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-newproperty", kvp.Key);
+                    Assert.Equal("NewProperty", kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("data-val-oldproperty", kvp.Key);
+                    Assert.Equal("OldProperty", kvp.Value);
+                }
             );
         }
 

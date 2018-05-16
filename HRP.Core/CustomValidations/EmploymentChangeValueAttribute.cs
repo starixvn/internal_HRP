@@ -28,11 +28,6 @@
 
         public void AddValidation(ClientModelValidationContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             MergeAttribute(context.Attributes, "data-val", "true");
             MergeAttribute(context.Attributes, "data-val-employmentchange", ErrorMessage);
             MergeAttribute(context.Attributes, "data-val-oldproperty", OldProperty);
