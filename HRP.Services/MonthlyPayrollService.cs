@@ -469,28 +469,28 @@
             var currencyId = monthlyPayrollBasicAllowance.CurrencyId.Value;
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceAmount,
-                monthlyPayrollBasicAllowance.SubsistenceCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.SubsistenceCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageAmount,
-                monthlyPayrollBasicAllowance.HomePassageCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.HomePassageCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingAmount,
-                monthlyPayrollBasicAllowance.HousingCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.HousingCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneAmount,
-                monthlyPayrollBasicAllowance.MobilePhoneCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.MobilePhoneCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HPIAmount,
-                monthlyPayrollBasicAllowance.HPICurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.HPICurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealAmount,
-                monthlyPayrollBasicAllowance.DutyMealCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.DutyMealCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentAmount,
-                monthlyPayrollBasicAllowance.SecondmentCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.SecondmentCurrencyId, currencyId);
 
             totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
-                monthlyPayrollBasicAllowance.OthersCurrencyId ?? 0, currencyId);
+                monthlyPayrollBasicAllowance.OthersCurrencyId, currencyId);
 
             totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0);
             monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
@@ -582,7 +582,7 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyCode, 0);
+            var afterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyCode);
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
 
             monthlyPayrollBasicAllowance.SubsistenceAfterAdjustmentAmount = 

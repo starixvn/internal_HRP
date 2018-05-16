@@ -39,7 +39,7 @@
             || (oldCurrency !== '' && $currency.val() !== '' && ($currency.val() !== oldCurrency || oldElementValue !== ''));
     }
 
-    function calculateBasicSalary() {
+    function calculateAutoBasicSalary() {
         var totalAmountCurrency = $('#BasicSalary_CurrencyId').val();
         var $basicSalary = $('#BasicSalary_Salary');
 
@@ -76,7 +76,7 @@
         }
     }
 
-    function calculateAmountForBanks() {
+    function calculateAutoAllowance() {
         var totalAmountCurrency = $('#Allowance_CurrencyId').val();
         var totalAmount = new BigNumber(Number($('#allowance-total-amount').val()));
 
@@ -129,7 +129,7 @@
             $totalAmount.valid();
         }
 
-        calculateAmountForBanks();
+        calculateAutoAllowance();
     }
 
     function convertToAllowanceCurrency(element, allowanceCurrency) {
@@ -482,13 +482,13 @@
         $('#BasicSalary_Salary, #BasicSalary_CurrencyId').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
-            calculateBasicSalary();
+            calculateAutoBasicSalary();
         });
 
         $('.basic-salary-calculate').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
-            calculateBasicSalary();
+            calculateAutoBasicSalary();
 
             $('#BasicSalary_Salary, #BasicSalary_CurrencyId').each(function (i, element) {
                 var $element = $(element);
@@ -501,7 +501,7 @@
         $('.allowance-calculate').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
-            calculateAmountForBanks();
+            calculateAutoAllowance();
 
             $('#allowance-total-amount, #Allowance_CurrencyId').each(function (i, element) {
                 var $element = $(element);
@@ -611,7 +611,7 @@
     function init() {
         vndCurrencyId = $('#VNDCurrencyId').val();
 
-        calculateBasicSalary();
+        calculateAutoBasicSalary();
         calculateAllowances();
         assignAddBankAccountButton();
 
