@@ -1,4 +1,5 @@
-﻿@using HRP.Resources
+﻿@using HRP.Core.Constants
+@using HRP.Resources
 @using HRP.Models.Currency
 @model CurrencySettingViewModel
 
@@ -64,36 +65,59 @@
                     var disabled = Model.CanUpdate ? string.Empty : "disabled";
                     <tr>
                         <td class="col-highlight bold">@fromCurrency.CurrencyCode</td>
+
                         @foreach (var toCurrency in Model.Currencies)
                         {
                             var rate = Model.CurrencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrency.CurrencyId && x.ToCurrencyId == toCurrency.CurrencyId);
                             if (Model.CanUpdate)
                             {
-                                if (isDisabled || fromCurrency.CurrencyCode == "VND")
-                                {
-                                    disabled = "disabled";
-                                }
+                                //if (isDisabled || fromCurrency.CurrencyCode == Constants.VNDCurrencyCode)
+                                //{
+                                //    disabled = "disabled";
+                                //}
 
-                                if (fromCurrency.CurrencyCode == "USD" && toCurrency.CurrencyCode == "VND")
-                                {
-                                    disabled = string.Empty;
-                                }
+                                //if (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode)
+                                //{
+                                //    disabled = string.Empty;
+                                //}
+
+                                <td>
+                                    @if ((!isDisabled && fromCurrency.CurrencyCode != Constants.VNDCurrencyCode) || 
+                                        (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode))
+                                    {
+                                        <input class="input rate" type="text" value="@rate?.ExchangeRateDisplay"
+                                           data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
+                                           name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
+                                    }
+                                    else
+                                    {
+                                        <input class="input rate" disabled type="text" value="@rate?.ExchangeRateDisplay"
+                                           data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
+                                           name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
+
+                                        <input class="input rate-real" type="hidden" value="@rate?.ExchangeRate"
+                                           data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
+                                           name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
+                                    }
+                                </td>
+
                                 isDisabled = true;
-                            }
 
-                            <td>
-                                <input class="input rate" @disabled type="text" value="@rate?.ExchangeRate"
+                            }
+                            else
+                            {
+                                <td>
+                                    <input class="input rate" disabled type="text" value="@rate?.ExchangeRateDisplay"
                                        data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
                                        name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
-                            </td>
-
+                                </td>
+                            }
                         }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
 </form>
 
 @if (Model.CanUpdate)
@@ -133,6 +157,7 @@
         <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
+        <script src="~/lib/bignumber.js/bignumber.js"></script>
         <script src="~/assets/js/currency-setting.js"></script>
     </environment>
     <environment exclude="Development">

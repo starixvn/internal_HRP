@@ -41,7 +41,7 @@ BEGIN
 	CREATE TABLE #ExchangeRate (
 		FromCurrencyId INT
 		,ToCurrencyId INT
-		,ExchangeRate DECIMAL(18, 5)
+		,ExchangeRate DECIMAL(20, 10)
 		)
 
 	EXEC sp_xml_preparedocument @idoc OUTPUT, @ExchangeRates
@@ -54,7 +54,7 @@ BEGIN
 	SELECT FromCurrencyId
 		,ToCurrencyId
 		,ExchangeRate
-	FROM OPENXML(@idoc, '/Root/Row', 1) WITH (FromCurrencyId INT, ToCurrencyId INT, ExchangeRate DECIMAL(18, 5)) AS data
+	FROM OPENXML(@idoc, '/Root/Row', 1) WITH (FromCurrencyId INT, ToCurrencyId INT, ExchangeRate DECIMAL(20, 10)) AS data
 
 	IF EXISTS (SELECT 1 FROM dbo.CurrencyExchangeRate cur WHERE MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
 		AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth))

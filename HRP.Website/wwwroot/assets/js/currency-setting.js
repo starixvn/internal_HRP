@@ -48,7 +48,7 @@
 
     function updateCurrencySetting() {
         var data = [];
-        $('.rate').each(function (index, e) {
+        $('.rate:enabled, .rate-real').each(function (index, e) {
             var element = $(e);
             data.push({
                 fromCurrencyId: element.data('from-currency'),
@@ -83,33 +83,47 @@
             $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]')
                 .inputmask({
                     alias: 'numeric',
-                    groupSeparator: '',
+                    groupSeparator: ',',
                     autoGroup: true,
                     digits: 5,
                     digitsOptional: true,
                     placeholder: '',
+                    allowMinus: false,
                     autoUnmask: true,
-                    allowMinus: false
+                    removeMaskOnSubmit: true
                 })
                 .on('change', function () {
+                    debugger;
                     var target = $(this);
                     var fromCurrency = target.data('from-currency');
                     var toCurrency = target.data('to-currency');
-                    var value = Number(target.val()).toFixed(5);
+                    var value;
+
+                    if (target.is(':disabled')) {
+                        value = new BigNumber($('.rate-real[data-from-currency="' + fromCurrency + '"][data-to-currency="' + toCurrency + '"]').val());
+                    } else {
+                        value = new BigNumber(Number(target.val()));
+                    }
+
 
                     if (toCurrency === baseCurrency) {
-                        if (Number(value) === 0) {
+                        if (value.equals(0)) {
                             $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val('');
+                            $('.rate-real[data-from-currency="' + fromCurrency + '"]').val('');
                             $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val('');
+                            $('.rate-real[data-to-currency="' + fromCurrency + '"]').val('');
                             return;
                         }
 
                         $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val(function () {
-                            var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
+                            var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
                             if (toCurrencyOnBaseCurrency === '' || Number(toCurrencyOnBaseCurrency) === 0)
                                 return;
 
-                            return round(value / toCurrencyOnBaseCurrency);
+                            var convertValue = value.div(toCurrencyOnBaseCurrency);
+                            $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(convertValue.round(10).toString());
+
+                            return convertValue.round(5).toFixed(5);
                         });
 
                         $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val(function () {
@@ -117,16 +131,22 @@
                             if (fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0)
                                 return;
 
-                            return round(fromCurrencyOnBaseCurrency / value);
+                            var convertValue = new BigNumber(fromCurrencyOnBaseCurrency).div(value);
+
+                            $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(convertValue.round(10).toString());
+                            return convertValue.round(5).toFixed(5);
                         });
 
-                        $('.rate:enabled[data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
+                        $('.rate-real[type="text"][data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
                             var $element = $(element);
-                            var elementValue = $element.inputmask('unmaskedvalue');
+                            var elementValue = $element.val();
                             if (elementValue === '' || Number(elementValue) === 0)
                                 return;
 
-                            $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(round(value / elementValue));
+                            var convertValue = value.div(elementValue);
+
+                            $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(5).toString());
+                            $('.rate-real[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(10).toString());
                         });
                     } else {
                         var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
@@ -134,18 +154,21 @@
 
                         if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0) {
                             $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val('');
+                            $('.rate-real[data-to-currency="' + toCurrency + '"]').val('');
                             $('.rate:disabled[data-from-currency="' + toCurrency + '"]').val('');
+                            $('.rate-real[data-from-currency="' + toCurrency + '"]').val('');
                             return;
                         }
 
-                        toCurrencyOnBaseCurrency.val(function () {
-                            return round(fromCurrencyOnBaseCurrency / value);
-                        });
+                        var convertValue = new BigNumber(fromCurrencyOnBaseCurrency).div(value);
+
+                        $('.rate-real[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(10).toString());
+                        toCurrencyOnBaseCurrency.val(convertValue.round(5).toFixed(5));
 
                         toCurrencyOnBaseCurrency.change();
                     }
 
-                    target.val(value);
+                    target.val(value.toFixed(5));
                 });
 
             $('#btn-save').on('click', function () {
