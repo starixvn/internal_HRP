@@ -279,7 +279,7 @@
                     <select class="control js-select2-disabled" asp-for="MonthlyBasicSalary.CashCurrencyId" disabled>
                         <option value="@Model.MonthlyBasicSalary.CurrencyId">@Model.MonthlyBasicSalary.CurrencyCode</option>
                     </select>
-                    <input type="text" class="control number highlighted bold js-numberOnly" asp-for="MonthlyBasicSalary.AfterAdjustmentAmount" disabled>
+                    <input type="text" class="control number highlighted bold js-afterAdjustmentAmount" asp-for="MonthlyBasicSalary.AfterAdjustmentAmount" disabled>
                 </div>
                 <div class="group-complex -layout-setting-2">
                     <div>@ViewLang.Reason</div>

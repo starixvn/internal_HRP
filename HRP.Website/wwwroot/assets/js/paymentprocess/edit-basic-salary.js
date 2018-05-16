@@ -278,6 +278,16 @@ var editBasicSalary = (function ($) {
             removeMaskOnSubmit: true
         });
 
+        $('.js-afterAdjustmentAmount').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
+            placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true
+        });
+
         $('.js-positiveNumberOnly').inputmask({
             alias: 'numeric',
             autoGroup: true,
