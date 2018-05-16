@@ -204,6 +204,7 @@ BEGIN
 		,maa.NoOfDays = a.NoOfDays
 		,maa.TotalAmount = a.TotalAmount
 		,maa.NetAllowance = a.NetAllowance
+		,maa.CurrencyId = a.CurrencyId
 	FROM dbo.MonthlyAllowanceAddition AS maa WITH (ROWLOCK, UPDLOCK)
 		INNER JOIN #addition AS a ON maa.PayrollId = a.PayrollId
 		AND maa.[Type] = a.[Type]
@@ -213,6 +214,7 @@ BEGIN
 		,mad.NoOfDays = d.NoOfDays
 		,mad.TotalAmount = d.TotalAmount
 		,mad.NetAllowance = d.NetAllowance
+		,mad.CurrencyId = d.CurrencyId
 	FROM dbo.MonthlyAllowanceDeduction AS mad WITH (ROWLOCK, UPDLOCK)
 		INNER JOIN #deduction AS d ON mad.PayrollId = d.PayrollId
 		AND mad.[Type] = d.[Type]

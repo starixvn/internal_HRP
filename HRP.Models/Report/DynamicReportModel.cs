@@ -67,13 +67,13 @@
 
         public string Company { get; set; }
 
-        public string CompanyChangeDate { get; set; }
+        public DateTime? CompanyChangeDate { get; set; }
 
         public string CompanyReason { get; set; }
 
         public string LocalCompany { get; set; }
 
-        public string LocalCompanyChangeDate { get; set; }
+        public DateTime? LocalCompanyChangeDate { get; set; }
 
         public string LocalCompanyReason { get; set; }
 
