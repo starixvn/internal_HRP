@@ -93,7 +93,6 @@
                     removeMaskOnSubmit: true
                 })
                 .on('change', function () {
-                    debugger;
                     var target = $(this);
                     var fromCurrency = target.data('from-currency');
                     var toCurrency = target.data('to-currency');
