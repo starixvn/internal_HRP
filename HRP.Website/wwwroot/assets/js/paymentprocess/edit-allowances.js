@@ -12,18 +12,27 @@
         return this.round(dp);
     };
 
-    BigNumber.prototype.toStringWithCurrency = function (currency) {
+    BigNumber.prototype.toStringWithCurrency = function (currency, dp) {
         if (currency === vietnamCurrencyId)
             return this.toString();
 
-        return this.toFixed(2);
+        return this.toFixed(dp);
     };
 
     function validatedInvalidRelatedElements(element) {
         var group = $(element).data('group');
         var validateElements = $('.input-validation-error[data-group="' + group + '"]').not(element);
+
         if (validateElements.length > 0) {
             validateElements.valid();
+        }
+    }
+
+    function roundingAmount($currency, $amount, dp) {
+        if ($currency.val() !== '' && $amount.val() !== '') {
+            var number = new BigNumber($amount.val());
+            var currency = $currency.val();
+            $amount.val(number.roundWithCurrency(dp, currency).toStringWithCurrency(currency, dp));
         }
     }
 
@@ -56,15 +65,15 @@
         var fitnessFirstCurrencyId = $('#BasicAllowance_FitnessFirstCurrencyId').val();
         if (fitnessFirstCurrencyId !== '') {
             var fitnessFirstAmount = new BigNumber(Number($('#BasicAllowance_FitnessFirstAmount').val()));
-            var exchangeRate = Number($('input[data-from-currency="' + fitnessFirstCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
-            totalAmount = totalAmount.minus(fitnessFirstAmount.mul(exchangeRate));
+            var fitnessFirstExchangeRate = Number($('input[data-from-currency="' + fitnessFirstCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
+            totalAmount = totalAmount.minus(fitnessFirstAmount.mul(fitnessFirstExchangeRate));
         }
 
         var roomingChargesCurrencyId = $('#BasicAllowance_RoomingChargesCurrencyId').val();
         if (roomingChargesCurrencyId !== '') {
             var roomingChargesAmount = new BigNumber(Number($('#BasicAllowance_RoomingChargesAmount').val()));
-            var exchangeRate = Number($('input[data-from-currency="' + roomingChargesCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
-            totalAmount = totalAmount.minus(roomingChargesAmount.mul(exchangeRate));
+            var roomingChargesExchangeRate = Number($('input[data-from-currency="' + roomingChargesCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
+            totalAmount = totalAmount.minus(roomingChargesAmount.mul(roomingChargesExchangeRate));
         }
 
         var totalAmountDisplay = totalAmount.roundWithCurrency(0, totalAmountCurrencyId).toString();
@@ -81,7 +90,7 @@
             totalNetAmount = totalNetAmount.minus(dstAmount.mul(exchangeRate));
         }
 
-        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(0, totalAmountCurrencyId).toString());
+        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId, 2));
     }
 
     function calculateAutoAllowance() {
@@ -117,7 +126,7 @@
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmount')
+        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmountDisplay, #Allowance_DSTNetSalaryAmount, #Allowance_TotalNetAmount')
             .inputmask({
                 alias: 'numeric',
                 autoGroup: true,
@@ -259,6 +268,10 @@
         }).change();
 
         $('.allowance-calculate').on('change', function (e) {
+            var dataCalculateGroup = $(this).data('calculate-for');
+            var $currency = $('select[data-calculate-for="' + dataCalculateGroup + '"]');
+            var $amount = $('input[type="text"][data-calculate-for="' + dataCalculateGroup + '"]');
+            roundingAmount($currency, $amount, 0);
             validatedInvalidRelatedElements(e.target);
             calculateAutoAllowance();
         });
@@ -274,7 +287,7 @@
 
                     var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
                     var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
-                    $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                    $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
                 }
             } else {
                 $unitAmount.val('');
@@ -302,11 +315,11 @@
                 if ($noOfDays.val() !== '') {
                     totalAmount = unitAmount.mul($noOfDays.val());
                     $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
                 } else {
                     totalAmount = unitAmount;
                     $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId));
+                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
                 }
 
                 if (currencyId !== '' && totalAmountCurrencyId !== '') {
@@ -337,6 +350,7 @@
         });
 
         $('#Allowance_DSTNetSalaryAmount, #Allowance_DSTNetSalaryCurrencyId').on('change', function (e) {
+            roundingAmount($('#Allowance_DSTNetSalaryCurrencyId'), $('#Allowance_DSTNetSalaryAmount'), 2)
             validatedInvalidRelatedElements(e.target);
             calculateTotalNetAmount();
         });

@@ -2,7 +2,7 @@
     var vietNamCurrencyId;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === vietNamCurrencyId)
+        if (currency == vietNamCurrencyId)
             return this.round(0);
 
         return this.round(dp);
@@ -116,24 +116,22 @@
 
             $('.rate-real[type="text"]')
                 .on('change', function () {
+                    debugger;
                     var target = $(this);
                     var fromCurrency = target.data('from-currency');
                     var toCurrency = target.data('to-currency');
-                    var value;
-
-                    if (target.is(':disabled')) {
-                        value = new BigNumber($('.rate-real[data-from-currency="' + fromCurrency + '"][data-to-currency="' + toCurrency + '"]').val());
-                    } else {
-                        value = new BigNumber(Number(target.val()));
-                    }
-
+                    var value = new BigNumber(Number(target.val()));
 
                     if (toCurrency === baseCurrency) {
                         if (value.equals(0)) {
                             $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val('');
-                            $('.rate-real[data-from-currency="' + fromCurrency + '"]').val('');
-                            $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val('');
-                            $('.rate-real[data-to-currency="' + fromCurrency + '"]').val('');
+                            $('.rate-real:hidden[data-from-currency="' + fromCurrency + '"]').val('');
+
+                            if (fromCurrency !== toCurrency) {
+                                $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val('');
+                                $('.rate-real:hidden[data-to-currency="' + fromCurrency + '"]').val('');
+                            }
+
                             return;
                         }
 
@@ -176,11 +174,11 @@
 
                         var fromCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').val();
 
-                        if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0) {
+                        if (value.equals(0) || fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0) {
                             $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val('');
-                            $('.rate-real[data-to-currency="' + toCurrency + '"]').val('');
+                            $('.rate-real:hidden[data-to-currency="' + toCurrency + '"]').val('');
                             $('.rate:disabled[data-from-currency="' + toCurrency + '"]').val('');
-                            $('.rate-real[data-from-currency="' + toCurrency + '"]').val('');
+                            $('.rate-real:hidden[data-from-currency="' + toCurrency + '"]').val('');
                             return;
                         }
 

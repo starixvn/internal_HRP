@@ -112,6 +112,8 @@
 
         public string AfterAdjustmentAmount { get; set; }
 
+        public string AfterAdjustmentAmountDisplay { get; set; }
+
         public string Reason { get; set; }
     }
 }

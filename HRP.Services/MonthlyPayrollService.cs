@@ -582,7 +582,7 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(totalAmount / daysInMonth * (endDay - startDay + 1), monthlyPayrollBasicAllowance.CurrencyCode);
+            var afterAdjustmentAmount = totalAmount / daysInMonth * (endDay - startDay + 1);
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
 
             monthlyPayrollBasicAllowance.SubsistenceAfterAdjustmentAmount = 
@@ -691,6 +691,11 @@
             basicAllowance.DutyMealAmount = cryptoService.Decrypt(basicAllowance.DutyMealAmount);
             basicAllowance.SecondmentAmount = cryptoService.Decrypt(basicAllowance.SecondmentAmount);
             basicAllowance.OthersAmount = cryptoService.Decrypt(basicAllowance.OthersAmount);
+
+            if(basicAllowance.CurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.AfterAdjustmentAmount)) {
+                basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount), basicAllowance.CurrencyCode)
+                    .ToString(CultureInfo.InvariantCulture);
+            }
         }
 
         private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
@@ -984,7 +989,7 @@
                 var totalNetAmount = totalAmount -
                     CalculationService.ConvertAmount(currencyExchangeRates, monthlyAllowance.DSTNetSalaryAmount, monthlyAllowance.DSTNetSalaryCurrencyId.Value, monthlyAllowance.CurrencyId.Value);
 
-                monthlyAllowance.TotalNetAmount = CalculationService.RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture);
+                monthlyAllowance.TotalNetAmount = CalculationService.RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyCode).ToString(CultureInfo.InvariantCulture);
             }
             else
             {
