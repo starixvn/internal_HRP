@@ -48,7 +48,7 @@
             var authController = GetAuthController();
 
             // Act
-            var actual = authController.Login();
+            authController.Login();
 
             // Assert
             sessionService.Received().ClearAll();

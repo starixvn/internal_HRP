@@ -461,42 +461,40 @@
             DateTime? groupEndDate)
         {
             decimal totalAmount = 0;
-            if (!monthlyPayrollBasicAllowance.CurrencyId.HasValue)
+            if (monthlyPayrollBasicAllowance.CurrencyId.HasValue)
             {
-                return;
+                var currencyId = monthlyPayrollBasicAllowance.CurrencyId.Value;
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceAmount,
+                    monthlyPayrollBasicAllowance.SubsistenceCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageAmount,
+                    monthlyPayrollBasicAllowance.HomePassageCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingAmount,
+                    monthlyPayrollBasicAllowance.HousingCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneAmount,
+                    monthlyPayrollBasicAllowance.MobilePhoneCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HPIAmount,
+                    monthlyPayrollBasicAllowance.HPICurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealAmount,
+                    monthlyPayrollBasicAllowance.DutyMealCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentAmount,
+                    monthlyPayrollBasicAllowance.SecondmentCurrencyId, currencyId);
+
+                totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
+                    monthlyPayrollBasicAllowance.OthersCurrencyId, currencyId);
+
+                totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0);
+                monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
+
+                CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate, currencyExchangeRates);
+                CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
             }
-
-            var currencyId = monthlyPayrollBasicAllowance.CurrencyId.Value;
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SubsistenceAmount,
-                monthlyPayrollBasicAllowance.SubsistenceCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HomePassageAmount,
-                monthlyPayrollBasicAllowance.HomePassageCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HousingAmount,
-                monthlyPayrollBasicAllowance.HousingCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.MobilePhoneAmount,
-                monthlyPayrollBasicAllowance.MobilePhoneCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.HPIAmount,
-                monthlyPayrollBasicAllowance.HPICurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.DutyMealAmount,
-                monthlyPayrollBasicAllowance.DutyMealCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.SecondmentAmount,
-                monthlyPayrollBasicAllowance.SecondmentCurrencyId, currencyId);
-
-            totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
-                monthlyPayrollBasicAllowance.OthersCurrencyId, currencyId);
-
-            totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0);
-            monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
-
-            CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate, currencyExchangeRates);
-            CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
         }
 
         public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(

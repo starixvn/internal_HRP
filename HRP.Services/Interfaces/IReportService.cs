@@ -18,8 +18,6 @@
             DateTime selectedTime,
             string selectedPaymentTransactions);
 
-        IEnumerable<ColumnGroup> GetAvailableColumnsList();
-
         Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId);
 
         Task<IEnumerable<DynamicReportModel>> GetEmployeeDataForDynamicReport(int companyId, string employeeStatusIds);

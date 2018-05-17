@@ -5,6 +5,7 @@
         Ebanking = 1,
         DirectBanking1,
         DirectBanking2,
-        Cash
+        Cash,
+        Default
     }
 }
