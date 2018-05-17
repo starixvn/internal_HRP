@@ -1,5 +1,8 @@
 ﻿namespace HRP.Core.UnitTests.CustomValidations
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using HRP.Core.CustomValidations;
     using HRP.Core.Enumerations;
     using Microsoft.AspNetCore.Http;
@@ -14,6 +17,37 @@
 
     public class GenericCompareAttributeTests
     {
+        [Fact]
+        public void IsValid_ValueIsNotNull_ReturnSuccess()
+        {
+            // Arrange
+            var validationResults = new List<ValidationResult>();
+            var model = new EmploymentTest { NewValue = 1 };
+            var context = new ValidationContext(model);
+
+            // Act
+            Validator.TryValidateObject(model, context, validationResults, true);
+
+            // Assert
+            Assert.Empty(validationResults);
+        }
+
+        [Fact]
+        public void IsValid_NewValueIsLessThanOldValue_ReturnError()
+        {
+            // Arrange
+            var validationResults = new List<ValidationResult>();
+            var model = new EmploymentTest { OldValue = 2 , NewValue = 1 };
+            var context = new ValidationContext(model);
+
+            // Act
+            Validator.TryValidateObject(model, context, validationResults, true);
+
+            // Assert
+            Assert.Single(validationResults);
+            Assert.Equal("Old value must be greater than New value.", validationResults.First().ErrorMessage);
+        }
+
         [Theory]
         [InlineData(GenericCompareOperator.None, "")]
         [InlineData(GenericCompareOperator.GreaterThan, "Start Date must be greater than End Date.")]
@@ -79,6 +113,18 @@
                  metadata,
                  metadataProvider,
                  new AttributeDictionary());
+        }
+
+        private class EmploymentTest
+        {
+            public int? OldValue { get; set; }
+
+            [GenericCompare(
+                CompareToPropertyName = nameof(OldValue),
+                DisplayName = "Old value",
+                OtherPropertyDisplayName = "New value",
+                Operator = GenericCompareOperator.GreaterThan)]
+            public int NewValue { get; set; }
         }
     }
 }

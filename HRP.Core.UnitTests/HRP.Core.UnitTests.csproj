@@ -384,7 +384,6 @@
     <Compile Include="CustomValidations\RequiredIfRealtedFieldHasValueAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredIfRelatedFieldIsTrueAttributeTests.cs" />
     <Compile Include="CustomValidations\RequiredNoneOrAllAttributeTests.cs" />
-    <Compile Include="Enumerations\BankTypesTests.cs" />
     <Compile Include="Filters\HRPActionFilterAttributeTests.cs" />
     <Compile Include="Filters\HRPAuthorizeAttributeTests.cs" />
     <Compile Include="Filters\HRPPermissionAttributeTests.cs" />

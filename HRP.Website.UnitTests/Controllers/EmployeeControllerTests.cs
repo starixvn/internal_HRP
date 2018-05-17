@@ -161,7 +161,7 @@
                     new SelectList(new List<string> { "item3" }, "val3", "text3"),
                     new SelectList(new List<string> { "item4" }, "val4", "text4")
                 );
-            var filter = new CachingFilterViewModel();
+            var filter = new CachingFilterViewModel { DepartmentIds = "1,2", EmployeeId = 1, EmployeeName = "tim.trinh", EmploymentStatusIds = "1,2" };
 
             var employeeController = GetEmployeeController();
             employeeService.GetDataToCreateEmployeeAsync().Returns(tuple);
