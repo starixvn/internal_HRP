@@ -292,7 +292,7 @@
                     DutyMealCurrencyId = 1,
                     DutyMealAmount = "1000",
                     AllowanceCashCurrencyId = 1,
-                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.Cash
+                    AllowanceAutoCalculateOn = PayrollAutoCalculateOn.Default
                 }
             };
         }

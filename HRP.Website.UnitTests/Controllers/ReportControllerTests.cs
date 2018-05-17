@@ -48,7 +48,7 @@
                     IsActive = true,
                     RefName = ReferenceResource.PaymentTransactionEbanking,
                     ResourceId = (int)BankTypes.Ebanking,
-                    Value = ((int)BankTypes.Ebanking).ToString()
+                    Value = BankTypes.DirectBanking.GetDisplayName()
                 }
             };
 
@@ -83,15 +83,15 @@
                 {
                     IsActive = true,
                     RefName = ReferenceResource.PaymentTransactionDirectBanking,
-                    ResourceId = 1,
-                    Value = "1"
+                    ResourceId = (int)BankTypes.DirectBanking,
+                    Value = BankTypes.DirectBanking.GetDisplayName()
                 },
                 new ReferenceResourceModel
                 {
                     IsActive = true,
                     RefName = ReferenceResource.PaymentTransactionCash,
-                    ResourceId = 1,
-                    Value = "1"
+                    ResourceId = (int)BankTypes.Cash,
+                    Value = BankTypes.Cash.GetDisplayName()
                 }
             };
 
@@ -174,7 +174,8 @@
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                TypeOfPayment = PaymentType.BasicSalary
             };
 
             var reportController = GetReportController();
@@ -183,6 +184,7 @@
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
 
             //Assert
+            Assert.Equal(PaymentType.BasicSalary.GetDisplayName(), bankInReportViewModel.TypeOfPayment.GetDisplayName());
             Assert.IsType<RedirectToActionResult>(actual);
         }
 
@@ -230,7 +232,8 @@
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                TypeOfPayment = PaymentType.Allowances
             };
 
             var reportController = GetReportController();
@@ -239,6 +242,7 @@
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);
 
             //Assert
+            Assert.Equal(PaymentType.Allowances.GetDisplayName(), bankInReportViewModel.TypeOfPayment.GetDisplayName());
             Assert.IsType<RedirectToActionResult>(actual);
         }
 
