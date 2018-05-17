@@ -395,6 +395,7 @@
     <Compile Include="Repository\BaseRepositoryTests.cs" />
     <Compile Include="Services\BaseMailServiceTests.cs" />
     <Compile Include="Services\BaseServiceTests.cs" />
+    <Compile Include="Services\CertificateServiceTests.cs" />
     <Compile Include="Services\CryptoServiceTests.cs" />
     <Compile Include="Services\SessionServiceTests.cs" />
     <Compile Include="Services\ViewRenderServiceTests.cs" />
@@ -404,9 +405,11 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="App_Data\SecretKey.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="HRP.Core.UnitTests.ruleset" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Test.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj">

@@ -44,6 +44,7 @@ namespace HRP.Website.Controllers
         }
 
         [HRPAuthorize]
+        [ServiceFilter(typeof(HRPActionFilterAttribute))]
         public async Task<IActionResult> Index(AccountTab tab = AccountTab.Profile)
         {
             var user = await userService.GetUserByUsernameAsync(sessionService.Username);

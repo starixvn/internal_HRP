@@ -140,7 +140,7 @@
 
         private static X509Certificate2 GetX509Certificate2()
         {
-            var resourceName = "HRP.Core.UnitTests.Test.pfx";
+            var resourceName = "HRP.Core.UnitTests.App_Data.SecretKey.pfx";
             byte[] embeddedCert;
             using (var stream = typeof(CryptoServiceTests).Assembly.GetManifestResourceStream(resourceName))
             {
