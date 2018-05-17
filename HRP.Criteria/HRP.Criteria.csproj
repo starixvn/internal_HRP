@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
   </ItemGroup>
 
 </Project>

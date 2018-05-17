@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
     using HRP.Core.Filters;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -56,14 +57,16 @@
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Host)]
         public async Task<IActionResult> Edit(DateTime selectedTime, IEnumerable<CurrencyExchangeRateModel> exchangeRates)
         {
-            var criteria = new UpdateExchangeRatesCriteria(exchangeRates)
+            var criteria = new UpdateExchangeRatesCriteria
             {
                 ExchangeRateMonth = selectedTime,
+                ExchangeRates = exchangeRates.ToXML().ToString(),
                 UpdatedBy = sessionService.UserId
             };
 
-            var result = await baseService.ExecuteNonQueryAsync(criteria);
-            return Json(result);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+
+            return Json(commandResult);
         }
 
         [HttpGet]

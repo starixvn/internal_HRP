@@ -1,8 +1,6 @@
 ﻿namespace HRP.Criteria.UnitTests.Currency
 {
     using System;
-    using System.Linq;
-    using HRP.Models.Currency;
     using Xunit;
 
     public class UpdateExchangeRatesCriteriaTest
@@ -10,7 +8,7 @@
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
-            var criteria = new UpdateExchangeRatesCriteria(Enumerable.Empty<CurrencyExchangeRateModel>());
+            var criteria = new UpdateExchangeRatesCriteria();
             var expected = "Currency_UpdateExchangeRates";
 
             var actual = criteria.GetSettingKey();
@@ -18,9 +16,9 @@
         }
 
         [Fact]
-        public void IsValid_ValidData_ReturnTrue()
+        public void IsValid_ParamsAreValid_ReturnTrue()
         {
-            var criteria = new UpdateExchangeRatesCriteria(Enumerable.Empty<CurrencyExchangeRateModel>())
+            var criteria = new UpdateExchangeRatesCriteria
             {
                 ExchangeRateMonth = DateTime.Today,
                 ExchangeRates = "<root></root>",
@@ -30,27 +28,17 @@
             Assert.True(criteria.IsValid());
         }
 
-        [Fact]
-        public void IsValid_InvalidUserId_ReturnFalse()
+        [Theory]
+        [InlineData(0, "<root></root>")]
+        [InlineData(1, "")]
+        [InlineData(0, "")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int userId, string exchangeRates)
         {
-            var criteria = new UpdateExchangeRatesCriteria(Enumerable.Empty<CurrencyExchangeRateModel>())
+            var criteria = new UpdateExchangeRatesCriteria
             {
                 ExchangeRateMonth = DateTime.Today,
-                ExchangeRates = "<root></root>",
-                UpdatedBy = 0
-            };
-
-            Assert.False(criteria.IsValid());
-        }
-
-        [Fact]
-        public void IsValid_InvalidExchangeRatesData_ReturnFalse()
-        {
-            var criteria = new UpdateExchangeRatesCriteria(Enumerable.Empty<CurrencyExchangeRateModel>())
-            {
-                ExchangeRateMonth = DateTime.Today,
-                ExchangeRates = string.Empty,
-                UpdatedBy = 1
+                ExchangeRates = exchangeRates,
+                UpdatedBy = userId
             };
 
             Assert.False(criteria.IsValid());

@@ -300,6 +300,7 @@
     <None Include="app.config" />
     <None Include="HRP.Services.UnitTests.ruleset" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="TemplateTest.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

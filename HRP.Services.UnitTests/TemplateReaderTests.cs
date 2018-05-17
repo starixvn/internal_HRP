@@ -20,6 +20,24 @@
         private const int DSTNetSalaryHeaderRow = 4;
         private ICryptoService cryptoService;
 
+        [Fact]
+        public void CreateSheet_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var resourceName = "HRP.Services.UnitTests.TemplateTest.xlsx";
+            var templateReader = GetTemplateReader();
+
+            using (var stream = GetType().Assembly.GetManifestResourceStream(resourceName))
+            {
+                // Act
+                var actual = templateReader.CreateSheet(stream);
+
+                // Assert
+                Assert.NotNull(actual);
+                Assert.IsAssignableFrom<ISheet>(actual);
+            }
+        }
+
         #region ReadAttendance
 
         [Fact]
