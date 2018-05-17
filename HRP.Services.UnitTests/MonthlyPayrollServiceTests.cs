@@ -263,12 +263,17 @@
         public async Task EditMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
+            var viewModel = new EditMonthlySalaryViewModel
+            {
+                Additions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                Deductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() }
+            };
             var expected = new CommandResult();
             var monthlyPayrollService = GetMonthlyPayrollService();
             baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlySalaryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(new EditMonthlySalaryViewModel());
+            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -293,6 +298,8 @@
             Assert.Equal(cipherText, criteria.DirectBanking1Amount);
             Assert.Equal(cipherText, criteria.DirectBanking2Amount);
             Assert.Equal(cipherText, criteria.CashAmount);
+            Assert.Equal(cipherText, criteria.AdditionAmount);
+            Assert.Equal(cipherText, criteria.DeductionAmount);
         }
 
         #endregion EditMonthlySalaryAsync
@@ -301,7 +308,7 @@
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
             // Arrange
-            var allowance = new MonthlyAllowanceModel();
+            var allowance = new MonthlyAllowanceModel { CurrencyId = 1 };
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
             var additions = new List<MonthlyAllowanceAdditionModel>
             {
@@ -331,7 +338,7 @@
             };
 
             var monthlyPayrollService = GetMonthlyPayrollService();
-            cryptoService.Decrypt(Arg.Any<string>()).Returns(string.Empty);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns("1");
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
                 .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
                 (allowance, additions, deductions, basicAllowance));
@@ -388,8 +395,11 @@
             Assert.True(actual.IsSuccessful);
         }
 
-        [Fact]
-        public void CalculateMonthlyBasicAllowance_StartDateInMonth_ReturnExpectedResult()
+        [Theory]
+        [InlineData(PayrollAutoCalculateOn.DirectBanking1)]
+        [InlineData(PayrollAutoCalculateOn.DirectBanking2)]
+        [InlineData(PayrollAutoCalculateOn.Cash)]
+        public void CalculateMonthlyBasicAllowance_StartDateInMonth_ReturnExpectedResult(PayrollAutoCalculateOn payrollAutoCalculateOn)
         {
             var monthlyPayrollService = GetMonthlyPayrollService();
             var payrollId = 1;
@@ -403,9 +413,11 @@
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
                 PayrollId = payrollId,
-                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                AutoCalculateOn = payrollAutoCalculateOn,
                 CurrencyId = 1,
                 CashCurrencyId = 1,
+                DirectBanking1CurrencyId = 1,
+                DirectBanking2CurrencyId = 1,
                 SubsistenceAmount = "2000",
                 SubsistenceCurrencyId = 1
             };
@@ -502,8 +514,11 @@
             Assert.NotNull(basicAllowance.Reason);
         }
 
-        [Fact]
-        public void InitializeMonthlyAllowance_ValidDate_ReturnModel()
+        [Theory]
+        [InlineData(PayrollAutoCalculateOn.DirectBanking1)]
+        [InlineData(PayrollAutoCalculateOn.DirectBanking2)]
+        [InlineData(PayrollAutoCalculateOn.Cash)]
+        public void InitializeMonthlyAllowance_ValidDate_ReturnModel(PayrollAutoCalculateOn payrollAutoCalculateOn)
         {
             // Arrage
             var monthlyPayrollService = GetMonthlyPayrollService();
@@ -521,9 +536,11 @@
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
                 PayrollId = payrollId,
-                AutoCalculateOn = PayrollAutoCalculateOn.Cash,
+                AutoCalculateOn = payrollAutoCalculateOn,
                 CurrencyId = 1,
                 CashCurrencyId = 1,
+                DirectBanking1CurrencyId = 1,
+                DirectBanking2CurrencyId = 1,
                 SubsistenceAmount = "2000",
                 SubsistenceCurrencyId = 1,
                 TotalAmount = "2000",
