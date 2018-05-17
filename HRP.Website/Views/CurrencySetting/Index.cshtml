@@ -46,6 +46,12 @@
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyId" id="base-currency" />
 <input type="hidden" asp-for="CanUpdate" />
 
+@{ 
+    var vndCurrencyId = Model.Currencies.FirstOrDefault(x => x.CurrencyCode == Constants.VNDCurrencyCode)?.CurrencyId;
+}
+
+<input type="hidden" id="vndCurrencyId" value="@vndCurrencyId" />
+
 <form id="currency-form" asp-action="Edit">
     <div>
         <table id="currency-table" class="table table-bordered table-hover">
@@ -75,13 +81,13 @@
                                     @if ((!isDisabled && fromCurrency.CurrencyCode != Constants.VNDCurrencyCode) || 
                                         (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode))
                                     {
-                                        <input class="input rate" type="text" value="@rate?.ExchangeRateDisplay"
+                                        <input class="input rate-real" type="text" value="@rate?.GetExchangeRateDisplay(vndCurrencyId)"
                                            data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
                                            name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
                                     }
                                     else
                                     {
-                                        <input class="input rate" disabled type="text" value="@rate?.ExchangeRateDisplay"
+                                        <input class="input rate" disabled type="text" value="@rate?.GetExchangeRateDisplay(vndCurrencyId)"
                                            data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
                                            name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
 
@@ -97,7 +103,7 @@
                             else
                             {
                                 <td>
-                                    <input class="input rate" disabled type="text" value="@rate?.ExchangeRateDisplay"
+                                    <input class="input rate" disabled type="text" value="@rate?.GetExchangeRateDisplay(vndCurrencyId)"
                                        data-from-currency="@fromCurrency.CurrencyId" data-to-currency="@toCurrency.CurrencyId"
                                        name="@fromCurrency.CurrencyCode-@toCurrency.CurrencyCode" />
                                 </td>
@@ -151,6 +157,7 @@
         <script src="~/assets/js/currency-setting.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/bignumber.js/bignumber.min.js"></script>
         <script src="~/assets/bundles/currency/js/currency-setting.min.js"></script>
     </environment>
 }

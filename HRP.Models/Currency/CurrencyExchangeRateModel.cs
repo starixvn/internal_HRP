@@ -10,17 +10,14 @@
 
         public decimal? ExchangeRate { get; set; }
 
-        public decimal? ExchangeRateDisplay
+        public decimal? GetExchangeRateDisplay(int? vndCurrencyId)
         {
-            get
+            if (ExchangeRate.HasValue)
             {
-                if (ExchangeRate.HasValue)
-                {
-                    return Math.Round(ExchangeRate.Value, 5, MidpointRounding.AwayFromZero);
-                }
-
-                return null;
+                return Math.Round(ExchangeRate.Value, ToCurrencyId == vndCurrencyId ? 0 : 5, MidpointRounding.AwayFromZero);
             }
+
+            return null;
         }
     }
 }

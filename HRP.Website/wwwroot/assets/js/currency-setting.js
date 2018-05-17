@@ -1,4 +1,13 @@
 ﻿var currencySetting = (function ($, commonFunctions) {
+    var vietNamCurrencyId;
+
+    BigNumber.prototype.roundWithCurrency = function (dp, currency) {
+        if (currency === vietNamCurrencyId)
+            return this.round(0);
+
+        return this.round(dp);
+    };
+
     function round(value) {
         return Number(Math.round(value + 'e5') + 'e-5').toFixed(5);
     }
@@ -48,7 +57,7 @@
 
     function updateCurrencySetting() {
         var data = [];
-        $('.rate:enabled, .rate-real').each(function (index, e) {
+        $('.rate-real').each(function (index, e) {
             var element = $(e);
             data.push({
                 fromCurrencyId: element.data('from-currency'),
@@ -77,21 +86,35 @@
     }
 
     function initModule() {
+        vietNamCurrencyId = $('#vndCurrencyId').val()
         var baseCurrency = Number($('#base-currency').val());
 
         if ($('#CanUpdate').val() === 'True') {
-            $('.rate:enabled, .rate:disabled[data-to-currency="' + baseCurrency + '"]')
-                .inputmask({
-                    alias: 'numeric',
-                    groupSeparator: ',',
-                    autoGroup: true,
-                    digits: 5,
-                    digitsOptional: true,
-                    placeholder: '',
-                    allowMinus: false,
-                    autoUnmask: true,
-                    removeMaskOnSubmit: true
-                })
+            var $rateToVND = $('.rate[data-to-currency="' + vietNamCurrencyId + '"], .rate-real[type="text"][data-to-currency="' + vietNamCurrencyId + '"]');
+            $rateToVND.inputmask({
+                alias: 'numeric',
+                autoGroup: true,
+                digits: 0,
+                placeholder: '',
+                groupSeparator: ',',
+                autoUnmask: true,
+                allowMinus: false,
+                removeMaskOnSubmit: true
+            })
+
+            $('.rate-real[type="text"]').not($rateToVND).inputmask({
+                alias: 'numeric',
+                groupSeparator: ',',
+                autoGroup: true,
+                digits: 5,
+                digitsOptional: true,
+                placeholder: '',
+                allowMinus: false,
+                autoUnmask: true,
+                removeMaskOnSubmit: true
+            });
+
+            $('.rate-real[type="text"]')
                 .on('change', function () {
                     var target = $(this);
                     var fromCurrency = target.data('from-currency');
@@ -115,25 +138,25 @@
                         }
 
                         $('.rate:disabled[data-from-currency="' + fromCurrency + '"]').val(function () {
-                            var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
+                            var toCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
                             if (toCurrencyOnBaseCurrency === '' || Number(toCurrencyOnBaseCurrency) === 0)
                                 return;
 
                             var convertValue = value.div(toCurrencyOnBaseCurrency);
                             $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(convertValue.round(10).toString());
 
-                            return convertValue.round(5).toFixed(5);
+                            return convertValue.roundWithCurrency(5, $(this).data('to-currency')).toFixed(5);
                         });
 
                         $('.rate:disabled[data-to-currency="' + fromCurrency + '"]').val(function () {
-                            var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
+                            var fromCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
                             if (fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0)
                                 return;
 
                             var convertValue = new BigNumber(fromCurrencyOnBaseCurrency).div(value);
 
                             $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(convertValue.round(10).toString());
-                            return convertValue.round(5).toFixed(5);
+                            return convertValue.roundWithCurrency(5, $(this).data('to-currency')).toFixed(5);
                         });
 
                         $('.rate-real[type="text"][data-from-currency="' + fromCurrency + '"]').not(target).each(function (index, element) {
@@ -144,12 +167,14 @@
 
                             var convertValue = value.div(elementValue);
 
-                            $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(5).toString());
+                            $('.rate:disabled[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.roundWithCurrency(5, baseCurrency).toString());
                             $('.rate-real[data-from-currency="' + $element.data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(10).toString());
                         });
                     } else {
-                        var toCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
-                        var fromCurrencyOnBaseCurrency = $('.rate[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').inputmask('unmaskedvalue');
+                        var $toCurrencyOnBaseCurrencyDisplay = $('.rate[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
+                        var $toCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]');
+
+                        var fromCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + fromCurrency + '"][data-to-currency="' + baseCurrency + '"]').val();
 
                         if (isNaN(value) || fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0) {
                             $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val('');
@@ -160,11 +185,32 @@
                         }
 
                         var convertValue = new BigNumber(fromCurrencyOnBaseCurrency).div(value);
+                        $toCurrencyOnBaseCurrencyDisplay.val(convertValue.roundWithCurrency(5, baseCurrency).toFixed(5));
 
-                        $('.rate-real[data-from-currency="' + toCurrency + '"][data-to-currency="' + baseCurrency + '"]').val(convertValue.round(10).toString());
-                        toCurrencyOnBaseCurrency.val(convertValue.round(5).toFixed(5));
+                        convertValue = convertValue.round(10);
+                        $toCurrencyOnBaseCurrency.val(convertValue.toString());
 
-                        toCurrencyOnBaseCurrency.change();
+                        $('.rate:disabled[data-from-currency="' + toCurrency + '"]').not($toCurrencyOnBaseCurrencyDisplay).val(function () {
+                            var toCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + $(this).data('to-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
+                            if (toCurrencyOnBaseCurrency === '' || Number(toCurrencyOnBaseCurrency) === 0)
+                                return;
+
+                            var value = convertValue.div(toCurrencyOnBaseCurrency);
+                            $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(value.round(10).toString());
+
+                            return value.roundWithCurrency(5, $(this).data('to-currency')).toFixed(5);
+                        });
+
+                        $('.rate:disabled[data-to-currency="' + toCurrency + '"]').val(function () {
+                            var fromCurrencyOnBaseCurrency = $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + baseCurrency + '"]').val();
+                            if (fromCurrencyOnBaseCurrency === '' || Number(fromCurrencyOnBaseCurrency) === 0)
+                                return;
+
+                            var value = new BigNumber(fromCurrencyOnBaseCurrency).div(convertValue);
+
+                            $('.rate-real[data-from-currency="' + $(this).data('from-currency') + '"][data-to-currency="' + $(this).data('to-currency') + '"]').val(value.round(10).toString());
+                            return value.roundWithCurrency(5, $(this).data('to-currency')).toFixed(5);
+                        });
                     }
 
                     target.val(value.toFixed(5));
