@@ -159,7 +159,7 @@
             if (checkNetSalaryReceived.IsValid)
             {
                 decimal.TryParse(record.NetSalaryReceived, out decimal salary);
-                salary = string.Equals(record.Currency, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase) ? Math.Round(salary) : Math.Round(salary, 2);
+                salary = CalculationService.RoundAmountWithCurrency(salary, record.Currency);
                 record.NetSalaryReceived = salary.ToString(CultureInfo.InvariantCulture);
             }
 
