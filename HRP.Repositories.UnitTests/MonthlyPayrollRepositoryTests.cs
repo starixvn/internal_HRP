@@ -31,7 +31,12 @@
             var multiResultReader = FakeMultipleResultReader();
             var criteria = FakeCriteia();
             var monthlyBasicSalary = new MonthlyBasicSalaryModel();
-            var monthlySalary = new MonthlySalaryModel();
+            var monthlySalary = new MonthlySalaryModel
+            {
+                EbankingAccountName = "ACB",
+                DirectBanking1AccountName = "CCC",
+                DirectBanking2AccountName = "HSBC"
+            };
             var additions = new List<MonthlySalaryAdditionModel>();
             var deductions = new List<MonthlySalaryDeductionModel>();
             multiResultReader.ReadFirstOrDefaultAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);

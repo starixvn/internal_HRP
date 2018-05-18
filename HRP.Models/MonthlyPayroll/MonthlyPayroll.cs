@@ -31,16 +31,7 @@
         [XMLName("GroupEndDate")]
         public string XmlGroupEndDate
         {
-            get
-            {
-                var value = string.Empty;
-                if (GroupEndDate.HasValue)
-                {
-                    value = GroupEndDate.Value.ToString(CultureInfo.InvariantCulture);
-                }
-
-                return value;
-            }
+            get => (GroupEndDate.HasValue) ? GroupEndDate.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
         }
     }
 }

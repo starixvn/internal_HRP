@@ -315,7 +315,8 @@
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                CompanyId = 22
+                CompanyId = 22,
+                CommonError = "ahihi"
             };
 
             var companies = new List<Company> { MockCompany() };

@@ -377,6 +377,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
             var viewModel = new MonthlyAllowancesViewModel
             {
+                EmployeeId = 22,
                 Allowance = new MonthlyAllowanceModel(),
                 Additions = new List<MonthlyAllowanceAdditionModel>
                 {
