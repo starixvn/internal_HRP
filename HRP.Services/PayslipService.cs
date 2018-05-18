@@ -158,7 +158,7 @@
 
             decimal.TryParse(payslip.SalaryAmount, out decimal basicSalaryAmount);
             payslip.SalaryAmount = FormatAmount(
-                CalculationService.RoundAllowanceDetailAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyCode),
+                CalculationService.RoundAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyCode, roundingThousand: false),
                 payslip.SalaryCurrencyCode);
 
             payslip.SalaryAdditions = payslip.SalaryAdditions.Any()
@@ -183,7 +183,7 @@
                 decimal.TryParse(addition.NetSalary, out amount);
                 additionAmount += amount;
                 addition.NetSalaryDisplay = FormatAmount(
-                    CalculationService.RoundAllowanceDetailAmountWithCurrency(amount, payslip.SalaryCurrencyCode),
+                    CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, roundingThousand: false),
                     payslip.SalaryCurrencyCode);
             }
 
@@ -194,7 +194,7 @@
                 decimal.TryParse(deduction.NetSalary, out amount);
                 deductionAmount += amount;
                 deduction.NetSalaryDisplay = FormatAmount(
-                    CalculationService.RoundAllowanceDetailAmountWithCurrency(amount, payslip.SalaryCurrencyCode),
+                    CalculationService.RoundAmountWithCurrency(amount, payslip.SalaryCurrencyCode, roundingThousand: false),
                     payslip.SalaryCurrencyCode);
             }
 
@@ -222,7 +222,7 @@
 
             decimal.TryParse(payslip.AllowanceAmount, out decimal basicAllowanceAmount);
             payslip.AllowanceAmount = FormatAmount(
-                CalculationService.RoundAllowanceDetailAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyCode),
+                CalculationService.RoundAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyCode, roundingThousand: false),
                 payslip.AllowanceCurrencyCode);
 
             payslip.AllowanceAdditions = payslip.AllowanceAdditions.Any()
@@ -247,7 +247,7 @@
                 decimal.TryParse(addition.NetAllowance, out amount);
                 additionAmount += amount;
                 addition.NetAllowanceToDisplay = FormatAmount(
-                    CalculationService.RoundAllowanceDetailAmountWithCurrency(amount, payslip.AllowanceCurrencyCode),
+                    CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, roundingThousand: false),
                     payslip.AllowanceCurrencyCode);
             }
 
@@ -258,7 +258,7 @@
                 decimal.TryParse(deduction.NetAllowance, out amount);
                 deductionAmount += amount;
                 deduction.NetAllowanceToDisplay = FormatAmount(
-                    CalculationService.RoundAllowanceDetailAmountWithCurrency(amount, payslip.AllowanceCurrencyCode),
+                    CalculationService.RoundAmountWithCurrency(amount, payslip.AllowanceCurrencyCode, roundingThousand: false),
                     payslip.AllowanceCurrencyCode);
             }
 

@@ -1035,7 +1035,7 @@
                             + (newSalary / daysInMonth * (endDay - basicSetting.EffectiveDate.Value.Day + 1))
                         : newSalary / daysInMonth * (endDay - startDay + 1);
 
-                amount = CalculationService.RoundAllowanceDetailAmountWithCurrency(amount.Value, basicSetting.CurrencyCode);
+                amount = CalculationService.RoundAmountWithCurrency(amount.Value, basicSetting.CurrencyCode, roundingThousand: false);
             }
 
             return amount;
@@ -1063,7 +1063,7 @@
                     backPayAmount = ((newSalary - oldSalary) / daysInMonth * (daysInMonth - basicSetting.EffectiveDate.Value.Day + 1))
                         + ((newSalary - oldSalary) * (monthDiff - 1));
 
-                    backPayAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(backPayAmount.Value, basicSetting.CurrencyCode);
+                    backPayAmount = CalculationService.RoundAmountWithCurrency(backPayAmount.Value, basicSetting.CurrencyCode, roundingThousand: false);
                 }
             }
 
@@ -1079,7 +1079,7 @@
         {
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             decimal.TryParse(basicSetting.Salary, out decimal salary);
-            decimal differenceAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyCode);
+            decimal differenceAmount = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyCode, roundingThousand: false);
             var reason = new StringBuilder();
             if (differenceAmount != 0)
             {
