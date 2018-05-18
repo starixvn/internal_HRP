@@ -58,21 +58,21 @@
             Assert.Equal(expected.Message, result.Message);
         }
 
-        [Fact]
-        public async Task ExecuteNonQueryAsync_CriteriaIsNull_ThrowNullReferenceException()
-        {
-            // Arrange
-            ICriteria criteria = null;
-            var repository = new BaseRepository();
+        ////[Fact]
+        ////public async Task ExecuteNonQueryAsync_CriteriaIsNull_ThrowNullReferenceException()
+        ////{
+        ////    // Arrange
+        ////    ICriteria criteria = null;
+        ////    var repository = new BaseRepository();
 
-            // Act
-            var task = Task.Run(() => repository.ExecuteNonQueryAsync(criteria));
-            var exception = await Record.ExceptionAsync(async () => await task);
+        ////    // Act
+        ////    var task = Task.Run(() => repository.ExecuteNonQueryAsync(criteria));
+        ////    var exception = await Record.ExceptionAsync(async () => await task);
 
-            // Assert
-            Assert.Equal(exception.HResult, -2147467261);
-            Assert.Equal(exception.Message, ExceptionMessage);
-        }
+        ////    // Assert
+        ////    Assert.Equal(exception.HResult, -2147467261);
+        ////    Assert.Equal(exception.Message, ExceptionMessage);
+        ////}
 
         #endregion ExecuteNonQueryAsync
 
