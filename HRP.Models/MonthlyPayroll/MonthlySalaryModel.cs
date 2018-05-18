@@ -58,6 +58,9 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? CashAccountId { get; set; }
 
+        [XmlIgnore]
+        public string EbankingAccountName { get; set; }
+
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking1Amount), nameof(DirectBanking1AccountId) },
              ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DirectBanking1CurrencyId { get; set; }
@@ -74,6 +77,9 @@
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? DirectBanking1AccountId { get; set; }
 
+        [XmlIgnore]
+        public string DirectBanking1AccountName { get; set; }
+
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2Amount), nameof(DirectBanking2AccountId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequried))]
         public int? DirectBanking2CurrencyId { get; set; }
@@ -89,6 +95,9 @@
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(DirectBanking2CurrencyId), nameof(DirectBanking2Amount) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequried))]
         public int? DirectBanking2AccountId { get; set; }
+
+        [XmlIgnore]
+        public string DirectBanking2AccountName { get; set; }
 
         [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
