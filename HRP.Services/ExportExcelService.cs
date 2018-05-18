@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using Core.Constants;
@@ -15,7 +14,6 @@
     using OfficeOpenXml.Style;
     using Resources;
 
-    [ExcludeFromCodeCoverage]
     public class ExportExcelService : IExportExcelService
     {
         private readonly ICryptoService cryptoService;
