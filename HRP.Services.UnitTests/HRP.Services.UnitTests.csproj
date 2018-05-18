@@ -257,6 +257,7 @@
   <ItemGroup>
     <Compile Include="BankAccountServiceTests.cs" />
     <Compile Include="DataConfigurationServiceTests.cs" />
+    <Compile Include="ExportExcelServiceTests.cs" />
     <Compile Include="MonthlyPayrollServiceTests.cs" />
     <Compile Include="EmployeeServiceTests.cs" />
     <Compile Include="EmployeePayrollServiceTests.cs" />
@@ -301,7 +302,9 @@
     <None Include="app.config" />
     <None Include="HRP.Services.UnitTests.ruleset" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="FileTest\TemplateTest.xlsx" />
+    <EmbeddedResource Include="FileTest\TemplateTest.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
