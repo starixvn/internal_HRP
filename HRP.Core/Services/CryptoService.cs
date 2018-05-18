@@ -1,10 +1,10 @@
 namespace HRP.Core.Services
 {
     using System;
+    using System.IO;
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-    using HRP.Core.CustomException;
     using HRP.Core.Model;
     using HRP.Resources;
     using Microsoft.Extensions.Options;
@@ -91,24 +91,14 @@ namespace HRP.Core.Services
         {
             if (!certificateService.IsExistedCertificate())
             {
-                throw new CertificateNotFoundException(Message.CertificateNotFound);
+                throw new FileNotFoundException(Message.CertificateNotFound);
             }
 
-            try
-            {
-                string filePath = certificateService.GetCertificateFilePath();
-                string password = certificateService.GetPasswordAccessTheCertificate();
-                var flags = X509KeyStorageFlags.MachineKeySet;
+            string filePath = certificateService.GetCertificateFilePath();
+            string password = certificateService.GetPasswordAccessTheCertificate();
+            var flags = X509KeyStorageFlags.MachineKeySet;
 
-                return new X509Certificate2(filePath, password, flags);
-            }
-            catch (CryptographicException ex)
-            {
-                throw new CertificatePasswordException(
-                    ex.Message + Environment.NewLine + ex.Source
-                    + Environment.NewLine + ex.TargetSite
-                    + Environment.NewLine + ex.StackTrace);
-            }
+            return new X509Certificate2(filePath, password, flags);
         }
     }
 }

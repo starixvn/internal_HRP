@@ -1,10 +1,12 @@
 ﻿namespace HRP.Core.UnitTests
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
-    using HRP.Core.CustomException;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
     using NSubstitute;
@@ -37,7 +39,7 @@
             var context = new DefaultHttpContext();
             var logger = Substitute.For<ILogger<ErrorHandlingMiddleware>>();
             var next = Substitute.For<RequestDelegate>();
-            next.Invoke(Arg.Any<HttpContext>()).Returns(x => { throw new CertificateNotFoundException(); });
+            next.Invoke(Arg.Any<HttpContext>()).Returns(x => { throw new Exception(Message.CertificateNotFound); });
             var middleware = new ErrorHandlingMiddleware(next, logger);
 
             // Act
@@ -55,7 +57,7 @@
             var context = new DefaultHttpContext();
             var logger = Substitute.For<ILogger<ErrorHandlingMiddleware>>();
             var next = Substitute.For<RequestDelegate>();
-            next.Invoke(Arg.Any<HttpContext>()).Returns(x => { throw new CertificatePasswordException(); });
+            next.Invoke(Arg.Any<HttpContext>()).Returns(x => { throw new CryptographicException(); });
             var middleware = new ErrorHandlingMiddleware(next, logger);
 
             // Act

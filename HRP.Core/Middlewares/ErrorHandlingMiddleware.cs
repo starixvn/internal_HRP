@@ -2,8 +2,9 @@
 {
     using System;
     using System.Globalization;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
-    using HRP.Core.CustomException;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
 
@@ -44,11 +45,11 @@
                     exception.StackTrace);
             logger.LogError(message);
 
-            if (exceptionType == typeof(CertificateNotFoundException))
+            if (exception.Message == Message.CertificateNotFound)
             {
                 context.Response.Redirect("/SystemSecurity/FileNotFound");
             }
-            else if (exceptionType == typeof(CertificatePasswordException))
+            else if (exceptionType == typeof(CryptographicException))
             {
                 context.Response.Redirect("/SystemSecurity/password");
             }
