@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.Services
 {
     using System;
     using System.IO;
@@ -25,11 +25,8 @@
 
             baseMailService = Substitute.ForPartsOf<BaseMailService>(configuration);
 
-            // Action
-            Action testDelegate = () => baseMailService.GetMailDeliver();
-
-            // Assert
-            Assert.Throws<NullReferenceException>(testDelegate);
+            // Act && Assert
+            Assert.Throws<NullReferenceException>((Action)(() => baseMailService.GetMailDeliver()));
         }
 
         [Fact]
@@ -47,11 +44,8 @@
 
             baseMailService = Substitute.ForPartsOf<BaseMailService>(configuration);
 
-            // Action
-            Action testDelegate = () => baseMailService.SendMail(mailRecord);
-
-            // Assert
-            Assert.Throws<NullReferenceException>(testDelegate);
+            // Act && Assert
+            Assert.Throws<NullReferenceException>((Action)(() => baseMailService.SendMail(mailRecord)));
         }
 
         [Fact]
@@ -94,7 +88,7 @@
 
             // Action
             var expected = baseMailService.SendEmail(model);
-            
+
             // Assert
             Assert.True(expected);
         }
@@ -133,11 +127,8 @@
             // Arrange
             FakeBaseMailService();
 
-            // Action
-            Action testDelegate = () => baseMailService.ReadTextFile(string.Empty);
-
-            // Assert
-            Assert.Throws<ArgumentException>(testDelegate);
+            // Act && Assert
+            Assert.Throws<ArgumentException>((Action)(() => baseMailService.ReadTextFile(string.Empty)));
         }
 
         [Fact]
@@ -146,13 +137,23 @@
             // Arrange
             FakeBaseMailService();
 
-            // Action
-            Action testDelegate = () => baseMailService.ReadTextFile("aaa.txt");
+            // Act && Assert
+            Assert.Throws<FileNotFoundException>((Action)(() => baseMailService.ReadTextFile("aaa.txt")));
+        }
+
+        [Fact]
+        public void ReadTextFile_ValidPathFile_ReturnAsExpected()
+        {
+            // Arrange
+            FakeBaseMailService();
+
+            // Act
+            var actual = baseMailService.ReadTextFile("App_Data\\Test.txt");
 
             // Assert
-            Assert.Throws<FileNotFoundException>(testDelegate);
+            Assert.Equal("Hello", actual);
         }
-        
+
         private void FakeBaseMailService()
         {
             var mailConfig = new MailConfigs

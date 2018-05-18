@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.Services
 {
     using System.Security.Cryptography.X509Certificates;
     using HRP.Core.Model;
@@ -13,7 +13,6 @@
 
         [Theory]
         [InlineData(null)]
-        [InlineData("")]
         [InlineData("  ")]
         public void Encrypt_PlainTextIsNullOrWhiteSpace_ReturnEmpty(string plainText)
         {
@@ -67,7 +66,6 @@
 
         [Theory]
         [InlineData(null)]
-        [InlineData("")]
         [InlineData("  ")]
         public void Decrypt_CipherTextIsNullOrWhiteSpace_ReturnEmpty(string cipherText)
         {

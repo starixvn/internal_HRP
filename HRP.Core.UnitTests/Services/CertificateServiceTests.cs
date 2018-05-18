@@ -94,6 +94,19 @@
             Assert.False(actual);
         }
 
+        [Fact]
+        public void GenerateSelfSignedCertificate_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var certificateService = GetCertificateService();
+
+            // Act
+            var actual = certificateService.GenerateSelfSignedCertificate("123456");
+
+            // Assert
+            Assert.True(actual.IsSuccessful);
+        }
+
         #region Helpers
 
         private static IHostingEnvironment FakeHostingEnvironment()

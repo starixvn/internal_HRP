@@ -64,18 +64,10 @@
                 Code = 0
             };
 
-            try
-            {
-                X509Certificate2 cert = GenerateSelfSignedCertificate();
-                byte[] certData = cert.Export(X509ContentType.Pfx, password);
-                string filePath = GetCertificateFilePath();
-                File.WriteAllBytes(filePath, certData);
-            }
-            catch (CryptographicException ex)
-            {
-                commandResult.Code = 1;
-                commandResult.Message = ex.Message;
-            }
+            X509Certificate2 cert = GenerateSelfSignedCertificate();
+            byte[] certData = cert.Export(X509ContentType.Pfx, password);
+            string filePath = GetCertificateFilePath();
+            File.WriteAllBytes(filePath, certData);
 
             return commandResult;
         }
@@ -120,7 +112,7 @@
         {
             var cacheExpirationOptions = new MemoryCacheEntryOptions
             {
-                SlidingExpiration = TimeSpan.FromDays(1),
+                SlidingExpiration = TimeSpan.FromDays(30),
                 Priority = CacheItemPriority.Normal
             };
             memoryCache.Set(CacheKeys.PasswordAccessTheCertificate, password, cacheExpirationOptions);
