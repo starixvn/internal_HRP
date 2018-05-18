@@ -61,7 +61,7 @@
         }
 
         [Theory]
-        [InlineData(11, "vnd", "1,000.00")]
+        [InlineData(11, "vnd", "1,234")]
         [InlineData(1, "eur", "1,234.00")]
         public async Task GetPayslipDetailAsync_ExistedPayroll_ReturnsAsExpectedModel(int currencyId, string currencyCode, string expectedAmount)
         {
