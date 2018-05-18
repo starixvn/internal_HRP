@@ -6,7 +6,7 @@
     public class CreateEmployeeViewModelTests
     {
         [Fact]
-        public void ProfilePicLink_ReturnDefaultlink_WhenProfilePicIsNullOrEmpty()
+        public void ProfilePicLink_WhenProfilePicIsNullOrEmpty_ReturnDefaultlink()
         {
             var model = new CreateEmployeeViewModel
             {
@@ -17,7 +17,7 @@
         }
 
         [Fact]
-        public void ProfilePicLink_ReturnExpectedLink_WhenProfilePicIsNotNullAndEmpty()
+        public void ProfilePicLink_WhenProfilePicIsNotNullAndEmpty_ReturnExpectedLink()
         {
             var model = new CreateEmployeeViewModel
             {

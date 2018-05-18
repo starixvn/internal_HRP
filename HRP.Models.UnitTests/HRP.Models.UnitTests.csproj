@@ -59,11 +59,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankInReportTests.cs" />
+    <Compile Include="CurrencyExchangeRateModelTests.cs" />
     <Compile Include="CreateEmployeeViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupOtpViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HRP.Core\HRP.Core.csproj">
+      <Project>{4215e3c1-c316-400c-95a6-ae408b1d0016}</Project>
+      <Name>HRP.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj">
       <Project>{fb14dd5e-fe8c-433d-be71-1dcb5542a975}</Project>
       <Name>HRP.Models</Name>

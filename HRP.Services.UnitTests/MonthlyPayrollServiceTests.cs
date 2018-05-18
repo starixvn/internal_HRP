@@ -27,7 +27,22 @@
         public async Task GetFilterInfoAsync_WhenCalled_ReturnAsExpectedFilterInfo()
         {
             // Arrange
-            var filterInfo = new MonthlyPayrollFilterInfoModel();
+            var filterInfo = new MonthlyPayrollFilterInfoModel()
+            {
+                PayrollId = 1,
+                EmployeeId = 1,
+                FullName = "a",
+                Nickname = "b",
+                IdNo = "c",
+                CostCenter = "d",
+                StartDate = new DateTime(20110, 1, 1),
+                DueDate = new DateTime(20110, 1, 1),
+                CompanyId = 1,
+                CompanyCode = "DAR",
+                WorkingDays = 22,
+                IsHost = true,
+                TotalEmployees = 100
+            };
             var service = GetMonthlyPayrollService();
             baseService.GetDataEntityAsync<MonthlyPayrollFilterInfoModel>(Arg.Any<GetFilterInfoCriteria>()).Returns(filterInfo);
 

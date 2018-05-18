@@ -37,7 +37,10 @@
                 BankSwiftCode = null,
                 BankAddress = null,
                 BankBranch = null,
-                BankName = null
+                BankName = null,
+                BankTypeName = string.Empty,
+                AccountTypeName = string.Empty,
+                PaymentTransaction = string.Empty
             };
 
             var bankAccountService = GetBankAccountService();
