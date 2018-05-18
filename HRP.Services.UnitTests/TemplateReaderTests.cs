@@ -24,7 +24,7 @@
         public void CreateSheet_WhenCalled_ReturnAsExpected()
         {
             // Arrange
-            var resourceName = "HRP.Services.UnitTests.TemplateTest.xlsx";
+            var resourceName = @"HRP.Services.UnitTests.FileTest.TemplateTest.xlsx";
             var templateReader = GetTemplateReader();
 
             using (var stream = GetType().Assembly.GetManifestResourceStream(resourceName))

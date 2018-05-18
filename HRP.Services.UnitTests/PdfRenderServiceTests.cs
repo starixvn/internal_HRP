@@ -15,7 +15,7 @@
             var service = GetPdfRenderService();
 
             // Act
-            var actual = service.RenderContent("pdf.min.css", "<h1>hello</h1>");
+            var actual = service.RenderContent(@"FileTest\\pdf.min.css", "<h1>hello</h1>");
 
             // Assert
             Assert.NotNull(actual);
@@ -28,7 +28,7 @@
             var service = GetPdfRenderService();
 
             // Act
-            var actual = service.RenderContentWithPasswordProtected("pdf.min.css", "<h1>hello</h1>", "123456", "123456");
+            var actual = service.RenderContentWithPasswordProtected(@"FileTest\\pdf.min.css", "<h1>hello</h1>", "123456", "123456");
 
             // Assert
             Assert.NotNull(actual);

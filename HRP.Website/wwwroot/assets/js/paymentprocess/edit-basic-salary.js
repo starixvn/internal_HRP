@@ -193,6 +193,9 @@ var editBasicSalary = (function ($) {
                 amount = new BigNumber(Number(value));
 
                 if ($this.hasClass('js-addition-unitAmount')) {
+                    amount = amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit);
+                    $this.val(amount);
+
                     $relatedEl = $this.siblings('.js-addition-noOfDays');
                     noOfDays = Number(getNumber($relatedEl));
 
@@ -200,10 +203,10 @@ var editBasicSalary = (function ($) {
                         amount = amount.mul(noOfDays);
 
                         $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 0));
-                        $netSalary.val(amount.round(maxDigit));
+                        $netSalary.val(amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
                     } else {
                         $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 0));
-                        $netSalary.val(amount.round(maxDigit));
+                        $netSalary.val(amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
                     }
                 } else {
                     $relatedEl = $this.siblings('.js-addition-unitAmount');
@@ -213,7 +216,7 @@ var editBasicSalary = (function ($) {
                         amount = amount.mul(unitAmount);
 
                         $netSalaryDisplay.val(amount.roundAmount(currencySettingId, 0));
-                        $netSalary.val(amount.round(maxDigit));
+                        $netSalary.val(amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
                     } else {
                         $netSalaryDisplay.val('');
                         $netSalary.val('');
@@ -229,7 +232,7 @@ var editBasicSalary = (function ($) {
 
                     if (getNumber($relatedEl).length > 0) {
                         $netSalaryDisplay.val(unitAmount.roundAmount(currencySettingId, 0));
-                        $netSalary.val(unitAmount.round(maxDigit));
+                        $netSalary.val(unitAmount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
                     } else {
                         $netSalaryDisplay.val('');
                         $netSalary.val('');
@@ -254,10 +257,11 @@ var editBasicSalary = (function ($) {
                     amount = salaryPerDay.div(8 * 60).mul(Number(value));
                 } else {
                     amount = new BigNumber(Number(value));
+                    $this.val(amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
                 }
 
                 $this.siblings('.js-deduction-netSalaryDisplay').val(amount.roundAmount(currencySettingId, 0));
-                $this.siblings('.js-deduction-netSalary').val(amount.round(maxDigit));
+                $this.siblings('.js-deduction-netSalary').val(amount.round(currencySettingId === vietnamCurrencyId ? 0 : maxDigit));
             } else {
                 $this.siblings('.js-deduction-netSalaryDisplay').val('');
                 $this.siblings('.js-deduction-netSalary').val('');
@@ -500,7 +504,7 @@ var editBasicSalary = (function ($) {
         currencySettingId = parseInt($('#MonthlySalary_CurrencyId').val(), 10);
         salaryPerDay = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_SalaryPerDay'))));
         afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount'))));
-        vietnamCurrencyId = $('#VietnamCurrencyId').val();
+        vietnamCurrencyId = parseInt($('#VietnamCurrencyId').val());
 
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
         initSelect2();

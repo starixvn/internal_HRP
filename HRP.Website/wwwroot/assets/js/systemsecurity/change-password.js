@@ -32,5 +32,12 @@ $(document).ready(function () {
         }
     });
 
+    $('.js-cancel').on('click', function () {
+        $('#ShowPassword').prop('checked', false);
+        $('input[type=text]').attr('type', 'password');
+
+        $('input[type=password]').val('');
+    });
+
     commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
 });
