@@ -10,7 +10,7 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Employee;
-    using HRP.Criteria.Currency;
+    using HRP.Criteria;
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -378,7 +378,7 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetAllCurrencyCriteria());
+            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
 
             viewModel.CachingFilter = filter;
             viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);

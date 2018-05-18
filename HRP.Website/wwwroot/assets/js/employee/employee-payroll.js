@@ -119,7 +119,9 @@
         }
 
         $('.allowance-convert-amount').each(function (i, e) {
-            totalAmount = totalAmount.plus(Number($(e).val()));
+            if ($(e).val() !== '') {
+                totalAmount = totalAmount.plus($(e).val());
+            }
         });
 
         var $totalAmount = $('#allowance-total-amount');
@@ -139,11 +141,16 @@
         if (currency !== '' && !isNaN(amount) && amount !== '') {
             amount = new BigNumber(amount);
             var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
-            var value = amount.mul(exchangeRates).roundAllowanceDetailWithCurrency(2, allowanceCurrency);
-            $('.allowance-convert-amount', parent).val(value.toStringWithCurrency(allowanceCurrency));
+
+            amount = amount.mul(exchangeRates);
+            $('.allowance-convert-amount', parent).val(amount.toString());
+
+            var displayValue = amount.roundAllowanceDetailWithCurrency(2, allowanceCurrency);
+            $('.allowance-convert-amount-display', parent).val(displayValue.toStringWithCurrency(allowanceCurrency));
         }
         else {
             $('.allowance-convert-amount', parent).val('');
+            $('.allowance-convert-amount-display', parent).val('');
         }
     }
 
@@ -153,6 +160,7 @@
         if (allowanceCurrency === '') {
             $('#allowance-total-amount').val('');
             $('.allowance-convert-amount').val('');
+            $('.allowance-convert-amount-display').val('');
             $('input.allowance-calculate[readonly]').val('');
             return;
         }
@@ -224,7 +232,7 @@
     }
 
     function initInputMask() {
-        $('input.deduction-calculate, input.allowance-detail-calculate, .allowance-convert-amount, #duty-meal-per-day').inputmask({
+        $('input.deduction-calculate, input.allowance-detail-calculate, .allowance-convert-amount-display, #duty-meal-per-day').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 2,

@@ -111,8 +111,8 @@
             if (currency !== '') {
                 var $element = $('input.allowance-calculate[type="text"][data-calculate-for="' + group + '"]');
                 if ($element.val() !== '' && !isNaN($element.val())) {
-                    var amount = new BigNumber(Number($element.val()));
-                    var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
+                    var amount = new BigNumber($element.val());
+                    var exchangeRates = $('input[data-from-currency="' + currency + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val();
                     totalAmount = totalAmount.minus(amount.mul(exchangeRates));
                 }
             }
