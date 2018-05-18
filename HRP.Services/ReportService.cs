@@ -210,26 +210,26 @@
         {
             var conversionCurrencyId = basicAllowance.CurrencyId;
             var conversionCurrencyCode = basicAllowance.CurrencyCode;
-            basicAllowance.SubsistenceAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.SubsistenceAmount,
-                            basicAllowance.SubsistenceCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HomePassageAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HomePassageAmount,
-                            basicAllowance.HomePassageCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HousingAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HousingAmount,
-                            basicAllowance.HousingCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.MobilePhoneAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.MobilePhoneAmount,
-                            basicAllowance.MobilePhoneCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.HPIAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HPIAmount,
-                            basicAllowance.HPICurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.DutyMealAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.DutyMealAmount,
-                            basicAllowance.DutyMealCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.SecondmentAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.SecondmentAmount,
-                            basicAllowance.SecondmentCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.OthersAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.OthersAmount,
-                            basicAllowance.OthersCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.RoomingChargesAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
-                            basicAllowance.RoomingChargesCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
-            basicAllowance.FitnessFirstAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
-                            basicAllowance.FitnessFirstCurrencyId, conversionCurrencyId), conversionCurrencyCode).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.SubsistenceAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.SubsistenceAmount,
+                            basicAllowance.SubsistenceCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HomePassageAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HomePassageAmount,
+                            basicAllowance.HomePassageCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HousingAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HousingAmount,
+                            basicAllowance.HousingCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.MobilePhoneAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.MobilePhoneAmount,
+                            basicAllowance.MobilePhoneCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.HPIAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.HPIAmount,
+                            basicAllowance.HPICurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.DutyMealAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.DutyMealAmount,
+                            basicAllowance.DutyMealCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.SecondmentAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.SecondmentAmount,
+                            basicAllowance.SecondmentCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.OthersAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.OthersAmount,
+                            basicAllowance.OthersCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.RoomingChargesAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
+                            basicAllowance.RoomingChargesCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
+            basicAllowance.FitnessFirstAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
+                            basicAllowance.FitnessFirstCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
 
             basicAllowance.SubsistenceCurrencyId = conversionCurrencyId;
             basicAllowance.HomePassageCurrencyId = conversionCurrencyId;

@@ -7,16 +7,9 @@
         }).length > 0;
     }
 
-    BigNumber.prototype.roundWithCurrency = function (dp, currency) {
+    BigNumber.prototype.roundWithCurrency = function (dp, currency, roundingThousand = true) {
         if (currency === vndCurrencyId)
-            return this.div(1000).round().mul(1000);
-
-        return this.round(dp);
-    };
-
-    BigNumber.prototype.roundAllowanceDetailWithCurrency = function (dp, currency) {
-        if (currency === vndCurrencyId)
-            return this.round(0);
+            return roundingThousand ? this.div(1000).round().mul(1000) : this.round(0);
 
         return this.round(dp);
     };
@@ -145,7 +138,7 @@
             amount = amount.mul(exchangeRates);
             $('.allowance-convert-amount', parent).val(amount.toString());
 
-            var displayValue = amount.roundAllowanceDetailWithCurrency(2, allowanceCurrency);
+            var displayValue = amount.roundWithCurrency(2, allowanceCurrency, false);
             $('.allowance-convert-amount-display', parent).val(displayValue.toStringWithCurrency(allowanceCurrency));
         }
         else {
@@ -171,14 +164,14 @@
         calculateTotalAllowance(allowanceCurrency);
     }
 
-    function roundingAmount(element, dp) {
+    function roundingAmount(element, dp, roundingThousand = true) {
         var parent = $(element).parent();
         var $currency = parent.find('select');
         var $amount = parent.find('input');
         if ($currency.val() !== '' && $amount.val() !== '' && !isNaN($amount.val())) {
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
-            $amount.val(number.roundWithCurrency(dp, currency).toStringWithCurrency(currency));
+            $amount.val(number.roundWithCurrency(dp, currency, roundingThousand).toStringWithCurrency(currency));
         }
     }
 
@@ -520,7 +513,11 @@
         });
 
         $('.allowance-detail-calculate').on('change', function (e) {
-            roundingAmount(e.target, 2);
+            var parent = $(this).parent();
+            var $currency = parent.find('select');
+            var $amount = parent.find('input');
+            roundingAmount($currency, $amount, 2, false);
+
             validatedInvalidRelatedElements(e.target);
 
             var $totalAmount = $('#allowance-total-amount');
@@ -534,17 +531,18 @@
             }
 
             var allowanceCurrency = $totalAmountCurrency.val();
-            if (allowanceCurrency === '') {
-                return;
+            if (allowanceCurrency !== '') {
+                convertToAllowanceCurrency($(this), allowanceCurrency);
+                calculateTotalAllowance(allowanceCurrency);
             }
-
-            convertToAllowanceCurrency($(this), allowanceCurrency);
-            calculateTotalAllowance(allowanceCurrency);
         });
 
         $('.deduction-calculate').on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
-            roundingAmount(e.target, 2);
+            var parent = $(this).parent();
+            var $currency = parent.find('select');
+            var $amount = parent.find('input');
+            roundingAmount($currency, $amount, 2, false);
         });
 
         $('#Allowance_CurrencyId').on('change', function () {

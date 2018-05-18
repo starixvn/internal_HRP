@@ -5,9 +5,9 @@
     var daysInMonth;
     var vietnamCurrencyId;
 
-    BigNumber.prototype.roundWithCurrency = function (dp, currency) {
+    BigNumber.prototype.roundWithCurrency = function (dp, currency, roundingThousand = true) {
         if (currency === vietnamCurrencyId)
-            return this.div(1000).round().mul(1000);
+            return roundingThousand ? this.div(1000).round().mul(1000) : this.round(0);
 
         return this.round(dp);
     };
@@ -28,11 +28,11 @@
         }
     }
 
-    function roundingAmount($currency, $amount, dp) {
+    function roundingAmount($currency, $amount, dp, roundingThousand = true) {
         if ($currency.val() !== '' && $amount.val() !== '') {
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
-            $amount.val(number.roundWithCurrency(dp, currency).toStringWithCurrency(currency, dp));
+            $amount.val(number.roundWithCurrency(dp, currency, roundingThousand).toStringWithCurrency(currency, dp));
         }
     }
 
@@ -90,7 +90,7 @@
             totalNetAmount = totalNetAmount.minus(dstAmount.mul(exchangeRate));
         }
 
-        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId).toStringWithCurrency(totalAmountCurrencyId, 2));
+        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId, false).toStringWithCurrency(totalAmountCurrencyId, 2));
     }
 
     function calculateAutoAllowance() {
@@ -269,7 +269,7 @@
 
         $('.allowance-calculate').on('change', function (e) {
             var dataCalculateGroup = $(this).data('calculate-for');
-            var $currency = $('select[data-calculate-for="' + dataCalculateGroup + '"]');
+            var $currency = $('select[data-calculate-for="' + dataCalculateGroup + '"]');roundingAmount
             var $amount = $('input[type="text"][data-calculate-for="' + dataCalculateGroup + '"]');
             roundingAmount($currency, $amount, 0);
             validatedInvalidRelatedElements(e.target);
@@ -287,11 +287,20 @@
 
                     var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
                     var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
-                    $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
+                    $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId, false).toStringWithCurrency(currencyId, 2));
                 }
             } else {
                 $unitAmount.val('');
             }
+        });
+
+        $('.unit-amount, addition.currency, .deduction.currency').on('change', function (e) {
+            var $this = $(this);
+            var dataGroup = $this.data('group');
+            var $currency = $('.currency[data-group="' + dataGroup + '"]');
+            var $unitAmount = $('.unit-amount[data-group="' + dataGroup + '"]');
+
+            roundingAmount($currency, $unitAmount, 2, false);
         });
 
         $('.addition:enabled, .deduction:enabled').on('change', function (e) {
@@ -312,15 +321,9 @@
                 var unitAmount = new BigNumber($unitAmount.val());
                 var totalAmount = '';
 
-                if ($noOfDays.val() !== '') {
-                    totalAmount = unitAmount.mul($noOfDays.val());
-                    $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
-                } else {
-                    totalAmount = unitAmount;
-                    $totalAmount.val(totalAmount.toString());
-                    $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId).toStringWithCurrency(currencyId, 2));
-                }
+                totalAmount = $noOfDays.val() !== '' ? unitAmount.mul($noOfDays.val()) : unitAmount;
+                $totalAmount.val(totalAmount.toString());
+                $totalAmountDisplay.val(totalAmount.roundWithCurrency(2, currencyId, false).toStringWithCurrency(currencyId, 2));
 
                 if (currencyId !== '' && totalAmountCurrencyId !== '') {
                     var exchangeRates = Number($('input[data-from-currency="' + currencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());

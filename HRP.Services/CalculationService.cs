@@ -8,21 +8,11 @@
 
     public static class CalculationService
     {
-        public static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2)
+        public static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2, bool roundingThousand = true)
         {
             if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
             {
-                return Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000;
-            }
-
-            return Math.Round(amount, digits, MidpointRounding.AwayFromZero);
-        }
-
-        public static decimal RoundAllowanceDetailAmountWithCurrency(decimal amount, string currencyCode, int digits = 2)
-        {
-            if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
-            {
-                return Math.Round(amount, 0, MidpointRounding.AwayFromZero);
+                 return roundingThousand ? Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000 : Math.Round(amount, 0, MidpointRounding.AwayFromZero);
             }
 
             return Math.Round(amount, digits, MidpointRounding.AwayFromZero);

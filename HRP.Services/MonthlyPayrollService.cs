@@ -580,7 +580,7 @@
             int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
             int startDay = GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
             int endDay = (groupEndDate.HasValue && GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
-            var afterAdjustmentAmount = totalAmount / daysInMonth * (endDay - startDay + 1);
+            var afterAdjustmentAmount = endDay == daysInMonth && startDay == 1 ? totalAmount : totalAmount / daysInMonth * (endDay - startDay + 1);
             monthlyPayrollBasicAllowance.AfterAdjustmentAmount = afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
 
             monthlyPayrollBasicAllowance.SubsistenceAfterAdjustmentAmount = 
@@ -634,9 +634,10 @@
             {
                 decimal.TryParse(allowanceDetailAmount, out decimal amount);
                 var afterAdjustmentAmount = amount / daysInMonth * (endDay - startDay + 1);
-                afterAdjustmentAmount = CalculationService.RoundAllowanceDetailAmountWithCurrency(
+                afterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(
                     CalculationService.ConvertAmount(currencyExchangeRate, afterAdjustmentAmount, allowanceDetailCurrencyId, monthlyPayrollBasicAllowance.CurrencyId), 
-                    monthlyPayrollBasicAllowance.CurrencyCode);
+                    monthlyPayrollBasicAllowance.CurrencyCode, roundingThousand: false);
+
                 return afterAdjustmentAmount.ToString(CultureInfo.InvariantCulture);
             }
 
@@ -692,7 +693,7 @@
 
             if(basicAllowance.CurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.AfterAdjustmentAmount)) {
                 basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount), basicAllowance.CurrencyCode)
-                    .ToString(CultureInfo.InvariantCulture);
+                        .ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -742,7 +743,7 @@
                     if (!string.IsNullOrEmpty(addition.TotalAmount))
                     {
                         addition.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(addition.TotalAmount), addition.CurrencyCode)
-                            .ToString(CultureInfo.InvariantCulture);
+                            .ToStringWithCurrency(addition.CurrencyCode);
                     }
                 }
             }
@@ -767,7 +768,7 @@
                     if (!string.IsNullOrEmpty(deduction.TotalAmount))
                     {
                         deduction.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(deduction.TotalAmount), deduction.CurrencyCode)
-                            .ToString(CultureInfo.InvariantCulture);
+                            .ToStringWithCurrency(deduction.CurrencyCode);
                     }
                 }
             }
