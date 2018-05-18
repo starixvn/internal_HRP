@@ -107,6 +107,19 @@
             Assert.True(actual.IsSuccessful);
         }
 
+        [Fact]
+        public void CachePasswordAccessTheCertificate_WhenCalled_ExpectedCachingPassword()
+        {
+            // Arrange
+            var certificateService = GetCertificateService();
+
+            // Act
+            certificateService.CachePasswordAccessTheCertificate("123456");
+
+            // Assert
+            memoryCache.Received().Set("PasswordAccessTheCertificate", "123456", Arg.Any<MemoryCacheEntryOptions>());
+        }
+
         #region Helpers
 
         private static IHostingEnvironment FakeHostingEnvironment()
