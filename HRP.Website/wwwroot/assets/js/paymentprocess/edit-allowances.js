@@ -284,8 +284,14 @@
             if ($this.val() !== '') {
                 if ($unitAmount.val() === '') {
                     var currencyId = $('.currency[data-group="' + dataGroup + '"]').val();
+                    var $basicAmount = $('.basic-allowance-amount.' + $this.data('allowance-type'));
+                    var amount = new BigNumber(Number($basicAmount.val()));
+                    var exchangeRate = $('input[data-from-currency="' + $basicAmount.data('currency') + '"][data-to-currency="' + currencyId + '"]').val();
 
-                    var amount = new BigNumber(Number($('.basic-allowance-amount.' + $this.data('allowance-type')).val()));
+                    if (exchangeRate) {
+                        amount = amount.mul(exchangeRate);
+                    }
+
                     var days = $unitAmount.is('[readonly]') ? workingDays : daysInMonth;
                     $unitAmount.val(amount.div(days).roundWithCurrency(2, currencyId, false).toStringWithCurrency(currencyId, 2));
                 }
@@ -294,7 +300,7 @@
             }
         });
 
-        $('.unit-amount, addition.currency, .deduction.currency').on('change', function (e) {
+        $('.unit-amount, .addition.currency, .deduction.currency').on('change', function (e) {
             var $this = $(this);
             var dataGroup = $this.data('group');
             var $currency = $('.currency[data-group="' + dataGroup + '"]');

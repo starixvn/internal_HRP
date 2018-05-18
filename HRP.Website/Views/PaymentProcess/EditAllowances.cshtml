@@ -119,14 +119,14 @@
     <input type="hidden" asp-for="EmployeeInfo.CompanyId" />
     <input type="hidden" asp-for="EmployeeInfo.WorkingDays" />
 
-    <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount" class="basic-allowance-amount @((int)AllowanceType.Subsistence)" />
-    <input type="hidden" asp-for="BasicAllowance.HomePassageAmount" class="basic-allowance-amount @((int)AllowanceType.HomePassage)" />
-    <input type="hidden" asp-for="BasicAllowance.HousingAmount" class="basic-allowance-amount @((int)AllowanceType.Housing)" />
-    <input type="hidden" asp-for="BasicAllowance.MobilePhoneAmount" class="basic-allowance-amount @((int)AllowanceType.MobilePhone)" />
-    <input type="hidden" asp-for="BasicAllowance.HPIAmount" class="basic-allowance-amount @((int)AllowanceType.HPI)" />
-    <input type="hidden" asp-for="BasicAllowance.DutyMealAmount" class="basic-allowance-amount @((int)AllowanceType.DutyMeal)" />
-    <input type="hidden" asp-for="BasicAllowance.SecondmentAmount" class="basic-allowance-amount @((int)AllowanceType.Secondment)" />
-    <input type="hidden" asp-for="BasicAllowance.OthersAmount" class="basic-allowance-amount @((int)AllowanceType.Others)" />
+    <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount" data-currency="@Model.BasicAllowance.SubsistenceCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Subsistence)" />
+    <input type="hidden" asp-for="BasicAllowance.HomePassageAmount" data-currency="@Model.BasicAllowance.HomePassageCurrencyId" class="basic-allowance-amount @((int)AllowanceType.HomePassage)" />
+    <input type="hidden" asp-for="BasicAllowance.HousingAmount" data-currency="@Model.BasicAllowance.HousingCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Housing)" />
+    <input type="hidden" asp-for="BasicAllowance.MobilePhoneAmount" data-currency="@Model.BasicAllowance.MobilePhoneCurrencyId" class="basic-allowance-amount @((int)AllowanceType.MobilePhone)" />
+    <input type="hidden" asp-for="BasicAllowance.HPIAmount" data-currency="@Model.BasicAllowance.HPICurrencyId" class="basic-allowance-amount @((int)AllowanceType.HPI)" />
+    <input type="hidden" asp-for="BasicAllowance.DutyMealAmount" data-currency="@Model.BasicAllowance.DutyMealCurrencyId" class="basic-allowance-amount @((int)AllowanceType.DutyMeal)" />
+    <input type="hidden" asp-for="BasicAllowance.SecondmentAmount" data-currency="@Model.BasicAllowance.SecondmentCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Secondment)" />
+    <input type="hidden" asp-for="BasicAllowance.OthersAmount" data-currency="@Model.BasicAllowance.OthersCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Others)" />
 
     <div class="form-information">
         <div class="list-message-error hidden" id="validation-summary">

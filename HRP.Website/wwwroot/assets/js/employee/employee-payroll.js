@@ -513,11 +513,7 @@
         });
 
         $('.allowance-detail-calculate').on('change', function (e) {
-            var parent = $(this).parent();
-            var $currency = parent.find('select');
-            var $amount = parent.find('input');
-            roundingAmount($currency, $amount, 2, false);
-
+            roundingAmount(e.target, 2, false);
             validatedInvalidRelatedElements(e.target);
 
             var $totalAmount = $('#allowance-total-amount');
@@ -539,10 +535,7 @@
 
         $('.deduction-calculate').on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
-            var parent = $(this).parent();
-            var $currency = parent.find('select');
-            var $amount = parent.find('input');
-            roundingAmount($currency, $amount, 2, false);
+            roundingAmount(e.target, 2, false);
         });
 
         $('#Allowance_CurrencyId').on('change', function () {
