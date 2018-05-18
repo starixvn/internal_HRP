@@ -550,7 +550,7 @@
 
                 // Write Data
                 var row = 2;
-                foreach (var record in records)
+                foreach (DynamicReportModel record in records)
                 {
                     worksheet.Cells[row, 1].Value = record.IDNo;
                     col = 2;

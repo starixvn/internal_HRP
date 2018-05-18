@@ -124,6 +124,21 @@
             Assert.NotEmpty(actual);
         }
 
+        [Fact]
+        public void ExportDynamicReport_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var data = new List<DynamicReportModel> { new DynamicReportModel { IDNo = "DAR1234", CompanyStartDate = DateTime.Now } };
+            var selectedIds = new List<int> { 1, 42 };
+            var service = GetExportExcelService();
+
+            // Act
+            var actual = service.ExportDynamicReport(data, selectedIds);
+
+            // Assert
+            Assert.NotEmpty(actual);
+        }
+
         #region Helpers
 
         private static ICryptoService FakeCryptoService()

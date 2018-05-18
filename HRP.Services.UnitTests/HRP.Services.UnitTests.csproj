@@ -313,6 +313,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ColumnsConfiguration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="FileTest\pdf.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
