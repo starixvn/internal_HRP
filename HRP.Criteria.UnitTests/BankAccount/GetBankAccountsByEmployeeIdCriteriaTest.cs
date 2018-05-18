@@ -25,30 +25,37 @@
         }
 
         [Theory]
-        [MemberData(nameof(IsValidData))]
-        public void IsValid_WhenCalled_ReturnExpected(GetBankAccountsByEmployeeIdCriteria getBankAccountsByEmployeeIdCriteria, bool expectedResult)
+        [MemberData(nameof(InvalidData))]
+        public void IsValid_ParamInvalid_ReturnFalse(GetBankAccountsByEmployeeIdCriteria getBankAccountsByEmployeeIdCriteria)
         {
-            Assert.True(getBankAccountsByEmployeeIdCriteria.IsValid() == expectedResult);
+            Assert.False(getBankAccountsByEmployeeIdCriteria.IsValid());
         }
 
-        public static IEnumerable<object[]> IsValidData
+        [Theory]
+        [MemberData(nameof(ValidData))]
+        public void IsValid_ParamValid_ReturnTrue(GetBankAccountsByEmployeeIdCriteria getBankAccountsByEmployeeIdCriteria)
+        {
+            Assert.True(getBankAccountsByEmployeeIdCriteria.IsValid());
+        }
+
+        public static IEnumerable<object[]> InvalidData
         {
             get
             {
-                var data = new List<TheoryDatum>();
+                var data = new List<object[]>();
 
                 var criteria = GetBaseCriteria();
                 criteria.EmployeeId = 0;
                 criteria.BankTypeId = null;
                 criteria.IsActive = null;
 
-                data.Add(TheoryDatum.Factory(criteria, false));
+                data.Add(new object[] { criteria });
 
-                data.Add(TheoryDatum.Factory(GetBaseCriteria(), true));
-
-                return data.ConvertAll(d => d.ToParameterArray());
+                return data;
             }
         }
+
+        public static IEnumerable<object[]> ValidData => new List<object[]> { new object[] { GetBaseCriteria() } };
 
         private static GetBankAccountsByEmployeeIdCriteria GetBaseCriteria()
         {
