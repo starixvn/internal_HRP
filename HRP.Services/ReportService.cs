@@ -6,10 +6,10 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
+    using Core.Enumerations;
     using Core.Services;
     using Criteria.Report;
-    using HRP.Core.Enumerations;
-    using HRP.Criteria;
+    using Criteria;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;

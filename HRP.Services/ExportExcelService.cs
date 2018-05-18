@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using Core.Constants;
+    using Core.Enumerations;
     using Core.Extensions;
     using HRP.Core.Services;
     using Interfaces;

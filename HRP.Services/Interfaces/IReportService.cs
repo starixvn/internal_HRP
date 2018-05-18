@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Core.Enumerations;
     using Models.Report;
 
     public interface IReportService

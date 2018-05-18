@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using Core.Enumerations;
     using Models.Report;
 
     public interface IExportExcelService
