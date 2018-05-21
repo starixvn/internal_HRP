@@ -431,7 +431,6 @@
             var reportController = GetReportController();
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
             baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(employeeStatuses);
-                });
 
             // Act
             var actual = await reportController.DynamicReport();
