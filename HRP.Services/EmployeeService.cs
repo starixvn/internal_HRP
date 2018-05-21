@@ -118,7 +118,7 @@
                 CompanyEndDate = employee.CompanyEndDate,
                 Email = employee.Email,
                 CountryId = employee.CountryId,
-                CityId = employee.CountryId,
+                CityId = employee.CityId,
                 OfficeId = employee.OfficeId,
                 DST = employee.DST,
                 DBT = employee.DBT,
