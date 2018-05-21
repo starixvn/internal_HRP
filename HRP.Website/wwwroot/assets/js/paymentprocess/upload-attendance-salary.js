@@ -357,7 +357,7 @@
                 } else {
                     $(domElement.UploadFilesForm).validate().showErrors(response.errors);
                     hideLoadingAnimation();
-                }               
+                }
             },
             error: commonFunctions.handleAjaxError
         });
@@ -442,6 +442,8 @@
 
     function init() {
         var $form = $(domElement.UploadFilesForm);
+        $('select.js-select2').select2();
+
         registerEventChangeExcelFiles($form);
         registerEventBrowseExcelFiles();
         registerEventClearFiles();
