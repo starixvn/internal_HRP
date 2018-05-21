@@ -71,8 +71,8 @@ BEGIN
 	ORDER BY [Type]
 
 	SELECT [PayrollId]
-		,[CurrencyId]
-		,[TotalAmount]
+		,mba.[CurrencyId]
+		,c.[CurrencyCode]
 		,[DirectBanking1CurrencyId]
 		,[DirectBanking1Amount]
 		,[DirectBanking2CurrencyId]
@@ -104,6 +104,7 @@ BEGIN
 		,[CreatedDate]
 		,[AfterAdjustmentAmount]
 		,[Reason]
-	FROM [dbo].[MonthlyBasicAllowance] WITH (NOLOCK)
+	FROM [dbo].[MonthlyBasicAllowance] AS mba WITH (NOLOCK)
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = mba.CurrencyId
 	WHERE PayrollId = @PayrollId
 END
