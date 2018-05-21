@@ -289,7 +289,7 @@
         public async Task MonthlyPayroll_WhenCalled_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
-            var companies = new List<Company> { MockCompany() };
+            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
             reportController.ModelState.AddModelError("CompanyId", "Required");
@@ -319,7 +319,7 @@
                 CommonError = "ahihi"
             };
 
-            var companies = new List<Company> { MockCompany() };
+            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
             reportController.ModelState.AddModelError("CompanyId", "Required");
@@ -354,7 +354,7 @@
                 SelectedTime = DateTime.Today,
                 CompanyId = 22
             };
-            var companies = new List<Company> { MockCompany() };
+            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             var reportController = GetReportController();
@@ -418,31 +418,36 @@
         [Fact]
         public async Task DynamicReport_WhenCalled_ReturnExpectedViewResult()
         {
+            // Arrange
+            var companies = new List<Company>
+            {
+                new Company { CompanyId = 1, Name = "DAR" }
+            };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var employeeStatuses = new List<MultiSelectViewModel>
+            {
+                new MultiSelectViewModel { Value = "1", Text = "Probation" }
+            };
             var reportController = GetReportController();
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report)
-                .Returns(new List<Company>
-                {
-                    new Company { CompanyId = 1, Name = "DAR" }
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
+            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(employeeStatuses);
                 });
 
-            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>())
-                .Returns(new List<MultiSelectViewModel>
-                {
-                    new MultiSelectViewModel
-                    {
-                        Value = "3",
-                    }
-                });
-
+            // Act
             var actual = await reportController.DynamicReport();
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsType<GenerateReportViewModel>(viewResult.Model);
-            Assert.False(string.IsNullOrEmpty(viewModel.EmployeeStatusIds));
+            Assert.Equal("DynamicReport", viewResult.ViewName);
+            Assert.Equal("1,2", viewModel.EmployeeStatusIds);
+            Assert.Equal(companySelectList, viewModel.Companies);
         }
 
         [Fact]
         public async Task DynamicReport_ValidModel_ReturnFile()
         {
+            // Arrange
             var viewModel = new GenerateReportViewModel
             {
                 CompanyId = 1,
@@ -450,7 +455,7 @@
                 SelectedIds = "1"
             };
 
-            var employeeDatas = new List<DynamicReportModel>()
+            var employeeDatas = new List<DynamicReportModel>
             {
                 new DynamicReportModel
                 {
@@ -463,13 +468,22 @@
             reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds).Returns(employeeDatas);
             exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse)).Returns(new byte[10]);
 
+            // Act
             var actual = await reportController.DynamicReport(viewModel);
+
+            // Assert
             Assert.IsType<FileContentResult>(actual);
         }
 
         [Fact]
         public async Task DynamicReport_InvalidModel_ReturnExpectedViewResult()
         {
+            // Arrange
+            var companies = new List<Company>
+            {
+                new Company { CompanyId = 1, Name = "DAR" }
+            };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var viewModel = new GenerateReportViewModel
             {
                 CompanyId = 1,
@@ -480,20 +494,24 @@
             var reportController = GetReportController();
             reportController.ModelState.AddModelError(nameof(viewModel.CompanyId), "Missing company id");
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report)
-               .Returns(new List<Company>
-               {
-                    new Company { CompanyId = 1, Name = "DAR" }
-               });
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
 
+            // Act
             var actual = await reportController.DynamicReport(viewModel);
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<GenerateReportViewModel>(viewResult.Model);
+            var viewModelResult = Assert.IsType<GenerateReportViewModel>(viewResult.Model);
+            Assert.Equal(viewModel.CompanyId, viewModelResult.CompanyId);
+            Assert.Equal(viewModel.EmployeeStatusIds, viewModelResult.EmployeeStatusIds);
+            Assert.Equal(viewModel.SelectedIds, viewModelResult.SelectedIds);
+            Assert.Equal(companySelectList, viewModelResult.Companies);
         }
 
         [Fact]
         public async Task DynamicReport_DontHavePermissionOnCompany_RedirectToAccessDenied()
         {
+            // Arrange
             var viewModel = new GenerateReportViewModel
             {
                 CompanyId = 1,
@@ -504,7 +522,10 @@
             var reportController = GetReportController();
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(false);
 
+            // Act
             var actual = await reportController.DynamicReport(viewModel);
+
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("AccessDenied", redirectResult.ActionName);
             Assert.Equal("Error", redirectResult.ControllerName);
@@ -512,7 +533,7 @@
 
         #region Helpers
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
@@ -520,29 +541,29 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             var service = Substitute.For<IBaseService>();
 
             return service;
         }
 
-        private IReportService FakeReportService()
+        private static IReportService FakeReportService()
         {
             return Substitute.For<IReportService>();
         }
 
-        private IHostingEnvironment FakeHostingEnviroment()
+        private static IHostingEnvironment FakeHostingEnviroment()
         {
             return Substitute.For<IHostingEnvironment>();
         }
 
-        private IExportExcelService FakeExportExcelService()
+        private static IExportExcelService FakeExportExcelService()
         {
             return Substitute.For<IExportExcelService>();
         }
 
-        private ICommonService FakeCommonService()
+        private static ICommonService FakeCommonService()
         {
             return Substitute.For<ICommonService>();
         }
@@ -563,17 +584,6 @@
                 exportExcelService,
                 reportService,
                 commonService);
-        }
-
-        private Company MockCompany()
-        {
-            return new Company
-            {
-                CompanyId = 11,
-                Code = "company",
-                Name = "descC",
-                IsActive = true
-            };
         }
 
         #endregion Helpers

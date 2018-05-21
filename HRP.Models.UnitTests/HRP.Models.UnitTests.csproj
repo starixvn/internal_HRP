@@ -59,7 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankInReportTests.cs" />
     <Compile Include="CurrencyExchangeRateModelTests.cs" />
     <Compile Include="CreateEmployeeViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

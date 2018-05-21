@@ -9,7 +9,7 @@ namespace HRP.Core.Services
     using HRP.Resources;
     using Microsoft.Extensions.Options;
 
-    public class CryptoService : ICryptoService, IDisposable
+    public class CryptoService : ICryptoService
     {
         private const bool OptimalAsymmetricEncryptionPadding = false;
 
@@ -71,20 +71,6 @@ namespace HRP.Core.Services
             }
 
             return plainText;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (cert2 != null)
-            {
-                cert2.Dispose();
-            }
         }
 
         private X509Certificate2 InitCertificate()

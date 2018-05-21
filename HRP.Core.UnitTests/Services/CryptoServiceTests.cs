@@ -1,5 +1,6 @@
 ﻿namespace HRP.Core.UnitTests.Services
 {
+    using System.IO;
     using System.Security.Cryptography.X509Certificates;
     using HRP.Core.Model;
     using HRP.Core.Services;
@@ -9,6 +10,19 @@
 
     public class CryptoServiceTests
     {
+        [Fact]
+        public void Constructor_CertFileIsNotFound_ThrowException()
+        {
+            // Arrange
+            ICertificateService certificateService = FakeCertificateService();
+            certificateService.IsExistedCertificate().Returns(false);
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(true);
+
+            // Act & Assert
+            var ex = Assert.Throws<FileNotFoundException>(() => new CryptoService(certificateService, configuration, null));
+            Assert.Equal("Certificate is not found!", ex.Message);
+        }
+
         #region Encrypt
 
         [Theory]
@@ -18,7 +32,7 @@
         {
             // Arrange
             var cert = Substitute.For<X509Certificate2>();
-            var configuration = FakeIOptionsSnapshot(true);
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(true);
             var service = GetCryptoService(configuration, cert);
 
             // Act
@@ -34,7 +48,7 @@
             // Arrange
             var plainText = "123456";
             var cert = Substitute.For<X509Certificate2>();
-            var configuration = FakeIOptionsSnapshot(false);
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(false);
             var service = GetCryptoService(configuration, cert);
 
             // Act
@@ -49,8 +63,8 @@
         {
             // Arrange
             var plainText = "123456";
-            var cert = GetX509Certificate2();
-            var configuration = FakeIOptionsSnapshot(true);
+            X509Certificate2 cert = GetX509Certificate2();
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(true);
             var service = GetCryptoService(configuration, cert);
 
             // Act
@@ -71,7 +85,7 @@
         {
             // Arrange
             var cert = Substitute.For<X509Certificate2>();
-            var configuration = FakeIOptionsSnapshot(true);
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(true);
             var service = GetCryptoService(configuration, cert);
 
             // Act
@@ -87,7 +101,7 @@
             // Arrange
             var cipherText = "123456";
             var cert = Substitute.For<X509Certificate2>();
-            var configuration = FakeIOptionsSnapshot(false);
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(false);
             var service = GetCryptoService(configuration, cert);
 
             // Act
@@ -102,8 +116,8 @@
         {
             // Arrange
             var expected = "123456";
-            var cert = GetX509Certificate2();
-            var configuration = FakeIOptionsSnapshot(true);
+            X509Certificate2 cert = GetX509Certificate2();
+            IOptionsSnapshot<AppSettingsOptions> configuration = FakeIOptionsSnapshot(true);
             var service = GetCryptoService(configuration, cert);
             var cipherText = service.Encrypt(expected);
 

@@ -53,7 +53,7 @@
             Assert.Equal(companyId, viewModel.CompanyId);
             Assert.Null(viewModel.IsSent);
             Assert.Equal(payslips, viewModel.Payslips);
-            Assert.Equal(companies.Count(), viewModel.Companies.Count());
+            Assert.Equal(companies.Count, viewModel.Companies.Count());
         }
 
         #region Details
