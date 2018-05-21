@@ -119,6 +119,7 @@ var editBasicSalary = (function ($) {
             currencyId = $parent.find('.js-selectCurrency').val();
 
             if (currencyId !== '') {
+                currencyId = parseInt(currencyId);
                 var amount = getNumber($parent.find('.js-autoCalculateAmount'));
                 if (amount.length > 0 && !isNaN(amount)) {
                     amount = new BigNumber(amount);
@@ -132,6 +133,7 @@ var editBasicSalary = (function ($) {
         });
 
         currencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val();
+        currencyId = currencyId !== '' ? parseInt(currencyId) : '';
         exchangeRate = Number($('input[data-from-currency="' + currencySettingId + '"][data-to-currency="' + currencyId + '"]').val());
         monthlySalary = monthlySalary.mul(exchangeRate).roundAmount(currencyId, 0);
         $parentAutoCalculateOn.find('.js-autoCalculateAmount').val(monthlySalary).valid();

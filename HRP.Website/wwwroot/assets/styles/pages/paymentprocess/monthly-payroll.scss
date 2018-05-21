@@ -38,3 +38,11 @@ select.width-200 {
     color: #ff0000;
 }
 
+table {
+    tr.row-highlight {
+        td {
+            background-color: #ffe28a;
+        }
+    }
+}
+

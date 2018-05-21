@@ -535,4 +535,8 @@ select.width-200 {
 .negative-amount {
   color: #ff0000;
 }
+
+table tr.row-highlight td {
+  background-color: #ffe28a;
+}
 /*# sourceMappingURL=monthly-payroll.css.map */

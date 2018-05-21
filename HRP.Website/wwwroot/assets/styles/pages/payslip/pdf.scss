@@ -21,7 +21,8 @@ body {
 .note {
     text-align: center;
     color: #666;
-    padding-top: 12px; 
+    padding-top: 12px;
+    font-style: italic;
 }
 
 .label-company-name, .label-payslip, .label-confidential, .label-month {
@@ -46,8 +47,9 @@ body {
 
 table {
     width: 100%;
+    border-spacing: 0;
     border-collapse: collapse;
-    vertical-align: top;
+    vertical-align: middle;
 
     .align-left {
         text-align: left;
@@ -64,10 +66,11 @@ table {
                     font-size: 13px;
                 }
             }
-            
+
             td {
-                font-size: 12px;                
-                padding: 0 8px;
+                font-size: 12px;
+                padding: 5px 8px;
+                vertical-align: middle;
             }
 
             .border-right {
