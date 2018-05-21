@@ -133,7 +133,7 @@
         var amount = $('input.allowance-detail-calculate', parent).val();
         if (currency !== '' && !isNaN(amount) && amount !== '') {
             amount = new BigNumber(amount);
-            var exchangeRates = Number($('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val());
+            var exchangeRates = $('input[data-from-currency="' + currency + '"][data-to-currency="' + allowanceCurrency + '"]').val();
 
             amount = amount.mul(exchangeRates);
             $('.allowance-convert-amount', parent).val(amount.toString());
