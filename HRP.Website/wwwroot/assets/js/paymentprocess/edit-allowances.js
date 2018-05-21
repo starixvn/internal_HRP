@@ -126,7 +126,7 @@
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmountDisplay, #Allowance_DSTNetSalaryAmount, #Allowance_TotalNetAmount')
+        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmountDisplay, #Allowance_DSTNetSalaryAmount')
             .inputmask({
                 alias: 'numeric',
                 autoGroup: true,
@@ -142,6 +142,16 @@
             alias: 'numeric',
             autoGroup: true,
             digits: 0,
+            placeholder: '',
+            groupSeparator: ',',
+            autoUnmask: true,
+            removeMaskOnSubmit: true
+        });
+
+        $('#Allowance_TotalNetAmount').inputmask({
+            alias: 'numeric',
+            autoGroup: true,
+            digits: 2,
             placeholder: '',
             groupSeparator: ',',
             autoUnmask: true,

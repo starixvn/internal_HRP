@@ -219,8 +219,8 @@
 
             DecryptMonthlyBasicAllowance(model.BasicAllowance);
             DecryptMonthlyAllowance(model.Allowance);
-            DecryptMonthlyAllowanceAdditions(model.Additions);
-            DecryptMonthlyAllowanceDeductions(model.Deductions);
+            DecryptMonthlyAllowanceAdditions(model.Additions, model.Allowance.CurrencyCode);
+            DecryptMonthlyAllowanceDeductions(model.Deductions, model.Allowance.CurrencyCode);
 
             return model;
         }
@@ -696,8 +696,8 @@
 
             if (basicAllowance.CurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.AfterAdjustmentAmount))
             {
-                basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount), basicAllowance.CurrencyCode)
-                        .ToStringWithCurrency(basicAllowance.CurrencyCode);
+                basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount), 
+                    basicAllowance.CurrencyCode, roundingThousand: false).ToStringWithCurrency(basicAllowance.CurrencyCode);
             }
         }
 
@@ -728,7 +728,7 @@
             }
         }
 
-        private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)
+        private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions, string allowanceCurrencyCode)
         {
             foreach (var addition in additions)
             {
@@ -740,20 +740,20 @@
                 {
                     if (!string.IsNullOrEmpty(addition.NetAllowance))
                     {
-                        addition.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(addition.NetAllowance), addition.CurrencyCode, 0)
+                        addition.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(addition.NetAllowance), allowanceCurrencyCode, 0)
                             .ToString(CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(addition.TotalAmount))
                     {
-                        addition.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(addition.TotalAmount), addition.CurrencyCode)
+                        addition.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(addition.TotalAmount), addition.CurrencyCode, roundingThousand: false)
                             .ToStringWithCurrency(addition.CurrencyCode);
                     }
                 }
             }
         }
 
-        private void DecryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
+        private void DecryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeductionModel> deductions, string allowanceCurrencyCode)
         {
             foreach (var deduction in deductions)
             {
@@ -765,13 +765,13 @@
                 {
                     if (!string.IsNullOrEmpty(deduction.NetAllowance))
                     {
-                        deduction.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(deduction.NetAllowance), deduction.CurrencyCode, 0)
+                        deduction.NetAllowanceToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(deduction.NetAllowance), allowanceCurrencyCode, 0)
                             .ToString(CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(deduction.TotalAmount))
                     {
-                        deduction.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(deduction.TotalAmount), deduction.CurrencyCode)
+                        deduction.TotalAmountToDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(deduction.TotalAmount), deduction.CurrencyCode, roundingThousand: false)
                             .ToStringWithCurrency(deduction.CurrencyCode);
                     }
                 }
