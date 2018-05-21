@@ -1,3 +1,7 @@
+.block.certificate {
+  width: 350px;
+}
+
 .block.certificate .msg-error.-has-icon, .block.certificate .msg-success.-has-icon {
   margin-left: 24px;
   margin-right: 24px;
@@ -5,11 +9,16 @@
 
 .block.certificate .title {
   margin-bottom: 20px;
+  line-height: 27px;
 }
 
 .block.certificate .intro {
   text-align: left;
   padding: 0 24px 10px;
+}
+
+.block.certificate .intro .intro-detail {
+  line-height: 18px;
 }
 
 .block.certificate .list-button {
