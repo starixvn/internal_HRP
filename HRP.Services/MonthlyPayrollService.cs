@@ -489,8 +489,8 @@
                 totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, monthlyPayrollBasicAllowance.OthersAmount,
                     monthlyPayrollBasicAllowance.OthersCurrencyId, currencyId);
 
-                totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0);
-                monthlyPayrollBasicAllowance.TotalAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
+                monthlyPayrollBasicAllowance.TotalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyPayrollBasicAllowance.CurrencyCode, 0)
+                    .ToString(CultureInfo.InvariantCulture);
 
                 CalculateAfterAdjustment(totalAmount, monthlyPayrollBasicAllowance, workingMonth, groupStartDate, groupEndDate, currencyExchangeRates);
                 CalculateAutoBasicAllowance(currencyExchangeRates, monthlyPayrollBasicAllowance);
@@ -620,7 +620,10 @@
             {
                 var reason = new StringBuilder();
                 string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
-                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted", Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode);
+
+                reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted",
+                    CalculationService.RoundAmountWithCurrency(Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode, roundingThousand: false), 
+                    monthlyPayrollBasicAllowance.CurrencyCode);
                 reason.Append(dateCommencementReason);
 
                 monthlyPayrollBasicAllowance.Reason = reason.ToString();
