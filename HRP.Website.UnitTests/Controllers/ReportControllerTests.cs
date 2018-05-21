@@ -425,7 +425,14 @@
                     new Company { CompanyId = 1, Name = "DAR" }
                 });
 
-            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(new List<MultiSelectViewModel>());
+            baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>())
+                .Returns(new List<MultiSelectViewModel>
+                {
+                    new MultiSelectViewModel
+                    {
+                        Value = "3",
+                    }
+                });
 
             var actual = await reportController.DynamicReport();
             var viewResult = Assert.IsType<ViewResult>(actual);
