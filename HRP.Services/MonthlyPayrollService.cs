@@ -1089,7 +1089,10 @@
             if (differenceAmount != 0)
             {
                 string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
-                reason.AppendFormat("{0} {1} ({2}).", differenceAmount > 0 ? "Added" : "Deducted", Math.Abs(differenceAmount), basicSetting.CurrencyCode);
+                reason.AppendFormat("{0} {1} ({2}).",
+                    differenceAmount > 0 ? "Added" : "Deducted",
+                    CalculationService.FormatAmount(Math.Abs(differenceAmount), basicSetting.CurrencyCode),
+                    basicSetting.CurrencyCode);
                 reason.Append(dateCommencementReason);
 
                 switch (basicSetting.SalaryChangeReason)

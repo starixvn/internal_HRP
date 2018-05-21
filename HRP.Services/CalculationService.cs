@@ -45,6 +45,18 @@
             return amount * GetExchangeRate(currencyExchangeRates, fromCurrencyId ?? 0, toCurrencyId ?? 0);
         }
 
+        public static string FormatAmount(decimal amount, string currencyCode)
+        {
+            var result = amount.ToString("#,##0.00");
+
+            if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
+            {
+                result = amount.ToString("#,##0");
+            }
+
+            return result;
+        }
+
         private static decimal GetExchangeRate(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             int fromCurrencyId,
