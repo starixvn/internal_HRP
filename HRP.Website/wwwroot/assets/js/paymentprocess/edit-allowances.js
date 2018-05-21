@@ -57,7 +57,7 @@
     }
 
     function calculateTotalAmount() {
-        var totalAmount = new BigNumber(Number($('#BasicAllowance_AfterAdjustmentAmount').val()));
+        var totalAmount = new BigNumber($('#BasicAllowance_AfterAdjustmentAmount').val());
 
         totalAmount = totalAmount.plus(Number($("#total-addition").val()));
         totalAmount = totalAmount.minus(Number($("#total-deduction").val()));
