@@ -120,6 +120,33 @@
             memoryCache.Received().Set("PasswordAccessTheCertificate", "123456", Arg.Any<MemoryCacheEntryOptions>());
         }
 
+        [Fact]
+        public void ChangePasswordAccessTheCertificate_OldPasswordIsCorrect_ReturnAsExpectedCommandResualt()
+        {
+            // Arrange
+            var certificateService = GetCertificateService();
+
+            // Act
+            var actual = certificateService.ChangePasswordAccessTheCertificate("123456", "123456");
+
+            // Assert
+            Assert.True(actual.IsSuccessful);
+        }
+
+        [Fact]
+        public void ChangePasswordAccessTheCertificate_OldPasswordIsIncorrect_ReturnAsExpectedCommandResualt()
+        {
+            // Arrange
+            var certificateService = GetCertificateService();
+
+            // Act
+            var actual = certificateService.ChangePasswordAccessTheCertificate("1234", "123456");
+
+            // Assert
+            Assert.False(actual.IsSuccessful);
+            Assert.Contains("The specified network password is not correct.", actual.Message);
+        }
+
         #region Helpers
 
         private static IHostingEnvironment FakeHostingEnvironment()

@@ -426,7 +426,8 @@
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var employeeStatuses = new List<MultiSelectViewModel>
             {
-                new MultiSelectViewModel { Value = "1", Text = "Probation" }
+                new MultiSelectViewModel { Value = "1", Text = "Probation" },
+                new MultiSelectViewModel { Value = "3", Text = "Resigned" }
             };
             var reportController = GetReportController();
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);

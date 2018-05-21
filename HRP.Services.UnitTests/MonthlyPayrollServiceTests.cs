@@ -324,7 +324,7 @@
         {
             // Arrange
             var allowance = new MonthlyAllowanceModel { CurrencyId = 1 };
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel { CurrencyId = 1 };
             var additions = new List<MonthlyAllowanceAdditionModel>
             {
                 new MonthlyAllowanceAdditionModel
