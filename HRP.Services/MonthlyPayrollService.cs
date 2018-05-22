@@ -993,7 +993,8 @@
                 var totalNetAmount = totalAmount -
                     CalculationService.ConvertAmount(currencyExchangeRates, monthlyAllowance.DSTNetSalaryAmount, monthlyAllowance.DSTNetSalaryCurrencyId.Value, monthlyAllowance.CurrencyId.Value);
 
-                monthlyAllowance.TotalNetAmount = CalculationService.RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyCode).ToString(CultureInfo.InvariantCulture);
+                monthlyAllowance.TotalNetAmount = CalculationService.RoundAmountWithCurrency(totalNetAmount, monthlyAllowance.CurrencyCode, roundingThousand: false)
+                    .ToString(CultureInfo.InvariantCulture);
             }
             else
             {
