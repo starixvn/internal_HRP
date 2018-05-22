@@ -183,33 +183,28 @@ var monthlyPayroll = (function ($) {
                     hasSetting: $element.next().find('.js-menuItem-allowance').data('hassetting') === 'True'
                 };
                 var presetMonthlyPayroll = $element.next().find('.js-menuItem-presetMonthlyPayroll');
-                var items = {
-                    'BasicSalary': {
-                        name: basicSalary.title,
-                        isHtmlName: true
-                    },
-                    'Allowances': {
-                        name: allowance.title,
-                        isHtmlName: true
-                    }
-                };
                 var modalHasNoPayrollSetting = $('#modalHasNoPayrollSetting');
+                var items = {};
 
-                if (presetMonthlyPayroll.length > 0) {
+                if (basicSalary.title) {
                     items = {
-                        'BasicSalary': {
-                            name: basicSalary.title,
-                            isHtmlName: true
-                        },
-                        'Allowances': {
-                            name: allowance.title,
-                            isHtmlName: true
-                        },
-                        'PresetMonthlyPayroll': {
-                            name: presetMonthlyPayroll.html(),
-                            isHtmlName: true
-                        }
+                        'BasicSalary': { name: basicSalary.title, isHtmlName: true },
+                        'Allowances': { name: allowance.title, isHtmlName: true }
                     };
+
+                    if (presetMonthlyPayroll.length > 0) {
+                        items = {
+                            'BasicSalary': { name: basicSalary.title, isHtmlName: true },
+                            'Allowances': { name: allowance.title, isHtmlName: true },
+                            'PresetMonthlyPayroll': { name: presetMonthlyPayroll.html(), isHtmlName: true }
+                        };
+                    }
+                } else {
+                    if (presetMonthlyPayroll.length > 0) {
+                        items = {
+                            'PresetMonthlyPayroll': { name: presetMonthlyPayroll.html(), isHtmlName: true }
+                        };
+                    }
                 }
 
                 return {

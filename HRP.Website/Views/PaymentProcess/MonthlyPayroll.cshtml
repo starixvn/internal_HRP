@@ -271,39 +271,42 @@
                                 <span class="caret"></span>
                             </div>
                             <div class="js-contextMenuItems hidden">
-                                <a class="js-menuItem-basicSalary" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
-                                   asp-route-payrollId="@employee.PayrollId" asp-route-companyId="@Model.CompanyId"
-                                   asp-route-month="@Model.Month" asp-route-employeeId="@Model.EmployeeId"
-                                   asp-route-employee="@Model.Employee" asp-route-idNo="@Model.IDNo"
-                                   asp-route-workingDays="@Model.WorkingDays" asp-route-costCenterIds="@Model.CostCenterIds"
-                                   data-hasSetting="@employee.HasSettingSalary">
-                                    <span class="icon-salary"></span>
-                                    @if (employee.Policy == Policy.Host)
-                                    {
-                                        @ViewLang.EditMonthlyBasicSalary
-                                    }
-                                    else
-                                    {
-                                        @ViewLang.ViewMonthlyBasicSalary
-                                    }
-                                </a>
+                                @if (employee.IsGenerated)
+                                {
+                                    <a class="js-menuItem-basicSalary" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
+                                       asp-route-payrollId="@employee.PayrollId" asp-route-companyId="@Model.CompanyId"
+                                       asp-route-month="@Model.Month" asp-route-employeeId="@Model.EmployeeId"
+                                       asp-route-employee="@Model.Employee" asp-route-idNo="@Model.IDNo"
+                                       asp-route-workingDays="@Model.WorkingDays" asp-route-costCenterIds="@Model.CostCenterIds"
+                                       data-hasSetting="@employee.HasSettingSalary">
+                                        <span class="icon-salary"></span>
+                                        @if (employee.Policy == Policy.Host)
+                                        {
+                                            @ViewLang.EditMonthlyBasicSalary
+                                        }
+                                        else
+                                        {
+                                            @ViewLang.ViewMonthlyBasicSalary
+                                        }
+                                    </a>
 
-                                <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
-                                   asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month"
-                                   asp-route-companyId="@Model.CompanyId" asp-route-employeeId="@Model.EmployeeId"
-                                   asp-route-employee="@Model.Employee" asp-route-idNo="@Model.IDNo"
-                                   asp-route-workingDays="@Model.WorkingDays" asp-route-costCenterIds="@Model.CostCenterIds"
-                                   data-hasSetting="@employee.HasSettingAllowance">
-                                    <span class="icon-allowances"></span>
-                                    @if (employee.Policy == Policy.Host)
-                                    {
-                                        @ViewLang.EditMonthlyAllowances
-                                    }
-                                    else
-                                    {
-                                        @ViewLang.ViewMonthlyAllowances
-                                    }
-                                </a>
+                                    <a class="js-menuItem-allowance" asp-action="EditAllowances" asp-controller="PaymentProcess"
+                                       asp-route-payrollId="@employee.PayrollId" asp-route-month="@Model.Month"
+                                       asp-route-companyId="@Model.CompanyId" asp-route-employeeId="@Model.EmployeeId"
+                                       asp-route-employee="@Model.Employee" asp-route-idNo="@Model.IDNo"
+                                       asp-route-workingDays="@Model.WorkingDays" asp-route-costCenterIds="@Model.CostCenterIds"
+                                       data-hasSetting="@employee.HasSettingAllowance">
+                                        <span class="icon-allowances"></span>
+                                        @if (employee.Policy == Policy.Host)
+                                        {
+                                            @ViewLang.EditMonthlyAllowances
+                                        }
+                                        else
+                                        {
+                                            @ViewLang.ViewMonthlyAllowances
+                                        }
+                                    </a>
+                                }
 
                                 @if (employee.Policy == Policy.Host)
                                 {
@@ -313,99 +316,99 @@
                                 }
                             </div>
                         }
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-<div class="list-button">
-    <a class="button -second" asp-controller="PaymentProcess" asp-action="UploadAttendanceAndSalary"
-       asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.Back</a>
-</div>
-
-@if (Model.FilterInfo.IsHost)
-{
-    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetPayroll">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content -has-title">
-                <div class="modal-header">
-                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
+                            </td>
+                        </tr>
+                    }
+                        }
+                    </tbody>
+                </table>
+                <div class="list-button">
+                    <a class="button -second" asp-controller="PaymentProcess" asp-action="UploadAttendanceAndSalary"
+                       asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.Back</a>
                 </div>
-                <div class="modal-body">
-                    <form class="form-information" asp-controller="paymentprocess" asp-action="Preset" method="post" id="preset-form"
-                          data-ajax-method="post" data-ajax="true"
-                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetSuccess">
-                        <input type="hidden" name="employeeId" value="" />
-                        <input type="hidden" name="month" value="@Model.Month" />
-                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
-                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
-                        <div class="list-button">
-                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
-                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+
+                @if (Model.FilterInfo.IsHost)
+                {
+                    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetPayroll">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content -has-title">
+                                <div class="modal-header">
+                                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-information" asp-controller="paymentprocess" asp-action="Preset" method="post" id="preset-form"
+                                          data-ajax-method="post" data-ajax="true"
+                                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetSuccess">
+                                        <input type="hidden" name="employeeId" value="" />
+                                        <input type="hidden" name="month" value="@Model.Month" />
+                                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
+                                        <div class="list-button">
+                                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
+                                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetAllPayroll">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content -has-title">
-                <div class="modal-header">
-                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-information" asp-controller="paymentprocess" asp-action="PresetAllMonthlyPayroll" method="post" id="preset-form"
-                          data-ajax-method="post" data-ajax="true"
-                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetAllSuccess">
-                        <input type="hidden" name="month" value="@Model.Month" />
-                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
-                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
-                        <div class="list-button">
-                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
-                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                    <div class="modal fade" tabindex="-1" role="dialog" id="modalPresetAllPayroll">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content -has-title">
+                                <div class="modal-header">
+                                    <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                                    <h4 class="modal-title">@ViewLang.Confirmation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-information" asp-controller="paymentprocess" asp-action="PresetAllMonthlyPayroll" method="post" id="preset-form"
+                                          data-ajax-method="post" data-ajax="true"
+                                          data-ajax-failure="commonFunctions.handleAjaxError" data-ajax-success="monthlyPayroll.onPresetAllSuccess">
+                                        <input type="hidden" name="month" value="@Model.Month" />
+                                        <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                                        <p>@Html.Raw(Message.PayrollPresetConfirmationMessage)</p>
+                                        <div class="list-button">
+                                            <button class="button -primary" type="submit">@ViewLang.Yes</button>
+                                            <button type="button" class="button -second" data-dismiss="modal">@ViewLang.No</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                }
+
+                <div class="modal fade" tabindex="-1" role="dialog" id="modalHasNoPayrollSetting">
+                    <div class="modal-dialog -small" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
+                            </div>
+                            <div class="modal-body">
+                                <p class="no-basic-salary-setting">@Message.EmployeeHasNoBasicSalarySetting</p>
+                                <p class="no-allowance-setting">@Message.EmployeeHasNoAllowanceSetting</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-}
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modalHasNoPayrollSetting">
-    <div class="modal-dialog -small" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="icon-delete close" data-dismiss="modal" aria-label="Close"></span>
-            </div>
-            <div class="modal-body">
-                <p class="no-basic-salary-setting">@Message.EmployeeHasNoBasicSalarySetting</p>
-                <p class="no-allowance-setting">@Message.EmployeeHasNoAllowanceSetting</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
-        <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-        <script src="~/assets/js/paymentprocess/employee-monthly-payroll.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/paymentprocess/js/employee-monthly-payroll.min.js"></script>
-    </environment>
-}
+                @section Scripts {
+                    <environment include="Development">
+                        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+                        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+                        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+                        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
+                        <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
+                        <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
+                        <script src="~/lib/select2/dist/js/select2.js"></script>
+                        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+                        <script src="~/assets/js/paymentprocess/employee-monthly-payroll.js"></script>
+                    </environment>
+                    <environment exclude="Development">
+                        <script src="~/assets/bundles/paymentprocess/js/employee-monthly-payroll.min.js"></script>
+                    </environment>
+                }
