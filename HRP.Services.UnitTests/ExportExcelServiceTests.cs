@@ -54,6 +54,27 @@
         }
 
         [Fact]
+        public void ExportDirectBankingReports_EmptyCashBankIns_ReturnAsExpected()
+        {
+            // Arrange
+            var data = new BankInReport
+            {
+                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" },
+                EBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
+                CashBankIns = new List<BankIn>()
+            };
+
+            var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
+            var service = GetExportExcelService();
+
+            // Act
+            var actual = service.ExportDirectBankingReports(DateTime.Now, fileInfo, PaymentType.BasicSalary, data);
+
+            // Assert
+            Assert.NotEmpty(actual);
+        }
+
+        [Fact]
         public void ExportEbankingReports_HasNotData_ReturnAsExpected()
         {
             // Arrange
