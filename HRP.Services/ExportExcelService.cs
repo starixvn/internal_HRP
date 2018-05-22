@@ -19,9 +19,8 @@
 
     public class ExportExcelService : IExportExcelService
     {
+        private const string NumberFormatWithThousandSeperatorAndNoDecimal = "#,##0";
         private readonly ICryptoService cryptoService;
-
-        private static string numberFormatWithThousandSeperatorAndNoDecimal = "#,##0";
 
         public ExportExcelService(ICryptoService cryptoService)
         {
@@ -141,9 +140,7 @@
             worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
 
             // Set payment type
-            worksheet.Cells["D4"].Value = typeOfPayment != 0
-                ? typeOfPayment.GetDisplayName()
-                : PaymentType.BasicSalary.GetDisplayName();
+            worksheet.Cells["D4"].Value = typeOfPayment != 0 ? typeOfPayment.GetDisplayName() : PaymentType.BasicSalary.GetDisplayName();
 
             // Set selected payment transaction
             worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
@@ -175,7 +172,7 @@
             {
                 var bankInRows = grouping.ToList();
 
-                foreach (var bankIn in bankInRows)
+                foreach (BankIn bankIn in bankInRows)
                 {
                     bankInIndex++;
 
@@ -236,8 +233,7 @@
             if (data is float)
             {
                 // writing amount of money
-                worksheet.Cells[currentRow, 4].Style.Numberformat.Format =
-                    numberFormatWithThousandSeperatorAndNoDecimal;
+                worksheet.Cells[currentRow, 4].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
             }
         }
 
@@ -247,17 +243,13 @@
             int startRow)
         {
             int rowIndex = startRow;
-
             foreach (IGrouping<string, BankIn> bankIns in bankInsGroupedByBank)
             {
-                // group by currency
-
-                var bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
-
+                IEnumerable<IGrouping<string, BankIn>> bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
                 foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
                 {
                     var bankInRows = grouping.ToList();
-                    foreach (var bankIn in bankInRows)
+                    foreach (BankIn bankIn in bankInRows)
                     {
                         worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
                         worksheet.Cells[rowIndex, 3].Value = bankIn.IDNo;
@@ -270,7 +262,7 @@
                         worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
 
                         worksheet.Cells[rowIndex, 11].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = numberFormatWithThousandSeperatorAndNoDecimal;
+                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
 
                         rowIndex++;
                     }
@@ -287,26 +279,24 @@
             IEnumerable<IGrouping<string, BankIn>> bankInCurrencies)
         {
             var beginRow = currentRow;
-            foreach (var currency in bankInCurrencies)
+            foreach (IGrouping<string, BankIn> currency in bankInCurrencies)
             {
                 worksheet.Cells[$"J{currentRow}"].Value = currency.Key;
                 worksheet.Cells[$"I{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
-                worksheet.Cells[$"I{currentRow}"].Style.Numberformat.Format =
-                    numberFormatWithThousandSeperatorAndNoDecimal;
+                worksheet.Cells[$"I{currentRow}"].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
 
                 currentRow++;
             }
 
+            // the bankInCurrencies have no items
             if (beginRow == currentRow)
             {
-                // the bankInCurrencies have no items
                 currentRow++;
             }
 
             worksheet.Cells[$"B{beginRow}:H{currentRow - 1}"].Merge = true;
             worksheet.Cells[$"B{beginRow}"].Value = summaryText;
-            worksheet.Cells[$"B{beginRow}"].Style.VerticalAlignment =
-                ExcelVerticalAlignment.Center;
+            worksheet.Cells[$"B{beginRow}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
             worksheet.Cells[$"B{beginRow}:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
@@ -319,16 +309,11 @@
             int startRow)
         {
             int rowIndex = startRow;
-
             foreach (IGrouping<string, BankIn> bankIns in bankInsGroupedByBank)
             {
-                // group by currency
-
-                var bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
-
+                IEnumerable<IGrouping<string, BankIn>> bankInsGroupByCurrency = bankIns.GroupBy(x => x.CurrencyCode);
                 foreach (IGrouping<string, BankIn> grouping in bankInsGroupByCurrency)
                 {
-                    ////int count = 0;
                     var bankInRows = grouping.ToList();
                     foreach (var bankIn in bankInRows)
                     {
@@ -341,8 +326,7 @@
                         worksheet.Cells[rowIndex, 8].Value = bankIn.AccountNumber;
 
                         worksheet.Cells[rowIndex, 9].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 9].Style.Numberformat.Format =
-                            numberFormatWithThousandSeperatorAndNoDecimal;
+                        worksheet.Cells[rowIndex, 9].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
 
                         worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
 
