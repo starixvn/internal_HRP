@@ -1951,7 +1951,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Employee Payroll has been successfully updated. You will be redirected in 5 seconds..
+        ///   Looks up a localized string similar to Employee Payroll has been successfully updated!.
         /// </summary>
         public static string UpdateEmployeePayrollSuccessfully {
             get {

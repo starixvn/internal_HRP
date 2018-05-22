@@ -607,6 +607,14 @@
         });
     }
 
+    function disableForm() {
+        $('button').off('click');
+        var $form = $('#payroll-form');
+        $form.find('input[type="text"]').attr('readonly', 'readonly');
+        $form.find('select').attr('disabled', 'disabled');
+        $form.submit(false);
+    }
+
     function init() {
         vndCurrencyId = $('#VNDCurrencyId').val();
 
@@ -620,8 +628,8 @@
 
         $('.allowance-total-currency').val($("#Allowance_CurrencyId option:selected").text());
 
-        if ($('#CanUpdate').val() !== 'True') {
-            $('select, input', '#payroll-form').attr('disabled', 'disabled');
+        if (!$('#CanUpdate').prop('checked')) {
+            disableForm();
             return;
         }
 
@@ -654,23 +662,30 @@
 
     return {
         init: init,
-        onSaveBegin: function () {
-            $('#btn-save').button('loading');
-        },
         onSaveSuccess: function (response, status) {
             if (response.isSuccessful) {
-                $('.msg-success').removeClass('hidden');
-                setTimeout(function () {
-                    window.location.href = response.redirectTo;
-                }, 5000);
+                disableForm();
+
+                var $element = $('.msg-success'),
+                    $countDownElement = $element.find('.count-down');
+                var delay = 3;
+                $element.removeClass('hidden');
+
+                var intervalCountDown = setInterval(function () {
+                    if (delay === 0) {
+                        clearInterval(intervalCountDown);
+
+                        window.location.href = response.redirectTo;
+                    } else {
+                        delay--;
+                        $countDownElement.html(delay);
+                    }
+                }, 1000);
             } else {
                 if (response.message) {
                     commonFunctions.showErrorMessage($('.msg-error'), response.message);
                 }
             }
-        },
-        onSaveComplete: function () {
-            $('#btn-save').button('reset');
         }
     };
 }(jQuery));

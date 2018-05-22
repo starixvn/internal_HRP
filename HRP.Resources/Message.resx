@@ -640,7 +640,7 @@
     <value>404 Not Found</value>
   </data>
   <data name="UpdateEmployeePayrollSuccessfully" xml:space="preserve">
-    <value>Employee Payroll has been successfully updated. You will be redirected in 5 seconds.</value>
+    <value>Employee Payroll has been successfully updated!</value>
   </data>
   <data name="GreaterThanCompare" xml:space="preserve">
     <value>{0} must be greater than {1}.</value>
