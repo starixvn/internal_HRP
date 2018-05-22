@@ -135,13 +135,16 @@
             {
                 foreach (MonthlySalaryModel salary in salaryList)
                 {
+                    decimal.TryParse(cryptoService.Decrypt(salary.AdditionAmount), out decimal additionAmount);
+                    decimal.TryParse(cryptoService.Decrypt(salary.DeductionAmount), out decimal deductionAmount);
+
                     salary.Salary = cryptoService.Decrypt(salary.Salary);
                     salary.EbankingAmount = cryptoService.Decrypt(salary.EbankingAmount);
                     salary.DirectBanking1Amount = cryptoService.Decrypt(salary.DirectBanking1Amount);
                     salary.DirectBanking2Amount = cryptoService.Decrypt(salary.DirectBanking2Amount);
                     salary.CashAmount = cryptoService.Decrypt(salary.CashAmount);
-                    salary.AdditionAmount = cryptoService.Decrypt(salary.AdditionAmount);
-                    salary.DeductionAmount = cryptoService.Decrypt(salary.DeductionAmount);
+                    salary.AdditionAmount = CalculationService.RoundAmountWithCurrency(additionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
+                    salary.DeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
 
                     salary.SalaryAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, MYRCurrencyId);
                     salary.SalaryAmountInUSD = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, USDCurrencyId);
@@ -161,6 +164,8 @@
             {
                 foreach (var basicAllowance in basicAllowanceList)
                 {
+                    decimal.TryParse(cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount), out decimal afterAdjustmentAmount);
+
                     basicAllowance.TotalAmount = cryptoService.Decrypt(basicAllowance.TotalAmount);
                     basicAllowance.SubsistenceAmount = cryptoService.Decrypt(basicAllowance.SubsistenceAmount);
                     basicAllowance.HomePassageAmount = cryptoService.Decrypt(basicAllowance.HomePassageAmount);
@@ -172,7 +177,8 @@
                     basicAllowance.OthersAmount = cryptoService.Decrypt(basicAllowance.OthersAmount);
                     basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
                     basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
-                    basicAllowance.AfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.AfterAdjustmentAmount);
+                    basicAllowance.AfterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount, basicAllowance.CurrencyCode, 2, false)
+                                                            .ToString(CultureInfo.InvariantCulture);
                     basicAllowance.DutyMealAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.DutyMealAfterAdjustmentAmount);
                     basicAllowance.HomePassageAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HomePassageAfterAdjustmentAmount);
                     basicAllowance.HousingAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HousingAfterAdjustmentAmount);
@@ -195,11 +201,14 @@
             {
                 foreach (var allowance in allowanceList)
                 {
+                    decimal.TryParse(cryptoService.Decrypt(allowance.AdditionAmount), out decimal additionAmount);
+                    decimal.TryParse(cryptoService.Decrypt(allowance.DeductionAmount), out decimal deductionAmount);
+
                     allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
                     allowance.DSTNetSalaryAmount = cryptoService.Decrypt(allowance.DSTNetSalaryAmount);
                     allowance.TotalNetAmount = cryptoService.Decrypt(allowance.TotalNetAmount);
-                    allowance.AdditionAmount = cryptoService.Decrypt(allowance.AdditionAmount);
-                    allowance.DeductionAmount = cryptoService.Decrypt(allowance.DeductionAmount);
+                    allowance.AdditionAmount = CalculationService.RoundAmountWithCurrency(additionAmount, allowance.CurrencyCode).ToString(CultureInfo.InvariantCulture);
+                    allowance.DeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, allowance.CurrencyCode).ToString(CultureInfo.InvariantCulture);
 
                     ConvertMonthlyAllowanceToConversionCurrency(allowance, currencyExchangeRates);
                 }
@@ -353,7 +362,7 @@
         private static void CalculateAutoSalary(DynamicReportModel data, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             decimal.TryParse(data.Salary, out decimal totalAmount);
-            
+
             var eBanking = CalculationService.ConvertAmount(currencyExchangeRates, data.EbankingAmount,
                 data.EbankingCurrencyId, data.CurrencyId);
             var directBanking1 = CalculationService.ConvertAmount(currencyExchangeRates, data.DirectBanking1Amount,

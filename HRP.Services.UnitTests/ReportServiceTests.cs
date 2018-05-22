@@ -197,7 +197,7 @@
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 3 } },
                 MonthlySalary = new List<MonthlySalaryModel> { new MonthlySalaryModel { EmployeeId = 3 } },
                 MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 3, CurrencyCode = Constants.VNDCurrencyCode } },
-                MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 3 } },
+                MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 3, DSTNetSalaryCurrencyCode = "PHP" } },
                 CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
             };
             var month = DateTime.Today;
