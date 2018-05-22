@@ -138,6 +138,7 @@ BEGIN
 		,a.ActualWorkingDay
 	FROM dbo.MonthlyAttendance AS a WITH (NOLOCK)
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON a.EmployeeId = p.EmployeeId
+														AND a.[Month] = p.[Month]
 
 	-- Get MonthlyDSTNetSalary
 	SELECT d.EmployeeId
@@ -146,6 +147,7 @@ BEGIN
 		,d.NetSalaryReceived
 	FROM dbo.MonthlyDSTNetSalary AS d WITH (NOLOCK)
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON d.EmployeeId = p.EmployeeId
+														AND d.[Month] = p.[Month]
 
 	-- Get MonthlyBasicSalary
 	SELECT p.[EmployeeId]

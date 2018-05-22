@@ -177,7 +177,7 @@
                     basicAllowance.OthersAmount = cryptoService.Decrypt(basicAllowance.OthersAmount);
                     basicAllowance.RoomingChargesAmount = cryptoService.Decrypt(basicAllowance.RoomingChargesAmount);
                     basicAllowance.FitnessFirstAmount = cryptoService.Decrypt(basicAllowance.FitnessFirstAmount);
-                    basicAllowance.AfterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount, basicAllowance.CurrencyCode, 2, false)
+                    basicAllowance.AfterAdjustmentAmount = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount, basicAllowance.CurrencyCode, roundingThousand: false)
                                                             .ToString(CultureInfo.InvariantCulture);
                     basicAllowance.DutyMealAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.DutyMealAfterAdjustmentAmount);
                     basicAllowance.HomePassageAfterAdjustmentAmount = cryptoService.Decrypt(basicAllowance.HomePassageAfterAdjustmentAmount);

@@ -70,6 +70,7 @@ BEGIN
 	-- Get monthly salary
 	SELECT ei.EmployeeId
 		,s.CurrencyId
+		,c.CurrencyCode
 		,s.Salary
 		,s.EbankingCurrencyId
 		,s.EbankingAmount
@@ -83,6 +84,7 @@ BEGIN
 		,s.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON s.PayrollId = ei.PayrollId
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON s.CurrencyId = c.CurrencyId
 
 	-- Get basic Allowances
 	SELECT ei.EmployeeId
@@ -125,6 +127,7 @@ BEGIN
 	-- Get Allowances
 	SELECT ei.EmployeeId
 		,a.CurrencyId
+		,c.CurrencyCode
 		,a.TotalAmount
 		,a.[DSTNetSalaryCurrencyId]
 		,a.[DSTNetSalaryAmount]
@@ -133,6 +136,7 @@ BEGIN
 		,a.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlyAllowance AS a WITH (NOLOCK) ON a.PayrollId = ei.PayrollId
+	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
 
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate

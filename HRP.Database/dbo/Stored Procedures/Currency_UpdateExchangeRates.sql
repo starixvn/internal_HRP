@@ -1,5 +1,4 @@
 ﻿
-
 CREATE PROCEDURE [dbo].[Currency_UpdateExchangeRates] @ExchangeRateMonth DATE
 	,@ExchangeRates VARCHAR(MAX)
 	,@UpdatedBy INT
@@ -41,10 +40,11 @@ BEGIN
 	CREATE TABLE #ExchangeRate (
 		FromCurrencyId INT
 		,ToCurrencyId INT
-		,ExchangeRate DECIMAL(20, 10)
+		,ExchangeRate DECIMAL(20, 10) NULL
 		)
 
-	EXEC sp_xml_preparedocument @idoc OUTPUT, @ExchangeRates
+	EXEC sp_xml_preparedocument @idoc OUTPUT
+		,@ExchangeRates
 
 	INSERT INTO #ExchangeRate (
 		FromCurrencyId
@@ -53,11 +53,18 @@ BEGIN
 		)
 	SELECT FromCurrencyId
 		,ToCurrencyId
-		,ExchangeRate
-	FROM OPENXML(@idoc, '/Root/Row', 1) WITH (FromCurrencyId INT, ToCurrencyId INT, ExchangeRate DECIMAL(20, 10)) AS data
+		,CASE 
+			WHEN ISNUMERIC(ExchangeRate) <> 1 THEN NULL
+			ELSE ExchangeRate
+			END
+	FROM OPENXML(@idoc, '/Root/Row', 1) WITH (FromCurrencyId INT, ToCurrencyId INT, ExchangeRate VARCHAR(30)) AS data
 
-	IF EXISTS (SELECT 1 FROM dbo.CurrencyExchangeRate cur WHERE MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
-		AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth))
+	IF EXISTS (
+			SELECT 1
+			FROM dbo.CurrencyExchangeRate AS cur WITH (NOLOCK)
+			WHERE MONTH(cur.ExchangeRateMonth) = MONTH(@ExchangeRateMonth)
+				AND YEAR(cur.ExchangeRateMonth) = YEAR(@ExchangeRateMonth)
+			)
 	BEGIN
 		-- Update
 		UPDATE cur
@@ -83,7 +90,7 @@ BEGIN
 			,er.ExchangeRate
 		FROM #ExchangeRate AS er WITH (NOLOCK)
 	END
-		
+
 	-- write log after update
 	SET @xml = (
 			SELECT c.ExchangeRateMonth AS '@erm'

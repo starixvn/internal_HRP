@@ -73,6 +73,7 @@ BEGIN
 	SELECT [PayrollId]
 		,mba.[CurrencyId]
 		,c.[CurrencyCode]
+		,[TotalAmount]
 		,[DirectBanking1CurrencyId]
 		,[DirectBanking1Amount]
 		,[DirectBanking2CurrencyId]
