@@ -21,6 +21,8 @@
     {
         private readonly ICryptoService cryptoService;
 
+        private static string numberFormatWithThousandSeperatorAndNoDecimal = "#,##0";
+
         public ExportExcelService(ICryptoService cryptoService)
         {
             this.cryptoService = cryptoService;
@@ -230,6 +232,13 @@
             worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
             worksheet.Cells[currentRow, 2, currentRow, 3].Value = title;
             worksheet.Cells[currentRow, 4].Value = data;
+
+            if (data is float)
+            {
+                // writing amount of money
+                worksheet.Cells[currentRow, 4].Style.Numberformat.Format =
+                    numberFormatWithThousandSeperatorAndNoDecimal;
+            }
         }
 
         private static int RenderReportRowsForEbankingBankIns(
@@ -259,7 +268,9 @@
                         worksheet.Cells[rowIndex, 8].Value = bankIn.BankAddress;
                         worksheet.Cells[rowIndex, 9].Value = bankIn.BankSwiftCode;
                         worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
+
                         worksheet.Cells[rowIndex, 11].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = numberFormatWithThousandSeperatorAndNoDecimal;
 
                         rowIndex++;
                     }
@@ -280,6 +291,9 @@
             {
                 worksheet.Cells[$"J{currentRow}"].Value = currency.Key;
                 worksheet.Cells[$"I{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
+                worksheet.Cells[$"I{currentRow}"].Style.Numberformat.Format =
+                    numberFormatWithThousandSeperatorAndNoDecimal;
+
                 currentRow++;
             }
 
@@ -325,7 +339,11 @@
                         worksheet.Cells[rowIndex, 6].Value = bankIn.PaymentTransaction;
                         worksheet.Cells[rowIndex, 7].Value = bankIn.BankName;
                         worksheet.Cells[rowIndex, 8].Value = bankIn.AccountNumber;
+
                         worksheet.Cells[rowIndex, 9].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 9].Style.Numberformat.Format =
+                            numberFormatWithThousandSeperatorAndNoDecimal;
+
                         worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
 
                         rowIndex++;
