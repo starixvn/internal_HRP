@@ -257,8 +257,9 @@
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = allowance.CurrencyId;
-            allowance.DSTNetSalaryAmount = CalculationService.ConvertAmount(currencyExchangeRates, allowance.DSTNetSalaryAmount,
-                allowance.DSTNetSalaryCurrencyId, conversionCurrencyId).ToString(CultureInfo.InvariantCulture);
+            var conversionCurrencyCode = allowance.CurrencyCode;
+            allowance.DSTNetSalaryAmount = CalculationService.RoundAmountWithCurrency(CalculationService.ConvertAmount(currencyExchangeRates, allowance.DSTNetSalaryAmount,
+                allowance.DSTNetSalaryCurrencyId, conversionCurrencyId), conversionCurrencyCode, roundingThousand: false).ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion MonthlyPayrollReport
