@@ -307,7 +307,7 @@
 
                 totalAmount += CalculationService.ConvertAmount(currencyExchangeRates, data.OthersAmount, data.OthersCurrencyId, currencyId);
 
-                totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, data.CurrencyCode, 0);
+                totalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, data.AllowanceCurrencyCode, 0);
                 data.AllowanceAmount = totalAmount.ToString(CultureInfo.InvariantCulture);
 
                 var directBanking1 = CalculationService.ConvertAmount(currencyExchangeRates, data.AllowanceDirectBanking1Amount,
