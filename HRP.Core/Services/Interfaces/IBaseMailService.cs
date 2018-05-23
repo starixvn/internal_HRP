@@ -1,10 +1,11 @@
 namespace HRP.Core.Services
 {
+    using System.Threading.Tasks;
     using Model;
 
     public interface IBaseMailService
     {
-        bool SendEmail(MailModel email);
+        Task<bool> SendEmailAsync(MailModel email);
 
         string ReadTextFile(string filePath);
     }

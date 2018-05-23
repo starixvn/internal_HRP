@@ -1,7 +1,7 @@
 namespace HRP.Core.Model
 {
     using System.Collections.Generic;
-    using Fanex.MailDeliver.Model;
+    using System.Net.Mail;
 
     public class MailModel
     {
@@ -11,8 +11,6 @@ namespace HRP.Core.Model
 
         public string ReceiverEmail { get; set; }
 
-        public string MailCC { get; set; }
-
-        public List<MailAttachment> Attachments { get; set; } = new List<MailAttachment>();
+        public List<Attachment> Attachments { get; set; } = new List<Attachment>();
     }
 }

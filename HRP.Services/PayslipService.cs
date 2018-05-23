@@ -5,8 +5,8 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net.Mail;
     using System.Threading.Tasks;
-    using Fanex.MailDeliver.Model;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
@@ -122,11 +122,8 @@
 
             using (var input = new MemoryStream(content))
             {
-                var mailAttachments = new List<MailAttachment>();
-                var mailAttachment = new MailAttachment(input, FileExtentions.PDF)
-                {
-                    FileName = fileName
-                };
+                var mailAttachments = new List<Attachment>();
+                var mailAttachment = new Attachment(input, fileName);
                 mailAttachments.Add(mailAttachment);
 
                 var mailModel = new MailModel
@@ -137,7 +134,7 @@
                     Attachments = mailAttachments
                 };
 
-                emailService.SendEmail(mailModel);
+                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
             }
         }
 

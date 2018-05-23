@@ -109,11 +109,10 @@ namespace HRP.Services
             {
                 Subject = Message.RegisterOTP,
                 ReceiverEmail = user.Email,
-                MailCC = string.Empty,
                 Body = body
             };
 
-            emailService.SendEmail(mailModel);
+            await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
         }
 
         public async Task<bool> UpdateOTPStatusAsync(int userId, bool isOTPRegistered)
@@ -153,11 +152,10 @@ namespace HRP.Services
             {
                 Subject = Message.ResetPasswordEmailSubject,
                 ReceiverEmail = user.Email,
-                MailCC = string.Empty,
                 Body = body
             };
 
-            emailService.SendEmail(mailModel);
+            await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
         }
     }
 }

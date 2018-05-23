@@ -412,10 +412,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj">
-      <Project>{42c3dead-fde5-4c7b-a596-f9b5f95dada3}</Project>
-      <Name>Fanex.MailDeliver.MailClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj">
       <Project>{4215e3c1-c316-400c-95a6-ae408b1d0016}</Project>
       <Name>HRP.Core</Name>

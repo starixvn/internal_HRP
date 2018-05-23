@@ -147,7 +147,7 @@ namespace HRP.Services.UnitTests
             await userService.ResetUserPasswordAsync("test");
 
             // Assert
-            emailService.Received().SendEmail(Arg.Any<MailModel>());
+            await emailService.Received().SendEmailAsync(Arg.Any<MailModel>());
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace HRP.Services.UnitTests
             await userService.ResetUserPasswordAsync("test");
 
             // Assert
-            emailService.DidNotReceive().SendEmail(Arg.Any<MailModel>());
+            await emailService.Received().SendEmailAsync(Arg.Any<MailModel>());
         }
 
         #endregion ResetUserPassword
@@ -181,7 +181,7 @@ namespace HRP.Services.UnitTests
             await userService.SendMailToRegisterOTPAsync("test");
 
             // Assert
-            emailService.Received().SendEmail(Arg.Any<MailModel>());
+            await emailService.Received().SendEmailAsync(Arg.Any<MailModel>());
         }
 
         [Fact]

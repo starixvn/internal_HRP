@@ -28,7 +28,6 @@
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDeliver.MailClient\Fanex.MailDeliver.MailClient.csproj" />
     <ProjectReference Include="..\HRP.Resources\HRP.Resources.csproj" />
   </ItemGroup>
 </Project>
