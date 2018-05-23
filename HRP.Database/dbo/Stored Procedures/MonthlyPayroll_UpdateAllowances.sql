@@ -189,6 +189,7 @@ BEGIN
 		,[DirectBanking2AccountId] = @DirectBanking2AccountId
 		,[CashCurrencyId] = @CashCurrencyId
 		,[CashAmount] = @CashAmount
+		,[CashAccountId] = @CashAccountId
 		,[DSTNetSalaryCurrencyId] = @DSTNetSalaryCurrencyId
 		,[DSTNetSalaryAmount] = @DSTNetSalaryAmount
 		,[AutoCalculateOn] = @AutoCalculateOn
