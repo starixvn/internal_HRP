@@ -27,18 +27,18 @@
             Assert.Equal("App_Data\\SecretKey.pfx", actual);
         }
 
-        [Fact]
-        public void GetPasswordAccessTheCertificate_WhenCalled_ReturnAsExpected()
-        {
-            // Arrange
-            var service = GetCertificateService();
+        ////[Fact]
+        ////public void GetPasswordAccessTheCertificate_WhenCalled_ReturnAsExpected()
+        ////{
+        ////    // Arrange
+        ////    var service = GetCertificateService();
 
-            // Act
-            service.GetPasswordAccessTheCertificate();
+        ////    // Act
+        ////    service.GetPasswordAccessTheCertificate();
 
-            // Assert
-            memoryCache.Received().TryGetValue(Arg.Any<object>(), out object outputValue);
-        }
+        ////    // Assert
+        ////    memoryCache.Received().TryGetValue(Arg.Any<object>(), out object outputValue);
+        ////}
 
         [Fact]
         public void IsGeneratedCertificate_WhenCalled_ReturnAsExpected()
@@ -107,18 +107,18 @@
             Assert.True(actual.IsSuccessful);
         }
 
-        [Fact]
-        public void CachePasswordAccessTheCertificate_WhenCalled_ExpectedCachingPassword()
-        {
-            // Arrange
-            var certificateService = GetCertificateService();
+        ////[Fact]
+        ////public void CachePasswordAccessTheCertificate_WhenCalled_ExpectedCachingPassword()
+        ////{
+        ////    // Arrange
+        ////    var certificateService = GetCertificateService();
 
-            // Act
-            certificateService.CachePasswordAccessTheCertificate("123456");
+        ////    // Act
+        ////    certificateService.CachePasswordAccessTheCertificate("123456");
 
-            // Assert
-            memoryCache.Received().Set("PasswordAccessTheCertificate", "123456", Arg.Any<MemoryCacheEntryOptions>());
-        }
+        ////    // Assert
+        ////    memoryCache.Received().Set("PasswordAccessTheCertificate", "123456", Arg.Any<MemoryCacheEntryOptions>());
+        ////}
 
         [Fact]
         public void ChangePasswordAccessTheCertificate_OldPasswordIsCorrect_ReturnAsExpectedCommandResualt()
