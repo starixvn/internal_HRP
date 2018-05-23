@@ -7,7 +7,7 @@ CREATE PROCEDURE [dbo].[Report_GetDataForDirectBankingReport]
 	,@PaymentTransactions NVARCHAR(MAX) = ''
 AS
 /*
-Created: 20180406@Hunter.Tran
+Created: 20180522@Hunter.Tran
 Task: Get data for Direct Banking reports
 DB: bodb_HRP
 Original:
@@ -43,10 +43,12 @@ BEGIN
 		BankTypeId
 		,PaymentTransactionId
 		)
-	SELECT SUBSTRING(Pair, 1, 1)
-		,SUBSTRING(Pair, 3, LEN(Pair) - 2)
+	SELECT SUBSTRING(Pair, 1, CHARINDEX('-', Pair) - 1)
+		,SUBSTRING(Pair, CHARINDEX('-', Pair) + 1, LEN(Pair) - CHARINDEX('-', Pair))
 	FROM #PaymentTransactionValues
-	WHERE LEN(Pair) = 3
+	WHERE Pair like '%-%'
+	AND ISNUMERIC(SUBSTRING(Pair, 1, CHARINDEX('-', Pair) - 1)) = 1
+	AND ISNUMERIC(SUBSTRING(Pair, CHARINDEX('-', Pair) + 1, LEN(Pair) - CHARINDEX('-', Pair))) = 1
 
 	DROP TABLE #PaymentTransactionValues
 
