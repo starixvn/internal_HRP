@@ -48,10 +48,11 @@
         private void FakeBaseMailService()
         {
             var mailConfig = new MailConfigs();
+            var baseService = Substitute.For<IBaseService>();
             var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
             configuration.Value.Returns(mailConfig);
 
-            baseMailService = new BaseMailService(configuration);
+            baseMailService = new BaseMailService(configuration, baseService);
         }
     }
 }
