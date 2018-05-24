@@ -413,7 +413,6 @@
     <Compile Include="Controllers\ReportControllerTests.cs" />
     <Compile Include="Controllers\UserManagementControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartupTests.cs" />
     <Compile Include="ViewComponents\MenuViewComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
