@@ -5,7 +5,10 @@ body {
     font-family: $font-family;
     font-size: $font-size;
 }
-
+.payslip-detail-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
 .employee-info {
     text-align: center;
 
@@ -97,12 +100,12 @@ body {
 
     .key {
         color: $table-header-bg;
-        padding: 5px 8px;
+        padding: 3px 8px;
     }
 
     .value {
         text-align: right;
-        padding: 5px 8px;
+        padding: 3px 8px;
     }
 
     .key.total, .value.total {

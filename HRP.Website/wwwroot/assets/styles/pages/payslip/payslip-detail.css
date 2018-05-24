@@ -3,6 +3,11 @@ body {
   font-size: 13px;
 }
 
+.payslip-detail-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 .employee-info {
   text-align: center;
 }
@@ -95,12 +100,12 @@ body {
 
 .detail-section .key {
   color: #1973b2;
-  padding: 5px 8px;
+  padding: 3px 8px;
 }
 
 .detail-section .value {
   text-align: right;
-  padding: 5px 8px;
+  padding: 3px 8px;
 }
 
 .detail-section .key.total, .detail-section .value.total {
