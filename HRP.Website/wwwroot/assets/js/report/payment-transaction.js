@@ -39,11 +39,27 @@
                     }
                 });
 
+                paymentTransaction.disableEnterOnFanexMultiSelect();
+
                 var selectedValue =
                     $("#payment-transactions-multiselect").fanexMultiSelect("getItems", true).join(",");
                 $("#selected-payment-transactions").val(selectedValue);
             }
         });
+    },
+
+    disableEnterOnFanexMultiSelect: function () {
+        $("#fanex-multiselect-filter-input").off("keydown");
+
+        $("#fanex-multiselect-filter-input").on("keydown",
+            function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                } else {
+                    return true;
+                }
+            });
     }
 }
 
