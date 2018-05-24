@@ -67,7 +67,14 @@ namespace HRP.Core.Services
                         }
                     };
 
-                    await mailclient.SendMailAsync(message).ConfigureAwait(false);
+                    try
+                    {
+                        await mailclient.SendMailAsync(message).ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        mailSent = false;
+                    }
 
                     return mailSent;
                 }

@@ -1,4 +1,4 @@
-﻿namespace HRP.Core.UnitTests
+﻿namespace HRP.Core.UnitTests.Criteria
 {
     using HRP.Core.Criteria;
     using Xunit;

@@ -377,6 +377,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Criteria\GetRefResourceByNamesCriteriaTests.cs" />
+    <Compile Include="Criteria\LogMailErrorCriteriaTests.cs" />
     <Compile Include="Criteria\LogOutUserCriteriaTests.cs" />
     <Compile Include="Criteria\ReCheckInUserCriteriaTests.cs" />
     <Compile Include="CustomValidations\EmploymentChangeValueAttributeTests.cs" />
