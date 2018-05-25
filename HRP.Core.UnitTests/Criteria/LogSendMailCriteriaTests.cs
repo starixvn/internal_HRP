@@ -3,14 +3,14 @@
     using HRP.Core.Criteria;
     using Xunit;
 
-    public class LogMailErrorCriteriaTests
+    public class LogSendMailCriteriaTests
     {
         [Fact]
         public void GetSettingKey_WhenCalled_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new LogMailErrorCriteria();
-            var expected = "MailError_Create";
+            var criteria = new LogSendMailCriteria();
+            var expected = "MailRecord_Create";
 
             // Act
             var actual = criteria.GetSettingKey();
@@ -23,7 +23,7 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new LogMailErrorCriteria();
+            var criteria = new LogSendMailCriteria();
 
             // Act
             var actual = criteria.IsValid();

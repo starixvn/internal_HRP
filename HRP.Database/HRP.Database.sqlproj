@@ -269,7 +269,7 @@
     <Build Include="dbo\Stored Procedures\Report_GetDataForMonthlyPayrollReport.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForEbankingReport.sql" />
     <Build Include="dbo\Stored Procedures\Report_GetDataForDirectBankingReport.sql" />
-    <Build Include="dbo\Tables\MailError.sql" />
-    <Build Include="dbo\Stored Procedures\MailError_Create.sql" />
+    <Build Include="dbo\Tables\MailRecord.sql" />
+    <Build Include="dbo\Stored Procedures\MailRecord_Create.sql" />
   </ItemGroup>
 </Project>

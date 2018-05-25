@@ -3,7 +3,6 @@ namespace HRP.Services
     using System.Globalization;
     using System.Threading.Tasks;
     using BCrypt.Net;
-    using Core.Constants;
     using Core.Model;
     using Core.Services;
     using Criteria;
@@ -13,6 +12,9 @@ namespace HRP.Services
 
     public class UserService : IUserService
     {
+        private const string EmailTemplateResetPassword = @"wwwroot\\EmailTemplates\\ResetPassword.cshtml";
+        private const string EmailTemplateOTPRegistration = @"wwwroot\\EmailTemplates\\OTPRegistration.cshtml";
+
         private readonly IBaseService baseService;
         private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
         private readonly IBaseMailService emailService;
@@ -101,7 +103,7 @@ namespace HRP.Services
                 TokenOTPRegister = tokenOTPRegister
             }).ConfigureAwait(false);
 
-            var body = emailService.ReadTextFile(Constants.TemplateEmailOTPRegistraion);
+            var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
             var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.Domain, tokenOTPRegister);
             body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
@@ -144,7 +146,7 @@ namespace HRP.Services
         private async Task SendMailToResetPasswordAsync(string username, string tokenResetPassword)
         {
             var user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
-            var body = emailService.ReadTextFile(Constants.TemplateEmailResetPassword);
+            var body = emailService.ReadTextFile(EmailTemplateResetPassword);
             var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.Domain, tokenResetPassword);
             body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
 

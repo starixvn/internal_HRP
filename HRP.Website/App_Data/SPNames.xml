@@ -186,6 +186,6 @@
     <Setting Key="Report_GetEmployeeDataForDynamicReport" SpName="Report_GetEmployeeDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Mail">
-    <Setting Key="MailError_Create" SpName="MailError_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailRecord_Create" SpName="MailRecord_Create" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

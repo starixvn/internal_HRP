@@ -60,16 +60,17 @@ namespace HRP.Core.Services
                     try
                     {
                         mailclient.Send(message);
+
+                        mailSent = true;
+                        WriteLogSendEmail(email, mailSent);
                     }
                     catch (SmtpException ex)
                     {
-                        mailSent = false;
-                        WriteLogErrorSendingEmail(email, ex.Message, ex.StackTrace);
+                        WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                     }
                     catch (Exception ex)
                     {
-                        mailSent = false;
-                        WriteLogErrorSendingEmail(email, ex.Message, ex.StackTrace);
+                        WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                     }
 
                     return mailSent;
@@ -96,12 +97,18 @@ namespace HRP.Core.Services
             return regex.IsMatch(email);
         }
 
-        private void WriteLogErrorSendingEmail(MailModel email, string errorMessage, string stackTrace)
+        private void WriteLogSendEmail(
+            MailModel email,
+            bool mailSent,
+            string errorMessage = null,
+            string stackTrace = null)
         {
-            var criteria = new LogMailErrorCriteria
+            var criteria = new LogSendMailCriteria
             {
                 MailTo = email.ReceiverEmail,
                 Subject = email.Subject,
+                SentTime = DateTime.Now,
+                IsSuccessful = mailSent,
                 ErrorMessage = errorMessage,
                 StackTrace = stackTrace
             };

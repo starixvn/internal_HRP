@@ -10,14 +10,6 @@ namespace HRP.Core.Constants
 
         public const string MinDate = "01/01/1900";
 
-        public const string BeginRootTag = "<ROOT>";
-
-        public const string EndRootTag = "</ROOT>";
-
-        public const string TemplateEmailResetPassword = "wwwroot/EmailTemplates/EmailTemplateResetPassword.cshtml";
-
-        public const string TemplateEmailOTPRegistraion = "wwwroot/EmailTemplates/EmailTemplateOTPRegistraion.cshtml";
-
         public const string VNDCurrencyCode = "VND";
 
         public const string USDCurrencyCode = "USD";
