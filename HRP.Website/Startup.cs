@@ -74,12 +74,16 @@
             services.AddMemoryCache();
             services.AddMvc(options =>
                 {
+                    ////#if !DEBUG
+                    ////options.Filters.Add(new RequireHttpsAttribute());
+                    ////#endif
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }
             ).AddSessionStateTempDataProvider();
 
             services.AddSession(options =>
             {
+                options.Cookie.Name = ".HRP.Session";
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                 options.Cookie.HttpOnly = true;
             });
