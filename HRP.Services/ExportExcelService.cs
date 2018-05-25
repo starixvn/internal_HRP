@@ -8,13 +8,13 @@
     using Core.Enumerations;
     using Core.Extensions;
     using HRP.Core.Services;
-    using HRP.Models.Currency;
-    using HRP.Models.Employee;
-    using HRP.Models.MonthlyPayroll;
     using Interfaces;
+    using Models.Currency;
+    using Models.Employee;
+    using Models.MonthlyPayroll;
     using Models.Report;
-    using OfficeOpenXml;
     using OfficeOpenXml.Style;
+    using OfficeOpenXml;
     using Resources;
 
     public class ExportExcelService : IExportExcelService
@@ -137,7 +137,7 @@
             worksheet.Cells["D2"].Value = data.CompanyName;
 
             // Set month
-            worksheet.Cells["D3"].Value = selectedTime.ToString("MMMM yyyy");
+            worksheet.Cells["D3"].Value = selectedTime.ToString("MM-yyyy");
 
             // Set payment type
             worksheet.Cells["D4"].Value = typeOfPayment != 0 ? typeOfPayment.GetDisplayName() : PaymentType.BasicSalary.GetDisplayName();

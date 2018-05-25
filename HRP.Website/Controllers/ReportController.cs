@@ -11,7 +11,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Employee;
-    using HRP.Criteria;
+    using Criteria;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -147,7 +147,7 @@
                     viewModel.TypeOfPayment,
                     bankInData);
 
-                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_DirectBankingDetails.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"Direct_Banking-Cash_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
             }
 
             return result;
