@@ -38,10 +38,10 @@
                     <td colspan="2">@Model.IDNo</td>
                 </tr>
                 <tr class="header">
-                    <td class="border-left">@ViewLang.MonthlyBasicSalary.ToUpperInvariant()</td>
-                    <td></td>
-                    <td class="border-left">@ViewLang.MonthlyAllowances.ToUpperInvariant()</td>
-                    <td class="border-right"></td>
+                    <td class="border-top border-left">@ViewLang.MonthlyBasicSalary.ToUpperInvariant()</td>
+                    <td class="border-top"></td>
+                    <td class="border-top border-left">@ViewLang.MonthlyAllowances.ToUpperInvariant()</td>
+                    <td class="border-top border-right"></td>
                 </tr>
                 <tr class="body">
                     <td class="key border-left">@ViewLang.BasicSalary</td>
@@ -131,10 +131,10 @@
                     <td class="value border-right align-right red bold">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</td>
                 </tr>
                 <tr class="footer net-amount">
-                    <td class="key bold">@ViewLang.NetMonthlyBasicSalary.ToUpperInvariant()</td>
-                    <td class="value align-right bold">@Model.NetSalaryAmount @salaryCurrencyCode</td>
-                    <td class="key border-left bold">@ViewLang.NetMonthlyAllowances.ToUpperInvariant()</td>
-                    <td class="value align-right bold">@Model.NetAllowanceAmount @allowanceCurrencyCode</td>
+                    <td class="key bold border-bottom border-left">@ViewLang.NetMonthlyBasicSalary.ToUpperInvariant()</td>
+                    <td class="value align-right bold border-bottom">@Model.NetSalaryAmount @salaryCurrencyCode</td>
+                    <td class="key bold border-bottom border-left">@ViewLang.NetMonthlyAllowances.ToUpperInvariant()</td>
+                    <td class="value align-right bold border-right border-bottom">@Model.NetAllowanceAmount @allowanceCurrencyCode</td>
                 </tr>
             </tbody>
         </table>
