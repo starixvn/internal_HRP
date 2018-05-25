@@ -410,7 +410,7 @@
             var fileResult = Assert.IsType<FileContentResult>(actual);
             Assert.Equal(bytes, fileResult.FileContents);
             Assert.Equal(MimeType.XLSX, fileResult.ContentType);
-            Assert.Equal($"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx", fileResult.FileDownloadName);
+            Assert.Equal($"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx", fileResult.FileDownloadName);
         }
 
         #endregion MonthlyPayroll

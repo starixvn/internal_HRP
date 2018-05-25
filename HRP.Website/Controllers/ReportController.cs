@@ -222,7 +222,7 @@
                     var templatePath = Path.Combine(webRootFolder, fileName);
                     var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-                    return File(data, MimeType.XLSX, $"MonthlyPayrollReport_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
+                    return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
                 }
 
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);

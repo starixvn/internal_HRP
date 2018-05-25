@@ -346,7 +346,7 @@
                 using (var package = new ExcelPackage())
                 {
                     ExcelWorksheet templateWorksheet = templatePackage.Workbook.Worksheets[1];
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Salary & Allowance Report");
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report");
 
                     // Write header
                     templateWorksheet.Cells[1, 1, 8, 48].Copy(worksheet.Cells[1, 1, 8, 48]);

@@ -16,6 +16,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @FirstDayOfWorkingMonth DATE
+			,@LastDayOfWorkingMonth DATE
 
 	CREATE TABLE #tblMonthlyPayroll (
 		EmployeeId INT
@@ -40,6 +41,7 @@ BEGIN
 
 	----------------------------
 	SET @FirstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
+	SET @LastDayOfWorkingMonth = DATEADD(s,-1,DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month) + 1,0))
 
 	-- Get Current Salary History id
 	INSERT INTO #tblCurrentSalary (
@@ -83,6 +85,8 @@ BEGIN
 				AND e.GroupEndDate > @FirstDayOfWorkingMonth
 				)
 			)
+		AND e.GroupStartDate IS NOT NULL
+		AND e.GroupStartDate <= @LastDayOfWorkingMonth
 		AND e.EmployeeId = ISNULL(@EmployeeId, e.EmployeeId)
 
 	-- Get last month salary
