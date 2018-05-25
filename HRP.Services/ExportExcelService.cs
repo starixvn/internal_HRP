@@ -281,9 +281,9 @@
             var beginRow = currentRow;
             foreach (IGrouping<string, BankIn> currency in bankInCurrencies)
             {
-                worksheet.Cells[$"J{currentRow}"].Value = currency.Key;
-                worksheet.Cells[$"I{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
-                worksheet.Cells[$"I{currentRow}"].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
+                worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
+                worksheet.Cells[$"J{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
+                worksheet.Cells[$"J{currentRow}"].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
 
                 currentRow++;
             }
@@ -324,11 +324,10 @@
                         worksheet.Cells[rowIndex, 6].Value = bankIn.PaymentTransaction;
                         worksheet.Cells[rowIndex, 7].Value = bankIn.BankName;
                         worksheet.Cells[rowIndex, 8].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
 
-                        worksheet.Cells[rowIndex, 9].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 9].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
-
-                        worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
+                        worksheet.Cells[rowIndex, 10].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, 10].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
 
                         rowIndex++;
                     }

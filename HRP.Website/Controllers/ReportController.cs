@@ -187,7 +187,7 @@
                     viewModel.TypeOfPayment,
                     bankInData);
 
-                result = File(fileContent, MimeType.XLSX, $"{viewModel.SelectedTime:yyyyMM}_EbankingDetails.xlsx");
+                result = File(fileContent, MimeType.XLSX, $"E-Banking_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
             }
 
             return result;
