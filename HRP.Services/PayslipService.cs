@@ -134,7 +134,7 @@
                     Attachments = mailAttachments
                 };
 
-                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+                emailService.SendEmail(mailModel);
             }
         }
 

@@ -152,7 +152,7 @@
             await payslipService.SendPayslipAsync(viewModel);
 
             // Assert
-            await emailService.Received(2).SendEmailAsync(Arg.Any<MailModel>());
+            emailService.Received(2).SendEmail(Arg.Any<MailModel>());
         }
 
         #region Helpers

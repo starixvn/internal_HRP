@@ -1,11 +1,10 @@
 namespace HRP.Core.Services
 {
-    using System.ComponentModel;
+    using System;
     using System.IO;
     using System.Net;
     using System.Net.Mail;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using HRP.Core.Criteria;
     using Microsoft.Extensions.Options;
     using Model;
@@ -23,7 +22,7 @@ namespace HRP.Core.Services
             this.baseService = baseService;
         }
 
-        public async Task<bool> SendEmailAsync(MailModel email)
+        public bool SendEmail(MailModel email)
         {
             bool mailSent = false;
             if (email == null || !IsValidEmail(email.ReceiverEmail))
@@ -57,23 +56,20 @@ namespace HRP.Core.Services
                     mailclient.Host = configuration.Value.SmtpServer;
                     mailclient.Port = configuration.Value.SmtpPortNumber;
                     mailclient.EnableSsl = configuration.Value.EnableSsl;
-                    mailclient.SendCompleted += (s, e) =>
-                    {
-                        mailSent = !(e.Cancelled || e.Error != null);
-
-                        if (e.Cancelled || e.Error != null)
-                        {
-                            WriteLogErrorSendingEmail(email, e);
-                        }
-                    };
 
                     try
                     {
-                        await mailclient.SendMailAsync(message).ConfigureAwait(false);
+                        mailclient.Send(message);
                     }
-                    catch
+                    catch (SmtpException ex)
                     {
                         mailSent = false;
+                        WriteLogErrorSendingEmail(email, ex.Message, ex.StackTrace);
+                    }
+                    catch (Exception ex)
+                    {
+                        mailSent = false;
+                        WriteLogErrorSendingEmail(email, ex.Message, ex.StackTrace);
                     }
 
                     return mailSent;
@@ -100,27 +96,15 @@ namespace HRP.Core.Services
             return regex.IsMatch(email);
         }
 
-        private void WriteLogErrorSendingEmail(MailModel email, AsyncCompletedEventArgs e)
+        private void WriteLogErrorSendingEmail(MailModel email, string errorMessage, string stackTrace)
         {
             var criteria = new LogMailErrorCriteria
             {
                 MailTo = email.ReceiverEmail,
-                Subject = email.Subject
+                Subject = email.Subject,
+                ErrorMessage = errorMessage,
+                StackTrace = stackTrace
             };
-
-            if (e.Cancelled)
-            {
-                criteria.ErrorMessage = "Send canceled.";
-            }
-
-            if (e.Error != null)
-            {
-                criteria.ErrorMessage = string.Format(
-                    "ErrorMessage: {0} InnerException: {1}",
-                    e.Error.Message,
-                    e.Error.InnerException != null ? e.Error.InnerException.Message : string.Empty);
-                criteria.StackTrace = e.Error.StackTrace;
-            }
 
             baseService.ExecuteNonQueryAsync(criteria).Wait();
         }

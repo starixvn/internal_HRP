@@ -112,7 +112,7 @@ namespace HRP.Services
                 Body = body
             };
 
-            await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+            emailService.SendEmail(mailModel);
         }
 
         public async Task<bool> UpdateOTPStatusAsync(int userId, bool isOTPRegistered)
@@ -155,7 +155,7 @@ namespace HRP.Services
                 Body = body
             };
 
-            await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+            emailService.SendEmail(mailModel);
         }
     }
 }
