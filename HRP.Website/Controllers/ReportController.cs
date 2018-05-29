@@ -196,7 +196,7 @@
         [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         public async Task<IActionResult> MonthlyPayroll()
         {
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
@@ -212,23 +212,32 @@
         {
             if (ModelState.IsValid)
             {
-                var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
-                if (report.Employees.Any())
+                if (sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read))
                 {
-                    var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
-                    report.Company = company;
-                    string webRootFolder = hostingEnvironment.WebRootPath;
-                    string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
-                    var templatePath = Path.Combine(webRootFolder, fileName);
-                    var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
+                    var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
+                    if (report.Employees.Any())
+                    {
+                        var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
+                        report.Company = company;
+                        string webRootFolder = hostingEnvironment.WebRootPath;
+                        string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
+                        var templatePath = Path.Combine(webRootFolder, fileName);
+                        var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
 
-                    return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
+                        return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
+                    }
                 }
-
-                ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
+                else
+                {
+                    ModelState.AddModelError(nameof(viewModel.CommonError), Message.NotHasPermissionOnCompany);
+                }
             }
 
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             return View("MonthlyPayroll", viewModel);

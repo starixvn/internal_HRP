@@ -807,4 +807,7 @@
   <data name="ChangeTheProtectionPasswordSuccessfully" xml:space="preserve">
     <value>The protection password has been successfully changed. You should download and keep the new certificate physical file.</value>
   </data>
+  <data name="NotHasPermissionOnCompany" xml:space="preserve">
+    <value>You do not have permission on this company.</value>
+  </data>
 </root>

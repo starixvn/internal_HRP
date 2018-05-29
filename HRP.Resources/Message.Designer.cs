@@ -1501,6 +1501,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have permission on this company..
+        /// </summary>
+        public static string NotHasPermissionOnCompany {
+            get {
+                return ResourceManager.GetString("NotHasPermissionOnCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NRIC No. must not over {1} characters long..
         /// </summary>
         public static string NRICNoMaxLength {
