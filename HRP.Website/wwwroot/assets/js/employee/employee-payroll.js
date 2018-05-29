@@ -277,7 +277,6 @@
         $('.select2').select2({
             allowClear: true,
             placeholder: '',
-            minimumResultsForSearch: Infinity
         }).on('select2:unselecting', function () {
             $(this).data('unselecting', true);
         }).on('select2:opening', function (e) {

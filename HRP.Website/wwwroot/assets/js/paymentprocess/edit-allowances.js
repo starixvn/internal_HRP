@@ -164,7 +164,6 @@
         $('.select2:enabled').select2({
             allowClear: true,
             placeholder: '',
-            minimumResultsForSearch: Infinity
         }).on('change', function () {
             $(this).click();
         });
