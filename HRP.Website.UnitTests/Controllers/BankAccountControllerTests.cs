@@ -8,7 +8,6 @@
     using Core.Model;
     using Core.Services;
     using Criteria.BankAccount;
-    using HRP.Core.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.BankAccount;
@@ -25,6 +24,40 @@
         private IBankAccountService bankAccountService;
         private ICommonService commonService;
         private ISessionService sessionService;
+
+        [Fact]
+        public async Task EmployeeBankAccounts_NoReadPermission_ReturnPermissionDenied()
+        {
+            // Arrange
+            var controller = GetBankAccountController();
+            var resources = GetReferenceResourcesForTest();
+
+            var viewModel = new EmployeeBankAccountsViewModel
+            {
+                EmployeeId = 1,
+                CompanyId = 1,
+                IsActive = null,
+                BankTypeId = null,
+            };
+
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Read).Returns(false);
+
+            // Test
+            var actual = await controller.EmployeeBankAccounts(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
 
         [Fact]
         public async Task EmployeeBankAccounts_WhenCalled_ReturnAsExpectedViewResult()
@@ -48,6 +81,7 @@
             commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(resources.Where(x => x.RefName == ReferenceResource.BankType));
             bankAccountService.GetBankAccountsByEmployeeIdAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(new List<BankAccount>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Read).Returns(true);
 
             // Test
             var actual = await controller.EmployeeBankAccounts(viewModel);
@@ -467,10 +501,44 @@
         #region GetEmployeeBankAccounts
 
         [Fact]
+        public async Task GetEmployeeBankAccounts_NoReadPermission_ReturnEmployeeBankAccounts()
+        {
+            //Arrange
+            var controller = GetBankAccountController();
+
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Read).Returns(false);
+            baseService.GetDataAsync<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
+
+            // Test
+            var actual = await controller.GetEmployeeBankAccounts((int)BankTypes.Ebanking, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
+
+        [Fact]
         public async Task GetEmployeeBankAccounts_ValidBankType_ReturnEmployeeBankAccounts()
         {
             //Arrange
             var controller = GetBankAccountController();
+
+            var employee = new EmployeeBasicInfo
+            {
+                CompanyId = 1,
+                Nickname = "hunter.tran"
+            };
+
+            employeeService.GetEmployeeBasicInfoByIdAsync(Arg.Any<int>()).Returns(employee);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.EmployeeBankDetails, Policy.Read).Returns(true);
             baseService.GetDataAsync<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(new List<BankAccount>());
 
             // Test

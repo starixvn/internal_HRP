@@ -39,13 +39,20 @@
             this.commonService = commonService;
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         [IgnoreAntiforgeryToken]
+        [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Read)]
         public async Task<IActionResult> EmployeeBankAccounts(EmployeeBankAccountsViewModel viewModel)
         {
             EmployeeBasicInfo employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
             viewModel.CompanyId = employee.CompanyId;
             viewModel.EmployeeName = employee.Nickname;
+
+            bool haveReadPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Read);
+
+            if (!haveReadPermission)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
 
             viewModel.BankTypeResources = await commonService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
             viewModel.BankAccounts = await bankAccountService.GetBankAccountsByEmployeeIdAsync(viewModel.EmployeeId, viewModel.BankTypeId, viewModel.IsActive);
@@ -196,6 +203,18 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
         public async Task<IActionResult> GetEmployeeBankAccounts(int bankTypeId, int employeeId)
         {
+            var employeeBasicInfo = await employeeService.GetEmployeeBasicInfoByIdAsync(employeeId);
+
+            var isHaveReadPermission = sessionService.HasPermissionOnCompany(
+                employeeBasicInfo.CompanyId,
+                FunctionKey.EmployeeBankDetails,
+                Policy.Read);
+
+            if (!isHaveReadPermission)
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
             var criteria = new SearchBankAccountCriteria
             {
                 EmployeeId = employeeId,
