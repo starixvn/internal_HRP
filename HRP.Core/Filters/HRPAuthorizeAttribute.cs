@@ -4,6 +4,7 @@ namespace HRP.Core.Filters
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Services;
 
@@ -22,7 +23,7 @@ namespace HRP.Core.Filters
             if (currentSession.UserId <= 0 || string.IsNullOrWhiteSpace(currentSession.Username))
             {
                 context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-                context.HttpContext.Response.Redirect("/auth/login");
+                context.Result = new RedirectResult("/auth/login");
             }
         }
     }

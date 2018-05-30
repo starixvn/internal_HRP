@@ -54,8 +54,8 @@
             filter.OnAuthorization(authContext);
 
             // Assert
-            Assert.Equal("/auth/login", authContext.HttpContext.Response.Headers.Values.First().ToString());
-            Assert.Equal((int)HttpStatusCode.Found, authContext.HttpContext.Response.StatusCode);
+            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(authContext.Result);
+            Assert.Equal("/auth/login", redirectResult.Url);
         }
 
         [Fact]
