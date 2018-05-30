@@ -246,7 +246,7 @@
         [HRPPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
         public async Task<IActionResult> DynamicReport()
         {
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DynamicReport);
             var criteria = new GetEmployeeStatusByUserCriteria
             {
                 UserId = sessionService.UserId
