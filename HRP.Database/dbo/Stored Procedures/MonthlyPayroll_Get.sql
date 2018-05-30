@@ -75,8 +75,24 @@ BEGIN
 	ELSE
 	BEGIN
 		INSERT INTO #tblCostCenterId (Id)
-		SELECT val
-		FROM dbo.strSplit(@CostCenterIds, ',')
+		SELECT DISTINCT cc.CostCenterId
+		FROM dbo.strSplit(@CostCenterIds, ',') AS tbl
+			INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON ISNUMERIC(tbl.val) = 1
+			AND tbl.val = cc.CostCenterId
+			AND cc.IsActive = 1
+			INNER JOIN dbo.Department AS dept WITH (NOLOCK) ON cc.DepartmentId = dept.DepartmentId
+			AND dept.IsActive = 1
+			INNER JOIN dbo.Division AS div WITH (NOLOCK) ON dept.DivisionId = div.DivisionId
+			AND div.IsActive = 1
+			INNER JOIN dbo.Company AS c WITH (NOLOCK) ON div.CompanyId = c.CompanyId
+			AND c.CompanyId = @CompanyId
+			AND c.IsActive = 1
+			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
+			AND uf.UserId = @UserId
+			AND uf.IsRead = 1
+			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+			AND f.FunctionKey = @functionKey
+			AND f.IsActive = 1
 	END
 
 	INSERT INTO #tblMonthlyPayroll (

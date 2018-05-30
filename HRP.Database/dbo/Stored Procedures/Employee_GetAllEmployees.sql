@@ -29,7 +29,7 @@ BEGIN
 	IF ISNULL(@DepartmentIds, '') = ''
 	BEGIN
 		INSERT INTO #tblDepartmentId (Id)
-		SELECT dept.DepartmentId
+		SELECT DISTINCT dept.DepartmentId
 		FROM dbo.Department AS dept WITH (NOLOCK)
 			INNER JOIN dbo.Division AS di WITH (NOLOCK) ON dept.DivisionId = di.DivisionId
 			AND di.IsActive = 1
@@ -46,13 +46,27 @@ BEGIN
 	ELSE
 	BEGIN
 		INSERT INTO #tblDepartmentId (Id)
-		SELECT val
-		FROM dbo.strSplit(@DepartmentIds, ',')
+		SELECT DISTINCT dept.DepartmentId
+		FROM dbo.strSplit(@DepartmentIds, ',') AS tbl
+			INNER JOIN dbo.Department AS dept WITH (NOLOCK) ON ISNUMERIC(tbl.val) = 1
+			AND tbl.val = dept.DepartmentId
+			AND dept.IsActive = 1
+			INNER JOIN dbo.Division AS di WITH (NOLOCK) ON dept.DivisionId = di.DivisionId
+			AND di.IsActive = 1
+			INNER JOIN dbo.Company AS c WITH (NOLOCK) ON di.CompanyId = c.CompanyId
+			AND c.IsActive = 1
+			INNER JOIN dbo.UserFunction AS uf WITH (NOLOCK) ON c.CompanyId = uf.CompanyId
+			AND uf.UserId = @UserId
+			AND uf.IsRead = 1
+			INNER JOIN dbo.[Function] AS f WITH (NOLOCK) ON uf.FunctionId = f.FunctionId
+			AND f.IsActive = 1
+			AND f.FunctionKey = @functionKey
 	END
 
 	INSERT INTO #tblEmployeeStatusId (Id)
 	SELECT val
 	FROM dbo.strSplit(@EmploymentStatusIds, ',')
+	WHERE ISNUMERIC(val) = 1
 
 	SELECT em.EmployeeId
 		,em.EmployeeCode
