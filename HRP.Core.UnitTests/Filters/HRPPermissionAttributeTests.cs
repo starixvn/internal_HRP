@@ -44,8 +44,9 @@
             filter.OnAuthorization(authContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(authContext.Result);
-            Assert.Equal("/error/405", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(authContext.Result);
+            Assert.Equal("error", redirectResult.ControllerName);
+            Assert.Equal("405", redirectResult.ActionName);
         }
 
         [Fact]

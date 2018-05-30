@@ -41,12 +41,12 @@
             }
             else if (!certificateService.IsGeneratedCertificate())
             {
-                context.Result = new RedirectResult("/SystemSecurity/generate");
+                context.Result = new RedirectToActionResult("generate", "SystemSecurity", null);
                 return;
             }
             else if (!certificateService.IsExistedCertificate())
             {
-                context.Result = new RedirectResult("/SystemSecurity/FileNotFound");
+                context.Result = new RedirectToActionResult("FileNotFound", "SystemSecurity", null);
                 return;
             }
             else
@@ -55,7 +55,7 @@
 
                 if (string.IsNullOrEmpty(password) || !certificateService.IsCorrectPasswordAccessTheCertificate(password))
                 {
-                    context.Result = new RedirectResult("/SystemSecurity/password");
+                    context.Result = new RedirectToActionResult("password", "SystemSecurity", null);
                     return;
                 }
             }
@@ -75,7 +75,7 @@
             await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
             await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-            context.Result = new RedirectResult("/auth/login");
+            context.Result = new RedirectToActionResult("login", "auth", null);
         }
     }
 }

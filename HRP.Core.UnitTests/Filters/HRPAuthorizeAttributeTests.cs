@@ -54,8 +54,9 @@
             filter.OnAuthorization(authContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(authContext.Result);
-            Assert.Equal("/auth/login", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(authContext.Result);
+            Assert.Equal("auth", redirectResult.ControllerName);
+            Assert.Equal("login", redirectResult.ActionName);
         }
 
         [Fact]

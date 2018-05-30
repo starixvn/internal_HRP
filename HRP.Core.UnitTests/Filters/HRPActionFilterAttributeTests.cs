@@ -50,8 +50,9 @@
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/auth/login", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
+            Assert.Equal("auth", redirectResult.ControllerName);
+            Assert.Equal("login", redirectResult.ActionName);
         }
 
         [Fact]
@@ -82,8 +83,9 @@
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/SystemSecurity/generate", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
+            Assert.Equal("SystemSecurity", redirectResult.ControllerName);
+            Assert.Equal("generate", redirectResult.ActionName);
         }
 
         [Fact]
@@ -115,8 +117,9 @@
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/SystemSecurity/FileNotFound", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
+            Assert.Equal("SystemSecurity", redirectResult.ControllerName);
+            Assert.Equal("FileNotFound", redirectResult.ActionName);
         }
 
         [Fact]
@@ -149,8 +152,9 @@
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/SystemSecurity/password", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
+            Assert.Equal("SystemSecurity", redirectResult.ControllerName);
+            Assert.Equal("password", redirectResult.ActionName);
         }
 
         [Fact]
@@ -184,8 +188,9 @@
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            var redirectResult = Assert.IsAssignableFrom<RedirectResult>(actionExecutingContext.Result);
-            Assert.Equal("/SystemSecurity/password", redirectResult.Url);
+            var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
+            Assert.Equal("SystemSecurity", redirectResult.ControllerName);
+            Assert.Equal("password", redirectResult.ActionName);
         }
 
         [Fact]
