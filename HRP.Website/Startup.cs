@@ -52,15 +52,12 @@
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Cookie.Name = ".HRP.Cookie";
+                    options.AccessDeniedPath = new PathString("/Error/405");
+                    options.LoginPath = new PathString("/Auth/Login");
+                    options.LogoutPath = new PathString("/Auth/Logout");
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
                     options.SlidingExpiration = true;
-                    options.LoginPath = "/Auth/Login";
-                    options.LogoutPath = "/Auth/Logout";
-                    options.Events.OnSigningOut = context =>
-                    {
-                        context.Response.Redirect(options.LoginPath);
-                        return Task.CompletedTask;
-                    };
                 });
 
             // Cookie Authentication

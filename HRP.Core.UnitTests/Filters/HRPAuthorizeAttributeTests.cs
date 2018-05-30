@@ -56,7 +56,7 @@
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(authContext.Result);
             Assert.Equal("auth", redirectResult.ControllerName);
-            Assert.Equal("login", redirectResult.ActionName);
+            Assert.Equal("logout", redirectResult.ActionName);
         }
 
         [Fact]

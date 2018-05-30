@@ -22,8 +22,7 @@ namespace HRP.Core.Filters
 
             if (currentSession.UserId <= 0 || string.IsNullOrWhiteSpace(currentSession.Username))
             {
-                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-                context.Result = new RedirectToActionResult("login", "auth", null);
+                context.Result = new RedirectToActionResult("logout", "auth", null);
             }
         }
     }

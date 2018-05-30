@@ -1,5 +1,6 @@
 namespace HRP.Website.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Criteria;
@@ -165,8 +166,18 @@ namespace HRP.Website.Controllers
 
             await baseService.ExecuteNonQueryAsync(criteria);
 
+            ClearCookies();
             sessionService.ClearAll();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        private void ClearCookies()
+        {
+            IEnumerable<string> cookies = HttpContext.Request.Cookies.Keys;
+            foreach (string cookie in cookies)
+            {
+                HttpContext.Response.Cookies.Delete(cookie);
+            }
         }
     }
 }
