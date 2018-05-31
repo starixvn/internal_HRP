@@ -173,6 +173,10 @@ namespace HRP.Website.Controllers
 
         private void ClearCookies()
         {
+            HttpContext.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
+            HttpContext.Response.Headers.Add("Pragma", "no-cache");
+            HttpContext.Response.Headers.Add("Expires", "0");
+
             IEnumerable<string> cookies = HttpContext.Request.Cookies.Keys;
             foreach (string cookie in cookies)
             {
