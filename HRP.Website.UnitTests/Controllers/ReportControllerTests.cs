@@ -11,18 +11,18 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Employee;
-    using Criteria;
+    using HRP.Criteria;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Models;
     using Models.Employee;
     using Models.Report;
-    using Models;
     using Newtonsoft.Json;
     using NSubstitute;
     using Resources;
-    using Services.Interfaces;
     using Services;
+    using Services.Interfaces;
     using Website.Controllers;
     using Xunit;
 
@@ -286,26 +286,24 @@
         #region MonthlyPayroll
 
         [Fact]
-        public async Task MonthlyPayroll_WhenCalled_ReturnMonthlyPayrollViewResult()
+        public async Task MonthlyPayrollPost_UserNotHasPermissionOnThisCompany_RedirectToAccessDenied()
         {
             // Arrange
-            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
-            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                CompanyId = 22
+            };
             var reportController = GetReportController();
-            reportController.ModelState.AddModelError("CompanyId", "Required");
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport).Returns(companies);
-            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
-                        .Returns(companySelectList);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(false);
 
             // Act
-            var actual = await reportController.MonthlyPayroll();
+            var actual = await reportController.MonthlyPayroll(viewModel);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
-            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
-            Assert.Equal(DateTime.Today, viewResultModel.SelectedTime);
-            Assert.Equal(companySelectList, viewResultModel.Companies);
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("AccessDenied", redirectResult.ActionName);
+            Assert.Equal("Error", redirectResult.ControllerName);
         }
 
         [Fact]
@@ -323,9 +321,9 @@
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
             reportController.ModelState.AddModelError("CompanyId", "Required");
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport).Returns(companies);
-            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
@@ -338,43 +336,6 @@
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
             Assert.Equal("Required", viewResult.ViewData.ModelState["CompanyId"].Errors.FirstOrDefault().ErrorMessage);
-        }
-
-        [Fact]
-        public async Task MonthlyPayrollPost_UserNotHasPermissionOnThisCompany_ReturnMonthlyPayrollViewResult()
-        {
-            // Arrange
-            var report = new MonthlyPayrollReport
-            {
-                Employees = new List<EmployeeBasicInfo>(),
-                Month = DateTime.Today
-            };
-            var viewModel = new MonthlyPayrollReportViewModel
-            {
-                SelectedTime = DateTime.Today,
-                CompanyId = 22
-            };
-            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
-            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
-
-            var reportController = GetReportController();
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(false);
-            //reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport).Returns(companies);
-            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
-                        .Returns(companySelectList);
-
-            // Act
-            var actual = await reportController.MonthlyPayroll(viewModel);
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
-            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
-            Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
-            Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
-            Assert.Equal(companySelectList, viewResultModel.Companies);
-            Assert.Equal(Message.NotHasPermissionOnCompany, viewResult.ViewData.ModelState["CommonError"].Errors.FirstOrDefault().ErrorMessage);
         }
 
         [Fact]
@@ -396,10 +357,10 @@
 
             var reportController = GetReportController();
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
-            reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
-            commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport).Returns(companies);
-            commonService.GetSelectList(Arg.Is<IEnumerable<Company>>(x => x == companies), Arg.Is<string>(x => x == nameof(Company.CompanyId)), Arg.Is<string>(x => x == nameof(Company.Code)))
+            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
@@ -419,13 +380,12 @@
         {
             // Arrange
             byte[] bytes = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
-            var company = new Company { Code = "OW", Name = "One Work" };
             var report = new MonthlyPayrollReport
             {
                 Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 2 } },
                 Month = DateTime.Today
             };
-
+            var company = new Company { Code = "OW", Name = "One Work" };
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
@@ -437,10 +397,10 @@
             var templatePath = Path.Combine(webRootPath, fileName);
             var reportController = GetReportController();
             hostingEnvironment.WebRootPath.Returns(webRootPath);
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
-            reportService.GetDataForMonthlyPayrollReportAsync(Arg.Is<DateTime>(x => x == viewModel.SelectedTime), Arg.Is<int>(x => x == viewModel.CompanyId)).Returns(report);
             baseService.GetDataEntityAsync<Company>(Arg.Is<GetCompanyByIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(company);
-            exportExcelService.ExportMonthlyPayrollReport(Arg.Is<string>(x => x == templatePath), Arg.Is<MonthlyPayrollReport>(x => x == report)).Returns(bytes);
+            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
+            exportExcelService.ExportMonthlyPayrollReport(templatePath, report).Returns(bytes);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
