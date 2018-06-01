@@ -385,8 +385,10 @@
                 ReferenceResource.WorkPermitType2,
                 ReferenceResource.CompanyBVIChangeReason,
                 ReferenceResource.CompanyLocalChangeReason,
-                ReferenceResource.JobTitleChangeReason,
-                ReferenceResource.DateCommencementChangeReason,
+                ReferenceResource.JobTitleBVIChangeReason,
+                ReferenceResource.JobTitleLocalChangeReason,
+                ReferenceResource.DateCommencementGroupChangeReason,
+                ReferenceResource.DateCommencementCompanyChangeReason,
                 ReferenceResource.EmployeeIDChangeReason,
                 ReferenceResource.JobCategoryChangeReason,
                 ReferenceResource.JobGradeChangeReason,
@@ -404,8 +406,10 @@
             IEnumerable<ReferenceResourceModel> workPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2);
             IEnumerable<ReferenceResourceModel> companyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyBVIChangeReason);
             IEnumerable<ReferenceResourceModel> localCompanyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.CompanyLocalChangeReason);
-            IEnumerable<ReferenceResourceModel> jobTitleChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobTitleChangeReason);
-            IEnumerable<ReferenceResourceModel> dateCommencementChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DateCommencementChangeReason);
+            IEnumerable<ReferenceResourceModel> jobTitleBVIChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobTitleBVIChangeReason);
+            IEnumerable<ReferenceResourceModel> jobTitleLocalChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobTitleLocalChangeReason);
+            IEnumerable<ReferenceResourceModel> dateCommencementGroupChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DateCommencementGroupChangeReason);
+            IEnumerable<ReferenceResourceModel> dateCommencementCompanyChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.DateCommencementCompanyChangeReason);
             IEnumerable<ReferenceResourceModel> idNoChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.EmployeeIDChangeReason);
             IEnumerable<ReferenceResourceModel> jobCategoryChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobCategoryChangeReason);
             IEnumerable<ReferenceResourceModel> jobGradeChangeReasons = commonService.FilterReferenceResources(refResources, ReferenceResource.JobGradeChangeReason);
@@ -514,8 +518,11 @@
                 WorkPermitType2s = commonService.GetSelectList(workPermitType2s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
                 CompanyChangeReasons = commonService.GetSelectList(companyChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
                 LocalCompanyChangeReasons = commonService.GetSelectList(localCompanyChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
-                JobTitleChangeReasons = commonService.GetSelectList(jobTitleChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
-                DateCommencementChangeReasons = commonService.GetSelectList(dateCommencementChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                JobTitleBVIChangeReasons = commonService.GetSelectList(jobTitleBVIChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                JobTitleLocalChangeReasons = commonService.GetSelectList(jobTitleLocalChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                DateCommencementGroupChangeReasons = commonService.GetSelectList(dateCommencementGroupChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                DateCommencementCompanyChangeReasons = commonService.GetSelectList(dateCommencementCompanyChangeReasons,
+                                                                                    nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
                 IDNoChangeReasons = commonService.GetSelectList(idNoChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
                 JobCategoryChangeReasons = commonService.GetSelectList(jobCategoryChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
                 JobGradeChangeReasons = commonService.GetSelectList(jobGradeChangeReasons, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),

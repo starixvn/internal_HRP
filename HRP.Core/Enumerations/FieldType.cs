@@ -25,11 +25,11 @@
         [Display(Name = "Job Title Local")]
         JobTitleLocal = 7,
 
-        [Display(Name = "Job Title Change Reason")]
-        JobTitleChangeReason = 8,
+        [Display(Name = "Job Title BVI Change Reason")]
+        JobTitleBVIChangeReason = 8,
 
-        [Display(Name = "Date Commencement Change Reason")]
-        DateCommencementChangeReason = 9,
+        [Display(Name = "Date Commencement Change Reason - Group")]
+        DateCommencementGroupChangeReason = 9,
 
         [Display(Name = "Employee ID Change Reason")]
         EmployeeIDChangeReason = 10,
@@ -113,6 +113,12 @@
         PaymentTransactionEbanking = 36,
 
         [Display(Name = "Payment Transaction - Direct Banking")]
-        PaymentTransactionDirectBanking = 37
+        PaymentTransactionDirectBanking = 37,
+
+        [Display(Name = "Job Title Local Change Reason")]
+        JobTitleLocalChangeReason = 38,
+
+        [Display(Name = "Date Commencement Change Reason - Company")]
+        DateCommencementCompanyChangeReason = 39,
     }
 }

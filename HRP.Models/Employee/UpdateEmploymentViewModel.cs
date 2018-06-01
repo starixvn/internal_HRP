@@ -196,11 +196,15 @@
 
         public SelectList LocalCompanyChangeReasons { get; set; }
 
-        public SelectList JobTitleChangeReasons { get; set; }
+        public SelectList JobTitleBVIChangeReasons { get; set; }
+
+        public SelectList JobTitleLocalChangeReasons { get; set; }
 
         public SelectList IDNoChangeReasons { get; set; }
 
-        public SelectList DateCommencementChangeReasons { get; set; }
+        public SelectList DateCommencementGroupChangeReasons { get; set; }
+
+        public SelectList DateCommencementCompanyChangeReasons { get; set; }
 
         public SelectList JobCategoryChangeReasons { get; set; }
 

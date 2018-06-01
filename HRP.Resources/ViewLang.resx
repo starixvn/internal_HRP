@@ -738,10 +738,10 @@
   <data name="CostCenterChangeReason" xml:space="preserve">
     <value>Cost Center Change Reason</value>
   </data>
-  <data name="DateCommencementChangeReasonOfCompany" xml:space="preserve">
+  <data name="DateCommencementCompanyChangeReason" xml:space="preserve">
     <value>Date Commencement Change Reason - Company</value>
   </data>
-  <data name="DateCommencementChangeReasonOfGroup" xml:space="preserve">
+  <data name="DateCommencementGroupChangeReason" xml:space="preserve">
     <value>Date Commencement Change Reason - Group</value>
   </data>
   <data name="DepartmentChangeReason" xml:space="preserve">
@@ -756,8 +756,8 @@
   <data name="JobGradeChangeReason" xml:space="preserve">
     <value>Job Grade Change Reason</value>
   </data>
-  <data name="JobTitleChangeReason" xml:space="preserve">
-    <value>Job Title Change Reason</value>
+  <data name="JobTitleBVIChangeReason" xml:space="preserve">
+    <value>Job Title BVI Change Reason</value>
   </data>
   <data name="PaymentTransactionCash" xml:space="preserve">
     <value>Payment Transaction - Cash</value>
@@ -782,9 +782,6 @@
   </data>
   <data name="TypeOfBankAccount" xml:space="preserve">
     <value>Type of Bank Account</value>
-  </data>
-  <data name="DateCommencementChangeReason" xml:space="preserve">
-    <value>Date Commencement Change Reason</value>
   </data>
   <data name="Otp" xml:space="preserve">
     <value>OTP</value>
@@ -1088,5 +1085,8 @@
   </data>
   <data name="PresetAll" xml:space="preserve">
     <value>Preset All</value>
+  </data>
+  <data name="JobTitleLocalChangeReason" xml:space="preserve">
+    <value>Job Title Local Change Reason</value>
   </data>
 </root>

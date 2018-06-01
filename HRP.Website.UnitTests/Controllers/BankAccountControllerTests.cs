@@ -611,11 +611,6 @@
                 {
                     RefName = ReferenceResource.TypeOfBankAccount,
                     ResourceId = 2
-                },
-                new ReferenceResourceModel
-                {
-                    RefName = ReferenceResource.ContraCoAccount,
-                    ResourceId = 1
                 }
             };
 

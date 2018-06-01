@@ -754,29 +754,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date Commencement Change Reason.
-        /// </summary>
-        public static string DateCommencementChangeReason {
-            get {
-                return ResourceManager.GetString("DateCommencementChangeReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Date Commencement Change Reason - Company.
         /// </summary>
-        public static string DateCommencementChangeReasonOfCompany {
+        public static string DateCommencementCompanyChangeReason {
             get {
-                return ResourceManager.GetString("DateCommencementChangeReasonOfCompany", resourceCulture);
+                return ResourceManager.GetString("DateCommencementCompanyChangeReason", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Date Commencement Change Reason - Group.
         /// </summary>
-        public static string DateCommencementChangeReasonOfGroup {
+        public static string DateCommencementGroupChangeReason {
             get {
-                return ResourceManager.GetString("DateCommencementChangeReasonOfGroup", resourceCulture);
+                return ResourceManager.GetString("DateCommencementGroupChangeReason", resourceCulture);
             }
         }
         
@@ -1582,11 +1573,20 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Job Title Change Reason.
+        ///   Looks up a localized string similar to Job Title BVI Change Reason.
         /// </summary>
-        public static string JobTitleChangeReason {
+        public static string JobTitleBVIChangeReason {
             get {
-                return ResourceManager.GetString("JobTitleChangeReason", resourceCulture);
+                return ResourceManager.GetString("JobTitleBVIChangeReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Title Local Change Reason.
+        /// </summary>
+        public static string JobTitleLocalChangeReason {
+            get {
+                return ResourceManager.GetString("JobTitleLocalChangeReason", resourceCulture);
             }
         }
         

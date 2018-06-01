@@ -118,21 +118,37 @@
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
                     RefName = ReferenceResource.LocalJobTitle }
             },
-            { (int)FieldType.JobTitleChangeReason, new Field   {
-                    FieldId = (int)FieldType.JobTitleChangeReason,
-                    FieldName = ViewLang.JobTitleChangeReason,
+            { (int)FieldType.JobTitleBVIChangeReason, new Field   {
+                    FieldId = (int)FieldType.JobTitleBVIChangeReason,
+                    FieldName = ViewLang.JobTitleBVIChangeReason,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.JobTitleChangeReason }
+                    RefName = ReferenceResource.JobTitleBVIChangeReason }
             },
-            { (int)FieldType.DateCommencementChangeReason, new Field   {
-                    FieldId = (int)FieldType.DateCommencementChangeReason,
-                    FieldName = ViewLang.DateCommencementChangeReason,
+            { (int)FieldType.JobTitleLocalChangeReason, new Field   {
+                    FieldId = (int)FieldType.JobTitleLocalChangeReason,
+                    FieldName = ViewLang.JobTitleLocalChangeReason,
                     LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
                     LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
                     LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
-                    RefName = ReferenceResource.DateCommencementChangeReason }
+                    RefName = ReferenceResource.JobTitleLocalChangeReason }
+            },
+            { (int)FieldType.DateCommencementGroupChangeReason, new Field   {
+                    FieldId = (int)FieldType.DateCommencementGroupChangeReason,
+                    FieldName = ViewLang.DateCommencementGroupChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DateCommencementGroupChangeReason }
+            },
+            { (int)FieldType.DateCommencementCompanyChangeReason, new Field   {
+                    FieldId = (int)FieldType.DateCommencementCompanyChangeReason,
+                    FieldName = ViewLang.DateCommencementCompanyChangeReason,
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.DateCommencementCompanyChangeReason }
             },
             { (int)FieldType.EmployeeIDChangeReason, new Field   {
                     FieldId = (int)FieldType.EmployeeIDChangeReason,

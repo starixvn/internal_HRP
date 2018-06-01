@@ -17,8 +17,10 @@
         public const string BasicSalaryChangeReason = "BasicSalaryChangeReason";
         public const string CompanyBVIChangeReason = "CompanyBVIChangeReason";
         public const string CompanyLocalChangeReason = "CompanyLocalChangeReason";
-        public const string JobTitleChangeReason = "JobTitleChangeReason";
-        public const string DateCommencementChangeReason = "DateCommencementChangeReason";
+        public const string JobTitleBVIChangeReason = "JobTitleBVIChangeReason";
+        public const string JobTitleLocalChangeReason = "JobTitleLocalChangeReason";
+        public const string DateCommencementGroupChangeReason = "DateCommencementGroupChangeReason";
+        public const string DateCommencementCompanyChangeReason = "DateCommencementCompanyChangeReason";
         public const string EmployeeIDChangeReason = "EmployeeIDChangeReason";
         public const string JobCategoryChangeReason = "JobCategoryChangeReason";
         public const string JobGradeChangeReason = "JobGradeChangeReason";
@@ -29,7 +31,6 @@
         public const string PaymentTransactionCash = "PaymentTransactionCash";
         public const string PaymentTransactionEbanking = "PaymentTransactionEbanking";
         public const string PaymentTransactionDirectBanking = "PaymentTransactionDirectBanking";
-        public const string ContraCoAccount = "ContraCoAccount"; //Remove
         public const string IsGeneratedCertificate = "IsGeneratedCertificate";
     }
 }

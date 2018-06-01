@@ -91,7 +91,7 @@
                 <div class="component">
                     <label class="text" asp-for="JobTitleReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
-                            asp-for="JobTitleReasonId" asp-items="Model.JobTitleChangeReasons">
+                            asp-for="JobTitleReasonId" asp-items="Model.JobTitleBVIChangeReasons">
                         <option value=""></option>
                     </select>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="component">
                     <label class="text" asp-for="LocalJobTitleReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
-                            asp-for="LocalJobTitleReasonId" asp-items="Model.JobTitleChangeReasons">
+                            asp-for="LocalJobTitleReasonId" asp-items="Model.JobTitleLocalChangeReasons">
                         <option value=""></option>
                     </select>
                 </div>
@@ -132,7 +132,7 @@
                 <div class="component">
                     <label class="text" asp-for="GroupDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
-                            asp-for="GroupDateReasonId" asp-items="Model.DateCommencementChangeReasons">
+                            asp-for="GroupDateReasonId" asp-items="Model.DateCommencementGroupChangeReasons">
                         <option value=""></option>
                     </select>
                 </div>
@@ -151,7 +151,7 @@
                 <div class="component">
                     <label class="text" asp-for="CompanyDateReasonId">@ViewLang.Reason</label>
                     <select class="control js-select2 js-select2-allowclear-hidesearchbox-hideplaceholder"
-                            asp-for="CompanyDateReasonId" asp-items="Model.DateCommencementChangeReasons">
+                            asp-for="CompanyDateReasonId" asp-items="Model.DateCommencementCompanyChangeReasons">
                         <option value=""></option>
                     </select>
                 </div>
@@ -614,8 +614,8 @@
     </div>
     <div class="list-button">
         <a class="button -second" asp-controller="employee" asp-action="index"
-            asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
-            asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
+           asp-route-departmentIds="@Model.CachingFilter.DepartmentIds" asp-route-employmentStatusIds="@Model.CachingFilter.EmploymentStatusIds"
+           asp-route-employeeId="@Model.CachingFilter.EmployeeId" asp-route-displayName="@Model.CachingFilter.EmployeeName">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
             <button type="button" class="button -primary js-btnSubmit">@ViewLang.Save</button>

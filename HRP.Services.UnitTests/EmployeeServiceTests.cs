@@ -531,8 +531,10 @@
             Assert.Equal(refResourceSelectList, actual.WorkPermitType2s);
             Assert.Equal(refResourceSelectList, actual.CompanyChangeReasons);
             Assert.Equal(refResourceSelectList, actual.LocalCompanyChangeReasons);
-            Assert.Equal(refResourceSelectList, actual.JobTitleChangeReasons);
-            Assert.Equal(refResourceSelectList, actual.DateCommencementChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.JobTitleBVIChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.JobTitleLocalChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.DateCommencementGroupChangeReasons);
+            Assert.Equal(refResourceSelectList, actual.DateCommencementCompanyChangeReasons);
             Assert.Equal(refResourceSelectList, actual.IDNoChangeReasons);
             Assert.Equal(refResourceSelectList, actual.JobCategoryChangeReasons);
             Assert.Equal(refResourceSelectList, actual.JobGradeChangeReasons);
