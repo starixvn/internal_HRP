@@ -16,10 +16,6 @@ namespace HRP.Core.Constants
 
         public const string MYRCurrencyCode = "MYR";
 
-        public const string RijndaelKey = "8080808080808080";
-
-        public const string RijndaelIV = "8080808080808080";
-
         public const string CertificateFilePath = "App_Data";
 
         public const string CertificateFileName = "SecretKey.pfx";

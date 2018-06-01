@@ -6,11 +6,10 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Core.Enumerations;
-    using Core.Services;
     using Core.Model;
+    using Core.Services;
     using Criteria;
     using Criteria.User;
-    using Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
@@ -18,6 +17,7 @@
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Primitives;
+    using Models;
     using Models.Account;
     using NSubstitute;
     using Services;
@@ -59,7 +59,11 @@
             Assert.Null(viewResult.ViewName);
             Assert.Collection(
                 viewResult.ViewData,
-                kvp => { Assert.Equal("Username", kvp.Key); Assert.Equal(username, kvp.Value); });
+                kvp =>
+                {
+                    Assert.Equal("Username", kvp.Key);
+                    Assert.Equal(username, kvp.Value);
+                });
             Assert.Equal(user.IsOTPRegistered, viewModel.IsOTPRegistered);
             Assert.Equal(tab, viewModel.ActivePanel);
             Assert.Null(viewModel.SetupOtpViewModel);
@@ -86,8 +90,16 @@
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(-1, kvp.Value); },
-                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal("Update failed", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("code", kvp.Key);
+                    Assert.Equal(-1, kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("message", kvp.Key);
+                    Assert.Equal("Update failed", kvp.Value);
+                }
             );
         }
 
@@ -112,8 +124,16 @@
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(-2, kvp.Value); },
-                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal("The old password you entered is incorrect.", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("code", kvp.Key);
+                    Assert.Equal(-2, kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("message", kvp.Key);
+                    Assert.Equal("The old password you entered is incorrect.", kvp.Value);
+                }
             );
         }
 
@@ -144,8 +164,16 @@
             var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value);
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("code", kvp.Key); Assert.Equal(expectedCode, kvp.Value); },
-                kvp => { Assert.Equal("message", kvp.Key); Assert.Equal(expectedMessage, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("code", kvp.Key);
+                    Assert.Equal(expectedCode, kvp.Value);
+                },
+                kvp =>
+                {
+                    Assert.Equal("message", kvp.Key);
+                    Assert.Equal(expectedMessage, kvp.Value);
+                }
             );
         }
 
@@ -184,7 +212,11 @@
             Assert.Equal("SetupOtpAfterReset", viewResult.ActionName);
             Assert.Collection(
                 viewResult.RouteValues,
-                kvp => { Assert.Equal("token", kvp.Key); Assert.Equal(token, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("token", kvp.Key);
+                    Assert.Equal(token, kvp.Value);
+                }
             );
         }
 
@@ -204,7 +236,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -221,7 +253,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -261,7 +293,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -278,7 +310,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -337,7 +369,11 @@
             Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
             Assert.Collection(
                 errors,
-                kvp => { Assert.Equal("fullname", kvp.Key); Assert.Equal("required", kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("fullname", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
             );
         }
 
@@ -387,7 +423,11 @@
             Assert.Equal("Index", viewResult.ActionName);
             Assert.Collection(
                 viewResult.RouteValues,
-                kvp => { Assert.Equal("tab", kvp.Key); Assert.Equal(AccountTab.Otp, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("tab", kvp.Key);
+                    Assert.Equal(AccountTab.Otp, kvp.Value);
+                }
             );
         }
 
@@ -414,7 +454,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -465,7 +505,11 @@
             Assert.Equal("Index", viewResult.ActionName);
             Assert.Collection(
                 viewResult.RouteValues,
-                kvp => { Assert.Equal("tab", kvp.Key); Assert.Equal(AccountTab.Otp, kvp.Value); }
+                kvp =>
+                {
+                    Assert.Equal("tab", kvp.Key);
+                    Assert.Equal(AccountTab.Otp, kvp.Value);
+                }
             );
         }
 
@@ -491,7 +535,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -615,7 +659,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             Assert.Equal("Auth", viewResult.ControllerName);
-            Assert.Equal("Login", viewResult.ActionName);
+            Assert.Equal("Logout", viewResult.ActionName);
         }
 
         [Fact]
@@ -653,7 +697,6 @@
         public async Task VerifySetupOTP_ModelStateIsValidAndOtpIsValid_ReturnOkResult()
         {
             // Arrange
-            var user = new User { Username = "hunter.tran" };
             var accountController = GetAccountController();
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
@@ -667,24 +710,24 @@
 
         #endregion VerifySetupOTP
 
-        #region Helper
+        #region Helpers
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             return Substitute.For<ISessionService>();
         }
 
-        private ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
+        private static ITwoFactorAuthenticatorService FakeTwoFactorAuthenticatorService()
         {
             return Substitute.For<ITwoFactorAuthenticatorService>();
         }
 
-        private IUserService FakeUserService()
+        private static IUserService FakeUserService()
         {
             return Substitute.For<IUserService>();
         }
@@ -714,6 +757,6 @@
             return new AccountController(sessionService, baseService, twoFactorAuthService, userService, otpConfig);
         }
 
-        #endregion Helper
+        #endregion Helpers
     }
 }

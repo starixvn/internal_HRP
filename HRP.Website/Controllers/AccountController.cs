@@ -1,5 +1,6 @@
 namespace HRP.Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -134,13 +135,13 @@ namespace HRP.Website.Controllers
         {
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             var setupOtpViewModel = new SetupOtpViewModel
@@ -158,13 +159,13 @@ namespace HRP.Website.Controllers
         {
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             var userProfile = new UserProfileViewModel
@@ -226,7 +227,7 @@ namespace HRP.Website.Controllers
 
             if (string.IsNullOrEmpty(sessionService.Username))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             return View("VerifyOTP", new TwoFactorAuthenticatorViewModel());
@@ -245,7 +246,7 @@ namespace HRP.Website.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
@@ -270,7 +271,7 @@ namespace HRP.Website.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Logout", "Auth");
             }
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
@@ -301,7 +302,7 @@ namespace HRP.Website.Controllers
 
         private async Task<string> GetOtpSetupCode(string username)
         {
-            var secretKey = Utilities.GenerateSecretKey();
+            var secretKey = Guid.NewGuid().ToString("N").Substring(0, 12);
             await userService.UpdateSecretKeyAsync(username, secretKey);
 
             return twoFactorAuthService.SetupGoogleAuthInfo(sessionService.Username, secretKey);

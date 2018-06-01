@@ -1,5 +1,4 @@
 ﻿@using HRP.Resources
-@using HRP.Core.Constants
 @model HRP.Models.LoginViewModel
 
 @{
@@ -42,8 +41,8 @@
             <a class="link" asp-controller="Auth" asp-action="ForgotPassword">@ViewLang.ForgotPassword?</a>
         </div>
     </section>
-    <input hidden value="@Constants.RijndaelKey" id="RijndaelKey" />
-    <input hidden value="@Constants.RijndaelIV" id="RijndaelIV" />
+    <input hidden value="@Model.RijndaelKey" id="RijndaelKey" />
+    <input hidden value="@Model.RijndaelIV" id="RijndaelIV" />
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>

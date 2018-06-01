@@ -25,7 +25,9 @@ var login = (function ($) {
         var password = $('#Password').val();
         var key = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
         var iv = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
-        var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(password), key,
+        var encrypted = CryptoJS.AES.encrypt(
+            CryptoJS.enc.Utf8.parse(password),
+            key,
             {
                 keySize: 128 / 8,
                 iv: iv,

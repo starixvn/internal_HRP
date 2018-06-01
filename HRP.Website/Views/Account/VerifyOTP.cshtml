@@ -1,3 +1,4 @@
+@using HRP.Resources
 @model HRP.Models.TwoFactorAuthenticatorViewModel
 
 @{
@@ -35,7 +36,7 @@
             </label>
         </div>
         <div class="group list-button">
-            <a asp-action="Login" asp-controller="Auth" class="button -second">Cancel</a>
+            <a asp-action="Logout" asp-controller="Auth" class="button -second">@ViewLang.Cancel</a>
             <input type="submit" class="button -primary" value="Validate OTP" />
         </div>
     </form>

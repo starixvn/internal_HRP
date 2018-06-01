@@ -21,6 +21,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private IUserService userService;
+        private IRijndaelService rijndaelService;
 
         private readonly User user = new User
         {
@@ -42,23 +43,12 @@
         #region Login
 
         [Fact]
-        public void LoginGet_WhenCalled_ExpectedClearSession()
-        {
-            // Arrange
-            var authController = GetAuthController();
-
-            // Act
-            authController.Login();
-
-            // Assert
-            sessionService.Received().ClearAll();
-        }
-
-        [Fact]
         public void LoginGet_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
+            Tuple<string, string> tuple = new Tuple<string, string>("1234", "1234");
             var authController = GetAuthController();
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = authController.Login();
@@ -69,25 +59,8 @@
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.Username);
             Assert.Null(viewModel.Password);
-        }
-
-        [Fact]
-        public async Task LoginPost_ValidModel_ReturnSuccessfully()
-        {
-            //Arrange
-            var authController = GetAuthController();
-            var model = new LoginViewModel
-            {
-                Username = "admin",
-                Password = "r2RzX0EqeQCSjpXCp/GMnA=="
-            };
-
-            //Act
-            var actual = await authController.Login(model);
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -109,6 +82,7 @@
 
             //Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Account", viewResult.ControllerName);
             Assert.Equal("RegisterOTPNotification", viewResult.ActionName);
         }
 
@@ -136,9 +110,10 @@
         }
 
         [Fact]
-        public async Task Login_IncorrectUser_ReturnViewResultWithModel()
+        public async Task Login_IncorrectPassword_ReturnViewResultWithModel()
         {
             //Arrange
+            Tuple<string, string> tuple = new Tuple<string, string>("1234", "1234");
             var authController = GetAuthController();
             var model = new LoginViewModel
             {
@@ -147,14 +122,17 @@
             };
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             //Act
             var actual = await authController.Login(model);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
+            var viewModel = Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
             Assert.Equal(1, viewResult.ViewData.ModelState.ErrorCount);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         #endregion Login
@@ -353,12 +331,20 @@
             return service;
         }
 
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+
+            return service;
+        }
+
         private AuthController GetAuthController()
         {
             baseService = FakeBaseService();
             sessionService = FakeSessionService();
             userService = FakeUserService();
-            var controller = new AuthController(userService, sessionService, baseService);
+            rijndaelService = FakeRijndaelService();
+            var controller = new AuthController(userService, sessionService, baseService, rijndaelService);
 
             return controller;
         }

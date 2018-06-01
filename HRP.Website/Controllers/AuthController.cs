@@ -1,5 +1,6 @@
 namespace HRP.Website.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BCrypt.Net;
@@ -20,21 +21,30 @@ namespace HRP.Website.Controllers
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly IUserService userService;
+        private readonly IRijndaelService rijndaelService;
 
         public AuthController(
             IUserService userService,
             ISessionService sessionService,
-            IBaseService baseService)
+            IBaseService baseService,
+            IRijndaelService rijndaelService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.userService = userService;
+            this.rijndaelService = rijndaelService;
         }
 
         public IActionResult Login()
         {
-            sessionService.ClearAll();
-            var viewModel = new LoginViewModel();
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+            var viewModel = new LoginViewModel
+            {
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
+            };
             return View(viewModel);
         }
 
@@ -46,10 +56,12 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid)
             {
                 User user = await userService.GetUserByUsernameAsync(viewModel.Username);
-                var password = Utilities.DecryptStringAES(viewModel.Password);
+                var password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
 
                 if (user != null && userService.IsCorrectPassword(password, user.Password) && user.IsActive)
                 {
+                    sessionService.RijndaelIV = string.Empty;
+                    sessionService.RijndaelKey = string.Empty;
                     return await AfterLoginSuccessful(user);
                 }
 
@@ -59,6 +71,11 @@ namespace HRP.Website.Controllers
             }
 
             ModelState.AddModelError(string.Empty, errorMsg);
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+            viewModel.RijndaelIV = sessionService.RijndaelIV;
+            viewModel.RijndaelKey = sessionService.RijndaelKey;
 
             return View(viewModel);
         }

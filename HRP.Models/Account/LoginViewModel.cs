@@ -8,5 +8,8 @@ namespace HRP.Models
 
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string RijndaelKey { get; set; }
+        public string RijndaelIV { get; set; }
     }
 }

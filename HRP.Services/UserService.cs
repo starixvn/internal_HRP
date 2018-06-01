@@ -31,7 +31,7 @@ namespace HRP.Services
 
         public async Task<string> GenerateTokenOTPRegisterAsync(string username)
         {
-            string tokenOTPRegister = Utilities.GenerateRadomString();
+            string tokenOTPRegister = GenerateRandomString();
 
             var criteria = new UpdateTokenOTPRegisterCriteria
             {
@@ -81,7 +81,7 @@ namespace HRP.Services
 
         public async Task ResetUserPasswordAsync(string username)
         {
-            string tokenResetPassword = Utilities.GenerateRadomString();
+            string tokenResetPassword = GenerateRandomString();
             var criteria = new UpdateTokenResetPasswordCriteria
             {
                 Username = username,
@@ -158,6 +158,13 @@ namespace HRP.Services
             };
 
             emailService.SendEmail(mailModel);
+        }
+
+        private static string GenerateRandomString()
+        {
+            string salt = BCrypt.GenerateSalt(30);
+            string random = salt.Replace("/", string.Empty).Replace(".", string.Empty);
+            return random;
         }
     }
 }

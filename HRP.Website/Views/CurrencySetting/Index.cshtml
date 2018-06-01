@@ -3,7 +3,7 @@
 @using HRP.Models.Currency
 @model CurrencySettingViewModel
 
-@{ 
+@{
     ViewData["Title"] = ViewLang.CurrencySetting;
 }
 
@@ -46,7 +46,7 @@
 <input type="hidden" value="@Model.Currencies.FirstOrDefault()?.CurrencyId" id="base-currency" />
 <input type="hidden" asp-for="CanUpdate" />
 
-@{ 
+@{
     var vndCurrencyId = Model.Currencies.FirstOrDefault(x => x.CurrencyCode == Constants.VNDCurrencyCode)?.CurrencyId;
 }
 
@@ -78,7 +78,7 @@
                             if (Model.CanUpdate)
                             {
                                 <td>
-                                    @if ((!isDisabled && fromCurrency.CurrencyCode != Constants.VNDCurrencyCode) || 
+                                    @if ((!isDisabled && fromCurrency.CurrencyCode != Constants.VNDCurrencyCode) ||
                                         (fromCurrency.CurrencyCode == Constants.USDCurrencyCode && toCurrency.CurrencyCode == Constants.VNDCurrencyCode))
                                     {
                                         <input class="input rate-real" type="text" value="@rate?.GetExchangeRateDisplay(vndCurrencyId)"
@@ -140,7 +140,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <environment include="Development">
