@@ -66,23 +66,41 @@ BEGIN
 	END
 
 	--------------------------
-	IF @RefName = 'JobTitleChangeReason'
+	IF @RefName = 'JobTitleBVIChangeReason'
 	BEGIN
 		SELECT @isUsed = 1
 		FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
 		WHERE e.JobTitleReasonId = @ResourceId
-			OR e.LocalJobTitleReasonId = @ResourceId
 
 		RETURN @isUsed
 	END
 
 	--------------------------
-	IF @RefName = 'DateCommencementChangeReason'
+	IF @RefName = 'JobTitleLocalChangeReason'
+	BEGIN
+		SELECT @isUsed = 1
+		FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+		WHERE e.LocalJobTitleReasonId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
+	IF @RefName = 'DateCommencementGroupChangeReason'
 	BEGIN
 		SELECT @isUsed = 1
 		FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
 		WHERE e.GroupDateReasonId = @ResourceId
-			OR e.CompanyDateReasonId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
+	IF @RefName = 'DateCommencementCompanyChangeReason'
+	BEGIN
+		SELECT @isUsed = 1
+		FROM dbo.EmploymentHistory AS e WITH (NOLOCK)
+		WHERE e.CompanyDateReasonId = @ResourceId
 
 		RETURN @isUsed
 	END
