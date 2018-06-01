@@ -10,7 +10,6 @@
     <CodeAnalysisRuleSet>HRP.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="BouncyCastle" Version="1.8.2" />
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="EPPlus" Version="4.5.1" />
