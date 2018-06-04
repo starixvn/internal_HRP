@@ -1,11 +1,8 @@
 ﻿namespace HRP.Core.Filters
 {
     using System;
-    using System.Threading.Tasks;
     using HRP.Core.Criteria;
     using HRP.Core.Services;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -36,7 +33,7 @@
 
             if (isKickedOut)
             {
-                DoSignOut(context).Wait();
+                context.Result = new RedirectToActionResult("logout", "auth", null);
                 return;
             }
             else if (!certificateService.IsGeneratedCertificate())
@@ -61,21 +58,6 @@
             }
 
             base.OnActionExecuting(context);
-        }
-
-        private async Task DoSignOut(ActionExecutingContext context)
-        {
-            var criteria = new LogOutUserCriteria
-            {
-                OnUserId = sessionService.OnUserId,
-                IP = context.HttpContext.Connection.RemoteIpAddress.ToString(),
-                Platform = context.HttpContext.Request.Headers["User-Agent"].ToString()
-            };
-
-            await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-            context.Result = new RedirectToActionResult("login", "auth", null);
         }
     }
 }

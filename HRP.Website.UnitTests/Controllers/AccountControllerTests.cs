@@ -225,7 +225,7 @@
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public async Task SetupOtp_TokenIsInvalid_ReturnRedirectToLogin(string token)
+        public async Task SetupOtp_TokenIsInvalid_ReturnRedirectToLogout(string token)
         {
             // Arrange
             var accountController = GetAccountController();
@@ -240,7 +240,7 @@
         }
 
         [Fact]
-        public async Task SetupOtp_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task SetupOtp_UserIsNotExisted_ReturnRedirectToLogout()
         {
             // Arrange
             User user = null;
@@ -282,7 +282,7 @@
         #region SetupOtpAfterReset
 
         [Fact]
-        public async Task SetupOtpAfterReset_EmptyToken_ReturnRedirectToLogin()
+        public async Task SetupOtpAfterReset_EmptyToken_ReturnRedirectToLogout()
         {
             // Arrange
             var accountController = GetAccountController();
@@ -297,7 +297,7 @@
         }
 
         [Fact]
-        public async Task SetupOtpAfterReset_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task SetupOtpAfterReset_UserIsNotExisted_ReturnRedirectToLogout()
         {
             // Arrange
             User user = null;
@@ -434,7 +434,7 @@
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void VerifyOTPGet_UserIsNotAuthenticatedAndUsernameIsInvalid_ReturnRedirectToLogin(string username)
+        public void VerifyOTPGet_UserIsNotAuthenticatedAndUsernameIsInvalid_ReturnRedirectToLogout(string username)
         {
             // Arrange
             var accountController = GetAccountController();
@@ -514,7 +514,7 @@
         }
 
         [Fact]
-        public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsNotExisted_ReturnRedirectToLogin()
+        public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsNotExisted_ReturnRedirectToLogout()
         {
             // Arrange
             User user = null;
@@ -646,7 +646,7 @@
         #region VerifySetupOTP
 
         [Fact]
-        public async Task VerifySetupOTP_UserIsNotExisted_ReturnRedirectToLogin()
+        public async Task VerifySetupOTP_UserIsNotExisted_ReturnRedirectToLogout()
         {
             // Arrange
             User user = null;

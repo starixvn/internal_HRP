@@ -22,7 +22,7 @@
         private ICertificateService certificateService;
 
         [Fact]
-        public void OnActionExecuting_IsKickedOut_ExpectedRedirectToLogin()
+        public void OnActionExecuting_IsKickedOut_ExpectedRedirectToLogout()
         {
             // Arrange
             var authService = Substitute.For<IAuthenticationService>();
@@ -41,8 +41,6 @@
                 Substitute.For<Controller>()
             );
 
-            actionContext.HttpContext.Connection.RemoteIpAddress = IPAddress.Any;
-            actionContext.HttpContext.Request.Headers["User-Agent"] = "12345";
             var actionFilter = GetActionFilter();
             baseService.GetDataEntityAsync<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(true);
 
@@ -52,7 +50,7 @@
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(actionExecutingContext.Result);
             Assert.Equal("auth", redirectResult.ControllerName);
-            Assert.Equal("login", redirectResult.ActionName);
+            Assert.Equal("logout", redirectResult.ActionName);
         }
 
         [Fact]
