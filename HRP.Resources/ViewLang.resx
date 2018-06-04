@@ -684,8 +684,8 @@
   <data name="Rate" xml:space="preserve">
     <value>Rate</value>
   </data>
-  <data name="RommingCharges" xml:space="preserve">
-    <value>Romming Charges</value>
+  <data name="RoomingCharges" xml:space="preserve">
+    <value>Rooming Charges</value>
   </data>
   <data name="Secondment" xml:space="preserve">
     <value>Secondment</value>

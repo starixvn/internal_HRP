@@ -2329,11 +2329,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Romming Charges.
+        ///   Looks up a localized string similar to Rooming Charges.
         /// </summary>
-        public static string RommingCharges {
+        public static string RoomingCharges {
             get {
-                return ResourceManager.GetString("RommingCharges", resourceCulture);
+                return ResourceManager.GetString("RoomingCharges", resourceCulture);
             }
         }
         
