@@ -682,7 +682,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username must be uniques, between 2 and 30 characters long and does not contain the space.;Password must be has at least 8 characters and maximum 50 characters in length, contains UPER/lowercase letters and numbers.;Username, Password and Email Address are required..
+        ///   Looks up a localized string similar to Username must be uniques, between 2 and 30 characters long and does not contain the space.;Password must be has at least 8 characters and maximum 50 characters in length, contains UPPER/lowercase letters and numbers.;Username, Password and Email Address are required..
         /// </summary>
         public static string CreateUserNotes {
             get {
@@ -2104,7 +2104,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp..
+        ///   Looks up a localized string similar to This is computer generated document. Signature is not required AND not construed as official without certification by HR Department with rubber stamp..
         /// </summary>
         public static string PayslipNote {
             get {

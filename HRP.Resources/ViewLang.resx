@@ -238,7 +238,7 @@
     <value>Phone No.</value>
   </data>
   <data name="CreateUserNotes" xml:space="preserve">
-    <value>Username must be uniques, between 2 and 30 characters long and does not contain the space.;Password must be has at least 8 characters and maximum 50 characters in length, contains UPER/lowercase letters and numbers.;Username, Password and Email Address are required.</value>
+    <value>Username must be uniques, between 2 and 30 characters long and does not contain the space.;Password must be has at least 8 characters and maximum 50 characters in length, contains UPPER/lowercase letters and numbers.;Username, Password and Email Address are required.</value>
   </data>
   <data name="CreateUserNoteTitle" xml:space="preserve">
     <value>For the safety and security of your account, you should create a new user that has:</value>
@@ -1009,7 +1009,7 @@
     <value>Net Monthly Basic Salary</value>
   </data>
   <data name="PayslipNote" xml:space="preserve">
-    <value>This is computer generated document. Singature is not required AND not construed as offcial without certification by HR Department with rubber stamp.</value>
+    <value>This is computer generated document. Signature is not required AND not construed as official without certification by HR Department with rubber stamp.</value>
   </data>
   <data name="EmployeePayrollChangedWarning" xml:space="preserve">
     <value>Are you sure you want to apply this changes? All the adjustment amounts will be calculated based on the last basic salary amount that you've just updated.</value>
