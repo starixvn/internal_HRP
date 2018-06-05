@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models.UserPermisson;
+    using Models.UserPermission;
 
     public interface IFunctionService
     {

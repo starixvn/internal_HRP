@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Xml.Linq;
 
-    public static class ColumnsConfirguration
+    public static class ColumnsConfiguration
     {
         private static Dictionary<int, IEnumerable<ColumnGroup>> columns;
         private static IEnumerable<DynamicReportGroup> dynamicReportGroups;

@@ -780,7 +780,7 @@
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllJobGrade()
         {
-            var jobGradeList = await dataConfigurationService.GetAllJobGradelAsync();
+            var jobGradeList = await dataConfigurationService.GetAllJobGradeAsync();
             var viewModel = new JobGradeTableViewModel
             {
                 JobGradeList = jobGradeList,

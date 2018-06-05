@@ -1431,7 +1431,7 @@
             // Arrange
             var jobGradeList = new List<JobGrade> { MockJobGrade() };
             var controller = GetDataConfigurationController();
-            dataConfigurationService.GetAllJobGradelAsync().Returns(jobGradeList);
+            dataConfigurationService.GetAllJobGradeAsync().Returns(jobGradeList);
 
             // Act
             var actual = await controller.GetAllJobGrade();

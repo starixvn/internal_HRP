@@ -51,7 +51,7 @@
 
             // Assert
             var result = Assert.IsType<Failure<AttendanceTemplate>>(actual);
-            Assert.Equal(Message.ErrorOccuredWhileReadingTemplate, result.Message);
+            Assert.Equal(Message.ErrorOccurredWhileReadingTemplate, result.Message);
         }
 
         [Fact]
@@ -277,7 +277,7 @@
 
             // Assert
             var result = Assert.IsType<Failure<DSTNetSalaryTemplate>>(actual);
-            Assert.Equal(Message.ErrorOccuredWhileReadingTemplate, result.Message);
+            Assert.Equal(Message.ErrorOccurredWhileReadingTemplate, result.Message);
         }
 
         [Fact]

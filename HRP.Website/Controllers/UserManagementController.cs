@@ -14,7 +14,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.UserManagement;
-    using Models.UserPermisson;
+    using Models.UserPermission;
     using Services;
 
     public class UserManagementController : BaseController

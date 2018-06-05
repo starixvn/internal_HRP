@@ -268,7 +268,7 @@
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 }),
                 EmployeeStatusIds = string.Join(",", employeeStatusIds),
-                Groups = ColumnsConfirguration.DynamicReportGroups
+                Groups = ColumnsConfiguration.DynamicReportGroups
             };
 
             return View("DynamicReport", viewModel);

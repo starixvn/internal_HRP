@@ -20,15 +20,15 @@
         public int WorkingDays { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollCurrencyRequried")]
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequired))]
         public int? EbankingCurrencyId { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollSettingAmountRequried")]
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequired))]
         public string EbankingAmount { get; set; }
 
         [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAmount) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmployeePayrollAccountRequried")]
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequired))]
         public int? EbankingAccountId { get; set; }
 
         public string EbankingAccountName { get; set; }

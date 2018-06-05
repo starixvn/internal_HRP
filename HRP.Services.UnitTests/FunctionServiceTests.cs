@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using Core.Services;
     using HRP.Criteria;
-    using HRP.Models.UserPermisson;
+    using HRP.Models.UserPermission;
     using NSubstitute;
     using Xunit;
 

@@ -87,7 +87,7 @@
             }
             catch (Exception)
             {
-                return new Failure<AttendanceTemplate>(Message.ErrorOccuredWhileReadingTemplate);
+                return new Failure<AttendanceTemplate>(Message.ErrorOccurredWhileReadingTemplate);
             }
         }
 
@@ -138,7 +138,7 @@
             }
             catch (Exception)
             {
-                return new Failure<DSTNetSalaryTemplate>(Message.ErrorOccuredWhileReadingTemplate);
+                return new Failure<DSTNetSalaryTemplate>(Message.ErrorOccurredWhileReadingTemplate);
             }
         }
 

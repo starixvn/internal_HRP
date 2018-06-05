@@ -67,7 +67,7 @@
 
         Task<CommandResult> UpdateGradeLevelAsync(GradeLevel gradeLevel);
 
-        Task<IEnumerable<JobGrade>> GetAllJobGradelAsync();
+        Task<IEnumerable<JobGrade>> GetAllJobGradeAsync();
 
         Task<CommandResult> CreateJobGradeAsync(JobGrade jobGrade);
 

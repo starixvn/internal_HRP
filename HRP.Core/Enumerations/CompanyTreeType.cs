@@ -3,7 +3,7 @@
     public enum CompanyTreeType
     {
         Company = 0,
-        Divison = 1,
+        Division = 1,
         Department = 2
     }
 }

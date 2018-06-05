@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.UserManagement;
-    using Models.UserPermisson;
+    using Models.UserPermission;
     using NSubstitute;
     using Services;
     using Website.Controllers;
@@ -58,7 +58,7 @@
         {
             // Arrange
             IEnumerable<Company> companies = new List<Company>();
-            IEnumerable<Models.UserPermisson.FunctionModel> functions = new List<Models.UserPermisson.FunctionModel>();
+            IEnumerable<Models.UserPermission.FunctionModel> functions = new List<Models.UserPermission.FunctionModel>();
             IEnumerable<UserPermissionModel> permissions = new List<UserPermissionModel>();
             var user = new UserModel { Username = "tim", IsSystemAdmin = false };
             var userController = GetUserManagementController();

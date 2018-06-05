@@ -83,11 +83,11 @@
             </div>
             <div class="currency-amount">
                 <select class="control without-label select2" asp-for="BasicSalary.CurrencyId" asp-items="currencySelectList"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control without-label number total-amount" placeholder="Total Amount"
-                       asp-for="BasicSalary.Salary" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="BasicSalary.Salary" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="">
                 <div class="pull-left calendar">
@@ -136,11 +136,11 @@
             <div class="currency-amount">
                 <select class="control basic-salary-calculate basic-salary-ebanking select2"
                         asp-for="BasicSalary.EbankingCurrencyId" asp-items="currencySelectList"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-ebanking"
-                       asp-for="BasicSalary.EbankingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="BasicSalary.EbankingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
@@ -150,7 +150,7 @@
                     <option value="@((int) BankTypes.Ebanking)" selected></option>
                 </select>
                 <select class="control select2-ajax basic-salary-ebanking bank-account-select"
-                        asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        asp-for="BasicSalary.EbankingAccountId" data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option value="@Model.BasicSalary.EbankingAccountId">@Model.BasicSalary.EbankingAccountName</option>
                 </select>
                 @if (Model.HaveHostPermissionOnBankAccounts)
@@ -167,11 +167,11 @@
             <div class="currency-amount">
                 <select class="control basic-salary-calculate basic-salary-directbanking1 select2"
                         asp-for="BasicSalary.DirectBanking1CurrencyId" asp-items="currencySelectList"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-directbanking1"
-                       asp-for="BasicSalary.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="BasicSalary.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
@@ -183,7 +183,7 @@
                 </select>
 
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking1"
-                        asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        asp-for="BasicSalary.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option value="@Model.BasicSalary.DirectBanking1AccountId">@Model.BasicSalary.DirectBanking1AccountName</option>
                 </select>
                 @if (Model.HaveHostPermissionOnBankAccounts)
@@ -199,11 +199,11 @@
             </label>
             <div class="currency-amount">
                 <select class="control basic-salary-calculate basic-salary-directbanking2 select2"
-                        asp-for="BasicSalary.DirectBanking2CurrencyId" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        asp-for="BasicSalary.DirectBanking2CurrencyId" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-directbanking2"
-                       asp-for="BasicSalary.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="BasicSalary.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
@@ -214,7 +214,7 @@
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select basic-salary-directbanking2"
-                        asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        asp-for="BasicSalary.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option value="@Model.BasicSalary.DirectBanking2AccountId">@Model.BasicSalary.DirectBanking2AccountName</option>
                 </select>
                 @if (Model.HaveHostPermissionOnBankAccounts)
@@ -230,11 +230,11 @@
             </label>
             <div class="currency-amount">
                 <select class="control basic-salary-calculate basic-salary-cash select2"
-                        asp-for="BasicSalary.CashCurrencyId" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        asp-for="BasicSalary.CashCurrencyId" asp-items="currencySelectList" data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number basic-salary-calculate basic-salary-cash"
-                       asp-for="BasicSalary.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="BasicSalary.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div></div>
@@ -242,7 +242,7 @@
                 <label class="bank-type">@ViewLang.Cash</label>
                 <select class="control basic-salary-cash bank-account-select select2"
                         asp-for="BasicSalary.CashAccountId" asp-items="@(new SelectList(Model.CashAccounts, "ResourceId", "Value"))"
-                        data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option></option>
                 </select>
             </div>
@@ -257,11 +257,11 @@
             <div class="actual">@ViewLang.Actual</div>
             <div class="currency-amount start-3">
                 <select class="control select2" asp-items="currencySelectList" asp-for="Allowance.CurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control total-amount" readonly name="AllowanceTotal" id="allowance-total-amount"
-                       data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="transaction-item -allowances">
                 <span>@ViewLang.BankType</span>
@@ -277,11 +277,11 @@
             <div class="currency-amount start-3">
                 <select class="control allowance-calculate allowance-directbanking1 select2"
                         asp-items="currencySelectList" asp-for="Allowance.DirectBanking1CurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-directbanking1"
-                       asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="Allowance.DirectBanking1Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
@@ -292,7 +292,7 @@
                 </select>
 
                 <select class="control select2-ajax bank-account-select allowance-directbanking1"
-                        asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        asp-for="Allowance.DirectBanking1AccountId" data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option value="@Model.Allowance.DirectBanking1AccountId">@Model.Allowance.DirectBanking1AccountName</option>
                 </select>
                 @if (Model.HaveHostPermissionOnBankAccounts)
@@ -310,11 +310,11 @@
             <div class="currency-amount start-3">
                 <select class="control allowance-calculate allowance-directbanking2 select2"
                         asp-items="currencySelectList" asp-for="Allowance.DirectBanking2CurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-directbanking2"
-                       asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="Allowance.DirectBanking2Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
@@ -324,7 +324,7 @@
                     <option value="@((int) BankTypes.DirectBanking)" selected></option>
                 </select>
                 <select class="control select2-ajax bank-account-select allowance-directbanking2"
-                        asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        asp-for="Allowance.DirectBanking2AccountId" data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option value="@Model.Allowance.DirectBanking2AccountId">@Model.Allowance.DirectBanking2AccountName</option>
                 </select>
                 @if (Model.HaveHostPermissionOnBankAccounts)
@@ -342,18 +342,18 @@
             <div class="currency-amount start-3">
                 <select class="control allowance-calculate allowance-cash select2"
                         asp-items="currencySelectList" asp-for="Allowance.CashCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-calculate allowance-cash"
-                       asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried"
+                       asp-for="Allowance.CashAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        data-rule-invalidsetting="true" data-msg-invalidsetting="@Message.EmployeePayroll_InvalidSetting" />
             </div>
             <div class="payment-transaction -allowances">
                 <label class="bank-type">Cash</label>
                 <select class="control allowance-cash bank-account-select select2"
                         asp-for="Allowance.CashAccountId" asp-items="@(new SelectList(Model.CashAccounts, "ResourceId", "Value"))"
-                        data-msg-required="@Message.EmployeePayrollAccountRequried">
+                        data-msg-required="@Message.EmployeePayrollAccountRequired">
                     <option></option>
                 </select>
             </div>
@@ -364,11 +364,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 subsistence"
                         asp-items="currencySelectList" asp-for="Allowance.SubsistenceCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate subsistence"
-                       asp-for="Allowance.SubsistenceAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.SubsistenceAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -381,11 +381,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 home-passage"
                         asp-items="currencySelectList" asp-for="Allowance.HomePassageCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate home-passage"
-                       asp-for="Allowance.HomePassageAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.HomePassageAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -398,11 +398,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 housing"
                         asp-items="currencySelectList" asp-for="Allowance.HousingCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate housing"
-                       asp-for="Allowance.HousingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.HousingAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -415,11 +415,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 mobile-phone"
                         asp-items="currencySelectList" asp-for="Allowance.MobilePhoneCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate mobile-phone"
-                       asp-for="Allowance.MobilePhoneAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.MobilePhoneAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -432,11 +432,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 hpi"
                         asp-items="currencySelectList" asp-for="Allowance.HPICurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate hpi"
-                       asp-for="Allowance.HPIAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.HPIAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -453,11 +453,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 duty-meal"
                         asp-items="currencySelectList" asp-for="Allowance.DutyMealCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate duty-meal" readonly
-                       asp-for="Allowance.DutyMealAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.DutyMealAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -475,11 +475,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 secondment"
                         asp-items="currencySelectList" asp-for="Allowance.SecondmentCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate secondment"
-                       asp-for="Allowance.SecondmentAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.SecondmentAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -492,11 +492,11 @@
             <div class="currency-amount">
                 <select class="control allowance-detail-calculate select2 others"
                         asp-items="currencySelectList" asp-for="Allowance.OthersCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number allowance-detail-calculate others"
-                       asp-for="Allowance.OthersAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Allowance.OthersAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
             <div class="currency-amount">
                 <input type="text" class="control allowance-total-currency" disabled />
@@ -512,11 +512,11 @@
             <div class="currency-amount">
                 <select class="control deduction-calculate select2 rooming-charges"
                         asp-items="currencySelectList" asp-for="Deduction.RoomingChargesCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number deduction-calculate rooming-charges"
-                       asp-for="Deduction.RoomingChargesAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Deduction.RoomingChargesAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
         </div>
         <div class="group-complex -payroll-layout3">
@@ -524,11 +524,11 @@
             <div class="currency-amount">
                 <select class="control deduction-calculate select2 fitness-first"
                         asp-items="currencySelectList" asp-for="Deduction.FitnessFirstCurrencyId"
-                        data-msg-required="@Message.EmployeePayrollCurrencyRequried">
+                        data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
                 <input type="text" class="control number deduction-calculate fitness-first"
-                       asp-for="Deduction.FitnessFirstAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequried" />
+                       asp-for="Deduction.FitnessFirstAmount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
         </div>
         <div class="list-button">

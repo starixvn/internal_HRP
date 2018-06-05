@@ -537,7 +537,7 @@
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
-                var columnConfig = ColumnsConfirguration.Columns;
+                var columnConfig = ColumnsConfiguration.Columns;
                 var selectedGroups = selectedIds.SelectMany(x => columnConfig[x]);
                 var columns = selectedGroups.SelectMany(x => x.Columns);
                 // Write header

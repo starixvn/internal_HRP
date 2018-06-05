@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.UserPermisson
+﻿namespace HRP.Models.UserPermission
 {
     using System;
     using System.Collections.Generic;

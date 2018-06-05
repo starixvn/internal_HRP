@@ -449,7 +449,7 @@
 
         #region Job Grade
 
-        public async Task<IEnumerable<JobGrade>> GetAllJobGradelAsync()
+        public async Task<IEnumerable<JobGrade>> GetAllJobGradeAsync()
         {
             var jobGradeList = await baseService.GetDataAsync<JobGrade>(new GetAllJobGradeCriteria()).ConfigureAwait(false);
 

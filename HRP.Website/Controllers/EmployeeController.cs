@@ -415,7 +415,7 @@
 
         private IEnumerable<MultiSelectViewModel> GetHierarchyCompanies(IEnumerable<CompanyTree> companyTrees, string departmentIds)
         {
-            var divisions = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Divison);
+            var divisions = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Division);
             var departments = companyTrees.Where(t => t.CategoryId == (int)CompanyTreeType.Department);
             var selectedDepartments = (departmentIds ?? string.Empty).Split(',');
 

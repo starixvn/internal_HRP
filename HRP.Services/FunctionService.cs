@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using Core.Services;
     using Criteria;
-    using Models.UserPermisson;
+    using Models.UserPermission;
 
     public class FunctionService : IFunctionService
     {

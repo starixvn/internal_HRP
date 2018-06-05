@@ -585,23 +585,23 @@
   <data name="EmployeePayrollTotalAmountRequired" xml:space="preserve">
     <value>Total amount is required!</value>
   </data>
-  <data name="EmployeePayrollAccountRequried" xml:space="preserve">
-    <value>Account Name is requried!</value>
+  <data name="EmployeePayrollAccountRequired" xml:space="preserve">
+    <value>Account Name is required!</value>
   </data>
-  <data name="EmployeePayrollBankTypeRequried" xml:space="preserve">
+  <data name="EmployeePayrollBankTypeRequired" xml:space="preserve">
     <value>Bank Type is required!</value>
   </data>
-  <data name="EmployeePayrollCurrencyRequried" xml:space="preserve">
-    <value>Currency is requried!</value>
+  <data name="EmployeePayrollCurrencyRequired" xml:space="preserve">
+    <value>Currency is required!</value>
   </data>
-  <data name="EmployeePayrollSettingAmountRequried" xml:space="preserve">
+  <data name="EmployeePayrollSettingAmountRequired" xml:space="preserve">
     <value>Setting Amount is required!</value>
   </data>
   <data name="SelectAtLeastOneCompany" xml:space="preserve">
     <value>Please select at least one Company</value>
   </data>
   <data name="EmployeePayrollEffectiveDateRequired" xml:space="preserve">
-    <value>Effective Date is requried!</value>
+    <value>Effective Date is required!</value>
   </data>
   <data name="EmployeePayrollReasonRequired" xml:space="preserve">
     <value>Reason is required!</value>
@@ -774,8 +774,8 @@
   <data name="SendPayslipConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to send payslip to the selected employee(s)?</value>
   </data>
-  <data name="ErrorOccuredWhileReadingTemplate" xml:space="preserve">
-    <value>An error occured while reading template file.</value>
+  <data name="ErrorOccurredWhileReadingTemplate" xml:space="preserve">
+    <value>An error occurred while reading template file.</value>
   </data>
   <data name="SentPayslipSuccessful" xml:space="preserve">
     <value>Payslip has been sent successfully.</value>

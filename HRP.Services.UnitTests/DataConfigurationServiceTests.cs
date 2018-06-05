@@ -842,7 +842,7 @@
         #region Job Grade
 
         [Fact]
-        public async Task GetAllJobGradelAsync_BaseServiceGetJobGradeList_ReturnJobGradeList()
+        public async Task GetAllJobGradeAsync_BaseServiceGetJobGradeList_ReturnJobGradeList()
         {
             // Arrange
             var expected = new List<JobGrade> { MockJobGrade() };
@@ -851,7 +851,7 @@
             baseService.GetDataAsync<JobGrade>(Arg.Any<GetAllJobGradeCriteria>()).Returns(expected);
 
             // Act
-            var actual = await dataConfigurationService.GetAllJobGradelAsync() as List<JobGrade>;
+            var actual = await dataConfigurationService.GetAllJobGradeAsync() as List<JobGrade>;
 
             // Assert
             Assert.NotNull(actual);

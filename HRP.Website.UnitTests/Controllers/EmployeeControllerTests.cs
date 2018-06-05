@@ -985,7 +985,7 @@
                 {
                     Id = 3,
                     Code = "SM",
-                    CategoryId = (int)CompanyTreeType.Divison,
+                    CategoryId = (int)CompanyTreeType.Division,
                     ParentId = 1
                 },
                 new CompanyTree
@@ -999,7 +999,7 @@
                 {
                     Id = 5,
                     Code = "GO",
-                    CategoryId = (int)CompanyTreeType.Divison,
+                    CategoryId = (int)CompanyTreeType.Division,
                     ParentId = 2
                 },
                 new CompanyTree

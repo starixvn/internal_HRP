@@ -610,34 +610,34 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Name is requried!.
+        ///   Looks up a localized string similar to Account Name is required!.
         /// </summary>
-        public static string EmployeePayrollAccountRequried {
+        public static string EmployeePayrollAccountRequired {
             get {
-                return ResourceManager.GetString("EmployeePayrollAccountRequried", resourceCulture);
+                return ResourceManager.GetString("EmployeePayrollAccountRequired", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bank Type is required!.
         /// </summary>
-        public static string EmployeePayrollBankTypeRequried {
+        public static string EmployeePayrollBankTypeRequired {
             get {
-                return ResourceManager.GetString("EmployeePayrollBankTypeRequried", resourceCulture);
+                return ResourceManager.GetString("EmployeePayrollBankTypeRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currency is requried!.
+        ///   Looks up a localized string similar to Currency is required!.
         /// </summary>
-        public static string EmployeePayrollCurrencyRequried {
+        public static string EmployeePayrollCurrencyRequired {
             get {
-                return ResourceManager.GetString("EmployeePayrollCurrencyRequried", resourceCulture);
+                return ResourceManager.GetString("EmployeePayrollCurrencyRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effective Date is requried!.
+        ///   Looks up a localized string similar to Effective Date is required!.
         /// </summary>
         public static string EmployeePayrollEffectiveDateRequired {
             get {
@@ -657,9 +657,9 @@ namespace HRP.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Setting Amount is required!.
         /// </summary>
-        public static string EmployeePayrollSettingAmountRequried {
+        public static string EmployeePayrollSettingAmountRequired {
             get {
-                return ResourceManager.GetString("EmployeePayrollSettingAmountRequried", resourceCulture);
+                return ResourceManager.GetString("EmployeePayrollSettingAmountRequired", resourceCulture);
             }
         }
         
@@ -718,11 +718,11 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured while reading template file..
+        ///   Looks up a localized string similar to An error occurred while reading template file..
         /// </summary>
-        public static string ErrorOccuredWhileReadingTemplate {
+        public static string ErrorOccurredWhileReadingTemplate {
             get {
-                return ResourceManager.GetString("ErrorOccuredWhileReadingTemplate", resourceCulture);
+                return ResourceManager.GetString("ErrorOccurredWhileReadingTemplate", resourceCulture);
             }
         }
         
