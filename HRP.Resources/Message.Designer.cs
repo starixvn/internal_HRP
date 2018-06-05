@@ -279,27 +279,27 @@ namespace HRP.Resources {
         /// <summary>
         ///   Looks up a localized string similar to  seconds..
         /// </summary>
-        public static string CreateBankAccountSuccessedDimissTime {
+        public static string CreateBankAccountSucceededDismissTime {
             get {
-                return ResourceManager.GetString("CreateBankAccountSuccessedDimissTime", resourceCulture);
+                return ResourceManager.GetString("CreateBankAccountSucceededDismissTime", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bank Account has been successfully updated! Popup will be dismissed in .
         /// </summary>
-        public static string CreateBankAccountSuccessedForModal {
+        public static string CreateBankAccountSucceededForModal {
             get {
-                return ResourceManager.GetString("CreateBankAccountSuccessedForModal", resourceCulture);
+                return ResourceManager.GetString("CreateBankAccountSucceededForModal", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bank Account has been successfully updated! You will be redirected in .
         /// </summary>
-        public static string CreateBankAccountSuccessedForPage {
+        public static string CreateBankAccountSucceededForPage {
             get {
-                return ResourceManager.GetString("CreateBankAccountSuccessedForPage", resourceCulture);
+                return ResourceManager.GetString("CreateBankAccountSucceededForPage", resourceCulture);
             }
         }
         
