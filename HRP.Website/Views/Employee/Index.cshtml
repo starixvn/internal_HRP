@@ -4,7 +4,7 @@
 @model EmployeeManagementViewModel
 
 @{
-    ViewData["Title"] = "Employee List";
+    ViewData["Title"] = ViewLang.EmployeeList;
 }
 
 <environment include="Development">
@@ -117,7 +117,7 @@
                                     <li>
                                         <a asp-controller="Employee" asp-action="UpdateEmployee"
                                            asp-route-id="@employee.EmployeeId" asp-route-departmentIds="@Model.DepartmentIds" asp-route-employmentStatusIds="@Model.EmploymentStatusIds"
-                                            asp-route-employeeId="@Model.EmployeeId" asp-route-employeeName="@Model.DisplayName">
+                                           asp-route-employeeId="@Model.EmployeeId" asp-route-employeeName="@Model.DisplayName">
                                             <span class="icon-user"></span>
 
                                             @if (employee.EditProfilePolicy == Policy.Host)
@@ -157,7 +157,7 @@
                                     <li>
                                         <a asp-controller="Employee" asp-action="Payroll"
                                            asp-route-id="@employee.EmployeeId" asp-route-departmentIds="@Model.DepartmentIds" asp-route-employmentStatusIds="@Model.EmploymentStatusIds"
-                                            asp-route-employeeId="@Model.EmployeeId" asp-route-employeeName="@Model.DisplayName">
+                                           asp-route-employeeId="@Model.EmployeeId" asp-route-employeeName="@Model.DisplayName">
                                             <span class="icon-edit_payroll"></span>
 
                                             @if (employee.EditPayRollPolicy == Policy.Host)
