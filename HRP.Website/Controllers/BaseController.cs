@@ -6,6 +6,7 @@
 
     [HRPAuthorize]
     [ServiceFilter(typeof(HRPActionFilterAttribute))]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public class BaseController : Controller
     {
         protected readonly IBaseService baseService;
