@@ -1,4 +1,6 @@
-﻿<div class="block">
+﻿@using HRP.Resources
+
+<div class="block">
     <p class="info">
         The OTP will be required when you make log in to HRP system.
         You will need to register for the <strong>Mobile Authenticator App</strong> before
@@ -23,8 +25,8 @@
                 <p>The system will no longer accept the secret key generated on the registered device. Do you want to proceed?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="button -second" data-dismiss="modal">Cancel</button>
-                <a asp-action="ResetOtpDevice" asp-controller="Account" class="button -primary">Ok</a>
+                <button type="button" class="button -second" data-dismiss="modal">@ViewLang.Cancel</button>
+                <a asp-action="ResetOtpDevice" asp-controller="Account" class="button -primary">@ViewLang.OK</a>
             </div>
         </div>
     </div>

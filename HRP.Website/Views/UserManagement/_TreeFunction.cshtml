@@ -21,19 +21,20 @@
         else
         {
             <td>
-                @for(int i = 0; i < function.Level - 1; i++)
+                @for (int i = 0; i < function.Level - 1; i++)
                 {
                     <span class="icon-root_tree icon-level-second" style="visibility: hidden"></span>
                 }
-                <span class="icon-root_tree icon-level-second "></span> 
-                <span class="func-name">@function.Name</span></td>
+                <span class="icon-root_tree icon-level-second "></span>
+                <span class="func-name">@function.Name</span>
+            </td>
         }
 
         <td class="text-center">
             <label>
                 <input type="checkbox" class="checkAllRowFunc" data-fid="@function.FunctionId" data-pid="@function.ParentId" @disabled />
                 <span class="null"></span>
-            </label> 
+            </label>
         </td>
         @foreach (Company company in Model.Companies)
         {
@@ -41,18 +42,18 @@
             <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
                 <label>
                     <input type="checkbox" name="criteria.funcRead" id="funcRead@(function.FunctionId)@(company.CompanyId)"
-                       data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
-                       @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
+                           data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                           @(permission != null && permission.IsRead ? "checked" : string.Empty) @disabled />
                     <span class="null"></span>
-                </label>                
+                </label>
             </td>
             <td class="text-center @(colIndex % 2 == 1 ? "col-odd" : string.Empty)">
                 <label>
                     <input type="checkbox" name="criteria.funcHost" id="funcHost@(function.FunctionId)@(company.CompanyId)"
-                       data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
-                       @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
+                           data-cid="@company.CompanyId" data-pid="@function.ParentId" data-fid="@function.FunctionId"
+                           @(permission != null && permission.IsHost ? "checked" : string.Empty) @disabled />
                     <span class="null"></span>
-                </label>                
+                </label>
             </td>
 
             colIndex++;
