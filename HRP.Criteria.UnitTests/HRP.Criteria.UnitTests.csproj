@@ -147,14 +147,12 @@
     <Compile Include="Section\GetAllSectionCriteriaTests.cs" />
     <Compile Include="Section\GetSectionByIdCriteriaTests.cs" />
     <Compile Include="Section\UpdateSectionCriteriaTests.cs" />
-    <Compile Include="City\GetCityByCountryIdCriteriaTests.cs" />
     <Compile Include="Company\CheckCompanyExistsCriteriaTests.cs" />
     <Compile Include="Company\CreateCompanyCriteriaTests.cs" />
     <Compile Include="Company\GetAllCompanyCriteriaTests.cs" />
     <Compile Include="Company\GetCompanyByIdCriteriaTests.cs" />
     <Compile Include="Company\UpdateCompanyCriteriaTests.cs" />
     <Compile Include="CostCenter\GetCostCenterByDepartmentIdCriteriaTests.cs" />
-    <Compile Include="Country\GetAllCountryCriteriaTests.cs" />
     <Compile Include="Currency\GetActiveCurrencyCodesCriteriaTest.cs" />
     <Compile Include="Currency\GetExchangeRateCriteriaTest.cs" />
     <Compile Include="Currency\GetLatestExchangeRatesCriteriaTest.cs" />
@@ -184,7 +182,6 @@
     <Compile Include="JobCategory\GetAllJobCategoryCriteriaTests.cs" />
     <Compile Include="JobGrade\GetJobGradeByGradeLevelIdCriteriaTests.cs" />
     <Compile Include="Menu\GetMenuByUserIdCriteriaTests.cs" />
-    <Compile Include="Office\GetOfficeByCityIdCriteriaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Section\GetSectionByCostCenterIdCriteriaTests.cs" />
     <Compile Include="User\AssignFunctionToUserCriteriaTests.cs" />
