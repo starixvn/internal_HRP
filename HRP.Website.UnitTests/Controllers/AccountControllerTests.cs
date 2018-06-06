@@ -31,6 +31,7 @@
         private ITwoFactorAuthenticatorService twoFactorAuthService;
         private IUserService userService;
         private IOptionsSnapshot<OtpConfig> otpConfig;
+        private IRijndaelService rijndaelService;
 
         [Theory]
         [InlineData(AccountTab.Profile)]
@@ -259,7 +260,7 @@
         [Fact]
         public async Task SetupOtp_UserIsExisted_ReturnAsExpectedViewResult()
         {
-            // Arrage
+            // Arrange
             var textCode = "TextCode";
             var user = new User { Username = "tim.trinh" };
             var accountController = GetAccountController();
@@ -461,6 +462,7 @@
         public void VerifyOTPGet_UserIsNotAuthenticatedAndUsernameIsValid_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var tuple = new Tuple<string, string>("1234", "1234");
             var accountController = GetAccountController();
             var controllerContext = new ControllerContext
             {
@@ -471,6 +473,7 @@
             };
             accountController.ControllerContext = controllerContext;
             sessionService.Username = "hunter.tran";
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = accountController.VerifyOTP();
@@ -542,6 +545,7 @@
         public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsExistedAndModelStateIsInvalid_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var tuple = new Tuple<string, string>("1234", "1234");
             var accountController = GetAccountController();
             var controllerContext = new ControllerContext
             {
@@ -553,21 +557,29 @@
             accountController.ControllerContext = controllerContext;
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             accountController.ModelState.AddModelError("otpcode", "required");
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
 
             // Act
             var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel());
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<TwoFactorAuthenticatorViewModel>(viewResult.Model);
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
-            Assert.Null(viewResult.Model);
+            Assert.Empty(viewModelResult.OTPCode);
+            Assert.False(viewModelResult.IsByPassTwoFactor);
+            Assert.False(viewModelResult.IsEncrypted);
+            Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
+            Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }
 
         [Fact]
         public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsExistedAndModelStateIsValidAndOtpIsInvalid_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var tuple = new Tuple<string, string>("1234", "1234");
             var accountController = GetAccountController();
             var controllerContext = new ControllerContext
             {
@@ -579,15 +591,22 @@
             accountController.ControllerContext = controllerContext;
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
 
             // Act
             var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel());
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<TwoFactorAuthenticatorViewModel>(viewResult.Model);
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
-            Assert.Null(viewResult.Model);
+            Assert.Empty(viewModelResult.OTPCode);
+            Assert.False(viewModelResult.IsByPassTwoFactor);
+            Assert.False(viewModelResult.IsEncrypted);
+            Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
+            Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }
 
         [Fact]
@@ -627,7 +646,8 @@
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
             otpConfig = FakeOtpConfig();
-            var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService, otpConfig);
+            rijndaelService = FakeRijndaelService();
+            var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService, rijndaelService, otpConfig);
             accountController.ControllerContext = controllerContext;
             accountController.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
                 .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
@@ -746,6 +766,13 @@
             return testOtpConfig;
         }
 
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+
+            return service;
+        }
+
         private AccountController GetAccountController()
         {
             sessionService = FakeSessionService();
@@ -753,8 +780,9 @@
             twoFactorAuthService = FakeTwoFactorAuthenticatorService();
             userService = FakeUserService();
             otpConfig = FakeOtpConfig();
+            rijndaelService = FakeRijndaelService();
 
-            return new AccountController(sessionService, baseService, twoFactorAuthService, userService, otpConfig);
+            return new AccountController(sessionService, baseService, twoFactorAuthService, userService, rijndaelService, otpConfig);
         }
 
         #endregion Helpers
