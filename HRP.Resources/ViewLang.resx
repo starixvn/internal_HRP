@@ -1089,4 +1089,10 @@
   <data name="JobTitleLocalChangeReason" xml:space="preserve">
     <value>Job Title Local Change Reason</value>
   </data>
+  <data name="ValidateOTP" xml:space="preserve">
+    <value>Validate OTP</value>
+  </data>
+  <data name="OTPCodeValidation" xml:space="preserve">
+    <value>OTP Code Validation</value>
+  </data>
 </root>

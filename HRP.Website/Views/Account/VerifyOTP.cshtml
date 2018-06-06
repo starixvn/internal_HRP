@@ -1,22 +1,24 @@
 @using HRP.Resources
 @model HRP.Models.TwoFactorAuthenticatorViewModel
-
 @{
     Layout = "_LoginLayout";
-    ViewData["Title"] = "OTP Code Validation";
+    ViewData["Title"] = ViewLang.OTPCodeValidation;
 }
-
 <section class="block -otp-code-validation">
+    <input type="hidden" class="encryption-key" asp-for="RijndaelKey"/>
+    <input type="hidden" class="encryption-iv" asp-for="RijndaelIV"/>
+
     <form asp-action="VerifyOTP" asp-controller="Account" method="post">
+        <input type="hidden" class="encryption-isencrypted" asp-for="IsEncrypted"/>
         <div class="circle-large">
             <span class="icon-otp"></span>
         </div>
-        <h1 class="title">OTP Code Validation</h1>
+        <h1 class="title">@ViewLang.OTPCodeValidation</h1>
         <div class="intro -otp">
-            <p>To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP.</p>
+            <p>@Message.EnterOtpMessage</p>
             <p class="text-special">
                 <span class="highlight">*</span>
-                <span>Your Date & Time Setting on your device must be set to Automatic.</span>
+                <span>@Message.OtpCodeDateTimeSettingMessage</span>
             </p>
         </div>
         @if (ViewData["ErrorMessage"] != null && !string.IsNullOrEmpty(ViewData["ErrorMessage"].ToString()))
@@ -26,22 +28,23 @@
             </div>
         }
         <div class="group">
-            <input asp-for="OTPCode" class="form-control" placeholder="OTP Code" maxlength="6" autocomplete="off" />
+            <input asp-for="OTPCode" class="form-control encrypt" placeholder="OTP Code" maxlength="6" autocomplete="off"/>
             <span asp-validation-for="OTPCode" class="msg-error"></span>
         </div>
         <div class="group">
             <label>
-                <input type="checkbox" asp-for="IsByPassTwoFactor" class="form-controll" checked />
+                <input type="checkbox" asp-for="IsByPassTwoFactor" class="form-controll" checked/>
                 <span>Skip OTP authenticator</span>
             </label>
         </div>
         <div class="group list-button">
             <a asp-action="Logout" asp-controller="Auth" class="button -second">@ViewLang.Cancel</a>
-            <input type="submit" class="button -primary" value="Validate OTP" />
+            <button type="submit" class="button -primary">@ViewLang.ValidateOTP</button>
         </div>
     </form>
 </section>
-
 @section Scripts {
     <script src="~/js/jquery-validate.min.js"></script>
+    <script src="~/lib/CryptoJS/aes.js"></script>
+    <script src="~/assets/js/client-encryption.js" asp-append-version="true"></script>
 }

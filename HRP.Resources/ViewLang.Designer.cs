@@ -1969,6 +1969,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP Code Validation.
+        /// </summary>
+        public static string OTPCodeValidation {
+            get {
+                return ResourceManager.GetString("OTPCodeValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overseas No..
         /// </summary>
         public static string OverseasNo {
@@ -2820,6 +2829,15 @@ namespace HRP.Resources {
         public static string UserPermission {
             get {
                 return ResourceManager.GetString("UserPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate OTP.
+        /// </summary>
+        public static string ValidateOTP {
+            get {
+                return ResourceManager.GetString("ValidateOTP", resourceCulture);
             }
         }
         

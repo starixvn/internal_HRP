@@ -718,6 +718,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP..
+        /// </summary>
+        public static string EnterOtpMessage {
+            get {
+                return ResourceManager.GetString("EnterOtpMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred while reading template file..
         /// </summary>
         public static string ErrorOccurredWhileReadingTemplate {
@@ -1542,6 +1551,24 @@ namespace HRP.Resources {
         public static string OtherPhoneNoMaxLength {
             get {
                 return ResourceManager.GetString("OtherPhoneNoMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Date &amp; Time Setting on your device must be set to Automatic..
+        /// </summary>
+        public static string OtpCodeDateTimeSettingMessage {
+            get {
+                return ResourceManager.GetString("OtpCodeDateTimeSettingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OTP Code Validation.
+        /// </summary>
+        public static string OTPCodeValidationTitle {
+            get {
+                return ResourceManager.GetString("OTPCodeValidationTitle", resourceCulture);
             }
         }
         

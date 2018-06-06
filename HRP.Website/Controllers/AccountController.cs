@@ -28,6 +28,7 @@ namespace HRP.Website.Controllers
         private readonly ISessionService sessionService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
         private readonly IUserService userService;
+        private readonly IRijndaelService rijndaelService;
         private readonly IOptionsSnapshot<OtpConfig> otpConfig;
 
         public AccountController(
@@ -35,12 +36,14 @@ namespace HRP.Website.Controllers
             IBaseService baseService,
             ITwoFactorAuthenticatorService twoFactorAuthService,
             IUserService userService,
+            IRijndaelService rijndaelService,
             IOptionsSnapshot<OtpConfig> otpConfig)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.twoFactorAuthService = twoFactorAuthService;
             this.userService = userService;
+            this.rijndaelService = rijndaelService;
             this.otpConfig = otpConfig;
         }
 
@@ -230,7 +233,17 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
-            return View("VerifyOTP", new TwoFactorAuthenticatorViewModel());
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
+            var viewModel = new TwoFactorAuthenticatorViewModel
+            {
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
+            };
+
+            return View("VerifyOTP", viewModel);
         }
 
         [HttpPost]
@@ -249,6 +262,8 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
+            viewModel.OTPCode = rijndaelService.Decrypt(viewModel.OTPCode, sessionService.RijndaelKey, sessionService.RijndaelIV);
+
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
 
             // TODO: Remove IsByPassTwoFactor
@@ -259,8 +274,10 @@ namespace HRP.Website.Controllers
             }
 
             ViewData["ErrorMessage"] = Message.InvalidOTP;
+            viewModel.RijndaelKey = sessionService.RijndaelKey;
+            viewModel.RijndaelIV = sessionService.RijndaelIV;
 
-            return View("VerifyOTP");
+            return View("VerifyOTP", viewModel);
         }
 
         [AllowAnonymous]

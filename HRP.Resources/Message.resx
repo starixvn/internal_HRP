@@ -807,4 +807,13 @@
   <data name="ChangeTheProtectionPasswordSuccessfully" xml:space="preserve">
     <value>The protection password has been successfully changed. You should download and keep the new certificate physical file.</value>
   </data>
+  <data name="EnterOtpMessage" xml:space="preserve">
+    <value>To proceed with your transaction, please enter the OTP (One Time Password) and click Validate OTP.</value>
+  </data>
+  <data name="OTPCodeValidationTitle" xml:space="preserve">
+    <value>OTP Code Validation</value>
+  </data>
+  <data name="OtpCodeDateTimeSettingMessage" xml:space="preserve">
+    <value>Your Date &amp; Time Setting on your device must be set to Automatic.</value>
+  </data>
 </root>

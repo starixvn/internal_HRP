@@ -5,14 +5,14 @@
     }
 };
 
-$(document).ready(function () {
+$(document).ready(function() {
     navs.init();
 
-    $('.goback').click(function () {
+    $('.goback').click(function() {
         if (history.length === 1) {
-            window.location = "/"
+            window.location = "/";
         } else {
             history.back();
         }
-    })
+    });
 });
