@@ -28,8 +28,6 @@
 
         Task<Employment> GetEmploymentByEmployeeIdAsync(int employeeId);
 
-        Task<CreateEmploymentViewModel> GetDataToCreateEmploymentAsync();
-
         Task<UpdateEmploymentViewModel> GetDataToUpdateEmploymentAsync(int employeeId);
 
         Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel);

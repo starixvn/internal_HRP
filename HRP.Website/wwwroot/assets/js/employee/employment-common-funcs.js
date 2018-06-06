@@ -2,7 +2,6 @@
 
 var employmentCommonFuncs = (function ($) {
     var $bviCompanyElement, $divisionElement, $departmentElement, $sectionElement, $costCenterElement,
-        $countryElement, $cityElement, $officeElement,
         $groupStartDateElement, $groupEndDateElement, $companyStartDateElement, $companyEndDateElement,
         $companyCodeElement, $jobCategoryElement, $gradeLevelElement, $jobGradeElement,
         defaultOption = '<option value=""></option>',
@@ -197,68 +196,6 @@ var employmentCommonFuncs = (function ($) {
                     }
 
                     $jobGradeElement.html(htmlOptions);
-                },
-                error: commonFunctions.handleAjaxError
-            });
-        });
-    }
-
-    function registerEventChangeCountry() {
-        $countryElement.on('change', function () {
-            var countryId = $(this).val(),
-                htmlOptions = '';
-
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + 'Employee/GetCityByCountryId',
-                dataType: 'json',
-                data: {
-                    countryId: countryId
-                },
-                success: function (data) {
-                    htmlOptions = defaultOption;
-
-                    if (data && data.length > 0) {
-                        var totalItems = data.length;
-
-                        for (var i = 0; i < totalItems; i++) {
-                            htmlOptions += '<option value="' + data[i].cityId + '">' + data[i].code + '</option>';
-                        }
-                    }
-
-                    $cityElement.html(htmlOptions);
-                    // reset
-                    $officeElement.html(defaultOption);
-                },
-                error: commonFunctions.handleAjaxError
-            });
-        });
-    }
-
-    function registerEventChangeCity() {
-        $cityElement.on('change', function () {
-            var cityId = $(this).val(),
-                htmlOptions = '';
-
-            $.ajax({
-                type: 'GET',
-                url: commonFunctions.rootURL + 'Employee/GetOfficeByCityId',
-                dataType: 'json',
-                data: {
-                    cityId: cityId
-                },
-                success: function (data) {
-                    htmlOptions = defaultOption;
-
-                    if (data && data.length > 0) {
-                        var totalItems = data.length;
-
-                        for (var i = 0; i < totalItems; i++) {
-                            htmlOptions += '<option value="' + data[i].officeId + '">' + data[i].code + '</option>';
-                        }
-                    }
-
-                    $officeElement.html(htmlOptions);
                 },
                 error: commonFunctions.handleAjaxError
             });
@@ -498,9 +435,6 @@ var employmentCommonFuncs = (function ($) {
         $jobCategoryElement = $form.find('#JobCategoryId');
         $gradeLevelElement = $form.find('#GradeLevelId');
         $jobGradeElement = $form.find('#JobGradeId');
-        $countryElement = $form.find('#CountryId');
-        $cityElement = $form.find('#CityId');
-        $officeElement = $form.find('#OfficeId');
 
         reparseform($form);
         initSelect2($form);
@@ -511,8 +445,6 @@ var employmentCommonFuncs = (function ($) {
         registerEventChangeCostCenter();
         registerEventChangeJobCategory();
         registerEventChangeGradeLevel();
-        registerEventChangeCountry();
-        registerEventChangeCity();
         initSearchAutocomplete($('#NoneOrIDNoPFileAdmin'), $('#FullNamePFileAdmin'), $('#NicknamePFileAdmin'));
         initSearchAutocomplete($('#NoneOrIDNoBVISalary'), $('#Paymaster_FullNameBVISalary'), $('#Paymaster_NicknameBVISalary'));
         initSearchAutocomplete($('#NoneOrIDNoBVIAllowance'), $('#Paymaster_FullNameBVIAllowance'), $('#Paymaster_NicknameBVIAllowance'));

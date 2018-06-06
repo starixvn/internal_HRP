@@ -374,15 +374,21 @@
             <div class="group-complex -emp-layout6">
                 <div class="component">
                     <label class="text -has-required" asp-for="CountryId">@ViewLang.Country</label>
-                    <select class="control js-select2 js-search-suggestion" asp-for="CountryId" asp-items="Model.Countries"></select>
+                    <select class="control js-select2 js-search-suggestion" asp-for="CountryId" asp-items="Model.Countries">
+                        <option value=""></option>
+                    </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="CityId">@ViewLang.City</label>
-                    <select class="control js-select2 js-search-suggestion" asp-for="CityId" asp-items="Model.Cities"></select>
+                    <select class="control js-select2 js-search-suggestion" asp-for="CityId" asp-items="Model.Cities">
+                        <option value=""></option>
+                    </select>
                 </div>
                 <div class="component">
                     <label class="text -has-required" asp-for="OfficeId">@ViewLang.Office</label>
-                    <select class="control js-select2 js-search-suggestion" asp-for="OfficeId" asp-items="Model.Offices"></select>
+                    <select class="control js-select2 js-search-suggestion" asp-for="OfficeId" asp-items="Model.Offices">
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
 

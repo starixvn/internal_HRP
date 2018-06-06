@@ -431,8 +431,28 @@
             //Arrange
             var viewName = "_CreateEmployment";
             var filter = new CachingFilterViewModel();
+            var companies = new List<Company>
+            {
+                new Company { CompanyId = 1, Code = "DAR" }
+            };
+            var jobCategories = new List<JobCategory>
+            {
+                new JobCategory { JobCategoryId = 1, Name = "Staff" }
+            };
+            var refResources = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel {RefName = ReferenceResource.Gender, Value = "a", ResourceId = 1 },
+                new ReferenceResourceModel {RefName = ReferenceResource.Nationality, Value = "b", ResourceId = 11 },
+                new ReferenceResourceModel {RefName = ReferenceResource.MaritalStatus, Value = "c", ResourceId = 2 },
+                new ReferenceResourceModel {RefName = ReferenceResource.NoOfChildren, Value = "d", ResourceId = 33 }
+            };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var jobCategorySelectList = new SelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name));
+            var refResourceSelectList = new SelectList(refResources, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             var employeeController = GetEmployeeController();
-            employeeService.GetDataToCreateEmploymentAsync().Returns(new CreateEmploymentViewModel());
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<JobCategory>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(jobCategorySelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(refResourceSelectList);
 
             //Act
             var actual = await employeeController.CreateEmployment(filter);
@@ -442,6 +462,17 @@
             var viewModel = Assert.IsType<CreateEmploymentViewModel>(viewResult.Model);
             Assert.Equal(viewName, viewResult.ViewName);
             Assert.Equal(filter, viewModel.CachingFilter);
+            Assert.Equal(companySelectList, viewModel.Companies);
+            Assert.Equal(jobCategorySelectList, viewModel.JobCategories);
+            Assert.Equal(refResourceSelectList, viewModel.LocalCompanies);
+            Assert.Equal(refResourceSelectList, viewModel.LocalJobTitles);
+            Assert.Equal(refResourceSelectList, viewModel.EmploymentTypes);
+            Assert.Equal(refResourceSelectList, viewModel.EmploymentStatuses);
+            Assert.Equal(refResourceSelectList, viewModel.Countries);
+            Assert.Equal(refResourceSelectList, viewModel.Cities);
+            Assert.Equal(refResourceSelectList, viewModel.Offices);
+            Assert.Equal(refResourceSelectList, viewModel.WorkPermitType1s);
+            Assert.Equal(refResourceSelectList, viewModel.WorkPermitType2s);
         }
 
         [Fact]
@@ -756,44 +787,6 @@
 
             // Act
             var actual = await employeeController.GetJobGradeByGradeLevelId(1);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, jsonResult.Value);
-        }
-
-        [Fact]
-        public async Task GetCityByCountryId_WhenCalled_ReturnExpectedCities()
-        {
-            // Arrange
-            var expected = new List<City>
-            {
-                new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
-            };
-            var employeeController = GetEmployeeController();
-            commonService.GetCityByCountryIdAsync(1).Returns(expected);
-
-            // Act
-            var actual = await employeeController.GetCityByCountryId(1);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(expected, jsonResult.Value);
-        }
-
-        [Fact]
-        public async Task GetOfficeByCityId_WhenCalled_ReturnExpectedCities()
-        {
-            // Arrange
-            var expected = new List<Office>
-            {
-                new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
-            };
-            var employeeController = GetEmployeeController();
-            commonService.GetOfficeByCityIdAsync(1).Returns(expected);
-
-            // Act
-            var actual = await employeeController.GetOfficeByCityId(1);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

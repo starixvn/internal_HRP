@@ -145,7 +145,45 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
         public async Task<IActionResult> CreateEmployment(CachingFilterViewModel filter)
         {
-            CreateEmploymentViewModel viewModel = await employeeService.GetDataToCreateEmploymentAsync();
+            string[] refNames = {
+                ReferenceResource.LocalCompany,
+                ReferenceResource.LocalJobTitle,
+                ReferenceResource.EmploymentType,
+                ReferenceResource.EmploymentStatus,
+                ReferenceResource.Country,
+                ReferenceResource.City,
+                ReferenceResource.Office,
+                ReferenceResource.WorkPermitType1,
+                ReferenceResource.WorkPermitType2
+            };
+
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> localCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany);
+            IEnumerable<ReferenceResourceModel> localJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle);
+            IEnumerable<ReferenceResourceModel> employmentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType);
+            IEnumerable<ReferenceResourceModel> employmentStatuses = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentStatus);
+            IEnumerable<ReferenceResourceModel> countries = commonService.FilterReferenceResources(refResources, ReferenceResource.Country);
+            IEnumerable<ReferenceResourceModel> cities = commonService.FilterReferenceResources(refResources, ReferenceResource.City);
+            IEnumerable<ReferenceResourceModel> offices = commonService.FilterReferenceResources(refResources, ReferenceResource.Office);
+            IEnumerable<ReferenceResourceModel> workPermitType1s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType1);
+            IEnumerable<ReferenceResourceModel> workPermitType2s = commonService.FilterReferenceResources(refResources, ReferenceResource.WorkPermitType2);
+
+            var viewModel = new CreateEmploymentViewModel
+            {
+                Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                JobCategories = commonService.GetSelectList(jobCategories, nameof(JobCategory.JobCategoryId), nameof(JobCategory.Name)),
+                LocalCompanies = commonService.GetSelectList(localCompanies, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                LocalJobTitles = commonService.GetSelectList(localJobTitles, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentTypes = commonService.GetSelectList(employmentTypes, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                EmploymentStatuses = commonService.GetSelectList(employmentStatuses, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                Countries = commonService.GetSelectList(countries, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                Cities = commonService.GetSelectList(cities, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                Offices = commonService.GetSelectList(offices, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType1s = commonService.GetSelectList(workPermitType1s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value)),
+                WorkPermitType2s = commonService.GetSelectList(workPermitType2s, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value))
+            };
             viewModel.CachingFilter = filter;
 
             return PartialView("_CreateEmployment", viewModel);
@@ -349,22 +387,6 @@
         {
             IEnumerable<JobGrade> jobGrades = await commonService.GetJobGradeByGradeLevelIdAsync(gradeLevelId);
             return Json(jobGrades);
-        }
-
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> GetCityByCountryId(int countryId)
-        {
-            IEnumerable<City> cities = await commonService.GetCityByCountryIdAsync(countryId);
-            return Json(cities);
-        }
-
-        [HttpGet]
-        [HRPPermission(FunctionKey = FunctionKey.EmployeeProfile, Policy = Policy.Host)]
-        public async Task<IActionResult> GetOfficeByCityId(int cityId)
-        {
-            IEnumerable<Office> offices = await commonService.GetOfficeByCityIdAsync(cityId);
-            return Json(offices);
         }
 
         [HttpGet]
