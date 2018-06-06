@@ -85,9 +85,9 @@ BEGIN
 	,emh.SectionChangeDate
 	,sectionChangeReasonRef.Value AS 'SectionReason'
 	,em.Email
-	,co.Code AS 'Country'
-	,ci.Code AS 'City'
-	,office.Code AS 'Office'
+	,country.Value AS 'Country'
+	,city.Value AS 'City'
+	,office.Value AS 'Office'
 	,wpCompanyRef.Value AS 'WorkPermitCompany'
 	,wpType1Ref.Value AS 'WorkPermitType1'
 	,ewp.StartDateType1
@@ -198,15 +198,14 @@ BEGIN
 	INNER JOIN dbo.RefResource AS martitalStatusRef WITH (NOLOCK) ON e.MaritalStatus = martitalStatusRef.ResourceId AND martitalStatusRef.RefName = 'MaritalStatus'
 	INNER JOIN dbo.RefResource AS noOfChildRenRef WITH (NOLOCK) ON e.NoOfChildren = noOfChildRenRef.ResourceId AND noOfChildRenRef.RefName = 'NoOfChildren'
 	INNER JOIN dbo.EmergencyContact AS ec WITH (NOLOCK) ON e.EmployeeId = ec.EmployeeId
-
 	INNER JOIN dbo.Employment AS em WITH (NOLOCK) ON e.EmployeeId = em.EmployeeId
 	INNER JOIN dbo.Company AS c WITH (NOLOCK) ON c.CompanyId = em.CompanyId
 	INNER JOIN dbo.JobCategory AS jc WITH (NOLOCK) ON em.JobCategoryId = jc.JobCategoryId
 	INNER JOIN dbo.JobGrade AS jg WITH (NOLOCK) ON em.JobGradeId = jg.JobGradeId
 	INNER JOIN dbo.GradeLevel AS gl WITH (NOLOCK) ON em.GradeLevelId = gl.GradeLevelId
-	INNER JOIN dbo.Country AS co WITH (NOLOCK) ON em.CountryId = co.CountryId
-	INNER JOIN dbo.City AS ci WITH (NOLOCK) ON em.CityId = ci.CityId
-	INNER JOIN dbo.Office AS office WITH (NOLOCK) ON em.OfficeId = office.OfficeId
+	INNER JOIN dbo.RefResource AS country WITH (NOLOCK) ON em.CountryId = country.ResourceId AND country.RefName = 'Country'
+	INNER JOIN dbo.RefResource AS city WITH (NOLOCK) ON em.CityId = city.ResourceId AND city.RefName = 'City'
+	INNER JOIN dbo.RefResource AS office WITH (NOLOCK) ON em.OfficeId = office.ResourceId AND office.RefName = 'Office'
 	INNER JOIN dbo.Division AS d WITH (NOLOCK) on em.DivisionId = d.DivisionId
 	INNER JOIN dbo.CostCenter AS cc WITH (NOLOCK) on em.CostCenterId = cc.CostCenterId
 	INNER JOIN dbo.Department AS dm WITH (NOLOCK) ON em.DepartmentId = dm.DepartmentId

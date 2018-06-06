@@ -172,11 +172,6 @@
     <Build Include="dbo\Stored Procedures\PaymentProcess_CreateMonthlyAllowance.sql" />
     <Build Include="dbo\Stored Procedures\PaymentProcess_CreateDSTNetSalaryUploading.sql" />
     <Build Include="dbo\Stored Procedures\PaymentProcess_CreateAttendanceUploading.sql" />
-    <Build Include="dbo\Stored Procedures\Office_Update.sql" />
-    <Build Include="dbo\Stored Procedures\Office_GetById.sql" />
-    <Build Include="dbo\Stored Procedures\Office_GetByCityId.sql" />
-    <Build Include="dbo\Stored Procedures\Office_GetAll.sql" />
-    <Build Include="dbo\Stored Procedures\Office_Create.sql" />
     <Build Include="dbo\Stored Procedures\MonthlyPayroll_UpdateSalary.sql" />
     <Build Include="dbo\Stored Procedures\MonthlyPayroll_UpdateAllowances.sql" />
     <Build Include="dbo\Stored Procedures\MonthlyPayroll_GetSalary.sql" />
@@ -242,10 +237,6 @@
     <Build Include="dbo\Stored Procedures\Currency_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Currency_GetActiveCurrencyCodes.sql" />
     <Build Include="dbo\Stored Procedures\Currency_Create.sql" />
-    <Build Include="dbo\Stored Procedures\Country_Update.sql" />
-    <Build Include="dbo\Stored Procedures\Country_GetById.sql" />
-    <Build Include="dbo\Stored Procedures\Country_GetAll.sql" />
-    <Build Include="dbo\Stored Procedures\Country_Create.sql" />
     <Build Include="dbo\Stored Procedures\CostCenter_Update.sql" />
     <Build Include="dbo\Stored Procedures\CostCenter_GetById.sql" />
     <Build Include="dbo\Stored Procedures\CostCenter_GetByDepartmentId.sql" />
@@ -256,11 +247,6 @@
     <Build Include="dbo\Stored Procedures\Company_GetByFunctionKey.sql" />
     <Build Include="dbo\Stored Procedures\Company_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Company_Create.sql" />
-    <Build Include="dbo\Stored Procedures\City_Update.sql" />
-    <Build Include="dbo\Stored Procedures\City_GetById.sql" />
-    <Build Include="dbo\Stored Procedures\City_GetByCountryId.sql" />
-    <Build Include="dbo\Stored Procedures\City_GetAll.sql" />
-    <Build Include="dbo\Stored Procedures\City_Create.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_Update.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_Search.sql" />
     <Build Include="dbo\Stored Procedures\BankAccount_GetBankAccountsByEmpId.sql" />

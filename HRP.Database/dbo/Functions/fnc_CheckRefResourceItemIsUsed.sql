@@ -66,6 +66,36 @@ BEGIN
 	END
 
 	--------------------------
+	IF @RefName = 'Country'
+	BEGIN
+		SELECT @isUsed = 1
+		FROM dbo.Employment AS e WITH (NOLOCK)
+		WHERE e.CountryId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
+	IF @RefName = 'City'
+	BEGIN
+		SELECT @isUsed = 1
+		FROM dbo.Employment AS e WITH (NOLOCK)
+		WHERE e.CityId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
+	IF @RefName = 'Office'
+	BEGIN
+		SELECT @isUsed = 1
+		FROM dbo.Employment AS e WITH (NOLOCK)
+		WHERE e.OfficeId = @ResourceId
+
+		RETURN @isUsed
+	END
+
+	--------------------------
 	IF @RefName = 'JobTitleBVIChangeReason'
 	BEGIN
 		SELECT @isUsed = 1
