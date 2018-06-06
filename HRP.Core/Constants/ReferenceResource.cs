@@ -32,5 +32,8 @@
         public const string PaymentTransactionEbanking = "PaymentTransactionEbanking";
         public const string PaymentTransactionDirectBanking = "PaymentTransactionDirectBanking";
         public const string IsGeneratedCertificate = "IsGeneratedCertificate";
+        public const string Country = "Country";
+        public const string City = "City";
+        public const string Office = "Office";
     }
 }

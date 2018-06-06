@@ -75,30 +75,6 @@
 
         Task<CommandResult> UpdateJobGradeAsync(JobGrade jobGrade);
 
-        Task<IEnumerable<SimpleItem>> GetAllCountryAsync();
-
-        Task<CommandResult> CreateCountryAsync(SimpleItem item);
-
-        Task<SimpleItem> GetCountryByIdAsync(int id);
-
-        Task<CommandResult> UpdateCountryAsync(SimpleItem item);
-
-        Task<IEnumerable<City>> GetAllCityAsync();
-
-        Task<CommandResult> CreateCityAsync(City city);
-
-        Task<City> GetCityByIdAsync(int id);
-
-        Task<CommandResult> UpdateCityAsync(City city);
-
-        Task<IEnumerable<Office>> GetAllOfficeAsync();
-
-        Task<CommandResult> CreateOfficeAsync(Office office);
-
-        Task<Office> GetOfficeByIdAsync(int id);
-
-        Task<CommandResult> UpdateOfficeAsync(Office office);
-
         Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName);
 
         Task<CommandResult> CreateRefResourceItemAsync(string refName, SimpleItem item);

@@ -100,9 +100,6 @@
         [Display(Name = "Payment Transaction - Cash")]
         PaymentTransactionCash = 32,
 
-        //[Display(Name = "Contra Co. Account")]
-        //ContraCoAccount = 33,
-
         [Display(Name = "Company BVI Change Reason")]
         CompanyBVIChangeReason = 34,
 

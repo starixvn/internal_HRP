@@ -68,23 +68,26 @@
             { (int)FieldType.Country, new Field   {
                     FieldId = (int)FieldType.Country,
                     FieldName = ViewLang.Country,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCountry,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateCountry,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateCountry }
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.Country }
             },
             { (int)FieldType.City, new Field   {
                     FieldId = (int)FieldType.City,
                     FieldName = ViewLang.City,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllCity,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateCity,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateCity }
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.City }
             },
             { (int)FieldType.Office, new Field   {
                     FieldId = (int)FieldType.Office,
                     FieldName = ViewLang.Office,
-                    LinkGetAllItem = DataConfigurationActionLink.GetAllOffice,
-                    LinkCreateItem =  DataConfigurationActionLink.CreateOffice,
-                    LinkUpdateItem =  DataConfigurationActionLink.UpdateOffice }
+                    LinkGetAllItem = DataConfigurationActionLink.GetAllRefResource,
+                    LinkCreateItem =  DataConfigurationActionLink.CreateRefResource,
+                    LinkUpdateItem =  DataConfigurationActionLink.UpdateRefResource,
+                    RefName = ReferenceResource.Office}
             },
             { (int)FieldType.CompanyLocal, new Field   {
                     FieldId = (int)FieldType.CompanyLocal,
