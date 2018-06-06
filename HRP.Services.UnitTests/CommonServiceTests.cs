@@ -274,68 +274,6 @@
         }
 
         [Fact]
-        public async Task GetAllCountryAsync_WhenCalled_ReturnAsExpectedJobCategories()
-        {
-            // Arrange
-            var coutries = new List<Country>
-            {
-                new Country { CountryId = 1 }
-            };
-            var service = GetCommonService();
-            baseService.GetDataAsync<Country>(Arg.Any<GetAllCountryCriteria>()).Returns(coutries);
-
-            // Act
-            var actual = await service.GetAllCountryAsync();
-
-            // Assert
-            Assert.Equal(coutries, actual);
-        }
-
-        [Fact]
-        public async Task GetCityByCountryIdAsync_WhenCalled_ReturnAsExpectedCities()
-        {
-            // Arrange
-            var countryId = 1;
-            var cities = new List<City>
-            {
-                new City { CityId = 1, Code = "VNM", Name = "Viet nam", IsActive = true }
-            };
-            var criteria = new GetCityByCountryIdCriteria();
-            var service = GetCommonService();
-            baseService.GetDataAsync<City>(Arg.Do<GetCityByCountryIdCriteria>(x => criteria = x)).Returns(cities);
-
-            // Act
-            var actual = await service.GetCityByCountryIdAsync(countryId);
-
-            // Assert
-            Assert.Equal(cities, actual);
-            Assert.Equal(countryId, criteria.CountryId);
-            Assert.True(criteria.IsActive);
-        }
-
-        [Fact]
-        public async Task GetOfficeByCityIdAsync_WhenCalled_ReturnAsExpectedOffices()
-        {
-            // Arrange
-            var cityId = 1;
-            var offices = new List<Office>
-            {
-                new Office { OfficeId = 1, Code = "SMS", Name = "SMS", IsActive = true }
-            };
-            var criteria = new GetOfficeByCityIdCriteria();
-            var service = GetCommonService();
-            baseService.GetDataAsync<Office>(Arg.Do<GetOfficeByCityIdCriteria>(x => criteria = x)).Returns(offices);
-
-            // Act
-            var actual = await service.GetOfficeByCityIdAsync(cityId);
-
-            // Assert
-            Assert.Equal(offices, actual);
-            Assert.Equal(cityId, criteria.CityId);
-            Assert.True(criteria.IsActive);
-        }
-
-        [Fact]
         public void GetSelectList_WhenCalled_ReturnAsExpectedSelectList()
         {
             // Arrange

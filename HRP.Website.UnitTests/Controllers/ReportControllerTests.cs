@@ -38,7 +38,7 @@
         [Fact]
         public async Task GetEbankingPaymentTransaction_WhenCalled_ReturnEbanking()
         {
-            //Arrange
+            // Arrange
             var reportController = GetReportController();
 
             var refResources = new List<ReferenceResourceModel>
@@ -61,7 +61,7 @@
 
             commonService.GetReferenceResourcesByNamesAsync(Arg.Any<string[]>()).Returns(refResources);
 
-            //Act
+            // Act
             var actual = await reportController.GetEbankingPaymentTransactions();
 
             //Assert
@@ -74,7 +74,7 @@
         [Fact]
         public async Task GetDirectBankingPaymentTransactions_WhenCalled_ReturnDirectBanking()
         {
-            //Arrange
+            // Arrange
             var reportController = GetReportController();
 
             var refResources = new List<ReferenceResourceModel>
@@ -127,10 +127,10 @@
                 .FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), Arg.Any<string>())
                 .Returns(refResources);
 
-            //Act
+            // Act
             var actual = await reportController.GetDirectBankingPaymentTransactions();
 
-            //Assert
+            // Assert
             var json = Assert.IsType<JsonResult>(actual);
             Assert.Equal(
                 JsonConvert.SerializeObject(json.Value),
@@ -140,13 +140,13 @@
         [Fact]
         public async Task DirectBanking_WhenCalled_ReturnExpectedView()
         {
-            //Arrange
+            // Arrange
             var reportController = GetReportController();
 
-            //Act
+            // Act
             var actual = await reportController.DirectBanking();
 
-            //Assert
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<BankInReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
@@ -155,13 +155,13 @@
         [Fact]
         public async Task Ebanking_WhenCalled_ReturnExpectedView()
         {
-            //Arrange
+            // Arrange
             var reportController = GetReportController();
 
-            //Act
+            // Act
             var actual = await reportController.Ebanking();
 
-            //Assert
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.IsType<BankInReportViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
@@ -170,7 +170,7 @@
         [Fact]
         public async Task GetDirectBankingReport_InValidParams_ReturnEmpty()
         {
-            //Arrage
+            // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
@@ -180,10 +180,10 @@
 
             var reportController = GetReportController();
 
-            //Act
+            // Act
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
 
-            //Assert
+            // Assert
             Assert.Equal(PaymentType.BasicSalary.GetDisplayName(), bankInReportViewModel.TypeOfPayment.GetDisplayName());
             Assert.IsType<RedirectToActionResult>(actual);
         }
@@ -191,7 +191,7 @@
         [Fact]
         public async Task GetDirectBankingReport_ValidParams_ReturnNull()
         {
-            //Arrage
+            // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 1,
@@ -218,17 +218,17 @@
             var reportController = GetReportController();
             reportService.GetDirectBankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
 
-            //Act
+            // Act
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
 
-            //Assert
+            // Assert
             Assert.IsType<FileContentResult>(actual);
         }
 
         [Fact]
         public async Task GetEbankingReport_InValidParams_ReturnEmpty()
         {
-            //Arrage
+            // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
@@ -238,10 +238,10 @@
 
             var reportController = GetReportController();
 
-            //Act
+            // Act
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);
 
-            //Assert
+            // Assert
             Assert.Equal(PaymentType.Allowances.GetDisplayName(), bankInReportViewModel.TypeOfPayment.GetDisplayName());
             Assert.IsType<RedirectToActionResult>(actual);
         }
@@ -249,7 +249,7 @@
         [Fact]
         public async Task GetEbankingReport_ValidParams_ReturnNull()
         {
-            //Arrage
+            // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 1,
@@ -276,14 +276,34 @@
             var reportController = GetReportController();
             reportService.GetEbankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(bankInReport);
 
-            //Act
+            // Act
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);
 
-            //Assert
+            // Assert
             Assert.IsType<FileContentResult>(actual);
         }
 
         #region MonthlyPayroll
+
+        [Fact]
+        public async Task MonthlyPayroll_WhenCalled_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
+            var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            var reportController = GetReportController();
+            commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
+                        .Returns(companySelectList);
+
+            // Act
+            var actual = await reportController.MonthlyPayroll();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
+            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal(companySelectList, viewResultModel.Companies);
+        }
 
         [Fact]
         public async Task MonthlyPayrollPost_UserNotHasPermissionOnThisCompany_RedirectToAccessDenied()

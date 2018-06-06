@@ -106,24 +106,6 @@
             return await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true)
-        {
-            var criteria = new GetAllCountryCriteria { IsActive = isActive };
-            return await baseService.GetDataAsync<Country>(criteria).ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<City>> GetCityByCountryIdAsync(int countryId, bool? isActive = true)
-        {
-            var criteria = new GetCityByCountryIdCriteria { CountryId = countryId, IsActive = isActive };
-            return await baseService.GetDataAsync<City>(criteria).ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<Office>> GetOfficeByCityIdAsync(int cityId, bool? isActive = true)
-        {
-            var criteria = new GetOfficeByCityIdCriteria { CityId = cityId, IsActive = true };
-            return await baseService.GetDataAsync<Office>(criteria).ConfigureAwait(false);
-        }
-
         public SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField)
         {
             return new SelectList(items, dataValueField, dataTextField);

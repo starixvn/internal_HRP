@@ -28,12 +28,6 @@
 
         Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true);
 
-        Task<IEnumerable<Country>> GetAllCountryAsync(bool? isActive = true);
-
-        Task<IEnumerable<City>> GetCityByCountryIdAsync(int countryId, bool? isActive = true);
-
-        Task<IEnumerable<Office>> GetOfficeByCityIdAsync(int cityId, bool? isActive = true);
-
         SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField);
     }
 }
