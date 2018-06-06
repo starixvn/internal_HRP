@@ -7,15 +7,12 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Criteria.City;
     using HRP.Criteria.CostCenter;
-    using HRP.Criteria.Country;
     using HRP.Criteria.Currency;
     using HRP.Criteria.Department;
     using HRP.Criteria.GradeLevel;
     using HRP.Criteria.JobCategory;
     using HRP.Criteria.JobGrade;
-    using HRP.Criteria.Office;
     using HRP.Criteria.RefResource;
     using HRP.Criteria.Section;
     using HRP.Models;
@@ -1366,45 +1363,6 @@
                 JobCategoryName = "jobname",
                 GradeLevelId = 3,
                 GradeLevelName = "gradele"
-            };
-        }
-
-        private Country MockCountry()
-        {
-            return new Country
-            {
-                CountryId = 99,
-                Code = "USA",
-                Name = "America",
-                IsActive = true,
-            };
-        }
-
-        private City MockCity()
-        {
-            return new City
-            {
-                CityId = 15,
-                Code = "HCM",
-                Name = "Ho Chi Minh",
-                IsActive = true,
-                CountryId = 3,
-                CountryCode = "VN"
-            };
-        }
-
-        private Office MockOffice()
-        {
-            return new Office
-            {
-                OfficeId = 16,
-                Code = "Nex",
-                Name = "nexcelsolution",
-                IsActive = true,
-                CountryId = 3,
-                CountryCode = "VN",
-                CityId = 2,
-                CityCode = "hcmmm"
             };
         }
 

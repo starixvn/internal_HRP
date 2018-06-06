@@ -11,8 +11,6 @@
         SectionId: '.js-sectionId',
         JobCategoryId: '.js-jobCateogryId',
         GradeLevelId: '.js-gradeLevelId',
-        CountryId: '.js-countryId',
-        CityId: '.js-cityId',
         CreateItemModal: '#createItemModal',
         CreateItemModalContent: '#createItemModalContent'
     };
@@ -153,7 +151,6 @@
                     registerEventChangeDepartment();
                     registerEventChangeCostCenter();
                     registerEventChangeJobCategory();
-                    registerEventChangeCountry();
 
                     var $createForm = $('#createItemForm');
                     initSelect2($createForm, '100%');
@@ -273,28 +270,6 @@
                     data: { jobCategoryId: jobCategoryId },
                     success: function (data) {
                         $gradeLevelId.html(data);
-                    },
-                    error: commonFunctions.handleAjaxError
-                });
-            }
-        });
-    }
-
-    function registerEventChangeCountry() {
-        $(domElement.CountryId).on('change', function () {
-            //reset City
-            var $cityId = $(domElement.CityId);
-            $cityId.html(htmlDefaultOption);
-
-            var countryId = $(this).val();
-            if (countryId !== "" && $cityId.length > 0) {
-                $.ajax({
-                    type: 'GET',
-                    url: commonFunctions.rootURL + 'DataConfiguration/GetCitySelectListByCountryId',
-                    dataType: 'html',
-                    data: { countryId: countryId },
-                    success: function (data) {
-                        $cityId.html(data);
                     },
                     error: commonFunctions.handleAjaxError
                 });

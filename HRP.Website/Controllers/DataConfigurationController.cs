@@ -1115,13 +1115,6 @@
             return PartialView("_SelectListItem", commonService.GetSelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name)));
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
-        public async Task<IActionResult> GetCitySelectListByCountryId(int countryId)
-        {
-            IEnumerable<City> cities = await commonService.GetCityByCountryIdAsync(countryId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(cities, nameof(City.CityId), nameof(City.Code)));
-        }
-
         private static string UppercaseFirstLetter(string s)
         {
             char[] a = s.ToCharArray();

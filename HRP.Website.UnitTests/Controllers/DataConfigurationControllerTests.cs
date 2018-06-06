@@ -2142,26 +2142,6 @@
             Assert.Equal(gradeLevelSelectList, viewModel);
         }
 
-        [Fact]
-        public async Task GetCitySelectListByCountryId_ServiceGetCitySelectList_ReturnPartialViewWithCitySelectList()
-        {
-            // Arrange
-            var id = 20;
-            var cities = new List<City> { MockCity() };
-            var citySelectList = new SelectList(cities, nameof(City.CityId), nameof(City.Code));
-            var controller = GetDataConfigurationController();
-            commonService.GetSelectList(Arg.Any<IEnumerable<City>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(citySelectList);
-
-            // Act
-            var actual = await controller.GetCitySelectListByCountryId(id);
-
-            // Assert
-            var viewResult = Assert.IsType<PartialViewResult>(actual);
-            var viewModel = Assert.IsType<SelectList>(viewResult.ViewData.Model);
-            Assert.Equal("_SelectListItem", viewResult.ViewName);
-            Assert.Equal(citySelectList, viewModel);
-        }
-
         #endregion Commons
 
         #region Initialization
@@ -2342,45 +2322,6 @@
                 Name = "JobCategory",
                 Description = "descs11",
                 IsActive = true
-            };
-        }
-
-        private Country MockCountry()
-        {
-            return new Country
-            {
-                CountryId = 99,
-                Code = "USA",
-                Name = "America",
-                IsActive = true,
-            };
-        }
-
-        private City MockCity()
-        {
-            return new City
-            {
-                CityId = 15,
-                Code = "HCM",
-                Name = "Ho Chi Minh",
-                IsActive = true,
-                CountryId = 3,
-                CountryCode = "VN"
-            };
-        }
-
-        private Office MockOffice()
-        {
-            return new Office
-            {
-                OfficeId = 16,
-                Code = "Nex",
-                Name = "nexcelsolution",
-                IsActive = true,
-                CountryId = 3,
-                CountryCode = "VN",
-                CityId = 2,
-                CityCode = "hcmmm"
             };
         }
 
