@@ -10,5 +10,7 @@
         public string Password { get; set; }
 
         public bool IsHost { get; set; }
+        public string RijndaelKey { get; set; }
+        public string RijndaelIV { get; set; }
     }
 }

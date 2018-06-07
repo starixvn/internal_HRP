@@ -29,7 +29,6 @@ var login = (function ($) {
             CryptoJS.enc.Utf8.parse(password),
             key,
             {
-                keySize: 128 / 8,
                 iv: iv,
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7

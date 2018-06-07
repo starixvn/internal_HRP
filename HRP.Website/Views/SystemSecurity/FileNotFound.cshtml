@@ -1,4 +1,6 @@
-﻿@{
+﻿@using HRP.Resources
+
+@{
     Layout = "_LoginLayout";
     ViewData["Title"] = "File Not Found";
     var isHost = ViewData["IsHost"] != null && bool.Parse(ViewData["IsHost"].ToString());
@@ -10,6 +12,6 @@
     </div>
     <h1 class="title">The certificate file not found.</h1>
     <div class="footer">
-        <a class="link action-back" asp-controller="auth" asp-action="logout">Back to Login</a>
+        <a class="link action-back" asp-controller="auth" asp-action="logout">@ViewLang.BackToLogin</a>
     </div>
 </section>

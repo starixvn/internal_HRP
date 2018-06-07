@@ -46,7 +46,7 @@
         public void LoginGet_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            Tuple<string, string> tuple = new Tuple<string, string>("1234", "1234");
+            var tuple = new Tuple<string, string>("1234", "1234");
             var authController = GetAuthController();
             rijndaelService.GenerateKey().Returns(tuple);
 
@@ -113,7 +113,7 @@
         public async Task Login_IncorrectPassword_ReturnViewResultWithModel()
         {
             //Arrange
-            Tuple<string, string> tuple = new Tuple<string, string>("1234", "1234");
+            var tuple = new Tuple<string, string>("1234", "1234");
             var authController = GetAuthController();
             var model = new LoginViewModel
             {

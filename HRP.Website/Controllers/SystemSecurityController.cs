@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -10,6 +11,7 @@
     using HRP.Criteria.RefResource;
     using HRP.Models.SystemSecurity;
     using HRP.Resources;
+    using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
 
     [HRPAuthorize]
@@ -18,15 +20,18 @@
         private readonly ISessionService sessionService;
         private readonly IBaseService baseService;
         private readonly ICertificateService certificateService;
+        private readonly IRijndaelService rijndaelService;
 
         public SystemSecurityController(
             ISessionService sessionService,
             IBaseService baseService,
-            ICertificateService certificateService)
+            ICertificateService certificateService,
+            IRijndaelService rijndaelService)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.certificateService = certificateService;
+            this.rijndaelService = rijndaelService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.SecuritySetting, Policy = Policy.Host)]
@@ -42,9 +47,14 @@
 
         public IActionResult Generate()
         {
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
             var viewModel = new GenerateCertificateViewModel
             {
-                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host)
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
             };
 
             return View(viewModel);
@@ -56,11 +66,14 @@
         {
             if (ModelState.IsValid)
             {
+                viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
                 CommandResult commandResult = certificateService.GenerateSelfSignedCertificate(viewModel.Password);
                 viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (commandResult.IsSuccessful)
                 {
+                    sessionService.RijndaelIV = string.Empty;
+                    sessionService.RijndaelKey = string.Empty;
                     certificateService.CachePasswordAccessTheCertificate(viewModel.Password);
 
                     await UpdateIsGeneratedCertificate();
@@ -71,14 +84,25 @@
                 }
             }
 
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+            viewModel.RijndaelIV = sessionService.RijndaelIV;
+            viewModel.RijndaelKey = sessionService.RijndaelKey;
+
             return View(viewModel);
         }
 
         public IActionResult Password()
         {
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
             var viewModel = new InputPasswordViewModel
             {
-                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host)
+                IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
             };
 
             return View(viewModel);
@@ -90,9 +114,12 @@
         {
             if (ModelState.IsValid)
             {
+                viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
                 if (certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password))
                 {
                     certificateService.CachePasswordAccessTheCertificate(viewModel.Password);
+                    sessionService.RijndaelIV = string.Empty;
+                    sessionService.RijndaelKey = string.Empty;
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -101,6 +128,12 @@
                     ModelState.AddModelError(nameof(viewModel.Password), Message.PasswordNotMatch);
                 }
             }
+
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+            viewModel.RijndaelIV = sessionService.RijndaelIV;
+            viewModel.RijndaelKey = sessionService.RijndaelKey;
 
             return View(viewModel);
         }

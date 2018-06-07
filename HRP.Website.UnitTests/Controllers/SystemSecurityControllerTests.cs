@@ -1,5 +1,6 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -8,6 +9,7 @@
     using HRP.Core.Services;
     using HRP.Criteria.RefResource;
     using HRP.Models.SystemSecurity;
+    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
@@ -19,6 +21,7 @@
         private ISessionService sessionService;
         private IBaseService baseService;
         private ICertificateService certificateService;
+        private IRijndaelService rijndaelService;
 
         [Fact]
         public void Index_WhenCalled_ReturnAsExpectedViewResult()
@@ -48,8 +51,10 @@
         public void Generate_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
             sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = controller.Generate();
@@ -62,6 +67,8 @@
             Assert.True(viewModel.IsHost);
             Assert.False(viewModel.IsSuccessful);
             Assert.Null(viewModel.MessageResult);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -69,8 +76,10 @@
         {
             // Arrange
             var viewModel = new GenerateCertificateViewModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = await controller.Generate(viewModel);
@@ -78,9 +87,14 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
-            Assert.Equal(viewModel, viewModelResult);
             Assert.False(viewResult.ViewData.ModelState.IsValid);
             Assert.True(viewResult.ViewData.ModelState.Count == 1, "required");
+            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
+            Assert.Equal(viewModel.IsSuccessful, viewModelResult.IsSuccessful);
+            Assert.Equal(viewModel.MessageResult, viewModelResult.MessageResult);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -89,8 +103,11 @@
             // Arrange
             var commandResult = new CommandResult();
             var viewModel = new GenerateCertificateViewModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
-            certificateService.GenerateSelfSignedCertificate(viewModel.Password).Returns(commandResult);
+            certificateService.GenerateSelfSignedCertificate(tuple.Item1).Returns(commandResult);
+            rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(tuple.Item1);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = await controller.Generate(viewModel);
@@ -98,10 +115,12 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
-            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(tuple.Item1, viewModelResult.Password);
             Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
             Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsSuccessful);
             Assert.Equal(commandResult.Message, viewModelResult.MessageResult);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -110,8 +129,11 @@
             // Arrange
             var commandResult = new CommandResult { Code = 0 };
             var viewModel = new GenerateCertificateViewModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
-            certificateService.GenerateSelfSignedCertificate(viewModel.Password).Returns(commandResult);
+            certificateService.GenerateSelfSignedCertificate(tuple.Item1).Returns(commandResult);
+            rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(tuple.Item1);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = await controller.Generate(viewModel);
@@ -119,10 +141,12 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModelResult = Assert.IsAssignableFrom<GenerateCertificateViewModel>(viewResult.Model);
-            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(tuple.Item1, viewModelResult.Password);
             Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
             Assert.Equal(commandResult.IsSuccessful, viewModelResult.IsSuccessful);
             Assert.Null(viewModelResult.MessageResult);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
 
             certificateService.Received(1).CachePasswordAccessTheCertificate(viewModel.Password);
             await baseService.Received(1).ExecuteNonQueryAsync(Arg.Any<UpdateRefResourceItemCriteria>());
@@ -136,8 +160,10 @@
         public void Password_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
             sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = controller.Password();
@@ -148,6 +174,8 @@
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.Password);
             Assert.True(viewModel.IsHost);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -155,8 +183,10 @@
         {
             // Arrange
             var viewModel = new InputPasswordViewModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
             controller.ModelState.AddModelError("password", "required");
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = controller.Password(viewModel);
@@ -168,7 +198,10 @@
             Assert.False(viewResult.ViewData.ModelState.IsValid);
             Assert.True(viewResult.ViewData.ModelState.Count == 1);
 
-            Assert.Equal(viewModel, viewModelResult);
+            Assert.Equal(viewModel.Password, viewModelResult.Password);
+            Assert.Equal(viewModel.IsHost, viewModelResult.IsHost);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -176,8 +209,11 @@
         {
             // Arrange
             var viewModel = new InputPasswordViewModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
             var controller = GetSystemSecurityController();
-            certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(false);
+            certificateService.IsCorrectPasswordAccessTheCertificate(tuple.Item1).Returns(false);
+            rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(tuple.Item1);
+            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = controller.Password(viewModel);
@@ -188,7 +224,10 @@
             Assert.Null(viewResult.ViewName);
             Assert.False(viewResult.ViewData.ModelState.IsValid);
             Assert.True(viewResult.ViewData.ModelState.Count == 1);
-            Assert.Equal(viewModel, viewModelResult);
+
+            Assert.Equal(tuple.Item1, viewModelResult.Password);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
         }
 
         [Fact]
@@ -196,8 +235,10 @@
         {
             // Arrange
             var viewModel = new InputPasswordViewModel();
+            var password = "1234";
             var controller = GetSystemSecurityController();
-            certificateService.IsCorrectPasswordAccessTheCertificate(viewModel.Password).Returns(true);
+            certificateService.IsCorrectPasswordAccessTheCertificate(password).Returns(true);
+            rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(password);
 
             // Act
             var actual = controller.Password(viewModel);
@@ -360,12 +401,20 @@
             return service;
         }
 
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+
+            return service;
+        }
+
         private SystemSecurityController GetSystemSecurityController()
         {
             sessionService = FakeSessionService();
             baseService = FakeBaseService();
             certificateService = FakeCertificateService();
-            var controller = new SystemSecurityController(sessionService, baseService, certificateService);
+            rijndaelService = FakeRijndaelService();
+            var controller = new SystemSecurityController(sessionService, baseService, certificateService, rijndaelService);
 
             return controller;
         }
