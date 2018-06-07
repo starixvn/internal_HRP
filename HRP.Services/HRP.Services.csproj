@@ -21,6 +21,10 @@
     <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
 	<DebugType>Full</DebugType>

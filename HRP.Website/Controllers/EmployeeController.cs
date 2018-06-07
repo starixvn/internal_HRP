@@ -10,6 +10,7 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Employee;
+    using HRP.Core.Criteria;
     using HRP.Criteria;
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc;
@@ -24,17 +25,20 @@
         private readonly ICommonService commonService;
         private readonly IEmployeeService employeeService;
         private readonly IEmployeePayrollService payrollService;
+        private readonly IRijndaelService rijndaelService;
 
         public EmployeeController(
             IBaseService baseService,
             ISessionService sessionService,
             ICommonService commonService,
             IEmployeeService employeeService,
-            IEmployeePayrollService payrollService) : base(baseService, sessionService)
+            IEmployeePayrollService payrollService,
+            IRijndaelService rijndaelService) : base(baseService, sessionService)
         {
             this.commonService = commonService;
             this.employeeService = employeeService;
             this.payrollService = payrollService;
+            this.rijndaelService = rijndaelService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeManagement, Policy = Policy.Read)]
@@ -393,20 +397,48 @@
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Read)]
         public async Task<IActionResult> Payroll(int id, CachingFilterViewModel filter)
         {
-            EmployeePayrollViewModel viewModel = await payrollService.GetEmployeePayroll(id, sessionService.UserId);
+            var viewModel = await InitializePayrollViewModel(id);
 
             if (viewModel == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
-
-            var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-
             viewModel.CachingFilter = filter;
-            viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-            viewModel.Currencies = currencies;
-            viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
+            
             return View(viewModel);
+        }
+
+        private async Task<EmployeePayrollViewModel> InitializePayrollViewModel(int employeeId)
+        {
+            var payroll = await payrollService.GetEmployeePayroll(employeeId, sessionService.UserId);
+
+            if(payroll != null)
+            {
+                var viewModel = new EmployeePayrollViewModel();
+                var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+                viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
+                viewModel.ChangeReasons = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.BasicSalaryChangeReason,
+                    IsActive = true
+                });
+                viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.PaymentTransactionCash,
+                    IsActive = true
+                });
+                viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.BankType,
+                    IsActive = true
+                });
+                viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+                viewModel.Currencies = currencies;
+                viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
+                return viewModel;
+            }
+
+            return null;
         }
 
         [HttpPost]
@@ -415,7 +447,7 @@
         {
             if (ModelState.IsValid)
             {
-                CommandResult result = await payrollService.UpdatePayroll(model, sessionService.UserId);
+                CommandResult result = await payrollService.UpdatePayroll(new Models.ServiceModels.EmployeePayroll(), sessionService.UserId);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,

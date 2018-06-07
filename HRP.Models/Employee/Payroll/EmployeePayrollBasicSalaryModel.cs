@@ -2,36 +2,18 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using HRP.Core.CustomValidations;
-    using HRP.Resources;
 
     public class EmployeePayrollBasicSalaryModel : EmployeePayrollBaseBankDetails
     {
         public int EmployeeId { get; set; }
 
-        public string Salary { get; set; }
-
-        public string OldSalary { get; set; }
-
-        public int? CurrencyId { get; set; }
-
-        public int? OldCurrencyId { get; set; }
-
         public int WorkingDays { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingAmount), nameof(EbankingAccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollCurrencyRequired))]
-        public int? EbankingCurrencyId { get; set; }
+        public CurrencyAmount Salary { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAccountId) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequired))]
-        public string EbankingAmount { get; set; }
+        public CurrencyAmount OldSalary { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(EbankingCurrencyId), nameof(EbankingAmount) },
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollAccountRequired))]
-        public int? EbankingAccountId { get; set; }
-
-        public string EbankingAccountName { get; set; }
+        public PaymentTransaction Ebanking { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? EffectiveDate { get; set; }

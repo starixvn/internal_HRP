@@ -86,8 +86,12 @@
                         data-msg-required="@Message.EmployeePayrollCurrencyRequired">
                     <option></option>
                 </select>
-                <input type="text" class="control without-label number total-amount" placeholder="Total Amount"
-                       asp-for="BasicSalary.Salary" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
+                @*<input type="text" class="control without-label number total-amount" placeholder="Total Amount"
+                       asp-for="BasicSalary.Salary" data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />*@
+
+                <input type="text" class="control without-label number total-amount" placeholder="Total Amount" 
+                       asp-for="BasicSalary.SalaryData.PlainValue" asp-encrypt-for="BasicSalary.SalaryData.EncryptedValue"/>
+
             </div>
             <div class="">
                 <div class="pull-left calendar">

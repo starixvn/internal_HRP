@@ -6,36 +6,20 @@
 
         public int? CurrencyId { get; set; }
 
-        public string SubsistenceAmount { get; set; }
+        public CurrencyAmount Subsistence { get; set; }
 
-        public int? SubsistenceCurrencyId { get; set; }
+        public CurrencyAmount HomePassage { get; set; }
 
-        public string HomePassageAmount { get; set; }
+        public CurrencyAmount Housing { get; set; }
 
-        public int? HomePassageCurrencyId { get; set; }
+        public CurrencyAmount MobilePhone { get; set; }
 
-        public string HousingAmount { get; set; }
+        public CurrencyAmount HPI { get; set; }
 
-        public int? HousingCurrencyId { get; set; }
+        public CurrencyAmount DutyMeal { get; set; }
 
-        public string MobilePhoneAmount { get; set; }
+        public CurrencyAmount Secondment { get; set; }
 
-        public int? MobilePhoneCurrencyId { get; set; }
-
-        public string HPIAmount { get; set; }
-
-        public int? HPICurrencyId { get; set; }
-
-        public string DutyMealAmount { get; set; }
-
-        public int? DutyMealCurrencyId { get; set; }
-
-        public string SecondmentAmount { get; set; }
-
-        public int? SecondmentCurrencyId { get; set; }
-
-        public string OthersAmount { get; set; }
-
-        public int? OthersCurrencyId { get; set; }
+        public CurrencyAmount Others { get; set; }
     }
 }
