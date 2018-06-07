@@ -9,11 +9,11 @@
 
         public int WorkingDays { get; set; }
 
-        public CurrencyAmount Salary { get; set; }
+        public CurrencyAmountModel Salary { get; set; }
 
-        public CurrencyAmount OldSalary { get; set; }
+        public CurrencyAmountModel OldSalary { get; set; }
 
-        public PaymentTransaction Ebanking { get; set; }
+        public PaymentTransactionModel Ebanking { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? EffectiveDate { get; set; }

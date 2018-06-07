@@ -7,5 +7,9 @@
         Tuple<string, string> GenerateKey();
 
         string Decrypt(string cipherText, string rijndaelKey, string rijndaelIV);
+
+        string Encrypt(string plainText, string rijndaelKey, string rijndaelIV);
+
+        void DecryptObject(object obj, string rijndaelKey, string rijndaelIV);
     }
 }

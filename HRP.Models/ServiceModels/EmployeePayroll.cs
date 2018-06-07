@@ -17,5 +17,9 @@
         public EmployeePayrollAllowance Allowance { get; set; }
 
         public EmployeePayrollDeduction Deduction { get; set; }
+
+        public bool CanRead { get; set; }
+
+        public bool CanUpdate { get; set; }
     }
 }

@@ -41,5 +41,9 @@
         public CachingFilterViewModel CachingFilter { get; set; }
 
         public int? VNDCurrencyId { get; set; }
+
+        public string RijndaelIV { get; set; }
+
+        public string RijndaelKey { get; set; }
     }
 }

@@ -1,5 +1,9 @@
-﻿var employeePayroll = (function ($) {
+﻿var employeePayroll = (function ($, CryptoJS) {
     var vndCurrencyId;
+    var $plainValues;
+    var $form;
+    var rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
+    var rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
 
     function checkRelatedElementsHaveValue(className, element) {
         return $(className).not(element).serializeArray().filter(function (item) {
@@ -33,8 +37,8 @@
     }
 
     function calculateAutoBasicSalary() {
-        var totalAmountCurrency = $('#BasicSalary_CurrencyId').val();
-        var $basicSalary = $('#BasicSalary_Salary');
+        var totalAmountCurrency = $('#BasicSalary_Salary_CurrencyId').val();
+        var $basicSalary = $('#BasicSalary_Salary_PlainValue');
 
         var selectedAutoCalculate = $('input[name="BasicSalary.AutoCalculateOn"]:checked');
         var parent = selectedAutoCalculate.closest('.group-complex');
@@ -167,7 +171,7 @@
     function roundingAmount(element, dp, roundingThousand = true) {
         var parent = $(element).parent();
         var $currency = parent.find('select');
-        var $amount = parent.find('input');
+        var $amount = parent.find('input.plain-value');
         if ($currency.val() !== '' && $amount.val() !== '' && !isNaN($amount.val())) {
             var number = new BigNumber($amount.val());
             var currency = $currency.val();
@@ -324,7 +328,6 @@
     }
 
     function initFormValidation() {
-        var $form = $('#payroll-form');
         $form.removeData('validator');
         $form.removeData('unobtrusiveValidation');
 
@@ -400,9 +403,9 @@
                         return checkCurrencyAndAmountChange(element);
                     }
                 },
-                'BasicSalary.Salary': {
+                'BasicSalary.Salary.PlainValue': {
                     required: function (element) {
-                        settingValues = $('.basic-salary-calculate, #BasicSalary_CurrencyId').map(function (i, element) {
+                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_CurrencyId').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value
                             }
@@ -411,9 +414,9 @@
                         return settingValues.length > 0;
                     }
                 },
-                'BasicSalary.CurrencyId': {
+                'BasicSalary.Salary.CurrencyId': {
                     required: function (element) {
-                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary').map(function (i, element) {
+                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_PlainValue').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value
                             }
@@ -569,13 +572,12 @@
         }
 
         $('#btn-save').on('click', function () {
-            var $form = $('#payroll-form');
             if ($form.valid()) {
                 var effectiveDate = $('#BasicSalary_EffectiveDate').val();
-                var basicSalary = $('#BasicSalary_Salary').val();
-                var oldSalary = $('#BasicSalary_OldSalary').val();
-                var currency = $('#BasicSalary_CurrencyId').val();
-                var oldCurrency = $('#BasicSalary_OldCurrencyId').val(); 
+                var basicSalary = $('#BasicSalary_Salary_PlainValue').val();
+                var oldSalary = $('#BasicSalary_OldSalary_PlainValue').val();
+                var currency = $('#BasicSalary_Salary_CurrencyId').val();
+                var oldCurrency = $('#BasicSalary_OldSalary_CurrencyId').val(); 
 
                 if (effectiveDate !== '' && (Number(basicSalary) !== Number(oldSalary) || oldCurrency !== currency)) {
                     $.ajax({
@@ -589,13 +591,13 @@
                             if (response) {
                                 $('#modal').modal('show');
                             } else {
-                                $form.submit();
+                                submitForm();
                             }
                         },
                         error: commonFunctions.handleAjaxError
                     });
-                }else {
-                    $form.submit();
+                } else {
+                    submitForm();
                 }
             }
         });
@@ -614,9 +616,61 @@
         $form.submit(false);
     }
 
+    function decryptData() {
+        $('.encrypted-value').each(function () {
+            var $this = $(this);
+
+            if ($this.val() !== '') {
+                var decrypt = CryptoJS.AES.decrypt(
+                    $this.val(),
+                    rijndaelKey,
+                    {
+                        keySize: 128 / 8,
+                        iv: rijndaelIV,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+
+                $($this.data('plain-target')).val(decrypt.toString(CryptoJS.enc.Utf8));
+            }
+        });
+    }
+
+    function encryptData() {
+        $plainValues.each(function () {
+            var $this = $(this);
+
+            if ($this.val() !== '') {
+                debugger;
+                var encrypt = CryptoJS.AES.encrypt(
+                    $this.val(),
+                    rijndaelKey,
+                    {
+                        keySize: 128 / 8,
+                        iv: rijndaelIV,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+
+                $($this.data('encrypt-target')).val(encrypt.toString());
+            }
+        })
+    }
+
+    function submitForm() {
+        encryptData();
+        $plainValues.attr('disabled', 'disabled');
+        $form.submit();
+    }
+
     function init() {
         vndCurrencyId = $('#VNDCurrencyId').val();
+        rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
+        rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
+        $plainValues = $('.plain-value');
+        $form = $('#payroll-form');
 
+        decryptData();
         calculateAutoBasicSalary();
         calculateAllowances();
         assignAddBankAccountButton();
@@ -685,9 +739,12 @@
                     commonFunctions.showErrorMessage($('.msg-error'), response.message);
                 }
             }
+        },
+        onSaveComplete: function () {
+            $plainValues.removeAttr('disabled');
         }
     };
-}(jQuery));
+}(jQuery, CryptoJS));
 
 $(document).ready(function () {
     employeePayroll.init();

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Constants;
@@ -407,45 +408,15 @@
             
             return View(viewModel);
         }
-
-        private async Task<EmployeePayrollViewModel> InitializePayrollViewModel(int employeeId)
-        {
-            var payroll = await payrollService.GetEmployeePayroll(employeeId, sessionService.UserId);
-
-            if(payroll != null)
-            {
-                var viewModel = new EmployeePayrollViewModel();
-                var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
-                viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
-                viewModel.ChangeReasons = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                {
-                    RefNames = ReferenceResource.BasicSalaryChangeReason,
-                    IsActive = true
-                });
-                viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                {
-                    RefNames = ReferenceResource.PaymentTransactionCash,
-                    IsActive = true
-                });
-                viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                {
-                    RefNames = ReferenceResource.BankType,
-                    IsActive = true
-                });
-                viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
-                viewModel.Currencies = currencies;
-                viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
-                return viewModel;
-            }
-
-            return null;
-        }
-
+     
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
         public async Task<IActionResult> EditPayroll(EmployeePayrollViewModel model)
         {
-            if (ModelState.IsValid)
+            ModelState.Clear();
+            DecryptData(model);
+
+            if (TryValidateModel(model))
             {
                 CommandResult result = await payrollService.UpdatePayroll(new Models.ServiceModels.EmployeePayroll(), sessionService.UserId);
                 return Json(new
@@ -458,7 +429,7 @@
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
-        }
+        }      
 
         [HttpGet]
         public async Task<IActionResult> CheckEmployeePayrollChangedInMonth(DateTime month, int employeeId)
@@ -512,6 +483,199 @@
             }
 
             return employeeStatus;
+        }
+
+        private async Task<EmployeePayrollViewModel> InitializePayrollViewModel(int employeeId)
+        {
+            var payroll = await payrollService.GetEmployeePayroll(employeeId, sessionService.UserId);
+
+            if (payroll != null)
+            {
+                var keys = rijndaelService.GenerateKey();
+                sessionService.RijndaelIV = keys.Item1;
+                sessionService.RijndaelKey = keys.Item2;
+
+                var viewModel = new EmployeePayrollViewModel
+                {
+                    EmployeeId = payroll.EmployeeId,
+                    Code = payroll.Code,
+                    CompanyId = payroll.CompanyId,
+                    FullName = payroll.FullName,
+                    Nickname = payroll.Nickname,
+                    CanRead = payroll.CanRead,
+                    CanUpdate = payroll.CanUpdate,
+                    RijndaelIV = sessionService.RijndaelIV,
+                    RijndaelKey = sessionService.RijndaelKey
+                };
+
+                viewModel.BasicSalary = new EmployeePayrollBasicSalaryModel
+                {
+                    EmployeeId = payroll.BasicSalary.EmployeeId,
+                    EffectiveDate = payroll.BasicSalary.EffectiveDate,
+                    InitFirstTime = payroll.BasicSalary.InitFirstTime,
+                    ReasonId = payroll.BasicSalary.ReasonId,
+                    WorkingDays = payroll.BasicSalary.WorkingDays,
+                    AutoCalculateOn = payroll.BasicSalary.AutoCalculateOn,
+                    Salary = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.BasicSalary.CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    OldSalary = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.BasicSalary.CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Cash = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.BasicSalary.CashAccountId,
+                        CurrencyId = payroll.BasicSalary.CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    DirectBanking1 = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.BasicSalary.DirectBanking1AccountId,
+                        AccountName = payroll.BasicSalary.DirectBanking1AccountName,
+                        CurrencyId = payroll.BasicSalary.DirectBanking1CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.DirectBanking1Amount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    DirectBanking2 = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.BasicSalary.DirectBanking2AccountId,
+                        AccountName = payroll.BasicSalary.DirectBanking2AccountName,
+                        CurrencyId = payroll.BasicSalary.DirectBanking2CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.DirectBanking2Amount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Ebanking = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.BasicSalary.EbankingAccountId,
+                        AccountName = payroll.BasicSalary.EbankingAccountName,
+                        CurrencyId = payroll.BasicSalary.EbankingCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.EbankingAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    }
+                };
+                viewModel.Allowance = new EmployeePayrollAllowanceModel
+                {
+                    EmployeeId = payroll.Allowance.EmployeeId,
+                    CurrencyId = payroll.Allowance.CurrencyId,
+                    AutoCalculateOn = payroll.Allowance.AutoCalculateOn,
+                    DutyMealPerDay = new SecurityData
+                    {
+                        EncryptedValue = string.IsNullOrEmpty(payroll.Allowance.DutyMealAmount) ?
+                        string.Empty :
+                        rijndaelService.Encrypt(
+                            (decimal.Parse(payroll.Allowance.DutyMealAmount) / payroll.BasicSalary.WorkingDays).ToString(CultureInfo.InvariantCulture),
+                            sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    DutyMeal = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.DutyMealCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.DutyMealAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    HomePassage = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.HomePassageCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.HomePassageAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Housing = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.HousingCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.HousingAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    HPI = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.HPICurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.HPIAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    MobilePhone = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.MobilePhoneCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.MobilePhoneAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Secondment = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.SecondmentCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.SecondmentAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Subsistence = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.SubsistenceCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.SubsistenceAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Others = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Allowance.OthersCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.OthersAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    Cash = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.Allowance.CashAccountId,
+                        CurrencyId = payroll.Allowance.CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    DirectBanking1 = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.Allowance.DirectBanking1AccountId,
+                        AccountName = payroll.Allowance.DirectBanking1AccountName,
+                        CurrencyId = payroll.Allowance.DirectBanking1CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.DirectBanking1Amount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    DirectBanking2 = new PaymentTransactionModel
+                    {
+                        AccountId = payroll.Allowance.DirectBanking2AccountId,
+                        AccountName = payroll.Allowance.DirectBanking2AccountName,
+                        CurrencyId = payroll.Allowance.DirectBanking2CurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.DirectBanking2Amount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    }
+                };
+                viewModel.Deduction = new EmployeePayrollDeductionModel
+                {
+                    EmployeeId = payroll.Deduction.EmployeeId,
+                    RoomingCharges = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Deduction.RoomingChargesCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Deduction.RoomingChargesAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    },
+                    FitnessFirst = new CurrencyAmountModel
+                    {
+                        CurrencyId = payroll.Deduction.FitnessFirstCurrencyId,
+                        EncryptedValue = rijndaelService.Encrypt(payroll.Deduction.FitnessFirstAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                    }
+                };
+
+                var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+                viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
+                viewModel.ChangeReasons = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.BasicSalaryChangeReason,
+                    IsActive = true
+                });
+                viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.PaymentTransactionCash,
+                    IsActive = true
+                });
+                viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
+                {
+                    RefNames = ReferenceResource.BankType,
+                    IsActive = true
+                });
+
+                viewModel.HaveHostPermissionOnBankAccounts = sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
+                viewModel.Currencies = currencies;
+                viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
+
+                return viewModel;
+            }
+
+            return null;
+        }
+
+        private void DecryptData(EmployeePayrollViewModel model)
+        {
+            rijndaelService.DecryptObject(model.BasicSalary, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            rijndaelService.DecryptObject(model.Allowance, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            rijndaelService.DecryptObject(model.Deduction, sessionService.RijndaelKey, sessionService.RijndaelIV);
         }
     }
 }
