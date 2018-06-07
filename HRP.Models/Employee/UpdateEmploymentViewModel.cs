@@ -180,10 +180,6 @@
 
         public SelectList GradeLevels { get; set; }
 
-        public SelectList Cities { get; set; }
-
-        public SelectList Offices { get; set; }
-
         public SelectList Divisions { get; set; }
 
         public SelectList Departments { get; set; }
