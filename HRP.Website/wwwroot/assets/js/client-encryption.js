@@ -15,9 +15,7 @@
     },
 
     decryptAndReplace: function () {
-        var isEncrypted = $(".encryption-isencrypted").val();
-
-        if (isEncrypted === "true" && encrypt.encryptionKey !== "" && encrypt.encryptionIV !== "") {
+        if (encrypt.encryptionKey !== "" && encrypt.encryptionIV !== "") {
             var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
             var iv = CryptoJS.enc.Utf8.parse(encrypt.encryptionIV);
 
@@ -25,23 +23,26 @@
 
             encryptInputs.each(function (i, obj) {
                 var valueToDecrypt = $(this).val();
+                var isEncrypted = $(this).data("isencrypted");
+
+                if (valueToDecrypt === "undefined" || valueToDecrypt === "" || isEncrypted === "false") {
+                    return true;
+                }
 
                 var decrypted = CryptoJS.AES.decrypt(valueToDecrypt, key, {
                     iv: iv
                 });
 
                 $(this).val(CryptoJS.enc.Utf8.stringify(decrypted));
+                $(this).data("isencrypted", false);
             });
-
-            $(".encryption-isencrypted").val(false);
         }
     },
 
     encryptAndReplace: function () {
         $("form").on("submit",
             function (e) {
-                var isEncrypted = $(".encryption-isencrypted").val();
-                if (encrypt.encryptionKey === "" || encrypt.encryptionIV === "" || isEncrypted === "true") {
+                if (encrypt.encryptionKey === "" || encrypt.encryptionIV === "") {
                     return;
                 }
 
@@ -54,10 +55,11 @@
 
                 encryptInputs.each(function (i, obj) {
                     var valueToEncrypt = $(this).val();
+                    var isEncrypted = $(this).data("isencrypted");
 
                     validator.element($(this));
 
-                    if(valueToEncrypt === "undefined" || valueToEncrypt === ""){
+                    if (valueToEncrypt === "undefined" || valueToEncrypt === "" || isEncrypted === "true") {
                         return true;
                     }
 
@@ -68,9 +70,8 @@
                         });
 
                     $(this).val(encrypted);
+                    $(this).data("isencrypted", true);
                 });
-
-                $(".encryption-isencrypted").val(true);
             });
     }
 }

@@ -11,7 +11,6 @@ namespace HRP.Models
 
         public string RijndaelKey { get; set; }
         public string RijndaelIV { get; set; }
-        public bool IsEncrypted { get; set; }
 
         // TODO: Remove when 2 factor completed
         public bool IsByPassTwoFactor { get; set; }

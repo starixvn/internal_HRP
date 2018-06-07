@@ -280,8 +280,8 @@ namespace HRP.Website.Controllers
             return View("VerifyOTP", viewModel);
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifySetupOTP(SetupOtpViewModel viewModel)
         {
             User user = await userService.GetUserByUsernameAsync(viewModel.Username);
