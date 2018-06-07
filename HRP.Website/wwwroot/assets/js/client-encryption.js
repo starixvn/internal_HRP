@@ -57,6 +57,10 @@
 
                     validator.element($(this));
 
+                    if(valueToEncrypt === "undefined" || valueToEncrypt === ""){
+                        return true;
+                    }
+
                     var encrypted = CryptoJS.AES.encrypt(
                         CryptoJS.enc.Utf8.parse(valueToEncrypt),
                         key, {
