@@ -657,7 +657,6 @@
 
     function submitForm() {
         encryptData();
-        debugger;
         $plainValues.attr('disabled', 'disabled');
         $form.submit();
     }
