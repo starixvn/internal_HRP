@@ -27,10 +27,10 @@
 
     function checkCurrencyAndAmountChange(element) {
         var oldElementValue = $(element).data('old-value');
-        var $basicSalary = $('#BasicSalary_Salary');
-        var oldSalary = $('#BasicSalary_OldSalary').val();
-        var $currency = $('#BasicSalary_CurrencyId');
-        var oldCurrency = $('#BasicSalary_OldCurrencyId').val();
+        var $basicSalary = $('#BasicSalary_Salary_PlainValue');
+        var oldSalary = $('#BasicSalary_OldSalary_PlainValue').val();
+        var $currency = $('#BasicSalary_Salary_CurrencyId');
+        var oldCurrency = $('#BasicSalary_OldSalary_CurrencyId').val();
 
         return (oldSalary !== '' && $basicSalary.val() !== '' && (Number($basicSalary.val()) !== Number(oldSalary) || oldElementValue !== ''))
             || (oldCurrency !== '' && $currency.val() !== '' && ($currency.val() !== oldCurrency || oldElementValue !== ''));
@@ -239,7 +239,7 @@
             removeMaskOnSubmit: true
         });
 
-        $('input.basic-salary-calculate, input.allowance-calculate, #allowance-total-amount, #BasicSalary_Salary').inputmask({
+        $('input.basic-salary-calculate, input.allowance-calculate, #allowance-total-amount, #BasicSalary_Salary_PlainValue').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 0,
@@ -482,7 +482,7 @@
             }
         });
 
-        $('#BasicSalary_Salary, #BasicSalary_CurrencyId').on('change', function (e) {
+        $('#BasicSalary_Salary_PlainValue, #BasicSalary_Salary_CurrencyId').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
             calculateAutoBasicSalary();
@@ -493,7 +493,7 @@
             validatedInvalidRelatedElements(e.target);
             calculateAutoBasicSalary();
 
-            $('#BasicSalary_Salary, #BasicSalary_CurrencyId').each(function (i, element) {
+            $('#BasicSalary_Salary_PlainValue, #BasicSalary_Salary_CurrencyId').each(function (i, element) {
                 var $element = $(element);
                 if ($element.hasClass('input-validation-error')) {
                     $element.valid();
@@ -603,14 +603,13 @@
         });
 
         $('#modal #btn-yes').on('click', function () {
-            $('#payroll-form').submit();
+            submitForm();
             $('#modal').modal('hide');
         });
     }
 
     function disableForm() {
-        $('button').off('click');
-        var $form = $('#payroll-form');
+        $('#btn-save').off('click');
         $form.find('input[type="text"]').attr('readonly', 'readonly');
         $form.find('select').attr('disabled', 'disabled');
         $form.submit(false);
@@ -641,7 +640,6 @@
             var $this = $(this);
 
             if ($this.val() !== '') {
-                debugger;
                 var encrypt = CryptoJS.AES.encrypt(
                     $this.val(),
                     rijndaelKey,
@@ -659,6 +657,7 @@
 
     function submitForm() {
         encryptData();
+        debugger;
         $plainValues.attr('disabled', 'disabled');
         $form.submit();
     }

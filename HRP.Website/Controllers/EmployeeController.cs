@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
@@ -14,6 +15,7 @@
     using HRP.Core.Criteria;
     using HRP.Criteria;
     using HRP.Models.Currency;
+    using HRP.Models.ServiceModels;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Employee;
@@ -405,10 +407,10 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
             viewModel.CachingFilter = filter;
-            
+
             return View(viewModel);
         }
-     
+
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
         public async Task<IActionResult> EditPayroll(EmployeePayrollViewModel model)
@@ -418,7 +420,7 @@
 
             if (TryValidateModel(model))
             {
-                CommandResult result = await payrollService.UpdatePayroll(new Models.ServiceModels.EmployeePayroll(), sessionService.UserId);
+                CommandResult result = await payrollService.UpdatePayroll(ConvertToServiceModel(model), sessionService.UserId);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
@@ -426,10 +428,9 @@
                     redirectTo = Url.Action("Index")
                 });
             }
-
             var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
-        }      
+        }
 
         [HttpGet]
         public async Task<IActionResult> CheckEmployeePayrollChangedInMonth(DateTime month, int employeeId)
@@ -519,12 +520,12 @@
                     Salary = new CurrencyAmountModel
                     {
                         CurrencyId = payroll.BasicSalary.CurrencyId,
-                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.Salary, sessionService.RijndaelKey, sessionService.RijndaelIV)
                     },
                     OldSalary = new CurrencyAmountModel
                     {
                         CurrencyId = payroll.BasicSalary.CurrencyId,
-                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.CashAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
+                        EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.Salary, sessionService.RijndaelKey, sessionService.RijndaelIV)
                     },
                     Cash = new PaymentTransactionModel
                     {
@@ -676,6 +677,78 @@
             rijndaelService.DecryptObject(model.BasicSalary, sessionService.RijndaelKey, sessionService.RijndaelIV);
             rijndaelService.DecryptObject(model.Allowance, sessionService.RijndaelKey, sessionService.RijndaelIV);
             rijndaelService.DecryptObject(model.Deduction, sessionService.RijndaelKey, sessionService.RijndaelIV);
+        }
+
+        private EmployeePayroll ConvertToServiceModel(EmployeePayrollViewModel model)
+        {
+            var payroll = new EmployeePayroll
+            {
+                EmployeeId = model.EmployeeId,
+                BasicSalary = new EmployeePayrollBasicSalary
+                {
+                    EmployeeId = model.BasicSalary.EmployeeId,
+                    Salary = model.BasicSalary.Salary.PlainValue,
+                    CurrencyId = model.BasicSalary.Salary.CurrencyId,
+                    OldSalary = model.BasicSalary.OldSalary.PlainValue,
+                    OldCurrencyId = model.BasicSalary.OldSalary.CurrencyId,
+                    WorkingDays = model.BasicSalary.WorkingDays,
+                    ReasonId = model.BasicSalary.ReasonId,
+                    EffectiveDate = model.BasicSalary.EffectiveDate,
+                    AutoCalculateOn = model.BasicSalary.AutoCalculateOn,
+                    EbankingCurrencyId = model.BasicSalary.Ebanking.CurrencyId,
+                    EbankingAmount = model.BasicSalary.Ebanking.PlainValue,
+                    EbankingAccountId = model.BasicSalary.Ebanking.AccountId,
+                    DirectBanking1CurrencyId = model.BasicSalary.DirectBanking1.CurrencyId,
+                    DirectBanking1Amount = model.BasicSalary.DirectBanking1.PlainValue,
+                    DirectBanking1AccountId = model.BasicSalary.DirectBanking1.AccountId,
+                    DirectBanking2CurrencyId = model.BasicSalary.DirectBanking2.CurrencyId,
+                    DirectBanking2Amount = model.BasicSalary.DirectBanking2.PlainValue,
+                    DirectBanking2AccountId = model.BasicSalary.DirectBanking2.AccountId,
+                    CashCurrencyId = model.BasicSalary.Cash.CurrencyId,
+                    CashAmount = model.BasicSalary.Cash.PlainValue,
+                    CashAccountId = model.BasicSalary.Cash.AccountId
+                },
+                Allowance = new EmployeePayrollAllowance
+                {
+                    EmployeeId = model.Allowance.EmployeeId,
+                    CurrencyId = model.Allowance.CurrencyId,
+                    AutoCalculateOn = model.Allowance.AutoCalculateOn,
+                    DirectBanking1CurrencyId = model.Allowance.DirectBanking1.CurrencyId,
+                    DirectBanking1Amount = model.Allowance.DirectBanking1.PlainValue,
+                    DirectBanking1AccountId = model.Allowance.DirectBanking1.AccountId,
+                    DirectBanking2CurrencyId = model.Allowance.DirectBanking2.CurrencyId,
+                    DirectBanking2Amount = model.Allowance.DirectBanking2.PlainValue,
+                    DirectBanking2AccountId = model.Allowance.DirectBanking2.AccountId,
+                    CashCurrencyId = model.Allowance.Cash.CurrencyId,
+                    CashAmount = model.Allowance.Cash.PlainValue,
+                    CashAccountId = model.Allowance.Cash.AccountId,
+                    HomePassageCurrencyId = model.Allowance.HomePassage.CurrencyId,
+                    HomePassageAmount = model.Allowance.HomePassage.PlainValue,
+                    HousingCurrencyId = model.Allowance.Housing.CurrencyId,
+                    HousingAmount = model.Allowance.Housing.PlainValue,
+                    MobilePhoneCurrencyId = model.Allowance.MobilePhone.CurrencyId,
+                    MobilePhoneAmount = model.Allowance.MobilePhone.PlainValue,
+                    HPICurrencyId = model.Allowance.HPI.CurrencyId,
+                    HPIAmount = model.Allowance.HPI.PlainValue,
+                    DutyMealCurrencyId = model.Allowance.DutyMeal.CurrencyId,
+                    DutyMealAmount = model.Allowance.DutyMeal.PlainValue,
+                    SubsistenceCurrencyId = model.Allowance.Subsistence.CurrencyId,
+                    SubsistenceAmount = model.Allowance.Subsistence.PlainValue,
+                    SecondmentCurrencyId = model.Allowance.Secondment.CurrencyId,
+                    SecondmentAmount = model.Allowance.Secondment.PlainValue,
+                    OthersCurrencyId = model.Allowance.Others.CurrencyId,
+                    OthersAmount = model.Allowance.Others.PlainValue
+                },
+                Deduction = new EmployeePayrollDeduction
+                {
+                    RoomingChargesCurrencyId = model.Deduction.RoomingCharges.CurrencyId,
+                    RoomingChargesAmount = model.Deduction.RoomingCharges.PlainValue,
+                    FitnessFirstCurrencyId = model.Deduction.FitnessFirst.CurrencyId,
+                    FitnessFirstAmount = model.Deduction.FitnessFirst.PlainValue
+                }
+            };
+
+            return payroll;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace HRP.Services.UnitTests
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
@@ -8,8 +7,8 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Models.Currency;
     using HRP.Models.Employee;
+    using HRP.Models.ServiceModels;
     using Models.Employee.Payroll;
     using NSubstitute;
     using Xunit;
@@ -55,7 +54,7 @@
             // Arrange
             var plainText = "1234";
             var employeeId = 1;
-            var employeePayroll = new EmployeePayrollViewModel
+            var employeePayroll = new EmployeePayroll
             {
                 EmployeeId = employeeId,
                 FullName = "Full Name",
@@ -63,29 +62,24 @@
                 Code = "DAR",
                 CompanyId = 1
             };
-            var basicSalary = new EmployeePayrollBasicSalaryModel
+            var basicSalary = new EmployeePayrollBasicSalary
             {
                 EmployeeId = employeeId,
                 WorkingDays = 22,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 InitFirstTime = true
             };
-            var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
-            var deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId };
-            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
-            var currencyCodes = new List<CurrencyCodeModel>();
-            var refResources = new List<ReferenceResourceModel>();
+            var allowance = new EmployeePayrollAllowance { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
+            var deduction = new EmployeePayrollDeduction { EmployeeId = employeeId };
+
             var multiResultReader = FakeMultipleResultReader();
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollViewModel>().Returns(employeePayroll);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>().Returns(basicSalary);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowanceModel>().Returns(allowance);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeductionModel>().Returns(deduction);
+            multiResultReader.ReadFirstOrDefault<EmployeePayroll>().Returns(employeePayroll);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalary>().Returns(basicSalary);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowance>().Returns(allowance);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeduction>().Returns(deduction);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();
-            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<ICriteria>()).Returns(currencyExchangeRates);
-            baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<ICriteria>()).Returns(currencyCodes);
-            baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<ICriteria>()).Returns(refResources);
             cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
 
             // Act
@@ -122,11 +116,6 @@
 
             Assert.Equal(plainText, actual.Deduction.RoomingChargesAmount);
             Assert.Equal(plainText, actual.Deduction.FitnessFirstAmount);
-
-            Assert.Equal(currencyExchangeRates, actual.CurrencyExchangeRates);
-            Assert.Equal(currencyCodes, actual.Currencies);
-            Assert.Equal(refResources, actual.ChangeReasons);
-            Assert.Equal(refResources, actual.CashAccounts);
         }
 
         #endregion GetEmployeePayroll
@@ -137,7 +126,12 @@
         public async Task UpdatePayroll_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
-            var model = new EmployeePayrollViewModel();
+            var model = new EmployeePayroll
+            {
+                BasicSalary = new EmployeePayrollBasicSalary(),
+                Allowance = new EmployeePayrollAllowance(),
+                Deduction = new EmployeePayrollDeduction()
+            };
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);
@@ -154,7 +148,12 @@
         public async Task UpdatePayroll_WhenCalled_ExpectedCallEncrypt()
         {
             // Arrange
-            var model = new EmployeePayrollViewModel();
+            var model = new EmployeePayroll
+            {
+                BasicSalary = new EmployeePayrollBasicSalary(),
+                Allowance = new EmployeePayrollAllowance(),
+                Deduction = new EmployeePayrollDeduction()
+            };
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateEmployeePayrollCriteria>()).Returns(expected);

@@ -12,11 +12,20 @@
     using HRP.Models;
     using HRP.Models.Employee;
     using HRP.Models.Employee.Payroll;
+    using HRP.Models.ServiceModels;
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Abstractions;
+    using Microsoft.AspNetCore.Mvc.DataAnnotations.Internal;
+    using Microsoft.AspNetCore.Mvc.Formatters;
+    using Microsoft.AspNetCore.Mvc.Internal;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
@@ -28,6 +37,7 @@
         private ICommonService commonService;
         private IEmployeeService employeeService;
         private IEmployeePayrollService payrollService;
+        private IRijndaelService rijndaelService;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnAsExpectedViewResult()
@@ -800,7 +810,7 @@
             var employeeId = 0;
             var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayrollViewModel>(null));
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayroll>(null));
 
             // Act
             var actual = await employeeController.Payroll(employeeId, filter);
@@ -817,14 +827,14 @@
             // Arrange
             var employeeId = 1;
             var employeeController = GetEmployeeController();
-            var viewModel = new EmployeePayrollViewModel
+            var serviceModel = new EmployeePayroll
             {
                 EmployeeId = employeeId,
                 FullName = "Full Name",
                 Nickname = "Nick Name",
                 Code = "DAR",
                 CompanyId = 1,
-                BasicSalary = new EmployeePayrollBasicSalaryModel
+                BasicSalary = new EmployeePayrollBasicSalary
                 {
                     EmployeeId = employeeId,
                     EbankingAccountId = 1,
@@ -833,12 +843,25 @@
                     DirectBanking1AccountName = "Account 1",
                     DirectBanking2AccountId = 2,
                     DirectBanking2AccountName = "Account 2",
+                },
+                Allowance = new EmployeePayrollAllowance
+                {
+                    EmployeeId = employeeId,
+                    DirectBanking1AccountId = 1,
+                    DirectBanking1AccountName = "Account 1",
+                    DirectBanking2AccountId = 2,
+                    DirectBanking2AccountName = "Account 2",
+                },
+                Deduction = new EmployeePayrollDeduction
+                {
+                    EmployeeId = employeeId
                 }
             };
             var filter = new CachingFilterViewModel();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(viewModel);
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
-
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(serviceModel);
+            sessionService.HasPermissionOnCompany(serviceModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
+            rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
+            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(string.Empty, string.Empty));
             // Act
             var actual = await employeeController.Payroll(employeeId, filter);
 
@@ -861,11 +884,12 @@
                 Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
                 Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
             };
+
             var expected = new CommandResult { Code = 0 };
             var employeeController = GetEmployeeController();
             employeeController.Url = Substitute.For<IUrlHelper>();
             employeeController.Url.Action().ReturnsForAnyArgs("/Employee/Index");
-            payrollService.UpdatePayroll(model, sessionService.UserId).Returns(expected);
+            payrollService.UpdatePayroll(Arg.Any<EmployeePayroll>(), sessionService.UserId).Returns(expected);
 
             // Act
             var actual = await employeeController.EditPayroll(model);
@@ -881,9 +905,22 @@
         public async Task EditPayroll_InValidModel_ReturnErrors()
         {
             // Arrange
-            var model = new EmployeePayrollViewModel();
+            var employeeId = 1;
+            var model = new EmployeePayrollViewModel
+            {
+                EmployeeId = employeeId,
+                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, Salary = new CurrencyAmountModel { CurrencyId = 1 } },
+                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
+                Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
+            };
+
+            //rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
+            //rijndaelService.DecryptObject(Arg.Any<object>(), Arg.Any<string>(), Arg.Any<string>());
             var employeeController = GetEmployeeController();
-            employeeController.ModelState.AddModelError("employee", "error");
+            employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            employeeController.ObjectValidator.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                Arg.Any<string>(), Arg.Any<Object>());
+            employeeController.ControllerContext = Substitute.For<ControllerContext>();
 
             // Act
             var actual = await employeeController.EditPayroll(model);
@@ -937,9 +974,16 @@
             return service;
         }
 
-        private static IEmployeePayrollService FakeEmployeePayrollServicee()
+        private static IEmployeePayrollService FakeEmployeePayrollService()
         {
             var service = Substitute.For<IEmployeePayrollService>();
+
+            return service;
+        }
+
+        private IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
 
             return service;
         }
@@ -950,9 +994,9 @@
             sessionService = FakeSessionService();
             commonService = FakeCommonService();
             employeeService = FakeEmployeeService();
-            payrollService = FakeEmployeePayrollServicee();
-
-            var controller = new EmployeeController(baseService, sessionService, commonService, employeeService, payrollService);
+            payrollService = FakeEmployeePayrollService();
+            rijndaelService = FakeRijndaelService();
+            var controller = new EmployeeController(baseService, sessionService, commonService, employeeService, payrollService, rijndaelService);
 
             return controller;
         }
