@@ -23,16 +23,9 @@ var login = (function ($) {
         }
 
         var password = $('#Password').val();
-        var key = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
-        var iv = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
-        var encrypted = CryptoJS.AES.encrypt(
-            CryptoJS.enc.Utf8.parse(password),
-            key,
-            {
-                iv: iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
+        var rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
+        var rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
+        var encrypted = rijndaelService.encryptData(password, rijndaelKey, rijndaelIV);
 
         $('#Password').val(encrypted);
         $('#login').submit();

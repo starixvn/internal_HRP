@@ -8,14 +8,9 @@
             return;
         }
 
-        var encrypted = CryptoJS.AES.encrypt(
-            CryptoJS.enc.Utf8.parse(password),
-            CryptoJS.enc.Utf8.parse(key),
-            {
-                iv: CryptoJS.enc.Utf8.parse(iv),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
+        var rijndaelKey = CryptoJS.enc.Utf8.parse(key);
+        var rijndaelIV = CryptoJS.enc.Utf8.parse(iv);
+        var encrypted = rijndaelService.encryptData(password, rijndaelKey, rijndaelIV);
 
         $('#Password').val(encrypted);
     });

@@ -237,6 +237,7 @@
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/jquery-ui/jquery-ui.js",
       "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/login.js"
     ],
     "minify": {
@@ -620,6 +621,7 @@
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/systemsecurity/generate-cert-file.js"
     ],
     "minify": {
@@ -633,6 +635,7 @@
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/systemsecurity/input-password.js"
     ],
     "minify": {
