@@ -880,13 +880,45 @@
             var model = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
-                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId },
-                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
-                Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
+                BasicSalary = new EmployeePayrollBasicSalaryModel
+                {
+                    EmployeeId = employeeId,
+                    Salary = new CurrencyAmountModel(),
+                    OldSalary = new CurrencyAmountModel(),
+                    Ebanking = new PaymentTransactionModel(),
+                    DirectBanking1 = new PaymentTransactionModel(),
+                    DirectBanking2 = new PaymentTransactionModel(),
+                    Cash = new PaymentTransactionModel(),
+                },
+                Allowance = new EmployeePayrollAllowanceModel
+                {
+                    EmployeeId = employeeId,
+                    DirectBanking1 = new PaymentTransactionModel(),
+                    DirectBanking2 = new PaymentTransactionModel(),
+                    Cash = new PaymentTransactionModel(),
+                    DutyMeal = new CurrencyAmountModel(),
+                    HomePassage = new CurrencyAmountModel(),
+                    Housing = new CurrencyAmountModel(),
+                    HPI = new CurrencyAmountModel(),
+                    MobilePhone = new CurrencyAmountModel(),
+                    Secondment = new CurrencyAmountModel(),
+                    Subsistence = new CurrencyAmountModel(),
+                    Others = new CurrencyAmountModel()
+                },
+                Deduction = new EmployeePayrollDeductionModel
+                {
+                    EmployeeId = employeeId,
+                    RoomingCharges = new CurrencyAmountModel(),
+                    FitnessFirst = new CurrencyAmountModel()
+                }
             };
 
             var expected = new CommandResult { Code = 0 };
             var employeeController = GetEmployeeController();
+            rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
+            employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            employeeController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>()));
             employeeController.Url = Substitute.For<IUrlHelper>();
             employeeController.Url.Action().ReturnsForAnyArgs("/Employee/Index");
             payrollService.UpdatePayroll(Arg.Any<EmployeePayroll>(), sessionService.UserId).Returns(expected);
@@ -909,18 +941,19 @@
             var model = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
-                BasicSalary = new EmployeePayrollBasicSalaryModel { EmployeeId = employeeId, Salary = new CurrencyAmountModel { CurrencyId = 1 } },
+                BasicSalary = new EmployeePayrollBasicSalaryModel
+                {
+                    EmployeeId = employeeId,
+                    Salary = new CurrencyAmountModel { CurrencyId = 1 }
+                },
                 Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
                 Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
             };
 
-            //rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
-            //rijndaelService.DecryptObject(Arg.Any<object>(), Arg.Any<string>(), Arg.Any<string>());
-            var employeeController = GetEmployeeController();
+            var employeeController = GetEmployeeController();         
             employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
-            employeeController.ObjectValidator.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
-                Arg.Any<string>(), Arg.Any<Object>());
-            employeeController.ControllerContext = Substitute.For<ControllerContext>();
+            employeeController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                Arg.Any<string>(), Arg.Any<Object>())).Do(x => employeeController.ModelState.AddModelError("employee", "error"));
 
             // Act
             var actual = await employeeController.EditPayroll(model);

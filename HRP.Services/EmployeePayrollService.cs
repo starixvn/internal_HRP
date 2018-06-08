@@ -43,23 +43,6 @@
                         viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
                         viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowance>() ?? allowance;
                         viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeduction>() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
-                        //viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria()).ConfigureAwait(false);
-                        //viewModel.Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria()).ConfigureAwait(false);
-                        //viewModel.ChangeReasons = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                        //{
-                        //    RefNames = ReferenceResource.BasicSalaryChangeReason,
-                        //    IsActive = true
-                        //}).ConfigureAwait(false);
-                        //viewModel.CashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                        //{
-                        //    RefNames = ReferenceResource.PaymentTransactionCash,
-                        //    IsActive = true
-                        //}).ConfigureAwait(false);
-                        //viewModel.BankTypes = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria
-                        //{
-                        //    RefNames = ReferenceResource.BankType,
-                        //    IsActive = true
-                        //}).ConfigureAwait(false);
 
                         DecryptData(viewModel);
                     }
