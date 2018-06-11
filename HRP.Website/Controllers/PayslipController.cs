@@ -10,6 +10,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
@@ -18,15 +19,18 @@
     {
         private readonly ICommonService commonService;
         private readonly IPayslipService payslipService;
+        private readonly IRijndaelService rijndaelService;
 
         public PayslipController(
             ISessionService sessionService,
             IBaseService baseService,
             ICommonService commonService,
-            IPayslipService payslipService) : base(baseService, sessionService)
+            IPayslipService payslipService,
+            IRijndaelService rijndaelService) : base(baseService, sessionService)
         {
             this.commonService = commonService;
             this.payslipService = payslipService;
+            this.rijndaelService = rijndaelService;
         }
 
         [HRPPermission(FunctionKey = FunctionKey.Payslip, Policy = Policy.Read)]
@@ -68,6 +72,12 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            ViewData["RijndaelIV"] = tuple.Item1;
+            ViewData["RijndaelKey"] = tuple.Item2;
+
+            EncryptPayslipDetails(payslipDetails, tuple.Item2, tuple.Item1);
+
             return View(payslipDetails);
         }
 
@@ -85,6 +95,38 @@
             CommandResult commandResult = await payslipService.SendPayslipAsync(viewModel);
 
             return Json(commandResult);
+        }
+
+        private void EncryptPayslipDetails(PayslipDetailModel payslipDetails, string rijndaelKey, string rijndaelIV)
+        {
+            payslipDetails.SalaryAmount = rijndaelService.Encrypt(payslipDetails.SalaryAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.AllowanceAmount = rijndaelService.Encrypt(payslipDetails.AllowanceAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.SalaryDeductionAmount = rijndaelService.Encrypt(payslipDetails.SalaryDeductionAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.AllowanceDeductionAmount = rijndaelService.Encrypt(payslipDetails.AllowanceDeductionAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.GrossSalaryAmount = rijndaelService.Encrypt(payslipDetails.GrossSalaryAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.GrossAllowanceAmount = rijndaelService.Encrypt(payslipDetails.GrossAllowanceAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.NetSalaryAmount = rijndaelService.Encrypt(payslipDetails.NetSalaryAmount, rijndaelKey, rijndaelIV);
+            payslipDetails.NetAllowanceAmount = rijndaelService.Encrypt(payslipDetails.NetAllowanceAmount, rijndaelKey, rijndaelIV);
+
+            foreach (MonthlySalaryAdditionModel addition in payslipDetails.SalaryAdditions)
+            {
+                addition.NetSalaryDisplay = rijndaelService.Encrypt(addition.NetSalaryDisplay, rijndaelKey, rijndaelIV);
+            }
+
+            foreach (MonthlyAllowanceAdditionModel addition in payslipDetails.AllowanceAdditions)
+            {
+                addition.NetAllowanceToDisplay = rijndaelService.Encrypt(addition.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
+            }
+
+            foreach (MonthlySalaryDeductionModel deduction in payslipDetails.SalaryDeductions)
+            {
+                deduction.NetSalaryDisplay = rijndaelService.Encrypt(deduction.NetSalaryDisplay, rijndaelKey, rijndaelIV);
+            }
+
+            foreach (MonthlyAllowanceDeductionModel deduction in payslipDetails.AllowanceDeductions)
+            {
+                deduction.NetAllowanceToDisplay = rijndaelService.Encrypt(deduction.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
+            }
         }
     }
 }

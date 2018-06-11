@@ -19,9 +19,16 @@
     <link rel="icon" type="image/ico" href="~/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
 
-    <link href="~/assets/bundles/payslip/css/payslip-details.min.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/assets/styles/pages/payslip/payslip-detail.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/payslip/css/payslip-details.min.css" rel="stylesheet" />
+    </environment>
 </head>
 <body>
+    <input hidden value="@ViewData["RijndaelKey"].ToString()" id="RijndaelKey" />
+    <input hidden value="@ViewData["RijndaelIV"].ToString()" id="RijndaelIV" />
     <div class="container payslip-detail-container">
         <div class="employee-info">
             <div class="company-name">@Model.CompanyName</div>
@@ -49,20 +56,26 @@
                 <div class="content">
                     <div class="row">
                         <div class="key">@ViewLang.BasicSalary</div>
-                        <div class="value">@Model.SalaryAmount @Model.SalaryCurrencyCode</div>
+                        <div class="value">
+                            <span class="js-encrypted hidden">@Model.SalaryAmount</span> @Model.SalaryCurrencyCode
+                        </div>
                     </div>
                     @foreach (MonthlySalaryAdditionModel addition in Model.SalaryAdditions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)addition.Type)</div>
-                            <div class="value">@addition.NetSalaryDisplay @Model.SalaryCurrencyCode</div>
+                            <div class="value">
+                                <span class="js-encrypted hidden">@addition.NetSalaryDisplay</span> @Model.SalaryCurrencyCode
+                            </div>
                         </div>
                     }
                 </div>
                 <div class="footer">
                     <div class="row">
                         <div class="key total">@ViewLang.GrossBasicSalary</div>
-                        <div class="value total">@Model.GrossSalaryAmount @Model.SalaryCurrencyCode</div>
+                        <div class="value total">
+                            <span class="js-encrypted hidden">@Model.GrossSalaryAmount</span> @Model.SalaryCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,20 +84,26 @@
                 <div class="content">
                     <div class="row">
                         <div class="key">@ViewLang.BasicAllowances</div>
-                        <div class="value">@Model.AllowanceAmount @Model.AllowanceCurrencyCode</div>
+                        <div class="value">
+                            <span class="js-encrypted hidden">@Model.AllowanceAmount</span> @Model.AllowanceCurrencyCode
+                        </div>
                     </div>
                     @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
-                            <div class="value">@addition.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
+                            <div class="value">
+                                <span class="js-encrypted hidden">@addition.NetAllowanceToDisplay</span> @Model.AllowanceCurrencyCode
+                            </div>
                         </div>
                     }
                 </div>
                 <div class="footer">
                     <div class="row">
                         <div class="key total">@ViewLang.GrossAllowances</div>
-                        <div class="value total">@Model.GrossAllowanceAmount @Model.AllowanceCurrencyCode</div>
+                        <div class="value total">
+                            <span class="js-encrypted hidden">@Model.GrossAllowanceAmount</span> @Model.AllowanceCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,14 +114,18 @@
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((MonthlySalaryDeductionType)deduction.Type)</div>
-                            <div class="value">@deduction.NetSalaryDisplay @Model.SalaryCurrencyCode</div>
+                            <div class="value">
+                                <span class="js-encrypted hidden">@deduction.NetSalaryDisplay</span> @Model.SalaryCurrencyCode
+                            </div>
                         </div>
                     }
                 </div>
                 <div class="footer">
                     <div class="row">
                         <div class="key total">@ViewLang.MonthlyDeductions</div>
-                        <div class="value total red">@Model.SalaryDeductionAmount @Model.SalaryCurrencyCode</div>
+                        <div class="value total red">
+                            <span class="js-encrypted hidden">@Model.SalaryDeductionAmount</span> @Model.SalaryCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,14 +136,18 @@
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>
-                            <div class="value">@deduction.NetAllowanceToDisplay @Model.AllowanceCurrencyCode</div>
+                            <div class="value">
+                                <span class="js-encrypted hidden">@deduction.NetAllowanceToDisplay</span> @Model.AllowanceCurrencyCode
+                            </div>
                         </div>
                     }
                 </div>
                 <div class="footer">
                     <div class="row">
                         <div class="key total">@ViewLang.MonthlyDeductions</div>
-                        <div class="value total red">@Model.AllowanceDeductionAmount @Model.AllowanceCurrencyCode</div>
+                        <div class="value total red">
+                            <span class="js-encrypted hidden">@Model.AllowanceDeductionAmount</span> @Model.AllowanceCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,7 +155,9 @@
                 <div class="content">
                     <div class="row">
                         <div class="key">@ViewLang.NetMonthlyBasicSalary</div>
-                        <div class="value">@Model.NetSalaryAmount @Model.SalaryCurrencyCode</div>
+                        <div class="value">
+                            <span class="js-encrypted hidden">@Model.NetSalaryAmount</span> @Model.SalaryCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
@@ -136,12 +165,24 @@
                 <div class="content">
                     <div class="row">
                         <div class="key">@ViewLang.NetMonthlyAllowances</div>
-                        <div class="value">@Model.NetAllowanceAmount @Model.AllowanceCurrencyCode</div>
+                        <div class="value">
+                            <span class="js-encrypted hidden">@Model.NetAllowanceAmount</span> @Model.AllowanceCurrencyCode
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="note">@ViewLang.PayslipNote</div>
     </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/CryptoJS/aes.js"></script>
+        <script src="~/assets/js/rijndael-service.js"></script>
+        <script src="~/assets/js/payslip/payslip-details.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/payslip/js/payslip-details.min.js"></script>
+    </environment>
 </body>
 </html>

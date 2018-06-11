@@ -5,10 +5,12 @@ body {
     font-family: $font-family;
     font-size: $font-size;
 }
+
 .payslip-detail-container {
     max-width: 1280px;
     margin: 0 auto;
 }
+
 .employee-info {
     text-align: center;
 
@@ -23,12 +25,14 @@ body {
     }
 
     .payslip-title {
-        :nth-child(1), :nth-child(2){
+        :nth-child(1), :nth-child(2) {
             text-transform: uppercase;
         }
+
         :nth-child(1) {
             font-size: 16px;
         }
+
         :nth-child(3) {
             font-size: 15px;
         }
@@ -36,11 +40,11 @@ body {
 
     .tbl-main-info {
         margin: 0 auto 8px;
+
         tbody tr td {
             text-align: left;
         }
     }
-
 }
 
 .bold {
@@ -140,4 +144,8 @@ body {
     text-align: center;
     color: #666;
     margin-top: 12px;
+}
+
+.hidden {
+    display: none;
 }

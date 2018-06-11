@@ -642,5 +642,18 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/payslip/js/payslip-details.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/payslip/payslip-details.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

@@ -140,4 +140,8 @@ body {
   color: #666;
   margin-top: 12px;
 }
+
+.hidden {
+  display: none;
+}
 /*# sourceMappingURL=payslip-detail.css.map */

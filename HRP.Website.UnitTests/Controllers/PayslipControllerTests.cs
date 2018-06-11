@@ -8,6 +8,7 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Models;
+    using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Services;
     using HRP.Website.Controllers;
@@ -21,6 +22,7 @@
         private ISessionService sessionService;
         private ICommonService commonService;
         private IPayslipService payslipService;
+        private IRijndaelService rijndaelService;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnsAsExpectedViewResult()
@@ -96,10 +98,20 @@
         public async Task Details_PayrollIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var payslip = new PayslipDetailModel();
+            var tuple = new Tuple<string, string>("1234", "1234");
+            var cipherText = "1234abc";
+            var payslip = new PayslipDetailModel
+            {
+                SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
+                AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
+                AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+            };
             var payslipController = GetPayslipController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             payslipService.GetPayslipDetailAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(payslip);
+            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
 
             // Act
             var actual = await payslipController.Details(1, 1);
@@ -108,7 +120,56 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<PayslipDetailModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
-            Assert.Equal(payslip, viewModel);
+            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelIV"]);
+            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelKey"]);
+            Assert.Equal(payslip.PayrollId, viewModel.PayrollId);
+            Assert.Equal(payslip.Month, viewModel.Month);
+            Assert.Equal(payslip.FullName, viewModel.FullName);
+            Assert.Equal(payslip.Nickname, viewModel.Nickname);
+            Assert.Equal(payslip.IDNo, viewModel.IDNo);
+            Assert.Equal(payslip.Email, viewModel.Email);
+            Assert.Equal(payslip.CompanyName, viewModel.CompanyName);
+            Assert.Equal(payslip.PDFPassword, viewModel.PDFPassword);
+            Assert.Equal(payslip.SalaryCurrencyId, viewModel.SalaryCurrencyId);
+            Assert.Equal(payslip.SalaryCurrencyCode, viewModel.SalaryCurrencyCode);
+            Assert.Equal(cipherText, viewModel.SalaryAmount);
+            Assert.Equal(payslip.AllowanceCurrencyId, viewModel.AllowanceCurrencyId);
+            Assert.Equal(payslip.AllowanceCurrencyCode, viewModel.AllowanceCurrencyCode);
+            Assert.Equal(cipherText, viewModel.AllowanceAmount);
+            Assert.Equal(cipherText, viewModel.SalaryDeductionAmount);
+            Assert.Equal(cipherText, viewModel.AllowanceDeductionAmount);
+            Assert.Equal(cipherText, viewModel.GrossSalaryAmount);
+            Assert.Equal(cipherText, viewModel.GrossAllowanceAmount);
+            Assert.Equal(cipherText, viewModel.NetSalaryAmount);
+            Assert.Equal(cipherText, viewModel.NetAllowanceAmount);
+
+            Assert.Collection(
+                viewModel.SalaryAdditions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.NetSalaryDisplay);
+                });
+
+            Assert.Collection(
+                viewModel.SalaryDeductions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.NetSalaryDisplay);
+                });
+
+            Assert.Collection(
+                viewModel.AllowanceAdditions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.NetAllowanceToDisplay);
+                });
+
+            Assert.Collection(
+                viewModel.AllowanceDeductions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.NetAllowanceToDisplay);
+                });
         }
 
         #endregion Details
@@ -179,13 +240,21 @@
             return service;
         }
 
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+
+            return service;
+        }
+
         private PayslipController GetPayslipController()
         {
             sessionService = FakeSessionService();
             var baseService = FakeBaseService();
             commonService = FakeCommonService();
             payslipService = FakePayslipService();
-            var controller = new PayslipController(sessionService, baseService, commonService, payslipService);
+            rijndaelService = FakeRijndaelService();
+            var controller = new PayslipController(sessionService, baseService, commonService, payslipService, rijndaelService);
 
             return controller;
         }

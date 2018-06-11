@@ -32,16 +32,7 @@
         [XMLName("NoOfDays")]
         public string XmlNoOfDays
         {
-            get
-            {
-                var noOfDays = string.Empty;
-                if (NoOfDays.HasValue)
-                {
-                    noOfDays = NoOfDays.Value.ToString(CultureInfo.InvariantCulture);
-                }
-
-                return noOfDays;
-            }
+            get => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
         }
     }
 }
