@@ -3,6 +3,7 @@
 @using HRP.Core.Extensions
 @using HRP.Models.Payslip
 @using HRP.Models.MonthlyPayroll
+@using HRP.Models.ServiceModels
 
 @model PayslipDetailModel
 
@@ -88,7 +89,7 @@
                             <span class="js-encrypted hidden">@Model.AllowanceAmount</span> @Model.AllowanceCurrencyCode
                         </div>
                     </div>
-                    @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
+                    @foreach (MonthlyAllowanceAddition addition in Model.AllowanceAdditions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
@@ -132,7 +133,7 @@
             <div class="detail-section">
                 <div class="title">@ViewLang.Deduction</div>
                 <div class="content">
-                    @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
+                    @foreach (MonthlyAllowanceDeduction deduction in Model.AllowanceDeductions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>

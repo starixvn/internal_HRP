@@ -148,7 +148,6 @@
         {
             foreach (EmployeeMonthlyPayrollModel employee in Model.Employees)
             {
-                decimal amount;
                 <tr class="@(employee.IsGenerated ? string.Empty : "row-highlight")">
                     <td class="text-center has-icon">
                         @if (employee.IsGenerated)

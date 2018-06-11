@@ -1014,7 +1014,7 @@
             return service;
         }
 
-        private IRijndaelService FakeRijndaelService()
+        private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
 

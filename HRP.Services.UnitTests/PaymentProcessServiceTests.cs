@@ -632,12 +632,12 @@
             return service;
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 99;
@@ -645,27 +645,27 @@
             return service;
         }
 
-        private IPaymentProcessRepository FakePaymentProcessRepository()
+        private static IPaymentProcessRepository FakePaymentProcessRepository()
         {
             return Substitute.For<IPaymentProcessRepository>();
         }
 
-        private IObjectStream FakeFileStream()
+        private static IObjectStream FakeFileStream()
         {
             return Substitute.For<IObjectStream>();
         }
 
-        private ITemplateReader FakeTemplateReader()
+        private static ITemplateReader FakeTemplateReader()
         {
             return Substitute.For<ITemplateReader>();
         }
 
-        private IMonthlyPayrollService FakeMonthlyPayrollService()
+        private static IMonthlyPayrollService FakeMonthlyPayrollService()
         {
             return Substitute.For<IMonthlyPayrollService>();
         }
 
-        private ICryptoService FakeCryptoService()
+        private static ICryptoService FakeCryptoService()
         {
             return Substitute.For<ICryptoService>();
         }
@@ -690,7 +690,7 @@
             };
         }
 
-        private IFormFile MockExcelFile(long fileSize = (1024 * 1024))
+        private static IFormFile MockExcelFile(long fileSize = (1024 * 1024))
         {
             var file = Substitute.For<IFormFile>();
             var fileName = "template.xlsx";
@@ -717,7 +717,7 @@
             return file;
         }
 
-        private IEnumerable<string> MockListString()
+        private static IEnumerable<string> MockListString()
         {
             return new List<string>
             {
@@ -764,12 +764,12 @@
             };
         }
 
-        private Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
+        private static Failure<AttendanceTemplate> MockFailureResultAttendanceTemplate()
         {
             return new Failure<AttendanceTemplate>(Message.IncorrectTemplate);
         }
 
-        private Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
+        private static Failure<DSTNetSalaryTemplate> MockFailureResultDSTNetSalaryTemplate()
         {
             return new Failure<DSTNetSalaryTemplate>(Message.IncorrectTemplate);
         }
