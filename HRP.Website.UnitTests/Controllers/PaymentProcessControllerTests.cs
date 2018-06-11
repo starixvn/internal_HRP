@@ -26,6 +26,7 @@
     using Resources;
     using Services;
     using Xunit;
+    using HRP.Models.ServiceModels;
 
     public class PaymentProcessControllerTests
     {
@@ -38,6 +39,7 @@
         private ICommonService commonService;
         private IPaymentProcessService paymentProcessService;
         private IMonthlyPayrollService monthlyPayrollService;
+        private IRijndaelService rijndaelService;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
@@ -923,7 +925,7 @@
         public async Task EditAllowancesPost_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
-            var viewModel = new MonthlyAllowances();
+            var viewModel = new MonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
@@ -940,7 +942,7 @@
         public async Task EditAllowancesPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
         {
             // Arrange
-            var viewModel = new MonthlyAllowances();
+            var viewModel = new MonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             controller.ModelState.AddModelError("UnitAmount", "required");
@@ -966,12 +968,12 @@
         public async Task EditAllowancesPost_ModelStateIsValid_ReturnAsExpected()
         {
             // Arrange
-            var viewModel = new MonthlyAllowances();
+            var viewModel = new MonthlyAllowancesViewModel();
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
             controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, sessionService.UserId).Returns(commandResult);
+            monthlyPayrollService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowances>(), sessionService.UserId).Returns(commandResult);
 
             // Act
             var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
@@ -1074,8 +1076,17 @@
             paymentProcessService = FakePaymentProcessService();
             monthlyPayrollService = FakeMonthlyPayrollService();
             commonService = FakeCommonService();
+            rijndaelService = FakeRijndaelService();
 
-            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, commonService, paymentProcessService, monthlyPayrollService);
+            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, commonService, paymentProcessService, 
+                monthlyPayrollService, rijndaelService);
+        }
+
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+
+            return service;
         }
 
         private static ISessionService FakeSessionService()

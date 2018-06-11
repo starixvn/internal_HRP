@@ -10,6 +10,7 @@
     using HRP.Models.Employee;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Report;
+    using HRP.Models.ServiceModels;
     using NSubstitute;
     using Xunit;
 

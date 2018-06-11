@@ -10,6 +10,7 @@
     using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Models.ServiceModels;
     using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Mvc;
@@ -104,8 +105,8 @@
             {
                 SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                 SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
-                AllowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel> { new MonthlyAllowanceDetailAdjustmentModel() },
-                AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+                AllowanceAdditions = new List<MonthlyAllowanceAddition> { new MonthlyAllowanceAddition() },
+                AllowanceDeductions = new List<MonthlyAllowanceDeduction> { new MonthlyAllowanceDeduction() }
             };
             var payslipController = GetPayslipController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);

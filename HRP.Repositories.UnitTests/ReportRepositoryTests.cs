@@ -7,6 +7,7 @@
     using HRP.Models.Currency;
     using HRP.Models.Employee;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using Models.Report;
     using NSubstitute;
     using Xunit;

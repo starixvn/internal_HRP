@@ -10,6 +10,7 @@
     using HRP.Criteria.Payslip;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using NSubstitute;
     using Xunit;
@@ -77,8 +78,8 @@
                     AllowanceCurrencyCode = currencyCode,
                     SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
-                    AllowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel> { new MonthlyAllowanceDetailAdjustmentModel() },
-                    AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
+                    AllowanceAdditions = new List<MonthlyAllowanceAddition> { new MonthlyAllowanceAddition() },
+                    AllowanceDeductions = new List<MonthlyAllowanceDeduction> { new MonthlyAllowanceDeduction() }
                 }
             };
             var payslipService = GetPayslipService();

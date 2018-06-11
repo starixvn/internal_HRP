@@ -14,6 +14,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
@@ -571,15 +572,15 @@
                 CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
             };
             var mockAllowance = Substitute.For<MonthlyAllowance>();
-            var allowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel> { new MonthlyAllowanceDetailAdjustmentModel() };
-            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() };
+            var allowanceAdditions = new List<MonthlyAllowanceAddition> { new MonthlyAllowanceAddition() };
+            var allowanceDeductions = new List<MonthlyAllowanceDeduction> { new MonthlyAllowanceDeduction() };
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
                 .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
             monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowance>(),
-                Arg.Any<IEnumerable<MonthlyAllowanceDetailAdjustmentModel>>(),
-                Arg.Any<IEnumerable<MonthlyAllowanceDeductionModel>>(),
+                Arg.Any<IEnumerable<MonthlyAllowanceAddition>>(),
+                Arg.Any<IEnumerable<MonthlyAllowanceDeduction>>(),
                 Arg.Any<IEnumerable<CurrencyExchangeRateModel>>(),
                 Arg.Any<MonthlyDSTNetSalary>()).Returns(mockAllowance);
             monthlyPayrollService.InitializeAllowanceAdditions(Arg.Any<int>(), Arg.Any<decimal>(),

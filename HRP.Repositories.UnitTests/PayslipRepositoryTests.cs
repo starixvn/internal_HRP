@@ -7,6 +7,7 @@
     using Fanex.Data.Repository;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Models.ServiceModels;
     using NSubstitute;
     using Xunit;
 
@@ -42,19 +43,19 @@
             {
                 new MonthlySalaryDeductionModel { PayrollId = 1 }
             };
-            var allowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel>
+            var allowanceAdditions = new List<MonthlyAllowanceAddition>
             {
-                new MonthlyAllowanceDetailAdjustmentModel { PayrollId = 1 }
+                new MonthlyAllowanceAddition { PayrollId = 1 }
             };
-            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel>
+            var allowanceDeductions = new List<MonthlyAllowanceDeduction>
             {
-                new MonthlyAllowanceDeductionModel { PayrollId = 1 }
+                new MonthlyAllowanceDeduction { PayrollId = 1 }
             };
             multiResultReader.ReadAsync<PayslipDetailModel>().Returns(payslips);
             multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(salaryAdditions);
             multiResultReader.ReadAsync<MonthlySalaryDeductionModel>().Returns(salaryDeductions);
-            multiResultReader.ReadAsync<MonthlyAllowanceDetailAdjustmentModel>().Returns(allowanceAdditions);
-            multiResultReader.ReadAsync<MonthlyAllowanceDeductionModel>().Returns(allowanceDeductions);
+            multiResultReader.ReadAsync<MonthlyAllowanceAddition>().Returns(allowanceAdditions);
+            multiResultReader.ReadAsync<MonthlyAllowanceDeduction>().Returns(allowanceDeductions);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new PayslipRepository();
 

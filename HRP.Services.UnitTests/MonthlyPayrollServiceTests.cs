@@ -589,7 +589,7 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-            var basicAlloance = new MonthlyPayrollBasicAllowance
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 EmployeeId = 1,

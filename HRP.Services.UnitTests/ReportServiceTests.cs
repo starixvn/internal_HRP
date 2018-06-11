@@ -16,6 +16,7 @@
     using Repositories;
     using Xunit;
     using HRP.Core.Constants;
+    using HRP.Models.ServiceModels;
 
     public class ReportServiceTests
     {
