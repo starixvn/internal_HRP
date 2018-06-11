@@ -29,7 +29,7 @@
             // Arrange
             Employment employment = null;
             var multiResultReader = FakeMultipleResultReader();
-            var criteria = FakeCriteia();
+            var criteria = FakeCriteria();
             var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefaultAsync<Employment>().Returns(employment);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
@@ -50,7 +50,7 @@
             var paymaster = new Paymaster();
             var epa = new EPA();
             var multiResultReader = FakeMultipleResultReader();
-            var criteria = FakeCriteia();
+            var criteria = FakeCriteria();
             var repository = new EmployeeRepository();
             multiResultReader.ReadFirstOrDefaultAsync<Employment>().Returns(employment);
             multiResultReader.ReadFirstOrDefaultAsync<WorkPermit>().Returns(workPermit);
@@ -108,7 +108,7 @@
             return Substitute.For<IMultiResultReader>();
         }
 
-        private static ICriteria FakeCriteia()
+        private static ICriteria FakeCriteria()
         {
             var criteria = Substitute.For<ICriteria>();
             criteria.GetSettingKey().Returns("HRP_Test");

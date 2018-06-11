@@ -13,7 +13,7 @@
     public class RequiredLabelTagHelperTests
     {
         [Fact]
-        public void Process_TagHelperContextIsNull_ThrowExection()
+        public void Process_TagHelperContextIsNull_ThrowException()
         {
             // Arrange
             IModelMetadataProvider metadataProvider = new EmptyModelMetadataProvider();
@@ -26,7 +26,7 @@
         }
 
         [Fact]
-        public void Process_TagHelperOutputIsNull_ThrowExection()
+        public void Process_TagHelperOutputIsNull_ThrowException()
         {
             // Arrange
             IModelMetadataProvider metadataProvider = new EmptyModelMetadataProvider();

@@ -5,26 +5,26 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using HRP.Core.Constants;
+    using Core.Constants;
+    using Core.Enumerations;
+    using Core.Extensions;
+    using Core.Model;
+    using Criteria;
     using HRP.Core.Criteria;
-    using HRP.Core.Enumerations;
-    using HRP.Core.Extensions;
-    using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Models;
-    using HRP.Models.Currency;
-    using HRP.Models.MonthlyPayroll;
-    using HRP.Models.PaymentProcess;
-    using HRP.Resources;
-    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
+    using Models.Currency;
+    using Models.MonthlyPayroll;
+    using Models.PaymentProcess;
+    using Models;
     using NSubstitute;
+    using Resources;
+    using Services;
     using Xunit;
 
     public class PaymentProcessControllerTests
@@ -101,9 +101,9 @@
                 StartDate = startDate,
                 DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
-                IsAttendanceFileSubmited = true,
+                IsAttendanceFileSubmitted = true,
                 DSTNetSalaryFileName = "salaryFile.xls",
-                IsDSTNetSalaryFileSubmited = true,
+                IsDSTNetSalaryFileSubmitted = true,
                 IsPayrollGenerated = true,
                 IsHasCurrencySetting = false
             };
@@ -136,9 +136,9 @@
                 StartDate = startDate,
                 DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
-                IsAttendanceFileSubmited = true,
+                IsAttendanceFileSubmitted = true,
                 DSTNetSalaryFileName = "salaryFile.xls",
-                IsDSTNetSalaryFileSubmited = true,
+                IsDSTNetSalaryFileSubmitted = true,
                 IsPayrollGenerated = true,
                 IsHasCurrencySetting = true
             };
@@ -164,7 +164,7 @@
         [InlineData(true, false, true)]
         [InlineData(true, true, false)]
         public async Task IndexPost_UserHasHostPermissionAndPayrollIsNotGenerated_ReturnRedirectToUploadAttendanceAndSalary
-            (bool isPayrollGenerated, bool isAttendanceSubmited, bool isDSTNetSalarySubmited)
+            (bool isPayrollGenerated, bool isAttendanceSubmitted, bool isDSTNetSalarySubmitted)
         {
             // Arrange
             var paymentProcess = new PaymentProcess
@@ -172,9 +172,9 @@
                 StartDate = startDate,
                 DueDate = dueDate,
                 AttendanceFileName = "attendanceFile.xlsx",
-                IsAttendanceFileSubmited = isAttendanceSubmited,
+                IsAttendanceFileSubmitted = isAttendanceSubmitted,
                 DSTNetSalaryFileName = "salaryFile.xls",
-                IsDSTNetSalaryFileSubmited = isDSTNetSalarySubmited,
+                IsDSTNetSalaryFileSubmitted = isDSTNetSalarySubmitted,
                 IsPayrollGenerated = isPayrollGenerated,
                 IsHasCurrencySetting = true
             };
@@ -885,7 +885,7 @@
         #region EditAllowances
 
         [Fact]
-        public async Task EditAllowances_NotHavePermission_RederiectToAccessDenied()
+        public async Task EditAllowances_NotHavePermission_RedirectToAccessDenied()
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
@@ -987,7 +987,7 @@
         #region Preset
 
         [Fact]
-        public async Task Preset_NotHavePermission_RederiectToAccessDenied()
+        public async Task Preset_NotHavePermission_RedirectToAccessDenied()
         {
             // Arrange
             var companyId = 1;
@@ -1028,7 +1028,7 @@
         #region PresetAllMonthlyPayroll
 
         [Fact]
-        public async Task PresetAllMonthlyPayroll_NotHavePermission_RederiectToAccessDenied()
+        public async Task PresetAllMonthlyPayroll_NotHavePermission_RedirectToAccessDenied()
         {
             // Arrange
             var companyId = 1;

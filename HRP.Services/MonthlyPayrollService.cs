@@ -106,10 +106,10 @@
                     MonthlyPayrollBasicSalaryViewModel>(criteria).ConfigureAwait(false);
 
             IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = tuple.Item1;
-            foreach (MonthlyPayrollEmployeeInfoViewModel monhtlyPayroll in monthlyPayrolls)
+            foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
             {
-                monhtlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monhtlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
-                monhtlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monhtlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
+                monthlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
+                monthlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
             }
 
             DecryptMonthlyPayroll(monthlyPayrolls);
@@ -140,7 +140,7 @@
                     Additions = monthlySalary.Item3.ToList(),
                     Deductions = monthlySalary.Item4.ToList()
                 };
-                DecryptAndRoudingAmountMonthlySalary(viewModel);
+                DecryptAndRoundingAmountMonthlySalary(viewModel);
             }
 
             return viewModel;
@@ -816,7 +816,7 @@
             }
         }
 
-        private void DecryptAndRoudingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
+        private void DecryptAndRoundingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
         {
             viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
             viewModel.MonthlyBasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EbankingAmount);

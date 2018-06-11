@@ -588,7 +588,7 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-            var basicAlloance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
             {
                 PayrollId = payrollId,
                 EmployeeId = 1,
@@ -605,7 +605,7 @@
             };
 
             // Act
-            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAlloance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
 
             // Assert
             Assert.NotEmpty(result);

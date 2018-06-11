@@ -1,7 +1,7 @@
 ﻿@using HRP.Models
 @using HRP.Models.UserPermission
 
-@model AssignPermissonViewModel
+@model AssignPermissionViewModel
 
 @{
     var disabled = Model.IsHost ? string.Empty : "disabled";
@@ -60,7 +60,7 @@
         }
     </tr>
 
-    var model = new AssignPermissonViewModel
+    var model = new AssignPermissionViewModel
     {
         UserId = Model.UserId,
         Username = Model.Username,

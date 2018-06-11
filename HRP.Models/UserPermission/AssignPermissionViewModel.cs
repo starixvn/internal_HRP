@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class AssignPermissonViewModel
+    public class AssignPermissionViewModel
     {
         public int UserId { get; set; }
 

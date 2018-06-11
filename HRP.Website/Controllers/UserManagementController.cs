@@ -55,7 +55,7 @@
             var user = await baseService.GetDataEntityAsync<UserModel>(new GetUserByIdCriteria { UserId = id });
             var isHost = sessionService.HasPermissionOnFunction(FunctionKey.UserManagement, Policy.Host) && user != null && !user.IsSystemAdmin;
 
-            var model = new AssignPermissonViewModel
+            var model = new AssignPermissionViewModel
             {
                 UserId = id,
                 Functions = functions,

@@ -73,7 +73,7 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsAssignableFrom<AssignPermissonViewModel>(viewResult.Model);
+            var viewModel = Assert.IsAssignableFrom<AssignPermissionViewModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
             Assert.True(viewModel.IsHost);
             Assert.Equal(user.Username, viewModel.Username);

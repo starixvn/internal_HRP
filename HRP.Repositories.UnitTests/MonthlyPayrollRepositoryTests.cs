@@ -29,7 +29,7 @@
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
-            var criteria = FakeCriteia();
+            var criteria = FakeCriteria();
             var monthlyBasicSalary = new MonthlyBasicSalaryModel();
             var monthlySalary = new MonthlySalaryModel
             {
@@ -99,7 +99,7 @@
             multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
             multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
 
-            var criteria = FakeCriteia();
+            var criteria = FakeCriteria();
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new MonthlyPayrollRepository();
 
@@ -120,7 +120,7 @@
             return Substitute.For<IMultiResultReader>();
         }
 
-        private static ICriteria FakeCriteia()
+        private static ICriteria FakeCriteria()
         {
             var criteria = Substitute.For<ICriteria>();
             criteria.GetSettingKey().Returns("HRP_Test");

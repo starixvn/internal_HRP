@@ -29,7 +29,7 @@
         {
             // Arrange
             var multiResultReader = FakeMultipleResultReader();
-            var criteria = FakeCriteia();
+            var criteria = FakeCriteria();
             var payslips = new List<PayslipDetailModel>
             {
                 new PayslipDetailModel { PayrollId = 1, FullName = "thang" }
@@ -98,7 +98,7 @@
             return Substitute.For<IMultiResultReader>();
         }
 
-        private static ICriteria FakeCriteia()
+        private static ICriteria FakeCriteria()
         {
             var criteria = Substitute.For<ICriteria>();
             criteria.GetSettingKey().Returns("HRP_Test");

@@ -253,12 +253,12 @@
 
         private static bool IsRedirectToPageUploadFiles(PaymentProcess paymentProcess)
         {
-            var isAttendanceFileNotSubmited = (paymentProcess.AttendanceFileName != null && !paymentProcess.IsAttendanceFileSubmited);
-            var isDSTNetSalaryFileNotSubmited = (paymentProcess.DSTNetSalaryFileName != null && !paymentProcess.IsDSTNetSalaryFileSubmited);
+            var isAttendanceFileNotSubmitted = (paymentProcess.AttendanceFileName != null && !paymentProcess.IsAttendanceFileSubmitted);
+            var isDSTNetSalaryFileNotSubmitted = (paymentProcess.DSTNetSalaryFileName != null && !paymentProcess.IsDSTNetSalaryFileSubmitted);
 
             return (!paymentProcess.IsPayrollGenerated
-                        || isAttendanceFileNotSubmited
-                        || isDSTNetSalaryFileNotSubmited);
+                        || isAttendanceFileNotSubmitted
+                        || isDSTNetSalaryFileNotSubmitted);
         }
 
         private static bool IsInPaymentProcessDuration(PaymentProcess paymentProcess)
