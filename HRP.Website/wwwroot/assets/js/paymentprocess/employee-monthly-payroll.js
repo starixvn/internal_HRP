@@ -288,6 +288,10 @@ var monthlyPayroll = (function ($) {
             var value = $(this).html();
             var plainText = rijndaelService.decryptData(value, rijndaelKey, rijndaelIV);
 
+            if (parseFloat(plainText) < 0) {
+                $(this).addClass('negative-amount');
+            }
+
             $(this).html(plainText).removeClass('hidden');
         });
     }

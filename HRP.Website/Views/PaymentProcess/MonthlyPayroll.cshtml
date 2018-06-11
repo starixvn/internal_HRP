@@ -174,96 +174,54 @@
                     <td>@employee.Nickname</td>
                     <td>@employee.CostCenter</td>
                     <td>@employee.BasicSalary.EbankingCurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.EbankingAmount))
-                    {
-                        decimal.TryParse(employee.BasicSalary.EbankingAmount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.BasicSalary.EbankingAmount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.EbankingAmount))
+                        {
+                            <span class="js-encrypted hidden">@employee.BasicSalary.EbankingAmount</span>
+                        }
+                    </td>
                     <td>@employee.BasicSalary.DirectBanking1CurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking1Amount))
-                    {
-                        decimal.TryParse(employee.BasicSalary.DirectBanking1Amount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.BasicSalary.DirectBanking1Amount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking1Amount))
+                        {
+                            <span class="js-encrypted hidden">@employee.BasicSalary.DirectBanking1Amount</span>
+                        }
+                    </td>
                     <td>@employee.BasicSalary.DirectBanking2CurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking2Amount))
-                    {
-                        decimal.TryParse(employee.BasicSalary.DirectBanking2Amount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.BasicSalary.DirectBanking2Amount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.DirectBanking2Amount))
+                        {
+                            <span class="js-encrypted hidden">@employee.BasicSalary.DirectBanking2Amount</span>
+                        }
+                    </td>
                     <td>@employee.BasicSalary.CashCurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.CashAmount))
-                    {
-                        decimal.TryParse(employee.BasicSalary.CashAmount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.BasicSalary.CashAmount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.BasicSalary.CashAmount))
+                        {
+                            <span class="js-encrypted hidden">@employee.BasicSalary.CashAmount</span>
+                        }
+                    </td>
                     <td>@employee.Allowance.DirectBanking1CurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking1Amount))
-                    {
-                        decimal.TryParse(employee.Allowance.DirectBanking1Amount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.Allowance.DirectBanking1Amount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking1Amount))
+                        {
+                            <span class="js-encrypted hidden">@employee.Allowance.DirectBanking1Amount</span>
+                        }
+                    </td>
                     <td>@employee.Allowance.DirectBanking2CurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking2Amount))
-                    {
-                        decimal.TryParse(employee.Allowance.DirectBanking2Amount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.Allowance.DirectBanking2Amount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.Allowance.DirectBanking2Amount))
+                        {
+                            <span class="js-encrypted hidden">@employee.Allowance.DirectBanking2Amount</span>
+                        }
+                    </td>
                     <td>@employee.Allowance.CashCurrencyCode</td>
-                    @if (!string.IsNullOrWhiteSpace(employee.Allowance.CashAmount))
-                    {
-                        decimal.TryParse(employee.Allowance.CashAmount, out amount);
-
-                        <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            <span class="js-encypted hidden">@employee.Allowance.CashAmount</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                    <td class="text-right">
+                        @if (!string.IsNullOrWhiteSpace(employee.Allowance.CashAmount))
+                        {
+                            <span class="js-encrypted hidden">@employee.Allowance.CashAmount</span>
+                        }
+                    </td>
                     <td class="text-center">@employee.WorkingDays</td>
                     <td class="text-center has-icon">
                         @if (employee.Policy != Policy.None)

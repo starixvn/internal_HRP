@@ -1,7 +1,7 @@
 ﻿var commonFunctions = (function ($) {
     var timer,
         rootURL,
-        pagerRanges = [5, 50, 100],
+        pagerRanges = [20, 50, 100],
         noDataOnTableMsg = 'There is no data.';
 
     function showErrorMessage($element, message) {

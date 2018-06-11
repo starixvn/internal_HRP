@@ -316,9 +316,9 @@
                 employeePayroll.BasicSalary.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, tuple.Item1, tuple.Item2);
                 employeePayroll.BasicSalary.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, tuple.Item1, tuple.Item2);
 
-                employeePayroll.Allowance.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking1Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.Allowance.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.Allowance.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking1Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking2Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.CashAmount = rijndaelService.Encrypt(employeePayroll.Allowance.CashAmount, tuple.Item1, tuple.Item2);
             }
 
             return View("MonthlyPayroll", viewModel);

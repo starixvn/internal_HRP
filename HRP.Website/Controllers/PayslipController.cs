@@ -74,10 +74,10 @@
             }
 
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            ViewData["RijndaelIV"] = tuple.Item1;
-            ViewData["RijndaelKey"] = tuple.Item2;
+            ViewData["RijndaelKey"] = tuple.Item1;
+            ViewData["RijndaelIV"] = tuple.Item2;
 
-            EncryptPayslipDetails(payslipDetails, tuple.Item2, tuple.Item1);
+            EncryptPayslipDetails(payslipDetails, tuple.Item1, tuple.Item2);
 
             return View(payslipDetails);
         }

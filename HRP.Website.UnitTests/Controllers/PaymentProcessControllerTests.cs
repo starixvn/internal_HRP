@@ -673,6 +673,8 @@
             var companyId = 1;
             var employeeId = 31;
             var month = DateTime.Now;
+            var tuple = new Tuple<string, string>("1234", "12345");
+            var cipherText = "1234abc";
             var filterInfo = new MonthlyPayrollFilterInfoModel();
             var employeePayrolls = new List<EmployeeMonthlyPayrollModel>
             {
@@ -682,6 +684,8 @@
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetFilterInfoAsync(companyId, month).Returns(filterInfo);
             monthlyPayrollService.GetMonthlyPayrollAsync(Arg.Any<EmployeeMonthlyPayrollViewModel>()).Returns(employeePayrolls);
+            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
 
             // Act
             var actual = await controller.EmployeeMonthlyPayroll(companyId, month, employeeId, null, null, null);
@@ -695,7 +699,8 @@
             Assert.Equal(employeeId, viewModelResult.EmployeeId);
             Assert.Null(viewModelResult.Employee);
             Assert.Null(viewModelResult.IDNo);
-            Assert.Equal(employeePayrolls, viewModelResult.Employees);
+            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelKey"]);
+            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelIV"]);
         }
 
         #endregion EmployeeMonthlyPayroll
@@ -1069,27 +1074,6 @@
 
         #region Helpers
 
-        private PaymentProcessController GetPaymentProcessController()
-        {
-            sessionService = FakeSessionService();
-            baseService = FakeBaseService();
-            hostingEnvironment = FakeHostingEnvironment();
-            paymentProcessService = FakePaymentProcessService();
-            monthlyPayrollService = FakeMonthlyPayrollService();
-            commonService = FakeCommonService();
-            rijndaelService = FakeRijndaelService();
-
-            return new PaymentProcessController(baseService, sessionService, hostingEnvironment, commonService, paymentProcessService, 
-                monthlyPayrollService, rijndaelService);
-        }
-
-        private static IRijndaelService FakeRijndaelService()
-        {
-            var service = Substitute.For<IRijndaelService>();
-
-            return service;
-        }
-
         private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
@@ -1124,6 +1108,32 @@
         {
             var service = Substitute.For<IMonthlyPayrollService>();
             return service;
+        }
+
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+            return service;
+        }
+
+        private PaymentProcessController GetPaymentProcessController()
+        {
+            sessionService = FakeSessionService();
+            baseService = FakeBaseService();
+            hostingEnvironment = FakeHostingEnvironment();
+            paymentProcessService = FakePaymentProcessService();
+            monthlyPayrollService = FakeMonthlyPayrollService();
+            commonService = FakeCommonService();
+            rijndaelService = FakeRijndaelService();
+
+            return new PaymentProcessController(
+                baseService,
+                sessionService,
+                hostingEnvironment,
+                commonService,
+                paymentProcessService,
+                monthlyPayrollService,
+                rijndaelService);
         }
 
         private Company MockCompany()

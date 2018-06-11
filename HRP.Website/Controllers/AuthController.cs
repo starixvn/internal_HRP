@@ -38,8 +38,8 @@ namespace HRP.Website.Controllers
         public IActionResult Login()
         {
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             var viewModel = new LoginViewModel
             {
                 RijndaelIV = sessionService.RijndaelIV,
@@ -60,8 +60,8 @@ namespace HRP.Website.Controllers
 
                 if (user != null && userService.IsCorrectPassword(password, user.Password) && user.IsActive)
                 {
-                    sessionService.RijndaelIV = string.Empty;
                     sessionService.RijndaelKey = string.Empty;
+                    sessionService.RijndaelIV = string.Empty;
                     return await AfterLoginSuccessful(user);
                 }
 
@@ -72,8 +72,8 @@ namespace HRP.Website.Controllers
 
             ModelState.AddModelError(string.Empty, errorMsg);
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             viewModel.RijndaelIV = sessionService.RijndaelIV;
             viewModel.RijndaelKey = sessionService.RijndaelKey;
 

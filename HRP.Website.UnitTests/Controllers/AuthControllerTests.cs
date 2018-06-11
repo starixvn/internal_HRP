@@ -46,7 +46,7 @@
         public void LoginGet_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
+            var tuple = new Tuple<string, string>("1234", "12345");
             var authController = GetAuthController();
             rijndaelService.GenerateKey().Returns(tuple);
 
@@ -59,8 +59,8 @@
             Assert.Null(viewResult.ViewName);
             Assert.Null(viewModel.Username);
             Assert.Null(viewModel.Password);
-            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
-            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item2);
         }
 
         [Fact]
@@ -113,7 +113,7 @@
         public async Task Login_IncorrectPassword_ReturnViewResultWithModel()
         {
             //Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
+            var tuple = new Tuple<string, string>("1234", "12345");
             var authController = GetAuthController();
             var model = new LoginViewModel
             {
@@ -131,8 +131,8 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<LoginViewModel>(viewResult.ViewData.Model);
             Assert.Equal(1, viewResult.ViewData.ModelState.ErrorCount);
-            Assert.Equal(viewModel.RijndaelIV, tuple.Item1);
-            Assert.Equal(viewModel.RijndaelKey, tuple.Item2);
+            Assert.Equal(viewModel.RijndaelKey, tuple.Item1);
+            Assert.Equal(viewModel.RijndaelIV, tuple.Item2);
         }
 
         #endregion Login

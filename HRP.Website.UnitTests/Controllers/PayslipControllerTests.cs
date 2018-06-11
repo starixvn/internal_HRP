@@ -99,7 +99,7 @@
         public async Task Details_PayrollIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
+            var tuple = new Tuple<string, string>("1234", "12345");
             var cipherText = "1234abc";
             var payslip = new PayslipDetailModel
             {
@@ -121,8 +121,8 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<PayslipDetailModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
-            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelIV"]);
-            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelKey"]);
+            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelKey"]);
+            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelIV"]);
             Assert.Equal(payslip.PayrollId, viewModel.PayrollId);
             Assert.Equal(payslip.Month, viewModel.Month);
             Assert.Equal(payslip.FullName, viewModel.FullName);

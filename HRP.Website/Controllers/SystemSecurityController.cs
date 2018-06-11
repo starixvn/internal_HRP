@@ -48,8 +48,8 @@
         public IActionResult Generate()
         {
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             var viewModel = new GenerateCertificateViewModel
             {
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
@@ -85,8 +85,8 @@
             }
 
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             viewModel.RijndaelIV = sessionService.RijndaelIV;
             viewModel.RijndaelKey = sessionService.RijndaelKey;
 
@@ -96,8 +96,8 @@
         public IActionResult Password()
         {
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             var viewModel = new InputPasswordViewModel
             {
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
@@ -130,8 +130,8 @@
             }
 
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
             viewModel.RijndaelIV = sessionService.RijndaelIV;
             viewModel.RijndaelKey = sessionService.RijndaelKey;
 
