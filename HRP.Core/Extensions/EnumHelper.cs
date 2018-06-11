@@ -23,12 +23,6 @@
             return description;
         }
 
-        /// <summary>
-        /// Retrieves the <see cref="DisplayAttribute.Name" /> property on the <see cref="DisplayAttribute" />
-        /// of the current enum value, or the enum member name if the <see cref="DisplayAttribute" /> is not present.
-        /// </summary>
-        /// <param name="val">This enum member to get the name for.</param>
-        /// <returns>The <see cref="DisplayAttribute.Name" /> property on the <see cref="DisplayAttribute" /> attribute, if present.</returns>
         public static string GetDisplayName(this Enum val)
         {
             return val.GetType()
