@@ -12,6 +12,7 @@
     using HRP.Models;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Models.ServiceModels;
     using HRP.Services;
     using Microsoft.AspNetCore.Mvc;
 
@@ -113,7 +114,7 @@
                 addition.NetSalaryDisplay = rijndaelService.Encrypt(addition.NetSalaryDisplay, rijndaelKey, rijndaelIV);
             }
 
-            foreach (MonthlyAllowanceAdditionModel addition in payslipDetails.AllowanceAdditions)
+            foreach (MonthlyAllowanceAddition addition in payslipDetails.AllowanceAdditions)
             {
                 addition.NetAllowanceToDisplay = rijndaelService.Encrypt(addition.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
             }
@@ -123,7 +124,7 @@
                 deduction.NetSalaryDisplay = rijndaelService.Encrypt(deduction.NetSalaryDisplay, rijndaelKey, rijndaelIV);
             }
 
-            foreach (MonthlyAllowanceDeductionModel deduction in payslipDetails.AllowanceDeductions)
+            foreach (MonthlyAllowanceDeduction deduction in payslipDetails.AllowanceDeductions)
             {
                 deduction.NetAllowanceToDisplay = rijndaelService.Encrypt(deduction.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
             }

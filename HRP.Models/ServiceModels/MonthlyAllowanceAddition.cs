@@ -1,13 +1,11 @@
-﻿namespace HRP.Models.MonthlyPayroll
+﻿namespace HRP.Models.ServiceModels
 {
     using System.Globalization;
     using System.Xml.Serialization;
-    using HRP.Core.CustomValidations;
     using HRP.Core.Extensions;
-    using HRP.Resources;
 
     [XMLName("Row")]
-    public class MonthlyAllowanceAdditionModel
+    public class MonthlyAllowanceAddition
     {
         public int PayrollId { get; set; }
 
@@ -26,7 +24,6 @@
 
         public string TotalAmount { get; set; }
 
-        [RequiredIfRealtedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UnitAmountRequired")]
         public string UnitAmount { get; set; }
 
         public string NetAllowance { get; set; }

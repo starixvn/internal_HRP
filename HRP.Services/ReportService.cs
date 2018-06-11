@@ -14,6 +14,7 @@
     using Models.MonthlyPayroll;
     using Models.Report;
     using Repositories;
+    using HRP.Models.ServiceModels;
 
     public class ReportService : IReportService
     {
@@ -157,7 +158,7 @@
         }
 
         private void DecryptMonthlyBasicAllowanceListAndConvertAmount(
-            IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList,
+            IEnumerable<MonthlyPayrollBasicAllowance> basicAllowanceList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (basicAllowanceList != null && basicAllowanceList.Any())
@@ -194,7 +195,7 @@
         }
 
         private void DecryptMonthlyAllowanceListAndConvertAmount(
-            IEnumerable<MonthlyAllowanceModel> allowanceList,
+            IEnumerable<MonthlyAllowance> allowanceList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (allowanceList != null && allowanceList.Any())
@@ -215,7 +216,7 @@
             }
         }
 
-        private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowance basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = basicAllowance.CurrencyId;
             var conversionCurrencyCode = basicAllowance.CurrencyCode;
@@ -253,7 +254,7 @@
         }
 
         private static void ConvertMonthlyAllowanceToConversionCurrency(
-            MonthlyAllowanceModel allowance,
+            MonthlyAllowance allowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = allowance.CurrencyId;

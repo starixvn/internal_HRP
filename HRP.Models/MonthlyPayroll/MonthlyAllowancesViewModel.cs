@@ -19,9 +19,9 @@
 
         public MonthlyPayrollBasicAllowanceModel BasicAllowance { get; set; } = new MonthlyPayrollBasicAllowanceModel();
 
-        public IList<MonthlyAllowanceAdditionModel> Additions { get; set; } = new List<MonthlyAllowanceAdditionModel>();
+        public IList<MonthlyAllowanceDetailAdjustmentModel> Additions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentModel>();
 
-        public IList<MonthlyAllowanceDeductionModel> Deductions { get; set; } = new List<MonthlyAllowanceDeductionModel>();
+        public IList<MonthlyAllowanceDetailAdjustmentModel> Deductions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentModel>();
 
         public MonthlyPayrollFilterInfoModel EmployeeInfo { get; set; } = new MonthlyPayrollFilterInfoModel();
 
@@ -38,5 +38,9 @@
         public int DaysInMonth { get; set; }
 
         public int VNDCurrencyId { get; set; }
+
+        public string RijndaelIV { get; set; }
+
+        public string RijndaelKey { get; set; }
     }
 }

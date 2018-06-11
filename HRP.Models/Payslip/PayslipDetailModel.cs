@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
 
     public class PayslipDetailModel
     {
@@ -32,7 +33,7 @@
         public string NetAllowanceAmount { get; set; }
         public IList<MonthlySalaryAdditionModel> SalaryAdditions { get; set; } = new List<MonthlySalaryAdditionModel>();
         public IList<MonthlySalaryDeductionModel> SalaryDeductions { get; set; } = new List<MonthlySalaryDeductionModel>();
-        public IList<MonthlyAllowanceAdditionModel> AllowanceAdditions { get; set; } = new List<MonthlyAllowanceAdditionModel>();
-        public IList<MonthlyAllowanceDeductionModel> AllowanceDeductions { get; set; } = new List<MonthlyAllowanceDeductionModel>();
+        public IList<MonthlyAllowanceAddition> AllowanceAdditions { get; set; } = new List<MonthlyAllowanceAddition>();
+        public IList<MonthlyAllowanceDeduction> AllowanceDeductions { get; set; } = new List<MonthlyAllowanceDeduction>();
     }
 }

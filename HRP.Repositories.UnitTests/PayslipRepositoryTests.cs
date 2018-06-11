@@ -42,9 +42,9 @@
             {
                 new MonthlySalaryDeductionModel { PayrollId = 1 }
             };
-            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel>
+            var allowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel>
             {
-                new MonthlyAllowanceAdditionModel { PayrollId = 1 }
+                new MonthlyAllowanceDetailAdjustmentModel { PayrollId = 1 }
             };
             var allowanceDeductions = new List<MonthlyAllowanceDeductionModel>
             {
@@ -53,7 +53,7 @@
             multiResultReader.ReadAsync<PayslipDetailModel>().Returns(payslips);
             multiResultReader.ReadAsync<MonthlySalaryAdditionModel>().Returns(salaryAdditions);
             multiResultReader.ReadAsync<MonthlySalaryDeductionModel>().Returns(salaryDeductions);
-            multiResultReader.ReadAsync<MonthlyAllowanceAdditionModel>().Returns(allowanceAdditions);
+            multiResultReader.ReadAsync<MonthlyAllowanceDetailAdjustmentModel>().Returns(allowanceAdditions);
             multiResultReader.ReadAsync<MonthlyAllowanceDeductionModel>().Returns(allowanceDeductions);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
             var repository = new PayslipRepository();

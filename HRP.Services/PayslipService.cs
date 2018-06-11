@@ -14,6 +14,7 @@
     using HRP.Criteria.Payslip;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories;
 
     public class PayslipService : IPayslipService
@@ -224,20 +225,20 @@
 
             payslip.AllowanceAdditions = payslip.AllowanceAdditions.Any()
                 ? payslip.AllowanceAdditions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceAdditionModel
+                                                .Select(x => new MonthlyAllowanceAddition
                                                 {
                                                     PayrollId = payslip.PayrollId,
                                                     Type = (int)x
                                                 }).ToList();
             payslip.AllowanceDeductions = payslip.AllowanceDeductions.Any()
                 ? payslip.AllowanceDeductions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceDeductionModel
+                                                .Select(x => new MonthlyAllowanceDeduction
                                                 {
                                                     PayrollId = payslip.PayrollId,
                                                     Type = (int)x
                                                 }).ToList();
 
-            foreach (MonthlyAllowanceAdditionModel addition in payslip.AllowanceAdditions)
+            foreach (var addition in payslip.AllowanceAdditions)
             {
                 addition.NetAllowance = cryptoService.Decrypt(addition.NetAllowance);
 
@@ -248,7 +249,7 @@
                     payslip.AllowanceCurrencyCode);
             }
 
-            foreach (MonthlyAllowanceDeductionModel deduction in payslip.AllowanceDeductions)
+            foreach (MonthlyAllowanceDeduction deduction in payslip.AllowanceDeductions)
             {
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
 

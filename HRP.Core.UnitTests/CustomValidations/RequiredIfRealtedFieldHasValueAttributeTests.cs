@@ -76,7 +76,7 @@
         {
             // Arrange
             var context = GetClientModelValidationContext();
-            var attribute = new RequiredIfRealtedFieldHasValueAttribute
+            var attribute = new RequiredIfRelatedFieldHasValueAttribute
             {
                 ErrorMessage = "Required"
             };
@@ -121,7 +121,7 @@
 
         private class AdditionModelTest
         {
-            [RequiredIfRealtedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessage = "Required")]
+            [RequiredIfRelatedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessage = "Required")]
             public string UnitAmount { get; set; }
 
             public decimal? NoOfDays { get; set; }

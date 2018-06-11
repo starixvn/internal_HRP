@@ -905,9 +905,9 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
-                .Returns(new MonthlyAllowancesViewModel
+                .Returns(new MonthlyAllowances
                 {
-                    Allowance = new MonthlyAllowanceModel()
+                    Allowance = new MonthlyAllowance()
                 });
             baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
@@ -916,14 +916,14 @@
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
 
             var result = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<MonthlyAllowancesViewModel>(result.Model);
+            Assert.IsType<MonthlyAllowances>(result.Model);
         }
 
         [Fact]
         public async Task EditAllowancesPost_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new MonthlyAllowances();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
@@ -940,7 +940,7 @@
         public async Task EditAllowancesPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new MonthlyAllowances();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             controller.ModelState.AddModelError("UnitAmount", "required");
@@ -966,7 +966,7 @@
         public async Task EditAllowancesPost_ModelStateIsValid_ReturnAsExpected()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new MonthlyAllowances();
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
             controller.Url = Substitute.For<IUrlHelper>();

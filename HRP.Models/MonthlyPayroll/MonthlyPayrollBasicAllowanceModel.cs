@@ -1,10 +1,7 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
-    using System.Xml.Serialization;
     using HRP.Core.Enumerations;
-    using HRP.Core.Extensions;
 
-    [XMLName("Row")]
     public class MonthlyPayrollBasicAllowanceModel
     {
         public int PayrollId { get; set; }
@@ -15,13 +12,13 @@
 
         public string CurrencyCode { get; set; }
 
-        public string TotalAmount { get; set; }
+        public SecurityData TotalAmount { get; set; }
 
         public int? DirectBanking1CurrencyId { get; set; }
 
         public string DirectBanking1CurrencyCode { get; set; }
 
-        public string DirectBanking1Amount { get; set; }
+        public SecurityData DirectBanking1Amount { get; set; }
 
         public int? DirectBanking1AccountId { get; set; }
 
@@ -31,7 +28,7 @@
 
         public string DirectBanking2CurrencyCode { get; set; }
 
-        public string DirectBanking2Amount { get; set; }
+        public SecurityData DirectBanking2Amount { get; set; }
 
         public int? DirectBanking2AccountId { get; set; }
 
@@ -41,78 +38,55 @@
 
         public string CashCurrencyCode { get; set; }
 
-        public string CashAmount { get; set; }
+        public SecurityData CashAmount { get; set; }
 
         public int? CashAccountId { get; set; }
 
-        public string SubsistenceAmount { get; set; }
-
-        public string SubsistenceAfterAdjustmentAmount { get; set; }
+        public SecurityData SubsistenceAmount { get; set; }
 
         public int? SubsistenceCurrencyId { get; set; }
 
-        public string HousingAmount { get; set; }
-
-        public string HousingAfterAdjustmentAmount { get; set; }
+        public SecurityData HousingAmount { get; set; }
 
         public int? HousingCurrencyId { get; set; }
 
-        public string HomePassageAmount { get; set; }
-
-        public string HomePassageAfterAdjustmentAmount { get; set; }
+        public SecurityData HomePassageAmount { get; set; }
 
         public int? HomePassageCurrencyId { get; set; }
 
-        public string MobilePhoneAmount { get; set; }
-
-        public string MobilePhoneAfterAdjustmentAmount { get; set; }
+        public SecurityData MobilePhoneAmount { get; set; }
 
         public int? MobilePhoneCurrencyId { get; set; }
 
-        public string DutyMealAmount { get; set; }
-
-        public string DutyMealAfterAdjustmentAmount { get; set; }
+        public SecurityData DutyMealAmount { get; set; }
 
         public int? DutyMealCurrencyId { get; set; }
 
-        public string HPIAmount { get; set; }
-
-        public string HPIAfterAdjustmentAmount { get; set; }
+        public SecurityData HPIAmount { get; set; }
 
         public int? HPICurrencyId { get; set; }
 
-        public string OthersAmount { get; set; }
-
-        public string OthersAfterAdjustmentAmount { get; set; }
+        public SecurityData OthersAmount { get; set; }
 
         public int? OthersCurrencyId { get; set; }
 
-        public string SecondmentAmount { get; set; }
-
-        public string SecondmentAfterAdjustmentAmount { get; set; }
+        public SecurityData SecondmentAmount { get; set; }
 
         public int? SecondmentCurrencyId { get; set; }
 
         public int? FitnessFirstCurrencyId { get; set; }
 
-        public string FitnessFirstAmount { get; set; }
+        public SecurityData FitnessFirstAmount { get; set; }
 
         public int? RoomingChargesCurrencyId { get; set; }
 
-        public string RoomingChargesAmount { get; set; }
+        public SecurityData RoomingChargesAmount { get; set; }
 
-        [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
-        [XMLName("AutoCalculateOn")]
-        public string XmlAutoCalculateOn
-        {
-            get => AutoCalculateOn.ToString();
-        }
+        public SecurityData AfterAdjustmentAmount { get; set; }
 
-        public string AfterAdjustmentAmount { get; set; }
-
-        public string AfterAdjustmentAmountDisplay { get; set; }
+        public SecurityData AfterAdjustmentAmountDisplay { get; set; }
 
         public string Reason { get; set; }
     }

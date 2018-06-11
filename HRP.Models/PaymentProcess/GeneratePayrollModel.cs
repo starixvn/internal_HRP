@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
 
     public class GeneratePayrollModel
     {
@@ -14,7 +15,7 @@
 
         public IEnumerable<MonthlyBasicSalaryModel> MonthlyBasicSalary { get; set; }
 
-        public IEnumerable<MonthlyPayrollBasicAllowanceModel> MonthlyBasicAllowance { get; set; }
+        public IEnumerable<MonthlyPayrollBasicAllowance> MonthlyBasicAllowance { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRate { get; set; }
     }

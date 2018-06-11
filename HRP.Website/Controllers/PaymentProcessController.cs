@@ -17,6 +17,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
+    using HRP.Models.ServiceModels;
     using HRP.Resources;
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IMonthlyPayrollService monthlyPayrollService;
+        private readonly IRijndaelService rijndaelService;
 
         public PaymentProcessController(
             IBaseService baseService,
@@ -35,12 +37,14 @@
             IHostingEnvironment hostingEnvironment,
             ICommonService commonService,
             IPaymentProcessService paymentProcessService,
-            IMonthlyPayrollService monthlyPayrollService) : base(baseService, sessionService)
+            IMonthlyPayrollService monthlyPayrollService,
+            IRijndaelService rijndaelService) : base(baseService, sessionService)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.commonService = commonService;
             this.paymentProcessService = paymentProcessService;
             this.monthlyPayrollService = monthlyPayrollService;
+            this.rijndaelService = rijndaelService;
         }
 
         #region UploadAttendanceAndDSTSalary
@@ -423,9 +427,31 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var viewModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            var keys = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = keys.Item1;
+            sessionService.RijndaelKey = keys.Item2;
+
+            var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter);
+            viewModel.RijndaelIV = keys.Item1;
+            viewModel.RijndaelKey = keys.Item2;
+
+            return View(viewModel);
+        }
+
+        private async Task<MonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
+        {
+            var serviceModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+
+            var viewModel = new MonthlyAllowancesViewModel
+            {
+                BasicAllowance = InitializeBasicAllowanceModel(serviceModel.BasicAllowance),
+                Allowance = InitializeAllowanceModel(serviceModel.Allowance),
+                Additions = InitializeAdjustmentModel(serviceModel.Additions),
+                Deductions = InitializeAdjustmentModel(serviceModel.Deductions)
+            };
             viewModel.EmployeeInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
             viewModel.CompanyId = companyId;
+            viewModel.Month = month;
             viewModel.Filter = filter;
             viewModel.DaysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
@@ -447,7 +473,240 @@
                 && DateTime.Today >= viewModel.EmployeeInfo.StartDate && DateTime.Today <= viewModel.EmployeeInfo.DueDate;
             viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
 
-            return View(viewModel);
+            return viewModel;
+        }
+
+        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAddition> additions)
+        {
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            return additions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
+            {
+                PayrollId = x.PayrollId,
+                EmployeeId = x.EmployeeId,
+                CurrencyId = x.CurrencyId,
+                CurrencyCode = x.CurrencyCode,
+                Type = x.Type,
+                NoOfDays = x.NoOfDays,
+                EncryptedValue = rijndaelService.Encrypt(x.UnitAmount, rijndaelKey, rijndaelIV),
+                TotalAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.TotalAmount, rijndaelKey, rijndaelIV)
+                },
+                TotalAmountToDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.TotalAmountToDisplay, rijndaelKey, rijndaelIV)
+                },
+                NetAllowance = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetAllowance, rijndaelKey, rijndaelIV)
+                },
+                NetAllowanceToDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetAllowanceToDisplay, rijndaelKey, rijndaelIV)
+                }
+            }).ToList();
+        }
+
+        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> additions)
+        {
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            return additions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
+            {
+                PayrollId = x.PayrollId,
+                EmployeeId = x.EmployeeId,
+                CurrencyId = x.CurrencyId,
+                CurrencyCode = x.CurrencyCode,
+                Type = x.Type,
+                NoOfDays = x.NoOfDays,
+                EncryptedValue = rijndaelService.Encrypt(x.UnitAmount, rijndaelKey, rijndaelIV),
+                NetAllowance = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetAllowance, rijndaelKey, rijndaelIV)
+                },
+                NetAllowanceToDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetAllowanceToDisplay, rijndaelKey, rijndaelIV)
+                },
+                TotalAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.TotalAmount, rijndaelKey, rijndaelIV)
+                },
+                TotalAmountToDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.TotalAmountToDisplay, rijndaelKey, rijndaelIV)
+                }
+            }).ToList();
+        }
+
+        private MonthlyAllowanceModel InitializeAllowanceModel(MonthlyAllowance allowance)
+        {
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            return new MonthlyAllowanceModel
+            {
+                PayrollId = allowance.PayrollId,
+                EmployeeId = allowance.EmployeeId,
+                Status = allowance.Status,
+                AutoCalculateOn = allowance.AutoCalculateOn,
+                Total = new CurrencyAmountModel
+                {
+                    CurrencyId = allowance.CurrencyId,
+                    CurrencyCode = allowance.CurrencyCode,
+                    EncryptedValue = rijndaelService.Encrypt(allowance.TotalAmount, rijndaelKey, rijndaelIV)
+                },
+                DST = new CurrencyAmountModel
+                {
+                    CurrencyId = allowance.DSTNetSalaryCurrencyId,
+                    CurrencyCode = allowance.DSTNetSalaryCurrencyCode,
+                    EncryptedValue = rijndaelService.Encrypt(allowance.DSTNetSalaryAmount, rijndaelKey, rijndaelIV)
+                },
+                TotalNet = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(allowance.TotalNetAmount, rijndaelKey, rijndaelIV)
+                },
+                Addition = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(allowance.AdditionAmount, rijndaelKey, rijndaelIV)
+                },
+                AdditionDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(allowance.AdditionAmountDisplay, rijndaelKey, rijndaelIV)
+                },
+                Deduction = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(allowance.DeductionAmount, rijndaelKey, rijndaelIV)
+                },
+                DeductiontDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(allowance.DeductionAmountDisplay, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking1 = new PaymentTransactionModel
+                {
+                    CurrencyId = allowance.DirectBanking1CurrencyId,
+                    CurrencyCode = allowance.DirectBanking1CurrencyCode,
+                    EncryptedValue = rijndaelService.Encrypt(allowance.DirectBanking1Amount, rijndaelKey, rijndaelIV),
+                    AccountId = allowance.DirectBanking1AccountId,
+                    AccountName = allowance.DirectBanking1AccountName
+                },
+                DirectBanking2 = new PaymentTransactionModel
+                {
+                    CurrencyId = allowance.DirectBanking2CurrencyId,
+                    CurrencyCode = allowance.DirectBanking2CurrencyCode,
+                    EncryptedValue = rijndaelService.Encrypt(allowance.DirectBanking2Amount, rijndaelKey, rijndaelIV),
+                    AccountId = allowance.DirectBanking2AccountId,
+                    AccountName = allowance.DirectBanking2AccountName
+                },
+                Cash = new PaymentTransactionModel
+                {
+                    CurrencyId = allowance.CashCurrencyId,
+                    CurrencyCode = allowance.CashCurrencyCode,
+                    EncryptedValue = rijndaelService.Encrypt(allowance.CashAmount, rijndaelKey, rijndaelIV),
+                    AccountId = allowance.CashAccountId,
+                }
+            };
+        }
+
+        private MonthlyPayrollBasicAllowanceModel InitializeBasicAllowanceModel(MonthlyPayrollBasicAllowance basicAllowance)
+        {
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            return new MonthlyPayrollBasicAllowanceModel
+            {
+                PayrollId = basicAllowance.PayrollId,
+                EmployeeId = basicAllowance.EmployeeId,
+                CurrencyId = basicAllowance.CurrencyId,
+                CurrencyCode = basicAllowance.CurrencyCode,
+                AutoCalculateOn = basicAllowance.AutoCalculateOn,
+                Reason = basicAllowance.Reason,
+                TotalAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.TotalAmount, rijndaelKey, rijndaelIV)
+                },
+                AfterAdjustmentAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.AfterAdjustmentAmount, rijndaelKey, rijndaelIV)
+                },
+                AfterAdjustmentAmountDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.AfterAdjustmentAmountDisplay, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking1CurrencyId = basicAllowance.DirectBanking1CurrencyId,
+                DirectBanking1Amount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DirectBanking1Amount, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking1AccountId = basicAllowance.DirectBanking1AccountId,
+                DirectBanking1AccountName = basicAllowance.DirectBanking1AccountName,
+                DirectBanking2CurrencyId = basicAllowance.DirectBanking2CurrencyId,
+                DirectBanking2Amount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DirectBanking2Amount, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking2AccountId = basicAllowance.DirectBanking2AccountId,
+                DirectBanking2AccountName = basicAllowance.DirectBanking2AccountName,
+                CashCurrencyId = basicAllowance.CashCurrencyId,
+                CashAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.CashAmount, rijndaelKey, rijndaelIV)
+                },
+                CashAccountId = basicAllowance.CashAccountId,
+                SubsistenceCurrencyId = basicAllowance.SubsistenceCurrencyId,
+                SubsistenceAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.SubsistenceAmount, rijndaelKey, rijndaelIV)
+                },
+                HousingCurrencyId = basicAllowance.HousingCurrencyId,
+                HousingAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HousingAmount, rijndaelKey, rijndaelIV)
+                },
+                HomePassageCurrencyId = basicAllowance.HomePassageCurrencyId,
+                HomePassageAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HomePassageAmount, rijndaelKey, rijndaelIV)
+                },
+                MobilePhoneCurrencyId = basicAllowance.MobilePhoneCurrencyId,
+                MobilePhoneAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.MobilePhoneAmount, rijndaelKey, rijndaelIV)
+                },
+                DutyMealCurrencyId = basicAllowance.DutyMealCurrencyId,
+                DutyMealAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DutyMealAmount, rijndaelKey, rijndaelIV)
+                },
+                HPICurrencyId = basicAllowance.HPICurrencyId,
+                HPIAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HPIAmount, rijndaelKey, rijndaelIV)
+                },
+                OthersCurrencyId = basicAllowance.OthersCurrencyId,
+                OthersAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.OthersAmount, rijndaelKey, rijndaelIV)
+                },
+                SecondmentCurrencyId = basicAllowance.SecondmentCurrencyId,
+                SecondmentAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.SecondmentAmount, rijndaelKey, rijndaelIV)
+                },
+                RoomingChargesCurrencyId = basicAllowance.RoomingChargesCurrencyId,
+                RoomingChargesAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.RoomingChargesAmount, rijndaelKey, rijndaelIV)
+                },
+                FitnessFirstCurrencyId = basicAllowance.FitnessFirstCurrencyId,
+                FitnessFirstAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.FitnessFirstAmount, rijndaelKey, rijndaelIV)
+                }
+            };
         }
 
         [HttpPost]
@@ -461,7 +720,7 @@
 
             if (ModelState.IsValid)
             {
-                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(viewModel, sessionService.UserId);
+                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(new Models.ServiceModels.MonthlyAllowances(), sessionService.UserId);
                 var redirectTo = string.Empty;
 
                 redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new

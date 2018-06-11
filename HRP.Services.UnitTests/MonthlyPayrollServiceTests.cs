@@ -12,6 +12,7 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using NSubstitute;
     using Xunit;
@@ -323,11 +324,11 @@
         public async Task GetMonthlyAllowancesAsync_ValidPayrollId_ReturnViewModel()
         {
             // Arrange
-            var allowance = new MonthlyAllowanceModel { CurrencyId = 1 };
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel { CurrencyId = 1 };
-            var additions = new List<MonthlyAllowanceAdditionModel>
+            var allowance = new MonthlyAllowance { CurrencyId = 1 };
+            var basicAllowance = new MonthlyPayrollBasicAllowance { CurrencyId = 1 };
+            var additions = new List<MonthlyAllowanceAddition>
             {
-                new MonthlyAllowanceAdditionModel
+                new MonthlyAllowanceAddition
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -338,9 +339,9 @@
                     CurrencyId = 1
                 }
             };
-            var deductions = new List<MonthlyAllowanceDeductionModel>
+            var deductions = new List<MonthlyAllowanceDeduction>
             {
-                new MonthlyAllowanceDeductionModel
+                new MonthlyAllowanceDeduction
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -355,7 +356,7 @@
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns("1");
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
+                .Returns(new Tuple<MonthlyAllowance, IEnumerable<MonthlyAllowanceAddition>, IEnumerable<MonthlyAllowanceDeduction>, MonthlyPayrollBasicAllowance>
                 (allowance, additions, deductions, basicAllowance));
 
             // Act
@@ -375,13 +376,13 @@
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
             baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
-            var viewModel = new MonthlyAllowancesViewModel
+            var viewModel = new MonthlyAllowances
             {
                 EmployeeId = 22,
-                Allowance = new MonthlyAllowanceModel(),
-                Additions = new List<MonthlyAllowanceAdditionModel>
+                Allowance = new MonthlyAllowance(),
+                Additions = new List<MonthlyAllowanceAddition>
                 {
-                    new MonthlyAllowanceAdditionModel
+                    new MonthlyAllowanceAddition
                     {
                         PayrollId = 1,
                         NoOfDays = 20,
@@ -392,9 +393,9 @@
                         CurrencyId = 1
                     }
                 },
-                Deductions = new List<MonthlyAllowanceDeductionModel>
+                Deductions = new List<MonthlyAllowanceDeduction>
                 {
-                    new MonthlyAllowanceDeductionModel
+                    new MonthlyAllowanceDeduction
                     {
                         PayrollId = 1,
                         NoOfDays = 20,
@@ -426,7 +427,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 AutoCalculateOn = payrollAutoCalculateOn,
@@ -467,7 +468,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
@@ -506,7 +507,7 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
@@ -545,11 +546,11 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel { Type = (int)AllowanceType.DutyMeal } };
-            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel { Type = (int)AllowanceType.DutyMeal } };
+            var allowanceAdditions = new List<MonthlyAllowanceAddition> { new MonthlyAllowanceAddition { Type = (int)AllowanceType.DutyMeal } };
+            var allowanceDeductions = new List<MonthlyAllowanceDeduction> { new MonthlyAllowanceDeduction { Type = (int)AllowanceType.DutyMeal } };
             var dstNetSalary = new MonthlyDSTNetSalary { CurrencyId = 1, NetSalaryReceived = "333" };
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 AutoCalculateOn = payrollAutoCalculateOn,
@@ -588,7 +589,7 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAlloance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 EmployeeId = 1,
@@ -627,7 +628,7 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (standardWorkingDays - actualWorkingDays);
 
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
+            var basicAllowance = new MonthlyPayrollBasicAllowance
             {
                 PayrollId = payrollId,
                 EmployeeId = 1,

@@ -15,6 +15,7 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using HRP.Resources;
 
@@ -204,17 +205,17 @@
             return commandResult;
         }
 
-        public async Task<MonthlyAllowancesViewModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month)
+        public async Task<MonthlyAllowances> GetMonthlyAllowancesAsync(int payrollId, DateTime month)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
             var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria).ConfigureAwait(false);
-            var model = new MonthlyAllowancesViewModel
+            var model = new MonthlyAllowances
             {
                 Month = month,
-                Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
+                Allowance = result.Item1 ?? new MonthlyAllowance(),
                 Additions = result.Item2.OrderBy(x => x.Type).ToList(),
                 Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowanceModel()
+                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowance()
             };
 
             DecryptMonthlyBasicAllowance(model.BasicAllowance);
@@ -225,7 +226,7 @@
             return model;
         }
 
-        public async Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesViewModel viewModel, int userId)
+        public async Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowances viewModel, int userId)
         {
             EncryptMonthlyAllowanceAddition(viewModel.Additions);
             EncryptMonthlyAllowanceDeduction(viewModel.Deductions);
@@ -387,14 +388,14 @@
             monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
         }
 
-        public MonthlyAllowanceModel InitializeMonthlyAllowance(
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions,
+        public MonthlyAllowance InitializeMonthlyAllowance(
+            MonthlyPayrollBasicAllowance basicAllowance,
+            IEnumerable<MonthlyAllowanceAddition> allowanceAdditions,
+            IEnumerable<MonthlyAllowanceDeduction> allowanceDeductions,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyDSTNetSalary dstNetSalary)
         {
-            var monthlyAllowance = new MonthlyAllowanceModel
+            var monthlyAllowance = new MonthlyAllowance
             {
                 PayrollId = basicAllowance.PayrollId,
                 EmployeeId = basicAllowance.EmployeeId,
@@ -455,7 +456,7 @@
 
         public void CalculateMonthlyBasicAllowance(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            MonthlyPayrollBasicAllowance monthlyPayrollBasicAllowance,
             DateTime workingMonth,
             DateTime groupStartDate,
             DateTime? groupEndDate)
@@ -497,14 +498,14 @@
             }
         }
 
-        public IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(
+        public IEnumerable<MonthlyAllowanceAddition> InitializeAllowanceAdditions(
             int standardWorkingDays,
             decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            MonthlyPayrollBasicAllowance basicAllowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var additions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                .Select(x => new MonthlyAllowanceAdditionModel
+                .Select(x => new MonthlyAllowanceAddition
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
@@ -533,14 +534,14 @@
             return additions;
         }
 
-        public IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(
+        public IEnumerable<MonthlyAllowanceDeduction> InitializeAllowanceDeductions(
             int standardWorkingDays,
             decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            MonthlyPayrollBasicAllowance basicAllowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var deductions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                .Select(x => new MonthlyAllowanceDeductionModel
+                .Select(x => new MonthlyAllowanceDeduction
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
@@ -571,7 +572,7 @@
 
         private static void CalculateAfterAdjustment(
             decimal totalAmount,
-            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
+            MonthlyPayrollBasicAllowance monthlyPayrollBasicAllowance,
             DateTime workingMonth,
             DateTime groupStartDate,
             DateTime? groupEndDate,
@@ -630,7 +631,7 @@
             }
         }
 
-        private static string CalculateAfterAdjustmentAllowanceDetail(MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance, int? allowanceDetailCurrencyId,
+        private static string CalculateAfterAdjustmentAllowanceDetail(MonthlyPayrollBasicAllowance monthlyPayrollBasicAllowance, int? allowanceDetailCurrencyId,
             string allowanceDetailAmount, int daysInMonth, int startDay, int endDay, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRate)
         {
             if (allowanceDetailCurrencyId.HasValue)
@@ -675,7 +676,7 @@
             return currencyExchangeRate?.ExchangeRate ?? 0;
         }
 
-        private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
+        private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowance basicAllowance)
         {
             basicAllowance.TotalAmount = cryptoService.Decrypt(basicAllowance.TotalAmount);
             basicAllowance.DirectBanking1Amount = cryptoService.Decrypt(basicAllowance.DirectBanking1Amount);
@@ -701,7 +702,7 @@
             }
         }
 
-        private void DecryptMonthlyAllowance(MonthlyAllowanceModel allowance)
+        private void DecryptMonthlyAllowance(MonthlyAllowance allowance)
         {
             allowance.TotalAmount = cryptoService.Decrypt(allowance.TotalAmount);
             allowance.DirectBanking1Amount = cryptoService.Decrypt(allowance.DirectBanking1Amount);
@@ -728,7 +729,7 @@
             }
         }
 
-        private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions, string allowanceCurrencyCode)
+        private void DecryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAddition> additions, string allowanceCurrencyCode)
         {
             foreach (var addition in additions)
             {
@@ -753,7 +754,7 @@
             }
         }
 
-        private void DecryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeductionModel> deductions, string allowanceCurrencyCode)
+        private void DecryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeduction> deductions, string allowanceCurrencyCode)
         {
             foreach (var deduction in deductions)
             {
@@ -796,9 +797,9 @@
             }
         }
 
-        private void EncryptMonthlyAllowanceAddition(IEnumerable<MonthlyAllowanceAdditionModel> additions)
+        private void EncryptMonthlyAllowanceAddition(IEnumerable<MonthlyAllowanceAddition> additions)
         {
-            foreach (MonthlyAllowanceAdditionModel addition in additions)
+            foreach (var addition in additions)
             {
                 addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
                 addition.TotalAmount = cryptoService.Encrypt(addition.TotalAmount);
@@ -806,9 +807,9 @@
             }
         }
 
-        private void EncryptMonthlyAllowanceDeduction(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
+        private void EncryptMonthlyAllowanceDeduction(IEnumerable<MonthlyAllowanceDeduction> deductions)
         {
-            foreach (MonthlyAllowanceDeductionModel deduction in deductions)
+            foreach (var deduction in deductions)
             {
                 deduction.UnitAmount = cryptoService.Encrypt(deduction.UnitAmount);
                 deduction.TotalAmount = cryptoService.Encrypt(deduction.TotalAmount);
@@ -861,7 +862,7 @@
             }
         }
 
-        private static int? GetCurrencyBaseOnAllowanceType(AllowanceType type, MonthlyPayrollBasicAllowanceModel basicAllowance)
+        private static int? GetCurrencyBaseOnAllowanceType(AllowanceType type, MonthlyPayrollBasicAllowance basicAllowance)
         {
             switch (type)
             {
@@ -877,7 +878,7 @@
             }
         }
 
-        private static void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance)
+        private static void CalculateAutoBasicAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyPayrollBasicAllowance monthlyPayrollBasicAllowance)
         {
             decimal.TryParse(monthlyPayrollBasicAllowance.TotalAmount, out decimal totalAmount);
 
@@ -931,7 +932,7 @@
             }
         }
 
-        private static void CalculateAutoAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
+        private static void CalculateAutoAllowance(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowance monthlyAllowance)
         {
             decimal.TryParse(monthlyAllowance.TotalAmount, out decimal totalAmount);
 
@@ -984,7 +985,7 @@
             monthlyAllowance.Status = autoAmount >= 0 ? MonthlyPayrollStatus.Default : MonthlyPayrollStatus.Unsatisfied;
         }
 
-        private static void CalculateTotalNetAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowanceModel monthlyAllowance)
+        private static void CalculateTotalNetAmount(IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates, MonthlyAllowance monthlyAllowance)
         {
             decimal.TryParse(monthlyAllowance.TotalAmount, out decimal totalAmount);
 

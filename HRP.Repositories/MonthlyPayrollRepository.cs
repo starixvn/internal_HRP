@@ -6,6 +6,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
 
     public class MonthlyPayrollRepository : IMonthlyPayrollRepository
     {
@@ -33,24 +34,24 @@
             }
         }
 
-        public async Task<Tuple<MonthlyAllowanceModel,
-            IEnumerable<MonthlyAllowanceAdditionModel>,
-            IEnumerable<MonthlyAllowanceDeductionModel>,
-            MonthlyPayrollBasicAllowanceModel>> GetMonthlyAllowancesAsync(ICriteria criteria)
+        public async Task<Tuple<MonthlyAllowance,
+            IEnumerable<MonthlyAllowanceAddition>,
+            IEnumerable<MonthlyAllowanceDeduction>,
+            MonthlyPayrollBasicAllowance>> GetMonthlyAllowancesAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (var multiResults = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var allowance = multiResults.ReadFirstOrDefault<MonthlyAllowanceModel>();
-                    var additions = multiResults.Read<MonthlyAllowanceAdditionModel>();
-                    var deductions = multiResults.Read<MonthlyAllowanceDeductionModel>();
-                    var basicAllowance = multiResults.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>();
+                    var allowance = multiResults.ReadFirstOrDefault<MonthlyAllowance>();
+                    var additions = multiResults.Read<MonthlyAllowanceAddition>();
+                    var deductions = multiResults.Read<MonthlyAllowanceDeduction>();
+                    var basicAllowance = multiResults.ReadFirstOrDefault<MonthlyPayrollBasicAllowance>();
 
-                    var tuple = new Tuple<MonthlyAllowanceModel,
-                        IEnumerable<MonthlyAllowanceAdditionModel>,
-                        IEnumerable<MonthlyAllowanceDeductionModel>,
-                        MonthlyPayrollBasicAllowanceModel>(allowance, additions, deductions, basicAllowance);
+                    var tuple = new Tuple<MonthlyAllowance,
+                        IEnumerable<MonthlyAllowanceAddition>,
+                        IEnumerable<MonthlyAllowanceDeduction>,
+                        MonthlyPayrollBasicAllowance>(allowance, additions, deductions, basicAllowance);
 
                     return tuple;
                 }

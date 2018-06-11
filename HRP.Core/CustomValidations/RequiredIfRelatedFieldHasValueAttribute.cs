@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class RequiredIfRealtedFieldHasValueAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class RequiredIfRelatedFieldHasValueAttribute : ValidationAttribute, IClientModelValidator
     {
         public string RelatedName { get; set; }
 

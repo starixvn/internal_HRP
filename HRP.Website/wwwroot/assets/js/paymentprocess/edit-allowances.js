@@ -1,9 +1,13 @@
-﻿var editAllowances = (function ($, commonFunctions) {
+﻿var editAllowances = (function ($, commonFunctions, CryptoJS) {
     var totalAmountCurrencyId;
     var $editAllowanceForm;
     var workingDays;
     var daysInMonth;
     var vietnamCurrencyId;
+    var rijndaelIV;
+    var rijndaelKey;
+    var $plainValues;
+    var $encryptedValues;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency, roundingThousand = true) {
         if (currency === vietnamCurrencyId)
@@ -37,6 +41,7 @@
     }
 
     function calculateTotalAddition() {
+        debugger;
         var totalAddition = new BigNumber(0);
         $('.addition.net-allowance').each(function (i, element) {
             totalAddition = totalAddition.plus(Number(element.value));
@@ -57,44 +62,44 @@
     }
 
     function calculateTotalAmount() {
-        var totalAmount = new BigNumber($('#BasicAllowance_AfterAdjustmentAmount').val());
+        var totalAmount = new BigNumber($('#BasicAllowance_AfterAdjustmentAmount_PlainValue').val());
 
         totalAmount = totalAmount.plus(Number($("#total-addition").val()));
         totalAmount = totalAmount.minus(Number($("#total-deduction").val()));
 
         var fitnessFirstCurrencyId = $('#BasicAllowance_FitnessFirstCurrencyId').val();
         if (fitnessFirstCurrencyId !== '') {
-            var fitnessFirstAmount = new BigNumber(Number($('#BasicAllowance_FitnessFirstAmount').val()));
+            var fitnessFirstAmount = new BigNumber(Number($('#BasicAllowance_FitnessFirstAmount_PlainValue').val()));
             var fitnessFirstExchangeRate = Number($('input[data-from-currency="' + fitnessFirstCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
             totalAmount = totalAmount.minus(fitnessFirstAmount.mul(fitnessFirstExchangeRate));
         }
 
         var roomingChargesCurrencyId = $('#BasicAllowance_RoomingChargesCurrencyId').val();
         if (roomingChargesCurrencyId !== '') {
-            var roomingChargesAmount = new BigNumber(Number($('#BasicAllowance_RoomingChargesAmount').val()));
+            var roomingChargesAmount = new BigNumber(Number($('#BasicAllowance_RoomingChargesAmount_PlainValue').val()));
             var roomingChargesExchangeRate = Number($('input[data-from-currency="' + roomingChargesCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
             totalAmount = totalAmount.minus(roomingChargesAmount.mul(roomingChargesExchangeRate));
         }
 
         var totalAmountDisplay = totalAmount.roundWithCurrency(0, totalAmountCurrencyId).toString();
         $('#total-amount-display').val(totalAmountDisplay);
-        $('#Allowance_TotalAmount').val(totalAmountDisplay);
+        $('#Allowance_Total_PlainValue').val(totalAmountDisplay);
     }
 
     function calculateTotalNetAmount() {
-        var totalNetAmount = new BigNumber(Number($('#Allowance_TotalAmount').val()));
-        var dstCurrencyId = $('#Allowance_DSTNetSalaryCurrencyId').val();
+        var totalNetAmount = new BigNumber(Number($('#Allowance_Total_PlainValue').val()));
+        var dstCurrencyId = $('#Allowance_DST_CurrencyId').val();
         if (dstCurrencyId !== '') {
-            var dstAmount = new BigNumber(Number($('#Allowance_DSTNetSalaryAmount').val()));
+            var dstAmount = new BigNumber(Number($('#Allowance_DST_PlainValue').val()));
             var exchangeRate = Number($('input[data-from-currency="' + dstCurrencyId + '"][data-to-currency="' + totalAmountCurrencyId + '"]').val());
             totalNetAmount = totalNetAmount.minus(dstAmount.mul(exchangeRate));
         }
 
-        $('#Allowance_TotalNetAmount').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId, false).toStringWithCurrency(totalAmountCurrencyId, 2));
+        $('#Allowance_TotalNet_PlainValue').val(totalNetAmount.roundWithCurrency(2, totalAmountCurrencyId, false).toStringWithCurrency(totalAmountCurrencyId, 2));
     }
 
     function calculateAutoAllowance() {
-        var totalAmount = new BigNumber(Number($('#Allowance_TotalAmount').val()));
+        var totalAmount = new BigNumber(Number($('#Allowance_Total_PlainValue').val()));
 
         if (totalAmountCurrencyId === '')
             return;
@@ -126,7 +131,7 @@
     }
 
     function initInputMask() {
-        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount, #BasicAllowance_FitnessFirstAmount, #BasicAllowance_AfterAdjustmentAmountDisplay, #Allowance_DSTNetSalaryAmount')
+        $('.unit-amount, .no-of-days, .total-amount-display, #BasicAllowance_RoomingChargesAmount_PlainValue, #BasicAllowance_FitnessFirstAmount_PlainValue, #BasicAllowance_AfterAdjustmentAmountDisplay_PlainValue, #Allowance_DST_PlainValue')
             .inputmask({
                 alias: 'numeric',
                 autoGroup: true,
@@ -148,7 +153,7 @@
             removeMaskOnSubmit: true
         });
 
-        $('#Allowance_TotalNetAmount').inputmask({
+        $('#Allowance_TotalNet_PlainValue').inputmask({
             alias: 'numeric',
             autoGroup: true,
             digits: 2,
@@ -264,9 +269,9 @@
             validatedInvalidRelatedElements(e.target);
         });
 
-        $('#Allowance_CashAccountId').on('change', function (e) {
-            validatedInvalidRelatedElements(e.target);
-        });
+        //$('#Allowance_Cash_AccountId').on('change', function (e) {
+        //    validatedInvalidRelatedElements(e.target);
+        //});
 
         $('input[name="Allowance.AutoCalculateOn"]').on('change', function () {
             if (this.checked) {
@@ -367,25 +372,76 @@
             calculateTotalNetAmount();
         });
 
-        $('#Allowance_DSTNetSalaryAmount, #Allowance_DSTNetSalaryCurrencyId').on('change', function (e) {
-            roundingAmount($('#Allowance_DSTNetSalaryCurrencyId'), $('#Allowance_DSTNetSalaryAmount'), 2)
+        $('#Allowance_DST_PlainValue, #Allowance_DST_CurrencyId').on('change', function (e) {
+            roundingAmount($('#Allowance_DST_CurrencyId'), $('#Allowance_DST_PlainValue'), 2)
             validatedInvalidRelatedElements(e.target);
             calculateTotalNetAmount();
         });
 
         $('.btn-submit', $editAllowanceForm).on('click', function () {
             $('input[name="submitAction"]', $editAllowanceForm).val($(this).val());
+            encryptData();
+            $plainValues.attr('disabled', 'disabled');
             $editAllowanceForm.submit();
         });
     }
 
+    function decryptData() {
+        $encryptedValues.each(function () {
+            var $this = $(this);
+
+            if ($this.val() !== '') {
+                var decrypt = CryptoJS.AES.decrypt(
+                    $this.val(),
+                    rijndaelKey,
+                    {
+                        keySize: 128 / 8,
+                        iv: rijndaelIV,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+
+                $($this.data('plain-target')).val(decrypt.toString(CryptoJS.enc.Utf8));
+            }
+        });
+    }
+
+    function encryptData() {
+        $plainValues.each(function () {
+            var $this = $(this);
+
+            if ($this.val() !== '') {
+                var encrypt = CryptoJS.AES.encrypt(
+                    $this.val(),
+                    rijndaelKey,
+                    {
+                        keySize: 128 / 8,
+                        iv: rijndaelIV,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+
+                $($this.data('encrypt-target')).val(encrypt.toString());
+            } else {
+                $($this.data('encrypt-target')).val('');
+            }
+        })
+    }
+
     function initModule() {
+        rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
+        rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
+        $plainValues = $('.plain-value');
+        $encryptedValues = $('.encrypted-value');
         $editAllowanceForm = $('#edit-allowances-form');
-        totalAmountCurrencyId = $('#Allowance_CurrencyId').val();
+        totalAmountCurrencyId = $('#Allowance_Total_CurrencyId').val();
         workingDays = $('#EmployeeInfo_WorkingDays').val();
         daysInMonth = $('#DaysInMonth').val();
         vietnamCurrencyId = $('#VietnamCurrencyId').val();
 
+        decryptData();
+        $('#total-amount-display').val($('#Allowance_Total_PlainValue').val());
+        
         initSelect2();
         initInputMask();
 
@@ -440,7 +496,7 @@
             }
         }
     };
-}(jQuery, commonFunctions));
+}(jQuery, commonFunctions, CryptoJS));
 
 $(document).ready(function () {
     editAllowances.initModule();

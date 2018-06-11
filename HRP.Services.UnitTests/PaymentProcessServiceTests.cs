@@ -531,7 +531,7 @@
             {
                 MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = 1, Month = DateTime.Today } },
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel>(),
-                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel>(),
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowance>(),
                 MonthlyAttendance = new List<MonthlyAttendance>(),
                 MonthlyDSTNetSalary = new List<MonthlyDSTNetSalary>(),
                 CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
@@ -565,27 +565,27 @@
             {
                 MonthlyPayroll = new List<MonthlyPayroll> { new MonthlyPayroll { EmployeeId = employeeId, Month = month } },
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = employeeId } },
-                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = employeeId } },
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowance> { new MonthlyPayrollBasicAllowance { EmployeeId = employeeId } },
                 MonthlyAttendance = new List<MonthlyAttendance>(),
                 MonthlyDSTNetSalary = new List<MonthlyDSTNetSalary> { new MonthlyDSTNetSalary { EmployeeId = employeeId } },
                 CurrencyExchangeRate = new List<CurrencyExchangeRateModel>()
             };
-            var mockAllowance = Substitute.For<MonthlyAllowanceModel>();
-            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() };
+            var mockAllowance = Substitute.For<MonthlyAllowance>();
+            var allowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel> { new MonthlyAllowanceDetailAdjustmentModel() };
             var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() };
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
                 .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
-            monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),
-                Arg.Any<IEnumerable<MonthlyAllowanceAdditionModel>>(),
+            monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowance>(),
+                Arg.Any<IEnumerable<MonthlyAllowanceDetailAdjustmentModel>>(),
                 Arg.Any<IEnumerable<MonthlyAllowanceDeductionModel>>(),
                 Arg.Any<IEnumerable<CurrencyExchangeRateModel>>(),
                 Arg.Any<MonthlyDSTNetSalary>()).Returns(mockAllowance);
             monthlyPayrollService.InitializeAllowanceAdditions(Arg.Any<int>(), Arg.Any<decimal>(),
-                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceAdditions);
+                Arg.Any<MonthlyPayrollBasicAllowance>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceAdditions);
             monthlyPayrollService.InitializeAllowanceDeductions(Arg.Any<int>(), Arg.Any<decimal>(),
-                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceDeductions);
+                Arg.Any<MonthlyPayrollBasicAllowance>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceDeductions);
 
             // Act
             var actual = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);

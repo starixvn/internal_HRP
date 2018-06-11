@@ -53,8 +53,8 @@
             var employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { CostCenterCode = "CC", SectionCode = "SC" } };
             var monthlyBasicSalary = new List<MonthlyBasicSalaryModel>();
             var monthlySalary = new List<MonthlySalaryModel>();
-            var monthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel>();
-            var monthlyAllowance = new List<MonthlyAllowanceModel>();
+            var monthlyBasicAllowance = new List<MonthlyPayrollBasicAllowance>();
+            var monthlyAllowance = new List<MonthlyAllowance>();
             var currencyExchangeRate = new List<CurrencyExchangeRateModel>();
 
             var criteria = FakeCriteria();
@@ -63,8 +63,8 @@
             multiResult.ReadAsync<EmployeeBasicInfo>().Returns(employees);
             multiResult.ReadAsync<MonthlyBasicSalaryModel>().Returns(monthlyBasicSalary);
             multiResult.ReadAsync<MonthlySalaryModel>().Returns(monthlySalary);
-            multiResult.ReadAsync<MonthlyPayrollBasicAllowanceModel>().Returns(monthlyBasicAllowance);
-            multiResult.ReadAsync<MonthlyAllowanceModel>().Returns(monthlyAllowance);
+            multiResult.ReadAsync<MonthlyPayrollBasicAllowance>().Returns(monthlyBasicAllowance);
+            multiResult.ReadAsync<MonthlyAllowance>().Returns(monthlyAllowance);
             multiResult.ReadAsync<CurrencyExchangeRateModel>().Returns(currencyExchangeRate);
             var reportRepository = new ReportRepository();
 

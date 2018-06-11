@@ -70,7 +70,7 @@
             multiResult.ReadAsync<MonthlyAttendance>().Returns(expected.MonthlyAttendance);
             multiResult.ReadAsync<MonthlyDSTNetSalary>().Returns(expected.MonthlyDSTNetSalary);
             multiResult.ReadAsync<MonthlyBasicSalaryModel>().Returns(expected.MonthlyBasicSalary);
-            multiResult.ReadAsync<MonthlyPayrollBasicAllowanceModel>().Returns(expected.MonthlyBasicAllowance);
+            multiResult.ReadAsync<MonthlyPayrollBasicAllowance>().Returns(expected.MonthlyBasicAllowance);
             multiResult.ReadAsync<CurrencyExchangeRateModel>().Returns(expected.CurrencyExchangeRate);
             var repository = new PaymentProcessRepository();
 

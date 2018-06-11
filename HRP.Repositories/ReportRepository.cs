@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Models.ServiceModels;
     using Models.Currency;
     using Models.Employee;
     using Models.MonthlyPayroll;
@@ -45,8 +46,8 @@
                         Employees = await results.ReadAsync<EmployeeBasicInfo>().ConfigureAwait(false),
                         MonthlyBasicSalary = await results.ReadAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false),
                         MonthlySalary = await results.ReadAsync<MonthlySalaryModel>().ConfigureAwait(false),
-                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false),
-                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowanceModel>().ConfigureAwait(false),
+                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowance>().ConfigureAwait(false),
+                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowance>().ConfigureAwait(false),
                         CurrencyExchangeRate = await results.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false),
                         CurrencyList = await results.ReadAsync<Currency>().ConfigureAwait(false)
                     };

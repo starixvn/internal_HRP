@@ -104,7 +104,7 @@
             {
                 SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                 SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
-                AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
+                AllowanceAdditions = new List<MonthlyAllowanceDetailAdjustmentModel> { new MonthlyAllowanceDetailAdjustmentModel() },
                 AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
             };
             var payslipController = GetPayslipController();

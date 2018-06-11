@@ -5,6 +5,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using NSubstitute;
     using Xunit;
 
@@ -62,9 +63,9 @@
         public async Task GetMonthlyAllowancesAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
         {
             // Arrange
-            var additions = new List<MonthlyAllowanceAdditionModel>
+            var additions = new List<MonthlyAllowanceAddition>
             {
-                new MonthlyAllowanceAdditionModel
+                new MonthlyAllowanceAddition
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -75,9 +76,9 @@
                     CurrencyId = 1
                 }
             };
-            var deductions = new List<MonthlyAllowanceDeductionModel>
+            var deductions = new List<MonthlyAllowanceDeduction>
             {
-                new MonthlyAllowanceDeductionModel
+                new MonthlyAllowanceDeduction
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -89,15 +90,15 @@
                 }
             };
 
-            var allowance = new MonthlyAllowanceModel();
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
+            var allowance = new MonthlyAllowance();
+            var basicAllowance = new MonthlyPayrollBasicAllowance();
 
             var multiResultReader = FakeMultipleResultReader();
-            multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
-            multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyAllowance>().Returns(allowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowance>().Returns(basicAllowance);
 
-            multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
-            multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
+            multiResultReader.Read<MonthlyAllowanceAddition>().Returns(additions);
+            multiResultReader.Read<MonthlyAllowanceDeduction>().Returns(deductions);
 
             var criteria = FakeCriteria();
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);

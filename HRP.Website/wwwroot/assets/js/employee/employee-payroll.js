@@ -2,8 +2,8 @@
     var vndCurrencyId;
     var $plainValues;
     var $form;
-    var rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
-    var rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
+    var rijndaelIV;
+    var rijndaelKey;
 
     function checkRelatedElementsHaveValue(className, element) {
         return $(className).not(element).serializeArray().filter(function (item) {
@@ -651,6 +651,8 @@
                     });
 
                 $($this.data('encrypt-target')).val(encrypt.toString());
+            } else {
+                $($this.data('encrypt-target')).val('');
             }
         })
     }
