@@ -17,9 +17,9 @@
             object instance = validationContext.ObjectInstance;
 
             Type type = instance.GetType();
-            object proprtyvalue = type.GetProperty(RelatedFieldName)?.GetValue(instance, null);
+            object propertyvalue = type.GetProperty(RelatedFieldName)?.GetValue(instance, null);
 
-            if (proprtyvalue?.ToString() == DesiredValue.ToString() && value == null)
+            if (propertyvalue?.ToString() == DesiredValue.ToString() && value == null)
             {
                 return new ValidationResult(GetErrorMessage(validationContext.DisplayName));
             }

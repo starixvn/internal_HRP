@@ -10,22 +10,22 @@
     {
         public static string GetDescription(Enum enumType)
         {
-            string desciption = string.Empty;
+            string description = string.Empty;
 
             if (enumType != null)
             {
                 FieldInfo fi = enumType.GetType().GetField(enumType.ToString());
                 DescriptionAttribute[] attributes =
                     (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-                desciption = attributes.Length > 0 ? attributes[0].Description : enumType.ToString();
+                description = attributes.Length > 0 ? attributes[0].Description : enumType.ToString();
             }
 
-            return desciption;
+            return description;
         }
 
         /// <summary>
         /// Retrieves the <see cref="DisplayAttribute.Name" /> property on the <see cref="DisplayAttribute" />
-        /// of the current enum value, or the enum's member name if the <see cref="DisplayAttribute" /> is not present.
+        /// of the current enum value, or the enum member name if the <see cref="DisplayAttribute" /> is not present.
         /// </summary>
         /// <param name="val">This enum member to get the name for.</param>
         /// <returns>The <see cref="DisplayAttribute.Name" /> property on the <see cref="DisplayAttribute" /> attribute, if present.</returns>
