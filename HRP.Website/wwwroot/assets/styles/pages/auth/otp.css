@@ -365,7 +365,7 @@ body {
   opacity: 0.3;
 }
 
-.notication-otp {
+.notification-otp {
   -webkit-border-radius: 4px;
   -khtml-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -385,7 +385,7 @@ body {
   color: #666;
 }
 
-.notication-otp .title {
+.notification-otp .title {
   margin-bottom: 12px;
   color: #333;
   font-size: 16px;
@@ -393,12 +393,12 @@ body {
   font-weight: bold;
 }
 
-.notication-otp .info {
+.notification-otp .info {
   margin-bottom: 16px;
   line-height: 18px;
 }
 
-.notication-otp .info li {
+.notification-otp .info li {
   margin-bottom: 8px;
 }
 

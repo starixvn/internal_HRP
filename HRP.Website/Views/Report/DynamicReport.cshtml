@@ -37,10 +37,10 @@
         <select multiple id="select-list">
             @foreach (var group in Model.Groups)
             {
-                <optgroup label="@group.Name" id="opt-@group.GroupdId">
+                <optgroup label="@group.Name" id="opt-@group.GroupId">
                     @foreach (var item in group.Items)
                     {
-                        <option data-parent-id="#opt-@group.GroupdId" value="@item.Id">@item.Name</option>
+                        <option data-parent-id="#opt-@group.GroupId" value="@item.Id">@item.Name</option>
                     }
                 </optgroup>
             }

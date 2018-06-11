@@ -296,7 +296,7 @@
 
         $('.select2-ajax').select2({
             ajax: {
-                url: $('#get-bank-acount-url').val(),
+                url: $('#get-bank-account-url').val(),
                 data: function (params) {
                     var query = {
                         employeeId: $('#EmployeeId').val(),

@@ -354,7 +354,7 @@
                     <select class="hidden js-bankType">
                         <option value="@((int) BankTypes.Ebanking)" selected="selected"></option>
                     </select>
-                    <select class="control js-select2-validation js-select2-bankAcount" data-group="ebanking"
+                    <select class="control js-select2-validation js-select2-bankAccount" data-group="ebanking"
                             asp-for="MonthlySalary.EbankingAccountId">
                         <option value="@Model.MonthlySalary.EbankingAccountId">@Model.MonthlySalary.EbankingAccountName</option>
                     </select>
@@ -364,7 +364,7 @@
                     <select class="hidden js-bankType">
                         <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
-                    <select class="control js-select2-validation js-select2-bankAcount" data-group="directbanking1"
+                    <select class="control js-select2-validation js-select2-bankAccount" data-group="directbanking1"
                             asp-for="MonthlySalary.DirectBanking1AccountId">
                         <option value="@Model.MonthlySalary.DirectBanking1AccountId">@Model.MonthlySalary.DirectBanking1AccountName</option>
                     </select>
@@ -374,7 +374,7 @@
                     <select class="hidden js-bankType">
                         <option value="@((int) BankTypes.DirectBanking)" selected></option>
                     </select>
-                    <select class="control js-select2-validation js-select2-bankAcount" data-group="directbanking2"
+                    <select class="control js-select2-validation js-select2-bankAccount" data-group="directbanking2"
                             asp-for="MonthlySalary.DirectBanking2AccountId">
                         <option value="@Model.MonthlySalary.DirectBanking2AccountId">@Model.MonthlySalary.DirectBanking2AccountName</option>
                     </select>

@@ -9,7 +9,7 @@
         DepartmentId: '.js-departmentId',
         CostCenterId: '.js-costCenterId',
         SectionId: '.js-sectionId',
-        JobCategoryId: '.js-jobCateogryId',
+        JobCategoryId: '.js-jobCategoryId',
         GradeLevelId: '.js-gradeLevelId',
         CreateItemModal: '#createItemModal',
         CreateItemModalContent: '#createItemModalContent'

@@ -71,7 +71,7 @@
             {
                 var dynamicReportGroup = new DynamicReportGroup
                 {
-                    GroupdId = int.Parse(groupElement.Attribute("GroupdId").Value),
+                    GroupId = int.Parse(groupElement.Attribute("GroupId").Value),
                     Name = groupElement.Attribute("Name").Value,
                     Items = GetItems(groupElement.Elements("Item"))
                 };

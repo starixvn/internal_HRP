@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Root>
-  <Group GroupdId="1" Name="Personal Detail">
+  <Group GroupId="1" Name="Personal Detail">
     <Item Id="1" Name="Full Name">
       <ColumnGroup GroupId="1" GroupName="Full Name">
         <MappingColumn PropertyName="FullName" HeaderName="Full Name" IsEncrypted="false" />
@@ -132,7 +132,7 @@
       </ColumnGroup>
     </Item>
   </Group>
-  <Group GroupdId="2" Name="Employment">
+  <Group GroupId="2" Name="Employment">
     <Item Id="27" Name="Company BVI">
       <ColumnGroup GroupId="1" GroupName="Company BVI">
         <MappingColumn PropertyName="Company" HeaderName="Company BVI" IsEncrypted="false" />
@@ -516,7 +516,7 @@
       </ColumnGroup>
     </Item>
   </Group>
-  <Group GroupdId="3" Name="Payroll">
+  <Group GroupId="3" Name="Payroll">
     <Item Id="102" Name="Basic Salary">
       <ColumnGroup GroupId="1" GroupName="Basic Salary">
         <MappingColumn PropertyName="CurrencyCode" HeaderName="Basic Salary - Currency" IsEncrypted="false" />

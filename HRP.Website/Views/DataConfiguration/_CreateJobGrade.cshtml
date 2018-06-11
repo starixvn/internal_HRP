@@ -20,7 +20,7 @@
 
         <label class="text -has-required">@ViewLang.JobCategory</label>
         <div class="group-control">
-            <select class="control js-jobCateogryId js-select2 js-search-suggestion" asp-for="JobGrade.JobCategoryId" asp-items="@Model.JobCategoryList"
+            <select class="control js-jobCategoryId js-select2 js-search-suggestion" asp-for="JobGrade.JobCategoryId" asp-items="@Model.JobCategoryList"
                     data-val-required="@string.Format(Message.ItemNameRequired,ViewLang.JobCategory)">
                 <option value=""></option>
             </select>

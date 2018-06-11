@@ -179,8 +179,8 @@ body {
     }
 }
 
-// Notication OTP
-.notication-otp {
+// Notification OTP
+.notification-otp {
     @include border-radius(4px);
     @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");  
     width: 690px;
