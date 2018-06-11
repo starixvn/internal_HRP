@@ -84,7 +84,7 @@
         public void DecryptObject(object obj, string rijndaelKey, string rijndaelIV)
         {
             var securityObjects = obj.GetType().GetProperties()
-                .Where(x => x.GetValue(obj).GetType().IsSubclassOf(typeof(SecurityData)) || x.GetValue(obj).GetType() == typeof(SecurityData))
+                .Where(x => x.GetValue(obj) != null && (x.GetValue(obj).GetType().IsSubclassOf(typeof(SecurityData)) || x.GetValue(obj).GetType() == typeof(SecurityData)))
                 .Select(x => x.GetValue(obj));
 
             foreach(var securityObject in securityObjects)

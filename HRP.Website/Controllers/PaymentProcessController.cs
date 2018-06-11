@@ -509,12 +509,12 @@
             }).ToList();
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> additions)
+        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> deductions)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
 
-            return additions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
+            return deductions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
             {
                 PayrollId = x.PayrollId,
                 EmployeeId = x.EmployeeId,
