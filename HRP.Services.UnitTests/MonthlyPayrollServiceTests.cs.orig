@@ -13,6 +13,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.ServiceModels;
+    using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
     using HRP.Repositories;
     using NSubstitute;
     using Xunit;
@@ -108,17 +109,17 @@
             {
                 CompanyId = 1
             };
-            var tuple = new Tuple<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>,
-                IEnumerable<MonthlyPayrollBasicSalaryViewModel>,
-                IEnumerable<MonthlyPayrollBasicSalaryViewModel>>(
-                    new List<MonthlyPayrollEmployeeInfoViewModel> { new MonthlyPayrollEmployeeInfoViewModel { PayrollId = 1 } },
-                    new List<MonthlyPayrollBasicSalaryViewModel> { new MonthlyPayrollBasicSalaryViewModel { PayrollId = 1 } },
-                    new List<MonthlyPayrollBasicSalaryViewModel> { new MonthlyPayrollBasicSalaryViewModel { PayrollId = 1 } });
+            var tuple = new Tuple<IEnumerable<EmployeeMonthlyPayrollModel>,
+                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>,
+                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>>(
+                    new List<EmployeeMonthlyPayrollModel> { new EmployeeMonthlyPayrollModel { PayrollId = 1 } },
+                    new List<EmployeeMonthlyPayrollBasicSalaryModel> { new EmployeeMonthlyPayrollBasicSalaryModel { PayrollId = 1 } },
+                    new List<EmployeeMonthlyPayrollBasicSalaryModel> { new EmployeeMonthlyPayrollBasicSalaryModel { PayrollId = 1 } });
             var monthlyPayrollService = GetMonthlyPayrollService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
-            baseService.FetchMultipleAsync<MonthlyPayrollEmployeeInfoViewModel,
-                    MonthlyPayrollBasicSalaryViewModel,
-                    MonthlyPayrollBasicSalaryViewModel>(Arg.Any<GetMonthlyPayrollCriteria>()).Returns(tuple);
+            baseService.FetchMultipleAsync<EmployeeMonthlyPayrollModel,
+                    EmployeeMonthlyPayrollBasicSalaryModel,
+                    EmployeeMonthlyPayrollBasicSalaryModel>(Arg.Any<GetMonthlyPayrollCriteria>()).Returns(tuple);
 
             // Act
             var actual = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
@@ -589,11 +590,7 @@
             decimal dutyMealAmount = 10 * standardWorkingDays;
             decimal totalAmount = unitAmount * (actualWorkingDays - standardWorkingDays);
 
-<<<<<<< HEAD
-            var basicAllowance = new MonthlyPayrollBasicAllowanceModel
-=======
             var basicAlloance = new MonthlyPayrollBasicAllowance
->>>>>>> #96777 - edit allowances
             {
                 PayrollId = payrollId,
                 EmployeeId = 1,

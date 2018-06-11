@@ -20,7 +20,7 @@
         {
             if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
             {
-                 return roundingThousand ? Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000 : Math.Round(amount, 0, MidpointRounding.AwayFromZero);
+                return roundingThousand ? Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000 : Math.Round(amount, 0, MidpointRounding.AwayFromZero);
             }
 
             return Math.Round(amount, digits, MidpointRounding.AwayFromZero);
@@ -52,6 +52,24 @@
             if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
             {
                 result = amount.ToString("#,##0");
+            }
+
+            return result;
+        }
+
+        public static string FormatAmount(string amount, string currencyCode)
+        {
+            var result = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(amount))
+            {
+                decimal.TryParse(amount, out decimal number);
+                result = number.ToString("#,##0.00");
+
+                if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
+                {
+                    result = number.ToString("#,##0");
+                }
             }
 
             return result;

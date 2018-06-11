@@ -12,6 +12,7 @@
     using Criteria;
     using HRP.Core.Criteria;
     using HRP.Core.Services;
+    using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -673,9 +674,9 @@
             var employeeId = 31;
             var month = DateTime.Now;
             var filterInfo = new MonthlyPayrollFilterInfoModel();
-            var employeePayrolls = new List<MonthlyPayrollEmployeeInfoViewModel>
+            var employeePayrolls = new List<EmployeeMonthlyPayrollModel>
             {
-                new MonthlyPayrollEmployeeInfoViewModel { }
+                new EmployeeMonthlyPayrollModel { }
             };
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);

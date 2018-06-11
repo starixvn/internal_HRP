@@ -1,6 +1,6 @@
 ﻿@using HRP.Core.Enumerations
 @using HRP.Resources
-@using HRP.Models.MonthlyPayroll
+@using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll
 @model EmployeeMonthlyPayrollViewModel
 
 @{
@@ -102,6 +102,8 @@
         <span class="icon-search"></span>
     </div>
 </div>
+<input hidden value="@ViewData["RijndaelKey"].ToString()" id="RijndaelKey" />
+<input hidden value="@ViewData["RijndaelIV"].ToString()" id="RijndaelIV" />
 <table id="monthly-payroll-table" class="table table-bordered table-hover table-striped dataTable" style="width:100%">
     <thead>
         <tr>
@@ -144,7 +146,7 @@
     <tbody>
         @if (Model.Employees != null && Model.Employees.Any())
         {
-            foreach (MonthlyPayrollEmployeeInfoViewModel employee in Model.Employees)
+            foreach (EmployeeMonthlyPayrollModel employee in Model.Employees)
             {
                 decimal amount;
                 <tr class="@(employee.IsGenerated ? string.Empty : "row-highlight")">
@@ -177,7 +179,7 @@
                         decimal.TryParse(employee.BasicSalary.EbankingAmount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.BasicSalary.EbankingAmount</span>
                         </td>
                     }
                     else
@@ -190,7 +192,7 @@
                         decimal.TryParse(employee.BasicSalary.DirectBanking1Amount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.BasicSalary.DirectBanking1Amount</span>
                         </td>
                     }
                     else
@@ -203,7 +205,7 @@
                         decimal.TryParse(employee.BasicSalary.DirectBanking2Amount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.BasicSalary.DirectBanking2Amount</span>
                         </td>
                     }
                     else
@@ -216,7 +218,7 @@
                         decimal.TryParse(employee.BasicSalary.CashAmount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.BasicSalary.CashAmount</span>
                         </td>
                     }
                     else
@@ -229,7 +231,7 @@
                         decimal.TryParse(employee.Allowance.DirectBanking1Amount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.Allowance.DirectBanking1Amount</span>
                         </td>
                     }
                     else
@@ -242,7 +244,7 @@
                         decimal.TryParse(employee.Allowance.DirectBanking2Amount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.Allowance.DirectBanking2Amount</span>
                         </td>
                     }
                     else
@@ -255,7 +257,7 @@
                         decimal.TryParse(employee.Allowance.CashAmount, out amount);
 
                         <td class="text-right @(amount < 0 ? "negative-amount" : string.Empty)">
-                            @string.Format("{0:n}", amount)
+                            <span class="js-encypted hidden">@employee.Allowance.CashAmount</span>
                         </td>
                     }
                     else
@@ -406,6 +408,8 @@
         <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+        <script src="~/lib/CryptoJS/aes.js"></script>
+        <script src="~/assets/js/rijndael-service.js"></script>
         <script src="~/assets/js/paymentprocess/employee-monthly-payroll.js"></script>
     </environment>
     <environment exclude="Development">

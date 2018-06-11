@@ -16,6 +16,7 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
     using HRP.Resources;
@@ -303,6 +304,22 @@
             };
             viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month);
             viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
+
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            ViewData["RijndaelKey"] = tuple.Item1;
+            ViewData["RijndaelIV"] = tuple.Item2;
+
+            foreach (EmployeeMonthlyPayrollModel employeePayroll in viewModel.Employees)
+            {
+                employeePayroll.BasicSalary.EbankingAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.EbankingAmount, tuple.Item1, tuple.Item2);
+                employeePayroll.BasicSalary.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking1Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.BasicSalary.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.BasicSalary.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, tuple.Item1, tuple.Item2);
+
+                employeePayroll.Allowance.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking1Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, tuple.Item1, tuple.Item2);
+            }
 
             return View("MonthlyPayroll", viewModel);
         }

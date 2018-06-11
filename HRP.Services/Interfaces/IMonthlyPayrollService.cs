@@ -8,6 +8,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.ServiceModels;
+    using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
 
     public interface IMonthlyPayrollService
     {
@@ -15,7 +16,7 @@
 
         Task<MonthlyPayrollFilterInfoModel> GetFilterInfoAsync(int companyId, DateTime month, int? payrollId = null);
 
-        Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel);
+        Task<IEnumerable<EmployeeMonthlyPayrollModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel);
 
         Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name);
 

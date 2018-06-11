@@ -280,6 +280,18 @@ var monthlyPayroll = (function ($) {
         });
     }
 
+    function decryptData() {
+        var rijndaelKey = $('#RijndaelKey').val();
+        var rijndaelIV = $('#RijndaelIV').val();
+
+        $table.DataTable().$('.js-encrypted').each(function () {
+            var value = $(this).html();
+            var plainText = rijndaelService.decryptData(value, rijndaelKey, rijndaelIV);
+
+            $(this).html(plainText).removeClass('hidden');
+        });
+    }
+
     function initModule() {
         companyId = parseInt($('#CompanyId').val(), 10);
         $btnBack = $('.js-btnBack');
@@ -288,6 +300,8 @@ var monthlyPayroll = (function ($) {
         searchEmployeeSuggestion();
         initContextMenu();
         registerEventSubmitForm();
+
+        decryptData();
 
         $('#quick-search').off('keyup').on('keyup', function () {
             $table.DataTable().search($(this).val()).draw();

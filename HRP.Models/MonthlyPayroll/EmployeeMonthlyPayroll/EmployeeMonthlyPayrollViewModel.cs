@@ -1,4 +1,4 @@
-﻿namespace HRP.Models.MonthlyPayroll
+﻿namespace HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll
 {
     using System;
     using System.Collections.Generic;
@@ -23,6 +23,6 @@
 
         public MonthlyPayrollFilterInfoModel FilterInfo { get; set; } = new MonthlyPayrollFilterInfoModel();
 
-        public IEnumerable<MonthlyPayrollEmployeeInfoViewModel> Employees { get; set; } = new List<MonthlyPayrollEmployeeInfoViewModel>();
+        public IEnumerable<EmployeeMonthlyPayrollModel> Employees { get; set; } = new List<EmployeeMonthlyPayrollModel>();
     }
 }

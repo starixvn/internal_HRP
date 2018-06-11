@@ -1,9 +1,8 @@
-﻿namespace HRP.Models.MonthlyPayroll
+﻿namespace HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll
 {
-    public class MonthlyPayrollBasicSalaryViewModel
+    public class EmployeeMonthlyPayrollBasicSalaryModel
     {
         public int PayrollId { get; set; }
-        public string Salary { get; set; }
         public string EbankingCurrencyCode { get; set; }
         public string EbankingAmount { get; set; }
         public string DirectBanking1CurrencyCode { get; set; }

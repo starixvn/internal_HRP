@@ -1,10 +1,10 @@
-﻿namespace HRP.Models.MonthlyPayroll
+﻿namespace HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll
 {
     using System;
     using HRP.Core.Enumerations;
 
     [Serializable]
-    public class MonthlyPayrollEmployeeInfoViewModel
+    public class EmployeeMonthlyPayrollModel
     {
         public int PayrollId { get; set; }
 
@@ -18,9 +18,9 @@
 
         public string CostCenter { get; set; }
 
-        public MonthlyPayrollBasicSalaryViewModel BasicSalary { get; set; } = new MonthlyPayrollBasicSalaryViewModel();
+        public EmployeeMonthlyPayrollBasicSalaryModel BasicSalary { get; set; } = new EmployeeMonthlyPayrollBasicSalaryModel();
 
-        public MonthlyPayrollBasicSalaryViewModel Allowance { get; set; } = new MonthlyPayrollBasicSalaryViewModel();
+        public EmployeeMonthlyPayrollBasicSalaryModel Allowance { get; set; } = new EmployeeMonthlyPayrollBasicSalaryModel();
 
         public int WorkingDays { get; set; }
 

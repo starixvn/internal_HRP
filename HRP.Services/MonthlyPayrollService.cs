@@ -16,6 +16,7 @@
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.ServiceModels;
+    using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
     using HRP.Repositories;
     using HRP.Resources;
 
@@ -85,7 +86,7 @@
             return hierarchy;
         }
 
-        public async Task<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
+        public async Task<IEnumerable<EmployeeMonthlyPayrollModel>> GetMonthlyPayrollAsync(EmployeeMonthlyPayrollViewModel viewModel)
         {
             var criteria = new GetMonthlyPayrollCriteria
             {
@@ -99,21 +100,22 @@
                 WorkingDays = viewModel.WorkingDays
             };
 
-            Tuple<IEnumerable<MonthlyPayrollEmployeeInfoViewModel>,
-                IEnumerable<MonthlyPayrollBasicSalaryViewModel>,
-                IEnumerable<MonthlyPayrollBasicSalaryViewModel>> tuple = await baseService.FetchMultipleAsync<
-                    MonthlyPayrollEmployeeInfoViewModel,
-                    MonthlyPayrollBasicSalaryViewModel,
-                    MonthlyPayrollBasicSalaryViewModel>(criteria).ConfigureAwait(false);
+            Tuple<IEnumerable<EmployeeMonthlyPayrollModel>,
+                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>,
+                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>> tuple = await baseService.FetchMultipleAsync<
+                    EmployeeMonthlyPayrollModel,
+                    EmployeeMonthlyPayrollBasicSalaryModel,
+                    EmployeeMonthlyPayrollBasicSalaryModel>(criteria).ConfigureAwait(false);
 
-            IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls = tuple.Item1;
-            foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
+            IEnumerable<EmployeeMonthlyPayrollModel> monthlyPayrolls = tuple.Item1;
+            foreach (EmployeeMonthlyPayrollModel monthlyPayroll in monthlyPayrolls)
             {
-                monthlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
-                monthlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new MonthlyPayrollBasicSalaryViewModel();
+                monthlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
+                monthlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
             }
 
-            DecryptMonthlyPayroll(monthlyPayrolls);
+            DecryptAmount(monthlyPayrolls);
+            FormatAmount(monthlyPayrolls);
 
             return monthlyPayrolls;
         }
@@ -623,7 +625,7 @@
                 string dateCommencementReason = GetPartOfAfterAdjustmentReason(workingMonth, groupStartDate, groupEndDate);
 
                 reason.AppendFormat("{0} {1} ({2}). ", amount > 0 ? "Added" : "Deducted",
-                    CalculationService.RoundAmountWithCurrency(Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode, roundingThousand: false), 
+                    CalculationService.RoundAmountWithCurrency(Math.Abs(amount), monthlyPayrollBasicAllowance.CurrencyCode, roundingThousand: false),
                     monthlyPayrollBasicAllowance.CurrencyCode);
                 reason.Append(dateCommencementReason);
 
@@ -648,20 +650,47 @@
             return string.Empty;
         }
 
-        private void DecryptMonthlyPayroll(IEnumerable<MonthlyPayrollEmployeeInfoViewModel> monthlyPayrolls)
+        private void DecryptAmount(IEnumerable<EmployeeMonthlyPayrollModel> monthlyPayrolls)
         {
-            foreach (MonthlyPayrollEmployeeInfoViewModel monthlyPayroll in monthlyPayrolls)
+            foreach (EmployeeMonthlyPayrollModel monthlyPayroll in monthlyPayrolls)
             {
-                monthlyPayroll.BasicSalary.Salary = cryptoService.Decrypt(monthlyPayroll.BasicSalary.Salary);
                 monthlyPayroll.BasicSalary.EbankingAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.EbankingAmount);
                 monthlyPayroll.BasicSalary.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking1Amount);
                 monthlyPayroll.BasicSalary.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.DirectBanking2Amount);
                 monthlyPayroll.BasicSalary.CashAmount = cryptoService.Decrypt(monthlyPayroll.BasicSalary.CashAmount);
 
-                monthlyPayroll.Allowance.Salary = cryptoService.Decrypt(monthlyPayroll.Allowance.Salary);
                 monthlyPayroll.Allowance.DirectBanking1Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking1Amount);
                 monthlyPayroll.Allowance.DirectBanking2Amount = cryptoService.Decrypt(monthlyPayroll.Allowance.DirectBanking2Amount);
                 monthlyPayroll.Allowance.CashAmount = cryptoService.Decrypt(monthlyPayroll.Allowance.CashAmount);
+            }
+        }
+
+        private static void FormatAmount(IEnumerable<EmployeeMonthlyPayrollModel> monthlyPayrolls)
+        {
+            foreach (EmployeeMonthlyPayrollModel monthlyPayroll in monthlyPayrolls)
+            {
+                monthlyPayroll.BasicSalary.EbankingAmount = CalculationService.FormatAmount(
+                    monthlyPayroll.BasicSalary.EbankingAmount,
+                    monthlyPayroll.BasicSalary.EbankingCurrencyCode);
+                monthlyPayroll.BasicSalary.DirectBanking1Amount = CalculationService.FormatAmount(
+                    monthlyPayroll.BasicSalary.DirectBanking1Amount,
+                    monthlyPayroll.BasicSalary.DirectBanking1CurrencyCode);
+                monthlyPayroll.BasicSalary.DirectBanking2Amount = CalculationService.FormatAmount(
+                    monthlyPayroll.BasicSalary.DirectBanking2Amount,
+                    monthlyPayroll.BasicSalary.DirectBanking2CurrencyCode);
+                monthlyPayroll.BasicSalary.CashAmount = CalculationService.FormatAmount(
+                    monthlyPayroll.BasicSalary.CashAmount,
+                    monthlyPayroll.BasicSalary.CashCurrencyCode);
+
+                monthlyPayroll.Allowance.DirectBanking1Amount = CalculationService.FormatAmount(
+                    monthlyPayroll.Allowance.DirectBanking1Amount,
+                    monthlyPayroll.Allowance.DirectBanking1CurrencyCode);
+                monthlyPayroll.Allowance.DirectBanking2Amount = CalculationService.FormatAmount(
+                    monthlyPayroll.Allowance.DirectBanking2Amount,
+                    monthlyPayroll.Allowance.DirectBanking2CurrencyCode);
+                monthlyPayroll.Allowance.CashAmount = CalculationService.FormatAmount(
+                    monthlyPayroll.Allowance.CashAmount,
+                    monthlyPayroll.Allowance.CashCurrencyCode);
             }
         }
 
@@ -697,7 +726,7 @@
 
             if (basicAllowance.CurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.AfterAdjustmentAmount))
             {
-                basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount), 
+                basicAllowance.AfterAdjustmentAmountDisplay = CalculationService.RoundAmountWithCurrency(decimal.Parse(basicAllowance.AfterAdjustmentAmount),
                     basicAllowance.CurrencyCode, roundingThousand: false).ToStringWithCurrency(basicAllowance.CurrencyCode);
             }
         }
