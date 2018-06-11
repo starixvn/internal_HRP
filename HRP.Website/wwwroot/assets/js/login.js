@@ -23,8 +23,8 @@ var login = (function ($) {
         }
 
         var password = $('#Password').val();
-        var rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
-        var rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
+        var rijndaelKey = $('#RijndaelKey').val();
+        var rijndaelIV = $('#RijndaelIV').val();
         var encrypted = rijndaelService.encryptData(password, rijndaelKey, rijndaelIV);
 
         $('#Password').val(encrypted);

@@ -21,7 +21,6 @@
     using HRP.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class PaymentProcessController : BaseController
     {
@@ -36,8 +35,7 @@
             IHostingEnvironment hostingEnvironment,
             ICommonService commonService,
             IPaymentProcessService paymentProcessService,
-            IMonthlyPayrollService monthlyPayrollService)
-            : base(baseService, sessionService)
+            IMonthlyPayrollService monthlyPayrollService) : base(baseService, sessionService)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.commonService = commonService;

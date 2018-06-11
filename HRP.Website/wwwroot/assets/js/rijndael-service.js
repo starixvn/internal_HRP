@@ -2,9 +2,9 @@
     function encryptData(value, rijndaelKey, rijndaelIV) {
         var cipherText = CryptoJS.AES.encrypt(
             value,
-            rijndaelKey,
+            CryptoJS.enc.Utf8.parse(rijndaelKey),
             {
-                iv: rijndaelIV,
+                iv: CryptoJS.enc.Utf8.parse(rijndaelIV),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
@@ -15,9 +15,9 @@
     function decryptData(value, rijndaelKey, rijndaelIV) {
         var plainText = CryptoJS.AES.decrypt(
             value,
-            rijndaelKey,
+            CryptoJS.enc.Utf8.parse(rijndaelKey),
             {
-                iv: rijndaelIV,
+                iv: CryptoJS.enc.Utf8.parse(rijndaelIV),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
