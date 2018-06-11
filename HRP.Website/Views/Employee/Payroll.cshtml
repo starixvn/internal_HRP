@@ -548,7 +548,7 @@
                     <option></option>
                 </select>
                 <input type="text" class="control number deduction-calculate fitness-first"
-                       asp-for="Deduction.FitnessFirst.PlainValue" asp-encrypt-for="Deduction.RoomingCharges.EncryptedValue"
+                       asp-for="Deduction.FitnessFirst.PlainValue" asp-encrypt-for="Deduction.FitnessFirst.EncryptedValue"
                        data-msg-required="@Message.EmployeePayrollSettingAmountRequired" />
             </div>
         </div>
@@ -599,6 +599,7 @@
         <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/lib/CryptoJS/aes.js"></script>
+        <script src="~/assets/js/rijndael-service.js"></script>
         <script type="text/javascript" src="~/assets/js/bank/bank-account-form.js" asp-append-version="true"></script>
         <script src="~/assets/js/employee/employee-payroll.js"></script>
     </environment>
