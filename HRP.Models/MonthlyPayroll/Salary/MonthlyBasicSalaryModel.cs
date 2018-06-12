@@ -48,10 +48,7 @@
         [XmlIgnore]
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
         [XMLName("AutoCalculateOn")]
-        public string XmlAutoCalculateOn
-        {
-            get => AutoCalculateOn.ToString();
-        }
+        public string XmlAutoCalculateOn => AutoCalculateOn.ToString();
         public string AfterAdjustmentAmount { get; set; }
         public string AfterAdjustmentReason { get; set; }
         [XmlIgnore]

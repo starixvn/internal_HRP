@@ -25,10 +25,7 @@
         public decimal? NoOfDays { get; set; }
 
         [XMLName("NoOfDays")]
-        public string XmlNoOfDays
-        {
-            get => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
-        }
+        public string XmlNoOfDays => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
 
         public string NetSalary { get; set; }
 

@@ -1,11 +1,9 @@
 ﻿namespace HRP.Models.MonthlyPayroll
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Xml.Serialization;
     using Core.Extensions;
-    using HRP.Resources;
 
     [Serializable]
     [XMLName("Row")]
@@ -26,13 +24,9 @@
 
         public string NetSalaryDisplay { get; set; }
 
-        [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
 
         [XMLName("NoOfDays")]
-        public string XmlNoOfDays
-        {
-            get => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
-        }
+        public string XmlNoOfDays => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
     }
 }

@@ -19,7 +19,7 @@
         [XMLName("NoOfDays")]
         public string XmlNoOfDays
         {
-            get => (NoOfDays.HasValue) ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            get => NoOfDays.HasValue ? NoOfDays.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
         }
 
         public string UnitAmount { get; set; }
