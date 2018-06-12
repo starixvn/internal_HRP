@@ -412,14 +412,14 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.EmployeePayroll, Policy = Policy.Host)]
-        public async Task<IActionResult> EditPayroll(EmployeePayrollViewModel model)
+        public async Task<IActionResult> EditPayroll(EmployeePayrollViewModel viewModel)
         {
             ModelState.Clear();
-            DecryptData(model);
+            DecryptData(viewModel);
 
-            if (TryValidateModel(model))
+            if (TryValidateModel(viewModel))
             {
-                CommandResult result = await payrollService.UpdatePayroll(ConvertToServiceModel(model), sessionService.UserId);
+                CommandResult result = await payrollService.UpdatePayroll(ConvertToServiceModel(viewModel), sessionService.UserId);
                 return Json(new
                 {
                     isSuccessful = result.IsSuccessful,
@@ -427,7 +427,7 @@
                     redirectTo = Url.Action("Index")
                 });
             }
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage );
             return Json(new { isSuccessful = false, errors });
         }
 

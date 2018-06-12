@@ -11,7 +11,7 @@
 
         public string CurrencyCode { get; set; }
 
-        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(PlainValue) },
+        [RequiredNoneOrAll(RelatedProperties = new[] { nameof(CurrencyId) },
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeePayrollSettingAmountRequired))]
         public override string PlainValue { get; set; }
 
