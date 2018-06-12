@@ -19,6 +19,7 @@
         public SecurityData CashAmount { get; set; }
         public SecurityData AfterAdjustmentAmount { get; set; }
         public string AfterAdjustmentReason { get; set; }
-        public decimal SalaryPerDay { get; set; }
+        public SecurityData SalaryPerDay { get; set; }
+        public int WorkingDays { get; set; }
     }
 }

@@ -7,8 +7,8 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
-    using HRP.Models.ServiceModels;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
+    using HRP.Models.ServiceModels;
 
     public interface IMonthlyPayrollService
     {
@@ -22,9 +22,18 @@
 
         Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByIDNoAsync(int companyId, string idNo);
 
-        Task<EditMonthlySalaryViewModel> GetMonthlySalaryAsync(int payrollId);
+        Task<Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(int payrollId);
 
-        Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel);
+        Task<CommandResult> EditMonthlySalaryAsync(
+            int payrollId,
+            int companyId,
+            DateTime month,
+            Tuple<MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary);
 
         Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month);
 

@@ -27,7 +27,7 @@
                     var tuple = new Tuple<MonthlyBasicSalaryModel,
                         MonthlySalaryModel,
                         IEnumerable<MonthlySalaryAdditionModel>,
-                        IEnumerable<MonthlySalaryDeductionModel>>(monthlyBasicSalary, monthlySalary, additions, deductions);
+                        IEnumerable<MonthlySalaryDeductionModel>>(monthlyBasicSalary, monthlySalary ?? new MonthlySalaryModel(), additions, deductions);
 
                     return tuple;
                 }

@@ -520,6 +520,8 @@
       "wwwroot/lib/inputmask/dist/min/inputmask/jquery.inputmask.min.js",
       "wwwroot/lib/tooltipster/dist/js/tooltipster.bundle.js",
       "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/paymentprocess/edit-basic-salary.js"
     ],
     "minify": {

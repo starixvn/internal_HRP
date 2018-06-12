@@ -22,6 +22,7 @@
 
         public string NetSalary { get; set; }
 
+        [XmlIgnore]
         public string NetSalaryDisplay { get; set; }
 
         public string Description { get; set; }

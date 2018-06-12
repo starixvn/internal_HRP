@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -337,11 +338,29 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            EditMonthlySalaryViewModel viewModel = await monthlyPayrollService.GetMonthlySalaryAsync(payrollId);
-            if (viewModel == null)
+            Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlyPayrollService.GetMonthlySalaryAsync(payrollId);
+            if (monthlySalary.Item1 == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
+
+            var keys = rijndaelService.GenerateKey();
+            sessionService.RijndaelKey = keys.Item1;
+            sessionService.RijndaelIV = keys.Item2;
+            var viewModel = new EditMonthlySalaryViewModel
+            {
+                Month = month,
+                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                RijndaelKey = keys.Item1,
+                RijndaelIV = keys.Item2,
+                CachingFilter = filter
+            };
 
             var criteria = new GetExchangeRateCriteria
             {
@@ -350,14 +369,13 @@
             };
 
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(
+                new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentTransactionCash, IsActive = true });
 
-            var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentTransactionCash, IsActive = true });
-            viewModel.Month = month;
             viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
             viewModel.CashAccounts = commonService.GetSelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = commonService.GetSelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);
-            viewModel.CachingFilter = filter;
             viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
 
             return View(viewModel);
@@ -376,7 +394,18 @@
 
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
+                var monthlySalary = new Tuple<MonthlySalaryModel,
+                    IEnumerable<MonthlySalaryAdditionModel>,
+                    IEnumerable<MonthlySalaryDeductionModel>>(
+                        ConvertMonthlySalaryToModel(viewModel.MonthlySalary, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                        ConvertMonthlySalaryAdditionToModel(viewModel.Additions, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                        ConvertMonthlySalaryDeductionToModel(viewModel.Deductions, sessionService.RijndaelKey, sessionService.RijndaelIV));
+                CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(
+                    viewModel.FilterInfo.PayrollId,
+                    viewModel.FilterInfo.CompanyId,
+                    viewModel.Month,
+                    monthlySalary
+                    );
                 var redirectTo = viewModel.IsRedirectToEditAllowance
                     ? Url.Action("EditAllowances", new
                     {
@@ -876,5 +905,218 @@
             }
         }
         #endregion Monthly Payroll
+
+        #region EditBasicSalary
+
+        private MonthlyBasicSalaryViewModel ConvertMonthlyBasicSalaryToViewModel(
+            MonthlyBasicSalaryModel monthlyBasicSalary,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return new MonthlyBasicSalaryViewModel
+            {
+                CurrencyId = monthlyBasicSalary.CurrencyId,
+                CurrencyCode = monthlyBasicSalary.CurrencyCode,
+                Salary = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.Salary, rijndaelKey, rijndaelIV)
+                },
+                EbankingCurrencyId = monthlyBasicSalary.EbankingCurrencyId,
+                EbankingCurrencyCode = monthlyBasicSalary.EbankingCurrencyCode,
+                EbankingAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.EbankingAmount, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking1CurrencyId = monthlyBasicSalary.DirectBanking1CurrencyId,
+                DirectBanking1CurrencyCode = monthlyBasicSalary.DirectBanking1CurrencyCode,
+                DirectBanking1Amount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.DirectBanking1Amount, rijndaelKey, rijndaelIV)
+                },
+                DirectBanking2CurrencyId = monthlyBasicSalary.DirectBanking2CurrencyId,
+                DirectBanking2CurrencyCode = monthlyBasicSalary.DirectBanking2CurrencyCode,
+                DirectBanking2Amount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.DirectBanking2Amount, rijndaelKey, rijndaelIV)
+                },
+                CashCurrencyId = monthlyBasicSalary.CashCurrencyId,
+                CashCurrencyCode = monthlyBasicSalary.CashCurrencyCode,
+                CashAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.CashAmount, rijndaelKey, rijndaelIV)
+                },
+                AfterAdjustmentAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.AfterAdjustmentAmount, rijndaelKey, rijndaelIV)
+                },
+                AfterAdjustmentReason = monthlyBasicSalary.AfterAdjustmentReason,
+                SalaryPerDay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.SalaryPerDay.ToString(CultureInfo.InvariantCulture), rijndaelKey, rijndaelIV)
+                },
+                WorkingDays = monthlyBasicSalary.WorkingDays
+            };
+        }
+
+        private MonthlySalaryViewModel ConvertMonthlySalaryToViewModel(
+            MonthlySalaryModel monthlySalary,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return new MonthlySalaryViewModel
+            {
+                Salary = new CurrencyAmountModel
+                {
+                    CurrencyId = monthlySalary.CurrencyId,
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.Salary, rijndaelKey, rijndaelIV)
+                },
+                Ebanking = new PaymentTransactionModel
+                {
+                    CurrencyId = monthlySalary.EbankingCurrencyId,
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.EbankingAmount, rijndaelKey, rijndaelIV),
+                    AccountId = monthlySalary.EbankingAccountId,
+                    AccountName = monthlySalary.EbankingAccountName
+                },
+                DirectBanking1 = new PaymentTransactionModel
+                {
+                    CurrencyId = monthlySalary.DirectBanking1CurrencyId,
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.DirectBanking1Amount, rijndaelKey, rijndaelIV),
+                    AccountId = monthlySalary.DirectBanking1AccountId,
+                    AccountName = monthlySalary.DirectBanking1AccountName
+                },
+                DirectBanking2 = new PaymentTransactionModel
+                {
+                    CurrencyId = monthlySalary.DirectBanking2CurrencyId,
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.DirectBanking2Amount, rijndaelKey, rijndaelIV),
+                    AccountId = monthlySalary.DirectBanking2AccountId,
+                    AccountName = monthlySalary.DirectBanking2AccountName
+                },
+                Cash = new PaymentTransactionModel
+                {
+                    CurrencyId = monthlySalary.CashCurrencyId,
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.CashAmount, rijndaelKey, rijndaelIV),
+                    AccountId = monthlySalary.CashAccountId
+                },
+                AutoCalculateOn = monthlySalary.AutoCalculateOn,
+                AdditionAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.AdditionAmount, rijndaelKey, rijndaelIV)
+                },
+                AdditionAmountDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.AdditionAmountDisplay, rijndaelKey, rijndaelIV)
+                },
+                DeductionAmount = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.DeductionAmount, rijndaelKey, rijndaelIV)
+                },
+                DeductionAmountDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlySalary.DeductionAmountDisplay, rijndaelKey, rijndaelIV)
+                }
+            };
+        }
+
+        private IList<MonthlySalaryAdditionViewModel> ConvertMonthlySalaryAdditionToViewModel(
+            IEnumerable<MonthlySalaryAdditionModel> additions,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return additions.Select(x => new MonthlySalaryAdditionViewModel
+            {
+                Type = x.Type,
+                EncryptedValue = rijndaelService.Encrypt(x.UnitAmount, rijndaelKey, rijndaelIV),
+                NoOfDays = x.NoOfDays,
+                NetSalary = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetSalary, rijndaelKey, rijndaelIV)
+                },
+                NetSalaryDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetSalaryDisplay, rijndaelKey, rijndaelIV)
+                },
+                Description = x.Description
+            }).ToList();
+        }
+
+        private IList<MonthlySalaryDeductionViewModel> ConvertMonthlySalaryDeductionToViewModel(
+            IEnumerable<MonthlySalaryDeductionModel> deductions,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return deductions.Select(x => new MonthlySalaryDeductionViewModel
+            {
+                Type = x.Type,
+                EncryptedValue = rijndaelService.Encrypt(x.UnitAmount, rijndaelKey, rijndaelIV),
+                NoOfDays = x.NoOfDays,
+                NetSalary = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetSalary, rijndaelKey, rijndaelIV)
+                },
+                NetSalaryDisplay = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(x.NetSalaryDisplay, rijndaelKey, rijndaelIV)
+                },
+                Description = x.Description
+            }).ToList();
+        }
+
+        private MonthlySalaryModel ConvertMonthlySalaryToModel(
+            MonthlySalaryViewModel monthlySalary,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return new MonthlySalaryModel
+            {
+                Salary = rijndaelService.Decrypt(monthlySalary.Salary.EncryptedValue, rijndaelKey, rijndaelIV),
+                EbankingCurrencyId = monthlySalary.Ebanking.CurrencyId,
+                EbankingAmount = rijndaelService.Decrypt(monthlySalary.Ebanking.EncryptedValue, rijndaelKey, rijndaelIV),
+                EbankingAccountId = monthlySalary.Ebanking.AccountId,
+                DirectBanking1CurrencyId = monthlySalary.DirectBanking1.CurrencyId,
+                DirectBanking1Amount = rijndaelService.Decrypt(monthlySalary.DirectBanking1.EncryptedValue, rijndaelKey, rijndaelIV),
+                DirectBanking1AccountId = monthlySalary.DirectBanking1.AccountId,
+                DirectBanking2CurrencyId = monthlySalary.DirectBanking2.CurrencyId,
+                DirectBanking2Amount = rijndaelService.Decrypt(monthlySalary.DirectBanking2.EncryptedValue, rijndaelKey, rijndaelIV),
+                DirectBanking2AccountId = monthlySalary.DirectBanking2.AccountId,
+                CashCurrencyId = monthlySalary.Cash.CurrencyId,
+                CashAmount = rijndaelService.Decrypt(monthlySalary.Cash.EncryptedValue, rijndaelKey, rijndaelIV),
+                CashAccountId = monthlySalary.Cash.AccountId,
+                AdditionAmount = rijndaelService.Decrypt(monthlySalary.AdditionAmount.EncryptedValue, rijndaelKey, rijndaelIV),
+                DeductionAmount = rijndaelService.Decrypt(monthlySalary.DeductionAmount.EncryptedValue, rijndaelKey, rijndaelIV),
+                AutoCalculateOn = monthlySalary.AutoCalculateOn
+            };
+        }
+
+        private IList<MonthlySalaryAdditionModel> ConvertMonthlySalaryAdditionToModel(
+            IEnumerable<MonthlySalaryAdditionViewModel> additions,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return additions.Select(x => new MonthlySalaryAdditionModel
+            {
+                Type = x.Type,
+                UnitAmount = rijndaelService.Decrypt(x.EncryptedValue, rijndaelKey, rijndaelIV),
+                NoOfDays = x.NoOfDays,
+                NetSalary = rijndaelService.Decrypt(x.NetSalary.EncryptedValue, rijndaelKey, rijndaelIV),
+                Description = x.Description
+            }).ToList();
+        }
+
+        private IList<MonthlySalaryDeductionModel> ConvertMonthlySalaryDeductionToModel(
+            IEnumerable<MonthlySalaryDeductionViewModel> deductions,
+            string rijndaelKey,
+            string rijndaelIV)
+        {
+            return deductions.Select(x => new MonthlySalaryDeductionModel
+            {
+                Type = x.Type,
+                UnitAmount = rijndaelService.Encrypt(x.EncryptedValue, rijndaelKey, rijndaelIV),
+                NoOfDays = x.NoOfDays,
+                NetSalary = rijndaelService.Encrypt(x.NetSalary.EncryptedValue, rijndaelKey, rijndaelIV),
+                Description = x.Description
+            }).ToList();
+        }
+
+        #endregion EditBasicSalary
     }
 }

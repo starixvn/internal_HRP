@@ -3,7 +3,8 @@
 var editBasicSalary = (function ($) {
     var $form, $btnPreset, $btnRefresh, $btnSubmit, $btnSubmitAndEditAllowances,
         employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount, vietnamCurrencyId,
-        bankAccountUrl = 'BankAccount/GetEmployeeBankAccounts', maxDigit = 2;
+        bankAccountUrl = 'BankAccount/GetEmployeeBankAccounts', maxDigit = 2,
+        rijndaelKey, rijndaelIV, $plainValues, $encryptedValues;
 
     BigNumber.config({
         FORMAT: {
@@ -65,7 +66,7 @@ var editBasicSalary = (function ($) {
         }
 
         monthlySalary = monthlySalary.roundAmount(currencySettingId, 0);
-        $('#MonthlySalary_Salary').val(monthlySalary);
+        $('#MonthlySalary_Salary_PlainValue').val(monthlySalary);
         $('.js-totalNetSalary').val(monthlySalary);
         calculateMonthlyBasicSalary();
     }
@@ -97,13 +98,13 @@ var editBasicSalary = (function ($) {
         }
 
         monthlySalary = monthlySalary.roundAmount(currencySettingId, 0);
-        $('#MonthlySalary_Salary').val(monthlySalary);
+        $('#MonthlySalary_Salary_PlainValue').val(monthlySalary);
         $('.js-totalNetSalary').val(monthlySalary);
         calculateMonthlyBasicSalary();
     }
 
     function calculateMonthlyBasicSalary() {
-        var monthlySalary = Number(getNumber($('#MonthlySalary_Salary'))),
+        var monthlySalary = Number(getNumber($('#MonthlySalary_Salary_PlainValue'))),
             $autoCalculateOn = $('input[name="MonthlySalary.AutoCalculateOn"]:checked'),
             $parentAutoCalculateOn = $autoCalculateOn.closest('.js-monthlySalary'),
             autoCalculateCurrencyId = $parentAutoCalculateOn.find('.js-selectCurrency').val(),
@@ -452,6 +453,8 @@ var editBasicSalary = (function ($) {
             initSelect2();
 
             if ($form.valid()) {
+                encryptData();
+                $plainValues.prop('disabled', true);
                 $form.submit();
             }
         });
@@ -461,6 +464,8 @@ var editBasicSalary = (function ($) {
 
             if ($form.valid()) {
                 $('#IsRedirectToEditAllowance').prop('checked', true);
+                encryptData();
+                $plainValues.prop('disabled', true);
                 $form.submit();
             }
         });
@@ -496,16 +501,53 @@ var editBasicSalary = (function ($) {
         $form.submit(false);
     }
 
+    function decryptData() {
+        $encryptedValues.each(function () {
+            var $this = $(this),
+                value = $this.val();
+
+            if (value !== '') {
+                var plainText = rijndaelService.decryptData(value, rijndaelKey, rijndaelIV);
+                $($this.data('plain-target')).val(plainText);
+            } else {
+                $($this.data('plain-target')).val('');
+            }
+        });
+    }
+
+    function encryptData() {
+        $plainValues.each(function () {
+            var $this = $(this),
+                value = $this.val();
+
+            if (value !== '') {
+                var cipherText = rijndaelService.encryptData(value, rijndaelKey, rijndaelIV);
+
+                $($this.data('encrypt-target')).val(cipherText);
+            } else {
+                $($this.data('encrypt-target')).val('');
+            }
+        })
+    }
+
     function initModule() {
+        rijndaelKey = $('#RijndaelKey').val();
+        rijndaelIV = $('#RijndaelIV').val();
+        $plainValues = $('.plain-value');
+        $encryptedValues = $('.encrypted-value');
+
+        decryptData();
+        $('.js-totalNetSalary').val($('#MonthlySalary_Salary_PlainValue').val());
+
         $btnPreset = $('.js-btnPreset');
         $btnRefresh = $('.js-btnRefresh');
         $btnSubmit = $('.js-btnSubmit');
         $btnSubmitAndEditAllowances = $('.js-btnSubmitAndEditAllowances');
         $form = $('#edit-basic-salary-form');
         employeeId = parseInt($('#EmployeeId').val(), 10);
-        currencySettingId = parseInt($('#MonthlySalary_CurrencyId').val(), 10);
-        salaryPerDay = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_SalaryPerDay'))));
-        afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount'))));
+        currencySettingId = parseInt($('#MonthlySalary_Salary_CurrencyId').val(), 10);
+        salaryPerDay = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_SalaryPerDay_PlainValue'))));
+        afterAdjustmentAmount = new BigNumber(Number(getNumber($('#MonthlyBasicSalary_AfterAdjustmentAmount_PlainValue'))));
         vietnamCurrencyId = parseInt($('#VietnamCurrencyId').val());
 
         commonFunctions.showHideValidationSummary($form.find('.list-message-error').get(0));
@@ -522,6 +564,8 @@ var editBasicSalary = (function ($) {
     return {
         initModule: initModule,
         onUpdateSuccess: function (response) {
+            $plainValues.prop('disabled', false);
+
             if (response.isSuccessful) {
                 disableForm();
                 $('#IsRedirectToEditAllowance').prop('checked', false);

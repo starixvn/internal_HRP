@@ -89,7 +89,7 @@
                             <span class="js-encrypted hidden">@Model.AllowanceAmount</span> @Model.AllowanceCurrencyCode
                         </div>
                     </div>
-                    @foreach (MonthlyAllowanceAddition addition in Model.AllowanceAdditions)
+                    @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
@@ -133,7 +133,7 @@
             <div class="detail-section">
                 <div class="title">@ViewLang.Deduction</div>
                 <div class="content">
-                    @foreach (MonthlyAllowanceDeduction deduction in Model.AllowanceDeductions)
+                    @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
                     {
                         <div class="row">
                             <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>

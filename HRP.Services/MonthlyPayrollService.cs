@@ -15,8 +15,8 @@
     using HRP.Models;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
-    using HRP.Models.ServiceModels;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using HRP.Resources;
 
@@ -120,9 +120,13 @@
             return monthlyPayrolls;
         }
 
-        public async Task<EditMonthlySalaryViewModel> GetMonthlySalaryAsync(int payrollId)
+        #region GetMonthlySalaryAsync
+
+        public async Task<Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(int payrollId)
         {
-            EditMonthlySalaryViewModel viewModel = null;
             var criteria = new GetMonthlySalaryToEditCriteria
             {
                 PayrollId = payrollId,
@@ -136,18 +140,61 @@
 
             if (monthlySalary.Item1 != null)
             {
-                viewModel = new EditMonthlySalaryViewModel
-                {
-                    MonthlyBasicSalary = monthlySalary.Item1,
-                    MonthlySalary = monthlySalary.Item2 ?? new MonthlySalaryModel(),
-                    Additions = monthlySalary.Item3.ToList(),
-                    Deductions = monthlySalary.Item4.ToList()
-                };
-                DecryptAndRoundingAmountMonthlySalary(viewModel);
+                DecryptAndRoundingAmountMonthlySalary(monthlySalary);
             }
 
-            return viewModel;
+            return monthlySalary;
         }
+
+        private void DecryptAndRoundingAmountMonthlySalary(Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary)
+        {
+            monthlySalary.Item1.Salary = cryptoService.Decrypt(monthlySalary.Item1.Salary);
+            monthlySalary.Item1.EbankingAmount = cryptoService.Decrypt(monthlySalary.Item1.EbankingAmount);
+            monthlySalary.Item1.DirectBanking1Amount = cryptoService.Decrypt(monthlySalary.Item1.DirectBanking1Amount);
+            monthlySalary.Item1.DirectBanking2Amount = cryptoService.Decrypt(monthlySalary.Item1.DirectBanking2Amount);
+            monthlySalary.Item1.CashAmount = cryptoService.Decrypt(monthlySalary.Item1.CashAmount);
+            monthlySalary.Item1.AfterAdjustmentAmount = cryptoService.Decrypt(monthlySalary.Item1.AfterAdjustmentAmount);
+
+            monthlySalary.Item2.Salary = cryptoService.Decrypt(monthlySalary.Item2.Salary);
+            monthlySalary.Item2.EbankingAmount = cryptoService.Decrypt(monthlySalary.Item2.EbankingAmount);
+            monthlySalary.Item2.DirectBanking1Amount = cryptoService.Decrypt(monthlySalary.Item2.DirectBanking1Amount);
+            monthlySalary.Item2.DirectBanking2Amount = cryptoService.Decrypt(monthlySalary.Item2.DirectBanking2Amount);
+            monthlySalary.Item2.CashAmount = cryptoService.Decrypt(monthlySalary.Item2.CashAmount);
+            monthlySalary.Item2.AdditionAmount = cryptoService.Decrypt(monthlySalary.Item2.AdditionAmount);
+            monthlySalary.Item2.DeductionAmount = cryptoService.Decrypt(monthlySalary.Item2.DeductionAmount);
+
+            decimal.TryParse(monthlySalary.Item2.AdditionAmount, out decimal amount);
+            monthlySalary.Item2.AdditionAmountDisplay = !string.IsNullOrWhiteSpace(monthlySalary.Item2.AdditionAmount)
+                ? CalculationService.RoundAmountWithCurrency(amount, monthlySalary.Item2.CurrencyCode).ToString(CultureInfo.InvariantCulture) : string.Empty;
+            decimal.TryParse(monthlySalary.Item2.DeductionAmount, out amount);
+            monthlySalary.Item2.DeductionAmountDisplay = !string.IsNullOrWhiteSpace(monthlySalary.Item2.DeductionAmount)
+                ? CalculationService.RoundAmountWithCurrency(amount, monthlySalary.Item2.CurrencyCode).ToString(CultureInfo.InvariantCulture) : string.Empty;
+
+            foreach (MonthlySalaryAdditionModel addition in monthlySalary.Item3)
+            {
+                addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
+                addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
+
+                decimal.TryParse(addition.NetSalary, out amount);
+                addition.NetSalaryDisplay = !string.IsNullOrWhiteSpace(addition.NetSalary)
+                    ? CalculationService.RoundAmountWithCurrency(amount, monthlySalary.Item2.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
+
+            foreach (MonthlySalaryDeductionModel deduction in monthlySalary.Item4)
+            {
+                deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
+                deduction.NetSalary = cryptoService.Decrypt(deduction.NetSalary);
+
+                decimal.TryParse(deduction.NetSalary, out amount);
+                deduction.NetSalaryDisplay = !string.IsNullOrWhiteSpace(deduction.NetSalary)
+                    ? CalculationService.RoundAmountWithCurrency(amount, monthlySalary.Item2.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
+        }
+
+        #endregion GetMonthlySalaryAsync
 
         public Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name)
         {
@@ -173,34 +220,40 @@
             return baseService.GetDataAsync<EmployeeSuggestionViewModel>(criteria);
         }
 
-        public async Task<CommandResult> EditMonthlySalaryAsync(EditMonthlySalaryViewModel viewModel)
+        public async Task<CommandResult> EditMonthlySalaryAsync(
+            int payrollId,
+            int companyId,
+            DateTime month,
+            Tuple<MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary)
         {
-            EncryptMonthlySalaryAddition(viewModel.Additions);
-            EncryptMonthlySalaryDeduction(viewModel.Deductions);
+            EncryptMonthlySalaryAddition(monthlySalary.Item2);
+            EncryptMonthlySalaryDeduction(monthlySalary.Item3);
             var criteria = new EditMonthlySalaryCriteria
             {
-                PayrollId = viewModel.FilterInfo.PayrollId,
-                CompanyId = viewModel.FilterInfo.CompanyId,
+                PayrollId = payrollId,
+                CompanyId = companyId,
                 UserId = sessionService.UserId,
-                Month = viewModel.Month,
-                Salary = cryptoService.Encrypt(viewModel.MonthlySalary.Salary),
-                EbankingCurrencyId = viewModel.MonthlySalary.EbankingCurrencyId,
-                EbankingAmount = cryptoService.Encrypt(viewModel.MonthlySalary.EbankingAmount),
-                EbankingAccountId = viewModel.MonthlySalary.EbankingAccountId,
-                DirectBanking1CurrencyId = viewModel.MonthlySalary.DirectBanking1CurrencyId,
-                DirectBanking1Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking1Amount),
-                DirectBanking1AccountId = viewModel.MonthlySalary.DirectBanking1AccountId,
-                DirectBanking2CurrencyId = viewModel.MonthlySalary.DirectBanking2CurrencyId,
-                DirectBanking2Amount = cryptoService.Encrypt(viewModel.MonthlySalary.DirectBanking2Amount),
-                DirectBanking2AccountId = viewModel.MonthlySalary.DirectBanking2AccountId,
-                CashCurrencyId = viewModel.MonthlySalary.CashCurrencyId,
-                CashAmount = cryptoService.Encrypt(viewModel.MonthlySalary.CashAmount),
-                CashAccountId = viewModel.MonthlySalary.CashAccountId,
-                AdditionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.AdditionAmount),
-                DeductionAmount = cryptoService.Encrypt(viewModel.MonthlySalary.DeductionAmount),
-                AutoCalculateOn = viewModel.MonthlySalary.AutoCalculateOn.ToString(),
-                AdditionXml = viewModel.Additions.ToXML().ToString(),
-                DeductionXml = viewModel.Deductions.ToXML().ToString()
+                Month = month,
+                Salary = cryptoService.Encrypt(monthlySalary.Item1.Salary),
+                EbankingCurrencyId = monthlySalary.Item1.EbankingCurrencyId,
+                EbankingAmount = cryptoService.Encrypt(monthlySalary.Item1.EbankingAmount),
+                EbankingAccountId = monthlySalary.Item1.EbankingAccountId,
+                DirectBanking1CurrencyId = monthlySalary.Item1.DirectBanking1CurrencyId,
+                DirectBanking1Amount = cryptoService.Encrypt(monthlySalary.Item1.DirectBanking1Amount),
+                DirectBanking1AccountId = monthlySalary.Item1.DirectBanking1AccountId,
+                DirectBanking2CurrencyId = monthlySalary.Item1.DirectBanking2CurrencyId,
+                DirectBanking2Amount = cryptoService.Encrypt(monthlySalary.Item1.DirectBanking2Amount),
+                DirectBanking2AccountId = monthlySalary.Item1.DirectBanking2AccountId,
+                CashCurrencyId = monthlySalary.Item1.CashCurrencyId,
+                CashAmount = cryptoService.Encrypt(monthlySalary.Item1.CashAmount),
+                CashAccountId = monthlySalary.Item1.CashAccountId,
+                AdditionAmount = cryptoService.Encrypt(monthlySalary.Item1.AdditionAmount),
+                DeductionAmount = cryptoService.Encrypt(monthlySalary.Item1.DeductionAmount),
+                AutoCalculateOn = monthlySalary.Item1.AutoCalculateOn.ToString(),
+                AdditionXml = monthlySalary.Item2.ToXML().ToString(),
+                DeductionXml = monthlySalary.Item3.ToXML().ToString()
             };
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 
@@ -843,51 +896,6 @@
                 deduction.UnitAmount = cryptoService.Encrypt(deduction.UnitAmount);
                 deduction.TotalAmount = cryptoService.Encrypt(deduction.TotalAmount);
                 deduction.NetAllowance = cryptoService.Encrypt(deduction.NetAllowance);
-            }
-        }
-
-        private void DecryptAndRoundingAmountMonthlySalary(EditMonthlySalaryViewModel viewModel)
-        {
-            viewModel.MonthlyBasicSalary.Salary = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.Salary);
-            viewModel.MonthlyBasicSalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.EbankingAmount);
-            viewModel.MonthlyBasicSalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking1Amount);
-            viewModel.MonthlyBasicSalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.DirectBanking2Amount);
-            viewModel.MonthlyBasicSalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.CashAmount);
-            viewModel.MonthlyBasicSalary.AfterAdjustmentAmount = cryptoService.Decrypt(viewModel.MonthlyBasicSalary.AfterAdjustmentAmount);
-
-            viewModel.MonthlySalary.Salary = cryptoService.Decrypt(viewModel.MonthlySalary.Salary);
-            viewModel.MonthlySalary.EbankingAmount = cryptoService.Decrypt(viewModel.MonthlySalary.EbankingAmount);
-            viewModel.MonthlySalary.DirectBanking1Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking1Amount);
-            viewModel.MonthlySalary.DirectBanking2Amount = cryptoService.Decrypt(viewModel.MonthlySalary.DirectBanking2Amount);
-            viewModel.MonthlySalary.CashAmount = cryptoService.Decrypt(viewModel.MonthlySalary.CashAmount);
-            viewModel.MonthlySalary.AdditionAmount = cryptoService.Decrypt(viewModel.MonthlySalary.AdditionAmount);
-            viewModel.MonthlySalary.DeductionAmount = cryptoService.Decrypt(viewModel.MonthlySalary.DeductionAmount);
-
-            decimal.TryParse(viewModel.MonthlySalary.AdditionAmount, out decimal amount);
-            viewModel.MonthlySalary.AdditionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.AdditionAmount)
-                ? CalculationService.RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyCode).ToString(CultureInfo.InvariantCulture) : string.Empty;
-            decimal.TryParse(viewModel.MonthlySalary.DeductionAmount, out amount);
-            viewModel.MonthlySalary.DeductionAmountDisplay = !string.IsNullOrWhiteSpace(viewModel.MonthlySalary.DeductionAmount)
-                ? CalculationService.RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyCode).ToString(CultureInfo.InvariantCulture) : string.Empty;
-
-            foreach (MonthlySalaryAdditionModel addition in viewModel.Additions)
-            {
-                addition.UnitAmount = cryptoService.Decrypt(addition.UnitAmount);
-                addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
-
-                decimal.TryParse(addition.NetSalary, out amount);
-                addition.NetSalaryDisplay = !string.IsNullOrWhiteSpace(addition.NetSalary)
-                    ? CalculationService.RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
-            }
-
-            foreach (MonthlySalaryDeductionModel deduction in viewModel.Deductions)
-            {
-                deduction.UnitAmount = cryptoService.Decrypt(deduction.UnitAmount);
-                deduction.NetSalary = cryptoService.Decrypt(deduction.NetSalary);
-
-                decimal.TryParse(deduction.NetSalary, out amount);
-                deduction.NetSalaryDisplay = !string.IsNullOrWhiteSpace(deduction.NetSalary)
-                    ? CalculationService.RoundAmountWithCurrency(amount, viewModel.MonthlySalary.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
             }
         }
 
