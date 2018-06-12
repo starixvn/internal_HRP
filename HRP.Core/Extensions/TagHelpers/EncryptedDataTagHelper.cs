@@ -36,7 +36,7 @@
                 throw new ArgumentNullException(nameof(output));
             }
 
-            var hidden = Generator.GenerateHidden(ViewContext, For.ModelExplorer, For.Name, For.Model, true, new { @class = "encrypted-value" });
+            var hidden = Generator.GenerateHidden(ViewContext, For.ModelExplorer, For.Name, For.Model, false, new { @class = "encrypted-value" });
 
             if (output.Attributes.TryGetAttribute("class", out TagHelperAttribute attribute))
             {

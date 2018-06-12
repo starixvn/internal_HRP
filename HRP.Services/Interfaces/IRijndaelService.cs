@@ -11,5 +11,9 @@
         string Encrypt(string plainText, string rijndaelKey, string rijndaelIV);
 
         void DecryptObject(object obj, string rijndaelKey, string rijndaelIV);
+
+        void EncryptObject(object obj, string rijndaelKey, string rijndaelIV);
+
+        void CleanPlainValue(object obj);
     }
 }

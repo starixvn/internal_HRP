@@ -1,4 +1,4 @@
-﻿var editAllowances = (function ($, commonFunctions, CryptoJS) {
+﻿var editAllowances = (function ($, commonFunctions, rijndaelService) {
     var totalAmountCurrencyId;
     var $editAllowanceForm;
     var workingDays;
@@ -41,7 +41,6 @@
     }
 
     function calculateTotalAddition() {
-        debugger;
         var totalAddition = new BigNumber(0);
         $('.addition.net-allowance').each(function (i, element) {
             totalAddition = totalAddition.plus(Number(element.value));
@@ -312,6 +311,10 @@
             } else {
                 $unitAmount.val('');
             }
+
+            if ($unitAmount.hasClass('input-validation-error')) {
+                $unitAmount.valid();
+            }
         });
 
         $('.unit-amount, .addition.currency, .deduction.currency').on('change', function (e) {
@@ -380,28 +383,23 @@
 
         $('.btn-submit', $editAllowanceForm).on('click', function () {
             $('input[name="submitAction"]', $editAllowanceForm).val($(this).val());
-            encryptData();
-            $plainValues.attr('disabled', 'disabled');
-            $editAllowanceForm.submit();
+
+            if ($editAllowanceForm.valid()) {
+                encryptData();
+                $plainValues.attr('disabled', 'disabled');
+                $editAllowanceForm.submit();
+            }
         });
     }
 
     function decryptData() {
-        $encryptedValues.each(function () {
+        $('.encrypted-value').each(function () {
             var $this = $(this);
 
             if ($this.val() !== '') {
-                var decrypt = CryptoJS.AES.decrypt(
-                    $this.val(),
-                    rijndaelKey,
-                    {
-                        keySize: 128 / 8,
-                        iv: rijndaelIV,
-                        mode: CryptoJS.mode.CBC,
-                        padding: CryptoJS.pad.Pkcs7
-                    });
-
-                $($this.data('plain-target')).val(decrypt.toString(CryptoJS.enc.Utf8));
+                $($this.data('plain-target')).val(rijndaelService.decryptData($this.val(), rijndaelKey, rijndaelIV));
+            } else {
+                $($this.data('plain-target')).val('');
             }
         });
     }
@@ -411,17 +409,7 @@
             var $this = $(this);
 
             if ($this.val() !== '') {
-                var encrypt = CryptoJS.AES.encrypt(
-                    $this.val(),
-                    rijndaelKey,
-                    {
-                        keySize: 128 / 8,
-                        iv: rijndaelIV,
-                        mode: CryptoJS.mode.CBC,
-                        padding: CryptoJS.pad.Pkcs7
-                    });
-
-                $($this.data('encrypt-target')).val(encrypt.toString());
+                $($this.data('encrypt-target')).val(rijndaelService.encryptData($this.val(), rijndaelKey, rijndaelIV));
             } else {
                 $($this.data('encrypt-target')).val('');
             }
@@ -429,8 +417,8 @@
     }
 
     function initModule() {
-        rijndaelIV = CryptoJS.enc.Utf8.parse($('#RijndaelIV').val());
-        rijndaelKey = CryptoJS.enc.Utf8.parse($('#RijndaelKey').val());
+        rijndaelIV = $('#RijndaelIV').val();
+        rijndaelKey = $('#RijndaelKey').val();
         $plainValues = $('.plain-value');
         $encryptedValues = $('.encrypted-value');
         $editAllowanceForm = $('#edit-allowances-form');
@@ -496,7 +484,7 @@
             }
         }
     };
-}(jQuery, commonFunctions, CryptoJS));
+}(jQuery, commonFunctions, rijndaelService));
 
 $(document).ready(function () {
     editAllowances.initModule();

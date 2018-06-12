@@ -95,5 +95,34 @@
                 plainValue.SetValue(securityObject, Decrypt(encryptedValue.GetValue(securityObject)?.ToString(), rijndaelKey, rijndaelIV));
             }
         }
+
+        public void EncryptObject(object obj, string rijndaelKey, string rijndaelIV)
+        {
+            var securityObjects = obj.GetType().GetProperties()
+                .Where(x => x.GetValue(obj) != null && (x.GetValue(obj).GetType().IsSubclassOf(typeof(SecurityData)) || x.GetValue(obj).GetType() == typeof(SecurityData)))
+                .Select(x => x.GetValue(obj));
+
+            foreach (var securityObject in securityObjects)
+            {
+                var type = securityObject.GetType();
+                var encryptedValue = type.GetProperty(nameof(SecurityData.EncryptedValue));
+                var plainValue = type.GetProperty(nameof(SecurityData.PlainValue));
+                encryptedValue.SetValue(securityObject, Encrypt(plainValue.GetValue(securityObject)?.ToString(), rijndaelKey, rijndaelIV));
+            }
+        }
+
+        public void CleanPlainValue(object obj)
+        {
+            var securityObjects = obj.GetType().GetProperties()
+                .Where(x => x.GetValue(obj) != null && (x.GetValue(obj).GetType().IsSubclassOf(typeof(SecurityData)) || x.GetValue(obj).GetType() == typeof(SecurityData)))
+                .Select(x => x.GetValue(obj));
+
+            foreach (var securityObject in securityObjects)
+            {
+                var type = securityObject.GetType();
+                var plainValue = type.GetProperty(nameof(SecurityData.PlainValue));
+                plainValue.SetValue(securityObject, null);
+            }
+        }
     }
 }

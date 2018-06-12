@@ -28,7 +28,7 @@
 
         Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month);
 
-        Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesModel viewModel, int userId);
+        Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesModel model, int userId);
 
         void CalculateBackPayAndAfterAdjustment(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,

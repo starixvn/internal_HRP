@@ -228,37 +228,37 @@
             return model;
         }
 
-        public async Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesModel viewModel, int userId)
+        public async Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesModel model, int userId)
         {
-            EncryptMonthlyAllowanceAddition(viewModel.Additions);
-            EncryptMonthlyAllowanceDeduction(viewModel.Deductions);
-            decimal.TryParse(viewModel.Allowance.DirectBanking1Amount, out decimal directbanking1);
-            decimal.TryParse(viewModel.Allowance.DirectBanking2Amount, out decimal directbanking2);
-            decimal.TryParse(viewModel.Allowance.CashAmount, out decimal cash);
+            EncryptMonthlyAllowanceAddition(model.Additions);
+            EncryptMonthlyAllowanceDeduction(model.Deductions);
+            decimal.TryParse(model.Allowance.DirectBanking1Amount, out decimal directbanking1);
+            decimal.TryParse(model.Allowance.DirectBanking2Amount, out decimal directbanking2);
+            decimal.TryParse(model.Allowance.CashAmount, out decimal cash);
             var status = directbanking1 < 0 || directbanking2 < 0 || cash < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Satisfied;
 
             var criteria = new EditMonthlyAllowancesCriteria
             {
-                PayrollId = viewModel.Allowance.PayrollId,
-                CurrencyId = viewModel.Allowance.CurrencyId,
-                TotalAmount = cryptoService.Encrypt(viewModel.Allowance.TotalAmount),
-                DirectBanking1CurrencyId = viewModel.Allowance.DirectBanking1CurrencyId,
-                DirectBanking1Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking1Amount),
-                DirectBanking1AccountId = viewModel.Allowance.DirectBanking1AccountId,
-                DirectBanking2CurrencyId = viewModel.Allowance.DirectBanking2CurrencyId,
-                DirectBanking2Amount = cryptoService.Encrypt(viewModel.Allowance.DirectBanking2Amount),
-                DirectBanking2AccountId = viewModel.Allowance.DirectBanking2AccountId,
-                CashCurrencyId = viewModel.Allowance.CashCurrencyId,
-                CashAmount = cryptoService.Encrypt(viewModel.Allowance.CashAmount),
-                CashAccountId = viewModel.Allowance.CashAccountId,
-                AutoCalculateOn = viewModel.Allowance.AutoCalculateOn,
-                TotalNetAmount = cryptoService.Encrypt(viewModel.Allowance.TotalNetAmount),
-                DSTNetSalaryCurrencyId = viewModel.Allowance.DSTNetSalaryCurrencyId,
-                DSTNetSalaryAmount = cryptoService.Encrypt(viewModel.Allowance.DSTNetSalaryAmount),
-                AdditionAmount = cryptoService.Encrypt(viewModel.Allowance.AdditionAmount),
-                DeductionAmount = cryptoService.Encrypt(viewModel.Allowance.DeductionAmount),
-                AllowanceAddition = viewModel.Additions.ToXML().ToString(),
-                AllowanceDeduction = viewModel.Deductions.ToXML().ToString(),
+                PayrollId = model.Allowance.PayrollId,
+                CurrencyId = model.Allowance.CurrencyId,
+                TotalAmount = cryptoService.Encrypt(model.Allowance.TotalAmount),
+                DirectBanking1CurrencyId = model.Allowance.DirectBanking1CurrencyId,
+                DirectBanking1Amount = cryptoService.Encrypt(model.Allowance.DirectBanking1Amount),
+                DirectBanking1AccountId = model.Allowance.DirectBanking1AccountId,
+                DirectBanking2CurrencyId = model.Allowance.DirectBanking2CurrencyId,
+                DirectBanking2Amount = cryptoService.Encrypt(model.Allowance.DirectBanking2Amount),
+                DirectBanking2AccountId = model.Allowance.DirectBanking2AccountId,
+                CashCurrencyId = model.Allowance.CashCurrencyId,
+                CashAmount = cryptoService.Encrypt(model.Allowance.CashAmount),
+                CashAccountId = model.Allowance.CashAccountId,
+                AutoCalculateOn = model.Allowance.AutoCalculateOn,
+                TotalNetAmount = cryptoService.Encrypt(model.Allowance.TotalNetAmount),
+                DSTNetSalaryCurrencyId = model.Allowance.DSTNetSalaryCurrencyId,
+                DSTNetSalaryAmount = cryptoService.Encrypt(model.Allowance.DSTNetSalaryAmount),
+                AdditionAmount = cryptoService.Encrypt(model.Allowance.AdditionAmount),
+                DeductionAmount = cryptoService.Encrypt(model.Allowance.DeductionAmount),
+                AllowanceAddition = model.Additions.ToXML().ToString(),
+                AllowanceDeduction = model.Deductions.ToXML().ToString(),
                 UserId = userId,
                 Status = status
             };

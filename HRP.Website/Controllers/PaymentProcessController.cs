@@ -455,6 +455,84 @@
             return View(viewModel);
         }
 
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> EditAllowances(EditMonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
+        {
+            if (!sessionService.HasPermissionOnCompany(viewModel.EmployeeInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            ModelState.Clear();
+            DecryptData(viewModel);
+
+            if (TryValidateModel(viewModel))
+            {
+                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(ConvertToServiceModel(viewModel), sessionService.UserId);
+                var redirectTo = string.Empty;
+
+                redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new
+                {
+                    companyId = viewModel.CompanyId,
+                    month = viewModel.Month,
+                    payrollId = viewModel.Allowance.PayrollId,
+                    employeeId = viewModel.Filter.EmployeeId,
+                    employee = viewModel.Filter.Employee,
+                    costCenterIds = viewModel.Filter.CostCenterIds,
+                    idNo = viewModel.Filter.IDNo,
+                    workingDays = viewModel.Filter.WorkingDays
+                }) : Url.Action("EmployeeMonthlyPayroll", new
+                {
+                    companyId = viewModel.CompanyId,
+                    month = viewModel.Month,
+                    employeeId = viewModel.Filter.EmployeeId,
+                    employee = viewModel.Filter.Employee,
+                    costCenterIds = viewModel.Filter.CostCenterIds,
+                    idNo = viewModel.Filter.IDNo,
+                    workingDays = viewModel.Filter.WorkingDays
+                });
+
+                return Json(new
+                {
+                    isSuccessful = result.IsSuccessful,
+                    message = result.Message,
+                    redirectTo = result.IsSuccessful ? redirectTo : string.Empty
+                });
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> Preset(int companyId, int employeeId, DateTime month)
+        {
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> PresetAllMonthlyPayroll(int companyId, DateTime month)
+        {
+            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            {
+                return RedirectToAction("AccessDenied", "Error");
+            }
+
+            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
+
+            return Json(result);
+        }
+
         private async Task<EditMonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
         {
             var serviceModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
@@ -726,81 +804,77 @@
             };
         }
 
-        [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> EditAllowances(EditMonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
+        private MonthlyAllowancesModel ConvertToServiceModel(EditMonthlyAllowancesViewModel viewModel)
         {
-            if (!sessionService.HasPermissionOnCompany(viewModel.EmployeeInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
+            return new MonthlyAllowancesModel
             {
-                return RedirectToAction("AccessDenied", "Error");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(new Models.ServiceModels.MonthlyAllowancesModel(), sessionService.UserId);
-                var redirectTo = string.Empty;
-
-                redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new
+                EmployeeId = viewModel.EmployeeId,
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.Month,
+                Allowance = new MonthlyAllowanceModel
                 {
-                    companyId = viewModel.CompanyId,
-                    month = viewModel.Month,
-                    payrollId = viewModel.Allowance.PayrollId,
-                    employeeId = viewModel.Filter.EmployeeId,
-                    employee = viewModel.Filter.Employee,
-                    costCenterIds = viewModel.Filter.CostCenterIds,
-                    idNo = viewModel.Filter.IDNo,
-                    workingDays = viewModel.Filter.WorkingDays
-                }) : Url.Action("EmployeeMonthlyPayroll", new
+                    PayrollId = viewModel.Allowance.PayrollId,
+                    EmployeeId = viewModel.Allowance.PayrollId,
+                    CurrencyId = viewModel.Allowance.Total.CurrencyId,
+                    TotalAmount = viewModel.Allowance.Total.PlainValue,
+                    DirectBanking1CurrencyId = viewModel.Allowance.DirectBanking1.CurrencyId,
+                    DirectBanking1Amount = viewModel.Allowance.DirectBanking1.PlainValue,
+                    DirectBanking1AccountId = viewModel.Allowance.DirectBanking1.AccountId,
+                    DirectBanking2CurrencyId = viewModel.Allowance.DirectBanking2.CurrencyId,
+                    DirectBanking2Amount = viewModel.Allowance.DirectBanking2.PlainValue,
+                    DirectBanking2AccountId = viewModel.Allowance.DirectBanking2.AccountId,
+                    CashCurrencyId = viewModel.Allowance.Cash.CurrencyId,
+                    CashAmount = viewModel.Allowance.Cash.PlainValue,
+                    CashAccountId = viewModel.Allowance.Cash.AccountId,
+                    AutoCalculateOn = viewModel.Allowance.AutoCalculateOn,
+                    TotalNetAmount = viewModel.Allowance.TotalNet.PlainValue,
+                    DSTNetSalaryCurrencyId = viewModel.Allowance.DST.CurrencyId,
+                    DSTNetSalaryAmount = viewModel.Allowance.DST.PlainValue,
+                    AdditionAmount = viewModel.Allowance.Addition.PlainValue,
+                    DeductionAmount = viewModel.Allowance.Deduction.PlainValue,
+                },
+                Additions = viewModel.Additions.Select(x => new MonthlyAllowanceAdditionModel
                 {
-                    companyId = viewModel.CompanyId,
-                    month = viewModel.Month,
-                    employeeId = viewModel.Filter.EmployeeId,
-                    employee = viewModel.Filter.Employee,
-                    costCenterIds = viewModel.Filter.CostCenterIds,
-                    idNo = viewModel.Filter.IDNo,
-                    workingDays = viewModel.Filter.WorkingDays
-                });
-
-                return Json(new
+                    PayrollId = x.PayrollId,
+                    Type = x.Type,
+                    CurrencyId = x.CurrencyId,
+                    UnitAmount = x.PlainValue,
+                    NoOfDays = x.NoOfDays,
+                    TotalAmount = x.TotalAmount.PlainValue,
+                    NetAllowance = x.NetAllowance.PlainValue
+                }).ToList(),
+                Deductions = viewModel.Deductions.Select(x => new MonthlyAllowanceDeductionModel
                 {
-                    isSuccessful = result.IsSuccessful,
-                    message = result.Message,
-                    redirectTo = result.IsSuccessful ? redirectTo : string.Empty
-                });
-            }
-
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
-            return Json(new { isSuccessful = false, errors });
+                    PayrollId = x.PayrollId,
+                    Type = x.Type,
+                    CurrencyId = x.CurrencyId,
+                    UnitAmount = x.PlainValue,
+                    NoOfDays = x.NoOfDays,
+                    TotalAmount = x.TotalAmount.PlainValue,
+                    NetAllowance = x.NetAllowance.PlainValue
+                }).ToList()
+            };
         }
 
-        [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> Preset(int companyId, int employeeId, DateTime month)
+        private void DecryptData(EditMonthlyAllowancesViewModel viewModel)
         {
-            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            rijndaelService.DecryptObject(viewModel.Allowance, rijndaelKey, rijndaelIV);
+
+            foreach(var addition in viewModel.Additions)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                addition.PlainValue = rijndaelService.Decrypt(addition.EncryptedValue, rijndaelKey, rijndaelIV);
+                rijndaelService.DecryptObject(addition, rijndaelKey, rijndaelIV);
             }
 
-            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
-
-            return Json(result);
-        }
-
-        [HttpPost]
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> PresetAllMonthlyPayroll(int companyId, DateTime month)
-        {
-            if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
+            foreach (var deduction in viewModel.Deductions)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                deduction.PlainValue = rijndaelService.Decrypt(deduction.EncryptedValue, rijndaelKey, rijndaelIV);
+                rijndaelService.DecryptObject(deduction, rijndaelKey, rijndaelIV);
             }
-
-            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
-
-            return Json(result);
         }
-
         #endregion Monthly Payroll
     }
 }

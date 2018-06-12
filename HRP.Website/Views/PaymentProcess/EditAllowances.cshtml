@@ -1,6 +1,6 @@
 ﻿@using HRP.Core.Enumerations
 @using HRP.Resources
-@model HRP.Models.MonthlyPayroll.MonthlyAllowancesViewModel
+@model HRP.Models.MonthlyPayroll.EditMonthlyAllowancesViewModel
 
 @{
     ViewData["Title"] = Model.CanEdit ? ViewLang.EditMonthlyAllowances : ViewLang.ViewMonthlyAllowances;
@@ -251,7 +251,7 @@
 
                 <div class="group-complex -alw-layout-deduction-2">
                     <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
-                    <input type="hidden" id="total-deduction" asp-for="Allowance.Deduction.EncryptedValue" asp-encrypt-for="Allowance.Deduction.EncryptedValue">
+                    <input type="hidden" id="total-deduction" asp-for="Allowance.Deduction.PlainValue" asp-encrypt-for="Allowance.Deduction.EncryptedValue">
                     <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled asp-for="Allowance.DeductiontDisplay.PlainValue" asp-encrypt-for="Allowance.DeductiontDisplay.EncryptedValue">
                 </div>
             </div>
@@ -480,6 +480,7 @@
         <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
         <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
         <script src="~/lib/CryptoJS/aes.js"></script>
+        <script src="~/assets/js/rijndael-service.js"></script>
         <script src="~/assets/js/paymentprocess/edit-allowances.js"></script>
     </environment>
     <environment exclude="Development">

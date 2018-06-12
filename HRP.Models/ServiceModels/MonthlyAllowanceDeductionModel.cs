@@ -9,9 +9,9 @@
     {
         public int PayrollId { get; set; }
 
-        public int EmployeeId { get; set; }
-
         public int Type { get; set; }
+
+        public int EmployeeId { get; set; }
 
         [XmlIgnore]
         public decimal? NoOfDays { get; set; }
