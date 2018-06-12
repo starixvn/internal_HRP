@@ -6,7 +6,7 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class MonthlyAllowancesViewModel
+    public class EditMonthlyAllowancesViewModel
     {
         public int EmployeeId { get; set; }
 
@@ -15,13 +15,13 @@
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
 
-        public MonthlyAllowanceModel Allowance { get; set; } = new MonthlyAllowanceModel();
+        public MonthlyAllowanceViewModel Allowance { get; set; } = new MonthlyAllowanceViewModel();
 
         public MonthlyPayrollBasicAllowanceModel BasicAllowance { get; set; } = new MonthlyPayrollBasicAllowanceModel();
 
-        public IList<MonthlyAllowanceDetailAdjustmentModel> Additions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentModel>();
+        public IList<MonthlyAllowanceDetailAdjustmentViewModel> Additions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentViewModel>();
 
-        public IList<MonthlyAllowanceDetailAdjustmentModel> Deductions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentModel>();
+        public IList<MonthlyAllowanceDetailAdjustmentViewModel> Deductions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentViewModel>();
 
         public MonthlyPayrollFilterInfoModel EmployeeInfo { get; set; } = new MonthlyPayrollFilterInfoModel();
 

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.Employee
 {
-    public class EmployeePayrollAllowanceModel : EmployeePayrollBaseBankDetails
+    public class EmployeePayrollAllowanceViewModel : EmployeePayrollBaseBankDetails
     {
         public int EmployeeId { get; set; }
 

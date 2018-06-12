@@ -455,11 +455,11 @@
             return View(viewModel);
         }
 
-        private async Task<MonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
+        private async Task<EditMonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
         {
             var serviceModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
 
-            var viewModel = new MonthlyAllowancesViewModel
+            var viewModel = new EditMonthlyAllowancesViewModel
             {
                 BasicAllowance = InitializeBasicAllowanceModel(serviceModel.BasicAllowance),
                 Allowance = InitializeAllowanceModel(serviceModel.Allowance),
@@ -493,12 +493,12 @@
             return viewModel;
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAddition> additions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAddition> additions)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
 
-            return additions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
+            return additions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
                 PayrollId = x.PayrollId,
                 EmployeeId = x.EmployeeId,
@@ -526,12 +526,12 @@
             }).ToList();
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> deductions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> deductions)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
 
-            return deductions.Select(x => new MonthlyAllowanceDetailAdjustmentModel
+            return deductions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
                 PayrollId = x.PayrollId,
                 EmployeeId = x.EmployeeId,
@@ -559,12 +559,12 @@
             }).ToList();
         }
 
-        private MonthlyAllowanceModel InitializeAllowanceModel(MonthlyAllowance allowance)
+        private MonthlyAllowanceViewModel InitializeAllowanceModel(MonthlyAllowance allowance)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
 
-            return new MonthlyAllowanceModel
+            return new MonthlyAllowanceViewModel
             {
                 PayrollId = allowance.PayrollId,
                 EmployeeId = allowance.EmployeeId,
@@ -728,7 +728,7 @@
 
         [HttpPost]
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> EditAllowances(MonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
+        public async Task<IActionResult> EditAllowances(EditMonthlyAllowancesViewModel viewModel, EditMonthlyAllowanceAction submitAction)
         {
             if (!sessionService.HasPermissionOnCompany(viewModel.EmployeeInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
             {

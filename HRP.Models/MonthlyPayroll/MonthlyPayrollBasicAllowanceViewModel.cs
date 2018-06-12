@@ -2,7 +2,7 @@
 {
     using HRP.Core.Enumerations;
 
-    public class MonthlyPayrollBasicAllowanceModel
+    public class MonthlyPayrollBasicAllowanceViewModel
     {
         public int PayrollId { get; set; }
 

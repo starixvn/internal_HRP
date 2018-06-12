@@ -508,7 +508,7 @@
                     RijndaelKey = sessionService.RijndaelKey
                 };
 
-                viewModel.BasicSalary = new EmployeePayrollBasicSalaryModel
+                viewModel.BasicSalary = new EmployeePayrollBasicSalaryViewModel
                 {
                     EmployeeId = payroll.BasicSalary.EmployeeId,
                     EffectiveDate = payroll.BasicSalary.EffectiveDate,
@@ -554,7 +554,7 @@
                         EncryptedValue = rijndaelService.Encrypt(payroll.BasicSalary.EbankingAmount, sessionService.RijndaelKey, sessionService.RijndaelIV)
                     }
                 };
-                viewModel.Allowance = new EmployeePayrollAllowanceModel
+                viewModel.Allowance = new EmployeePayrollAllowanceViewModel
                 {
                     EmployeeId = payroll.Allowance.EmployeeId,
                     CurrencyId = payroll.Allowance.CurrencyId,
@@ -628,7 +628,7 @@
                         EncryptedValue = rijndaelService.Encrypt(payroll.Allowance.DirectBanking2Amount, sessionService.RijndaelKey, sessionService.RijndaelIV)
                     }
                 };
-                viewModel.Deduction = new EmployeePayrollDeductionModel
+                viewModel.Deduction = new EmployeePayrollDeductionViewModel
                 {
                     EmployeeId = payroll.Deduction.EmployeeId,
                     RoomingCharges = new CurrencyAmountModel

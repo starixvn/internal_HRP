@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class EmployeePayrollBasicSalaryModel : EmployeePayrollBaseBankDetails
+    public class EmployeePayrollBasicSalaryViewModel : EmployeePayrollBaseBankDetails
     {
         public int EmployeeId { get; set; }
 

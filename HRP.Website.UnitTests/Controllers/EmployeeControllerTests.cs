@@ -880,7 +880,7 @@
             var model = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
-                BasicSalary = new EmployeePayrollBasicSalaryModel
+                BasicSalary = new EmployeePayrollBasicSalaryViewModel
                 {
                     EmployeeId = employeeId,
                     Salary = new CurrencyAmountModel(),
@@ -890,7 +890,7 @@
                     DirectBanking2 = new PaymentTransactionModel(),
                     Cash = new PaymentTransactionModel(),
                 },
-                Allowance = new EmployeePayrollAllowanceModel
+                Allowance = new EmployeePayrollAllowanceViewModel
                 {
                     EmployeeId = employeeId,
                     DirectBanking1 = new PaymentTransactionModel(),
@@ -905,7 +905,7 @@
                     Subsistence = new CurrencyAmountModel(),
                     Others = new CurrencyAmountModel()
                 },
-                Deduction = new EmployeePayrollDeductionModel
+                Deduction = new EmployeePayrollDeductionViewModel
                 {
                     EmployeeId = employeeId,
                     RoomingCharges = new CurrencyAmountModel(),
@@ -941,13 +941,13 @@
             var model = new EmployeePayrollViewModel
             {
                 EmployeeId = employeeId,
-                BasicSalary = new EmployeePayrollBasicSalaryModel
+                BasicSalary = new EmployeePayrollBasicSalaryViewModel
                 {
                     EmployeeId = employeeId,
                     Salary = new CurrencyAmountModel { CurrencyId = 1 }
                 },
-                Allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId },
-                Deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId }
+                Allowance = new EmployeePayrollAllowanceViewModel { EmployeeId = employeeId },
+                Deduction = new EmployeePayrollDeductionViewModel { EmployeeId = employeeId }
             };
 
             var employeeController = GetEmployeeController();         

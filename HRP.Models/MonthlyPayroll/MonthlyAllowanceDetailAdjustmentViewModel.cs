@@ -3,7 +3,7 @@
     using HRP.Core.CustomValidations;
     using HRP.Resources;
 
-    public class MonthlyAllowanceDetailAdjustmentModel : SecurityData
+    public class MonthlyAllowanceDetailAdjustmentViewModel : SecurityData
     {
         public int PayrollId { get; set; }
 

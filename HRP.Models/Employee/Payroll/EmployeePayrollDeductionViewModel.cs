@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.Employee
 {
-    public class EmployeePayrollDeductionModel
+    public class EmployeePayrollDeductionViewModel
     {
         public int EmployeeId { get; set; }
 

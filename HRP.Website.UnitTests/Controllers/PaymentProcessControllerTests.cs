@@ -931,7 +931,7 @@
         public async Task EditAllowancesPost_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new EditMonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
@@ -948,7 +948,7 @@
         public async Task EditAllowancesPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new EditMonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             controller.ModelState.AddModelError("UnitAmount", "required");
@@ -974,7 +974,7 @@
         public async Task EditAllowancesPost_ModelStateIsValid_ReturnAsExpected()
         {
             // Arrange
-            var viewModel = new MonthlyAllowancesViewModel();
+            var viewModel = new EditMonthlyAllowancesViewModel();
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
             controller.Url = Substitute.For<IUrlHelper>();

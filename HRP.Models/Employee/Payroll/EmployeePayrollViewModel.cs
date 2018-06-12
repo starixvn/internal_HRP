@@ -16,11 +16,11 @@
 
         public int CompanyId { get; set; }
 
-        public EmployeePayrollBasicSalaryModel BasicSalary { get; set; } = new EmployeePayrollBasicSalaryModel();
+        public EmployeePayrollBasicSalaryViewModel BasicSalary { get; set; } = new EmployeePayrollBasicSalaryViewModel();
 
-        public EmployeePayrollAllowanceModel Allowance { get; set; } = new EmployeePayrollAllowanceModel();
+        public EmployeePayrollAllowanceViewModel Allowance { get; set; } = new EmployeePayrollAllowanceViewModel();
 
-        public EmployeePayrollDeductionModel Deduction { get; set; } = new EmployeePayrollDeductionModel();
+        public EmployeePayrollDeductionViewModel Deduction { get; set; } = new EmployeePayrollDeductionViewModel();
 
         public IEnumerable<CurrencyCodeModel> Currencies { get; set; }
 
