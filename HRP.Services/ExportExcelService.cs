@@ -361,8 +361,8 @@
                     {
                         MonthlyBasicSalaryModel monthlyBasicSalary = report.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                         MonthlySalaryModel monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
-                        MonthlyPayrollBasicAllowance monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
-                        MonthlyAllowance monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                        MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                        MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
 
                         templateWorksheet.Cells[9, 1, 9, 48].Copy(worksheet.Cells[row, 1, row, 48]);
                         worksheet.Cells[row, 1].Value = serialNo;
@@ -491,8 +491,8 @@
                     worksheet.Cells[row, 21].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
                 }
 
-                IEnumerable<MonthlyPayrollBasicAllowance> basicAllowanceList = report.MonthlyBasicAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
-                IEnumerable<MonthlyAllowance> allowanceList = report.MonthlyAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
+                IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList = report.MonthlyBasicAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
+                IEnumerable<MonthlyAllowanceModel> allowanceList = report.MonthlyAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
                 worksheet.Cells[row, 24].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAmount));
                 worksheet.Cells[row, 25].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAmount));
                 worksheet.Cells[row, 26].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAmount));

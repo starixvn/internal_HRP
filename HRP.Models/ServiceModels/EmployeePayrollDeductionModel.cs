@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.ServiceModels
 {
-    public class EmployeePayrollDeduction
+    public class EmployeePayrollDeductionModel
     {
         public int EmployeeId { get; set; }
 

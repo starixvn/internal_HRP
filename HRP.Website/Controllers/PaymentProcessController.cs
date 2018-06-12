@@ -493,7 +493,7 @@
             return viewModel;
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAddition> additions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAdditionModel> additions)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
@@ -526,7 +526,7 @@
             }).ToList();
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeduction> deductions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeductionModel> deductions)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
@@ -559,7 +559,7 @@
             }).ToList();
         }
 
-        private MonthlyAllowanceViewModel InitializeAllowanceModel(MonthlyAllowance allowance)
+        private MonthlyAllowanceViewModel InitializeAllowanceModel(MonthlyAllowanceModel allowance)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
@@ -628,12 +628,12 @@
             };
         }
 
-        private MonthlyPayrollBasicAllowanceModel InitializeBasicAllowanceModel(MonthlyPayrollBasicAllowance basicAllowance)
+        private MonthlyPayrollBasicAllowanceViewModel InitializeBasicAllowanceModel(MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
             var rijndaelIV = sessionService.RijndaelIV;
             var rijndaelKey = sessionService.RijndaelKey;
 
-            return new MonthlyPayrollBasicAllowanceModel
+            return new MonthlyPayrollBasicAllowanceViewModel
             {
                 PayrollId = basicAllowance.PayrollId,
                 EmployeeId = basicAllowance.EmployeeId,
@@ -737,7 +737,7 @@
 
             if (ModelState.IsValid)
             {
-                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(new Models.ServiceModels.MonthlyAllowances(), sessionService.UserId);
+                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(new Models.ServiceModels.MonthlyAllowancesModel(), sessionService.UserId);
                 var redirectTo = string.Empty;
 
                 redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new

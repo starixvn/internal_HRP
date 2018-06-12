@@ -15,9 +15,9 @@
 
         public IEnumerable<MonthlySalaryModel> MonthlySalary { get; set; }
 
-        public IEnumerable<MonthlyPayrollBasicAllowance> MonthlyBasicAllowance { get; set; }
+        public IEnumerable<MonthlyPayrollBasicAllowanceModel> MonthlyBasicAllowance { get; set; }
 
-        public IEnumerable<MonthlyAllowance> MonthlyAllowance { get; set; }
+        public IEnumerable<MonthlyAllowanceModel> MonthlyAllowance { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRate { get; set; }
 

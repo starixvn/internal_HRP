@@ -20,8 +20,8 @@
                     var payslips = await multi.ReadAsync<PayslipDetailModel>().ConfigureAwait(false);
                     var salaryAdditions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
                     var salaryDeductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
-                    var allowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAddition>().ConfigureAwait(false);
-                    var allowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeduction>().ConfigureAwait(false);
+                    var allowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAdditionModel>().ConfigureAwait(false);
+                    var allowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeductionModel>().ConfigureAwait(false);
 
                     foreach (PayslipDetailModel payslip in payslips)
                     {

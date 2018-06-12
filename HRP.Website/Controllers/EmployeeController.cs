@@ -678,12 +678,12 @@
             rijndaelService.DecryptObject(model.Deduction, sessionService.RijndaelKey, sessionService.RijndaelIV);
         }
 
-        private EmployeePayroll ConvertToServiceModel(EmployeePayrollViewModel model)
+        private EmployeePayrollModel ConvertToServiceModel(EmployeePayrollViewModel model)
         {
-            var payroll = new EmployeePayroll
+            var payroll = new EmployeePayrollModel
             {
                 EmployeeId = model.EmployeeId,
-                BasicSalary = new EmployeePayrollBasicSalary
+                BasicSalary = new EmployeePayrollBasicSalaryModel
                 {
                     EmployeeId = model.BasicSalary.EmployeeId,
                     Salary = model.BasicSalary.Salary.PlainValue,
@@ -707,7 +707,7 @@
                     CashAmount = model.BasicSalary.Cash.PlainValue,
                     CashAccountId = model.BasicSalary.Cash.AccountId
                 },
-                Allowance = new EmployeePayrollAllowance
+                Allowance = new EmployeePayrollAllowanceModel
                 {
                     EmployeeId = model.Allowance.EmployeeId,
                     CurrencyId = model.Allowance.CurrencyId,
@@ -738,7 +738,7 @@
                     OthersCurrencyId = model.Allowance.Others.CurrencyId,
                     OthersAmount = model.Allowance.Others.PlainValue
                 },
-                Deduction = new EmployeePayrollDeduction
+                Deduction = new EmployeePayrollDeductionModel
                 {
                     RoomingChargesCurrencyId = model.Deduction.RoomingCharges.CurrencyId,
                     RoomingChargesAmount = model.Deduction.RoomingCharges.PlainValue,

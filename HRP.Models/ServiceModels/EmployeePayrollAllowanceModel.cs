@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.ServiceModels
 {
-    public class EmployeePayrollAllowance : EmployeePaymentTransactionBase
+    public class EmployeePayrollAllowanceModel : EmployeePaymentTransactionBase
     {
         public int EmployeeId { get; set; }
 

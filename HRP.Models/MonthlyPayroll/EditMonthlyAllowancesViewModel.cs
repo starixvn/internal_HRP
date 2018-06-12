@@ -17,7 +17,7 @@
 
         public MonthlyAllowanceViewModel Allowance { get; set; } = new MonthlyAllowanceViewModel();
 
-        public MonthlyPayrollBasicAllowanceModel BasicAllowance { get; set; } = new MonthlyPayrollBasicAllowanceModel();
+        public MonthlyPayrollBasicAllowanceViewModel BasicAllowance { get; set; } = new MonthlyPayrollBasicAllowanceViewModel();
 
         public IList<MonthlyAllowanceDetailAdjustmentViewModel> Additions { get; set; } = new List<MonthlyAllowanceDetailAdjustmentViewModel>();
 

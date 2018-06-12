@@ -810,7 +810,7 @@
             var employeeId = 0;
             var filter = new CachingFilterViewModel();
             var employeeController = GetEmployeeController();
-            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayroll>(null));
+            payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(Task.FromResult<EmployeePayrollModel>(null));
 
             // Act
             var actual = await employeeController.Payroll(employeeId, filter);
@@ -827,14 +827,14 @@
             // Arrange
             var employeeId = 1;
             var employeeController = GetEmployeeController();
-            var serviceModel = new EmployeePayroll
+            var serviceModel = new EmployeePayrollModel
             {
                 EmployeeId = employeeId,
                 FullName = "Full Name",
                 Nickname = "Nick Name",
                 Code = "DAR",
                 CompanyId = 1,
-                BasicSalary = new EmployeePayrollBasicSalary
+                BasicSalary = new EmployeePayrollBasicSalaryModel
                 {
                     EmployeeId = employeeId,
                     EbankingAccountId = 1,
@@ -844,7 +844,7 @@
                     DirectBanking2AccountId = 2,
                     DirectBanking2AccountName = "Account 2",
                 },
-                Allowance = new EmployeePayrollAllowance
+                Allowance = new EmployeePayrollAllowanceModel
                 {
                     EmployeeId = employeeId,
                     DirectBanking1AccountId = 1,
@@ -852,7 +852,7 @@
                     DirectBanking2AccountId = 2,
                     DirectBanking2AccountName = "Account 2",
                 },
-                Deduction = new EmployeePayrollDeduction
+                Deduction = new EmployeePayrollDeductionModel
                 {
                     EmployeeId = employeeId
                 }
@@ -921,7 +921,7 @@
                  Arg.Any<string>(), Arg.Any<Object>()));
             employeeController.Url = Substitute.For<IUrlHelper>();
             employeeController.Url.Action().ReturnsForAnyArgs("/Employee/Index");
-            payrollService.UpdatePayroll(Arg.Any<EmployeePayroll>(), sessionService.UserId).Returns(expected);
+            payrollService.UpdatePayroll(Arg.Any<EmployeePayrollModel>(), sessionService.UserId).Returns(expected);
 
             // Act
             var actual = await employeeController.EditPayroll(model);

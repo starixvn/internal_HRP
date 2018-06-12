@@ -5,7 +5,7 @@
     using HRP.Core.Extensions;
 
     [XMLName("Row")]
-    public class MonthlyPayrollBasicAllowance
+    public class MonthlyPayrollBasicAllowanceModel
     {
         public int PayrollId { get; set; }
 

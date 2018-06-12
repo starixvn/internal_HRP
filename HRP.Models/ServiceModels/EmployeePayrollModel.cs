@@ -1,6 +1,6 @@
 ﻿namespace HRP.Models.ServiceModels
 {
-    public class EmployeePayroll
+    public class EmployeePayrollModel
     {
         public int EmployeeId { get; set; }
 
@@ -12,11 +12,11 @@
 
         public int CompanyId { get; set; }
 
-        public EmployeePayrollBasicSalary BasicSalary { get; set; }
+        public EmployeePayrollBasicSalaryModel BasicSalary { get; set; }
 
-        public EmployeePayrollAllowance Allowance { get; set; }
+        public EmployeePayrollAllowanceModel Allowance { get; set; }
 
-        public EmployeePayrollDeduction Deduction { get; set; }
+        public EmployeePayrollDeductionModel Deduction { get; set; }
 
         public bool CanRead { get; set; }
 

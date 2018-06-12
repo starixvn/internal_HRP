@@ -913,9 +913,9 @@
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
-                .Returns(new MonthlyAllowances
+                .Returns(new MonthlyAllowancesModel
                 {
-                    Allowance = new MonthlyAllowance()
+                    Allowance = new MonthlyAllowanceModel()
                 });
             baseService.GetDataAsync<CurrencyCodeModel>(Arg.Any<GetActiveCurrencyCodesCriteria>()).Returns(new List<CurrencyCodeModel>());
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
@@ -924,7 +924,7 @@
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
 
             var result = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<MonthlyAllowances>(result.Model);
+            Assert.IsType<MonthlyAllowancesModel>(result.Model);
         }
 
         [Fact]
@@ -979,7 +979,7 @@
             var controller = GetPaymentProcessController();
             controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowances>(), sessionService.UserId).Returns(commandResult);
+            monthlyPayrollService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowancesModel>(), sessionService.UserId).Returns(commandResult);
 
             // Act
             var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);

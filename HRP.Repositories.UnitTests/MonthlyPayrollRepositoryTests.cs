@@ -63,9 +63,9 @@
         public async Task GetMonthlyAllowancesAsync_NotExistedMonthlySalary_ReturnDefaultViewModel()
         {
             // Arrange
-            var additions = new List<MonthlyAllowanceAddition>
+            var additions = new List<MonthlyAllowanceAdditionModel>
             {
-                new MonthlyAllowanceAddition
+                new MonthlyAllowanceAdditionModel
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -76,9 +76,9 @@
                     CurrencyId = 1
                 }
             };
-            var deductions = new List<MonthlyAllowanceDeduction>
+            var deductions = new List<MonthlyAllowanceDeductionModel>
             {
-                new MonthlyAllowanceDeduction
+                new MonthlyAllowanceDeductionModel
                 {
                     PayrollId = 1,
                     NoOfDays = 20,
@@ -90,15 +90,15 @@
                 }
             };
 
-            var allowance = new MonthlyAllowance();
-            var basicAllowance = new MonthlyPayrollBasicAllowance();
+            var allowance = new MonthlyAllowanceModel();
+            var basicAllowance = new MonthlyPayrollBasicAllowanceModel();
 
             var multiResultReader = FakeMultipleResultReader();
-            multiResultReader.ReadFirstOrDefault<MonthlyAllowance>().Returns(allowance);
-            multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowance>().Returns(basicAllowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyAllowanceModel>().Returns(allowance);
+            multiResultReader.ReadFirstOrDefault<MonthlyPayrollBasicAllowanceModel>().Returns(basicAllowance);
 
-            multiResultReader.Read<MonthlyAllowanceAddition>().Returns(additions);
-            multiResultReader.Read<MonthlyAllowanceDeduction>().Returns(deductions);
+            multiResultReader.Read<MonthlyAllowanceAdditionModel>().Returns(additions);
+            multiResultReader.Read<MonthlyAllowanceDeductionModel>().Returns(deductions);
 
             var criteria = FakeCriteria();
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);

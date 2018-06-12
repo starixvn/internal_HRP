@@ -114,7 +114,7 @@
                 addition.NetSalaryDisplay = rijndaelService.Encrypt(addition.NetSalaryDisplay, rijndaelKey, rijndaelIV);
             }
 
-            foreach (MonthlyAllowanceAddition addition in payslipDetails.AllowanceAdditions)
+            foreach (MonthlyAllowanceAdditionModel addition in payslipDetails.AllowanceAdditions)
             {
                 addition.NetAllowanceToDisplay = rijndaelService.Encrypt(addition.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
             }
@@ -124,7 +124,7 @@
                 deduction.NetSalaryDisplay = rijndaelService.Encrypt(deduction.NetSalaryDisplay, rijndaelKey, rijndaelIV);
             }
 
-            foreach (MonthlyAllowanceDeduction deduction in payslipDetails.AllowanceDeductions)
+            foreach (MonthlyAllowanceDeductionModel deduction in payslipDetails.AllowanceDeductions)
             {
                 deduction.NetAllowanceToDisplay = rijndaelService.Encrypt(deduction.NetAllowanceToDisplay, rijndaelKey, rijndaelIV);
             }

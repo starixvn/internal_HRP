@@ -8,7 +8,7 @@
     using HRP.Resources;
 
     [XMLName("Row")]
-    public class MonthlyAllowance
+    public class MonthlyAllowanceModel
     {
         public int PayrollId { get; set; }
 

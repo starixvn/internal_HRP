@@ -300,9 +300,9 @@
             var monthlySalaries = new List<MonthlySalaryModel>();
             var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
             var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
-            var monthlyAllowances = new List<MonthlyAllowance>();
-            var monthlyAllowanceAdditions = new List<MonthlyAllowanceAddition>();
-            var monthlyAllowanceDeductions = new List<MonthlyAllowanceDeduction>();
+            var monthlyAllowances = new List<MonthlyAllowanceModel>();
+            var monthlyAllowanceAdditions = new List<MonthlyAllowanceAdditionModel>();
+            var monthlyAllowanceDeductions = new List<MonthlyAllowanceDeductionModel>();
 
             foreach (MonthlyPayroll payroll in dataModel.MonthlyPayroll)
             {
@@ -376,9 +376,9 @@
         private void GenerateEmployeeAllowance(
             DateTime month,
             GeneratePayrollModel dataModel,
-            List<MonthlyAllowance> monthlyAllowances,
-            List<MonthlyAllowanceAddition> monthlyAllowanceAdditions,
-            List<MonthlyAllowanceDeduction> monthlyAllowanceDeductions,
+            List<MonthlyAllowanceModel> monthlyAllowances,
+            List<MonthlyAllowanceAdditionModel> monthlyAllowanceAdditions,
+            List<MonthlyAllowanceDeductionModel> monthlyAllowanceDeductions,
             MonthlyPayroll payroll,
             MonthlyBasicSalaryModel monthlyBasicSalary)
         {
@@ -477,7 +477,7 @@
             }
         }
 
-        private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowance allowance)
+        private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel allowance)
         {
             if (allowance != null)
             {
@@ -507,7 +507,7 @@
             }
         }
 
-        private void EncryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowance basicAllowance)
+        private void EncryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
             if (basicAllowance != null)
             {
@@ -540,7 +540,7 @@
             }
         }
 
-        private void EncryptMonthlyAllowance(MonthlyAllowance allowance)
+        private void EncryptMonthlyAllowance(MonthlyAllowanceModel allowance)
         {
             if (allowance != null)
             {
@@ -555,7 +555,7 @@
             }
         }
 
-        private void EncryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAddition> additions)
+        private void EncryptMonthlyAllowanceAdditions(IEnumerable<MonthlyAllowanceAdditionModel> additions)
         {
             foreach (var addition in additions)
             {
@@ -565,7 +565,7 @@
             }
         }
 
-        private void EncryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeduction> deductions)
+        private void EncryptMonthlyAllowanceDeductions(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
         {
             foreach (var deduction in deductions)
             {

@@ -7,7 +7,6 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
-    using HRP.Models.Employee;
     using HRP.Models.ServiceModels;
     using Models.Employee.Payroll;
     using NSubstitute;
@@ -54,7 +53,7 @@
             // Arrange
             var plainText = "1234";
             var employeeId = 1;
-            var employeePayroll = new EmployeePayroll
+            var employeePayroll = new EmployeePayrollModel
             {
                 EmployeeId = employeeId,
                 FullName = "Full Name",
@@ -62,21 +61,21 @@
                 Code = "DAR",
                 CompanyId = 1
             };
-            var basicSalary = new EmployeePayrollBasicSalary
+            var basicSalary = new EmployeePayrollBasicSalaryModel
             {
                 EmployeeId = employeeId,
                 WorkingDays = 22,
                 AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                 InitFirstTime = true
             };
-            var allowance = new EmployeePayrollAllowance { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
-            var deduction = new EmployeePayrollDeduction { EmployeeId = employeeId };
+            var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
+            var deduction = new EmployeePayrollDeductionModel { EmployeeId = employeeId };
 
             var multiResultReader = FakeMultipleResultReader();
-            multiResultReader.ReadFirstOrDefault<EmployeePayroll>().Returns(employeePayroll);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalary>().Returns(basicSalary);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowance>().Returns(allowance);
-            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeduction>().Returns(deduction);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollModel>().Returns(employeePayroll);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>().Returns(basicSalary);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollAllowanceModel>().Returns(allowance);
+            multiResultReader.ReadFirstOrDefault<EmployeePayrollDeductionModel>().Returns(deduction);
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResultReader);
 
             var service = GetEmployeePayrollService();
@@ -126,11 +125,11 @@
         public async Task UpdatePayroll_WhenCalled_ReturnAsExpectedCommandResult()
         {
             // Arrange
-            var model = new EmployeePayroll
+            var model = new EmployeePayrollModel
             {
-                BasicSalary = new EmployeePayrollBasicSalary(),
-                Allowance = new EmployeePayrollAllowance(),
-                Deduction = new EmployeePayrollDeduction()
+                BasicSalary = new EmployeePayrollBasicSalaryModel(),
+                Allowance = new EmployeePayrollAllowanceModel(),
+                Deduction = new EmployeePayrollDeductionModel()
             };
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();
@@ -148,11 +147,11 @@
         public async Task UpdatePayroll_WhenCalled_ExpectedCallEncrypt()
         {
             // Arrange
-            var model = new EmployeePayroll
+            var model = new EmployeePayrollModel
             {
-                BasicSalary = new EmployeePayrollBasicSalary(),
-                Allowance = new EmployeePayrollAllowance(),
-                Deduction = new EmployeePayrollDeduction()
+                BasicSalary = new EmployeePayrollBasicSalaryModel(),
+                Allowance = new EmployeePayrollAllowanceModel(),
+                Deduction = new EmployeePayrollDeductionModel()
             };
             var expected = new CommandResult();
             var service = GetEmployeePayrollService();

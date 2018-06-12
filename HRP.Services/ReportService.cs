@@ -158,7 +158,7 @@
         }
 
         private void DecryptMonthlyBasicAllowanceListAndConvertAmount(
-            IEnumerable<MonthlyPayrollBasicAllowance> basicAllowanceList,
+            IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (basicAllowanceList != null && basicAllowanceList.Any())
@@ -195,7 +195,7 @@
         }
 
         private void DecryptMonthlyAllowanceListAndConvertAmount(
-            IEnumerable<MonthlyAllowance> allowanceList,
+            IEnumerable<MonthlyAllowanceModel> allowanceList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             if (allowanceList != null && allowanceList.Any())
@@ -216,7 +216,7 @@
             }
         }
 
-        private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowance basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+        private static void ConvertMonthlyBasicAllowanceToConversionCurrency(MonthlyPayrollBasicAllowanceModel basicAllowance, IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = basicAllowance.CurrencyId;
             var conversionCurrencyCode = basicAllowance.CurrencyCode;
@@ -254,7 +254,7 @@
         }
 
         private static void ConvertMonthlyAllowanceToConversionCurrency(
-            MonthlyAllowance allowance,
+            MonthlyAllowanceModel allowance,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
         {
             var conversionCurrencyId = allowance.CurrencyId;

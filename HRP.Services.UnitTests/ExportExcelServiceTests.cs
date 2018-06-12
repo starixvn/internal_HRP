@@ -129,8 +129,8 @@
                 },
                 MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 1 } },
                 MonthlySalary = new List<MonthlySalaryModel> { new MonthlySalaryModel { EmployeeId = 1 } },
-                MonthlyAllowance = new List<MonthlyAllowance> { new MonthlyAllowance { EmployeeId = 1 } },
-                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowance> { new MonthlyPayrollBasicAllowance { EmployeeId = 1 } },
+                MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 1 } },
+                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 1 } },
                 CurrencyExchangeRate = new List<CurrencyExchangeRateModel>
                 {
                     new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 },

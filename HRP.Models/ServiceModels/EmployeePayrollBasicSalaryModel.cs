@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class EmployeePayrollBasicSalary : EmployeePaymentTransactionBase
+    public class EmployeePayrollBasicSalaryModel : EmployeePaymentTransactionBase
     {
         public int EmployeeId { get; set; }
 

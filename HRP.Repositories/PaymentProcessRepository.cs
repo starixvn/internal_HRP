@@ -38,7 +38,7 @@
                     var monthlyAttendance = await multi.ReadAsync<MonthlyAttendance>().ConfigureAwait(false);
                     var monthlyDSTNetSalary = await multi.ReadAsync<MonthlyDSTNetSalary>().ConfigureAwait(false);
                     var monthlyBasicSalary = await multi.ReadAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false);
-                    var monthlyBasicAllowance = await multi.ReadAsync<MonthlyPayrollBasicAllowance>().ConfigureAwait(false);
+                    var monthlyBasicAllowance = await multi.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false);
                     var currencyExchangeRate = await multi.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false);
 
                     var result = new GeneratePayrollModel

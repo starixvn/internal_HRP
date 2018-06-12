@@ -225,14 +225,14 @@
 
             payslip.AllowanceAdditions = payslip.AllowanceAdditions.Any()
                 ? payslip.AllowanceAdditions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceAddition
+                                                .Select(x => new MonthlyAllowanceAdditionModel
                                                 {
                                                     PayrollId = payslip.PayrollId,
                                                     Type = (int)x
                                                 }).ToList();
             payslip.AllowanceDeductions = payslip.AllowanceDeductions.Any()
                 ? payslip.AllowanceDeductions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceDeduction
+                                                .Select(x => new MonthlyAllowanceDeductionModel
                                                 {
                                                     PayrollId = payslip.PayrollId,
                                                     Type = (int)x
@@ -249,7 +249,7 @@
                     payslip.AllowanceCurrencyCode);
             }
 
-            foreach (MonthlyAllowanceDeduction deduction in payslip.AllowanceDeductions)
+            foreach (MonthlyAllowanceDeductionModel deduction in payslip.AllowanceDeductions)
             {
                 deduction.NetAllowance = cryptoService.Decrypt(deduction.NetAllowance);
 

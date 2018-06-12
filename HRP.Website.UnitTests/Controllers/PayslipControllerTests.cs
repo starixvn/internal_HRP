@@ -105,8 +105,8 @@
             {
                 SalaryAdditions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                 SalaryDeductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() },
-                AllowanceAdditions = new List<MonthlyAllowanceAddition> { new MonthlyAllowanceAddition() },
-                AllowanceDeductions = new List<MonthlyAllowanceDeduction> { new MonthlyAllowanceDeduction() }
+                AllowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() },
+                AllowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() }
             };
             var payslipController = GetPayslipController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);

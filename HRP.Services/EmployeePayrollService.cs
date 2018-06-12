@@ -19,30 +19,30 @@
             this.cryptoService = cryptoService;
         }
 
-        public async Task<EmployeePayroll> GetEmployeePayroll(int employeeId, int userId)
+        public async Task<EmployeePayrollModel> GetEmployeePayroll(int employeeId, int userId)
         {
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId, UserId = userId };
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
                 {
-                    var viewModel = multi.ReadFirstOrDefault<EmployeePayroll>();
+                    var viewModel = multi.ReadFirstOrDefault<EmployeePayrollModel>();
 
                     if (viewModel != null)
                     {
-                        var basicSalary = new EmployeePayrollBasicSalary
+                        var basicSalary = new EmployeePayrollBasicSalaryModel
                         {
                             EmployeeId = employeeId,
                             WorkingDays = 22,
                             AutoCalculateOn = PayrollAutoCalculateOn.Cash,
                             InitFirstTime = true
                         };
-                        var allowance = new EmployeePayrollAllowance { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
+                        var allowance = new EmployeePayrollAllowanceModel { EmployeeId = employeeId, AutoCalculateOn = PayrollAutoCalculateOn.Cash };
 
-                        viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalary>() ?? basicSalary;
+                        viewModel.BasicSalary = multi.ReadFirstOrDefault<EmployeePayrollBasicSalaryModel>() ?? basicSalary;
                         viewModel.BasicSalary.OldCurrencyId = viewModel.BasicSalary.CurrencyId;
-                        viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowance>() ?? allowance;
-                        viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeduction>() ?? new EmployeePayrollDeduction { EmployeeId = employeeId };
+                        viewModel.Allowance = multi.ReadFirstOrDefault<EmployeePayrollAllowanceModel>() ?? allowance;
+                        viewModel.Deduction = multi.ReadFirstOrDefault<EmployeePayrollDeductionModel>() ?? new EmployeePayrollDeductionModel { EmployeeId = employeeId };
 
                         DecryptData(viewModel);
                     }
@@ -52,7 +52,7 @@
             }
         }
 
-        public async Task<CommandResult> UpdatePayroll(EmployeePayroll model, int userId)
+        public async Task<CommandResult> UpdatePayroll(EmployeePayrollModel model, int userId)
         {
             var isSalaryChanged = model.BasicSalary.OldSalary != model.BasicSalary.Salary || model.BasicSalary.OldCurrencyId != model.BasicSalary.CurrencyId;
 
@@ -115,7 +115,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
-        private void DecryptData(EmployeePayroll payroll)
+        private void DecryptData(EmployeePayrollModel payroll)
         {
             payroll.BasicSalary.Salary = payroll.BasicSalary.OldSalary = cryptoService.Decrypt(payroll.BasicSalary.Salary);
             payroll.BasicSalary.EbankingAmount = cryptoService.Decrypt(payroll.BasicSalary.EbankingAmount);

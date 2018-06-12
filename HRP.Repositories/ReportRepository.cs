@@ -46,8 +46,8 @@
                         Employees = await results.ReadAsync<EmployeeBasicInfo>().ConfigureAwait(false),
                         MonthlyBasicSalary = await results.ReadAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false),
                         MonthlySalary = await results.ReadAsync<MonthlySalaryModel>().ConfigureAwait(false),
-                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowance>().ConfigureAwait(false),
-                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowance>().ConfigureAwait(false),
+                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false),
+                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowanceModel>().ConfigureAwait(false),
                         CurrencyExchangeRate = await results.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false),
                         CurrencyList = await results.ReadAsync<Currency>().ConfigureAwait(false)
                     };

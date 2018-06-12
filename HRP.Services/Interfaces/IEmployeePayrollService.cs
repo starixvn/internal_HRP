@@ -6,7 +6,7 @@
 
     public interface IEmployeePayrollService
     {
-        Task<EmployeePayroll> GetEmployeePayroll(int employeeId, int userId);
-        Task<CommandResult> UpdatePayroll(EmployeePayroll model, int userId);
+        Task<EmployeePayrollModel> GetEmployeePayroll(int employeeId, int userId);
+        Task<CommandResult> UpdatePayroll(EmployeePayrollModel model, int userId);
     }
 }
