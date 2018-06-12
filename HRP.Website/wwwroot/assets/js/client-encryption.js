@@ -14,6 +14,20 @@
         encrypt.encryptionIV = $(".encryption-iv").val();
     },
 
+    encryptData: function(value, rijndaelKey, rijndaelIV) {
+        return CryptoJS.AES.encrypt(
+            CryptoJS.enc.Utf8.parse(value),
+            rijndaelKey, {
+                iv: rijndaelIV
+            });
+    },
+
+    decryptData: function(value, rijndaelKey, rijndaelIV) {
+        return CryptoJS.AES.decrypt(value, rijndaelKey, {
+            iv: rijndaelIV
+        });
+    },
+
     decryptAndReplace: function () {
         if (encrypt.encryptionKey !== "" && encrypt.encryptionIV !== "") {
             var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
@@ -29,9 +43,7 @@
                     return true;
                 }
 
-                var decrypted = CryptoJS.AES.decrypt(valueToDecrypt, key, {
-                    iv: iv
-                });
+                var decrypted = encrypt.decryptData(valueToDecrypt, key, iv);
 
                 $(this).val(CryptoJS.enc.Utf8.stringify(decrypted));
                 $(this).data("isencrypted", false);
@@ -63,11 +75,7 @@
                         return true;
                     }
 
-                    var encrypted = CryptoJS.AES.encrypt(
-                        CryptoJS.enc.Utf8.parse(valueToEncrypt),
-                        key, {
-                            iv: iv
-                        });
+                    var encrypted = encrypt.encryptData(valueToEncrypt, key, iv);
 
                     $(this).val(encrypted);
                     $(this).data("isencrypted", true);
