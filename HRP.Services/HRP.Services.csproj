@@ -9,16 +9,16 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
-    <PackageReference Include="Dapper" Version="1.50.4" />
-    <PackageReference Include="EPPlus" Version="4.5.1" />
+    <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="EPPlus" Version="4.5.2.1" />
     <PackageReference Include="Fanex.Data" Version="2.1.0.1" />
     <PackageReference Include="Fanex.Data.Repository" Version="1.0.2.1" />
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
     <PackageReference Include="iTextSharp" Version="5.5.13" />
     <PackageReference Include="itextsharp.xmlworker" Version="5.5.13" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.7.1.4347" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463" />
   </ItemGroup>
 
   <PropertyGroup>
