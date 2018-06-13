@@ -148,15 +148,6 @@ var editBasicSalary = (function ($) {
             allowClear: true
         });
 
-        $('.js-select2-bankType').select2({
-            placeholder: '',
-            allowClear: true,
-            minimumResultsForSearch: Infinity
-        }).on('change', function (e) {
-            $(this).siblings('.js-select2-bankAccount').val('').trigger('change.select2');
-            validatedInvalidRelatedElements(e.target);
-        });
-
         $('.js-select2-bankAccount').select2({
             ajax: {
                 url: commonFunctions.rootURL + bankAccountUrl,
@@ -527,7 +518,7 @@ var editBasicSalary = (function ($) {
             } else {
                 $($this.data('encrypt-target')).val('');
             }
-        })
+        });
     }
 
     function initModule() {

@@ -167,7 +167,7 @@
         $('.select2:disabled').select2();
         $('.select2:enabled').select2({
             allowClear: true,
-            placeholder: '',
+            placeholder: ''
         }).on('change', function () {
             $(this).click();
         });
@@ -282,7 +282,7 @@
 
         $('.allowance-calculate').on('change', function (e) {
             var dataCalculateGroup = $(this).data('calculate-for');
-            var $currency = $('select[data-calculate-for="' + dataCalculateGroup + '"]');roundingAmount
+            var $currency = $('select[data-calculate-for="' + dataCalculateGroup + '"]');
             var $amount = $('input[type="text"][data-calculate-for="' + dataCalculateGroup + '"]');
             roundingAmount($currency, $amount, 0);
             validatedInvalidRelatedElements(e.target);
@@ -376,7 +376,7 @@
         });
 
         $('#Allowance_DST_PlainValue, #Allowance_DST_CurrencyId').on('change', function (e) {
-            roundingAmount($('#Allowance_DST_CurrencyId'), $('#Allowance_DST_PlainValue'), 2)
+            roundingAmount($('#Allowance_DST_CurrencyId'), $('#Allowance_DST_PlainValue'), 2);
             validatedInvalidRelatedElements(e.target);
             calculateTotalNetAmount();
         });
@@ -413,7 +413,7 @@
             } else {
                 $($this.data('encrypt-target')).val('');
             }
-        })
+        });
     }
 
     function initModule() {

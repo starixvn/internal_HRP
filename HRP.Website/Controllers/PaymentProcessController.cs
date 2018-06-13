@@ -381,8 +381,8 @@
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> EditBasicSalary(EditMonthlySalaryViewModel viewModel)
         {
             var isHost = sessionService.HasPermissionOnCompany(viewModel.FilterInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host);
@@ -392,14 +392,17 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            if (ModelState.IsValid)
+            ModelState.Clear();
+            DecryptData(viewModel);
+
+            if (TryValidateModel(viewModel))
             {
                 var monthlySalary = new Tuple<MonthlySalaryModel,
                     IEnumerable<MonthlySalaryAdditionModel>,
                     IEnumerable<MonthlySalaryDeductionModel>>(
-                        ConvertMonthlySalaryToModel(viewModel.MonthlySalary, sessionService.RijndaelKey, sessionService.RijndaelIV),
-                        ConvertMonthlySalaryAdditionToModel(viewModel.Additions, sessionService.RijndaelKey, sessionService.RijndaelIV),
-                        ConvertMonthlySalaryDeductionToModel(viewModel.Deductions, sessionService.RijndaelKey, sessionService.RijndaelIV));
+                        ConvertMonthlySalaryToModel(viewModel.MonthlySalary),
+                        ConvertMonthlySalaryAdditionToModel(viewModel.Additions),
+                        ConvertMonthlySalaryDeductionToModel(viewModel.Deductions));
                 CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(
                     viewModel.FilterInfo.PayrollId,
                     viewModel.FilterInfo.CompanyId,
@@ -892,7 +895,7 @@
 
             rijndaelService.DecryptObject(viewModel.Allowance, rijndaelKey, rijndaelIV);
 
-            foreach(var addition in viewModel.Additions)
+            foreach (var addition in viewModel.Additions)
             {
                 addition.PlainValue = rijndaelService.Decrypt(addition.EncryptedValue, rijndaelKey, rijndaelIV);
                 rijndaelService.DecryptObject(addition, rijndaelKey, rijndaelIV);
@@ -904,6 +907,7 @@
                 rijndaelService.DecryptObject(deduction, rijndaelKey, rijndaelIV);
             }
         }
+
         #endregion Monthly Payroll
 
         #region EditBasicSalary
@@ -1061,58 +1065,69 @@
             }).ToList();
         }
 
-        private MonthlySalaryModel ConvertMonthlySalaryToModel(
-            MonthlySalaryViewModel monthlySalary,
-            string rijndaelKey,
-            string rijndaelIV)
+        private void DecryptData(EditMonthlySalaryViewModel viewModel)
+        {
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            rijndaelService.DecryptObject(viewModel.MonthlySalary, rijndaelKey, rijndaelIV);
+
+            foreach (MonthlySalaryAdditionViewModel addition in viewModel.Additions)
+            {
+                addition.PlainValue = rijndaelService.Decrypt(addition.EncryptedValue, rijndaelKey, rijndaelIV);
+                rijndaelService.DecryptObject(addition, rijndaelKey, rijndaelIV);
+            }
+
+            foreach (MonthlySalaryDeductionViewModel deduction in viewModel.Deductions)
+            {
+                deduction.PlainValue = rijndaelService.Decrypt(deduction.EncryptedValue, rijndaelKey, rijndaelIV);
+                rijndaelService.DecryptObject(deduction, rijndaelKey, rijndaelIV);
+            }
+        }
+
+        private MonthlySalaryModel ConvertMonthlySalaryToModel(MonthlySalaryViewModel monthlySalary)
         {
             return new MonthlySalaryModel
             {
-                Salary = rijndaelService.Decrypt(monthlySalary.Salary.EncryptedValue, rijndaelKey, rijndaelIV),
+                Salary = monthlySalary.Salary.PlainValue,
                 EbankingCurrencyId = monthlySalary.Ebanking.CurrencyId,
-                EbankingAmount = rijndaelService.Decrypt(monthlySalary.Ebanking.EncryptedValue, rijndaelKey, rijndaelIV),
+                EbankingAmount = monthlySalary.Ebanking.PlainValue,
                 EbankingAccountId = monthlySalary.Ebanking.AccountId,
                 DirectBanking1CurrencyId = monthlySalary.DirectBanking1.CurrencyId,
-                DirectBanking1Amount = rijndaelService.Decrypt(monthlySalary.DirectBanking1.EncryptedValue, rijndaelKey, rijndaelIV),
+                DirectBanking1Amount = monthlySalary.DirectBanking1.PlainValue,
                 DirectBanking1AccountId = monthlySalary.DirectBanking1.AccountId,
                 DirectBanking2CurrencyId = monthlySalary.DirectBanking2.CurrencyId,
-                DirectBanking2Amount = rijndaelService.Decrypt(monthlySalary.DirectBanking2.EncryptedValue, rijndaelKey, rijndaelIV),
+                DirectBanking2Amount = monthlySalary.DirectBanking2.PlainValue,
                 DirectBanking2AccountId = monthlySalary.DirectBanking2.AccountId,
                 CashCurrencyId = monthlySalary.Cash.CurrencyId,
-                CashAmount = rijndaelService.Decrypt(monthlySalary.Cash.EncryptedValue, rijndaelKey, rijndaelIV),
+                CashAmount = monthlySalary.Cash.PlainValue,
                 CashAccountId = monthlySalary.Cash.AccountId,
-                AdditionAmount = rijndaelService.Decrypt(monthlySalary.AdditionAmount.EncryptedValue, rijndaelKey, rijndaelIV),
-                DeductionAmount = rijndaelService.Decrypt(monthlySalary.DeductionAmount.EncryptedValue, rijndaelKey, rijndaelIV),
+                AdditionAmount = monthlySalary.AdditionAmount.PlainValue,
+                DeductionAmount = monthlySalary.DeductionAmount.PlainValue,
                 AutoCalculateOn = monthlySalary.AutoCalculateOn
             };
         }
 
-        private IList<MonthlySalaryAdditionModel> ConvertMonthlySalaryAdditionToModel(
-            IEnumerable<MonthlySalaryAdditionViewModel> additions,
-            string rijndaelKey,
-            string rijndaelIV)
+        private IList<MonthlySalaryAdditionModel> ConvertMonthlySalaryAdditionToModel(IEnumerable<MonthlySalaryAdditionViewModel> additions)
         {
             return additions.Select(x => new MonthlySalaryAdditionModel
             {
                 Type = x.Type,
-                UnitAmount = rijndaelService.Decrypt(x.EncryptedValue, rijndaelKey, rijndaelIV),
+                UnitAmount = x.PlainValue,
                 NoOfDays = x.NoOfDays,
-                NetSalary = rijndaelService.Decrypt(x.NetSalary.EncryptedValue, rijndaelKey, rijndaelIV),
+                NetSalary = x.NetSalary.PlainValue,
                 Description = x.Description
             }).ToList();
         }
 
-        private IList<MonthlySalaryDeductionModel> ConvertMonthlySalaryDeductionToModel(
-            IEnumerable<MonthlySalaryDeductionViewModel> deductions,
-            string rijndaelKey,
-            string rijndaelIV)
+        private IList<MonthlySalaryDeductionModel> ConvertMonthlySalaryDeductionToModel(IEnumerable<MonthlySalaryDeductionViewModel> deductions)
         {
             return deductions.Select(x => new MonthlySalaryDeductionModel
             {
                 Type = x.Type,
-                UnitAmount = rijndaelService.Encrypt(x.EncryptedValue, rijndaelKey, rijndaelIV),
+                UnitAmount = x.PlainValue,
                 NoOfDays = x.NoOfDays,
-                NetSalary = rijndaelService.Encrypt(x.NetSalary.EncryptedValue, rijndaelKey, rijndaelIV),
+                NetSalary = x.NetSalary.PlainValue,
                 Description = x.Description
             }).ToList();
         }

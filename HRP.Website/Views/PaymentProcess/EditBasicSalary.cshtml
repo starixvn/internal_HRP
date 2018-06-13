@@ -230,7 +230,7 @@
                            asp-for="Deductions[2].PlainValue" asp-encrypt-for="Deductions[2].EncryptedValue" />
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay"
                            asp-for="Deductions[2].NetSalaryDisplay.PlainValue" asp-encrypt-for="Deductions[2].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[2].NetSalary" />
+                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[2].NetSalary.PlainValue" asp-encrypt-for="Deductions[2].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-deduction-2">
                     <div class="like-group-title">@ViewLang.Others</div>
@@ -314,6 +314,7 @@
                     <select class="control js-select2-disabled" asp-for="MonthlySalary.Salary.CurrencyId" asp-items="Model.Currencies" disabled>
                         <option></option>
                     </select>
+                    <input type="hidden" asp-for="MonthlySalary.Salary.CurrencyId" />
                     <input type="text" class="control number highlighted total-monthly-payroll js-numberOnly"
                            asp-for="MonthlySalary.Salary.PlainValue" asp-encrypt-for="MonthlySalary.Salary.EncryptedValue" readonly />
                 </div>
