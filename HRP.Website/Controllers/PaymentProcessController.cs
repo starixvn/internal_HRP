@@ -394,8 +394,9 @@
 
             ModelState.Clear();
             DecryptData(viewModel);
+            TryValidateModel(viewModel);
 
-            if (TryValidateModel(viewModel))
+            if (ModelState.IsValid)
             {
                 var monthlySalary = new Tuple<MonthlySalaryModel,
                     IEnumerable<MonthlySalaryAdditionModel>,

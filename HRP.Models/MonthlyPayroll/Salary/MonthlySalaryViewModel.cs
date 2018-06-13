@@ -4,15 +4,15 @@
 
     public class MonthlySalaryViewModel
     {
-        public CurrencyAmountModel Salary { get; set; }
-        public PaymentTransactionModel Ebanking { get; set; }
-        public PaymentTransactionModel DirectBanking1 { get; set; }
-        public PaymentTransactionModel DirectBanking2 { get; set; }
-        public PaymentTransactionModel Cash { get; set; }
+        public CurrencyAmountModel Salary { get; set; } = new CurrencyAmountModel();
+        public PaymentTransactionModel Ebanking { get; set; } = new PaymentTransactionModel();
+        public PaymentTransactionModel DirectBanking1 { get; set; } = new PaymentTransactionModel();
+        public PaymentTransactionModel DirectBanking2 { get; set; } = new PaymentTransactionModel();
+        public PaymentTransactionModel Cash { get; set; } = new PaymentTransactionModel();
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
-        public SecurityData AdditionAmount { get; set; }
-        public SecurityData AdditionAmountDisplay { get; set; }
-        public SecurityData DeductionAmount { get; set; }
-        public SecurityData DeductionAmountDisplay { get; set; }
+        public SecurityData AdditionAmount { get; set; } = new SecurityData();
+        public SecurityData AdditionAmountDisplay { get; set; } = new SecurityData();
+        public SecurityData DeductionAmount { get; set; } = new SecurityData();
+        public SecurityData DeductionAmountDisplay { get; set; } = new SecurityData();
     }
 }

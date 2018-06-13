@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Enumerations;
+    using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
@@ -156,85 +157,95 @@
 
         #region GetMonthlySalaryAsync
 
-        ////[Fact]
-        ////public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsNotExisted_ReturnNull()
-        ////{
-        ////    // Arrange
-        ////    var tupe = new Tuple<MonthlyBasicSalaryModel,
-        ////        MonthlySalaryModel,
-        ////        IEnumerable<MonthlySalaryAdditionModel>,
-        ////        IEnumerable<MonthlySalaryDeductionModel>>(null, null, null, null);
-        ////    var monthlyPayrollService = GetMonthlyPayrollService();
-        ////    monthlyPayrollRepository.GetMonthlySalaryAsync(Arg.Any<GetMonthlySalaryToEditCriteria>()).Returns(tupe);
+        [Fact]
+        public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsNotExisted_ReturnAsExpected()
+        {
+            // Arrange
+            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>(
+                    null,
+                    new MonthlySalaryModel(),
+                    new List<MonthlySalaryAdditionModel>(),
+                    new List<MonthlySalaryDeductionModel>());
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            monthlyPayrollRepository.GetMonthlySalaryAsync(Arg.Any<GetMonthlySalaryToEditCriteria>()).Returns(monthlyPayroll);
 
-        ////    // Act
-        ////    var actual = await monthlyPayrollService.GetMonthlySalaryAsync(1);
+            // Act
+            var actual = await monthlyPayrollService.GetMonthlySalaryAsync(1);
 
-        ////    // Assert
-        ////    Assert.Null(actual);
-        ////}
+            // Assert
+            Assert.Equal(monthlyPayroll, actual);
+        }
 
-        ////[Fact]
-        ////public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsExisted_ReturnAsExpectedViewModel()
-        ////{
-        ////    // Arrange
-        ////    var plainText = "1234";
-        ////    var tuple = new Tuple<MonthlyBasicSalaryModel,
-        ////        MonthlySalaryModel,
-        ////        IEnumerable<MonthlySalaryAdditionModel>,
-        ////        IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
-        ////            new MonthlySalaryModel(),
-        ////            new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
-        ////            new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
-        ////    var monthlyPayrollService = GetMonthlyPayrollService();
-        ////    monthlyPayrollRepository.GetMonthlySalaryAsync(Arg.Any<GetMonthlySalaryToEditCriteria>()).Returns(tuple);
-        ////    cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
+        [Fact]
+        public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsExisted_ReturnAsExpected()
+        {
+            // Arrange
+            var plainText = "1234";
+            var tuple = new Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
+                    new MonthlySalaryModel { CurrencyCode = "USD" },
+                    new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                    new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            monthlyPayrollRepository.GetMonthlySalaryAsync(Arg.Any<GetMonthlySalaryToEditCriteria>()).Returns(tuple);
+            cryptoService.Decrypt(Arg.Any<string>()).Returns(plainText);
 
-        ////    // Act
-        ////    var actual = await monthlyPayrollService.GetMonthlySalaryAsync(1);
+            // Act
+            var actual = await monthlyPayrollService.GetMonthlySalaryAsync(1);
 
-        ////    // Assert
-        ////    Assert.Equal(tuple.Item1.CurrencyCode, actual.MonthlyBasicSalary.CurrencyCode);
-        ////    Assert.Equal(tuple.Item1.Salary, actual.MonthlyBasicSalary.Salary);
-        ////    Assert.Equal(tuple.Item1.WorkingDays, actual.MonthlyBasicSalary.WorkingDays);
-        ////    Assert.Equal(123.4M, actual.MonthlyBasicSalary.SalaryPerDay);
-        ////    Assert.Equal(tuple.Item1.EbankingCurrencyCode, actual.MonthlyBasicSalary.EbankingCurrencyCode);
-        ////    Assert.Equal(plainText, actual.MonthlyBasicSalary.EbankingAmount);
-        ////    Assert.Equal(tuple.Item1.DirectBanking1CurrencyCode, actual.MonthlyBasicSalary.DirectBanking1CurrencyCode);
-        ////    Assert.Equal(plainText, actual.MonthlyBasicSalary.DirectBanking1Amount);
-        ////    Assert.Equal(tuple.Item1.DirectBanking2CurrencyCode, actual.MonthlyBasicSalary.DirectBanking2CurrencyCode);
-        ////    Assert.Equal(plainText, actual.MonthlyBasicSalary.DirectBanking2Amount);
-        ////    Assert.Equal(tuple.Item1.CashCurrencyCode, actual.MonthlyBasicSalary.CashCurrencyCode);
-        ////    Assert.Equal(plainText, actual.MonthlyBasicSalary.CashAmount);
-        ////    Assert.Equal(tuple.Item1.AutoCalculateOn, actual.MonthlyBasicSalary.AutoCalculateOn);
+            // Assert
+            Assert.Equal(tuple.Item1.CurrencyCode, actual.Item1.CurrencyCode);
+            Assert.Equal(tuple.Item1.Salary, actual.Item1.Salary);
+            Assert.Equal(tuple.Item1.WorkingDays, actual.Item1.WorkingDays);
+            Assert.Equal(123.4M, actual.Item1.SalaryPerDay);
+            Assert.Equal(tuple.Item1.EbankingCurrencyCode, actual.Item1.EbankingCurrencyCode);
+            Assert.Equal(plainText, actual.Item1.EbankingAmount);
+            Assert.Equal(tuple.Item1.DirectBanking1CurrencyCode, actual.Item1.DirectBanking1CurrencyCode);
+            Assert.Equal(plainText, actual.Item1.DirectBanking1Amount);
+            Assert.Equal(tuple.Item1.DirectBanking2CurrencyCode, actual.Item1.DirectBanking2CurrencyCode);
+            Assert.Equal(plainText, actual.Item1.DirectBanking2Amount);
+            Assert.Equal(tuple.Item1.CashCurrencyCode, actual.Item1.CashCurrencyCode);
+            Assert.Equal(plainText, actual.Item1.CashAmount);
+            Assert.Equal(tuple.Item1.AutoCalculateOn, actual.Item1.AutoCalculateOn);
 
-        ////    Assert.Equal(tuple.Item2.CurrencyId, actual.MonthlySalary.CurrencyId);
-        ////    Assert.Equal(tuple.Item2.Salary, actual.MonthlySalary.Salary);
-        ////    Assert.Equal(tuple.Item2.EbankingCurrencyId, actual.MonthlySalary.EbankingCurrencyId);
-        ////    Assert.Equal(tuple.Item2.EbankingAccountId, actual.MonthlySalary.EbankingAccountId);
-        ////    Assert.Equal(plainText, actual.MonthlySalary.EbankingAmount);
-        ////    Assert.Equal(tuple.Item2.DirectBanking1CurrencyId, actual.MonthlySalary.DirectBanking1CurrencyId);
-        ////    Assert.Equal(tuple.Item2.DirectBanking1AccountId, actual.MonthlySalary.DirectBanking1AccountId);
-        ////    Assert.Equal(plainText, actual.MonthlySalary.DirectBanking1Amount);
-        ////    Assert.Equal(tuple.Item2.DirectBanking2CurrencyId, actual.MonthlySalary.DirectBanking2CurrencyId);
-        ////    Assert.Equal(tuple.Item2.DirectBanking2AccountId, actual.MonthlySalary.DirectBanking2AccountId);
-        ////    Assert.Equal(plainText, actual.MonthlySalary.DirectBanking2Amount);
-        ////    Assert.Equal(tuple.Item2.CashCurrencyId, actual.MonthlySalary.CashCurrencyId);
-        ////    Assert.Equal(tuple.Item2.CashAccountId, actual.MonthlySalary.CashAccountId);
-        ////    Assert.Equal(plainText, actual.MonthlySalary.CashAmount);
+            Assert.Equal(tuple.Item2.CurrencyId, actual.Item2.CurrencyId);
+            Assert.Equal(tuple.Item2.Salary, actual.Item2.Salary);
+            Assert.Equal(tuple.Item2.EbankingCurrencyId, actual.Item2.EbankingCurrencyId);
+            Assert.Equal(tuple.Item2.EbankingAccountId, actual.Item2.EbankingAccountId);
+            Assert.Equal(plainText, actual.Item2.EbankingAmount);
+            Assert.Equal(tuple.Item2.DirectBanking1CurrencyId, actual.Item2.DirectBanking1CurrencyId);
+            Assert.Equal(tuple.Item2.DirectBanking1AccountId, actual.Item2.DirectBanking1AccountId);
+            Assert.Equal(plainText, actual.Item2.DirectBanking1Amount);
+            Assert.Equal(tuple.Item2.DirectBanking2CurrencyId, actual.Item2.DirectBanking2CurrencyId);
+            Assert.Equal(tuple.Item2.DirectBanking2AccountId, actual.Item2.DirectBanking2AccountId);
+            Assert.Equal(plainText, actual.Item2.DirectBanking2Amount);
+            Assert.Equal(tuple.Item2.CashCurrencyId, actual.Item2.CashCurrencyId);
+            Assert.Equal(tuple.Item2.CashAccountId, actual.Item2.CashAccountId);
+            Assert.Equal(plainText, actual.Item2.CashAmount);
 
-        ////    Assert.Collection(
-        ////        actual.Additions,
-        ////        kvp =>
-        ////        {
-        ////            Assert.Equal(plainText, kvp.NetSalary);
-        ////            Assert.Equal(plainText, kvp.UnitAmount);
-        ////        });
+            Assert.Collection(
+                actual.Item3,
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetSalary);
+                    Assert.Equal(plainText, kvp.NetSalaryDisplay);
+                    Assert.Equal(plainText, kvp.UnitAmount);
+                });
 
-        ////    Assert.Collection(
-        ////        actual.Deductions,
-        ////        kvp => { Assert.Equal(plainText, kvp.NetSalary); });
-        ////}
+            Assert.Collection(
+                actual.Item4,
+                kvp =>
+                {
+                    Assert.Equal(plainText, kvp.NetSalary);
+                    Assert.Equal(plainText, kvp.NetSalaryDisplay);
+                    Assert.Equal(plainText, kvp.UnitAmount);
+                });
+        }
 
         #endregion GetMonthlySalaryAsync
 
@@ -276,48 +287,59 @@
 
         #region EditMonthlySalaryAsync
 
-        ////[Fact]
-        ////public async Task EditMonthlySalaryAsync_WhenCalled_ReturnAsExpectedCommandResult()
-        ////{
-        ////    // Arrange
-        ////    var viewModel = new EditMonthlySalaryViewModel
-        ////    {
-        ////        Additions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
-        ////        Deductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() }
-        ////    };
-        ////    var expected = new CommandResult();
-        ////    var monthlyPayrollService = GetMonthlyPayrollService();
-        ////    baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlySalaryCriteria>()).Returns(expected);
+        [Fact]
+        public async Task EditMonthlySalaryAsync_WhenCalled_ReturnAsExpected()
+        {
+            // Arrange
+            var monthlySalary = new Tuple<MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>(
+                    new MonthlySalaryModel(),
+                    new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                    new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
+            var commandResult = new CommandResult();
+            var criteria = new EditMonthlySalaryCriteria();
+            var cipherText = "cipherText";
+            var payrollId = 1;
+            var companyId = 1;
+            var month = DateTime.Now;
+            var monthlyPayrollService = GetMonthlyPayrollService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditMonthlySalaryCriteria>(x => criteria = x)).Returns(commandResult);
+            cryptoService.Encrypt(Arg.Any<string>()).Returns(cipherText);
 
-        ////    // Act
-        ////    var actual = await monthlyPayrollService.EditMonthlySalaryAsync(viewModel);
+            // Act
+            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(payrollId, companyId, month, monthlySalary);
 
-        ////    // Assert
-        ////    Assert.Equal(expected, actual);
-        ////}
+            // Assert
+            Assert.Equal(commandResult, actual);
+            Assert.Equal(payrollId, criteria.PayrollId);
+            Assert.Equal(companyId, criteria.CompanyId);
+            Assert.Equal(month, criteria.Month);
+            Assert.Equal(cipherText, criteria.Salary);
 
-        ////[Fact]
-        ////public async Task EditMonthlySalaryAsync_WhenCalled_ExpectedEncryptData()
-        ////{
-        ////    // Arrange
-        ////    var criteria = new EditMonthlySalaryCriteria();
-        ////    var cipherText = "cipherText";
-        ////    var monthlyPayrollService = GetMonthlyPayrollService();
-        ////    baseService.ExecuteNonQueryAsync(Arg.Do<EditMonthlySalaryCriteria>(x => criteria = x)).Returns(new CommandResult());
-        ////    cryptoService.Encrypt(Arg.Any<string>()).Returns(cipherText);
+            Assert.Equal(monthlySalary.Item1.EbankingCurrencyId, criteria.EbankingCurrencyId);
+            Assert.Equal(cipherText, criteria.EbankingAmount);
+            Assert.Equal(monthlySalary.Item1.EbankingAccountId, criteria.EbankingAccountId);
 
-        ////    // Act
-        ////    await monthlyPayrollService.EditMonthlySalaryAsync(new EditMonthlySalaryViewModel());
+            Assert.Equal(monthlySalary.Item1.DirectBanking1CurrencyId, criteria.DirectBanking1CurrencyId);
+            Assert.Equal(cipherText, criteria.DirectBanking1Amount);
+            Assert.Equal(monthlySalary.Item1.DirectBanking1AccountId, criteria.DirectBanking1AccountId);
 
-        ////    // Assert
-        ////    Assert.Equal(cipherText, criteria.Salary);
-        ////    Assert.Equal(cipherText, criteria.EbankingAmount);
-        ////    Assert.Equal(cipherText, criteria.DirectBanking1Amount);
-        ////    Assert.Equal(cipherText, criteria.DirectBanking2Amount);
-        ////    Assert.Equal(cipherText, criteria.CashAmount);
-        ////    Assert.Equal(cipherText, criteria.AdditionAmount);
-        ////    Assert.Equal(cipherText, criteria.DeductionAmount);
-        ////}
+            Assert.Equal(monthlySalary.Item1.DirectBanking2CurrencyId, criteria.DirectBanking2CurrencyId);
+            Assert.Equal(cipherText, criteria.DirectBanking2Amount);
+            Assert.Equal(monthlySalary.Item1.DirectBanking2AccountId, criteria.DirectBanking2AccountId);
+
+            Assert.Equal(monthlySalary.Item1.CashCurrencyId, criteria.CashCurrencyId);
+            Assert.Equal(cipherText, criteria.CashAmount);
+            Assert.Equal(monthlySalary.Item1.CashAccountId, criteria.CashAccountId);
+
+            Assert.Equal(monthlySalary.Item1.AutoCalculateOn.ToString(), criteria.AutoCalculateOn);
+            Assert.Equal(cipherText, criteria.AdditionAmount);
+            Assert.Equal(cipherText, criteria.DeductionAmount);
+
+            Assert.Equal(monthlySalary.Item2.ToXML().ToString(), criteria.AdditionXml);
+            Assert.Equal(monthlySalary.Item3.ToXML().ToString(), criteria.DeductionXml);
+        }
 
         #endregion EditMonthlySalaryAsync
 

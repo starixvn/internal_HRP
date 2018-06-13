@@ -13,21 +13,22 @@
     using HRP.Core.Criteria;
     using HRP.Core.Services;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
+    using HRP.Models.ServiceModels;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Routing;
+    using Models;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.PaymentProcess;
-    using Models;
     using NSubstitute;
     using Resources;
     using Services;
     using Xunit;
-    using HRP.Models.ServiceModels;
 
     public class PaymentProcessControllerTests
     {
@@ -707,98 +708,189 @@
 
         #region EditBasicSalary
 
-        ////[Fact]
-        ////public async Task EditBasicSalary_HasNotPermission_ReturnRedirectToAccessDenied()
-        ////{
-        ////    // Arrange
-        ////    var controller = GetPaymentProcessController();
-        ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+        [Fact]
+        public async Task EditBasicSalary_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
+            // Act
+            var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
 
-        ////    // Assert
-        ////    var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-        ////    Assert.Equal("Error", viewResult.ControllerName);
-        ////    Assert.Equal("AccessDenied", viewResult.ActionName);
-        ////}
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
 
-        ////[Fact]
-        ////public async Task EditBasicSalary_MonthlyPayrollIsNotExisted_ReturnRedirectToPageNotFound()
-        ////{
-        ////    // Arrange
-        ////    EditMonthlySalaryViewModel monthlySalary = null;
-        ////    var controller = GetPaymentProcessController();
-        ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-        ////    monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlySalary);
+        [Fact]
+        public async Task EditBasicSalary_MonthlyPayrollIsNotExisted_ReturnRedirectToPageNotFound()
+        {
+            // Arrange
+            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>(
+                    null,
+                    new MonthlySalaryModel(),
+                    new List<MonthlySalaryAdditionModel>(),
+                    new List<MonthlySalaryDeductionModel>());
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
+            // Act
+            var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
 
-        ////    // Assert
-        ////    var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-        ////    Assert.Equal("Error", viewResult.ControllerName);
-        ////    Assert.Equal("PageNotFound", viewResult.ActionName);
-        ////}
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("PageNotFound", viewResult.ActionName);
+        }
 
-        ////[Fact]
-        ////public async Task EditBasicSalary_MonthlyPayrollIsExisted_ReturnAsExpectedViewResult()
-        ////{
-        ////    // Arrange
-        ////    var companyId = 1;
-        ////    var payrollId = 1;
-        ////    var month = DateTime.Now;
-        ////    var viewModel = new EditMonthlySalaryViewModel();
-        ////    var filterInfo = new MonthlyPayrollFilterInfoModel();
-        ////    var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
-        ////    var controller = GetPaymentProcessController();
-        ////    sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-        ////    monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(viewModel);
-        ////    monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
-        ////    baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
+        [Fact]
+        public async Task EditBasicSalary_MonthlyPayrollIsExisted_ReturnAsExpectedViewResult()
+        {
+            // Arrange
+            var companyId = 1;
+            var payrollId = 1;
+            var month = DateTime.Now;
+            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
+                MonthlySalaryModel,
+                IEnumerable<MonthlySalaryAdditionModel>,
+                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
+                    new MonthlySalaryModel { CurrencyCode = "USD" },
+                    new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
+                    new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
+            var filterInfo = new MonthlyPayrollFilterInfoModel();
+            var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
+            var cachingFilter = new CachingFilterViewModel();
+            var keys = new Tuple<string, string>("1234", "12345");
+            var cipherText = "1234abc";
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
+            monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
+            baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
+            rijndaelService.GenerateKey().Returns(keys);
+            rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(payrollId, companyId, month, new CachingFilterViewModel());
+            // Act
+            var actual = await controller.EditBasicSalary(payrollId, companyId, month, cachingFilter);
 
-        ////    // Assert
-        ////    var viewResult = Assert.IsType<ViewResult>(actual);
-        ////    var viewModelResult = Assert.IsAssignableFrom<EditMonthlySalaryViewModel>(viewResult.Model);
-        ////    Assert.Null(viewResult.ViewName);
-        ////    Assert.Equal(month, viewModelResult.Month);
-        ////    Assert.Equal(viewModel.MonthlyBasicSalary, viewModelResult.MonthlyBasicSalary);
-        ////    Assert.Equal(viewModel.MonthlySalary, viewModelResult.MonthlySalary);
-        ////    Assert.Equal(viewModel.Additions, viewModelResult.Additions);
-        ////    Assert.Equal(viewModel.Deductions, viewModelResult.Deductions);
-        ////    Assert.Equal(currencyExchangeRates, viewModelResult.CurrencyExchangeRates);
-        ////    Assert.Equal(filterInfo, viewModel.FilterInfo);
-        ////}
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModelResult = Assert.IsAssignableFrom<EditMonthlySalaryViewModel>(viewResult.Model);
+            Assert.Null(viewResult.ViewName);
+            Assert.Equal(month, viewModelResult.Month);
+            Assert.Equal(cachingFilter, viewModelResult.CachingFilter);
 
-        ////[Fact]
-        ////public async Task EditBasicSalaryPost_HasNotPermission_ReturnRedirectToAccessDenied()
-        ////{
-        ////    // Arrange
-        ////    var controller = GetPaymentProcessController();
-        ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+            Assert.Equal(monthlyPayroll.Item1.CurrencyId, viewModelResult.MonthlyBasicSalary.CurrencyId);
+            Assert.Equal(monthlyPayroll.Item1.CurrencyCode, viewModelResult.MonthlyBasicSalary.CurrencyCode);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.Salary.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.EbankingCurrencyId, viewModelResult.MonthlyBasicSalary.EbankingCurrencyId);
+            Assert.Equal(monthlyPayroll.Item1.EbankingCurrencyCode, viewModelResult.MonthlyBasicSalary.EbankingCurrencyCode);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.EbankingAmount.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.DirectBanking1CurrencyId, viewModelResult.MonthlyBasicSalary.DirectBanking1CurrencyId);
+            Assert.Equal(monthlyPayroll.Item1.DirectBanking1CurrencyCode, viewModelResult.MonthlyBasicSalary.DirectBanking1CurrencyCode);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.DirectBanking1Amount.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.DirectBanking2CurrencyId, viewModelResult.MonthlyBasicSalary.DirectBanking2CurrencyId);
+            Assert.Equal(monthlyPayroll.Item1.DirectBanking2CurrencyCode, viewModelResult.MonthlyBasicSalary.DirectBanking2CurrencyCode);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.DirectBanking2Amount.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.CashCurrencyId, viewModelResult.MonthlyBasicSalary.CashCurrencyId);
+            Assert.Equal(monthlyPayroll.Item1.CashCurrencyCode, viewModelResult.MonthlyBasicSalary.CashCurrencyCode);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.CashAmount.EncryptedValue);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.AfterAdjustmentAmount.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.AfterAdjustmentReason, viewModelResult.MonthlyBasicSalary.AfterAdjustmentReason);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.SalaryPerDay.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item1.WorkingDays, viewModelResult.MonthlyBasicSalary.WorkingDays);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(new EditMonthlySalaryViewModel());
+            Assert.Equal(monthlyPayroll.Item2.CurrencyId, viewModelResult.MonthlySalary.Salary.CurrencyId);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.Salary.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item2.EbankingCurrencyId, viewModelResult.MonthlySalary.Ebanking.CurrencyId);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.Ebanking.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item2.EbankingAccountId, viewModelResult.MonthlySalary.Ebanking.AccountId);
+            Assert.Equal(monthlyPayroll.Item2.EbankingAccountName, viewModelResult.MonthlySalary.Ebanking.AccountName);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking1CurrencyId, viewModelResult.MonthlySalary.DirectBanking1.CurrencyId);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.DirectBanking1.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking1AccountId, viewModelResult.MonthlySalary.DirectBanking1.AccountId);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking1AccountName, viewModelResult.MonthlySalary.DirectBanking1.AccountName);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking2CurrencyId, viewModelResult.MonthlySalary.DirectBanking2.CurrencyId);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.DirectBanking2.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking2AccountId, viewModelResult.MonthlySalary.DirectBanking2.AccountId);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking2AccountName, viewModelResult.MonthlySalary.DirectBanking2.AccountName);
+            Assert.Equal(monthlyPayroll.Item2.DirectBanking1AccountName, viewModelResult.MonthlySalary.DirectBanking1.AccountName);
+            Assert.Equal(monthlyPayroll.Item2.CashCurrencyId, viewModelResult.MonthlySalary.Cash.CurrencyId);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.Cash.EncryptedValue);
+            Assert.Equal(monthlyPayroll.Item2.CashAccountId, viewModelResult.MonthlySalary.Cash.AccountId);
+            Assert.Equal(monthlyPayroll.Item2.AutoCalculateOn, viewModelResult.MonthlySalary.AutoCalculateOn);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.AdditionAmount.EncryptedValue);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.AdditionAmountDisplay.EncryptedValue);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.DeductionAmount.EncryptedValue);
+            Assert.Equal(cipherText, viewModelResult.MonthlySalary.DeductionAmountDisplay.EncryptedValue);
 
-        ////    // Assert
-        ////    var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-        ////    Assert.Equal("Error", viewResult.ControllerName);
-        ////    Assert.Equal("AccessDenied", viewResult.ActionName);
-        ////}
+            Assert.Collection(
+                viewModelResult.Additions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.EncryptedValue);
+                    Assert.Equal(cipherText, kvp.NetSalary.EncryptedValue);
+                    Assert.Equal(cipherText, kvp.NetSalaryDisplay.EncryptedValue);
+                });
+
+            Assert.Collection(
+                viewModelResult.Deductions,
+                kvp =>
+                {
+                    Assert.Equal(cipherText, kvp.EncryptedValue);
+                    Assert.Equal(cipherText, kvp.NetSalary.EncryptedValue);
+                    Assert.Equal(cipherText, kvp.NetSalaryDisplay.EncryptedValue);
+                });
+
+            Assert.Equal(currencyExchangeRates, viewModelResult.CurrencyExchangeRates);
+            Assert.Equal(filterInfo, viewModelResult.FilterInfo);
+        }
+
+        [Fact]
+        public async Task EditBasicSalaryPost_HasNotPermission_ReturnRedirectToAccessDenied()
+        {
+            // Arrange
+            var controller = GetPaymentProcessController();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+
+            // Act
+            var actual = await controller.EditBasicSalary(new EditMonthlySalaryViewModel());
+
+            // Assert
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("Error", viewResult.ControllerName);
+            Assert.Equal("AccessDenied", viewResult.ActionName);
+        }
 
         ////[Fact]
         ////public async Task EditBasicSalaryPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
         ////{
         ////    // Arrange
+        ////    var viewModel = new EditMonthlySalaryViewModel
+        ////    {
+        ////        MonthlySalary = new MonthlySalaryViewModel(),
+        ////        Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
+        ////        Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
+        ////    };
         ////    var controller = GetPaymentProcessController();
+
+        ////    var objectValidator = Substitute.For<IObjectModelValidator>();
+        ////    objectValidator.Validate(Arg.Any<ActionContext>(),
+        ////        Arg.Any<ValidationStateDictionary>(),
+        ////        Arg.Any<string>(),
+        ////        Arg.Any<Object>());
+        ////    controller.ObjectValidator = objectValidator;
         ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
         ////    controller.ModelState.AddModelError("UnitAmount", "required");
 
         ////    // Act
-        ////    var actual = await controller.EditBasicSalary(new EditMonthlySalaryViewModel());
+        ////    var actual = await controller.EditBasicSalary(viewModel);
 
         ////    // Assert
         ////    var jsonResult = Assert.IsType<JsonResult>(actual);
