@@ -29,6 +29,7 @@
     using Resources;
     using Services;
     using Xunit;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     public class PaymentProcessControllerTests
     {
@@ -1020,6 +1021,8 @@
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
+            rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
+            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(string.Empty, string.Empty));
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
                 .Returns(new MonthlyAllowancesModel
@@ -1033,7 +1036,7 @@
             var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
 
             var result = Assert.IsType<ViewResult>(actual);
-            Assert.IsType<MonthlyAllowancesModel>(result.Model);
+            Assert.IsType<EditMonthlyAllowancesViewModel>(result.Model);
         }
 
         [Fact]
@@ -1060,7 +1063,9 @@
             var viewModel = new EditMonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            controller.ModelState.AddModelError("UnitAmount", "required");
+            controller.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            controller.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => controller.ModelState.AddModelError("UnitAmount", "required"));
 
             // Act
             var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
@@ -1083,9 +1088,25 @@
         public async Task EditAllowancesPost_ModelStateIsValid_ReturnAsExpected()
         {
             // Arrange
-            var viewModel = new EditMonthlyAllowancesViewModel();
+            var viewModel = new EditMonthlyAllowancesViewModel
+            {
+                Allowance = new MonthlyAllowanceViewModel
+                {
+                    DirectBanking1 = new PaymentTransactionModel(),
+                    DirectBanking2 = new PaymentTransactionModel(),
+                    Cash = new PaymentTransactionModel(),
+                    Total = new CurrencyAmountModel(),
+                    TotalNet = new SecurityData(),
+                    DST = new CurrencyAmountModel(),
+                    Addition = new SecurityData(),
+                    Deduction = new SecurityData()
+                }
+            };
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
+            controller.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            controller.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>()));
             controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowancesModel>(), sessionService.UserId).Returns(commandResult);

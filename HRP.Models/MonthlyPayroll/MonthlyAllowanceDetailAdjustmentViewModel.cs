@@ -27,6 +27,5 @@
         public SecurityData TotalAmount { get; set; }
 
         public SecurityData TotalAmountToDisplay { get; set; }
-
     }
 }
