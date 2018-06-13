@@ -224,36 +224,36 @@
             int payrollId,
             int companyId,
             DateTime month,
-            Tuple<MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary)
+            MonthlySalaryModel monthlySalary,
+            IEnumerable<MonthlySalaryAdditionModel> additions,
+            IEnumerable<MonthlySalaryDeductionModel> deductions)
         {
-            EncryptMonthlySalaryAddition(monthlySalary.Item2);
-            EncryptMonthlySalaryDeduction(monthlySalary.Item3);
+            EncryptMonthlySalaryAddition(additions);
+            EncryptMonthlySalaryDeduction(deductions);
             var criteria = new EditMonthlySalaryCriteria
             {
                 PayrollId = payrollId,
                 CompanyId = companyId,
                 UserId = sessionService.UserId,
                 Month = month,
-                Salary = cryptoService.Encrypt(monthlySalary.Item1.Salary),
-                EbankingCurrencyId = monthlySalary.Item1.EbankingCurrencyId,
-                EbankingAmount = cryptoService.Encrypt(monthlySalary.Item1.EbankingAmount),
-                EbankingAccountId = monthlySalary.Item1.EbankingAccountId,
-                DirectBanking1CurrencyId = monthlySalary.Item1.DirectBanking1CurrencyId,
-                DirectBanking1Amount = cryptoService.Encrypt(monthlySalary.Item1.DirectBanking1Amount),
-                DirectBanking1AccountId = monthlySalary.Item1.DirectBanking1AccountId,
-                DirectBanking2CurrencyId = monthlySalary.Item1.DirectBanking2CurrencyId,
-                DirectBanking2Amount = cryptoService.Encrypt(monthlySalary.Item1.DirectBanking2Amount),
-                DirectBanking2AccountId = monthlySalary.Item1.DirectBanking2AccountId,
-                CashCurrencyId = monthlySalary.Item1.CashCurrencyId,
-                CashAmount = cryptoService.Encrypt(monthlySalary.Item1.CashAmount),
-                CashAccountId = monthlySalary.Item1.CashAccountId,
-                AdditionAmount = cryptoService.Encrypt(monthlySalary.Item1.AdditionAmount),
-                DeductionAmount = cryptoService.Encrypt(monthlySalary.Item1.DeductionAmount),
-                AutoCalculateOn = monthlySalary.Item1.AutoCalculateOn.ToString(),
-                AdditionXml = monthlySalary.Item2.ToXML().ToString(),
-                DeductionXml = monthlySalary.Item3.ToXML().ToString()
+                Salary = cryptoService.Encrypt(monthlySalary.Salary),
+                EbankingCurrencyId = monthlySalary.EbankingCurrencyId,
+                EbankingAmount = cryptoService.Encrypt(monthlySalary.EbankingAmount),
+                EbankingAccountId = monthlySalary.EbankingAccountId,
+                DirectBanking1CurrencyId = monthlySalary.DirectBanking1CurrencyId,
+                DirectBanking1Amount = cryptoService.Encrypt(monthlySalary.DirectBanking1Amount),
+                DirectBanking1AccountId = monthlySalary.DirectBanking1AccountId,
+                DirectBanking2CurrencyId = monthlySalary.DirectBanking2CurrencyId,
+                DirectBanking2Amount = cryptoService.Encrypt(monthlySalary.DirectBanking2Amount),
+                DirectBanking2AccountId = monthlySalary.DirectBanking2AccountId,
+                CashCurrencyId = monthlySalary.CashCurrencyId,
+                CashAmount = cryptoService.Encrypt(monthlySalary.CashAmount),
+                CashAccountId = monthlySalary.CashAccountId,
+                AdditionAmount = cryptoService.Encrypt(monthlySalary.AdditionAmount),
+                DeductionAmount = cryptoService.Encrypt(monthlySalary.DeductionAmount),
+                AutoCalculateOn = monthlySalary.AutoCalculateOn.ToString(),
+                AdditionXml = additions.ToXML().ToString(),
+                DeductionXml = deductions.ToXML().ToString()
             };
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
 

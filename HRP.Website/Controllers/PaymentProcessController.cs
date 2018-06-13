@@ -398,18 +398,13 @@
 
             if (ModelState.IsValid)
             {
-                var monthlySalary = new Tuple<MonthlySalaryModel,
-                    IEnumerable<MonthlySalaryAdditionModel>,
-                    IEnumerable<MonthlySalaryDeductionModel>>(
-                        ConvertMonthlySalaryToModel(viewModel.MonthlySalary),
-                        ConvertMonthlySalaryAdditionToModel(viewModel.Additions),
-                        ConvertMonthlySalaryDeductionToModel(viewModel.Deductions));
                 CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(
                     viewModel.FilterInfo.PayrollId,
                     viewModel.FilterInfo.CompanyId,
                     viewModel.Month,
-                    monthlySalary
-                    );
+                    ConvertMonthlySalaryToModel(viewModel.MonthlySalary),
+                    ConvertMonthlySalaryAdditionToModel(viewModel.Additions),
+                    ConvertMonthlySalaryDeductionToModel(viewModel.Deductions));
                 var redirectTo = viewModel.IsRedirectToEditAllowance
                     ? Url.Action("EditAllowances", new
                     {

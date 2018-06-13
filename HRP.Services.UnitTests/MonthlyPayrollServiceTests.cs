@@ -291,12 +291,9 @@
         public async Task EditMonthlySalaryAsync_WhenCalled_ReturnAsExpected()
         {
             // Arrange
-            var monthlySalary = new Tuple<MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(
-                    new MonthlySalaryModel(),
-                    new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
-                    new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
+            var monthlySalary = new MonthlySalaryModel();
+            var additions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() };
+            var deductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() };
             var commandResult = new CommandResult();
             var criteria = new EditMonthlySalaryCriteria();
             var cipherText = "cipherText";
@@ -308,7 +305,7 @@
             cryptoService.Encrypt(Arg.Any<string>()).Returns(cipherText);
 
             // Act
-            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(payrollId, companyId, month, monthlySalary);
+            var actual = await monthlyPayrollService.EditMonthlySalaryAsync(payrollId, companyId, month, monthlySalary, additions, deductions);
 
             // Assert
             Assert.Equal(commandResult, actual);
@@ -317,28 +314,28 @@
             Assert.Equal(month, criteria.Month);
             Assert.Equal(cipherText, criteria.Salary);
 
-            Assert.Equal(monthlySalary.Item1.EbankingCurrencyId, criteria.EbankingCurrencyId);
+            Assert.Equal(monthlySalary.EbankingCurrencyId, criteria.EbankingCurrencyId);
             Assert.Equal(cipherText, criteria.EbankingAmount);
-            Assert.Equal(monthlySalary.Item1.EbankingAccountId, criteria.EbankingAccountId);
+            Assert.Equal(monthlySalary.EbankingAccountId, criteria.EbankingAccountId);
 
-            Assert.Equal(monthlySalary.Item1.DirectBanking1CurrencyId, criteria.DirectBanking1CurrencyId);
+            Assert.Equal(monthlySalary.DirectBanking1CurrencyId, criteria.DirectBanking1CurrencyId);
             Assert.Equal(cipherText, criteria.DirectBanking1Amount);
-            Assert.Equal(monthlySalary.Item1.DirectBanking1AccountId, criteria.DirectBanking1AccountId);
+            Assert.Equal(monthlySalary.DirectBanking1AccountId, criteria.DirectBanking1AccountId);
 
-            Assert.Equal(monthlySalary.Item1.DirectBanking2CurrencyId, criteria.DirectBanking2CurrencyId);
+            Assert.Equal(monthlySalary.DirectBanking2CurrencyId, criteria.DirectBanking2CurrencyId);
             Assert.Equal(cipherText, criteria.DirectBanking2Amount);
-            Assert.Equal(monthlySalary.Item1.DirectBanking2AccountId, criteria.DirectBanking2AccountId);
+            Assert.Equal(monthlySalary.DirectBanking2AccountId, criteria.DirectBanking2AccountId);
 
-            Assert.Equal(monthlySalary.Item1.CashCurrencyId, criteria.CashCurrencyId);
+            Assert.Equal(monthlySalary.CashCurrencyId, criteria.CashCurrencyId);
             Assert.Equal(cipherText, criteria.CashAmount);
-            Assert.Equal(monthlySalary.Item1.CashAccountId, criteria.CashAccountId);
+            Assert.Equal(monthlySalary.CashAccountId, criteria.CashAccountId);
 
-            Assert.Equal(monthlySalary.Item1.AutoCalculateOn.ToString(), criteria.AutoCalculateOn);
+            Assert.Equal(monthlySalary.AutoCalculateOn.ToString(), criteria.AutoCalculateOn);
             Assert.Equal(cipherText, criteria.AdditionAmount);
             Assert.Equal(cipherText, criteria.DeductionAmount);
 
-            Assert.Equal(monthlySalary.Item2.ToXML().ToString(), criteria.AdditionXml);
-            Assert.Equal(monthlySalary.Item3.ToXML().ToString(), criteria.DeductionXml);
+            Assert.Equal(additions.ToXML().ToString(), criteria.AdditionXml);
+            Assert.Equal(deductions.ToXML().ToString(), criteria.DeductionXml);
         }
 
         #endregion EditMonthlySalaryAsync

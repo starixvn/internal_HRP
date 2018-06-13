@@ -31,9 +31,9 @@
             int payrollId,
             int companyId,
             DateTime month,
-            Tuple<MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary);
+            MonthlySalaryModel monthlySalary,
+            IEnumerable<MonthlySalaryAdditionModel> additions,
+            IEnumerable<MonthlySalaryDeductionModel> deductions);
 
         Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month);
 

@@ -906,25 +906,42 @@
         ////    );
         ////}
 
-        ////[Fact]
-        ////public async Task EditBasicSalaryPost_ModelStateIsValid_ReturnAsExpected()
-        ////{
-        ////    // Arrange
-        ////    var viewModel = new EditMonthlySalaryViewModel();
-        ////    var commandResult = new CommandResult();
-        ////    var controller = GetPaymentProcessController();
-        ////    controller.Url = Substitute.For<IUrlHelper>();
-        ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-        ////    monthlyPayrollService.EditMonthlySalaryAsync(viewModel).Returns(commandResult);
+        [Fact]
+        public async Task EditBasicSalaryPost_ModelStateIsValid_ReturnAsExpected()
+        {
+            // Arrange
+            var viewModel = new EditMonthlySalaryViewModel
+            {
+                Month = DateTime.Now,
+                MonthlySalary = new MonthlySalaryViewModel(),
+                Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
+                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
+            };
+            var commandResult = new CommandResult();
+            var controller = GetPaymentProcessController();
+            var objectValidator = Substitute.For<IObjectModelValidator>();
+            objectValidator.Validate(Arg.Any<ActionContext>(),
+                Arg.Any<ValidationStateDictionary>(),
+                Arg.Any<string>(),
+                Arg.Any<Object>());
+            controller.ObjectValidator = objectValidator;
+            controller.Url = Substitute.For<IUrlHelper>();
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
+            monthlyPayrollService.EditMonthlySalaryAsync(
+                Arg.Any<int>(),
+                Arg.Any<int>(),
+                viewModel.Month,
+                Arg.Any<MonthlySalaryModel>(), Arg.Any<IEnumerable<MonthlySalaryAdditionModel>>(),
+                Arg.Any<IEnumerable<MonthlySalaryDeductionModel>>()).Returns(commandResult);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(viewModel);
+            // Act
+            var actual = await controller.EditBasicSalary(viewModel);
 
-        ////    // Assert
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    Assert.Equal(commandResult.IsSuccessful, (bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////    Assert.Equal(commandResult.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
-        ////}
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult.IsSuccessful, (bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Equal(commandResult.Message, jsonResult.Value.GetType().GetProperty("message").GetValue(jsonResult.Value));
+        }
 
         #endregion EditBasicSalary
 
