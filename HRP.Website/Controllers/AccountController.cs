@@ -147,11 +147,17 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
-                Username = user.Username
+                Username = user.Username,
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
             };
 
             return View("SetupOtp", setupOtpViewModel);
@@ -290,7 +296,7 @@ namespace HRP.Website.Controllers
             {
                 return RedirectToAction("Logout", "Auth");
             }
-
+            viewModel.Otp = rijndaelService.Decrypt(viewModel.Otp, sessionService.RijndaelKey, sessionService.RijndaelIV);
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 
             if (!ModelState.IsValid || !isOTPValid)

@@ -54,33 +54,37 @@
     encryptAndReplace: function () {
         $("form").on("submit",
             function (e) {
-                if (encrypt.encryptionKey === "" || encrypt.encryptionIV === "") {
-                    return;
-                }
-
-                var validator = $(this).validate();
-
-                var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
-                var iv = CryptoJS.enc.Utf8.parse(encrypt.encryptionIV);
-
-                var encryptInputs = $("input.encrypt");
-
-                encryptInputs.each(function (i, obj) {
-                    var valueToEncrypt = $(this).val();
-                    var isEncrypted = $(this).data("isencrypted");
-
-                    validator.element($(this));
-
-                    if (valueToEncrypt === "undefined" || valueToEncrypt === "" || isEncrypted === "true") {
-                        return true;
-                    }
-
-                    var encrypted = encrypt.encryptData(valueToEncrypt, key, iv);
-
-                    $(this).val(encrypted);
-                    $(this).data("isencrypted", true);
-                });
+                encrypt.encriptDataBeforeSubmit();
             });
+    },
+
+    encriptDataBeforeSubmit: function () {
+        if (encrypt.encryptionKey === "" || encrypt.encryptionIV === "") {
+            return;
+        }
+
+        var validator = $("form").validate();
+
+        var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
+        var iv = CryptoJS.enc.Utf8.parse(encrypt.encryptionIV);
+
+        var encryptInputs = $("input.encrypt");
+
+        encryptInputs.each(function (i, obj) {
+            var valueToEncrypt = $(this).val();
+            var isEncrypted = $(this).data("isencrypted");
+
+            validator.element($(this));
+
+            if (valueToEncrypt === "undefined" || valueToEncrypt === "" || isEncrypted === "true") {
+                return true;
+            }
+
+            var encrypted = encrypt.encryptData(valueToEncrypt, key, iv);
+
+            $(this).val(encrypted);
+            $(this).data("isencrypted", true);
+        });
     }
 }
 

@@ -14,6 +14,10 @@
 
         public string Username { get; set; }
 
+        public string RijndaelKey { get; set; }
+
+        public string RijndaelIV { get; set; }
+
         public string AppName { get; set; }
 
         public string QrCodeText => $"otpauth://totp/{AppName}:{Username}?secret={TextCode}&issuer={AppName}";

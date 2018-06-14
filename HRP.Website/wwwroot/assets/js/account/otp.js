@@ -19,10 +19,13 @@
         $("#verify-setup-otp-form").on("submit",
             function (e) {
                 e.preventDefault();
+                encrypt.encriptDataBeforeSubmit();
+                var data = $(this).serialize();
+                $("#Otp").val("");
                 $.ajax({
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
-                    data: $(this).serialize(),
+                    data: data,
                     success: function (res, status, xhr) {
                         qrcode.otpSuccess();
                     },
