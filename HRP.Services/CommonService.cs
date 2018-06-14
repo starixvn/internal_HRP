@@ -7,7 +7,9 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria;
+    using HRP.Criteria.BankAccount;
     using HRP.Models;
+    using HRP.Models.BankAccount;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CommonService : ICommonService
@@ -104,6 +106,18 @@
         {
             var criteria = new GetAllJobCategoryCriteria { IsActive = isActive };
             return await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<BankAccount>> GetEmployeeBankAccountAsync(int employeeId, int bankTypeId, bool? isActive = true)
+        {
+            var criteria = new SearchBankAccountCriteria
+            {
+                EmployeeId = employeeId,
+                BankTypeId = bankTypeId,
+                IsActive = isActive
+            };
+
+            return await baseService.GetDataAsync<BankAccount>(criteria).ConfigureAwait(false);
         }
 
         public SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField)

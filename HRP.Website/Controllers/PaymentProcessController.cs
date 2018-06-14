@@ -15,6 +15,7 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Models;
+    using HRP.Models.BankAccount;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
@@ -357,6 +358,7 @@
                 MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, sessionService.RijndaelKey, sessionService.RijndaelIV),
                 Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, sessionService.RijndaelKey, sessionService.RijndaelIV),
                 Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId),
                 RijndaelKey = keys.Item1,
                 RijndaelIV = keys.Item2,
                 CachingFilter = filter
@@ -369,10 +371,13 @@
             };
 
             var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
+            IEnumerable<BankAccount> ebankingAccounts = await commonService.GetEmployeeBankAccountAsync(viewModel.FilterInfo.EmployeeId, (int)BankTypes.Ebanking);
+            IEnumerable<BankAccount> directBankingAccounts = await commonService.GetEmployeeBankAccountAsync(viewModel.FilterInfo.EmployeeId, (int)BankTypes.DirectBanking);
             var cashAccounts = await baseService.GetDataAsync<ReferenceResourceModel>(
                 new GetRefResourceByNamesCriteria { RefNames = ReferenceResource.PaymentTransactionCash, IsActive = true });
 
-            viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
+            viewModel.EBankingAccounts = commonService.GetSelectList(ebankingAccounts, nameof(BankAccount.BankAccountId), nameof(BankAccount.PaymentTransaction));
+            viewModel.DirectBankingAccounts = commonService.GetSelectList(directBankingAccounts, nameof(BankAccount.BankAccountId), nameof(BankAccount.PaymentTransaction));
             viewModel.CashAccounts = commonService.GetSelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
             viewModel.Currencies = commonService.GetSelectList(currencies, nameof(CurrencyCodeModel.CurrencyId), nameof(CurrencyCodeModel.CurrencyCode));
             viewModel.CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria);

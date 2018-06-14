@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using HRP.Core.Model;
     using HRP.Models;
+    using HRP.Models.BankAccount;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface ICommonService
@@ -27,6 +28,8 @@
         Task<IEnumerable<JobGrade>> GetJobGradeByGradeLevelIdAsync(int gradeLevelId, bool? isActive = true);
 
         Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true);
+
+        Task<IEnumerable<BankAccount>> GetEmployeeBankAccountAsync(int employeeId, int bankTypeId, bool? isActive = true);
 
         SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField);
     }

@@ -7,7 +7,9 @@
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using HRP.Criteria;
+    using HRP.Criteria.BankAccount;
     using HRP.Models;
+    using HRP.Models.BankAccount;
     using NSubstitute;
     using Xunit;
 
@@ -271,6 +273,24 @@
 
             // Assert
             Assert.Equal(jobCategories, actual);
+        }
+
+        [Fact]
+        public async Task GetEmployeeBankAccountAsync_WhenCalled_ReturnAsExpectedBankAccounts()
+        {
+            // Arrange
+            var bankAccounts = new List<BankAccount>
+            {
+                new BankAccount { BankAccountId = 1, PaymentTransaction = "Eurobank1" }
+            };
+            var service = GetCommonService();
+            baseService.GetDataAsync<BankAccount>(Arg.Any<SearchBankAccountCriteria>()).Returns(bankAccounts);
+
+            // Act
+            var actual = await service.GetEmployeeBankAccountAsync(1, 1);
+
+            // Assert
+            Assert.Equal(bankAccounts, actual);
         }
 
         [Fact]

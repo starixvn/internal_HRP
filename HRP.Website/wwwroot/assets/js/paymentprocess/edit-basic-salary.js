@@ -2,8 +2,7 @@
 
 var editBasicSalary = (function ($) {
     var $form, $btnPreset, $btnRefresh, $btnSubmit, $btnSubmitAndEditAllowances,
-        employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount, vietnamCurrencyId,
-        bankAccountUrl = 'BankAccount/GetEmployeeBankAccounts', maxDigit = 2,
+        employeeId, currencySettingId, salaryPerDay, afterAdjustmentAmount, vietnamCurrencyId, maxDigit = 2,
         rijndaelKey, rijndaelIV, $plainValues, $encryptedValues;
 
     BigNumber.config({
@@ -149,26 +148,8 @@ var editBasicSalary = (function ($) {
         });
 
         $('.js-select2-bankAccount').select2({
-            ajax: {
-                url: commonFunctions.rootURL + bankAccountUrl,
-                data: function (params) {
-                    var query = {
-                        employeeId: employeeId,
-                        bankTypeId: $(this).siblings('.js-bankType').val()
-                    };
-
-                    return query;
-                },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                }
-            },
             allowClear: true,
-            placeholder: '',
-            minimumResultsForSearch: Infinity
+            placeholder: ''
         }).on('change', function (e) {
             validatedInvalidRelatedElements(e.target);
         });

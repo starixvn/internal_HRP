@@ -12,6 +12,7 @@
     using Criteria;
     using HRP.Core.Criteria;
     using HRP.Core.Services;
+    using HRP.Models.BankAccount;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
     using HRP.Models.ServiceModels;
     using HRP.Website.Controllers;
@@ -769,6 +770,17 @@
             var cachingFilter = new CachingFilterViewModel();
             var keys = new Tuple<string, string>("1234", "12345");
             var cipherText = "1234abc";
+            var bankAccounts = new List<BankAccount>
+            {
+                new BankAccount { BankAccountId = 1, PaymentTransaction = "Eurobank" }
+            };
+            var bankAccountSelectList = new SelectList(bankAccounts, nameof(BankAccount.BankAccountId), nameof(BankAccount.PaymentTransaction));
+            var cashAccounts = new List<ReferenceResourceModel>
+            {
+                new ReferenceResourceModel { ResourceId = 1, Value = "Cash - DAR" }
+            };
+            var cashAccountSelectList = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
+
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
@@ -776,6 +788,10 @@
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
             rijndaelService.GenerateKey().Returns(keys);
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
+            commonService.GetSelectList(Arg.Any<IEnumerable<BankAccount>>(), nameof(BankAccount.BankAccountId), nameof(BankAccount.PaymentTransaction))
+                .Returns(bankAccountSelectList);
+            commonService.GetSelectList(Arg.Any<IEnumerable<ReferenceResourceModel>>(), nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value))
+                .Returns(cashAccountSelectList);
 
             // Act
             var actual = await controller.EditBasicSalary(payrollId, companyId, month, cachingFilter);
@@ -851,6 +867,9 @@
 
             Assert.Equal(currencyExchangeRates, viewModelResult.CurrencyExchangeRates);
             Assert.Equal(filterInfo, viewModelResult.FilterInfo);
+            Assert.Equal(bankAccountSelectList, viewModelResult.EBankingAccounts);
+            Assert.Equal(bankAccountSelectList, viewModelResult.DirectBankingAccounts);
+            Assert.Equal(cashAccountSelectList, viewModelResult.CashAccounts);
         }
 
         [Fact]
@@ -869,43 +888,40 @@
             Assert.Equal("AccessDenied", viewResult.ActionName);
         }
 
-        ////[Fact]
-        ////public async Task EditBasicSalaryPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
-        ////{
-        ////    // Arrange
-        ////    var viewModel = new EditMonthlySalaryViewModel
-        ////    {
-        ////        MonthlySalary = new MonthlySalaryViewModel(),
-        ////        Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
-        ////        Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
-        ////    };
-        ////    var controller = GetPaymentProcessController();
+        [Fact]
+        public async Task EditBasicSalaryPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
+        {
+            // Arrange
+            var viewModel = new EditMonthlySalaryViewModel
+            {
+                MonthlySalary = new MonthlySalaryViewModel(),
+                Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
+                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
+            };
+            var controller = GetPaymentProcessController();
 
-        ////    var objectValidator = Substitute.For<IObjectModelValidator>();
-        ////    objectValidator.Validate(Arg.Any<ActionContext>(),
-        ////        Arg.Any<ValidationStateDictionary>(),
-        ////        Arg.Any<string>(),
-        ////        Arg.Any<Object>());
-        ////    controller.ObjectValidator = objectValidator;
-        ////    sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-        ////    controller.ModelState.AddModelError("UnitAmount", "required");
+            var objectValidator = Substitute.For<IObjectModelValidator>();
+            objectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()))
+                 .Do(x => controller.ModelState.AddModelError("UnitAmount", "required"));
+            controller.ObjectValidator = objectValidator;
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
 
-        ////    // Act
-        ////    var actual = await controller.EditBasicSalary(viewModel);
+            // Act
+            var actual = await controller.EditBasicSalary(viewModel);
 
-        ////    // Assert
-        ////    var jsonResult = Assert.IsType<JsonResult>(actual);
-        ////    var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
-        ////    Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
-        ////    Assert.Collection(
-        ////        errors,
-        ////        kvp =>
-        ////        {
-        ////            Assert.Equal("UnitAmount", kvp.Key);
-        ////            Assert.Equal("required", kvp.Value);
-        ////        }
-        ////    );
-        ////}
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var errors = (IDictionary<string, object>)new RouteValueDictionary(jsonResult.Value.GetType().GetProperty("errors").GetValue(jsonResult.Value));
+            Assert.False((bool)jsonResult.Value.GetType().GetProperty("isSuccessful").GetValue(jsonResult.Value));
+            Assert.Collection(
+                errors,
+                kvp =>
+                {
+                    Assert.Equal("UnitAmount", kvp.Key);
+                    Assert.Equal("required", kvp.Value);
+                }
+            );
+        }
 
         [Fact]
         public async Task EditBasicSalaryPost_ModelStateIsValid_ReturnAsExpected()

@@ -5,7 +5,6 @@
 
 @{
     ViewData["Title"] = Model.FilterInfo.IsHost ? ViewLang.EditMonthlyBasicSalary : ViewLang.ViewMonthlyBasicSalary;
-    var bankTypes = Html.GetEnumSelectList<BankTypes>().Where(x => int.Parse(x.Value) != (int)BankTypes.Ebanking);
 }
 
 @section Styles {
@@ -375,37 +374,28 @@
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.EBanking</div>
-                    <select class="hidden js-bankType">
-                        <option value="@((int) BankTypes.Ebanking)" selected="selected"></option>
-                    </select>
                     <select class="control js-select2-validation js-select2-bankAccount" data-group="ebanking"
-                            asp-for="MonthlySalary.Ebanking.AccountId">
-                        <option value="@Model.MonthlySalary.Ebanking.AccountId">@Model.MonthlySalary.Ebanking.AccountName</option>
+                            asp-for="MonthlySalary.Ebanking.AccountId" asp-items="Model.EBankingAccounts">
+                        <option></option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.DirectBanking</div>
-                    <select class="hidden js-bankType">
-                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
-                    </select>
                     <select class="control js-select2-validation js-select2-bankAccount" data-group="directbanking1"
-                            asp-for="MonthlySalary.DirectBanking1.AccountId">
-                        <option value="@Model.MonthlySalary.DirectBanking1.AccountId">@Model.MonthlySalary.DirectBanking1.AccountName</option>
+                            asp-for="MonthlySalary.DirectBanking1.AccountId" asp-items="Model.DirectBankingAccounts">
+                        <option></option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.DirectBanking</div>
-                    <select class="hidden js-bankType">
-                        <option value="@((int) BankTypes.DirectBanking)" selected></option>
-                    </select>
                     <select class="control js-select2-validation js-select2-bankAccount" data-group="directbanking2"
-                            asp-for="MonthlySalary.DirectBanking2.AccountId">
-                        <option value="@Model.MonthlySalary.DirectBanking2.AccountId">@Model.MonthlySalary.DirectBanking2.AccountName</option>
+                            asp-for="MonthlySalary.DirectBanking2.AccountId" asp-items="Model.DirectBankingAccounts">
+                        <option></option>
                     </select>
                 </div>
                 <div class="group-complex -layout-payment">
                     <div class="like-group-title">@ViewLang.Cash</div>
-                    <select class="control js-select2-validation js-select2-allowclear" data-group="cash"
+                    <select class="control js-select2-validation js-select2-bankAccount" data-group="cash"
                             asp-for="MonthlySalary.Cash.AccountId" asp-items="Model.CashAccounts">
                         <option></option>
                     </select>
