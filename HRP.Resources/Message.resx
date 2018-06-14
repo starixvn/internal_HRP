@@ -816,4 +816,13 @@
   <data name="OtpCodeDateTimeSettingMessage" xml:space="preserve">
     <value>Your Date &amp; Time Setting on your device must be set to Automatic.</value>
   </data>
+  <data name="PasswordRuleTitle" xml:space="preserve">
+    <value>For the safety and security of your account, you should create a strong password that uses:</value>
+  </data>
+  <data name="PasswordRuleLenght" xml:space="preserve">
+    <value>At least 8 characters and maximum 50 characters in length.</value>
+  </data>
+  <data name="PasswordRuleCharacters" xml:space="preserve">
+    <value>Contain UPPER/lowercase letters and numbers.</value>
+  </data>
 </root>

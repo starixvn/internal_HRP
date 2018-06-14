@@ -1654,6 +1654,33 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contain UPPER/lowercase letters and numbers..
+        /// </summary>
+        public static string PasswordRuleCharacters {
+            get {
+                return ResourceManager.GetString("PasswordRuleCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least 8 characters and maximum 50 characters in length..
+        /// </summary>
+        public static string PasswordRuleLenght {
+            get {
+                return ResourceManager.GetString("PasswordRuleLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For the safety and security of your account, you should create a strong password that uses:.
+        /// </summary>
+        public static string PasswordRuleTitle {
+            get {
+                return ResourceManager.GetString("PasswordRuleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly Payroll hasn&apos;t been generated. Please come back later..
         /// </summary>
         public static string PayrollNotGenerated {
