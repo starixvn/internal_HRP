@@ -151,7 +151,8 @@
                     <div class="like-group-title">@ViewLang.BackPay</div>
                     <input hidden asp-for="Additions[0].Type" />
                     <input type="text" class="control js-description" asp-for="Additions[0].Description" readonly />
-                    <input type="text" class="control number js-positiveNumberOnly" asp-for="Additions[0].PlainValue" readonly />
+                    <input type="text" class="control number js-positiveNumberOnly"
+                           asp-for="Additions[0].PlainValue" asp-encrypt-for="Additions[0].EncryptedValue" readonly />
                     <input type="text" class="control number -start-col-5 js-positiveNumberOnly js-addition-netSalaryDisplay"
                            asp-for="Additions[0].NetSalaryDisplay.PlainValue" asp-encrypt-for="Additions[0].NetSalaryDisplay.EncryptedValue" readonly />
                     <input hidden class="js-addition-netSalary" asp-for="Additions[0].NetSalary.PlainValue" asp-encrypt-for="Additions[0].NetSalary.EncryptedValue" />
