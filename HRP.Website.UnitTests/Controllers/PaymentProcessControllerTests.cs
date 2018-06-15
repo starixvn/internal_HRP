@@ -30,7 +30,6 @@
     using Resources;
     using Services;
     using Xunit;
-    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     public class PaymentProcessControllerTests
     {
