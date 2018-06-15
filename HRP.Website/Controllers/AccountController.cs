@@ -51,6 +51,10 @@ namespace HRP.Website.Controllers
         [ServiceFilter(typeof(HRPActionFilterAttribute))]
         public async Task<IActionResult> Index(AccountTab tab = AccountTab.Profile)
         {
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
             var user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
             var userProfile = new UserProfileViewModel
@@ -64,7 +68,9 @@ namespace HRP.Website.Controllers
             {
                 ActivePanel = tab,
                 IsOTPRegistered = user.IsOTPRegistered,
-                UserProfileViewModel = userProfile
+                UserProfileViewModel = userProfile,
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
             };
 
             ViewData["Username"] = sessionService.Username;
@@ -76,6 +82,10 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
+            viewModel.OldPassword = rijndaelService.Decrypt(viewModel.OldPassword,sessionService.RijndaelKey,sessionService.RijndaelIV);
+            viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey,sessionService.RijndaelIV);
+            viewModel.PasswordConfirm = rijndaelService.Decrypt(viewModel.PasswordConfirm, sessionService.RijndaelKey,sessionService.RijndaelIV);
+
             if (ModelState.IsValid)
             {
                 bool result = await IsCorrectOldPassword(viewModel.OldPassword);

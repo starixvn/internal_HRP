@@ -1,8 +1,9 @@
 ﻿namespace HRP.Models.Account
 {
+    using SystemSecurity;
     using Core.Enumerations;
 
-    public class AccountViewModel
+    public class AccountViewModel : RijndaelData
     {
         public AccountTab ActivePanel { get; set; }
 

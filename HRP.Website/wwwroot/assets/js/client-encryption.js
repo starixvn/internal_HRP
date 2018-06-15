@@ -16,15 +16,19 @@
 
     encryptData: function(value, rijndaelKey, rijndaelIV) {
         return CryptoJS.AES.encrypt(
-            CryptoJS.enc.Utf8.parse(value),
+            value,
             rijndaelKey, {
-                iv: rijndaelIV
+                iv: rijndaelIV,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
             });
     },
 
     decryptData: function(value, rijndaelKey, rijndaelIV) {
         return CryptoJS.AES.decrypt(value, rijndaelKey, {
-            iv: rijndaelIV
+            iv: rijndaelIV,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
         });
     },
 
