@@ -6,6 +6,10 @@
         });
 
         return {
+            onFailure: function(){
+                encrypt.decryptAndReplace();
+            },
+
             onChangeSuccess: function(response, status) {
                 var code = response.code;
                 var msg = response.message;
