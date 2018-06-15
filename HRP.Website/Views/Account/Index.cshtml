@@ -63,3 +63,13 @@
         @(Model.IsOTPRegistered ? Html.Partial("_OTP") : Html.Partial("_RegisterOTP", Model.SetupOtpViewModel))
     </div>
 </div>
+<environment include="Development">
+    <script src="~/js/jquery-validate.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/lib/qrious/qrious.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/assets/js/account/index.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/assets/js/account/update-profile.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/assets/js/account/change-password.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/lib/CryptoJS/aes.js"></script>
+    <script src="~/assets/js/client-encryption.js" asp-append-version="true"></script>
+    <script src="~/assets/js/account/otp.js" type="text/javascript" asp-append-version="true"></script>
+</environment>

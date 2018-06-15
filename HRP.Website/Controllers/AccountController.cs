@@ -194,11 +194,17 @@ namespace HRP.Website.Controllers
                 Phone = user.Phone
             };
 
+            Tuple<string, string> tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
-                Username = user.Username
+                Username = user.Username,
+                RijndaelKey = sessionService.RijndaelKey,
+                RijndaelIV = sessionService.RijndaelIV
             };
 
             var accountViewModel = new AccountViewModel

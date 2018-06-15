@@ -286,6 +286,8 @@
       "wwwroot/assets/js/account/index.js",
       "wwwroot/assets/js/account/update-profile.js",
       "wwwroot/assets/js/account/change-password.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {

@@ -1,6 +1,5 @@
 ﻿var qrcode = {
     init: function () {
-
         qrcode.hideOtpStatus();
 
         var qrcodetext = $("#qrcodetext").data("qrcodetext");
@@ -19,9 +18,7 @@
         $("#verify-setup-otp-form").on("submit",
             function (e) {
                 e.preventDefault();
-                encrypt.encriptDataBeforeSubmit();
                 var data = $(this).serialize();
-                $("#Otp").val("");
                 $.ajax({
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
@@ -31,13 +28,16 @@
                     },
                     error: function (request, error) {
                         qrcode.otpFail();
+                        var $otp = $("#verify-setup-otp-form").find('input[name=Otp]');
+                        $otp.val("");
+                        $otp.data("isencrypted", false);
                     }
                 });
                 return false;
             });
     },
 
-    hideOtpStatus: function() {
+    hideOtpStatus: function () {
         $("#verify-setup-otp-fail").hide();
         $("#verify-setup-otp-success").hide();
     },
@@ -56,7 +56,7 @@
         window.setTimeout(qrcode.navigateToVerifyOTP, 3000);
     },
 
-    navigateToVerifyOTP: function() {
+    navigateToVerifyOTP: function () {
         $(location).attr("href", "/Account/VerifyOTP");
     }
 };
