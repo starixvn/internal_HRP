@@ -19,9 +19,9 @@ namespace HRP.Website.Controllers
     public class AuthController : Controller
     {
         private readonly IBaseService baseService;
+        private readonly IRijndaelService rijndaelService;
         private readonly ISessionService sessionService;
         private readonly IUserService userService;
-        private readonly IRijndaelService rijndaelService;
 
         public AuthController(
             IUserService userService,
@@ -33,6 +33,33 @@ namespace HRP.Website.Controllers
             this.baseService = baseService;
             this.userService = userService;
             this.rijndaelService = rijndaelService;
+        }
+
+        public IActionResult ConfirmationEmailSent()
+        {
+            return View();
+        }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string username)
+        {
+            User user = await userService.GetUserByUsernameAsync(username);
+
+            if (user != null)
+            {
+                await userService.ResetUserPasswordAsync(username);
+
+                return RedirectToAction(nameof(ConfirmationEmailSent));
+            }
+
+            ModelState.AddModelError(string.Empty, Message.ForgotPasswordInvalidUser);
+
+            return View();
         }
 
         public IActionResult Login()
@@ -80,47 +107,11 @@ namespace HRP.Website.Controllers
             return View(viewModel);
         }
 
-        private async Task<IActionResult> AfterLoginSuccessful(User user)
+        public async Task<IActionResult> Logout()
         {
-            if (!user.IsOTPRegistered)
-            {
-                string otpRegisterToken = await userService.GenerateTokenOTPRegisterAsync(user.Username);
+            await DoSignOut();
 
-                await userService.SendMailToRegisterOTPAsync(otpRegisterToken);
-
-                return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
-            }
-
-            sessionService.Username = user.Username;
-
-            return RedirectToAction("VerifyOTP", "Account");
-        }
-
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ForgotPassword(string username)
-        {
-            User user = await userService.GetUserByUsernameAsync(username);
-
-            if (user != null)
-            {
-                await userService.ResetUserPasswordAsync(username);
-
-                return RedirectToAction(nameof(ConfirmationEmailSent));
-            }
-
-            ModelState.AddModelError(string.Empty, Message.ForgotPasswordInvalidUser);
-
-            return View();
-        }
-
-        public IActionResult ConfirmationEmailSent()
-        {
-            return View();
+            return RedirectToAction(nameof(Login));
         }
 
         public async Task<IActionResult> ResetPassword(string token)
@@ -132,11 +123,6 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            return View();
-        }
-
-        public IActionResult ResetPasswordSuccessfully()
-        {
             return View();
         }
 
@@ -165,11 +151,38 @@ namespace HRP.Website.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult ResetPasswordSuccessfully()
         {
-            await DoSignOut();
+            return View();
+        }
 
-            return RedirectToAction(nameof(Login));
+        private async Task<IActionResult> AfterLoginSuccessful(User user)
+        {
+            if (!user.IsOTPRegistered)
+            {
+                string otpRegisterToken = await userService.GenerateTokenOTPRegisterAsync(user.Username);
+
+                await userService.SendMailToRegisterOTPAsync(otpRegisterToken);
+
+                return RedirectToAction("RegisterOTPNotification", "Account", new { name = user.Username });
+            }
+
+            sessionService.Username = user.Username;
+
+            return RedirectToAction("VerifyOTP", "Account");
+        }
+
+        private void ClearCookies()
+        {
+            HttpContext.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
+            HttpContext.Response.Headers.Add("Pragma", "no-cache");
+            HttpContext.Response.Headers.Add("Expires", "0");
+
+            IEnumerable<string> cookies = HttpContext.Request.Cookies.Keys;
+            foreach (string cookie in cookies)
+            {
+                HttpContext.Response.Cookies.Delete(cookie);
+            }
         }
 
         private async Task DoSignOut()
@@ -186,19 +199,6 @@ namespace HRP.Website.Controllers
             ClearCookies();
             sessionService.ClearAll();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-
-        private void ClearCookies()
-        {
-            HttpContext.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-            HttpContext.Response.Headers.Add("Pragma", "no-cache");
-            HttpContext.Response.Headers.Add("Expires", "0");
-
-            IEnumerable<string> cookies = HttpContext.Request.Cookies.Keys;
-            foreach (string cookie in cookies)
-            {
-                HttpContext.Response.Cookies.Delete(cookie);
-            }
         }
     }
 }
