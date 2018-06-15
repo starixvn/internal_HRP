@@ -14,32 +14,12 @@
         encrypt.encryptionIV = $(".encryption-iv").val();
     },
 
-    encryptData: function(value, rijndaelKey, rijndaelIV) {
-        return CryptoJS.AES.encrypt(
-            value,
-            rijndaelKey, {
-                iv: rijndaelIV,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
-    },
-
-    decryptData: function(value, rijndaelKey, rijndaelIV) {
-        return CryptoJS.AES.decrypt(value, rijndaelKey, {
-            iv: rijndaelIV,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-    },
-
     decryptAndReplace: function () {
         if (encrypt.encryptionKey !== "" && encrypt.encryptionIV !== "") {
-            var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
-            var iv = CryptoJS.enc.Utf8.parse(encrypt.encryptionIV);
 
             var encryptInputs = $("input.encrypt");
 
-            encryptInputs.each(function (i, obj) {
+            encryptInputs.each(function () {
                 var valueToDecrypt = $(this).val();
                 var isEncrypted = $(this).data("isencrypted");
 
@@ -47,28 +27,27 @@
                     return true;
                 }
 
-                var decrypted = encrypt.decryptData(valueToDecrypt, key, iv);
+                var decrypted = rijndaelService.decryptData(valueToDecrypt, encrypt.encryptionKey, encrypt.encryptionIV);
 
-                $(this).val(CryptoJS.enc.Utf8.stringify(decrypted));
+                $(this).val(decrypted);
                 $(this).data("isencrypted", false);
+
+                return true;
             });
         }
     },
 
     encryptAndReplace: function () {
         $("form").on("submit",
-            function (e) {
+            function () {
                 if (encrypt.encryptionKey === "" || encrypt.encryptionIV === "") {
                     return;
                 }
                 var validator = $("form").validate();
 
-                var key = CryptoJS.enc.Utf8.parse(encrypt.encryptionKey);
-                var iv = CryptoJS.enc.Utf8.parse(encrypt.encryptionIV);
-
                 var encryptInputs = $("input.encrypt");
 
-                encryptInputs.each(function (i, obj) {
+                encryptInputs.each(function () {
                     var valueToEncrypt = $(this).val();
                     var isEncrypted = $(this).data("isencrypted");
 
@@ -77,13 +56,15 @@
                         return true;
                     }
 
-                    var encrypted = encrypt.encryptData(valueToEncrypt, key, iv);
+                    var encrypted = rijndaelService.encryptData(valueToEncrypt, encrypt.encryptionKey, encrypt.encryptionIV);
 
                     $(this).val(encrypted);
                     $(this).data("isencrypted", true);
+
+                    return true;
                 });
             });
-    },
+    }
 }
 
 $(document).ready(function () {

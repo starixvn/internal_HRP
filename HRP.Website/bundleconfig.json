@@ -248,6 +248,9 @@
   {
     "outputFileName": "wwwroot/assets/bundles/auth/js/reset-password.min.js",
     "inputFiles": [
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/client-encryption.js",
       "wwwroot/assets/js/reset-password.js"
     ],
     "minify": {
@@ -287,6 +290,7 @@
       "wwwroot/assets/js/account/change-password.js",
       "wwwroot/lib/CryptoJS/aes.js",
       "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/client-encryption.js",
       "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {
@@ -667,6 +671,7 @@
     "outputFileName": "wwwroot/assets/bundles/account/js/verify-otp.min.js",
     "inputFiles": [
       "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/client-encryption.js"
     ],
     "minify": {

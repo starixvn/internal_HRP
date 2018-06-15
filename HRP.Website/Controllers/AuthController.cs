@@ -67,6 +67,7 @@ namespace HRP.Website.Controllers
             Tuple<string, string> tuple = rijndaelService.GenerateKey();
             sessionService.RijndaelKey = tuple.Item1;
             sessionService.RijndaelIV = tuple.Item2;
+
             var viewModel = new LoginViewModel
             {
                 RijndaelIV = sessionService.RijndaelIV,
@@ -123,7 +124,17 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            return View();
+            var tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelKey = tuple.Item1;
+            sessionService.RijndaelIV = tuple.Item2;
+
+            var viewModel = new ResetPasswordViewModel
+            {
+                RijndaelIV = sessionService.RijndaelIV,
+                RijndaelKey = sessionService.RijndaelKey
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -131,7 +142,10 @@ namespace HRP.Website.Controllers
         {
             var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
-            if (model != null && ModelState.IsValid && user != null)
+            model.Password = rijndaelService.Decrypt(model.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            model.PasswordConfirm = rijndaelService.Decrypt(model.PasswordConfirm, sessionService.RijndaelKey, sessionService.RijndaelIV);
+
+            if (ModelState.IsValid && user != null)
             {
                 var criteria = new UpdateUserPasswordCriteria
                 {
