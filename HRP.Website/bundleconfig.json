@@ -500,6 +500,7 @@
       "wwwroot/lib/datatables.net/js/dataTables.bootstrap.js",
       "wwwroot/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js",
       "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/lib/CryptoJS/aes.js",
       "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/paymentprocess/employee-monthly-payroll.js"
     ],
