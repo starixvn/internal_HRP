@@ -4,7 +4,7 @@ var bankAccountForm = {
         bankAccountForm.toggleRequiredMarkOnBankTypeChanged();
         bankAccountForm.handleFormSubmittedInModal();
         bankAccountForm.removeBackdropOnModalHide();
-        bankAccountForm.handleFormSuccessed();
+        bankAccountForm.handleFormSucceeded();
         bankAccountForm.checkFormError();
         bankAccountForm.initPaymentTransactionSelect();
     },
@@ -124,10 +124,10 @@ var bankAccountForm = {
                 options.messages["requiredifrelatedfieldistrue"] = options.message;
             });
 
-        bankAccountForm.reinitValidation($(".bank-account-form"));
+        bankAccountForm.reInitValidation($(".bank-account-form"));
     },
 
-    reinitValidation: function ($form) {
+    reInitValidation: function ($form) {
         $form.removeData("validator").removeData("unobtrusiveValidation");
 
         $.validator.unobtrusive.parse($form);
@@ -190,7 +190,7 @@ var bankAccountForm = {
         }
     },
 
-    handleFormSuccessed: function () {
+    handleFormSucceeded: function () {
         var isSuccessful = $("#is-successful").val();
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
         if (isSuccessful) {
