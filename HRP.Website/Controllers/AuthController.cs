@@ -5,14 +5,14 @@ namespace HRP.Website.Controllers
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Criteria;
+    using Core.Model;
     using Core.Services;
     using Criteria;
-    using HRP.Core.Model;
-    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
-    using Models;
     using Models.Account;
+    using Models;
     using Resources;
     using Services;
 

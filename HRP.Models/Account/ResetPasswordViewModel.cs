@@ -1,9 +1,10 @@
 ﻿namespace HRP.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using SystemSecurity;
     using Resources;
 
-    public class ResetPasswordViewModel
+    public class ResetPasswordViewModel : RijndaelData
     {
         [DataType(DataType.Password)]
         [Display(Name = nameof(ViewLang.NewPassword), ResourceType = typeof(ViewLang))]

@@ -4,7 +4,8 @@ namespace HRP.Services.UnitTests
     using BCrypt.Net;
     using Core.Model;
     using Core.Services;
-    using HRP.Criteria;
+    using Criteria;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
     using Models;
     using NSubstitute;
@@ -14,6 +15,7 @@ namespace HRP.Services.UnitTests
     public class UserServiceTests
     {
         private IBaseMailService emailService;
+        private IHttpContextAccessor httpContextAccessor;
         private IBaseService baseService;
 
         #region GenerateTokenOTPRegister
@@ -219,6 +221,7 @@ namespace HRP.Services.UnitTests
         private UserService GetUserService()
         {
             baseService = Substitute.For<IBaseService>();
+            httpContextAccessor = Substitute.For<IHttpContextAccessor>();
             emailService = Substitute.For<IBaseMailService>();
 
             var appSettingsOptions = new AppSettingsOptions
@@ -231,7 +234,7 @@ namespace HRP.Services.UnitTests
             var configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
             configuration.Value.Returns(appSettingsOptions);
 
-            var service = new UserService(emailService, configuration, baseService);
+            var service = new UserService(emailService, httpContextAccessor, baseService);
 
             return service;
         }

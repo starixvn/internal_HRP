@@ -11,7 +11,7 @@
     using Core.Model;
     using Core.Services;
     using Criteria.Employee;
-    using HRP.Criteria;
+    using Criteria;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;

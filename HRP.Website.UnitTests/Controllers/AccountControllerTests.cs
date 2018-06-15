@@ -768,6 +768,7 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
+            service.GenerateKey().Returns(new Tuple<string, string>("test", "test"));
 
             return service;
         }

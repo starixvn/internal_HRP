@@ -248,7 +248,6 @@
   {
     "outputFileName": "wwwroot/assets/bundles/auth/js/reset-password.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/assets/js/reset-password.js"
     ],
     "minify": {

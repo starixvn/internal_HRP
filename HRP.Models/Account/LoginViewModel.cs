@@ -1,15 +1,13 @@
 namespace HRP.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using SystemSecurity;
 
-    public class LoginViewModel
+    public class LoginViewModel : RijndaelData
     {
         public string Username { get; set; }
 
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        public string RijndaelKey { get; set; }
-        public string RijndaelIV { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace HRP.Services
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using Microsoft.Extensions.Options;
+    using Microsoft.AspNetCore.Http;
     using Models;
     using Resources;
 
@@ -15,17 +15,17 @@ namespace HRP.Services
         private const string EmailTemplateResetPassword = @"wwwroot\\EmailTemplates\\ResetPassword.cshtml";
         private const string EmailTemplateOTPRegistration = @"wwwroot\\EmailTemplates\\OTPRegistration.cshtml";
 
-        private readonly IBaseService baseService;
-        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
         private readonly IBaseMailService emailService;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IBaseService baseService;
 
         public UserService(
             IBaseMailService emailService,
-            IOptionsSnapshot<AppSettingsOptions> configuration,
+            IHttpContextAccessor httpContextAccessor,
             IBaseService baseService)
         {
             this.emailService = emailService;
-            this.configuration = configuration;
+            this.httpContextAccessor = httpContextAccessor;
             this.baseService = baseService;
         }
 
@@ -104,7 +104,13 @@ namespace HRP.Services
             }).ConfigureAwait(false);
 
             var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
-            var linkToRegisterOTP = string.Format(CultureInfo.InvariantCulture, "{0}/Account/SetupOTP?token={1}", configuration.Value.Domain, tokenOTPRegister);
+
+            var linkToRegisterOTP = string.Format(
+                "{0}://{1}/Account/SetupOTP?token={2}",
+                httpContextAccessor.HttpContext.Request.Scheme,
+                httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
+                tokenOTPRegister);
+
             body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
             var mailModel = new MailModel
@@ -147,7 +153,13 @@ namespace HRP.Services
         {
             var user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
             var body = emailService.ReadTextFile(EmailTemplateResetPassword);
-            var linkToReset = string.Format(CultureInfo.InvariantCulture, "{0}/Auth/ResetPassword?token={1}", configuration.Value.Domain, tokenResetPassword);
+
+            var linkToReset = string.Format(
+                "{0}://{1}/Auth/ResetPassword?token={2}",
+                httpContextAccessor.HttpContext.Request.Scheme,
+                httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
+                tokenResetPassword);
+
             body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
 
             var mailModel = new MailModel

@@ -1,9 +1,10 @@
 ﻿namespace HRP.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using SystemSecurity;
     using Resources;
 
-    public class SetupOtpViewModel
+    public class SetupOtpViewModel : RijndaelData
     {
         public string TextCode { get; set; }
 
@@ -13,10 +14,6 @@
         public string Otp { get; set; }
 
         public string Username { get; set; }
-
-        public string RijndaelKey { get; set; }
-
-        public string RijndaelIV { get; set; }
 
         public string AppName { get; set; }
 
