@@ -302,6 +302,9 @@
     "outputFileName": "wwwroot/assets/bundles/account/js/setupotp.min.js",
     "inputFiles": [
       "wwwroot/lib/qrious/qrious.min.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/client-encryption.js",
       "wwwroot/assets/js/account/otp.js"
     ],
     "minify": {
