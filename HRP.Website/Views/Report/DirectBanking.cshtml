@@ -11,26 +11,36 @@
     <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
     <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
+    <link rel="stylesheet" asp-append-version="true" href="~/assets/styles/pages/employee/employee-management.css" />
 }
 
 @section Scripts {
+    <script type="text/javascript" asp-append-version="true" src="~/js/jquery-validate.min.js"></script>
     <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
+
     <script src="~/lib/select2/dist/js/select2.js"></script>
     <script src="~/lib/moment/moment.js"></script>
     <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
     <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-    <script src="~/assets/js/report/payment-transaction.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" asp-append-version="true" src="~/lib/CryptoJS/aes.js"></script>
+    <script type="text/javascript" asp-append-version="true" src="~/assets/js/rijndael-service.js"></script>
+    <script type="text/javascript" asp-append-version="true" src="~/assets/js/client-encryption.js"></script>
+
+    <script type="text/javascript" asp-append-version="true" src="~/assets/js/report/payment-transaction.js"></script>
 }
 
-    <ol class="breadcrumb">
-        <li class="like-link">@ViewLang.Report</li>
-        <li class="active">@ViewLang.DirectBanking</li>
-    </ol>
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.Report</li>
+    <li class="active">@ViewLang.DirectBanking</li>
+</ol>
+
+<input type="hidden" class="encryption-iv" asp-for="RijndaelIV" id="RijndaelIV" />
+<input type="hidden" class="encryption-key" asp-for="RijndaelKey" id="RijndaelKey" />
 
 <form class="search-form" asp-action="GetDirectBankingReport" asp-controller="Report" method="get">
     <a asp-controller="Report" asp-action="GetDirectBankingPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>
-    <input asp-for="BankType" type="hidden" id="banktype"/>
+    <input asp-for="BankType" type="hidden" id="banktype" />
 
     <div class="group">
         <label asp-for="CompanyId" class="text"></label>
@@ -54,6 +64,12 @@
         <label asp-for="SelectedPaymentTransactions" class="text"></label>
         <input type="hidden" asp-for="SelectedPaymentTransactions" id="selected-payment-transactions" />
         <select class="control company width-200" id="payment-transactions-multiselect"></select>
+    </div>
+
+    <div class="group">
+        <requiredlabel asp-for="FilePassword" class="text"></requiredlabel>
+        <span asp-validation-for="FilePassword"></span>
+        <input asp-for="FilePassword" class="encrypt" data-isencrypted="false" data-isdecryptaftersubmit="true" />
     </div>
 
     <div class="group">

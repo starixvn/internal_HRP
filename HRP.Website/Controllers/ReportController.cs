@@ -28,6 +28,7 @@
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
         private readonly ICommonService commonService;
+        private readonly IRijndaelService rijndaelService;
 
         private const string PaymentTransactionOptionRootParentId = "0";
 
@@ -37,11 +38,13 @@
             IHostingEnvironment hostingEnvironment,
             IExportExcelService exportExcelService,
             IReportService reportService,
+            IRijndaelService rijndaelService,
             ICommonService commonService) : base(baseService, sessionService)
         {
             this.reportService = reportService;
             this.hostingEnvironment = hostingEnvironment;
             this.exportExcelService = exportExcelService;
+            this.rijndaelService = rijndaelService;
             this.commonService = commonService;
         }
 
@@ -116,11 +119,17 @@
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DirectBankingReport);
 
+            var tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
-                BankType = BankTypes.DirectBanking
+                BankType = BankTypes.DirectBanking,
+                RijndaelKey = sessionService.RijndaelKey,
+                RijndaelIV = sessionService.RijndaelIV
             };
 
             return View(viewModel);
@@ -129,6 +138,11 @@
         [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetDirectBankingReport(BankInReportViewModel viewModel)
         {
+            viewModel.FilePassword = rijndaelService.Decrypt(
+                viewModel.FilePassword,
+                sessionService.RijndaelKey,
+                sessionService.RijndaelIV);
+
             var bankInData = await reportService.GetDirectBankingBankInAsync(
                 viewModel.CompanyId,
                 viewModel.SelectedTime,
@@ -145,7 +159,8 @@
                     viewModel.SelectedTime,
                     fileInfo,
                     viewModel.TypeOfPayment,
-                    bankInData);
+                    bankInData,
+                    viewModel.FilePassword);
 
                 result = File(fileContent, MimeType.XLSX, $"Direct_Banking-Cash_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
             }

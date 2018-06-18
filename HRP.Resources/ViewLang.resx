@@ -1095,4 +1095,7 @@
   <data name="OTPCodeValidation" xml:space="preserve">
     <value>OTP Code Validation</value>
   </data>
+  <data name="FilePassword" xml:space="preserve">
+    <value>File Password</value>
+  </data>
 </root>

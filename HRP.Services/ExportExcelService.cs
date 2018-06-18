@@ -13,10 +13,10 @@
     using Models.Employee;
     using Models.MonthlyPayroll;
     using Models.Report;
+    using Models.ServiceModels;
     using OfficeOpenXml.Style;
     using OfficeOpenXml;
     using Resources;
-    using HRP.Models.ServiceModels;
 
     public class ExportExcelService : IExportExcelService
     {
@@ -28,11 +28,11 @@
             this.cryptoService = cryptoService;
         }
 
-        public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data)
+        public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data, string password = null)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
-                ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
+                var worksheet = xlPackage.Workbook.Worksheets.First();
 
                 WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
 
@@ -77,6 +77,11 @@
                 }
 
                 worksheet.Cells.AutoFitColumns();
+
+                if (!string.IsNullOrEmpty(password))
+                {
+                    xlPackage.Encryption.Password = password;
+                }
 
                 return xlPackage.GetAsByteArray();
             }

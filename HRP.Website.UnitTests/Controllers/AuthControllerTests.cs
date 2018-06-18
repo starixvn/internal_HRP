@@ -2,18 +2,18 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Core.Model;
+    using Criteria;
     using HRP.Core.Criteria;
-    using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria;
-    using HRP.Models;
-    using HRP.Models.Account;
-    using HRP.Services;
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Account;
+    using Models;
     using NSubstitute;
+    using Services;
     using Xunit;
 
     public class AuthControllerTests
@@ -48,7 +48,6 @@
             // Arrange
             var tuple = new Tuple<string, string>("1234", "12345");
             var authController = GetAuthController();
-            rijndaelService.GenerateKey().Returns(tuple);
 
             // Act
             var actual = authController.Login();
@@ -334,6 +333,8 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
+            var tuple = new Tuple<string, string>("1234", "12345");
+            service.GenerateKey().Returns(tuple);
 
             return service;
         }

@@ -1330,6 +1330,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Password.
+        /// </summary>
+        public static string FilePassword {
+            get {
+                return ResourceManager.GetString("FilePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fitness Club Membership.
         /// </summary>
         public static string FitnessFirst {

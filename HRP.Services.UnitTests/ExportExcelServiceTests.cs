@@ -45,10 +45,11 @@
                 CashBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } }
             };
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
+            var password = "123456";
             var service = GetExportExcelService();
 
             // Act
-            var actual = service.ExportDirectBankingReports(DateTime.Now, fileInfo, PaymentType.BasicSalary, data);
+            var actual = service.ExportDirectBankingReports(DateTime.Now, fileInfo, PaymentType.BasicSalary, data, password);
 
             // Assert
             Assert.NotEmpty(actual);
@@ -66,10 +67,11 @@
             };
 
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
+            var password = "123456";
             var service = GetExportExcelService();
 
             // Act
-            var actual = service.ExportDirectBankingReports(DateTime.Now, fileInfo, PaymentType.BasicSalary, data);
+            var actual = service.ExportDirectBankingReports(DateTime.Now, fileInfo, PaymentType.BasicSalary, data, password);
 
             // Assert
             Assert.NotEmpty(actual);

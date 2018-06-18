@@ -33,6 +33,7 @@
         private IReportService reportService;
         private IHostingEnvironment hostingEnvironment;
         private IExportExcelService exportExcelService;
+        private IRijndaelService rijndaelService;
         private ICommonService commonService;
 
         [Fact]
@@ -587,6 +588,15 @@
             return Substitute.For<ICommonService>();
         }
 
+        private static IRijndaelService FakeRijndaelService()
+        {
+            var service = Substitute.For<IRijndaelService>();
+            var tuple = new Tuple<string, string>("1234", "12345");
+            service.GenerateKey().Returns(tuple);
+
+            return service;
+        }
+
         private ReportController GetReportController()
         {
             sessionService = FakeSessionService();
@@ -594,6 +604,7 @@
             reportService = FakeReportService();
             exportExcelService = FakeExportExcelService();
             hostingEnvironment = FakeHostingEnviroment();
+            rijndaelService = FakeRijndaelService();
             commonService = FakeCommonService();
 
             return new ReportController(
@@ -602,6 +613,7 @@
                 hostingEnvironment,
                 exportExcelService,
                 reportService,
+                rijndaelService,
                 commonService);
         }
 
