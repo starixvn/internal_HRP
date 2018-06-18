@@ -751,7 +751,10 @@
                 CurrencyId = basicAllowance.CurrencyId,
                 CurrencyCode = basicAllowance.CurrencyCode,
                 AutoCalculateOn = basicAllowance.AutoCalculateOn,
-                Reason = basicAllowance.Reason,
+                Reason = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.Reason, rijndaelKey, rijndaelIV)
+                },
                 TotalAmount = new SecurityData
                 {
                     EncryptedValue = rijndaelService.Encrypt(basicAllowance.TotalAmount, rijndaelKey, rijndaelIV)

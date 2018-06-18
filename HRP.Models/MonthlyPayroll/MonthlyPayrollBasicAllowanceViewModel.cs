@@ -88,6 +88,6 @@
 
         public SecurityData AfterAdjustmentAmountDisplay { get; set; }
 
-        public string Reason { get; set; }
+        public SecurityData Reason { get; set; }
     }
 }

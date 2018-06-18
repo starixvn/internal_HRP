@@ -393,11 +393,17 @@
     }
 
     function decryptData() {
-        $('.encrypted-value').each(function () {
+        $encryptedValues.each(function () {
             var $this = $(this);
 
             if ($this.val() !== '') {
-                $($this.data('plain-target')).val(rijndaelService.decryptData($this.val(), rijndaelKey, rijndaelIV));
+                var $target = $($this.data('plain-target'));
+                var data = rijndaelService.decryptData($this.val(), rijndaelKey, rijndaelIV);
+                $target.val(data);
+
+                if ($target.prop('tagName') === 'TEXTAREA') {
+                    $target.attr('title', data)
+                }
             } else {
                 $($this.data('plain-target')).val('');
             }
@@ -429,7 +435,7 @@
 
         decryptData();
         $('#total-amount-display').val($('#Allowance_Total_PlainValue').val());
-        
+
         initSelect2();
         initInputMask();
 

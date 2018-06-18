@@ -324,11 +324,11 @@
                     </select>
 
                     <input type="text" class="control highlighted" readonly asp-for="BasicAllowance.AfterAdjustmentAmountDisplay.PlainValue" asp-encrypt-for="BasicAllowance.AfterAdjustmentAmountDisplay.EncryptedValue">
-                    <input type="hidden" asp-for="BasicAllowance.AfterAdjustmentAmount.PlainValue" asp-encrypt-for="BasicAllowance.AfterAdjustmentAmount.EncryptedValue"/>
+                    <input type="hidden" asp-for="BasicAllowance.AfterAdjustmentAmount.PlainValue" asp-encrypt-for="BasicAllowance.AfterAdjustmentAmount.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-setting-2">
                     <div>Reason</div>
-                    <textarea class="control text-reason" readonly asp-for="BasicAllowance.Reason" title="@Model.BasicAllowance.Reason"></textarea>
+                    <textarea class="control text-reason" readonly asp-for="BasicAllowance.Reason.PlainValue" asp-encrypt-for="BasicAllowance.Reason.EncryptedValue"></textarea>
                 </div>
             </div>
             <div class="monthly-payroll">

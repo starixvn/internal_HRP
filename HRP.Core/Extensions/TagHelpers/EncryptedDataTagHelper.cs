@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Razor.TagHelpers;
 
     [HtmlTargetElement("input", Attributes = ForAttributeName)]
+    [HtmlTargetElement("textarea", Attributes = ForAttributeName)]
     public class EncryptedDataTagHelper : TagHelper
     {
         private const string ForAttributeName = "asp-encrypt-for";
