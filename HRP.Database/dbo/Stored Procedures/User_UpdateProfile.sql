@@ -1,7 +1,7 @@
 ﻿
 
 CREATE PROCEDURE [dbo].[User_UpdateProfile] @UserId INT
-	,@FullName VARCHAR(70)
+	,@FullName NVARCHAR(70)
 	,@Phone VARCHAR(20)
 	,@Email VARCHAR(250)
 	,@ErrCode INT = 0 OUTPUT

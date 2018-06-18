@@ -14,6 +14,7 @@
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Primitives;
@@ -686,7 +687,10 @@
         {
             // Arrange
             var accountController = GetAccountController();
-            accountController.ModelState.AddModelError("otp", "required");
+            accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                Arg.Any<string>(), Arg.Any<Object>())).Do(x => accountController.ModelState.AddModelError("otp", "error"));
+
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
@@ -703,6 +707,9 @@
             // Arrange
             var accountController = GetAccountController();
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
+            accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>()));
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             // Act
@@ -718,6 +725,9 @@
             // Arrange
             var accountController = GetAccountController();
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
+            accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>()));
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             // Act

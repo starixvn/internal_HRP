@@ -17,15 +17,8 @@
     using HRP.Website.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Abstractions;
-    using Microsoft.AspNetCore.Mvc.DataAnnotations.Internal;
-    using Microsoft.AspNetCore.Mvc.Formatters;
-    using Microsoft.AspNetCore.Mvc.Internal;
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
-    using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
@@ -950,7 +943,7 @@
                 Deduction = new EmployeePayrollDeductionViewModel { EmployeeId = employeeId }
             };
 
-            var employeeController = GetEmployeeController();         
+            var employeeController = GetEmployeeController();
             employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             employeeController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => employeeController.ModelState.AddModelError("employee", "error"));

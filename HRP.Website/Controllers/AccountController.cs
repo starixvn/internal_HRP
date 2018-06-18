@@ -82,9 +82,9 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
-            viewModel.OldPassword = rijndaelService.Decrypt(viewModel.OldPassword,sessionService.RijndaelKey,sessionService.RijndaelIV);
-            viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey,sessionService.RijndaelIV);
-            viewModel.PasswordConfirm = rijndaelService.Decrypt(viewModel.PasswordConfirm, sessionService.RijndaelKey,sessionService.RijndaelIV);
+            viewModel.OldPassword = rijndaelService.Decrypt(viewModel.OldPassword, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            viewModel.PasswordConfirm = rijndaelService.Decrypt(viewModel.PasswordConfirm, sessionService.RijndaelKey, sessionService.RijndaelIV);
 
             if (ModelState.IsValid)
             {
@@ -213,7 +213,9 @@ namespace HRP.Website.Controllers
                 IsOTPRegistered = false,
                 SetupOtpViewModel = setupOtpViewModel,
                 ChangePasswordViewModel = new ChangePasswordViewModel(),
-                UserProfileViewModel = userProfile
+                UserProfileViewModel = userProfile,
+                RijndaelKey = sessionService.RijndaelKey,
+                RijndaelIV = sessionService.RijndaelIV
             };
 
             return View("Index", accountViewModel);
@@ -306,6 +308,8 @@ namespace HRP.Website.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> VerifySetupOTP(SetupOtpViewModel viewModel)
         {
+            ModelState.Clear();
+
             User user = await userService.GetUserByUsernameAsync(viewModel.Username);
 
             if (user == null)
@@ -313,9 +317,10 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
             viewModel.Otp = rijndaelService.Decrypt(viewModel.Otp, sessionService.RijndaelKey, sessionService.RijndaelIV);
+
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 
-            if (!ModelState.IsValid || !isOTPValid)
+            if (!TryValidateModel(viewModel) || !isOTPValid)
             {
                 return Forbid();
             }
