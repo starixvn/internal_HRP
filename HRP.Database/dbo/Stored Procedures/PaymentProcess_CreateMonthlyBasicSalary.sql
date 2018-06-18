@@ -44,7 +44,7 @@ BEGIN
 		,CashAmount VARCHAR(MAX)
 		,AutoCalculateOn VARCHAR(30)
 		,AfterAdjustmentAmount VARCHAR(MAX)
-		,AfterAdjustmentReason NVARCHAR(200)
+		,AfterAdjustmentReason VARCHAR(MAX)
 		,CreatedBy INT
 		,CreatedDate DATETIME
 	)
@@ -66,7 +66,7 @@ BEGIN
 		,CashAmount VARCHAR(MAX)
 		,AutoCalculateOn VARCHAR(30)
 		,AfterAdjustmentAmount VARCHAR(MAX)
-		,AfterAdjustmentReason NVARCHAR(200)
+		,AfterAdjustmentReason VARCHAR(MAX)
 		,CreatedBy INT
 		,CreatedDate DATETIME
 	)
@@ -134,7 +134,7 @@ BEGIN
 			,CashAmount VARCHAR(MAX)
 			,AutoCalculateOn VARCHAR(30)
 			,AfterAdjustmentAmount VARCHAR(MAX)
-			,AfterAdjustmentReason NVARCHAR(200)
+			,AfterAdjustmentReason VARCHAR(MAX)
 			) AS Data
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON mp.EmployeeId = Data.EmployeeId
 		AND mp.[Month] = @Month
