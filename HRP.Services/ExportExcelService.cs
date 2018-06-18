@@ -91,7 +91,8 @@
             DateTime selectedTime,
             FileInfo fileInfo,
             PaymentType typeOfPayment,
-            BankInReport data)
+            BankInReport data,
+            string password = null)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
@@ -120,6 +121,11 @@
                 }
 
                 worksheet.Cells.AutoFitColumns();
+
+                if (!string.IsNullOrEmpty(password))
+                {
+                    xlPackage.Encryption.Password = password;
+                }
 
                 return xlPackage.GetAsByteArray();
             }

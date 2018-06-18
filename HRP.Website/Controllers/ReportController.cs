@@ -153,7 +153,7 @@
 
             IActionResult result = RedirectToAction("DirectBanking");
 
-            if (bankInData != null)
+            if (bankInData != null && ModelState.IsValid)
             {
                 var fileContent = exportExcelService.ExportDirectBankingReports(
                     viewModel.SelectedTime,
@@ -173,10 +173,16 @@
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EbankingReport);
 
+            var tuple = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = tuple.Item1;
+            sessionService.RijndaelKey = tuple.Item2;
+
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                RijndaelKey = sessionService.RijndaelKey,
+                RijndaelIV = sessionService.RijndaelIV
             };
 
             return View(viewModel);
@@ -185,6 +191,11 @@
         [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> GetEbankingReport(BankInReportViewModel viewModel)
         {
+            viewModel.FilePassword = rijndaelService.Decrypt(
+                viewModel.FilePassword,
+                sessionService.RijndaelKey,
+                sessionService.RijndaelIV);
+
             var bankInData = await reportService.GetEbankingBankInAsync(
                 viewModel.CompanyId,
                 viewModel.SelectedTime,
@@ -194,13 +205,14 @@
 
             IActionResult result = RedirectToAction("Ebanking");
 
-            if (bankInData != null)
+            if (bankInData != null && ModelState.IsValid)
             {
                 var fileContent = exportExcelService.ExportEbankingReports(
                     viewModel.SelectedTime,
                     fileInfo,
                     viewModel.TypeOfPayment,
-                    bankInData);
+                    bankInData,
+                    viewModel.FilePassword);
 
                 result = File(fileContent, MimeType.XLSX, $"E-Banking_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
             }
