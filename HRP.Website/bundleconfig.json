@@ -142,7 +142,7 @@
     "inputFiles": [
       "wwwroot/lib/select2/dist/css/select2.css",
       "wwwroot/lib/tooltipster/dist/css/tooltipster.bundle.css",
-      "wwwroot/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
+      "wwwroot/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
       "wwwroot/assets/styles/pages/paymentprocess/payment-process.css",
       "wwwroot/assets/styles/pages/employee/common.css",
       "wwwroot/assets/styles/pages/paymentprocess/edit-basic-salary.css"

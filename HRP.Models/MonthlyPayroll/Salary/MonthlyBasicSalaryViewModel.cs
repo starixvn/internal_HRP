@@ -18,7 +18,7 @@
         public string CashCurrencyCode { get; set; }
         public SecurityData CashAmount { get; set; }
         public SecurityData AfterAdjustmentAmount { get; set; }
-        public string AfterAdjustmentReason { get; set; }
+        public SecurityData AfterAdjustmentReason { get; set; }
         public SecurityData SalaryPerDay { get; set; }
         public int WorkingDays { get; set; }
     }

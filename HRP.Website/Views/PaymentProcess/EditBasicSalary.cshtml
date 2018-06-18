@@ -305,7 +305,8 @@
                 </div>
                 <div class="group-complex -layout-setting-2">
                     <div>@ViewLang.Reason</div>
-                    <textarea class="control text-reason js-afterAdjustmentReason" asp-for="MonthlyBasicSalary.AfterAdjustmentReason" readonly></textarea>
+                    <textarea class="control text-reason js-afterAdjustmentReason"
+                              asp-for="MonthlyBasicSalary.AfterAdjustmentReason.PlainValue" asp-encrypt-for="MonthlyBasicSalary.AfterAdjustmentReason.EncryptedValue" readonly></textarea>
                 </div>
             </div>
             <div class="monthly-payroll">

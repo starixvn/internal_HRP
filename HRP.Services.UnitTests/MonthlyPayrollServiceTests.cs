@@ -158,7 +158,7 @@
         #region GetMonthlySalaryAsync
 
         [Fact]
-        public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsNotExisted_ReturnAsExpected()
+        public async Task GetMonthlySalaryAsync_MonthlyPayrollIsNotExisted_ReturnAsExpected()
         {
             // Arrange
             var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
@@ -180,7 +180,7 @@
         }
 
         [Fact]
-        public async Task GetMonthlySalaryToEditAsync_MonthlyPayrollIsExisted_ReturnAsExpected()
+        public async Task GetMonthlySalaryAsync_MonthlyPayrollIsExisted_ReturnAsExpected()
         {
             // Arrange
             var plainText = "1234";
@@ -212,6 +212,8 @@
             Assert.Equal(tuple.Item1.CashCurrencyCode, actual.Item1.CashCurrencyCode);
             Assert.Equal(plainText, actual.Item1.CashAmount);
             Assert.Equal(tuple.Item1.AutoCalculateOn, actual.Item1.AutoCalculateOn);
+            Assert.Equal(plainText, actual.Item1.AfterAdjustmentReason);
+            Assert.Equal(plainText, actual.Item1.AfterAdjustmentAmount);
 
             Assert.Equal(tuple.Item2.CurrencyId, actual.Item2.CurrencyId);
             Assert.Equal(tuple.Item2.Salary, actual.Item2.Salary);

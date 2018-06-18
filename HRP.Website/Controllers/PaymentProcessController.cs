@@ -957,7 +957,10 @@
                 {
                     EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.AfterAdjustmentAmount, rijndaelKey, rijndaelIV)
                 },
-                AfterAdjustmentReason = monthlyBasicSalary.AfterAdjustmentReason,
+                AfterAdjustmentReason = new SecurityData
+                {
+                    EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.AfterAdjustmentReason, rijndaelKey, rijndaelIV)
+                },
                 SalaryPerDay = new SecurityData
                 {
                     EncryptedValue = rijndaelService.Encrypt(monthlyBasicSalary.SalaryPerDay.ToString(CultureInfo.InvariantCulture), rijndaelKey, rijndaelIV)

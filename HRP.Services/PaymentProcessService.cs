@@ -452,6 +452,7 @@
             basicSalary.DirectBanking2Amount = cryptoService.Encrypt(basicSalary.DirectBanking2Amount);
             basicSalary.CashAmount = cryptoService.Encrypt(basicSalary.CashAmount);
             basicSalary.AfterAdjustmentAmount = cryptoService.Encrypt(basicSalary.AfterAdjustmentAmount);
+            basicSalary.AfterAdjustmentReason = cryptoService.Encrypt(basicSalary.AfterAdjustmentReason);
         }
 
         private void EncryptMonthlySalary(MonthlySalaryModel salary)

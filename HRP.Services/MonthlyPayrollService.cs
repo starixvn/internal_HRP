@@ -157,6 +157,7 @@
             monthlySalary.Item1.DirectBanking2Amount = cryptoService.Decrypt(monthlySalary.Item1.DirectBanking2Amount);
             monthlySalary.Item1.CashAmount = cryptoService.Decrypt(monthlySalary.Item1.CashAmount);
             monthlySalary.Item1.AfterAdjustmentAmount = cryptoService.Decrypt(monthlySalary.Item1.AfterAdjustmentAmount);
+            monthlySalary.Item1.AfterAdjustmentReason = cryptoService.Decrypt(monthlySalary.Item1.AfterAdjustmentReason);
 
             monthlySalary.Item2.Salary = cryptoService.Decrypt(monthlySalary.Item2.Salary);
             monthlySalary.Item2.EbankingAmount = cryptoService.Decrypt(monthlySalary.Item2.EbankingAmount);

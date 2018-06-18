@@ -818,7 +818,7 @@
             Assert.Equal(monthlyPayroll.Item1.CashCurrencyCode, viewModelResult.MonthlyBasicSalary.CashCurrencyCode);
             Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.CashAmount.EncryptedValue);
             Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.AfterAdjustmentAmount.EncryptedValue);
-            Assert.Equal(monthlyPayroll.Item1.AfterAdjustmentReason, viewModelResult.MonthlyBasicSalary.AfterAdjustmentReason);
+            Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.AfterAdjustmentReason.EncryptedValue);
             Assert.Equal(cipherText, viewModelResult.MonthlyBasicSalary.SalaryPerDay.EncryptedValue);
             Assert.Equal(monthlyPayroll.Item1.WorkingDays, viewModelResult.MonthlyBasicSalary.WorkingDays);
 
