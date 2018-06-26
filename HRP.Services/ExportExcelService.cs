@@ -544,7 +544,7 @@
 
         #endregion MonthlyPayrollReport
 
-        public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds)
+        public byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds, string password = null)
         {
             using (var package = new ExcelPackage())
             {
@@ -588,6 +588,11 @@
                 }
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                if (!string.IsNullOrEmpty(password))
+                {
+                    package.Encryption.Password = password;
+                }
 
                 return package.GetAsByteArray();
             }

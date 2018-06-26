@@ -19,6 +19,9 @@
     <li class="active">Dynamic Report</li>
 </ol>
 
+<input type="hidden" asp-for="RijndaelIV" />
+<input type="hidden" asp-for="RijndaelKey" />
+
 <form class="search-form" asp-controller="Report" asp-action="DynamicReport" method="post" id="dynamic-report-form">
     <input type="hidden" asp-for="EmployeeStatuses" />
     <input type="hidden" asp-for="SelectedIds" />
@@ -26,7 +29,7 @@
     <div class="list-message-error hidden" id="validation-summary">
         <span asp-validation-for="CompanyId" class="message"></span>
         <span asp-validation-for="EmployeeStatusIds" class="message"></span>
-        <span asp-validation-for="Password" class="message"></span>
+        <span asp-validation-for="FilePassword" class="message"></span>
     </div>
 
     <div class="group">
@@ -44,7 +47,7 @@
     </div>
     <div class="group reuse-pass-group">
         <label>
-            <input class="hidden" type="checkbox" asp-for="ReusePassword">
+            <input class="hidden" type="checkbox" asp-for="ReusePassword" />
             <span>Reuse Password</span>
         </label>
     </div>
@@ -83,7 +86,7 @@
     </div>
     <div class="w-100"></div>
     <div class="group">
-        <button type="submit" class="button -excel"><span class="icon-excel"></span>Export Excel</button>
+        <button type="button" id="btn-export" class="button -excel"><span class="icon-excel"></span>Export Excel</button>
     </div>
 </form>
 
@@ -93,6 +96,8 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/select2/dist/js/select2.js"></script>
         <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
+        <script src="~/lib/CryptoJS/aes.js"></script>
+        <script src="~/assets/js/rijndael-service.js"></script>
         <script src="~/assets/js/report/dynamic-report.js"></script>
     </environment>
     <environment exclude="Development">

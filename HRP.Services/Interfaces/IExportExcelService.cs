@@ -24,6 +24,6 @@
             BankInReport data,
             string password = null);
 
-        byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds);
+        byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds, string password = null);
     }
 }

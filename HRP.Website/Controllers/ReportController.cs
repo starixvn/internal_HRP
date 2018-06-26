@@ -271,6 +271,10 @@
         [HRPPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
         public async Task<IActionResult> DynamicReport()
         {
+            var keys = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = keys.Item1;
+            sessionService.RijndaelKey = keys.Item2;
+
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DynamicReport);
             var criteria = new GetEmployeeStatusByUserCriteria
             {
@@ -295,7 +299,9 @@
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 }),
                 EmployeeStatusIds = string.Join(",", employeeStatusIds),
-                Groups = ColumnsConfiguration.DynamicReportGroups
+                Groups = ColumnsConfiguration.DynamicReportGroups,
+                RijndaelIV = keys.Item1,
+                RijndaelKey = keys.Item2
             };
 
             return View("DynamicReport", viewModel);
@@ -310,13 +316,25 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            viewModel.FilePassword = rijndaelService.Decrypt(viewModel.FilePassword, rijndaelKey, rijndaelIV);
+
             if (ModelState.IsValid)
             {
-                var employeeDatas = await reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds);
+                var password = viewModel.ReusePassword ? null : viewModel.FilePassword;
 
-                var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds?.Split(',').Select(int.Parse) ?? Enumerable.Empty<int>());
+                if (!string.IsNullOrEmpty(password))
+                {
+                    var employeeDatas = await reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds);
 
-                return File(data, MimeType.XLSX, $"DynamicReport.xlsx");
+                    var data = exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds?.Split(',').Select(int.Parse) ?? Enumerable.Empty<int>(), password);
+
+                    return File(data, MimeType.XLSX, $"DynamicReport.xlsx");
+                }
+
+                ModelState.AddModelError($"{nameof(viewModel.FilePassword)}", "You haven't set any password before!");
             }
 
             var companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);

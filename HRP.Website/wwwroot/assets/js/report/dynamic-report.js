@@ -1,5 +1,5 @@
-﻿var dynamicReport = (function ($, commonFunctions) {
-    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect, $form;
+﻿var dynamicReport = (function ($, commonFunctions, rijndaelService) {
+    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect, $form, $password, rijndaelIV, rijndaelKey;
 
     function moveUpDown(up) {
         var $selectedItems = $('#selected-list option:selected');
@@ -19,6 +19,7 @@
         $employeeStatusIds = $("#EmployeeStatusIds");
         $employeeStatusMultiSelect = $("#employee-status");
         $form = $('#dynamic-report-form');
+        $password = $('#FilePassword');
     }
 
     function initSelect2() {
@@ -86,6 +87,14 @@
         $('#btn-movedown').on('click', function () {
             moveUpDown(false);
         });
+
+        $('#btn-export', $form).on('click', function () {
+            if ($form.valid()) {
+                encryptData();
+                $plainValues.attr('disabled', 'disabled');
+                $form.submit();
+            }
+        });
     }
 
     function parseForm() {
@@ -114,10 +123,35 @@
         $form.removeData("validator").removeData("unobtrusiveValidation");
         $.validator.unobtrusive.parse($form);
 
-        commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
+        var $validations = $('#validation-summary');
+
+        if ($('.field-validation-error', $validations).length > 0) {
+            $validations.removeClass('hidden');
+        } else {
+            $validations.addClass('hidden');
+        }
+
+        commonFunctions.showHideValidationSummary($validations[0]);
+    }
+
+    function decryptData() {
+        if ($password.val() !== '') {
+            var data = rijndaelService.decryptData($password.val(), rijndaelKey, rijndaelIV);
+            $password.val(data);
+        }
+    }
+
+    function encryptData() {
+        if ($password.val() !== '') {
+            var data = rijndaelService.encryptData($password.val(), rijndaelKey, rijndaelIV);
+            $password.val(data);
+        }
     }
 
     function init() {
+        rijndaelIV = $('#RijndaelIV').val();
+        rijndaelKey = $('#RijndaelKey').val();
+
         getElements();
         initSelect2();
         parseForm();
@@ -128,7 +162,7 @@
     return {
         init: init
     };
-}(jQuery, commonFunctions));
+}(jQuery, commonFunctions, rijndaelService));
 
 $(document).ready(function () {
     dynamicReport.init();

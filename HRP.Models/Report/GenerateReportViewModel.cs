@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using HRP.Core.CustomValidations;
-    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class GenerateReportViewModel
@@ -19,12 +17,14 @@
 
         public string EmployeeStatuses { get; set; }
 
-        [RequiredIfRelatedFieldIsTrue(DesiredValue = false, RelatedFieldName = nameof(ReusePassword),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PasswordRequired))]
-        public string Password { get; set; }
+        public string FilePassword { get; set; }
 
         public bool ReusePassword { get; set; }
 
         public IEnumerable<DynamicReportGroup> Groups { get; set; }
+
+        public string RijndaelIV { get; set; }
+
+        public string RijndaelKey { get; set; }
     }
 }
