@@ -33,6 +33,7 @@
 
     function showHideValidationSummary(targetNode) {
         var callback = function () {
+            debugger;
             if ($('.field-validation-error', targetNode).length > 0) {
                 $(targetNode).removeClass('hidden');
             } else {
@@ -113,7 +114,6 @@
         });
     }
 
-
     function disableEnterKeySubmit($form) {
         $form.find('input').on('keypress', function (e) {
             return e.keyCode !== 13;
@@ -137,7 +137,6 @@
         registerEventGoBack: registerEventGoBack,
         noDataOnTableMsg: noDataOnTableMsg,
         disableEnterKeySubmit: disableEnterKeySubmit
-
     };
 }(jQuery));
 

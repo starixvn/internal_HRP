@@ -321,6 +321,7 @@
 
             var companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            viewModel.Groups = ColumnsConfiguration.DynamicReportGroups;
 
             return View("DynamicReport", viewModel);
         }

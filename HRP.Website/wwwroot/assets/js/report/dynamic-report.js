@@ -1,5 +1,5 @@
-﻿var dynamicReport = (function ($) {
-    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect;
+﻿var dynamicReport = (function ($, commonFunctions) {
+    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect, $form;
 
     function moveUpDown(up) {
         var $selectedItems = $('#selected-list option:selected');
@@ -18,6 +18,7 @@
         $selectedIds = $('#SelectedIds');
         $employeeStatusIds = $("#EmployeeStatusIds");
         $employeeStatusMultiSelect = $("#employee-status");
+        $form = $('#dynamic-report-form');
     }
 
     function initSelect2() {
@@ -87,9 +88,40 @@
         });
     }
 
+    function parseForm() {
+        $.validator.addMethod("requiredifrelatedfieldistrue",
+            function (value, element, parameters) {
+                debugger;
+                var desiredvalue = parameters.desiredvalue;
+                desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
+                var actualvalue;
+                var control = $("input[id$='" + parameters.relatedfieldname + "']");
+                actualvalue = control.is(':checked');
+
+                if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase() && value === '') {
+                    return false;
+                }
+
+                return true;
+            });
+
+        $.validator.unobtrusive.adapters.add("requiredifrelatedfieldistrue",
+            ["relatedfieldname", "desiredvalue"],
+            function (options) {
+                options.rules["requiredifrelatedfieldistrue"] = options.params;
+                options.messages["requiredifrelatedfieldistrue"] = options.message;
+            });
+
+        $form.removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($form);
+
+        commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
+    }
+
     function init() {
         getElements();
         initSelect2();
+        parseForm();
         initFanexMultiSelect();
         initEvents();
     }
@@ -97,7 +129,7 @@
     return {
         init: init
     };
-}(jQuery));
+}(jQuery, commonFunctions));
 
 $(document).ready(function () {
     dynamicReport.init();

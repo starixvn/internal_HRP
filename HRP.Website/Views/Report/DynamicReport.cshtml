@@ -22,14 +22,31 @@
 <form class="search-form" asp-controller="Report" asp-action="DynamicReport" method="post" id="dynamic-report-form">
     <input type="hidden" asp-for="EmployeeStatuses" />
     <input type="hidden" asp-for="SelectedIds" />
+
+    <div class="list-message-error hidden" id="validation-summary">
+        <span asp-validation-for="CompanyId" class="message"></span>
+        <span asp-validation-for="EmployeeStatusIds" class="message"></span>
+        <span asp-validation-for="Password" class="message"></span>
+    </div>
+
     <div class="group">
         <label class="text">@ViewLang.Company</label>
         <select class="control select2" asp-for="CompanyId" asp-items="Model.Companies"></select>
     </div>
     <div class="group">
         <label class="text">Employee Status</label>
-        <input type="hidden" asp-for="EmployeeStatusIds" />
+        <input type="text" asp-for="EmployeeStatusIds" hidden />
         <select class="control" id="employee-status"></select>
+    </div>
+    <div class="group">
+        <label class="text -has-required">@ViewLang.Password</label>
+        <input type="password" asp-for="Password" />
+    </div>
+    <div class="group">
+        <label>
+            <input class="hidden" type="checkbox" asp-for="ReusePassword">
+            <span>Reuse Password</span>
+        </label>
     </div>
     <div class="w-100"></div>
     <div class="group">
@@ -69,7 +86,6 @@
         <button type="submit" class="button -excel"><span class="icon-excel"></span>Export Excel</button>
     </div>
 </form>
-
 
 @section Scripts {
     <environment include="Development">
