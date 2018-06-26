@@ -33,7 +33,7 @@
 
     function showHideValidationSummary(targetNode) {
         var callback = function () {
-            debugger;
+            //debugger;
             if ($('.field-validation-error', targetNode).length > 0) {
                 $(targetNode).removeClass('hidden');
             } else {

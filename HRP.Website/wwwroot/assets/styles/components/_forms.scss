@@ -83,12 +83,7 @@
 
     .control {
         display: block;
-        width: 100%;
-
-        &.input-validation-error {
-            border-color: #ff4545;
-            @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
-        }
+        width: 100%;        
 
         &.without-label {
             margin-top: 18px;
@@ -141,3 +136,19 @@
         margin-top: 10px;
     }
 }
+
+form {
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"],
+    textarea {
+        &.input-validation-error {
+            border-color: #ff4545;
+            @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
+        }
+    }
+   
+}
+   

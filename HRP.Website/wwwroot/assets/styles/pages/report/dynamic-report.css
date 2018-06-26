@@ -80,16 +80,6 @@
   width: 100%;
 }
 
-.form-information .control.input-validation-error {
-  border-color: #ff4545;
-  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-}
-
 .form-information .control.without-label {
   margin-top: 18px;
 }
@@ -138,6 +128,21 @@
 
 .form-information .msg-error, .form-information .text-danger {
   margin-top: 10px;
+}
+
+form input[type="text"].input-validation-error,
+form input[type="search"].input-validation-error,
+form input[type="email"].input-validation-error,
+form input[type="number"].input-validation-error,
+form input[type="password"].input-validation-error,
+form textarea.input-validation-error {
+  border-color: #ff4545;
+  -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
 }
 
 ::-webkit-input-placeholder {
@@ -966,5 +971,22 @@ select[multiple] option:hover, select[multiple] option:focus, select[multiple] o
 
 .search-form .fanex-multiselect-options {
   width: 200px !important;
+}
+
+.pass-wrap {
+  position: relative;
+}
+
+.pass-wrap .icon-view, .pass-wrap .icon-hide {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  font-size: 18px;
+  color: #acacac;
+}
+
+.reuse-pass-group {
+  position: relative;
+  top: -10px;
 }
 /*# sourceMappingURL=dynamic-report.css.map */

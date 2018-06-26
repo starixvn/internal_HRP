@@ -568,6 +568,7 @@ input[type="checkbox"]:disabled + span {
   margin: 0 0 12px 0;
   background-color: #ffebea;
   color: #ff0101;
+  width: 100%;
 }
 
 .validation-summary-errors li, .list-message-error li, .validation-summary-errors .message, .list-message-error .message {
