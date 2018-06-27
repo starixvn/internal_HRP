@@ -87,6 +87,8 @@
     <Setting Key="User_CheckIn" SpName="User_CheckIn" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_Logout" SpName="User_Logout" DbName="bodb_HRP" Plain="0"></Setting>
     <Setting Key="User_ReCheckIn" SpName="User_ReCheckIn" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_EditFilePassword" SpName="User_EditFilePassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetFilePassword" SpName="User_GetFilePassword" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
   <Function Name="Currency">
     <Setting Key="Currency_GetExchangeRates" SpName="Currency_GetExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>

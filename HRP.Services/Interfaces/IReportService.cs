@@ -22,5 +22,9 @@
         Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId);
 
         Task<IEnumerable<DynamicReportModel>> GetEmployeeDataForDynamicReport(int companyId, string employeeStatusIds);
+
+        Task<string> GetUserFilePasswordAsync(int userId);
+
+        Task EditUserFilePasswordAsync(int userId, string password);
     }
 }

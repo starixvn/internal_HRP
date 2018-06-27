@@ -17,6 +17,8 @@
     using Xunit;
     using HRP.Core.Constants;
     using HRP.Models.ServiceModels;
+    using HRP.Criteria.User;
+    using HRP.Core.Model;
 
     public class ReportServiceTests
     {
@@ -316,6 +318,37 @@
             var actual = await reportService.GetEmployeeDataForDynamicReport(1, "1,2");
 
             Assert.Equal(datas.Count, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetUserFilePasswordAsync_WhenCalled_ReturnFilePassword()
+        {
+            var userId = 1;
+            var expected = "456";
+            var reportService = GetReportService();
+            baseService.GetDataEntityAsync<string>(Arg.Any<GetUserFilePasswordCriteria>()).Returns("123");
+            cryptoService.Decrypt("123").Returns(expected);
+            // Act
+            var actual = await reportService.GetUserFilePasswordAsync(userId);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task EditUserFilePasswordAsync_WhenCalled_ExpectMethodsCalled()
+        {
+            var userId = 1;
+            var password = "123";
+            var reportService = GetReportService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditUserFilePasswordCriteria>()).Returns(new CommandResult());
+            cryptoService.Encrypt(password).Returns("456");
+            // Act
+            await reportService.EditUserFilePasswordAsync(userId, password);
+
+            // Assert
+            await baseService.Received(1).ExecuteNonQueryAsync(Arg.Any<EditUserFilePasswordCriteria>());
+            cryptoService.Received(1).Encrypt(password);
         }
 
         #region Helpers

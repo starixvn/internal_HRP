@@ -1,5 +1,5 @@
 ﻿var dynamicReport = (function ($, commonFunctions, rijndaelService) {
-    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect, $form, $password, rijndaelIV, rijndaelKey;
+    var $selectedIds, $employeeStatusIds, $employeeStatusMultiSelect, $form, $password, $encryptedPassword, rijndaelIV, rijndaelKey;
 
     function moveUpDown(up) {
         var $selectedItems = $('#selected-list option:selected');
@@ -20,6 +20,7 @@
         $employeeStatusMultiSelect = $("#employee-status");
         $form = $('#dynamic-report-form');
         $password = $('#FilePassword');
+        $encryptedPassword = $('#EncryptedPassword');
     }
 
     function initSelect2() {
@@ -91,38 +92,28 @@
         $('#btn-export', $form).on('click', function () {
             if ($form.valid()) {
                 encryptData();
-                $plainValues.attr('disabled', 'disabled');
+                $password.attr('disabled', 'disabled');
                 $form.submit();
+                $password.removeAttr('disabled');
             }
+        });
+
+        $('.pass-wrap').on('click', '.icon-view', function () {
+            var $this = $(this);
+            var $input = $this.next();
+            $input.attr('type', 'text');
+            $this.removeClass('icon-view').addClass('icon-hide');
+        });
+
+        $('.pass-wrap').on('click', '.icon-hide', function () {
+            var $this = $(this);
+            var $input = $this.next();
+            $input.attr('type', 'password');
+            $this.addClass('icon-view').removeClass('icon-hide');
         });
     }
 
     function parseForm() {
-        $.validator.addMethod("requiredifrelatedfieldistrue",
-            function (value, element, parameters) {
-                var desiredvalue = parameters.desiredvalue;
-                desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
-                var actualvalue;
-                var control = $("input[id$='" + parameters.relatedfieldname + "']");
-                actualvalue = control.is(':checked');
-
-                if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase() && value === '') {
-                    return false;
-                }
-
-                return true;
-            });
-
-        $.validator.unobtrusive.adapters.add("requiredifrelatedfieldistrue",
-            ["relatedfieldname", "desiredvalue"],
-            function (options) {
-                options.rules["requiredifrelatedfieldistrue"] = options.params;
-                options.messages["requiredifrelatedfieldistrue"] = options.message;
-            });
-
-        $form.removeData("validator").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($form);
-
         var $validations = $('#validation-summary');
 
         if ($('.field-validation-error', $validations).length > 0) {
@@ -135,8 +126,8 @@
     }
 
     function decryptData() {
-        if ($password.val() !== '') {
-            var data = rijndaelService.decryptData($password.val(), rijndaelKey, rijndaelIV);
+        if ($encryptedPassword.val() !== '') {
+            var data = rijndaelService.decryptData($encryptedPassword.val(), rijndaelKey, rijndaelIV);
             $password.val(data);
         }
     }
@@ -144,7 +135,7 @@
     function encryptData() {
         if ($password.val() !== '') {
             var data = rijndaelService.encryptData($password.val(), rijndaelKey, rijndaelIV);
-            $password.val(data);
+            $encryptedPassword.val(data);
         }
     }
 
@@ -154,6 +145,7 @@
 
         getElements();
         initSelect2();
+        decryptData();
         parseForm();
         initFanexMultiSelect();
         initEvents();

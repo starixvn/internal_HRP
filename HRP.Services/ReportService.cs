@@ -15,6 +15,7 @@
     using Models.Report;
     using Repositories;
     using HRP.Models.ServiceModels;
+    using HRP.Criteria.User;
 
     public class ReportService : IReportService
     {
@@ -33,6 +34,20 @@
             this.sessionService = sessionService;
             this.reportRepository = reportRepository ?? new ReportRepository();
             this.baseService = baseService;
+        }
+
+        public async Task<string> GetUserFilePasswordAsync(int userId)
+        {
+            var password = await baseService.GetDataEntityAsync<string>(new GetUserFilePasswordCriteria { UserId = userId }).ConfigureAwait(false);
+
+            return cryptoService.Decrypt(password);
+        }
+
+        public async Task EditUserFilePasswordAsync(int userId, string password)
+        {
+            var encryptedPassword = cryptoService.Encrypt(password);
+
+            await baseService.ExecuteNonQueryAsync(new EditUserFilePasswordCriteria { UserId = userId, Password = encryptedPassword }).ConfigureAwait(false);
         }
 
         public async Task<BankInReport> GetDirectBankingBankInAsync(

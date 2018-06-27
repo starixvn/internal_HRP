@@ -25,6 +25,7 @@
     using Services.Interfaces;
     using Website.Controllers;
     using Xunit;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     public class ReportControllerTests
     {
@@ -449,9 +450,18 @@
                 new MultiSelectViewModel { Value = "1", Text = "Probation" },
                 new MultiSelectViewModel { Value = "3", Text = "Resigned" }
             };
+
+            var filePassword = "123";
+            var encryptedPassword = "456";
+            var rijndaelIV = "key1";
+            var rijndaelKey = "key2";
+
             var reportController = GetReportController();
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
             baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(employeeStatuses);
+            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(rijndaelIV, rijndaelKey));
+            reportService.GetUserFilePasswordAsync(sessionService.UserId).Returns(filePassword);
+            rijndaelService.Encrypt(filePassword, rijndaelKey, rijndaelIV).Returns(encryptedPassword);
 
             // Act
             var actual = await reportController.DynamicReport();
@@ -462,6 +472,10 @@
             Assert.Equal("DynamicReport", viewResult.ViewName);
             Assert.Equal("1,2", viewModel.EmployeeStatusIds);
             Assert.Equal(companySelectList, viewModel.Companies);
+            Assert.True(string.IsNullOrEmpty(viewModel.FilePassword));
+            Assert.Equal(encryptedPassword, viewModel.EncryptedPassword);
+            Assert.Equal(rijndaelIV, viewModel.RijndaelIV);
+            Assert.Equal(rijndaelKey, viewModel.RijndaelKey);
         }
 
         [Fact]
@@ -472,7 +486,9 @@
             {
                 CompanyId = 1,
                 EmployeeStatusIds = "1,2",
-                SelectedIds = "1"
+                SelectedIds = "1",
+                ReusePassword = true,
+                EncryptedPassword = "456"
             };
 
             var employeeDatas = new List<DynamicReportModel>
@@ -485,8 +501,13 @@
 
             var reportController = GetReportController();
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
+            sessionService.RijndaelIV = "key1";
+            sessionService.RijndaelKey = "key2";
             reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds).Returns(employeeDatas);
-            exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse)).Returns(new byte[10]);
+            rijndaelService.Decrypt(viewModel.EncryptedPassword, sessionService.RijndaelKey, sessionService.RijndaelIV).Returns("123");
+            exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse), "123").Returns(new byte[10]);
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
 
             // Act
             var actual = await reportController.DynamicReport(viewModel);
@@ -512,7 +533,9 @@
             };
 
             var reportController = GetReportController();
-            reportController.ModelState.AddModelError(nameof(viewModel.CompanyId), "Missing company id");
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => reportController.ModelState.AddModelError(nameof(viewModel.FilePassword), "Password is required"));
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
 

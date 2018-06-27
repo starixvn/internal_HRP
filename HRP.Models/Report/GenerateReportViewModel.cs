@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class GenerateReportViewModel
@@ -17,7 +18,10 @@
 
         public string EmployeeStatuses { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PasswordRequired))]
         public string FilePassword { get; set; }
+
+        public string EncryptedPassword { get; set; }
 
         public bool ReusePassword { get; set; }
 

@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Group GroupId="1" Name="Personal Detail">
+    <Item Id="1" Name="Full Name">
+      <ColumnGroup GroupId="1" GroupName="Full Name">
+        <MappingColumn PropertyName="FullName" HeaderName="Full Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="2" Name="Nick Name">
+      <ColumnGroup GroupId="1" GroupName="Nick Name">
+        <MappingColumn PropertyName="Nickname" HeaderName="Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="3" Name="Gender">
+      <ColumnGroup GroupId="1" GroupName="Gender">
+        <MappingColumn PropertyName="Gender" HeaderName="Gender" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="4" Name="Date of Birth">
+      <ColumnGroup GroupId="1" GroupName="Date of Birth">
+        <MappingColumn PropertyName="DateOfBirth" HeaderName="Date of Birth" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="5" Name="Place of Birth">
+      <ColumnGroup GroupId="1" GroupName="Place of Birth">
+        <MappingColumn PropertyName="PlaceOfBirth" HeaderName="Place of Birth" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="6" Name="Nationality">
+      <ColumnGroup GroupId="1" GroupName="Nationality">
+        <MappingColumn PropertyName="Nationality" HeaderName="Nationality" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="7" Name="NRIC No">
+      <ColumnGroup GroupId="1" GroupName="NRIC No">
+        <MappingColumn PropertyName="NRICNo" HeaderName="NRIC No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="8" Name="Marital Status">
+      <ColumnGroup GroupId="1" GroupName="Marital Status">
+        <MappingColumn PropertyName="MaritalStatus" HeaderName="Marital Status" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="9" Name="No Of Children">
+      <ColumnGroup GroupId="1" GroupName="No Of Children">
+        <MappingColumn PropertyName="NoOfChildren" HeaderName="No Of Children" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="10" Name="Telephone Overseas">
+      <ColumnGroup GroupId="1" GroupName="Telephone Overseas">
+        <MappingColumn PropertyName="OverseasPhoneNo" HeaderName="Telephone Overseas" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="11" Name="Telephone Local">
+      <ColumnGroup GroupId="1" GroupName="Telephone Local">
+        <MappingColumn PropertyName="LocalPhoneNo" HeaderName="Telephone Local" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="12" Name="Telephone Other">
+      <ColumnGroup GroupId="1" GroupName="Telephone Other">
+        <MappingColumn PropertyName="OtherPhoneNo" HeaderName="Telephone Other" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="13" Name="Passport No">
+      <ColumnGroup GroupId="1" GroupName="Passport No">
+        <MappingColumn PropertyName="PassportNo" HeaderName="Passport No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="14" Name="Passport Date of Issue">
+      <ColumnGroup GroupId="1" GroupName="Passport Date of Issue">
+        <MappingColumn PropertyName="DateIssue" HeaderName="Passport Date of Issue" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="15" Name="Passport Expired Date">
+      <ColumnGroup GroupId="1" GroupName="Passport Expired Date">
+        <MappingColumn PropertyName="ExpiredDate" HeaderName="Passport Expired Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="16" Name="Passport Place of Issue">
+      <ColumnGroup GroupId="1" GroupName="Passport Place Of Issue">
+        <MappingColumn PropertyName="PassportNo" HeaderName="Passport Place of Issue" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="17" Name="Skype Account">
+      <ColumnGroup GroupId="1" GroupName="Skype Account">
+        <MappingColumn PropertyName="Skype" HeaderName="Skype Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="18" Name="Personal Email Address">
+      <ColumnGroup GroupId="1" GroupName="Personal Email Address">
+        <MappingColumn PropertyName="PersonalEmail" HeaderName="Personal Email Address" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="19" Name="Permanent Address (Overseas)">
+      <ColumnGroup GroupId="1" GroupName="Permanent Address (Overseas)">
+        <MappingColumn PropertyName="PermanentAddress" HeaderName="Permanent Address (Overseas)" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="20" Name="Resident Address (Local)">
+      <ColumnGroup GroupId="1" GroupName="Resident Address (Local)">
+        <MappingColumn PropertyName="ResidenceAddress" HeaderName="Resident Address (Local)" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="21" Name="Mailing Address">
+      <ColumnGroup GroupId="1" GroupName="Mailing Address">
+        <MappingColumn PropertyName="MailingAddress" HeaderName="Mailing Address" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="22" Name="Emergency Contact Name">
+      <ColumnGroup GroupId="1" GroupName="Emergency Contact Name">
+        <MappingColumn PropertyName="EmergencyContactName" HeaderName="Emergency Contact Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="23" Name="Emergency Contact Relationship">
+      <ColumnGroup GroupId="1" GroupName="Emergency Contact Relationship">
+        <MappingColumn PropertyName="EmergencyContactRelationship" HeaderName="Emergency Contact Relationship" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="24" Name="Emergency Contact Address">
+      <ColumnGroup GroupId="1" GroupName="Emergency Contact Address">
+        <MappingColumn PropertyName="EmergencyContactAddress" HeaderName="Emergency Contact Address" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="25" Name="Emergency Contact Telephone No1">
+      <ColumnGroup GroupId="1" GroupName="Emergency Contact Telephone No1">
+        <MappingColumn PropertyName="EmergencyContactPhoneNo1" HeaderName="Emergency Contact Telephone No1" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="26" Name="Emergency Contact Telephone No2">
+      <ColumnGroup GroupId="1" GroupName="Emergency Contact Telephone No2">
+        <MappingColumn PropertyName="EmergencyContactPhoneNo2" HeaderName="Emergency Contact Telephone No2" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+  </Group>
+  <Group GroupId="2" Name="Employment">
+    <Item Id="27" Name="Company BVI">
+      <ColumnGroup GroupId="1" GroupName="Company BVI">
+        <MappingColumn PropertyName="Company" HeaderName="Company BVI" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="28" Name="Company BVI - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Company BVI - Effective Date">
+        <MappingColumn PropertyName="CompanyChangeDate" HeaderName="Company BVI - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="29" Name="Company BVI - Reason">
+      <ColumnGroup GroupId="1" GroupName="Company BVI - Reason">
+        <MappingColumn PropertyName="CompanyReason" HeaderName="Company Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="30" Name="Company Local">
+      <ColumnGroup GroupId="1" GroupName="Company Local">
+        <MappingColumn PropertyName="LocalCompany" HeaderName="Company Local" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="31" Name="Company Local - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Company Local - Effective Date">
+        <MappingColumn PropertyName="LocalCompanyChangeDate" HeaderName="Company Local - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="32" Name="Company Local - Reason">
+      <ColumnGroup GroupId="1" GroupName="Company Local - Reason">
+        <MappingColumn PropertyName="LocalCompanyReason" HeaderName="Company Local - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="33" Name="Job Title BVI">
+      <ColumnGroup GroupId="1" GroupName="Job Title BVI">
+        <MappingColumn PropertyName="JobTitle" HeaderName="Job Title BVI" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="34" Name="Job Title BVI - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Job Title BVI - Effective Date">
+        <MappingColumn PropertyName="JobTitleChangeDate" HeaderName="Job Title BVI - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="35" Name="Job Title BVI - Reason">
+      <ColumnGroup GroupId="1" GroupName="Job Title BVI - Reason">
+        <MappingColumn PropertyName="JobTitleReason" HeaderName="Job Title BVI - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="36" Name="Job Title Local">
+      <ColumnGroup GroupId="1" GroupName="Job Title Local">
+        <MappingColumn PropertyName="LocalJobTitle" HeaderName="Job Title Local" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="37" Name="Job Title Local - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Job Title Local - Effective Date">
+        <MappingColumn PropertyName="LocalJobTitleChangeDate" HeaderName="Job Title Local - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="38" Name="Job Title Local - Reason">
+      <ColumnGroup GroupId="1" GroupName="Job Title Local - Reason">
+        <MappingColumn PropertyName="LocalJobTitleReason" HeaderName="Job Title Local - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="39" Name="Date Commencement Group - Start Date">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Group - Start Date">
+        <MappingColumn PropertyName="GroupStartDate" HeaderName="Date Commencement Group - Start Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="40" Name="Date Commencement Group - End Date">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Group - End Date">
+        <MappingColumn PropertyName="GroupEndDate" HeaderName="Date Commencement Group - End Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="41" Name="Date Commencement Group - Reason">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Group - Reason">
+        <MappingColumn PropertyName="GroupDateReason" HeaderName="Date Commencement Group - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="42" Name="Date Commencement Company - Start">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Company - Start Date">
+        <MappingColumn PropertyName="CompanyStartDate" HeaderName="Date Commencement Company - Start Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="43" Name="Date Commencement Company - End">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Company - End Date">
+        <MappingColumn PropertyName="CompanyEndDate" HeaderName="Date Commencement Company - End Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="44" Name="Date Commencement Company - Reason">
+      <ColumnGroup GroupId="1" GroupName="Date Commencement Company - Reason">
+        <MappingColumn PropertyName="CompanyDateReason" HeaderName="Date Commencement Company - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="45" Name="Length Of Service - Group">
+      <ColumnGroup GroupId="1" GroupName="Length Of Service - Group">
+        <MappingColumn PropertyName="GroupLengthOfService" HeaderName="Length Of Service - Group" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="46" Name="Length Of Service - Company">
+      <ColumnGroup GroupId="1" GroupName="Length Of Service - Company">
+        <MappingColumn PropertyName="CompanyLengthOfService" HeaderName="Length Of Service - Company" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="48" Name="ID No - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="ID No - Effective Date">
+        <MappingColumn PropertyName="IDNoChangeDate" HeaderName="ID No - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="49" Name="ID No - Reason">
+      <ColumnGroup GroupId="1" GroupName="ID No - Reason">
+        <MappingColumn PropertyName="IDNoChangeReason" HeaderName="ID No - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="50" Name="Employment Type">
+      <ColumnGroup GroupId="1" GroupName="Employment Type">
+        <MappingColumn PropertyName="EmploymentType" HeaderName="Employment Type" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="51" Name="Employment Status">
+      <ColumnGroup GroupId="1" GroupName="Employment Status">
+        <MappingColumn PropertyName="EmploymentStatus" HeaderName="Employment Status" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="52" Name="Employment Status - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Employment Status - Effective Date">
+        <MappingColumn PropertyName="EmploymentStatusChangeDate" HeaderName="Employment Status - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="53" Name="Job Category">
+      <ColumnGroup GroupId="1" GroupName="Job Category">
+        <MappingColumn PropertyName="JobCategory" HeaderName="Job Category" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="54" Name="Job Category - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Job Category - Effective Date">
+        <MappingColumn PropertyName="JobCategoryChangeDate" HeaderName="Job Category - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="55" Name="Job Category - Reason">
+      <ColumnGroup GroupId="1" GroupName="Job Category - Reason">
+        <MappingColumn PropertyName="JobCategoryReason" HeaderName="Job Category - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="56" Name="Grade Level">
+      <ColumnGroup GroupId="1" GroupName="Grade Level">
+        <MappingColumn PropertyName="GradeLevel" HeaderName="Grade Level" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="57" Name="Job Grade">
+      <ColumnGroup GroupId="1" GroupName="Job Grade">
+        <MappingColumn PropertyName="JobGrade" HeaderName="Job Grade" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="58" Name="Grade Level - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Grade Level - Effective Date">
+        <MappingColumn PropertyName="JobGradeChangeDate" HeaderName="Grade Level - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="59" Name="Grade Level - Reason">
+      <ColumnGroup GroupId="1" GroupName="Grade Level - Reason">
+        <MappingColumn PropertyName="JobGradeReason" HeaderName="Grade Level - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="60" Name="Division">
+      <ColumnGroup GroupId="4" GroupName="Division">
+        <MappingColumn PropertyName="Division" HeaderName="Division" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="61" Name="Division - Effective Date">
+      <ColumnGroup GroupId="4" GroupName="Division - Effective Date">
+        <MappingColumn PropertyName="DivisionChangeDate" HeaderName="Division - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="62" Name="Division - Reason">
+      <ColumnGroup GroupId="4" GroupName="Division - Reason">
+        <MappingColumn PropertyName="DivisionReason" HeaderName="Division - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="63" Name="Department">
+      <ColumnGroup GroupId="5" GroupName="Department">
+        <MappingColumn PropertyName="Department" HeaderName="Department" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="64" Name="Department - Effective Date">
+      <ColumnGroup GroupId="5" GroupName="Department - Effective Date">
+        <MappingColumn PropertyName="DepartmentChangeDate" HeaderName="Department - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="65" Name="Department - Reason">
+      <ColumnGroup GroupId="5" GroupName="Department - Reason">
+        <MappingColumn PropertyName="DepartmentReason" HeaderName="Department - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="66" Name="Cost Center">
+      <ColumnGroup GroupId="1" GroupName="Cost Center">
+        <MappingColumn PropertyName="CostCenter" HeaderName="Cost Center" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="67" Name="Cost Center - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Cost Center - Effective Date">
+        <MappingColumn PropertyName="CostCenterChangeDate" HeaderName="Cost Center - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="68" Name="Cost Center - Reason">
+      <ColumnGroup GroupId="1" GroupName="Cost Center - Reason">
+        <MappingColumn PropertyName="CostCenterReason" HeaderName="Cost Center - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="69" Name="Section">
+      <ColumnGroup GroupId="1" GroupName="Section">
+        <MappingColumn PropertyName="Section" HeaderName="Section" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="70" Name="Section - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Section - Effective Date">
+        <MappingColumn PropertyName="SectionChangeDate" HeaderName="Section - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="71" Name="Section - Reason">
+      <ColumnGroup GroupId="1" GroupName="Section - Reason">
+        <MappingColumn PropertyName="SectionReason" HeaderName="Section - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="72" Name="Email Address">
+      <ColumnGroup GroupId="1" GroupName="Email Address">
+        <MappingColumn PropertyName="Email" HeaderName="Email Address" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="73" Name="Work Location - Country">
+      <ColumnGroup GroupId="1" GroupName="Work Location - Country">
+        <MappingColumn PropertyName="Country" HeaderName="Work Location - Country" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="74" Name="Work Location - City">
+      <ColumnGroup GroupId="1" GroupName="Work Location - City">
+        <MappingColumn PropertyName="City" HeaderName="Work Location - City" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="75" Name="Work Location - Office">
+      <ColumnGroup GroupId="1" GroupName="Work Location - Office">
+        <MappingColumn PropertyName="Office" HeaderName="Work Location - Office" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="76" Name="Work Permit - Company">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Company">
+        <MappingColumn PropertyName="WorkPermitCompany" HeaderName="Work Permit - Company" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="77" Name="Work Permit - Type 1">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 1">
+        <MappingColumn PropertyName="WorkPermitType1" HeaderName="Work Permit - Type 1" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="78" Name="Work Permit - Type 1 Start Date">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 1 Start Date">
+        <MappingColumn PropertyName="StartDateType1" HeaderName="Work Permit - Type 1 Start Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="79" Name="Work Permit - Type 1 End Date">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 1 End Date">
+        <MappingColumn PropertyName="EndDateType1" HeaderName="Work Permit - Type 1 End Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="80" Name="Work Permit - Type 2">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 2">
+        <MappingColumn PropertyName="WorkPermitType2" HeaderName="Work Permit - Type 2" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="81" Name="Work Permit - Type 2 Start Date">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 2 Start Date">
+        <MappingColumn PropertyName="StartDateType2" HeaderName="Work Permit - Type 2 Start Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="82" Name="Work Permit - Type 2 End Date">
+      <ColumnGroup GroupId="1" GroupName="Work Permit - Type 2 End Date">
+        <MappingColumn PropertyName="EndDateType2" HeaderName="Work Permit - Type 2 End Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="83" Name="Tax Declaration - DST">
+      <ColumnGroup GroupId="1" GroupName="Tax Declaration - DST">
+        <MappingColumn PropertyName="DSTCompany" HeaderName="Tax Declaration - DST" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="84" Name="Tax Declaration - DBT">
+      <ColumnGroup GroupId="1" GroupName="Tax Declaration - DBT">
+        <MappingColumn PropertyName="DBTCompany" HeaderName="Tax Declaration - DBT" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="85" Name="Local Statutory - Tax ID No">
+      <ColumnGroup GroupId="1" GroupName="Local Statutory - Tax ID No">
+        <MappingColumn PropertyName="TaxIDNo" HeaderName="Local Statutory - Tax ID No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="86" Name="Local Statutory - SSS No">
+      <ColumnGroup GroupId="1" GroupName="Local Statutory - SSS No">
+        <MappingColumn PropertyName="SSSNo" HeaderName="Local Statutory - SSS No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="87" Name="Local Statutory - Health Ins No">
+      <ColumnGroup GroupId="1" GroupName="Local Statutory - Health Ins No">
+        <MappingColumn PropertyName="HealthInsNo" HeaderName="Local Statutory - Health Ins No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="88" Name="Local Statutory - HDMF No">
+      <ColumnGroup GroupId="1" GroupName="Local Statutory - HDMF No">
+        <MappingColumn PropertyName="HDMFNo" HeaderName="Local Statutory - HDMF No" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="89" Name="P-File Admin">
+      <ColumnGroup GroupId="1" GroupName="P-File Admin">
+        <MappingColumn PropertyName="FullNamePFileAdmin" HeaderName="P-File Admin - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknamePFileAdmin" HeaderName="P-File Admin - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="90" Name="Paymaster - BVI Salary">
+      <ColumnGroup GroupId="1" GroupName="Paymaster - BVI Salary">
+        <MappingColumn PropertyName="FullNameBVISalary" HeaderName="Paymaster - BVI Salary - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NickNameBVISalary" HeaderName="Paymaster - BVI Salary - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="91" Name="Paymaster - BVI Allowance">
+      <ColumnGroup GroupId="1" GroupName="Paymaster - BVI Allowance">
+        <MappingColumn PropertyName="FullNameBVIAllowance" HeaderName="Paymaster - BVI Allowance - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NickNameBVIAllowance" HeaderName="Paymaster - BVI Allowance - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="92" Name="Paymaster - BVI Local Salary">
+      <ColumnGroup GroupId="1" GroupName="Paymaster - Local Salary">
+        <MappingColumn PropertyName="FullNameLocalSalary" HeaderName="Paymaster - Local Salary - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NickNameLocalSalary" HeaderName="Paymaster - Local Salary - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="93" Name="EPA - Administrator">
+      <ColumnGroup GroupId="1" GroupName="EPA - Administrator">
+        <MappingColumn PropertyName="FullNameAdministrator" HeaderName="EPA - Administrator - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameAdministrator" HeaderName="EPA - Administrator - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="94" Name="EPA - Evaluator #1">
+      <ColumnGroup GroupId="1" GroupName="EPA - Evaluator #1">
+        <MappingColumn PropertyName="FullNameEvaluator1" HeaderName="EPA - Evaluator #1 - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameEvaluator1" HeaderName="EPA - Evaluator #1 - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="95" Name="EPA - Evaluator #2">
+      <ColumnGroup GroupId="1" GroupName="EPA - Evaluator #2">
+        <MappingColumn PropertyName="FullNameEvaluator2" HeaderName="EPA - Evaluator #2 - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameEvaluator2" HeaderName="EPA - Evaluator #2 - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="96" Name="EPA - Reviewer">
+      <ColumnGroup GroupId="1" GroupName="EPA - Reviewer">
+        <MappingColumn PropertyName="FullNameReviewer" HeaderName="EPA - Reviewer - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameReviewer" HeaderName="EPA - Reviewer - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="97" Name="EPA - Management">
+      <ColumnGroup GroupId="1" GroupName="EPA - Management">
+        <MappingColumn PropertyName="FullNameManagement" HeaderName="EPA - Management - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameManagement" HeaderName="EPA - Management - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="98" Name="EPA - Increment">
+      <ColumnGroup GroupId="1" GroupName="EPA - Increment">
+        <MappingColumn PropertyName="FullNameIncrement" HeaderName="EPA - Increment - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameIncrement" HeaderName="EPA - Increment - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="99" Name="EPA - BVI Bonus">
+      <ColumnGroup GroupId="1" GroupName="EPA - BVI Bonus">
+        <MappingColumn PropertyName="FullNameBVIBonus" HeaderName="EPA - BVI Bonus - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameBVIBonus" HeaderName="EPA - BVI Bonus - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="100" Name="EPA - Local Bonus">
+      <ColumnGroup GroupId="1" GroupName="EPA - Local Bonus">
+        <MappingColumn PropertyName="FullNameLocalBonus" HeaderName="EPA - Local Bonus - Full Name" IsEncrypted="false" />
+        <MappingColumn PropertyName="NicknameLocalBonus" HeaderName="EPA - Local Bonus - Nick Name" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="101" Name="PDF Password">
+      <ColumnGroup GroupId="1" GroupName="PDF Password">
+        <MappingColumn PropertyName="PDFPassword" HeaderName="PDF Password" IsEncrypted="true" />
+      </ColumnGroup>
+    </Item>
+  </Group>
+  <Group GroupId="3" Name="Payroll">
+    <Item Id="102" Name="Basic Salary">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary">
+        <MappingColumn PropertyName="CurrencyCode" HeaderName="Basic Salary - Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="Salary" HeaderName="Basic Salary - Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="103" Name="Basic Salary - Effective Date">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - Effective Date">
+        <MappingColumn PropertyName="EffectiveDate" HeaderName="Basic Salary - Effective Date" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="104" Name="Basic Salary - Reason">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - Reason">
+        <MappingColumn PropertyName="Reason" HeaderName="Basic Salary - Reason" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="105" Name="Standard Working Day">
+      <ColumnGroup GroupId="1" GroupName="Standard Working Day">
+        <MappingColumn PropertyName="WorkingDays" HeaderName="Standard Working Day" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="106" Name="Basic Salary - E-banking">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - E-banking">
+        <MappingColumn PropertyName="EbankingCurrencyCode" HeaderName="Basic Salary - E-banking Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="EbankingAmount" HeaderName="Basic Salary - E-banking Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="EbankingAccount" HeaderName="Basic Salary - E-banking Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="107" Name="Basic Salary - Direct Banking 1">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - Direct Banking 1">
+        <MappingColumn PropertyName="DirectBanking1CurrencyCode" HeaderName="Basic Salary - Direct Banking 1 Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking1Amount" HeaderName="Basic Salary - Direct Banking 1 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking1Account" HeaderName="Basic Salary - Direct Banking 1 Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="108" Name="Basic Salary - Direct Banking 2">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - Direct Banking 2">
+        <MappingColumn PropertyName="DirectBanking2CurrencyCode" HeaderName="Basic Salary - Direct Banking 2 Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking2Amount" HeaderName="Basic Salary - Direct Banking 2 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking2Account" HeaderName="Basic Salary - Direct Banking 2 Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="109" Name="Basic Salary - Cash">
+      <ColumnGroup GroupId="1" GroupName="Basic Salary - Cash">
+        <MappingColumn PropertyName="CashCurrencyCode" HeaderName="Basic Salary - Cash Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="CashAmount" HeaderName="Basic Salary - Cash Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="CashAccount" HeaderName="Basic Salary - Cash Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="110" Name="Allowance">
+      <ColumnGroup GroupId="1" GroupName="Allowance">
+        <MappingColumn PropertyName="AllowanceCurrencyCode" HeaderName="Allowance Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceAmount" HeaderName="Allowance Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="111" Name="Allowance - Direct Banking 1">
+      <ColumnGroup GroupId="1" GroupName="Allowance- Direct Banking 1">
+        <MappingColumn PropertyName="AllowanceDirectBanking1CurrencyCode" HeaderName="Allowance - Direct Banking 1 Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking1Amount" HeaderName="Allowance - Direct Banking 1 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking1Account" HeaderName="Allowance - Direct Banking 1 Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="112" Name="Allowance - Direct Banking 2">
+      <ColumnGroup GroupId="1" GroupName="Allowance - Direct Banking 2">
+        <MappingColumn PropertyName="AllowanceDirectBanking2CurrencyCode" HeaderName="Allowance - Direct Banking 2 Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking2Amount" HeaderName="Allowance - Direct Banking 2 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking2Account" HeaderName="Allowance - Direct Banking 2 Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="113" Name="Allowance - Cash">
+      <ColumnGroup GroupId="1" GroupName="Allowance - Cash">
+        <MappingColumn PropertyName="AllowanceCashCurrencyCode" HeaderName="Allowance - Cash Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceCashAmount" HeaderName="Allowance - Cash Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceCashAccount" HeaderName="Allowance - Cash Account" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="114" Name="Subsistence">
+      <ColumnGroup GroupId="1" GroupName="Subsistence">
+        <MappingColumn PropertyName="SubsistenceCurrencyCode" HeaderName="Subsistence Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="SubsistenceAmount" HeaderName="Subsistence Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="115" Name="Home Passage">
+      <ColumnGroup GroupId="1" GroupName="HomePassage">
+        <MappingColumn PropertyName="HomePassageCurrencyCode" HeaderName="HomePassage Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="HomePassageAmount" HeaderName="HomePassage Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="116" Name="Housing">
+      <ColumnGroup GroupId="1" GroupName="Housing">
+        <MappingColumn PropertyName="HousingCurrencyCode" HeaderName="Housing Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="HousingAmount" HeaderName="Housing Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="117" Name="Mobile Phone">
+      <ColumnGroup GroupId="11" GroupName="Mobile Phone">
+        <MappingColumn PropertyName="MobilePhoneCurrencyCode" HeaderName="Mobile Phone Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="MobilePhoneAmount" HeaderName="Mobile Phone Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="118" Name="HPI">
+      <ColumnGroup GroupId="1" GroupName="HPI">
+        <MappingColumn PropertyName="HPICurrencyCode" HeaderName="HPI Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="HPIAmount" HeaderName="HPI Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="119" Name="Duty Meal">
+      <ColumnGroup GroupId="1" GroupName="Duty Meal">
+        <MappingColumn PropertyName="DutyMealCurrencyCode" HeaderName="Duty Meal Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="DutyMealAmount" HeaderName="Duty Meal Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="120" Name="Secondment">
+      <ColumnGroup GroupId="1" GroupName="Secondment">
+        <MappingColumn PropertyName="SecondmentCurrencyCode" HeaderName="Secondment Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="SecondmentAmount" HeaderName="Secondment Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="121" Name="Others">
+      <ColumnGroup GroupId="1" GroupName="Others">
+        <MappingColumn PropertyName="OthersCurrencyCode" HeaderName="Others Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="OthersAmount" HeaderName="Others Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="122" Name="Rooming Charge">
+      <ColumnGroup GroupId="1" GroupName="Rooming Charge">
+        <MappingColumn PropertyName="RoomingChargesCurrencyCode" HeaderName="Rooming Charge Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="RoomingChargesAmount" HeaderName="Rooming Charge Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+    <Item Id="123" Name="Fitness Club Membership">
+      <ColumnGroup GroupId="1" GroupName="Fitness Club Membership">
+        <MappingColumn PropertyName="FitnessFirstCurrencyCode" HeaderName="Fitness Club Membership Currency" IsEncrypted="false" />
+        <MappingColumn PropertyName="FitnessFirstAmount" HeaderName="Fitness Club Membership Amount" IsEncrypted="false" />
+      </ColumnGroup>
+    </Item>
+  </Group>
+</Root>
