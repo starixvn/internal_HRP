@@ -257,5 +257,7 @@
     <Build Include="dbo\Stored Procedures\Report_GetDataForDirectBankingReport.sql" />
     <Build Include="dbo\Tables\MailRecord.sql" />
     <Build Include="dbo\Stored Procedures\MailRecord_Create.sql" />
+    <Build Include="dbo\Stored Procedures\User_GetFilePassword.sql" />
+    <Build Include="dbo\Stored Procedures\User_UpdateFilePassword.sql" />
   </ItemGroup>
 </Project>

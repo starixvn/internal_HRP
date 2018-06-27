@@ -14,6 +14,7 @@
     [TokenResetPassword] VARCHAR (250) NULL,
     [TokenOTPRegister]   VARCHAR (250) NULL,
     [IsSystemAdmin]      BIT           DEFAULT ((0)) NOT NULL,
+	FilePassword		 VARCHAR(MAX)
     CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([UserId] ASC)
 );
 

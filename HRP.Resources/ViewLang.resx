@@ -1098,4 +1098,10 @@
   <data name="FilePassword" xml:space="preserve">
     <value>File Password</value>
   </data>
+  <data name="ExportExcel" xml:space="preserve">
+    <value>ExportExcel</value>
+  </data>
+  <data name="ReusePassword" xml:space="preserve">
+    <value>Reuse Password</value>
+  </data>
 </root>

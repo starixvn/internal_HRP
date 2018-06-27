@@ -8,7 +8,7 @@
 
         public string Password { get; set; }
 
-        public override string GetSettingKey() => "User_EditFilePassword";
+        public override string GetSettingKey() => "User_UpdateFilePassword";
 
         public override bool IsValid() => UserId > 0 && !string.IsNullOrEmpty(Password);
     }

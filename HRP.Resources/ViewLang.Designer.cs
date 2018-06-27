@@ -1321,6 +1321,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExportExcel.
+        /// </summary>
+        public static string ExportExcel {
+            get {
+                return ResourceManager.GetString("ExportExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field.
         /// </summary>
         public static string Field {
@@ -2334,6 +2343,15 @@ namespace HRP.Resources {
         public static string ResidenceAddress {
             get {
                 return ResourceManager.GetString("ResidenceAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reuse Password.
+        /// </summary>
+        public static string ReusePassword {
+            get {
+                return ResourceManager.GetString("ReusePassword", resourceCulture);
             }
         }
         

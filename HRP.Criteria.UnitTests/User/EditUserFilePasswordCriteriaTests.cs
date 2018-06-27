@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new EditUserFilePasswordCriteria();
-            var expected = "User_EditFilePassword";
+            var expected = "User_UpdateFilePassword";
 
             // Act
             var actual = criteria.GetSettingKey();
