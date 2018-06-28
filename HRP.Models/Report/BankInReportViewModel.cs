@@ -2,12 +2,11 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using SystemSecurity;
     using Core.Enumerations;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Resources;
 
-    public class BankInReportViewModel : RijndaelData
+    public class BankInReportViewModel : BaseSecurityReportViewModel
     {
         [Display(Name = nameof(ViewLang.Company), ResourceType = typeof(ViewLang))]
         public int CompanyId { get; set; }
@@ -22,11 +21,6 @@
         public PaymentType TypeOfPayment { get; set; }
 
         public BankTypes BankType { get; set; }
-
-        [Display(Name = nameof(ViewLang.FilePassword), ResourceType = typeof(ViewLang))]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        public string FilePassword { get; set; }
 
         [Display(Name = nameof(ViewLang.PaymentTransactions), ResourceType = typeof(ViewLang))]
         public string SelectedPaymentTransactions { get; set; }

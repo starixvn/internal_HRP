@@ -5,9 +5,10 @@
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class GenerateReportViewModel
+    public class GenerateReportViewModel : BaseSecurityReportViewModel
     {
         [Required]
+        [Display(Name = nameof(ViewLang.Company), ResourceType = typeof(ViewLang))]
         public int CompanyId { get; set; }
 
         public SelectList Companies { get; set; }
@@ -18,17 +19,6 @@
 
         public string EmployeeStatuses { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PasswordRequired))]
-        public string FilePassword { get; set; }
-
-        public string EncryptedPassword { get; set; }
-
-        public bool ReusePassword { get; set; }
-
         public IEnumerable<DynamicReportGroup> Groups { get; set; }
-
-        public string RijndaelIV { get; set; }
-
-        public string RijndaelKey { get; set; }
     }
 }

@@ -171,6 +171,8 @@
         [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> Ebanking()
         {
+            var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
+
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EbankingReport);
 
             var tuple = rijndaelService.GenerateKey();
@@ -182,7 +184,8 @@
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
                 RijndaelKey = sessionService.RijndaelKey,
-                RijndaelIV = sessionService.RijndaelIV
+                RijndaelIV = sessionService.RijndaelIV,
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, sessionService.RijndaelKey, sessionService.RijndaelIV)
             };
 
             return View(viewModel);
@@ -192,7 +195,7 @@
         public async Task<IActionResult> GetEbankingReport(BankInReportViewModel viewModel)
         {
             viewModel.FilePassword = rijndaelService.Decrypt(
-                viewModel.FilePassword,
+                viewModel.EncryptedPassword,
                 sessionService.RijndaelKey,
                 sessionService.RijndaelIV);
 
@@ -205,8 +208,15 @@
 
             IActionResult result = RedirectToAction("Ebanking");
 
-            if (bankInData != null && ModelState.IsValid)
+            ModelState.Clear();
+
+            if (bankInData != null && TryValidateModel(viewModel))
             {
+                if (viewModel.ReusePassword)
+                {
+                    await reportService.EditUserFilePasswordAsync(sessionService.UserId, viewModel.FilePassword);
+                }
+
                 var fileContent = exportExcelService.ExportEbankingReports(
                     viewModel.SelectedTime,
                     fileInfo,

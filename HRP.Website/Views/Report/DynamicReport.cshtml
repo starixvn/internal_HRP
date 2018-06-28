@@ -33,7 +33,7 @@
     </div>
 
     <div class="group">
-        <label class="text">@ViewLang.Company</label>
+        <label class="text" asp-for="CompanyId"></label>
         <select class="control select2" asp-for="CompanyId" asp-items="Model.Companies"></select>
     </div>
     <div class="group">
@@ -42,7 +42,7 @@
         <select class="control" id="employee-status"></select>
     </div>
     <div class="group">
-        <label class="text -has-required">@ViewLang.Password</label>
+        <label class="text -has-required" asp-for="FilePassword"></label>
         <div class="pass-wrap"><span class="icon-view"></span><input type="password" asp-for="FilePassword" /></div>
         <input type="hidden" asp-for="EncryptedPassword" />
     </div>

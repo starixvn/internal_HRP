@@ -255,8 +255,12 @@
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 1,
-                SelectedTime = DateTime.Now
+                SelectedTime = DateTime.Now,
+                EncryptedPassword = "456",
+                ReusePassword = true
             };
+
+            var filePassword = "123";
 
             var companyName = "Dashword";
             var reportedMonth = DateTime.Today;
@@ -277,11 +281,15 @@
 
             var reportController = GetReportController();
             reportService.GetEbankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(bankInReport);
+            rijndaelService.Decrypt(bankInReportViewModel.EncryptedPassword, Arg.Any<string>(), Arg.Any<string>()).Returns(filePassword);
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
 
             // Act
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);
 
             // Assert
+            Assert.Equal(filePassword, bankInReportViewModel.FilePassword);
             Assert.IsType<FileContentResult>(actual);
         }
 
