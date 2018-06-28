@@ -212,6 +212,32 @@
     }
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/report/css/direct-banking-report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
+      "wwwroot/assets/styles/fonts/hrp/style.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/report/css/ebanking-report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
+      "wwwroot/assets/styles/fonts/hrp/style.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
@@ -627,6 +653,42 @@
       "wwwroot/lib/CryptoJS/aes.js",
       "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/report/dynamic-report.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/report/js/direct-banking-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/report/payment-transaction.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/report/js/ebanking-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/moment/moment.js",
+      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
+      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
+      "wwwroot/assets/js/report/payment-transaction.js"
     ],
     "minify": {
       "enabled": true,

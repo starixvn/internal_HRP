@@ -117,6 +117,7 @@
         [HRPPermission(FunctionKey = FunctionKey.DirectBankingReport, Policy = Policy.Read)]
         public async Task<IActionResult> DirectBanking()
         {
+            var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DirectBankingReport);
 
             var tuple = rijndaelService.GenerateKey();
@@ -129,7 +130,8 @@
                 SelectedTime = DateTime.Now,
                 BankType = BankTypes.DirectBanking,
                 RijndaelKey = sessionService.RijndaelKey,
-                RijndaelIV = sessionService.RijndaelIV
+                RijndaelIV = sessionService.RijndaelIV,
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, sessionService.RijndaelKey, sessionService.RijndaelIV)
             };
 
             return View(viewModel);
@@ -139,7 +141,7 @@
         public async Task<IActionResult> GetDirectBankingReport(BankInReportViewModel viewModel)
         {
             viewModel.FilePassword = rijndaelService.Decrypt(
-                viewModel.FilePassword,
+                viewModel.EncryptedPassword,
                 sessionService.RijndaelKey,
                 sessionService.RijndaelIV);
 
@@ -151,10 +153,15 @@
 
             var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\DirectBanking.xlsx");
 
-            IActionResult result = RedirectToAction("DirectBanking");
+            ModelState.Clear();
 
-            if (bankInData != null && ModelState.IsValid)
+            if (bankInData != null && TryValidateModel(viewModel))
             {
+                if (viewModel.ReusePassword)
+                {
+                    await reportService.EditUserFilePasswordAsync(sessionService.UserId, viewModel.FilePassword);
+                }
+
                 var fileContent = exportExcelService.ExportDirectBankingReports(
                     viewModel.SelectedTime,
                     fileInfo,
@@ -162,10 +169,10 @@
                     bankInData,
                     viewModel.FilePassword);
 
-                result = File(fileContent, MimeType.XLSX, $"Direct_Banking-Cash_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
+                return File(fileContent, MimeType.XLSX, $"Direct_Banking-Cash_Report_{viewModel.SelectedTime:MMyyyy}.xlsx");
             }
 
-            return result;
+            return RedirectToAction("DirectBanking");
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EbankingReport, Policy = Policy.Read)]
