@@ -217,7 +217,8 @@
       "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
-      "wwwroot/assets/styles/fonts/hrp/style.css"
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/pages/report/direct-banking-report.css"
     ],
     "minify": {
       "enabled": true,
@@ -230,7 +231,8 @@
       "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
       "wwwroot/lib/fanex-multiselect/fanex.multiSelect.css",
-      "wwwroot/assets/styles/fonts/hrp/style.css"
+      "wwwroot/assets/styles/fonts/hrp/style.css",
+      "wwwroot/assets/styles/pages/report/ebanking-report.css"
     ],
     "minify": {
       "enabled": true,
