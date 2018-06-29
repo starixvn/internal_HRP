@@ -111,18 +111,8 @@
             $input.attr('type', 'password');
             $this.addClass('icon-view').removeClass('icon-hide');
         });
-    }
 
-    function parseForm() {
-        var $validations = $('#validation-summary');
-
-        if ($('.field-validation-error', $validations).length > 0) {
-            $validations.removeClass('hidden');
-        } else {
-            $validations.addClass('hidden');
-        }
-
-        commonFunctions.showHideValidationSummary($validations[0]);
+        commonFunctions.showHideValidationSummary(document.getElementById('validation-summary'));
     }
 
     function decryptData() {
@@ -146,7 +136,6 @@
         getElements();
         initSelect2();
         decryptData();
-        parseForm();
         initFanexMultiSelect();
         initEvents();
     }

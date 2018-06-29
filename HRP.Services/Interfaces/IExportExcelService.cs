@@ -8,7 +8,7 @@
 
     public interface IExportExcelService
     {
-        byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report);
+        byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report, string password = null);
 
         byte[] ExportDirectBankingReports(
             DateTime selectedTime,

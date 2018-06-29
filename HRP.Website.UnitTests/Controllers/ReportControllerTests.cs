@@ -320,6 +320,7 @@
             var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
             Assert.Equal("MonthlyPayroll", viewResult.ViewName);
             Assert.Equal(companySelectList, viewResultModel.Companies);
+            Assert.True(string.IsNullOrEmpty(viewResultModel.FilePassword));
         }
 
         [Fact]
@@ -357,10 +358,12 @@
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
-            reportController.ModelState.AddModelError("CompanyId", "Required");
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
+                Arg.Any<string>(), Arg.Any<Object>())).Do(x => reportController.ModelState.AddModelError(nameof(viewModel.FilePassword), "Password is required"));
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
@@ -372,7 +375,7 @@
             Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
-            Assert.Equal("Required", viewResult.ViewData.ModelState["CompanyId"].Errors.FirstOrDefault().ErrorMessage);
+            Assert.Equal("Password is required", viewResult.ViewData.ModelState[nameof(viewModel.FilePassword)].Errors.FirstOrDefault().ErrorMessage);
         }
 
         [Fact]
@@ -398,7 +401,8 @@
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
-
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
 
@@ -422,12 +426,17 @@
                 Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 2 } },
                 Month = DateTime.Today
             };
+
             var company = new Company { Code = "OW", Name = "One Work" };
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                CompanyId = 22
+                CompanyId = 22,
+                ReusePassword = true,
+                EncryptedPassword = "123"
             };
+
+            var expectedPassword = "456";
 
             var webRootPath = "abc";
             var fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
@@ -437,7 +446,12 @@
             baseService.GetDataEntityAsync<Company>(Arg.Is<GetCompanyByIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(company);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
-            exportExcelService.ExportMonthlyPayrollReport(templatePath, report).Returns(bytes);
+            exportExcelService.ExportMonthlyPayrollReport(templatePath, report, expectedPassword).Returns(bytes);
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
+            sessionService.RijndaelIV = "key1";
+            sessionService.RijndaelKey = "key2";
+            rijndaelService.Decrypt(viewModel.EncryptedPassword, sessionService.RijndaelKey, sessionService.RijndaelIV).Returns(expectedPassword);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);

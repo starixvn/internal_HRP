@@ -1104,4 +1104,7 @@
   <data name="ReusePassword" xml:space="preserve">
     <value>Reuse Password</value>
   </data>
+  <data name="MonthlyPayroll" xml:space="preserve">
+    <value>Monthly Payroll</value>
+  </data>
 </root>

@@ -240,11 +240,20 @@
         [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         public async Task<IActionResult> MonthlyPayroll()
         {
+            var keys = rijndaelService.GenerateKey();
+            sessionService.RijndaelIV = keys.Item1;
+            sessionService.RijndaelKey = keys.Item2;
+
+            var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
+
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                RijndaelIV = keys.Item1,
+                RijndaelKey = keys.Item2
             };
 
             return View("MonthlyPayroll", viewModel);
@@ -259,8 +268,19 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            if (ModelState.IsValid)
+            var rijndaelIV = sessionService.RijndaelIV;
+            var rijndaelKey = sessionService.RijndaelKey;
+
+            viewModel.FilePassword = rijndaelService.Decrypt(viewModel.EncryptedPassword, rijndaelKey, rijndaelIV);
+            ModelState.Clear();
+
+            if (TryValidateModel(viewModel))
             {
+                if (viewModel.ReusePassword)
+                {
+                    await reportService.EditUserFilePasswordAsync(sessionService.UserId, viewModel.FilePassword);
+                }
+
                 var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
                 if (report.Employees.Any())
                 {
@@ -269,7 +289,7 @@
                     string webRootFolder = hostingEnvironment.WebRootPath;
                     string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
                     var templatePath = Path.Combine(webRootFolder, fileName);
-                    var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report);
+                    var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report, viewModel.FilePassword);
 
                     return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
                 }
@@ -281,6 +301,8 @@
 
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            viewModel.RijndaelIV = rijndaelIV;
+            viewModel.RijndaelKey = rijndaelKey;
 
             return View("MonthlyPayroll", viewModel);
         }
@@ -358,6 +380,8 @@
             var companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Report);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             viewModel.Groups = ColumnsConfiguration.DynamicReportGroups;
+            viewModel.RijndaelIV = rijndaelIV;
+            viewModel.RijndaelKey = rijndaelKey;
 
             return View("DynamicReport", viewModel);
         }

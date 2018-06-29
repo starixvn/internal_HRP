@@ -1753,6 +1753,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Payroll.
+        /// </summary>
+        public static string MonthlyPayroll {
+            get {
+                return ResourceManager.GetString("MonthlyPayroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly Payroll Status.
         /// </summary>
         public static string MonthlyPayrollStatus {

@@ -41,8 +41,8 @@
     <li class="active">@ViewLang.EBanking</li>
 </ol>
 
-<input type="hidden" class="encryption-iv" asp-for="RijndaelIV" id="RijndaelIV" />
-<input type="hidden" class="encryption-key" asp-for="RijndaelKey" id="RijndaelKey" />
+<input type="hidden" class="encryption-iv" asp-for="RijndaelIV" />
+<input type="hidden" class="encryption-key" asp-for="RijndaelKey" />
 
 <form class="search-form" asp-action="GetEbankingReport" asp-controller="Report" method="get">
     <a asp-controller="Report" asp-action="GetEbankingPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>

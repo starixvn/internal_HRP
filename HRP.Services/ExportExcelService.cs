@@ -351,7 +351,7 @@
 
         #region MonthlyPayrollReport
 
-        public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report)
+        public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report, string password = null)
         {
             using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
             {
@@ -436,6 +436,11 @@
                     WriteTotalByCurrencyTable(row + 2, templateWorksheet, worksheet, report);
 
                     worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        package.Encryption.Password = password;
+                    }
 
                     return package.GetAsByteArray();
                 }

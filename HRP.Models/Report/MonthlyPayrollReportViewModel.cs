@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class MonthlyPayrollReportViewModel
+    public class MonthlyPayrollReportViewModel : BaseSecurityReportViewModel
     {
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-yyyy}")]
         public DateTime SelectedTime { get; set; }
