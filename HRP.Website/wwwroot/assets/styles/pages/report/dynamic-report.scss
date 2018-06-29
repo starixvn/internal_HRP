@@ -77,17 +77,3 @@ select[multiple] {
 .search-form .fanex-multiselect-options {
     width: 200px !important;
 }
-.pass-wrap {
-    position: relative;
-    .icon-view, .icon-hide {
-        position: absolute;
-        right: 8px;
-        top: 7px;
-        font-size: 18px;
-        color: #acacac;
-    }
-}
-.reuse-pass-group {
-    position: relative;
-    top: -10px;
-}

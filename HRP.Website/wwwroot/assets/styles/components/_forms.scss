@@ -149,6 +149,20 @@ form {
             @include box-shadow-multiple(0 0 2px 2px rgba(255,0,0, .2));
         }
     }
+    .pass-wrap {
+        position: relative;
+        .icon-view, .icon-hide {
+            position: absolute;
+            right: 8px;
+            top: 7px;
+            font-size: 18px;
+            color: #acacac;
+        }
+    }
+    .reuse-pass-group {
+        position: relative;
+        top: -10px;
+    }
    
 }
    

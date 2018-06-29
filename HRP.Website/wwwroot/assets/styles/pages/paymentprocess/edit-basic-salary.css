@@ -145,6 +145,23 @@ form textarea.input-validation-error {
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
 }
 
+form .pass-wrap {
+  position: relative;
+}
+
+form .pass-wrap .icon-view, form .pass-wrap .icon-hide {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  font-size: 18px;
+  color: #acacac;
+}
+
+form .reuse-pass-group {
+  position: relative;
+  top: -10px;
+}
+
 input[type="radio"] {
   display: none;
 }
