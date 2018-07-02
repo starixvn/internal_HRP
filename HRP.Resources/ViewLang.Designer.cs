@@ -1321,7 +1321,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExportExcel.
+        ///   Looks up a localized string similar to Export Excel.
         /// </summary>
         public static string ExportExcel {
             get {

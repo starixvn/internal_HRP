@@ -6,3 +6,10 @@
 @import "../../components/tables";
 @import "../../components/customize-select2";
 @import "../../components/customize-fanex-multiSelect";
+
+.icon-excel:before {
+    font-size: 18px;
+    position: relative;
+    top: 2px;
+    left: -2px;
+}

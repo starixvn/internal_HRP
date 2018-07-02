@@ -625,6 +625,8 @@
       "wwwroot/lib/moment/moment.js",
       "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
       "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/CryptoJS/aes.js",
+      "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/report/monthly-payroll.js"
     ],
     "minify": {

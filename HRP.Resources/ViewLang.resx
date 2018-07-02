@@ -1099,7 +1099,7 @@
     <value>File Password</value>
   </data>
   <data name="ExportExcel" xml:space="preserve">
-    <value>ExportExcel</value>
+    <value>Export Excel</value>
   </data>
   <data name="ReusePassword" xml:space="preserve">
     <value>Reuse Password</value>

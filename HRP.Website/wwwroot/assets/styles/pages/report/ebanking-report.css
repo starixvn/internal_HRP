@@ -847,4 +847,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   font-weight: normal !important;
   color: #f57d14;
 }
+
+.icon-excel:before {
+  font-size: 18px;
+  position: relative;
+  top: 2px;
+  left: -2px;
+}
 /*# sourceMappingURL=ebanking-report.css.map */
