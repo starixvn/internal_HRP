@@ -66,7 +66,7 @@
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            15,
+            50,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankSwiftCode { get; set; }

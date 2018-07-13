@@ -26,7 +26,7 @@
         public virtual int? LocalCompanyReasonId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleRequired))]
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleMaxLength))]
+        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleMaxLength))]
         public virtual string JobTitle { get; set; }
 
         [DataType(DataType.Date)]
