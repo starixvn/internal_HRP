@@ -9,7 +9,6 @@
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
-    using HRP.Repositories.Interfaces;
 
     public class PaymentProcessRepository : IPaymentProcessRepository
     {

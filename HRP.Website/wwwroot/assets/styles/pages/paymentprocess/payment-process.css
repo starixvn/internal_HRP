@@ -35,10 +35,17 @@
 }
 
 .search-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -138,8 +145,6 @@ form input[type="password"].input-validation-error,
 form textarea.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
@@ -163,11 +168,6 @@ form .reuse-pass-group {
 }
 
 .select2-container--default .select2-selection--single {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   outline: none;
   height: 32px;
@@ -179,11 +179,9 @@ form .reuse-pass-group {
   color: #333;
 }
 
-.select2-container--default .select2-selection--single.select2-has-error {
+.select2-container--default .select2-selection--single.select2-has-error, .select2-container--default .select2-selection--single.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
@@ -212,8 +210,6 @@ form .reuse-pass-group {
 
 .select2-container--default.select2-container--open .select2-selection--single {
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
@@ -245,8 +241,6 @@ form .reuse-pass-group {
 
 .select2-container--open .select2-dropdown--below {
   -webkit-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
-  -khtml-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
   -ms-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
@@ -258,11 +252,6 @@ form .reuse-pass-group {
 }
 
 .select2-dropdown {
-  -webkit-border-radius: 0;
-  -khtml-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
 }
 
@@ -274,12 +263,14 @@ form .reuse-pass-group {
 
 select[readonly].select2-hidden-accessible + .select2-container {
   pointer-events: none;
-  touch-action: none;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 
 select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
   background: #eee;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow,
@@ -288,15 +279,27 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 }
 
 .steps {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: start;
-  align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .steps .step {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: start;
-  align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 13px;
 }
 
@@ -324,8 +327,6 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
   background-color: #fafafa;
   border-color: #1a87d3;
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
@@ -368,8 +369,12 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 
 .steps.payment-process .step-title {
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 46px;
   line-height: 16px;
   padding: 8px 20px 8px 48px;
@@ -377,9 +382,15 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 }
 
 .steps.payment-process .step-title:before {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   position: absolute;
   left: 12px;
   height: 28px;
@@ -431,8 +442,11 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 }
 
 .payment-duration {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-self: flex-start;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
   padding-bottom: 18px;
 }
 

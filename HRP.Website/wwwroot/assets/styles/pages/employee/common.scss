@@ -3,18 +3,17 @@
 @import "../../components/customize-select2";
 @import "../../components/forms";
 
-
 // Customize select2
 .select2-container--default {
     .select2-selection--single {
         height: 28px;
-        line-height: 28px;  
+        line-height: 28px;
 
         .select2-selection__arrow {
             height: 28px;
         }
     }
-    
+
     .select2-search--dropdown .select2-search__field {
         height: 28px;
     }
@@ -24,7 +23,7 @@
     line-height: 28px;
 }
 
-.form-information {  
+.form-information {
     .group-title, .like-group-title {
         color: $primary-color !important;
         font-weight: bold;
@@ -58,11 +57,10 @@
         color: #333;
         font-weight: bold;
         line-height: 28px;
-        text-align: right;        
+        text-align: right;
     }
 }
 
 .list-button {
     margin-top: 8px;
 }
-

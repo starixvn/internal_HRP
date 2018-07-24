@@ -1107,4 +1107,22 @@
   <data name="MonthlyPayroll" xml:space="preserve">
     <value>Monthly Payroll</value>
   </data>
+  <data name="MailSetting" xml:space="preserve">
+    <value>Mail Setting</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="SenderEmail" xml:space="preserve">
+    <value>Sender Email</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="SSL" xml:space="preserve">
+    <value>SSL</value>
+  </data>
 </root>

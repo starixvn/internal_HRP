@@ -32,7 +32,7 @@
             ICryptoService cryptoService,
             ISessionService sessionService,
             ICommonService commonService,
-            IEmployeeRepository employeeRepository = null)
+            IEmployeeRepository employeeRepository)
         {
             this.baseService = baseService;
             this.hostingEnvironment = hostingEnvironment;

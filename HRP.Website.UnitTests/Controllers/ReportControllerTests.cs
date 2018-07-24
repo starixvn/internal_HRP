@@ -10,10 +10,11 @@
     using Core.Extensions;
     using Core.Model;
     using Core.Services;
-    using Criteria.Employee;
     using Criteria;
+    using Criteria.Employee;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
     using Models.Employee;
@@ -22,10 +23,8 @@
     using NSubstitute;
     using Resources;
     using Services;
-    using Services.Interfaces;
     using Website.Controllers;
     using Xunit;
-    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     public class ReportControllerTests
     {

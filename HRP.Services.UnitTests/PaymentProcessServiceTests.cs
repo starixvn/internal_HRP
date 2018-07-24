@@ -15,7 +15,7 @@
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
-    using HRP.Repositories.Interfaces;
+    using HRP.Repositories;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
     using NPOI.SS.UserModel;

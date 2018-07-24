@@ -1681,6 +1681,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail Setting.
+        /// </summary>
+        public static string MailSetting {
+            get {
+                return ResourceManager.GetString("MailSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Management.
         /// </summary>
         public static string Management {
@@ -2239,6 +2248,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string Port {
+            get {
+                return ResourceManager.GetString("Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preset.
         /// </summary>
         public static string Preset {
@@ -2253,6 +2271,15 @@ namespace HRP.Resources {
         public static string PresetAll {
             get {
                 return ResourceManager.GetString("PresetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string Priority {
+            get {
+                return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
         
@@ -2500,6 +2527,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sender Email.
+        /// </summary>
+        public static string SenderEmail {
+            get {
+                return ResourceManager.GetString("SenderEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Payslip.
         /// </summary>
         public static string SendPayslip {
@@ -2514,6 +2550,15 @@ namespace HRP.Resources {
         public static string Sent {
             get {
                 return ResourceManager.GetString("Sent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server.
+        /// </summary>
+        public static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
             }
         }
         
@@ -2550,6 +2595,15 @@ namespace HRP.Resources {
         public static string SkypeAccount {
             get {
                 return ResourceManager.GetString("SkypeAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSL.
+        /// </summary>
+        public static string SSL {
+            get {
+                return ResourceManager.GetString("SSL", resourceCulture);
             }
         }
         

@@ -36,7 +36,7 @@
             IBaseMailService emailService,
             IViewRenderService viewRenderService,
             IPdfRenderService pdfRenderService,
-            IPayslipRepository payslipRepository = null)
+            IPayslipRepository payslipRepository)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
@@ -44,7 +44,7 @@
             this.emailService = emailService;
             this.viewRenderService = viewRenderService;
             this.pdfRenderService = pdfRenderService;
-            this.payslipRepository = payslipRepository ?? new PayslipRepository();
+            this.payslipRepository = payslipRepository;
         }
 
         public async Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent)

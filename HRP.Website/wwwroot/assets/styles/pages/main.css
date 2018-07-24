@@ -8,7 +8,8 @@ body {
 }
 
 *, :before, :after {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 a, .link {
@@ -40,21 +41,10 @@ input, button {
 }
 
 .button {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-transition: all ease-in-out 0.3s;
-  -khtml-transition: all ease-in-out 0.3s;
-  -moz-transition: all ease-in-out 0.3s;
-  -ms-transition: all ease-in-out 0.3s;
-  -o-transition: all ease-in-out 0.3s;
   transition: all ease-in-out 0.3s;
   -webkit-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
-  -khtml-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   -ms-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   -o-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
@@ -160,11 +150,6 @@ a.button, a.button:hover {
 }
 
 select {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   outline: none;
   height: 32px;
@@ -180,8 +165,6 @@ select {
 select:focus {
   border-color: #1a87d3;
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
@@ -213,14 +196,18 @@ select[disabled] {
 .dropdown .btn {
   background: no-repeat;
   border: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   outline: none;
   padding: 0;
   -webkit-box-shadow: none;
-  -khtml-box-shadow: none;
-  -moz-box-shadow: none;
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
@@ -235,15 +222,8 @@ select[disabled] {
   margin-top: 6px;
   min-width: 190px;
   border: none;
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
@@ -296,17 +276,8 @@ input[type="email"],
 input[type="number"],
 input[type="password"],
 textarea {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-transition: all ease-in-out 0.3s;
-  -khtml-transition: all ease-in-out 0.3s;
-  -moz-transition: all ease-in-out 0.3s;
-  -ms-transition: all ease-in-out 0.3s;
-  -o-transition: all ease-in-out 0.3s;
   transition: all ease-in-out 0.3s;
   outline: none;
   height: 32px;
@@ -326,8 +297,6 @@ input[type="number"]:focus,
 input[type="password"]:focus,
 textarea:focus {
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
@@ -371,7 +340,8 @@ input[type="checkbox"] + .null {
 }
 
 input[type="checkbox"]:checked + span:after {
-  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
   content: "";
   position: absolute;
   top: 4px;
@@ -440,15 +410,16 @@ input[type="checkbox"]:disabled + span {
 }
 
 .modal-content.-has-icon .circle {
-  -webkit-border-radius: 50%;
-  -khtml-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
   border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   position: absolute;
   left: 50%;
   top: -24px;
@@ -560,9 +531,16 @@ input[type="checkbox"]:disabled + span {
 }
 
 .validation-summary-errors, .list-message-error {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
   border: 1px solid #ff0000;
   padding: 8px 10px;
   margin: 0 0 12px 0;
@@ -600,11 +578,6 @@ input[type="checkbox"]:disabled + span {
   border: 1px solid #3475c7;
   background-color: #e3f5fa;
   color: #1973b2;
-  -webkit-border-radius: 4px;
-  -khtml-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
   border-radius: 4px;
 }
 
@@ -618,7 +591,8 @@ input[type="checkbox"]:disabled + span {
   border: 1px solid #3475c7;
   border-width: 0 0 1px 1px;
   background-color: #e3f5fa;
-  transform: rotate(30deg) skew(-26deg);
+  -webkit-transform: rotate(30deg) skew(-26deg);
+          transform: rotate(30deg) skew(-26deg);
 }
 
 .note .list {
@@ -669,6 +643,7 @@ input[type="checkbox"]:disabled + span {
   margin: auto;
   background-color: #f57d14;
   content: '';
+  -webkit-transition: width 0.4s;
   transition: width 0.4s;
 }
 
@@ -717,17 +692,31 @@ input[type="checkbox"]:disabled + span {
   border-top-color: #1973b2;
   border-radius: 50%;
   position: relative;
-  animation: loader-rotate 0.8s linear infinite;
+  -webkit-animation: loader-rotate 0.8s linear infinite;
+          animation: loader-rotate 0.8s linear infinite;
   top: 50%;
   margin: -20px auto 0;
 }
 
-@keyframes loader-rotate {
+@-webkit-keyframes loader-rotate {
   0% {
-    transform: rotate(0);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
   }
   100% {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-rotate {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 
@@ -741,8 +730,12 @@ body {
   top: 0;
   left: 0;
   display: block;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
   background-color: #fff;
   border-bottom: 1px solid #dcdcdc;
@@ -751,9 +744,12 @@ body {
 
 @media screen and (min-width: 1024px) {
   .header {
+    display: -ms-grid;
     display: grid;
-    grid-template-columns: 159px 1fr 178px;
-    grid-template-rows: 1fr;
+    -ms-grid-columns: 159px 1fr 178px;
+        grid-template-columns: 159px 1fr 178px;
+    -ms-grid-rows: 1fr;
+        grid-template-rows: 1fr;
   }
 }
 
@@ -807,9 +803,15 @@ body {
 }
 
 .main-menu .menu > .link {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   line-height: 55px;
   padding-left: 10px;
   padding-right: 10px;
@@ -863,23 +865,12 @@ body {
 }
 
 .submenu {
-  -webkit-border-radius: 0 0 2px 2px;
-  -khtml-border-radius: 0 0 2px 2px;
-  -moz-border-radius: 0 0 2px 2px;
-  -ms-border-radius: 0 0 2px 2px;
-  -o-border-radius: 0 0 2px 2px;
   border-radius: 0 0 2px 2px;
   -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -webkit-transition: all .3s ease-in-out;
-  -khtml-transition: all .3s ease-in-out;
-  -moz-transition: all .3s ease-in-out;
-  -ms-transition: all .3s ease-in-out;
-  -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   position: absolute;
   top: 80%;
@@ -923,20 +914,21 @@ body {
 }
 
 .user-info .circle-gray {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-left: 10px;
   margin-right: 10px;
   height: 32px;
   width: 32px;
   background-color: #f57d14;
   border: 2px solid #cbcbcb;
-  -webkit-border-radius: 50%;
-  -khtml-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
   border-radius: 50%;
 }
 
@@ -968,15 +960,8 @@ body {
 }
 
 .content {
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
@@ -1040,7 +1025,8 @@ body {
   width: 0;
   border: 4px solid;
   border-color: #888 #888 transparent transparent;
-  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+          transform: rotate(135deg);
 }
 
 .icon-successful {

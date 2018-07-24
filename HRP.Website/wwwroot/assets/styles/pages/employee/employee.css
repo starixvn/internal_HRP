@@ -35,10 +35,17 @@
 }
 
 .search-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -138,8 +145,6 @@ form input[type="password"].input-validation-error,
 form textarea.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
@@ -163,16 +168,20 @@ form .reuse-pass-group {
 }
 
 .top-header {
-  -webkit-border-radius: 2px 2px 0 0;
-  -khtml-border-radius: 2px 2px 0 0;
-  -moz-border-radius: 2px 2px 0 0;
-  -ms-border-radius: 2px 2px 0 0;
-  -o-border-radius: 2px 2px 0 0;
   border-radius: 2px 2px 0 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: -8px;
   padding: 8px;
   border: 1px solid #d9d9d9;
@@ -208,7 +217,9 @@ form .reuse-pass-group {
 }
 
 .top-header.-only-search-box {
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .table {
@@ -309,11 +320,6 @@ form .reuse-pass-group {
 }
 
 .table .dropdown-menu {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   right: 0;
   left: auto;
@@ -366,15 +372,8 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .dataTables_wrapper .dataTables_length .form-control {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-box-shadow: none;
-  -khtml-box-shadow: none;
-  -moz-box-shadow: none;
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
@@ -404,11 +403,6 @@ table.dataTable thead .sorting_desc:after {
 
 .pagination .paginate_button.active a,
 .pagination .paginate_button a {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   line-height: 28px;
   height: 28px;
@@ -451,15 +445,27 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .steps {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: start;
-  align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .steps .step {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: start;
-  align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 13px;
 }
 
@@ -487,8 +493,6 @@ table.dataTable thead .sorting_desc:after {
   background-color: #fafafa;
   border-color: #1a87d3;
   -webkit-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
   box-shadow: 0 0 2px 2px rgba(25, 115, 178, 0.2);
@@ -531,8 +535,12 @@ table.dataTable thead .sorting_desc:after {
 
 .steps.payment-process .step-title {
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 46px;
   line-height: 16px;
   padding: 8px 20px 8px 48px;
@@ -540,9 +548,15 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .steps.payment-process .step-title:before {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   position: absolute;
   left: 12px;
   height: 28px;
@@ -590,23 +604,40 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .personal-detail {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  align-items: stretch;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: stretch;
+      -ms-flex-pack: stretch;
+          justify-content: stretch;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
 }
 
 .personal-detail .form-content {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 160px 530px 545px;
-  grid-template-rows: 1fr;
-  justify-content: stretch;
-  align-items: flex-start;
+  -ms-grid-columns: 160px 530px 545px;
+      grid-template-columns: 160px 530px 545px;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: stretch;
+      -ms-flex-pack: stretch;
+          justify-content: stretch;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 @media screen and (min-width: 1366px) {
   .personal-detail .form-content {
-    grid-template-columns: 160px 530px 630px;
+    -ms-grid-columns: 160px 530px 630px;
+        grid-template-columns: 160px 530px 630px;
   }
 }
 
@@ -658,8 +689,12 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .employment {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .employment .col:first-child {
@@ -673,93 +708,117 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .group-complex {
+  display: -ms-grid;
   display: grid;
   grid-gap: 10px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: flex-start;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   margin-bottom: 12px;
   /* Employment */
 }
 
 .group-complex.-per-layout1 {
-  grid-template-columns: 140px 110px 200px;
+  -ms-grid-columns: 140px 110px 200px;
+      grid-template-columns: 140px 110px 200px;
 }
 
 .group-complex.-per-layout2 {
-  grid-template-columns: 140px 318px;
+  -ms-grid-columns: 140px 318px;
+      grid-template-columns: 140px 318px;
 }
 
 .group-complex.-per-layout3 {
-  grid-template-columns: 140px 140px;
+  -ms-grid-columns: 140px 140px;
+      grid-template-columns: 140px 140px;
 }
 
 .group-complex.-per-layout4 {
-  grid-template-columns: 200px 262px;
+  -ms-grid-columns: 200px 262px;
+      grid-template-columns: 200px 262px;
 }
 
 .group-complex.-per-layout5 {
-  grid-template-columns: 228px 110px 110px;
+  -ms-grid-columns: 228px 110px 110px;
+      grid-template-columns: 228px 110px 110px;
 }
 
 .group-complex.-emp-layout1 {
-  grid-template-columns: 170px repeat(2, 110px);
+  -ms-grid-columns: 170px (110px)[2];
+      grid-template-columns: 170px repeat(2, 110px);
 }
 
 @media screen and (min-width: 1366px) {
   .group-complex.-emp-layout1 {
-    grid-template-columns: 210px repeat(2, 110px);
+    -ms-grid-columns: 210px (110px)[2];
+        grid-template-columns: 210px repeat(2, 110px);
   }
 }
 
 .group-complex.-emp-layout2 {
-  grid-template-columns: repeat(3, 110px);
+  -ms-grid-columns: (110px)[3];
+      grid-template-columns: repeat(3, 110px);
 }
 
 .group-complex.-emp-layout3 {
-  grid-template-columns: 170px 170px;
+  -ms-grid-columns: 170px 170px;
+      grid-template-columns: 170px 170px;
 }
 
 @media screen and (min-width: 1366px) {
   .group-complex.-emp-layout3 {
-    grid-template-columns: 210px 210px;
+    -ms-grid-columns: 210px 210px;
+        grid-template-columns: 210px 210px;
   }
 }
 
 .group-complex.-emp-layout4 {
-  grid-template-columns: 170px repeat(3, 110px);
+  -ms-grid-columns: 170px (110px)[3];
+      grid-template-columns: 170px repeat(3, 110px);
 }
 
 @media screen and (min-width: 1366px) {
   .group-complex.-emp-layout4 {
-    grid-template-columns: 210px repeat(3, 110px);
+    -ms-grid-columns: 210px (110px)[3];
+        grid-template-columns: 210px repeat(3, 110px);
   }
 }
 
 .group-complex.-emp-layout5 {
-  grid-template-columns: 170px 110px;
+  -ms-grid-columns: 170px 110px;
+      grid-template-columns: 170px 110px;
 }
 
 @media screen and (min-width: 1366px) {
   .group-complex.-emp-layout5 {
-    grid-template-columns: 210px 110px;
+    -ms-grid-columns: 210px 110px;
+        grid-template-columns: 210px 110px;
   }
 }
 
 .group-complex.-emp-layout6 {
-  grid-template-columns: repeat(3, 206px);
+  -ms-grid-columns: (206px)[3];
+      grid-template-columns: repeat(3, 206px);
 }
 
 .group-complex.-emp-layout7 {
-  grid-template-columns: 206px repeat(2, 110px);
+  -ms-grid-columns: 206px (110px)[2];
+      grid-template-columns: 206px repeat(2, 110px);
 }
 
 .group-complex.-emp-layout8 {
-  grid-template-columns: repeat(2, 206px);
+  -ms-grid-columns: (206px)[2];
+      grid-template-columns: repeat(2, 206px);
 }
 
 .group-complex.-emp-layout9 {
-  grid-template-columns: 100px 129px 215px 165px;
+  -ms-grid-columns: 100px 129px 215px 165px;
+      grid-template-columns: 100px 129px 215px 165px;
 }
 
 .group-complex.-emp-without-label * {

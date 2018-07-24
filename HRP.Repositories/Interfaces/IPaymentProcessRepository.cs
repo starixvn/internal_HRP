@@ -1,4 +1,4 @@
-﻿namespace HRP.Repositories.Interfaces
+﻿namespace HRP.Repositories
 {
     using System;
     using System.Collections.Generic;

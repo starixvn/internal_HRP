@@ -1,14 +1,18 @@
 .top-header {
-  -webkit-border-radius: 2px 2px 0 0;
-  -khtml-border-radius: 2px 2px 0 0;
-  -moz-border-radius: 2px 2px 0 0;
-  -ms-border-radius: 2px 2px 0 0;
-  -o-border-radius: 2px 2px 0 0;
   border-radius: 2px 2px 0 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: -8px;
   padding: 8px;
   border: 1px solid #d9d9d9;
@@ -44,7 +48,9 @@
 }
 
 .top-header.-only-search-box {
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .table {
@@ -145,11 +151,6 @@
 }
 
 .table .dropdown-menu {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   right: 0;
   left: auto;
@@ -202,15 +203,8 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .dataTables_wrapper .dataTables_length .form-control {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-box-shadow: none;
-  -khtml-box-shadow: none;
-  -moz-box-shadow: none;
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
@@ -240,11 +234,6 @@ table.dataTable thead .sorting_desc:after {
 
 .pagination .paginate_button.active a,
 .pagination .paginate_button a {
-  -webkit-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   line-height: 28px;
   height: 28px;
@@ -295,6 +284,8 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .upload-files .group-control {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -325,9 +316,12 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .inputfile-box .file {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 490px 80px;
-  grid-template-rows: 32px;
+  -ms-grid-columns: 490px 80px;
+      grid-template-columns: 490px 80px;
+  -ms-grid-rows: 32px;
+      grid-template-rows: 32px;
   grid-gap: 10px;
 }
 

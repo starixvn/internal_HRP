@@ -20,7 +20,6 @@
     using Newtonsoft.Json.Serialization;
     using Resources;
     using Services;
-    using Services.Interfaces;
 
     public class ReportController : BaseController
     {

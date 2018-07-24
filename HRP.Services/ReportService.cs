@@ -8,14 +8,14 @@
     using Core.Constants;
     using Core.Enumerations;
     using Core.Services;
-    using Criteria.Report;
     using Criteria;
+    using Criteria.Report;
+    using HRP.Criteria.User;
+    using HRP.Models.ServiceModels;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;
     using Repositories;
-    using HRP.Models.ServiceModels;
-    using HRP.Criteria.User;
 
     public class ReportService : IReportService
     {
@@ -28,11 +28,11 @@
             ICryptoService cryptoService,
             ISessionService sessionService,
             IBaseService baseService,
-            IReportRepository reportRepository = null)
+            IReportRepository reportRepository)
         {
             this.cryptoService = cryptoService;
             this.sessionService = sessionService;
-            this.reportRepository = reportRepository ?? new ReportRepository();
+            this.reportRepository = reportRepository;
             this.baseService = baseService;
         }
 

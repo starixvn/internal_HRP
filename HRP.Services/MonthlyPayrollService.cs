@@ -31,12 +31,12 @@
             ISessionService sessionService,
             IBaseService baseService,
             ICryptoService cryptoService,
-            IMonthlyPayrollRepository monthlyPayrollRepository = null)
+            IMonthlyPayrollRepository monthlyPayrollRepository)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
             this.cryptoService = cryptoService;
-            this.monthlyPayrollRepository = monthlyPayrollRepository ?? new MonthlyPayrollRepository();
+            this.monthlyPayrollRepository = monthlyPayrollRepository;
         }
 
         public async Task<MonthlyPayrollFilterInfoModel> GetFilterInfoAsync(int companyId, DateTime month, int? payrollId = null)

@@ -35,10 +35,17 @@
 }
 
 .search-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -138,8 +145,6 @@ form input[type="password"].input-validation-error,
 form textarea.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
@@ -193,6 +198,7 @@ input[type="radio"] + span:after {
   left: 3px;
   height: 7px;
   width: 7px;
+  -webkit-transition: all ease-in-out .3s;
   transition: all ease-in-out .3s;
   opacity: 0;
 }
@@ -284,12 +290,19 @@ input[type="radio"]:disabled + span {
 }
 
 .payroll .transaction-item {
+  display: -ms-grid;
   display: grid;
   grid-gap: 5px;
-  grid-template-columns: 146px 135px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: center;
+  -ms-grid-columns: 146px 135px;
+      grid-template-columns: 146px 135px;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-weight: bold;
   color: #666;
 }
@@ -300,12 +313,19 @@ input[type="radio"]:disabled + span {
 }
 
 .payroll .payment-transaction {
+  display: -ms-grid;
   display: grid;
   grid-gap: 5px;
-  grid-template-columns: 146px 135px 20px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: center;
+  -ms-grid-columns: 146px 135px 20px;
+      grid-template-columns: 146px 135px 20px;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .payroll .payment-transaction.-allowances {
@@ -319,21 +339,20 @@ input[type="radio"]:disabled + span {
 }
 
 .payroll .add-account {
-  -webkit-border-radius: 50%;
-  -khtml-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
   border-radius: 50%;
   -webkit-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
-  -khtml-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   -ms-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   -o-box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
   box-shadow: 0 2px 2px 0px rgba(0,0,0,0.3);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   background-color: #1ca041;
   height: 18px;
   width: 18px;
@@ -368,41 +387,59 @@ input[type="radio"]:disabled + span {
 }
 
 .payroll .currency-amount {
+  display: -ms-grid;
   display: grid;
   grid-gap: 5px;
-  grid-template-columns: 86px 110px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: flex-start;
+  -ms-grid-columns: 86px 110px;
+      grid-template-columns: 86px 110px;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 .group-complex {
+  display: -ms-grid;
   display: grid;
   grid-gap: 20px;
-  grid-template-rows: 1fr;
-  justify-content: flex-start;
-  align-items: center;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: 6px;
 }
 
 .group-complex.-payroll-layout1 {
-  grid-template-columns: 134px 200px 258px 306px;
+  -ms-grid-columns: 134px 200px 258px 306px;
+      grid-template-columns: 134px 200px 258px 306px;
 }
 
 .group-complex.-payroll-layout1 .start-4 {
-  grid-column-start: 4;
+  -ms-grid-column: 4;
+      grid-column-start: 4;
 }
 
 .group-complex.-payroll-layout2 {
-  grid-template-columns: 134px 200px 584px;
+  -ms-grid-columns: 134px 200px 584px;
+      grid-template-columns: 134px 200px 584px;
 }
 
 .group-complex.-payroll-layout3 {
-  grid-template-columns: 134px 200px 200px 368px;
+  -ms-grid-columns: 134px 200px 200px 368px;
+      grid-template-columns: 134px 200px 200px 368px;
 }
 
 .group-complex.-payroll-layout3 .start-3 {
-  grid-column-start: 3;
+  -ms-grid-column: 3;
+      grid-column-start: 3;
 }
 
 hr {
@@ -416,11 +453,18 @@ hr {
 }
 
 .layout-two-col {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  justify-content: space-between;
-  align-items: flex-start;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   grid-gap: 10px;
 }
 

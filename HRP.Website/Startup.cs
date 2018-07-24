@@ -5,9 +5,10 @@
     using System.Linq;
     using Core;
     using Core.Model;
-    using Core.Services;
     using Fanex.Data;
+    using HRP.Core.Extensions;
     using HRP.Core.Filters;
+    using HRP.Services.Extensions;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -16,8 +17,6 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Services;
-    using Services.Interfaces;
 
     public class Startup
     {
@@ -87,29 +86,9 @@
             // DI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IBaseMailService, BaseMailService>();
-            services.AddScoped<ICryptoService, CryptoService>();
-            services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<HRPActionFilterAttribute>();
-            services.AddScoped<IViewRenderService, ViewRenderService>();
-            services.AddScoped<IPdfRenderService, PdfRenderService>();
-            services.AddScoped<ICertificateService, CertificateService>();
-            services.AddScoped<IRijndaelService, RijndaelService>();
-            services.AddScoped<ICommonService, CommonService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
-            services.AddScoped<IFunctionService, FunctionService>();
-            services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddScoped<IBankAccountService, BankAccountService>();
-            services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
-            services.AddScoped<IDataConfigurationService, DataConfigurationService>();
-            services.AddScoped<IPaymentProcessService, PaymentProcessService>();
-            services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
-            services.AddScoped<ITemplateReader, TemplateReader>();
-            services.AddScoped<IPayslipService, PayslipService>();
-            services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IExportExcelService, ExportExcelService>();
+            services.ResolveCoreDI();
+            services.ResolveServiceDI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

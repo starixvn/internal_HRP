@@ -169,5 +169,6 @@
   </Function>
   <Function Name="Mail">
     <Setting Key="MailRecord_Create" SpName="MailRecord_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailSetting_Get" SpName="MailSetting_Get" DbName="bodb_HRP" Plain="0"></Setting>
   </Function>
 </Functions>

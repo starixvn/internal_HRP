@@ -30,7 +30,7 @@
         public override DateTime? LocalCompanyChangeDate { get; set; }
 
         [EmploymentChangeValue(OldProperty = nameof(OldLocalCompanyId), NewProperty = nameof(LocalCompanyId),
-            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.LocalCompanyChangeDateRequired))]
+            ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.LocalCompanyReasonRequired))]
         public override int? LocalCompanyReasonId { get; set; }
 
         public string OldJobTitle { get; set; }

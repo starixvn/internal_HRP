@@ -35,10 +35,17 @@
 }
 
 .search-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .search-form .group {
@@ -138,8 +145,6 @@ form input[type="password"].input-validation-error,
 form textarea.input-validation-error {
   border-color: #ff4545;
   -webkit-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -khtml-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -ms-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   -o-box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
   box-shadow: 0 0 2px 2px rgba(255, 0, 0, 0.2);
@@ -178,8 +183,6 @@ form .reuse-pass-group {
 .panel {
   border: none;
   -webkit-box-shadow: none;
-  -khtml-box-shadow: none;
-  -moz-box-shadow: none;
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
@@ -257,18 +260,19 @@ body {
 }
 
 .register-otp .sub-title:before {
-  -webkit-border-radius: 50%;
-  -khtml-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
   border-radius: 50%;
   position: absolute;
   left: 0;
   top: -5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 24px;
   width: 24px;
   background-color: #f57d14;
@@ -290,9 +294,12 @@ body {
 }
 
 .register-otp .download-content {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 90px 243px;
-  grid-template-rows: 80px;
+  -ms-grid-columns: 90px 243px;
+      grid-template-columns: 90px 243px;
+  -ms-grid-rows: 80px;
+      grid-template-rows: 80px;
   padding-top: 12px;
   padding-bottom: 5px;
 }
@@ -329,11 +336,6 @@ body {
 }
 
 .register-otp .qr-code .img {
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   border: 1px solid #d9d9d9;
   margin-bottom: 5px;
@@ -357,6 +359,8 @@ body {
 }
 
 .register-otp .manualQRCode .example {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
 }
@@ -388,15 +392,8 @@ body {
 }
 
 .notification-otp {
-  -webkit-border-radius: 4px;
-  -khtml-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
   border-radius: 4px;
   -webkit-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -khtml-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
-  -moz-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -ms-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   -o-box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);
   box-shadow: 0 2px 3px 1px rgba(0,0,0,.2);

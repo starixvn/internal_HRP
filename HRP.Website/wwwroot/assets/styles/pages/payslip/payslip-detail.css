@@ -55,8 +55,10 @@ body {
 }
 
 .payslip-detail {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
 }
 
 .detail-section {
@@ -73,8 +75,12 @@ body {
 }
 
 .detail-section .content .row, .detail-section .footer .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   margin: 0 8px;
 }
 
@@ -90,7 +96,8 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   height: 28px;
 }
 

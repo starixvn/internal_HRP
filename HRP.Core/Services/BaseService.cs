@@ -13,8 +13,8 @@ namespace HRP.Core.Services
         private readonly IBaseRepository baseRepository;
 
         public BaseService(
-            IDynamicRepository dynamicRepository = null,
-            IBaseRepository baseRepository = null)
+            IDynamicRepository dynamicRepository,
+            IBaseRepository baseRepository)
         {
             this.dynamicRepository = dynamicRepository ?? new DynamicRepository();
             this.baseRepository = baseRepository ?? new BaseRepository();

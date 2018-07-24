@@ -1,0 +1,84 @@
+﻿@using HRP.Resources
+@using HRP.Models.MailSetting
+@model MailSettingViewModel
+
+@{
+    ViewData["Title"] = ViewLang.MailSetting;
+}
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/assets/styles/pages/configuration/mail-setting.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/configuration/css/mail-setting.min.css" rel="stylesheet" />
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.Configuration</li>
+    <li class="active">@ViewLang.MailSetting</li>
+</ol>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@ViewLang.SymbolCount</th>
+            <th>@ViewLang.Company</th>
+            <th>@ViewLang.Server</th>
+            <th>@ViewLang.Port</th>
+            <th>@ViewLang.SenderEmail</th>
+            <th>@ViewLang.SSL</th>
+            <th>@ViewLang.Priority</th>
+            @if (Model.IsHost)
+            {
+                <th>@ViewLang.Edit</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MailSettings != null && Model.MailSettings.Any())
+        {
+            var rowIndex = 0;
+            foreach (MailSettingModel mailSetting in Model.MailSettings)
+            {
+                rowIndex++;
+                var mailPriority = string.Empty;
+                <tr>
+                    <td class="text-center">@rowIndex</td>
+                    <td class="text-center">@mailSetting.Code</td>
+                    <td>@mailSetting.Server</td>
+                    <td class="text-center">@mailSetting.Port</td>
+                    <td>@mailSetting.Username</td>
+                    <td class="text-center has-icon">
+                        @if (mailSetting.IsAuth)
+                        {
+                            <span class="icon-active"></span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @switch (mailSetting.Priority)
+                        {
+                            case 0:
+                                mailPriority = "Normal";
+                                break;
+                            case 1:
+                                mailPriority = "Low";
+                                break;
+                            case 2:
+                                mailPriority = "High";
+                                break;
+                        }
+                        @mailPriority
+                    </td>
+                    @if (Model.IsHost)
+                    {
+                        <td class="text-center has-icon">
+                            <a class="icon-edit" asp-action="edit" asp-route-id="@mailSetting.CompanyId"></a>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

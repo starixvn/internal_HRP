@@ -17,7 +17,6 @@
     using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
-    using HRP.Repositories.Interfaces;
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
 
@@ -36,16 +35,16 @@
             ICryptoService cryptoService,
             IMonthlyPayrollService monthlyPayrollService,
             ITemplateReader templateReader,
-            IPaymentProcessRepository paymentProcessRepository = null,
-            IObjectStream fileStream = null)
+            IPaymentProcessRepository paymentProcessRepository,
+            IObjectStream fileStream)
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
             this.monthlyPayrollService = monthlyPayrollService;
             this.templateReader = templateReader;
-            this.paymentProcessRepository = paymentProcessRepository ?? new PaymentProcessRepository();
-            this.fileStream = fileStream ?? new ObjectStream();
+            this.paymentProcessRepository = paymentProcessRepository;
+            this.fileStream = fileStream;
         }
 
         public async Task<PaymentProcess> GetCurrentDuration()
