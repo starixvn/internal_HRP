@@ -1069,6 +1069,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Mail Setting.
+        /// </summary>
+        public static string EditMailSetting {
+            get {
+                return ResourceManager.GetString("EditMailSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Monthly Allowances.
         /// </summary>
         public static string EditMonthlyAllowances {
@@ -2554,15 +2563,6 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server.
-        /// </summary>
-        public static string Server {
-            get {
-                return ResourceManager.GetString("Server", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Setting.
         /// </summary>
         public static string Setting {
@@ -2595,6 +2595,15 @@ namespace HRP.Resources {
         public static string SkypeAccount {
             get {
                 return ResourceManager.GetString("SkypeAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP.
+        /// </summary>
+        public static string SMTP {
+            get {
+                return ResourceManager.GetString("SMTP", resourceCulture);
             }
         }
         

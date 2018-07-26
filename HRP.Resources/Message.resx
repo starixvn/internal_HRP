@@ -171,8 +171,8 @@
   <data name="UpdateFail" xml:space="preserve">
     <value>Update failed</value>
   </data>
-  <data name="UpdateSuccess" xml:space="preserve">
-    <value>Updated successfully</value>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Updated successfully!</value>
   </data>
   <data name="EditUserSuccess" xml:space="preserve">
     <value>User {0} has been successfully updated.</value>

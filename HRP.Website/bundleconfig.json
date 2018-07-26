@@ -240,6 +240,26 @@
     }
   },
   {
+    "outputFileName": "wwwroot/assets/bundles/mail/css/mail-setting.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/pages/mail/mail-setting.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/mail/css/edit-mail-setting.min.css",
+    "inputFiles": [
+      "wwwroot/assets/styles/pages/mail/edit-mail-setting.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
@@ -746,6 +766,18 @@
       "wwwroot/lib/CryptoJS/aes.js",
       "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/client-encryption.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundles/mail/js/edit-mail-setting.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/assets/js/mail/edit-mail-setting.js"
     ],
     "minify": {
       "enabled": true,

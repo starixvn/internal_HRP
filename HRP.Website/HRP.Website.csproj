@@ -109,6 +109,9 @@
     <Content Update="appsettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\MailSetting\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\MailSetting\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

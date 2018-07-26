@@ -2005,6 +2005,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updated successfully!.
+        /// </summary>
+        public static string UpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("UpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Payroll has been successfully updated!.
         /// </summary>
         public static string UpdateEmployeePayrollSuccessfully {
@@ -2073,15 +2082,6 @@ namespace HRP.Resources {
         public static string UpdatePersonalDetailsSuccessfully {
             get {
                 return ResourceManager.GetString("UpdatePersonalDetailsSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updated successfully.
-        /// </summary>
-        public static string UpdateSuccess {
-            get {
-                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         

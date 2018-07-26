@@ -1,0 +1,86 @@
+﻿@using HRP.Models.MailSetting
+@using HRP.Resources
+@model EditMailSettingViewModel
+
+@{
+    ViewData["Title"] = ViewLang.EditMailSetting;
+}
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/assets/styles/pages/mail/edit-mail-setting.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/assets/bundles/mail/css/edit-mail-setting.min.css" rel="stylesheet" />
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.Configuration</li>
+    <li><a asp-action="index">@ViewLang.MailSetting</a></li>
+    <li class="active">@(ViewLang.EditMailSetting + " '" + Model.MailSetting.Code + "'")</li>
+</ol>
+<form class="form-information block" asp-action="Edit" method="post" autocomplete="off">
+    <div class="list-message-error hidden" id="validation-summary">
+        <span asp-validation-for="MailSetting.Server" class="message"></span>
+        <span asp-validation-for="MailSetting.Port" class="message"></span>
+        <span asp-validation-for="MailSetting.Username" class="message"></span>
+        <span asp-validation-for="MailSetting.Password" class="message"></span>
+    </div>
+
+    @if (Model.IsSuccessful)
+    {
+        <div class="msg-success -has-icon">@Message.UpdatedSuccessfully</div>
+    }
+    @if (!Model.IsSuccessful && !string.IsNullOrWhiteSpace(Model.MessageResult))
+    {
+        <div class="msg-error -has-border">@Model.MessageResult</div>
+    }
+
+    <input type="hidden" asp-for="MailSetting.CompanyId" />
+    <input type="hidden" asp-for="MailSetting.Code" />
+    <input type="hidden" asp-for="MailSetting.Name" />
+
+    <label asp-for="MailSetting.Server" class="text -has-required">@ViewLang.SMTP</label>
+    <div class="group-control">
+        <input type="text" class="control" asp-for="MailSetting.Server" />
+    </div>
+
+    <label asp-for="MailSetting.Port" class="text -has-required">@ViewLang.Port</label>
+    <div class="group-control">
+        <input type="text" class="control" asp-for="MailSetting.Port" />
+    </div>
+
+    <label asp-for="MailSetting.Username" class="text -has-required">@ViewLang.SenderEmail</label>
+    <div class="group-control">
+        <input type="text" class="control" asp-for="MailSetting.Username" />
+    </div>
+
+    <label asp-for="MailSetting.Password" class="text -has-required">@ViewLang.Password</label>
+    <div class="group-control">
+        <input type="text" class="control" asp-for="MailSetting.Password" />
+    </div>
+
+    <div class="group-control">
+        <label>
+            <input type="checkbox" asp-for="MailSetting.IsAuth" />
+            <span>@ViewLang.SSL</span>
+        </label>
+    </div>
+
+    <div class="list-button">
+        <a asp-action="index" class="button -second">@ViewLang.Cancel</a>
+        <button type="submit" class="button -primary">@ViewLang.Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/assets/js/mail/edit-mail-setting.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/bundles/mail/js/edit-mail-setting.min.js"></script>
+    </environment>
+}

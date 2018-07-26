@@ -1119,10 +1119,13 @@
   <data name="SenderEmail" xml:space="preserve">
     <value>Sender Email</value>
   </data>
-  <data name="Server" xml:space="preserve">
-    <value>Server</value>
+  <data name="SMTP" xml:space="preserve">
+    <value>SMTP</value>
   </data>
   <data name="SSL" xml:space="preserve">
     <value>SSL</value>
+  </data>
+  <data name="EditMailSetting" xml:space="preserve">
+    <value>Edit Mail Setting</value>
   </data>
 </root>
