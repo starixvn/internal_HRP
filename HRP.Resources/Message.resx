@@ -825,4 +825,7 @@
   <data name="PasswordRuleCharacters" xml:space="preserve">
     <value>Contain UPPER/lowercase letters and numbers.</value>
   </data>
+  <data name="MailSettingMissing" xml:space="preserve">
+    <value>The payslip could not be delivered to the employee because there is no setting for mail server. Please check the Email setting.</value>
+  </data>
 </root>

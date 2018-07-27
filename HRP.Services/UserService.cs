@@ -1,11 +1,14 @@
 namespace HRP.Services
 {
     using System.Globalization;
+    using System.Net.Mail;
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using HRP.Core.Constants;
+    using HRP.Models.MailSetting;
     using Microsoft.AspNetCore.Http;
     using Models;
     using Resources;
@@ -18,15 +21,18 @@ namespace HRP.Services
         private readonly IBaseMailService emailService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IBaseService baseService;
+        private readonly IMailSettingService mailSettingService;
 
         public UserService(
-            IBaseMailService emailService,
             IHttpContextAccessor httpContextAccessor,
-            IBaseService baseService)
+            IBaseMailService emailService,
+            IBaseService baseService,
+            IMailSettingService mailSettingService)
         {
-            this.emailService = emailService;
             this.httpContextAccessor = httpContextAccessor;
+            this.emailService = emailService;
             this.baseService = baseService;
+            this.mailSettingService = mailSettingService;
         }
 
         public async Task<string> GenerateTokenOTPRegisterAsync(string username)
@@ -98,29 +104,40 @@ namespace HRP.Services
 
         public async Task SendMailToRegisterOTPAsync(string tokenOTPRegister)
         {
-            var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenOTPRegisterCriteria
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId).ConfigureAwait(false);
+
+            if (mailSetting != null)
             {
-                TokenOTPRegister = tokenOTPRegister
-            }).ConfigureAwait(false);
+                var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenOTPRegisterCriteria
+                {
+                    TokenOTPRegister = tokenOTPRegister
+                }).ConfigureAwait(false);
 
-            var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
+                var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
 
-            var linkToRegisterOTP = string.Format(
-                "{0}://{1}/Account/SetupOTP?token={2}",
-                httpContextAccessor.HttpContext.Request.Scheme,
-                httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
-                tokenOTPRegister);
+                var linkToRegisterOTP = string.Format(
+                    "{0}://{1}/Account/SetupOTP?token={2}",
+                    httpContextAccessor.HttpContext.Request.Scheme,
+                    httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
+                    tokenOTPRegister);
 
-            body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
+                body = string.Format(CultureInfo.InvariantCulture, body, user.Username, linkToRegisterOTP);
 
-            var mailModel = new MailModel
-            {
-                Subject = Message.RegisterOTP,
-                ReceiverEmail = user.Email,
-                Body = body
-            };
+                var mailModel = new MailModel
+                {
+                    Server = mailSetting.Server,
+                    Port = mailSetting.Port ?? 0,
+                    Username = mailSetting.Username,
+                    Password = mailSetting.Password,
+                    IsAuth = mailSetting.IsAuth,
+                    Priority = (MailPriority)mailSetting.Priority,
+                    Subject = Message.RegisterOTP,
+                    ReceiverEmail = user.Email,
+                    Body = body
+                };
 
-            emailService.SendEmail(mailModel);
+                emailService.SendEmail(mailModel);
+            }
         }
 
         public async Task<bool> UpdateOTPStatusAsync(int userId, bool isOTPRegistered)
@@ -151,25 +168,36 @@ namespace HRP.Services
 
         private async Task SendMailToResetPasswordAsync(string username, string tokenResetPassword)
         {
-            var user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
-            var body = emailService.ReadTextFile(EmailTemplateResetPassword);
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId).ConfigureAwait(false);
 
-            var linkToReset = string.Format(
-                "{0}://{1}/Auth/ResetPassword?token={2}",
-                httpContextAccessor.HttpContext.Request.Scheme,
-                httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
-                tokenResetPassword);
-
-            body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
-
-            var mailModel = new MailModel
+            if (mailSetting != null)
             {
-                Subject = Message.ResetPasswordEmailSubject,
-                ReceiverEmail = user.Email,
-                Body = body
-            };
+                User user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
+                var body = emailService.ReadTextFile(EmailTemplateResetPassword);
 
-            emailService.SendEmail(mailModel);
+                var linkToReset = string.Format(
+                    "{0}://{1}/Auth/ResetPassword?token={2}",
+                    httpContextAccessor.HttpContext.Request.Scheme,
+                    httpContextAccessor.HttpContext.Request.Host.ToUriComponent(),
+                    tokenResetPassword);
+
+                body = string.Format(CultureInfo.InvariantCulture, body, username, linkToReset);
+
+                var mailModel = new MailModel
+                {
+                    Server = mailSetting.Server,
+                    Port = mailSetting.Port ?? 0,
+                    Username = mailSetting.Username,
+                    Password = mailSetting.Password,
+                    IsAuth = mailSetting.IsAuth,
+                    Priority = (MailPriority)mailSetting.Priority,
+                    Subject = Message.ResetPasswordEmailSubject,
+                    ReceiverEmail = user.Email,
+                    Body = body
+                };
+
+                emailService.SendEmail(mailModel);
+            }
         }
 
         private static string GenerateRandomString()

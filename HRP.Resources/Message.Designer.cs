@@ -1321,6 +1321,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The payslip could not be delivered to the employee because there is no setting for mail server. Please check the Email setting..
+        /// </summary>
+        public static string MailSettingMissing {
+            get {
+                return ResourceManager.GetString("MailSettingMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Marital Status is required!.
         /// </summary>
         public static string MaritalStatusRequired {

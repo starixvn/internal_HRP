@@ -19,5 +19,7 @@ namespace HRP.Core.Constants
         public const string CertificateFilePath = "App_Data";
 
         public const string CertificateFileName = "SecretKey.pfx";
+
+        public const int DefaultCompanyId = -1001;
     }
 }

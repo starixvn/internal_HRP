@@ -5,6 +5,7 @@ namespace HRP.Services.UnitTests
     using Core.Model;
     using Core.Services;
     using Criteria;
+    using HRP.Models.MailSetting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
     using Models;
@@ -14,9 +15,10 @@ namespace HRP.Services.UnitTests
 
     public class UserServiceTests
     {
-        private IBaseMailService emailService;
         private IHttpContextAccessor httpContextAccessor;
+        private IBaseMailService emailService;
         private IBaseService baseService;
+        private IMailSettingService mailSettingService;
 
         #region GenerateTokenOTPRegister
 
@@ -144,6 +146,7 @@ namespace HRP.Services.UnitTests
             var userService = GetUserService();
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenResetPasswordCriteria>()).Returns(commandResult);
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(new User());
+            mailSettingService.GetMailSettingForSendMailAsync(Arg.Any<int>()).Returns(new MailSettingModel());
 
             // Act
             await userService.ResetUserPasswordAsync("test");
@@ -178,6 +181,7 @@ namespace HRP.Services.UnitTests
             // Arrange
             var userService = GetUserService();
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(new User());
+            mailSettingService.GetMailSettingForSendMailAsync(Arg.Any<int>()).Returns(new MailSettingModel());
 
             // Act
             await userService.SendMailToRegisterOTPAsync("test");
@@ -220,9 +224,10 @@ namespace HRP.Services.UnitTests
 
         private UserService GetUserService()
         {
-            baseService = Substitute.For<IBaseService>();
             httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+            baseService = Substitute.For<IBaseService>();
             emailService = Substitute.For<IBaseMailService>();
+            mailSettingService = Substitute.For<IMailSettingService>();
 
             var appSettingsOptions = new AppSettingsOptions
             {
@@ -234,7 +239,7 @@ namespace HRP.Services.UnitTests
             var configuration = Substitute.For<IOptionsSnapshot<AppSettingsOptions>>();
             configuration.Value.Returns(appSettingsOptions);
 
-            var service = new UserService(emailService, httpContextAccessor, baseService);
+            var service = new UserService(httpContextAccessor, emailService, baseService, mailSettingService);
 
             return service;
         }

@@ -37,6 +37,16 @@
             return await baseService.GetDataEntityAsync<MailSettingModel>(criteria).ConfigureAwait(false);
         }
 
+        public async Task<MailSettingModel> GetMailSettingForSendMailAsync(int companyId)
+        {
+            var criteria = new GetMailSettingForSendMailCriteria
+            {
+                CompanyId = companyId
+            };
+
+            return await baseService.GetDataEntityAsync<MailSettingModel>(criteria).ConfigureAwait(false);
+        }
+
         public async Task<CommandResult> EditMailSettingAsync(MailSettingModel mailSetting)
         {
             var criteria = new EditMailSettingCriteria

@@ -11,6 +11,8 @@
 
         Task<MailSettingModel> GetMailSettingByCompanyIdAsync(int companyId);
 
+        Task<MailSettingModel> GetMailSettingForSendMailAsync(int companyId);
+
         Task<CommandResult> EditMailSettingAsync(MailSettingModel mailSetting);
     }
 }

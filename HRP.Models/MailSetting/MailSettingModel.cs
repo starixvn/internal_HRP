@@ -32,6 +32,6 @@
         public string Password { get; set; }
 
         public bool IsAuth { get; set; }
-        public int? Priority { get; set; }
+        public int Priority { get; set; }
     }
 }

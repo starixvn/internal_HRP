@@ -8,6 +8,7 @@
     using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Criteria.Payslip;
+    using HRP.Models.MailSetting;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Models.ServiceModels;
@@ -23,6 +24,7 @@
         private IBaseMailService emailService;
         private IViewRenderService viewRenderService;
         private IPdfRenderService pdfRenderService;
+        private IMailSettingService mailSettingService;
         private IPayslipRepository payslipRepository;
 
         [Fact]
@@ -137,7 +139,24 @@
         #endregion GetPayslipDetailAsync
 
         [Fact]
-        public async Task SendPayslipAsync_WhenCalled_ExpectedSendMail()
+        public async Task SendPayslipAsync_MailSettingIsNull_ReturnAsExpectedCommandResult()
+        {
+            // Arrange
+            MailSettingModel mailSetting = null;
+            var viewModel = new SendPayslipViewModel();
+            var payslipService = GetPayslipService();
+            mailSettingService.GetMailSettingForSendMailAsync(Arg.Any<int>()).Returns(mailSetting);
+
+            // Act
+            var actual = await payslipService.SendPayslipAsync(viewModel);
+
+            // Assert
+            Assert.Equal(1, actual.Code);
+            Assert.Equal("The payslip could not be delivered to the employee because there is no setting for mail server. Please check the Email setting.", actual.Message);
+        }
+
+        [Fact]
+        public async Task SendPayslipAsync_MailSettingIsNotNull_ExpectedSendMail()
         {
             // Arrange
             var viewModel = new SendPayslipViewModel();
@@ -146,24 +165,21 @@
                 new PayslipDetailModel { PayrollId = 1 },
                 new PayslipDetailModel { PayrollId = 2 }
             };
+            var commandResult = new CommandResult();
             var payslipService = GetPayslipService();
+            mailSettingService.GetMailSettingForSendMailAsync(Arg.Any<int>()).Returns(new MailSettingModel());
             payslipRepository.GetPayslipDetailsAsync(Arg.Any<GetPayslipDetailsCriteria>()).Returns(payslips);
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdatePayslipCriteria>()).Returns(commandResult);
 
             // Act
-            await payslipService.SendPayslipAsync(viewModel);
+            var actual = await payslipService.SendPayslipAsync(viewModel);
 
             // Assert
+            Assert.Equal(commandResult, actual);
             emailService.Received(2).SendEmail(Arg.Any<MailModel>());
         }
 
         #region Helpers
-
-        private static IBaseService FakeBaseService()
-        {
-            var service = Substitute.For<IBaseService>();
-
-            return service;
-        }
 
         private static ISessionService FakeSessionService()
         {
@@ -173,41 +189,26 @@
             return service;
         }
 
-        private static ICryptoService FakeCryptoService()
-        {
-            return Substitute.For<ICryptoService>();
-        }
-
-        private static IBaseMailService FakeMailService()
-        {
-            return Substitute.For<IBaseMailService>();
-        }
-
-        private static IViewRenderService FakeViewRenderService()
-        {
-            return Substitute.For<IViewRenderService>();
-        }
-
-        private static IPdfRenderService FakePdfRenderService()
-        {
-            return Substitute.For<IPdfRenderService>();
-        }
-
-        private static IPayslipRepository FakePayslipRepository()
-        {
-            return Substitute.For<IPayslipRepository>();
-        }
-
         private PayslipService GetPayslipService()
         {
-            baseService = FakeBaseService();
+            baseService = Substitute.For<IBaseService>();
             sessionService = FakeSessionService();
-            cryptoService = FakeCryptoService();
-            payslipRepository = FakePayslipRepository();
-            emailService = FakeMailService();
-            viewRenderService = FakeViewRenderService();
-            pdfRenderService = FakePdfRenderService();
-            var service = new PayslipService(baseService, sessionService, cryptoService, emailService, viewRenderService, pdfRenderService, payslipRepository);
+            cryptoService = Substitute.For<ICryptoService>();
+            payslipRepository = Substitute.For<IPayslipRepository>();
+            emailService = Substitute.For<IBaseMailService>();
+            viewRenderService = Substitute.For<IViewRenderService>();
+            pdfRenderService = Substitute.For<IPdfRenderService>();
+            mailSettingService = Substitute.For<IMailSettingService>();
+
+            var service = new PayslipService(
+                baseService,
+                sessionService,
+                cryptoService,
+                emailService,
+                viewRenderService,
+                pdfRenderService,
+                mailSettingService,
+                payslipRepository);
 
             return service;
         }

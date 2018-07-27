@@ -6,19 +6,14 @@ namespace HRP.Core.Services
     using System.Net.Mail;
     using System.Text.RegularExpressions;
     using HRP.Core.Criteria;
-    using Microsoft.Extensions.Options;
-    using Model;
+    using HRP.Core.Model;
 
     public class BaseMailService : IBaseMailService
     {
-        private readonly IOptionsSnapshot<MailConfigs> configuration;
         private readonly IBaseService baseService;
 
-        public BaseMailService(
-            IOptionsSnapshot<MailConfigs> configuration,
-            IBaseService baseService)
+        public BaseMailService(IBaseService baseService)
         {
-            this.configuration = configuration;
             this.baseService = baseService;
         }
 
@@ -32,12 +27,12 @@ namespace HRP.Core.Services
 
             using (var message = new MailMessage())
             {
-                message.From = new MailAddress(configuration.Value.Username);
+                message.From = new MailAddress(email.Username);
                 message.To.Add(new MailAddress(email.ReceiverEmail));
                 message.Subject = email.Subject;
                 message.Body = email.Body;
                 message.IsBodyHtml = true;
-                message.Priority = configuration.Value.MailPriority;
+                message.Priority = email.Priority;
 
                 foreach (Attachment attachment in email.Attachments)
                 {
@@ -48,14 +43,14 @@ namespace HRP.Core.Services
                 {
                     var credential = new NetworkCredential
                     {
-                        UserName = configuration.Value.Username,
-                        Password = configuration.Value.Password
+                        UserName = email.Username,
+                        Password = email.Password
                     };
                     mailclient.UseDefaultCredentials = true;
                     mailclient.Credentials = credential;
-                    mailclient.Host = configuration.Value.SmtpServer;
-                    mailclient.Port = configuration.Value.SmtpPortNumber;
-                    mailclient.EnableSsl = configuration.Value.EnableSsl;
+                    mailclient.Host = email.Server;
+                    mailclient.Port = email.Port;
+                    mailclient.EnableSsl = email.IsAuth;
 
                     try
                     {

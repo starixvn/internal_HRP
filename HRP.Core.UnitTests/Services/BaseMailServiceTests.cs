@@ -2,9 +2,7 @@
 {
     using System;
     using System.IO;
-    using HRP.Core.Model;
     using HRP.Core.Services;
-    using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
@@ -47,12 +45,9 @@
 
         private void FakeBaseMailService()
         {
-            var mailConfig = new MailConfigs();
             var baseService = Substitute.For<IBaseService>();
-            var configuration = Substitute.For<IOptionsSnapshot<MailConfigs>>();
-            configuration.Value.Returns(mailConfig);
 
-            baseMailService = new BaseMailService(configuration, baseService);
+            baseMailService = new BaseMailService(baseService);
         }
     }
 }

@@ -12,10 +12,12 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.Payslip;
+    using HRP.Models.MailSetting;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.Payslip;
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
+    using HRP.Resources;
 
     public class PayslipService : IPayslipService
     {
@@ -28,7 +30,9 @@
         private readonly IViewRenderService viewRenderService;
         private readonly IPdfRenderService pdfRenderService;
         private readonly IPayslipRepository payslipRepository;
+        private readonly IMailSettingService mailSettingService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public PayslipService(
             IBaseService baseService,
             ISessionService sessionService,
@@ -36,7 +40,9 @@
             IBaseMailService emailService,
             IViewRenderService viewRenderService,
             IPdfRenderService pdfRenderService,
+            IMailSettingService mailSettingService,
             IPayslipRepository payslipRepository)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
@@ -44,6 +50,7 @@
             this.emailService = emailService;
             this.viewRenderService = viewRenderService;
             this.pdfRenderService = pdfRenderService;
+            this.mailSettingService = mailSettingService;
             this.payslipRepository = payslipRepository;
         }
 
@@ -87,13 +94,22 @@
                 PayrollIds = string.Join(",", viewModel.PayrollIds),
                 CompanyId = viewModel.CompanyId
             };
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(viewModel.CompanyId).ConfigureAwait(false);
+
+            if (mailSetting == null)
+            {
+                return new CommandResult
+                {
+                    Message = Message.MailSettingMissing
+                };
+            }
 
             IEnumerable<PayslipDetailModel> payslips = await payslipRepository.GetPayslipDetailsAsync(criteria).ConfigureAwait(false);
 
             foreach (PayslipDetailModel payslip in payslips)
             {
                 DescryptAndCalculateAmount(payslip);
-                await RenderPdfAndSendMailAsync(payslip).ConfigureAwait(false);
+                await RenderPdfAndSendMailAsync(mailSetting, payslip).ConfigureAwait(false);
             }
 
             CommandResult commandResult = await UpdatePayslipAsync(viewModel).ConfigureAwait(false);
@@ -113,7 +129,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
 
-        private async Task RenderPdfAndSendMailAsync(PayslipDetailModel payslip)
+        private async Task RenderPdfAndSendMailAsync(MailSettingModel mailSetting, PayslipDetailModel payslip)
         {
             var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(EmailTemplate), payslip.Nickname);
             var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
@@ -129,6 +145,12 @@
 
                 var mailModel = new MailModel
                 {
+                    Server = mailSetting.Server,
+                    Port = mailSetting.Port ?? 0,
+                    Username = mailSetting.Username,
+                    Password = mailSetting.Password,
+                    IsAuth = mailSetting.IsAuth,
+                    Priority = (MailPriority)mailSetting.Priority,
                     Subject = subject,
                     ReceiverEmail = payslip.Email,
                     Body = body,
