@@ -72,7 +72,7 @@ BEGIN
 		,emp.FullNamePFileAdmin
 		,emp.NicknamePFileAdmin
 	FROM dbo.Employment AS emp WITH (NOLOCK)
-		INNER JOIN dbo.EmploymentHistory AS ec WITH (NOLOCK) ON emp.EmployeeId = ec.EmployeeId
+		LEFT JOIN dbo.EmploymentHistory AS ec WITH (NOLOCK) ON emp.EmployeeId = ec.EmployeeId
 		INNER JOIN dbo.Company AS c WITH (NOLOCK) ON emp.CompanyId = c.CompanyId
 	WHERE emp.EmployeeId = @EmployeeId
 
