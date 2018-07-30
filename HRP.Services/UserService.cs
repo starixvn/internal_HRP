@@ -1,7 +1,6 @@
 namespace HRP.Services
 {
     using System.Globalization;
-    using System.Net.Mail;
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Model;
@@ -130,13 +129,13 @@ namespace HRP.Services
                     Username = mailSetting.Username,
                     Password = mailSetting.Password,
                     IsAuth = mailSetting.IsAuth,
-                    Priority = (MailPriority)mailSetting.Priority,
+                    Priority = mailSetting.Priority,
                     Subject = Message.RegisterOTP,
                     ReceiverEmail = user.Email,
                     Body = body
                 };
 
-                emailService.SendEmail(mailModel);
+                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
             }
         }
 
@@ -190,13 +189,13 @@ namespace HRP.Services
                     Username = mailSetting.Username,
                     Password = mailSetting.Password,
                     IsAuth = mailSetting.IsAuth,
-                    Priority = (MailPriority)mailSetting.Priority,
+                    Priority = mailSetting.Priority,
                     Subject = Message.ResetPasswordEmailSubject,
                     ReceiverEmail = user.Email,
                     Body = body
                 };
 
-                emailService.SendEmail(mailModel);
+                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
             }
         }
 

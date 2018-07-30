@@ -18,13 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
-    <Content Remove="Models\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <None Remove="Models\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="App_Data\ColumnsConfiguration.xml" />
     <None Remove="App_Data\SPNames.xml" />
   </ItemGroup>
@@ -71,65 +64,6 @@
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\assets\bundles\account\css\" />
-    <Folder Include="wwwroot\assets\bundles\account\js\" />
-    <Folder Include="wwwroot\assets\bundles\auth\js\" />
-    <Folder Include="wwwroot\assets\bundles\auth\css\" />
-    <Folder Include="wwwroot\assets\bundles\configuration\js\" />
-    <Folder Include="wwwroot\assets\bundles\configuration\css\" />
-    <Folder Include="wwwroot\assets\bundles\currency\js\" />
-    <Folder Include="wwwroot\assets\bundles\employee\" />
-    <Folder Include="wwwroot\assets\bundles\user\css\" />
-    <Folder Include="wwwroot\assets\bundles\user\js\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\SystemSecurity\FileNotFound.cshtml" />
-    <None Include="Views\SystemSecurity\Generate.cshtml" />
-    <None Include="Views\SystemSecurity\Password.cshtml" />
-    <None Include="wwwroot\assets\styles\pages\systemsecurity\certificate.css.map" />
-    <None Include="wwwroot\assets\styles\pages\systemsecurity\certificate.scss" />
-    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shBrushGroovy.js" />
-    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shCore.js" />
-    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\shLegacy.js" />
-    <None Include="wwwroot\lib\fanex-multiselect\HighLightSyntax\scripts\XRegExp.js" />
-    <None Include="wwwroot\lib\jQuery-contextMenu\font\context-menu-icons.woff2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Production.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Views\MailSetting\Edit.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\MailSetting\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="wwwroot\EmailTemplates\OTPRegistration.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\EmailTemplates\Payslip.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\EmailTemplates\ResetPassword.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\ExcelTemplates\EuroBankIn.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\ExcelTemplates\BankIn.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <Target Name="CreateLogsFolder" AfterTargets="AfterPublish">

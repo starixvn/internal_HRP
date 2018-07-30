@@ -2,11 +2,12 @@ namespace HRP.Core.Services
 {
     using System;
     using System.IO;
-    using System.Net;
-    using System.Net.Mail;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
+    using MailKit.Net.Smtp;
+    using MimeKit;
 
     public class BaseMailService : IBaseMailService
     {
@@ -17,7 +18,7 @@ namespace HRP.Core.Services
             this.baseService = baseService;
         }
 
-        public bool SendEmail(MailModel email)
+        public async Task<bool> SendEmailAsync(MailModel email)
         {
             bool mailSent = false;
             if (email == null || !IsValidEmail(email.ReceiverEmail))
@@ -25,51 +26,42 @@ namespace HRP.Core.Services
                 return mailSent;
             }
 
-            using (var message = new MailMessage())
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(email.Username));
+            message.To.Add(new MailboxAddress(email.ReceiverEmail));
+            message.Subject = email.Subject;
+            message.Priority = (MessagePriority)email.Priority;
+
+            var builder = new BodyBuilder
             {
-                message.From = new MailAddress(email.Username);
-                message.To.Add(new MailAddress(email.ReceiverEmail));
-                message.Subject = email.Subject;
-                message.Body = email.Body;
-                message.IsBodyHtml = true;
-                message.Priority = email.Priority;
+                HtmlBody = email.Body
+            };
+            foreach (MimeEntity attachment in email.Attachments)
+            {
+                builder.Attachments.Add(attachment);
+            }
 
-                foreach (Attachment attachment in email.Attachments)
+            message.Body = builder.ToMessageBody();
+
+            using (var mailclient = new SmtpClient())
+            {
+                await mailclient.ConnectAsync(email.Server, email.Port, email.IsAuth).ConfigureAwait(false);
+                await mailclient.AuthenticateAsync(email.Username, email.Password).ConfigureAwait(false);
+
+                try
                 {
-                    message.Attachments.Add(attachment);
+                    await mailclient.SendAsync(message).ConfigureAwait(false);
+
+                    await mailclient.DisconnectAsync(true).ConfigureAwait(false);
+                    mailSent = true;
+                    await WriteLogSendEmail(email, mailSent).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
                 }
 
-                using (var mailclient = new SmtpClient())
-                {
-                    var credential = new NetworkCredential
-                    {
-                        UserName = email.Username,
-                        Password = email.Password
-                    };
-                    mailclient.UseDefaultCredentials = true;
-                    mailclient.Credentials = credential;
-                    mailclient.Host = email.Server;
-                    mailclient.Port = email.Port;
-                    mailclient.EnableSsl = email.IsAuth;
-
-                    try
-                    {
-                        mailclient.Send(message);
-
-                        mailSent = true;
-                        WriteLogSendEmail(email, mailSent);
-                    }
-                    catch (SmtpException ex)
-                    {
-                        WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
-                    }
-
-                    return mailSent;
-                }
+                return mailSent;
             }
         }
 
@@ -92,7 +84,7 @@ namespace HRP.Core.Services
             return regex.IsMatch(email);
         }
 
-        private void WriteLogSendEmail(
+        private async Task WriteLogSendEmail(
             MailModel email,
             bool mailSent,
             string errorMessage = null,
@@ -108,7 +100,7 @@ namespace HRP.Core.Services
                 StackTrace = stackTrace
             };
 
-            baseService.ExecuteNonQueryAsync(criteria).Wait();
+            await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
         }
     }
 }

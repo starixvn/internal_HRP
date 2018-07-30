@@ -5,7 +5,6 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Net.Mail;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
     using HRP.Core.Enumerations;
@@ -18,6 +17,7 @@
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using HRP.Resources;
+    using MimeKit;
 
     public class PayslipService : IPayslipService
     {
@@ -33,6 +33,7 @@
         private readonly IMailSettingService mailSettingService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public PayslipService(
             IBaseService baseService,
             ISessionService sessionService,
@@ -139,9 +140,10 @@
 
             using (var input = new MemoryStream(content))
             {
-                var mailAttachments = new List<Attachment>();
-                var mailAttachment = new Attachment(input, fileName);
-                mailAttachments.Add(mailAttachment);
+                var attachments = new AttachmentCollection
+                {
+                    { fileName, input }
+                };
 
                 var mailModel = new MailModel
                 {
@@ -150,14 +152,14 @@
                     Username = mailSetting.Username,
                     Password = mailSetting.Password,
                     IsAuth = mailSetting.IsAuth,
-                    Priority = (MailPriority)mailSetting.Priority,
+                    Priority = mailSetting.Priority,
                     Subject = subject,
                     ReceiverEmail = payslip.Email,
                     Body = body,
-                    Attachments = mailAttachments
+                    Attachments = attachments
                 };
 
-                emailService.SendEmail(mailModel);
+                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
             }
         }
 
