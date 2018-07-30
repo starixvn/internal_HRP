@@ -259,5 +259,10 @@
     <Build Include="dbo\Stored Procedures\MailRecord_Create.sql" />
     <Build Include="dbo\Stored Procedures\User_GetFilePassword.sql" />
     <Build Include="dbo\Stored Procedures\User_UpdateFilePassword.sql" />
+    <Build Include="dbo\Tables\MailSetting.sql" />
+    <Build Include="dbo\Stored Procedures\MailSetting_Update.sql" />
+    <Build Include="dbo\Stored Procedures\MailSetting_GetForSendMail.sql" />
+    <Build Include="dbo\Stored Procedures\MailSetting_GetByCompanyId.sql" />
+    <Build Include="dbo\Stored Procedures\MailSetting_Get.sql" />
   </ItemGroup>
 </Project>
