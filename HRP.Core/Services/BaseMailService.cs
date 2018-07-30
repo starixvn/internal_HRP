@@ -7,6 +7,7 @@ namespace HRP.Core.Services
     using HRP.Core.Criteria;
     using HRP.Core.Model;
     using MailKit.Net.Smtp;
+    using MailKit.Security;
     using MimeKit;
 
     public class BaseMailService : IBaseMailService
@@ -55,15 +56,27 @@ namespace HRP.Core.Services
                 try
                 {
                     await mailclient.SendAsync(message).ConfigureAwait(false);
-
-                    await mailclient.DisconnectAsync(true).ConfigureAwait(false);
                     mailSent = true;
                     await WriteLogSendEmail(email, mailSent).ConfigureAwait(false);
+                }
+                catch (AuthenticationException ex)
+                {
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                }
+                catch (SmtpCommandException ex)
+                {
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                }
+                catch (SmtpProtocolException ex)
+                {
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
                     await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
                 }
+
+                await mailclient.DisconnectAsync(true).ConfigureAwait(false);
 
                 return mailSent;
             }
