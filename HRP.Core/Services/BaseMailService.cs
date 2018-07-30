@@ -46,7 +46,11 @@ namespace HRP.Core.Services
             using (var mailclient = new SmtpClient())
             {
                 await mailclient.ConnectAsync(email.Server, email.Port, email.IsAuth).ConfigureAwait(false);
-                await mailclient.AuthenticateAsync(email.Username, email.Password).ConfigureAwait(false);
+
+                if (email.IsAuth)
+                {
+                    await mailclient.AuthenticateAsync(email.Username, email.Password).ConfigureAwait(false);
+                }
 
                 try
                 {

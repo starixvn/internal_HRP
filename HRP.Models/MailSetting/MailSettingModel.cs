@@ -24,7 +24,6 @@
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string Username { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
             100,
             ErrorMessageResourceType = typeof(Message),
