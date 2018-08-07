@@ -484,7 +484,6 @@
             var viewModel = Assert.IsType<TwoFactorAuthenticatorViewModel>(viewResult.Model);
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Null(viewModel.OTPCode);
-            Assert.False(viewModel.IsByPassTwoFactor);
         }
 
         [Fact]
@@ -570,8 +569,6 @@
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
             Assert.Empty(viewModelResult.OTPCode);
-            Assert.False(viewModelResult.IsByPassTwoFactor);
-            // Assert.False(viewModelResult.IsEncrypted);
             Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
             Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }
@@ -604,7 +601,6 @@
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
             Assert.Empty(viewModelResult.OTPCode);
-            Assert.False(viewModelResult.IsByPassTwoFactor);
             Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
             Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }

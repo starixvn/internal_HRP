@@ -290,8 +290,7 @@ namespace HRP.Website.Controllers
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
 
-            // TODO: Remove IsByPassTwoFactor
-            if (ModelState.IsValid && (isOTPValid || viewModel.IsByPassTwoFactor))
+            if (ModelState.IsValid && isOTPValid)
             {
                 await SignUserIn(user);
                 return RedirectToAction("Index", "Home");
