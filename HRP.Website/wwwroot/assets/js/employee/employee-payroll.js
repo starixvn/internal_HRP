@@ -472,16 +472,6 @@
             }
         }).change();
 
-        $('#Allowance_DutyMealCurrencyId').on('change', function (e) {
-            if (e.target.value) {
-                var dutyMealPerDay = $('#duty-meal-per-day').val();
-                if (dutyMealPerDay) {
-                    var workingDays = $('input[name="BasicSalary.WorkingDays"]:checked').val();
-                    $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay);
-                }
-            }
-        });
-
         $('#BasicSalary_Salary_PlainValue, #BasicSalary_Salary_CurrencyId').on('change', function (e) {
             roundingAmount(e.target, 0);
             validatedInvalidRelatedElements(e.target);
@@ -551,9 +541,9 @@
             var dutyMealPerDay = $('#duty-meal-per-day').val();
 
             if (dutyMealPerDay !== '') {
-                $('#Allowance_DutyMealAmount').val(workingDays * dutyMealPerDay).change().valid();
+                $('#Allowance_DutyMeal_PlainValue').val(workingDays * dutyMealPerDay).change().valid();
             } else {
-                $('#Allowance_DutyMealAmount').val('').change();
+                $('#Allowance_DutyMeal_PlainValue').val('').change();
             }
         });
 

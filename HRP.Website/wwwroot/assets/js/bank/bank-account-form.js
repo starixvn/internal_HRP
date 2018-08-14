@@ -152,7 +152,6 @@ var bankAccountForm = {
     },
 
     handleFormSubmittedInModal: function () {
-
         commonFunctions.disableEnterKeySubmit($(".bank-account-form"));
 
         var isModal = $(".bank-account-form :submit").data("ismodal") === true;
@@ -219,8 +218,6 @@ var bankAccountForm = {
     countTimeInSeconds: 5,
 
     checkFormError: function () {
-        console.log("custom check form for error");
-
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
             $(".bank-account-form .list-message-error").addClass("hidden");
