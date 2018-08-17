@@ -19,7 +19,9 @@
 
     public class ExportExcelService : IExportExcelService
     {
-        private const string NumberFormatWithThousandSeperatorAndNoDecimal = "#,##0";
+        private const string NumberFormatNoDecimal = "#,##0";
+        private const string NumberFormatTwoDecimals = "#,##0.##";
+        private const string NumberFormatFiveDecimals = "#,##0.#####";
         private readonly ICryptoService cryptoService;
 
         public ExportExcelService(ICryptoService cryptoService)
@@ -244,7 +246,7 @@
             if (data is float)
             {
                 // writing amount of money
-                worksheet.Cells[currentRow, 4].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
+                worksheet.Cells[currentRow, 4].Style.Numberformat.Format = NumberFormatNoDecimal;
             }
         }
 
@@ -273,7 +275,7 @@
                         worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
 
                         worksheet.Cells[rowIndex, 11].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
+                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = NumberFormatNoDecimal;
 
                         rowIndex++;
                     }
@@ -294,7 +296,7 @@
             {
                 worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
                 worksheet.Cells[$"J{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
-                worksheet.Cells[$"J{currentRow}"].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
+                worksheet.Cells[$"J{currentRow}"].Style.Numberformat.Format = NumberFormatNoDecimal;
 
                 currentRow++;
             }
@@ -338,7 +340,7 @@
                         worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
 
                         worksheet.Cells[rowIndex, 10].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 10].Style.Numberformat.Format = NumberFormatWithThousandSeperatorAndNoDecimal;
+                        worksheet.Cells[rowIndex, 10].Style.Numberformat.Format = NumberFormatNoDecimal;
 
                         rowIndex++;
                     }
@@ -427,6 +429,12 @@
                         worksheet.Cells[row, 46].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
                         worksheet.Cells[row, 47].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
                         worksheet.Cells[row, 48].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
+
+                        for (var col = 10; col <= 48; col++)
+                        {
+                            CreateConditionalFormating(worksheet.Cells[row, col], NumberFormatTwoDecimals);
+                        }
+
                         row++;
                         serialNo++;
                     }
@@ -465,6 +473,10 @@
                 worksheet.Cells[row, 1].Value = currency.CurrencyCode;
                 worksheet.Cells[row, 3].Value = exchangeRateToUSD?.ExchangeRate;
                 worksheet.Cells[row, 4].Value = exchangeRateToMYR?.ExchangeRate;
+
+                CreateConditionalFormating(worksheet.Cells[row, 3], NumberFormatFiveDecimals);
+                CreateConditionalFormating(worksheet.Cells[row, 4], NumberFormatFiveDecimals);
+
                 row++;
             }
         }
@@ -536,8 +548,24 @@
                 worksheet.Cells[row, 47].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
                 worksheet.Cells[row, 48].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
+                for (var col = 10; col <= 48; col++)
+                {
+                    CreateConditionalFormating(worksheet.Cells[row, col], NumberFormatTwoDecimals);
+                }
+
                 row++;
             }
+        }
+
+        private static void CreateConditionalFormating(ExcelRange cell, string decimalFormat)
+        {
+            var cond1 = cell.ConditionalFormatting.AddExpression();
+            cond1.Style.NumberFormat.Format = NumberFormatNoDecimal;
+            cond1.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) = 0),1,0)", cell.Address);
+
+            var cond2 = cell.ConditionalFormatting.AddExpression();
+            cond2.Style.NumberFormat.Format = decimalFormat;
+            cond2.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) <> 0),1,0)", cell.Address);
         }
 
         private static decimal ParseToDecimal(string amount)
