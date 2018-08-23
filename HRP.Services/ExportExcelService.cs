@@ -606,11 +606,18 @@
                         var propertyValue = propertyInfo.GetValue(record);
                         var cell = worksheet.Cells[row, col];
 
-                        cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
-
-                        if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
+                        if (column.IsAmount && propertyValue != null && !string.IsNullOrWhiteSpace(propertyValue.ToString()))
                         {
-                            cell.Style.Numberformat.Format = "dd/MM/yyyy";
+                            cell.Value = decimal.Parse(propertyValue.ToString());
+                        }
+                        else
+                        {
+                            cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
+
+                            if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
+                            {
+                                cell.Style.Numberformat.Format = "dd/MM/yyyy";
+                            }
                         }
 
                         col++;

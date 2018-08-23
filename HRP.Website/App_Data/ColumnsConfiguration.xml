@@ -520,7 +520,7 @@
     <Item Id="102" Name="Basic Salary">
       <ColumnGroup GroupId="1" GroupName="Basic Salary">
         <MappingColumn PropertyName="CurrencyCode" HeaderName="Basic Salary - Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="Salary" HeaderName="Basic Salary - Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="Salary" HeaderName="Basic Salary - Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="103" Name="Basic Salary - Effective Date">
@@ -541,116 +541,116 @@
     <Item Id="106" Name="Basic Salary - E-banking">
       <ColumnGroup GroupId="1" GroupName="Basic Salary - E-banking">
         <MappingColumn PropertyName="EbankingCurrencyCode" HeaderName="Basic Salary - E-banking Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="EbankingAmount" HeaderName="Basic Salary - E-banking Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="EbankingAmount" HeaderName="Basic Salary - E-banking Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="EbankingAccount" HeaderName="Basic Salary - E-banking Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="107" Name="Basic Salary - Direct Banking 1">
       <ColumnGroup GroupId="1" GroupName="Basic Salary - Direct Banking 1">
         <MappingColumn PropertyName="DirectBanking1CurrencyCode" HeaderName="Basic Salary - Direct Banking 1 Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="DirectBanking1Amount" HeaderName="Basic Salary - Direct Banking 1 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking1Amount" HeaderName="Basic Salary - Direct Banking 1 Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="DirectBanking1Account" HeaderName="Basic Salary - Direct Banking 1 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="108" Name="Basic Salary - Direct Banking 2">
       <ColumnGroup GroupId="1" GroupName="Basic Salary - Direct Banking 2">
         <MappingColumn PropertyName="DirectBanking2CurrencyCode" HeaderName="Basic Salary - Direct Banking 2 Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="DirectBanking2Amount" HeaderName="Basic Salary - Direct Banking 2 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="DirectBanking2Amount" HeaderName="Basic Salary - Direct Banking 2 Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="DirectBanking2Account" HeaderName="Basic Salary - Direct Banking 2 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="109" Name="Basic Salary - Cash">
       <ColumnGroup GroupId="1" GroupName="Basic Salary - Cash">
         <MappingColumn PropertyName="CashCurrencyCode" HeaderName="Basic Salary - Cash Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="CashAmount" HeaderName="Basic Salary - Cash Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="CashAmount" HeaderName="Basic Salary - Cash Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="CashAccount" HeaderName="Basic Salary - Cash Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="110" Name="Allowance">
       <ColumnGroup GroupId="1" GroupName="Allowance">
         <MappingColumn PropertyName="AllowanceCurrencyCode" HeaderName="Allowance Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="AllowanceAmount" HeaderName="Allowance Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceAmount" HeaderName="Allowance Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="111" Name="Allowance - Direct Banking 1">
       <ColumnGroup GroupId="1" GroupName="Allowance- Direct Banking 1">
         <MappingColumn PropertyName="AllowanceDirectBanking1CurrencyCode" HeaderName="Allowance - Direct Banking 1 Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="AllowanceDirectBanking1Amount" HeaderName="Allowance - Direct Banking 1 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking1Amount" HeaderName="Allowance - Direct Banking 1 Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="AllowanceDirectBanking1Account" HeaderName="Allowance - Direct Banking 1 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="112" Name="Allowance - Direct Banking 2">
       <ColumnGroup GroupId="1" GroupName="Allowance - Direct Banking 2">
         <MappingColumn PropertyName="AllowanceDirectBanking2CurrencyCode" HeaderName="Allowance - Direct Banking 2 Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="AllowanceDirectBanking2Amount" HeaderName="Allowance - Direct Banking 2 Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceDirectBanking2Amount" HeaderName="Allowance - Direct Banking 2 Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="AllowanceDirectBanking2Account" HeaderName="Allowance - Direct Banking 2 Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="113" Name="Allowance - Cash">
       <ColumnGroup GroupId="1" GroupName="Allowance - Cash">
         <MappingColumn PropertyName="AllowanceCashCurrencyCode" HeaderName="Allowance - Cash Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="AllowanceCashAmount" HeaderName="Allowance - Cash Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="AllowanceCashAmount" HeaderName="Allowance - Cash Amount" IsEncrypted="false" IsAmount="true" />
         <MappingColumn PropertyName="AllowanceCashAccount" HeaderName="Allowance - Cash Account" IsEncrypted="false" />
       </ColumnGroup>
     </Item>
     <Item Id="114" Name="Subsistence">
       <ColumnGroup GroupId="1" GroupName="Subsistence">
         <MappingColumn PropertyName="SubsistenceCurrencyCode" HeaderName="Subsistence Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="SubsistenceAmount" HeaderName="Subsistence Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="SubsistenceAmount" HeaderName="Subsistence Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="115" Name="Home Passage">
       <ColumnGroup GroupId="1" GroupName="HomePassage">
         <MappingColumn PropertyName="HomePassageCurrencyCode" HeaderName="HomePassage Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="HomePassageAmount" HeaderName="HomePassage Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="HomePassageAmount" HeaderName="HomePassage Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="116" Name="Housing">
       <ColumnGroup GroupId="1" GroupName="Housing">
         <MappingColumn PropertyName="HousingCurrencyCode" HeaderName="Housing Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="HousingAmount" HeaderName="Housing Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="HousingAmount" HeaderName="Housing Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="117" Name="Mobile Phone">
       <ColumnGroup GroupId="11" GroupName="Mobile Phone">
         <MappingColumn PropertyName="MobilePhoneCurrencyCode" HeaderName="Mobile Phone Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="MobilePhoneAmount" HeaderName="Mobile Phone Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="MobilePhoneAmount" HeaderName="Mobile Phone Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="118" Name="HPI">
       <ColumnGroup GroupId="1" GroupName="HPI">
         <MappingColumn PropertyName="HPICurrencyCode" HeaderName="HPI Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="HPIAmount" HeaderName="HPI Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="HPIAmount" HeaderName="HPI Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="119" Name="Duty Meal">
       <ColumnGroup GroupId="1" GroupName="Duty Meal">
         <MappingColumn PropertyName="DutyMealCurrencyCode" HeaderName="Duty Meal Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="DutyMealAmount" HeaderName="Duty Meal Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="DutyMealAmount" HeaderName="Duty Meal Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="120" Name="Secondment">
       <ColumnGroup GroupId="1" GroupName="Secondment">
         <MappingColumn PropertyName="SecondmentCurrencyCode" HeaderName="Secondment Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="SecondmentAmount" HeaderName="Secondment Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="SecondmentAmount" HeaderName="Secondment Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="121" Name="Others">
       <ColumnGroup GroupId="1" GroupName="Others">
         <MappingColumn PropertyName="OthersCurrencyCode" HeaderName="Others Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="OthersAmount" HeaderName="Others Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="OthersAmount" HeaderName="Others Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="122" Name="Rooming Charge">
       <ColumnGroup GroupId="1" GroupName="Rooming Charge">
         <MappingColumn PropertyName="RoomingChargesCurrencyCode" HeaderName="Rooming Charge Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="RoomingChargesAmount" HeaderName="Rooming Charge Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="RoomingChargesAmount" HeaderName="Rooming Charge Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
     <Item Id="123" Name="Fitness Club Membership">
       <ColumnGroup GroupId="1" GroupName="Fitness Club Membership">
         <MappingColumn PropertyName="FitnessFirstCurrencyCode" HeaderName="Fitness Club Membership Currency" IsEncrypted="false" />
-        <MappingColumn PropertyName="FitnessFirstAmount" HeaderName="Fitness Club Membership Amount" IsEncrypted="false" />
+        <MappingColumn PropertyName="FitnessFirstAmount" HeaderName="Fitness Club Membership Amount" IsEncrypted="false" IsAmount="true" />
       </ColumnGroup>
     </Item>
   </Group>

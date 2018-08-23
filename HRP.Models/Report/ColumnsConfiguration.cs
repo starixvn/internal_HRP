@@ -18,7 +18,8 @@
                 {
                     PropertyName = element.Attribute("PropertyName").Value,
                     HeaderName = element.Attribute("HeaderName").Value,
-                    IsEncrypted = bool.Parse(element.Attribute("IsEncrypted").Value)
+                    IsEncrypted = bool.Parse(element.Attribute("IsEncrypted").Value),
+                    IsAmount = element.Attribute("IsAmount") != null
                 });
             }
 
