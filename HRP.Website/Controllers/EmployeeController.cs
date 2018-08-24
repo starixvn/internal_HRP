@@ -427,7 +427,7 @@
                     redirectTo = Url.Action("Index")
                 });
             }
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage );
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -618,7 +618,7 @@
                 Cash = new PaymentTransactionModel
                 {
                     AccountId = payroll.Allowance.CashAccountId,
-                    CurrencyId = payroll.Allowance.CurrencyId,
+                    CurrencyId = payroll.Allowance.CashCurrencyId,
                     PlainValue = payroll.Allowance.CashAmount
                 },
                 DirectBanking1 = new PaymentTransactionModel
@@ -645,7 +645,7 @@
 
         private EmployeePayrollBasicSalaryViewModel InitializeBasicSalaryViewModel(EmployeePayrollModel payroll)
         {
-            var viewModel =  new EmployeePayrollBasicSalaryViewModel
+            var viewModel = new EmployeePayrollBasicSalaryViewModel
             {
                 EmployeeId = payroll.BasicSalary.EmployeeId,
                 EffectiveDate = payroll.BasicSalary.EffectiveDate,
@@ -666,7 +666,7 @@
                 Cash = new PaymentTransactionModel
                 {
                     AccountId = payroll.BasicSalary.CashAccountId,
-                    CurrencyId = payroll.BasicSalary.CurrencyId,
+                    CurrencyId = payroll.BasicSalary.CashCurrencyId,
                     PlainValue = payroll.BasicSalary.CashAmount
                 },
                 DirectBanking1 = new PaymentTransactionModel
