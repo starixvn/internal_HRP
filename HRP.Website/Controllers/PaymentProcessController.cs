@@ -28,6 +28,11 @@
 
     public class PaymentProcessController : BaseController
     {
+        protected const string RijndaelKeyForBasicSalary = "RijndaelKeyForBasicSalary";
+        protected const string RijndaelIVForBasicSalary = "RijndaelIVForBasicSalary";
+        protected const string RijndaelKeyForAllowances = "RijndaelKeyForAllowances";
+        protected const string RijndaelIVForAllowances = "RijndaelIVForAllowances";
+
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
@@ -349,15 +354,15 @@
             }
 
             var keys = rijndaelService.GenerateKey();
-            sessionService.RijndaelKey = keys.Item1;
-            sessionService.RijndaelIV = keys.Item2;
+            TempData[RijndaelKeyForBasicSalary] = keys.Item1;
+            TempData[RijndaelIVForBasicSalary] = keys.Item2;
             var viewModel = new EditMonthlySalaryViewModel
             {
                 Month = month,
-                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, sessionService.RijndaelKey, sessionService.RijndaelIV),
-                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, sessionService.RijndaelKey, sessionService.RijndaelIV),
-                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, sessionService.RijndaelKey, sessionService.RijndaelIV),
-                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, sessionService.RijndaelKey, sessionService.RijndaelIV),
+                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, keys.Item1, keys.Item2),
+                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, keys.Item1, keys.Item2),
+                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, keys.Item1, keys.Item2),
+                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, keys.Item1, keys.Item2),
                 FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId),
                 RijndaelKey = keys.Item1,
                 RijndaelIV = keys.Item2,
@@ -478,12 +483,12 @@
             }
 
             var keys = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = keys.Item1;
-            sessionService.RijndaelKey = keys.Item2;
+            TempData[RijndaelKeyForAllowances] = keys.Item1;
+            TempData[RijndaelIVForAllowances] = keys.Item2;
 
             var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter);
-            viewModel.RijndaelIV = keys.Item1;
-            viewModel.RijndaelKey = keys.Item2;
+            viewModel.RijndaelKey = keys.Item1;
+            viewModel.RijndaelIV = keys.Item2;
 
             return View(viewModel);
         }
@@ -606,8 +611,8 @@
 
         private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAdditionModel> additions)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelKey = (string)TempData[RijndaelKeyForAllowances];
+            var rijndaelIV = (string)TempData[RijndaelIVForAllowances];
 
             return additions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
@@ -639,8 +644,8 @@
 
         private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeductionModel> deductions)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelIV = (string)TempData[RijndaelIVForBasicSalary];
+            var rijndaelKey = (string)TempData[RijndaelKeyForBasicSalary];
 
             return deductions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
@@ -672,8 +677,8 @@
 
         private MonthlyAllowanceViewModel InitializeAllowanceModel(MonthlyAllowanceModel allowance)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelIV = (string)TempData[RijndaelIVForBasicSalary];
+            var rijndaelKey = (string)TempData[RijndaelKeyForBasicSalary];
 
             return new MonthlyAllowanceViewModel
             {
@@ -741,8 +746,8 @@
 
         private MonthlyPayrollBasicAllowanceViewModel InitializeBasicAllowanceModel(MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelIV = (string)TempData[RijndaelIVForBasicSalary];
+            var rijndaelKey = (string)TempData[RijndaelKeyForBasicSalary];
 
             return new MonthlyPayrollBasicAllowanceViewModel
             {
@@ -894,8 +899,8 @@
 
         private void DecryptData(EditMonthlyAllowancesViewModel viewModel)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelIV = (string)TempData[RijndaelIVForBasicSalary];
+            var rijndaelKey = (string)TempData[RijndaelKeyForBasicSalary];
 
             rijndaelService.DecryptObject(viewModel.Allowance, rijndaelKey, rijndaelIV);
 
@@ -1074,8 +1079,8 @@
 
         private void DecryptData(EditMonthlySalaryViewModel viewModel)
         {
-            var rijndaelIV = sessionService.RijndaelIV;
-            var rijndaelKey = sessionService.RijndaelKey;
+            var rijndaelIV = (string)TempData[RijndaelIVForBasicSalary];
+            var rijndaelKey = (string)TempData[RijndaelKeyForBasicSalary];
 
             rijndaelService.DecryptObject(viewModel.MonthlySalary, rijndaelKey, rijndaelIV);
 

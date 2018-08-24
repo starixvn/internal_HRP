@@ -21,6 +21,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
     using Models;
     using Models.Currency;
@@ -781,6 +782,7 @@
             var cashAccountSelectList = new SelectList(cashAccounts, nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
             monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
@@ -898,6 +900,7 @@
                 Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
             };
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
 
             var objectValidator = Substitute.For<IObjectModelValidator>();
             objectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()))
@@ -935,6 +938,7 @@
             };
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var objectValidator = Substitute.For<IObjectModelValidator>();
             objectValidator.Validate(Arg.Any<ActionContext>(),
                 Arg.Any<ValidationStateDictionary>(),
@@ -1036,6 +1040,7 @@
         {
             var companyId = 1;
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
             rijndaelService.GenerateKey().Returns(new Tuple<string, string>(string.Empty, string.Empty));
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
@@ -1077,6 +1082,7 @@
             // Arrange
             var viewModel = new EditMonthlyAllowancesViewModel();
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             controller.ObjectValidator = Substitute.For<IObjectModelValidator>();
             controller.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
@@ -1119,6 +1125,7 @@
             };
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             controller.ObjectValidator = Substitute.For<IObjectModelValidator>();
             controller.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                  Arg.Any<string>(), Arg.Any<Object>()));
